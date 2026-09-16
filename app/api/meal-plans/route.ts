@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { authFailure, sameOrigin, sessionUser } from "../../../lib/auth";
 import { parseBodyProfile } from "../../../lib/body-profile";
 import { parseDiet, recommendMeals } from "../../../lib/meal-plan";
+import { makeMonth } from "../../../lib/monthly-plan";
 import { getPool } from "../../../lib/db";
 
 export const runtime = "nodejs";
@@ -29,7 +30,8 @@ export async function POST(request: NextRequest) {
   if (!profile || !diet || !Number.isInteger(variant) || variant < 0 || variant > 1000000)
     return authFailure("신체 정보와 식단 설정을 확인해 주세요.", 400);
   try {
-  const recommendation = recommendMeals(profile, diet, variant, await catalogItems());
+  const catalog = await catalogItems();
+  const recommendation = recommendMeals(profile, diet, variant, catalog);
   if (!recommendation) return authFailure("선택한 시간대와 제외 재료 조건에 맞는 식단이 부족해요. 식사 시간·제외 재료 설정을 확인해 주세요. 임신·수유 중에는 자동 추천을 제공하지 않아요.", 422);
     const user = await sessionUser(request);
     const plan = { profile, diet, recommendation, variant };
@@ -46,6 +48,13 @@ export async function POST(request: NextRequest) {
       const result = await client.query(`INSERT INTO meal_plans (user_id,profile_snapshot,diet_snapshot,recommendation,variant)
         VALUES ($1,$2,$3,$4,$5) RETURNING id::text,created_at AS "createdAt"`,
         [user.id,JSON.stringify(profile),JSON.stringify(diet),JSON.stringify(recommendation),variant]);
+      const month=new Date(Date.now()+9*3600000).toISOString().slice(0,7);
+      const days=makeMonth(month,profile,diet,catalog);
+      if(!days)throw new Error("Monthly recommendation unavailable");
+      await client.query(`INSERT INTO monthly_meal_plans(user_id,month,profile,diet,days) VALUES($1,$2,$3,$4,$5)
+        ON CONFLICT(user_id,month) DO UPDATE SET profile=EXCLUDED.profile,diet=EXCLUDED.diet,days=EXCLUDED.days,updated_at=NOW()
+        WHERE monthly_meal_plans.profile<>EXCLUDED.profile OR monthly_meal_plans.diet<>EXCLUDED.diet`,
+        [user.id,month,JSON.stringify(profile),JSON.stringify(diet),JSON.stringify(days)]);
       await client.query("COMMIT");
       return json({ plan: { ...plan, ...result.rows[0] }, saved: true }, 201);
     } catch (error) { await client.query("ROLLBACK"); throw error; }

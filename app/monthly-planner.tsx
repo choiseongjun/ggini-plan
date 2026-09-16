@@ -26,7 +26,13 @@ export function MonthlyPlanner({userId,onLogin,mode='calendar'}:{userId?:string;
  useEffect(()=>{
   if(!userId)return;
   const controller=new AbortController();
-  fetch(mode==='cart'?'/api/monthly-plan?basket=1':`/api/monthly-plan?month=${month}`,{cache:'no-store',signal:controller.signal}).then(async r=>{const d=await r.json();if(!r.ok)throw new Error(d.error);return d;}).then(d=>{
+  fetch(mode==='cart'?'/api/monthly-plan?basket=1':`/api/monthly-plan?month=${month}`,{cache:'no-store',signal:controller.signal}).then(async r=>{const d=await r.json();if(!r.ok)throw new Error(d.error);
+   if(mode==='calendar'&&!d.plan){
+    const prepared=await fetch('/api/monthly-plan',{method:'POST',headers:{'Content-Type':'application/json'},signal:controller.signal,body:JSON.stringify({month,action:'ensure'})});
+    const result=await prepared.json();if(!prepared.ok)throw new Error(result.error);
+    const refreshed=await fetch(`/api/monthly-plan?month=${month}`,{cache:'no-store',signal:controller.signal});const ready=await refreshed.json();if(!refreshed.ok)throw new Error(ready.error);return ready;
+   }
+   return d;}).then(d=>{
    if(mode==='cart')setCart(d.basket);else{setPlan(d.plan);setBudget(d.budget);setDate(current=>current.startsWith(month)?current:month===thisMonth()?new Date(Date.now()+9*3600000).toISOString().slice(0,10):`${month}-01`);}setError('');
   }).catch(e=>{if(!controller.signal.aborted)setError(e.message);}).finally(()=>{if(!controller.signal.aborted)setLoading(false);});
   return()=>controller.abort();
@@ -48,7 +54,7 @@ export function MonthlyPlanner({userId,onLogin,mode='calendar'}:{userId?:string;
   {mode==='calendar'&&<nav className="meal-period-links" aria-label="식단 기간별 보기"><Link href="/calendar/week" aria-current={weekly?'page':undefined}>주간 보기</Link><Link href="/calendar" aria-current={!weekly?'page':undefined}>월간 보기</Link></nav>}
   {!userId?<><p>로그인하면 내 설정으로 월간 식단과 장보기 목록을 저장할 수 있어요.</p><button className="primary-button" onClick={onLogin}>로그인하기</button></>:<>
    {mode==='calendar'&&<><label className="real-date">계획할 달<input type="month" min="2000-01" max="2099-12" value={month} disabled={busy} onChange={e=>{if(e.target.value){setMonth(e.target.value);setPlan(null);setLoading(true);setReplace(false);setMessage('');}}}/></label><p className="body-note">마이에 저장한 식사 횟수·시간·제외 재료를 반영해요. 제공 메뉴 수에 따라 같은 메뉴가 반복될 수 있어요.</p><Link href="/profile#profile-settings">신체 정보·식단 취향 설정 →</Link></>}
-   {loading?<p role="status">저장된 내용을 불러오는 중이에요.</p>:mode==='calendar'?<>
+   {loading?<p role="status">저장한 설정으로 식단을 준비하고 있어요.</p>:mode==='calendar'?<>
     <p className="body-note">월 예산 {budget!==null?won(budget):'미설정'} · {plan?`계산 가능한 상품 합계 ${won(total)}${unknown?` + 미확인 재료 ${unknown}종`:' (배송비 제외)'}`:'아직 이달 식단이 없어요.'}</p>
     {plan&&<p className="body-note">{unknown?'전체 재료 가격이 확인되지 않아 예산 안에 드는지는 아직 확정할 수 없어요.':budget!==null&&total>budget?'계산된 구매 비용이 월 예산을 초과해요. 메뉴나 예산을 조정해 주세요.':'월 합계는 한 번에 구매할 때의 묶음 계산값이에요. 주별로 나누어 구매하면 달라질 수 있어요.'}</p>}
     {!plan?<button className="primary-button" disabled={busy||!!error} onClick={()=>act('generate')}>{busy?'식단 만드는 중…':'이달 식단 만들기'}</button>:<>

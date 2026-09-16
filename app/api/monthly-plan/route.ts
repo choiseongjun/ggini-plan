@@ -27,12 +27,17 @@ export async function POST(request:NextRequest){
  let input;try{input=await request.json();}catch{return authFailure('입력을 확인해 주세요.',400);}
  const {month,action}=input??{};if(!validMonth(month))return authFailure('월을 확인해 주세요.',400);
  const db=getPool();
- if(action==='generate'){
+ if(action==='generate'||action==='ensure'){
+  if(action==='ensure'){const exists=await db.query('SELECT 1 FROM monthly_meal_plans WHERE user_id=$1 AND month=$2',[user.id,month]);if(exists.rowCount)return json({ok:true});}
   const r=await db.query('SELECT height::float8,weight::float8,age,sex,activity,meals,pregnancy,diet_preferences FROM body_profiles WHERE user_id=$1',[user.id]);
   const profile=parseBodyProfile(r.rows[0]),diet=parseDiet(r.rows[0]?.diet_preferences);
   if(!profile||!diet)return authFailure('마이에서 신체 정보와 식단 취향을 먼저 저장해 주세요.',422);
   const days=makeMonth(month,profile,diet,await catalogItems());if(!days)return authFailure('시간대와 제외 재료 조건에 맞는 메뉴가 부족해요. 마이에서 설정을 조정해 주세요.',422);
-  if(input.replace!==true){const existing=await db.query('SELECT 1 FROM monthly_meal_plans WHERE user_id=$1 AND month=$2',[user.id,month]);if(existing.rowCount)return authFailure('이미 식단이 있어요. 다시 만들기를 선택해 주세요.',409);}
+  if(action!=='ensure'&&input.replace!==true){const existing=await db.query('SELECT 1 FROM monthly_meal_plans WHERE user_id=$1 AND month=$2',[user.id,month]);if(existing.rowCount)return authFailure('이미 식단이 있어요. 다시 만들기를 선택해 주세요.',409);}
+  if(action==='ensure'){
+   await db.query('INSERT INTO monthly_meal_plans(user_id,month,profile,diet,days) VALUES($1,$2,$3,$4,$5) ON CONFLICT(user_id,month) DO NOTHING',[user.id,month,JSON.stringify(profile),JSON.stringify(diet),JSON.stringify(days)]);
+   return json({ok:true});
+  }
   await db.query(`INSERT INTO monthly_meal_plans(user_id,month,profile,diet,days) VALUES($1,$2,$3,$4,$5) ON CONFLICT(user_id,month) DO UPDATE SET profile=EXCLUDED.profile,diet=EXCLUDED.diet,days=EXCLUDED.days,updated_at=NOW()`,[user.id,month,JSON.stringify(profile),JSON.stringify(diet),JSON.stringify(days)]);
  }else if(action==='swap'){
   if(typeof input.date!=='string'||!input.date.startsWith(month+'-')||!Number.isInteger(input.index)||input.index<0||input.index>5)return authFailure('끼니를 확인해 주세요.',400);

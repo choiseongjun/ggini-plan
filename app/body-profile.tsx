@@ -76,7 +76,7 @@ export function BodyProfilePanel({ userId, name, onLogin }: { userId?: string; n
       const data = await response.json();
       if (!response.ok) throw new Error(data.error ?? "식단을 생성하지 못했어요.");
       setStoredPlan(data.plan); setVariant(nextVariant);
-      setMessage(data.saved ? "신체 정보, 식단 취향과 맞춤 식단을 저장했어요." : "맞춤 식단을 만들었어요. 계정 저장은 로그인 후 이용할 수 있어요.");
+      setMessage(data.saved ? "맞춤 식단을 저장하고 이번 달 식단도 준비했어요. 주간·월간 보기에서 바로 확인하세요." : "맞춤 식단을 만들었어요. 계정 저장은 로그인 후 이용할 수 있어요.");
     } catch (error) { setError(error instanceof Error ? error.message : "식단을 생성하지 못했어요."); }
     finally { setSaving(false); }
   }
@@ -147,7 +147,7 @@ export function BodyProfilePanel({ userId, name, onLogin }: { userId?: string; n
     {showPlan && <section className="personal-meals" aria-label="맞춤 식단 추천" aria-live="polite">
       <div className="section-heading"><div><span className="section-kicker">JUST FOR YOU</span><h3>나를 위한 하루 식단</h3></div><span className="personal-meal-badge">하루 {meals}끼</span></div>
       <nav className="meal-period-links" aria-label="식단 기간별 보기"><Link href="/calendar/week">주간 식단 보기 →</Link><Link href="/calendar">월간 식단 보기 →</Link></nav>
-      <p className="body-note">여러 날의 식단과 장보기 재료를 함께 확인해요. 저장된 월간 식단이 없으면 이동한 화면에서 만들 수 있어요.</p>
+      <p className="body-note">여러 날의 식단과 장보기 재료를 함께 확인해요. 저장한 설정으로 주간·월간 식단을 자동으로 준비해요.</p>
       {recommendation ? <>
         {recommendation.version!==2 && <div className="meal-notice">이 식단은 이전 추천 기준으로 저장됐어요. 아침·점심·저녁에 맞춰 다시 만들어 주세요.<button type="button" className="meal-refresh" disabled={saving} onClick={()=>void generate(0)}>새 기준으로 식단 다시 만들기</button></div>}
         <p className="personal-meal-sub">{dietStyles[diet.style]} · {diet.fasting === "none" ? "일반 식사" : `${diet.fasting} 단식`} · 첫 끼 {recommendation.meals[0].time}{diet.fasting !== "none" && ` / 식사 마감 ${recommendation.end}`}</p>
