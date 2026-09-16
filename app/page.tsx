@@ -9,6 +9,7 @@ import { ShoppingPlanner } from "./shopping-planner";
 import type { DashboardData } from "../lib/dashboard";
 import { AuthScreen } from "./auth-screen";
 import { CommunityPanel, SharedBasket } from "./community";
+import { BudgetSettings } from "./budget-settings";
 import { BodyProfilePanel } from "./body-profile";
 import { RiceBuddy } from "./rice-buddy";
 import { googleAuthErrors, type GoogleAuthErrorCode } from "../lib/auth-messages";
@@ -207,7 +208,7 @@ export default function Home() {
           <p className="compare-disclaimer">비교 결과의 상품 용량, 배송비, 할인 조건은 판매처마다 달라질 수 있습니다. 결제 전 상품 상세 정보를 확인하세요.</p>
         </>}
         {tab === "community" && <CommunityPanel key={authUser?.id ?? "guest"} userId={authUser?.id} products={products} budget={budget} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")}/>}
-        {tab === "profile" && <BodyProfilePanel key={authUser?.id ?? "guest"} userId={authUser?.id} name={displayName} budget={budget} onBudget={editBudget} onLogin={() => setShowAuth(true)}/> }
+        {tab === "profile" && <><BudgetSettings key={`budget-${authUser?.id ?? "guest"}`} data={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)} onRefresh={refreshDashboard}/><BodyProfilePanel key={authUser?.id ?? "guest"} userId={authUser?.id} name={displayName} budget={budget} onBudget={editBudget} onLogin={() => setShowAuth(true)}/></> }
       </div>
       <nav className="bottom-nav" aria-label="앱 메뉴">{([ ["home","홈","home"], ["calendar","달력","calendar"], ["cart","장바구니","bag"], ["record","기록","chart"], ["community","함께","spark"], ["profile","마이","user"] ] as [Tab,string,IconName][]).map(([key,label,icon]) => <button key={key} type="button" className={tab === key ? "active" : ""} onClick={() => setTab(key)} aria-current={tab === key ? "page" : undefined}><Icon name={icon} size={21}/><span>{label}</span></button>)}</nav>
       </>}

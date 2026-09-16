@@ -18,8 +18,10 @@ test('dashboard stores real budgets/expenses, validates dates, isolates accounts
   assert.equal((await PUT(req(cookies[0],{action:'expense',date:guest.today,category:'food',amount:9000}))).status,200);
   assert.equal((await PUT(req(cookies[0],{action:'expense',date:'2026-02-30',category:'food',amount:1}))).status,400);
   assert.equal((await PUT(req(cookies[0],{action:'expense',date:guest.today,category:'unknown',amount:1}))).status,400);
-  const actual=await(await GET(req(cookies[0]))).json();assert.equal(actual.budget,70000);assert.equal(actual.expenses.length,1);assert.equal(actual.expenses[0].amount,9000);
-  const other=await(await GET(req(cookies[1]))).json();assert.equal(other.budget,null);assert.deepEqual(other.expenses,[]);
+  assert.equal((await PUT(req(cookies[0],{action:'monthlyBudget',amount:300000}))).status,200);
+  assert.equal((await PUT(req(cookies[0],{action:'monthlyBudget',amount:0}))).status,400);
+  const actual=await(await GET(req(cookies[0]))).json();assert.equal(actual.budget,70000);assert.equal(actual.monthlyBudget,300000);assert.equal(actual.monthlyFoodSpent,9000);assert.equal(actual.expenses.length,1);assert.equal(actual.expenses[0].amount,9000);
+  const other=await(await GET(req(cookies[1]))).json();assert.equal(other.budget,null);assert.equal(other.monthlyBudget,null);assert.deepEqual(other.expenses,[]);
   const catalog=await catalogItems();const count=(await db.query('SELECT count(*)::int AS n FROM catalog_items')).rows[0].n;assert.equal(catalog.length,count);assert.ok(catalog.some(p=>p.category==='meal_kit'));assert.ok(catalog.every(p=>p.productUrl?.startsWith('https://')));
  }finally{await db.query('DELETE FROM users WHERE id=ANY($1::bigint[])',[ids]);await db.end();}
 });

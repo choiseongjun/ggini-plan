@@ -5,7 +5,7 @@ import { emptyDashboard } from '../lib/dashboard';
 import { GET } from '../app/api/dashboard/route';
 
 test('empty dashboard follows Seoul date across year boundaries without invented records', () => {
- assert.deepEqual(emptyDashboard(new Date('2026-12-31T15:01:00Z')), {today:'2027-01-01',week:'2026-12-28',budget:null,plans:[],expenses:[]});
+ assert.deepEqual(emptyDashboard(new Date('2026-12-31T15:01:00Z')), {today:'2027-01-01',week:'2026-12-28',budget:null,monthlyBudget:null,monthlyFoodSpent:0,plans:[],expenses:[]});
 });
 test('anonymous dashboard returns no sample data without a database', async () => {
  const old = process.env.DATABASE_URL;
