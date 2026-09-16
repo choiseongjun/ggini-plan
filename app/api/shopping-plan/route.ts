@@ -12,8 +12,22 @@ export async function GET(request:NextRequest){
    const result=await getPool().query('SELECT conditions, meal_ids AS "mealIds", created_at AS "createdAt" FROM shopping_plans WHERE user_id=$1 ORDER BY id DESC LIMIT 1',[user.id]);
    return json({plan:result.rows[0]??null});
   }
-  return json({products:await planProducts()});
+  const user=await sessionUser(request);
+  const preferences=user?(await getPool().query('SELECT conditions FROM shopping_preferences WHERE user_id=$1',[user.id])).rows[0]?.conditions:null;
+  return json({products:await planProducts(),preferences:preferences??null});
  }catch{return authFailure('장보기 식단을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.',503);}
+}
+export async function PUT(request:NextRequest){
+ if(!sameOrigin(request))return authFailure('요청을 확인해 주세요.',403);
+ try{
+  const user=await sessionUser(request);if(!user)return authFailure('로그인이 필요해요.',401);
+  let input;try{input=await request.json();}catch{return authFailure('입력을 확인해 주세요.',400);}
+  const conditions=parseConditions(input?.conditions);
+  if(!conditions)return authFailure('예산과 챙길 끼니를 확인해 주세요.',400);
+  conditions.owned=[];
+  await getPool().query('INSERT INTO shopping_preferences(user_id,conditions) VALUES($1,$2) ON CONFLICT(user_id) DO UPDATE SET conditions=EXCLUDED.conditions,updated_at=NOW()',[user.id,JSON.stringify(conditions)]);
+  return json({saved:true,conditions});
+ }catch{return authFailure('장보기 설정을 저장하지 못했어요. 다시 시도해 주세요.',503);}
 }
 export async function POST(request:NextRequest){
  if(!sameOrigin(request))return authFailure('요청을 확인해 주세요.',403);

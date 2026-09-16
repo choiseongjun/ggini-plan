@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {test} from 'node:test';
 import {randomUUID} from 'node:crypto';
 import {NextRequest} from 'next/server';
-import {GET,POST} from '../app/api/shopping-plan/route';
+import {GET,POST,PUT} from '../app/api/shopping-plan/route';
 import {createSession,SESSION_COOKIE,type PublicUser} from '../lib/auth';
 import {getPool} from '../lib/db';
 import {initialConditions,recommendShopping} from '../lib/shopping-plan';
@@ -17,6 +17,13 @@ test('guest recommendation, authenticated save, account isolation and server val
   assert.equal((await POST(req(cookies[0],body))).status,201);
   assert.deepEqual((await(await GET(req(cookies[0],undefined,true))).json()).plan.mealIds,mealIds);
   assert.equal((await(await GET(req(cookies[1],undefined,true))).json()).plan,null);
+  assert.equal((await PUT(req('',{conditions:initialConditions}))).status,401);
+  const preferences={...initialConditions,budget:70000,days:5,slots:['lunch','dinner'],meals:10,owned:['temporary-stock']};
+  assert.equal((await PUT(req(cookies[0],{conditions:preferences}))).status,200);
+  const stored=(await(await GET(req(cookies[0]))).json()).preferences;
+  assert.equal(stored.budget,70000);assert.equal(stored.meals,10);assert.deepEqual(stored.slots,['lunch','dinner']);assert.deepEqual(stored.owned,[]);
+  assert.equal((await(await GET(req(cookies[1]))).json()).preferences,null);
+  assert.equal((await PUT(req(cookies[0],{conditions:{...preferences,slots:[]}}))).status,400);
   assert.equal((await POST(req(cookies[0],{...body,mealIds:['fake',...mealIds.slice(1)]}))).status,409);
   assert.equal((await POST(req(cookies[0],{...body,conditions:{...initialConditions,budget:1000}}))).status,409);
  }finally{await db.query('DELETE FROM users WHERE id=ANY($1::bigint[])',[ids]);await db.end();}

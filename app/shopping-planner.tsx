@@ -6,23 +6,24 @@ import { basket, basketTotal, validMealIds, slotCandidates, mealSchedule, slotLa
 import './shopping-planner.css';
 
 const won=(n:number)=>`${n.toLocaleString('ko-KR')}원`;
-const draftKey='kkiniplan-shopping-draft-v1';
-export function ShoppingPlanner({userId,onLogin,mode='plan'}:{userId?:string;onLogin:()=>void;mode?:'plan'|'cart'}){
+export function ShoppingPlanner({userId,onLogin,mode='plan'}:{userId?:string;onLogin:()=>void;mode?:'plan'|'cart'|'settings'}){
+ const draftKey=`kkiniplan-shopping-draft-v2-${userId??'guest'}`;
  const [products,setProducts]=useState<PlanProduct[]>([]),[conditions,setConditions]=useState<PlanConditions>(initialConditions);
  const [ids,setIds]=useState<string[]>([]),[loading,setLoading]=useState(true),[busy,setBusy]=useState(false);
  const [error,setError]=useState(''),[message,setMessage]=useState(''),[retry,setRetry]=useState(0);
  useEffect(()=>{
   const controller=new AbortController();
   fetch('/api/shopping-plan',{cache:'no-store',signal:controller.signal}).then(async r=>{const d=await r.json();if(!r.ok)throw new Error(d.error);return d;}).then(d=>{
-   setProducts(d.products);setError('');
+   setProducts(d.products);setError('');setIds([]);
+   const saved=parseConditions(d.preferences);setConditions(saved??initialConditions);
    try{const draft=JSON.parse(sessionStorage.getItem(draftKey)??'null');const c=parseConditions(draft?.conditions);
     if(c){setConditions(c);if(Array.isArray(draft.mealIds)&&validMealIds(draft.mealIds,d.products,c)&&basketTotal(draft.mealIds,d.products,c.owned)<=c.budget)setIds(draft.mealIds);}
    }catch{/* An expired draft should not stop browsing. */}
   }).catch(e=>{if(!controller.signal.aborted)setError(e.message);}).finally(()=>{if(!controller.signal.aborted)setLoading(false);});
   return()=>controller.abort();
- },[retry]);
+ },[retry,draftKey]);
  function remember(c:PlanConditions,mealIds:string[]){try{sessionStorage.setItem(draftKey,JSON.stringify({conditions:c,mealIds}));}catch{/* Saving to an account remains available. */}}
- function update(patch:Partial<PlanConditions>){const c={...conditions,...patch};if(c.slots&&c.days)c.meals=c.slots.length*c.days;setConditions(c);setIds([]);setMessage('');setError('');remember(c,[]);}
+ function update(patch:Partial<PlanConditions>){const c={...conditions,...patch};if(c.slots&&c.days)c.meals=c.slots.length*c.days;setConditions(c);setIds([]);setMessage('');setError('');if(mode!=='settings')remember(c,[]);}
  function generate(){
   setMessage('');setError('');const c=parseConditions(conditions);
   if(!c){setError('챙길 끼니를 하나 이상 고르고 예산을 1,000~1,000,000원으로 입력해 주세요.');return;}
@@ -34,6 +35,17 @@ export function ShoppingPlanner({userId,onLogin,mode='plan'}:{userId?:string;onL
  }
  function swap(index:number){const next=swapMeal(ids,index,products,conditions);if(!next){setMessage('예산과 제외 재료 조건에 맞는 다른 메뉴가 없어요.');return;}setIds(next);remember(conditions,next);setMessage('메뉴와 구매 수량을 함께 바꿨어요.');}
  function own(id:string){const c={...conditions,owned:conditions.owned.includes(id)?conditions.owned.filter(x=>x!==id):[...conditions.owned,id]};setConditions(c);remember(c,ids);setMessage('');}
+ async function savePreferences(){
+  const c=parseConditions(conditions);
+  if(!c){setError('챙길 끼니를 하나 이상 고르고 예산을 1,000~1,000,000원으로 입력해 주세요.');return;}
+  setBusy(true);setError('');setMessage('');
+  try{
+   const clean={...c,owned:[]};
+   if(userId){const r=await fetch('/api/shopping-plan',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({conditions:clean})});const d=await r.json();if(!r.ok)throw new Error(d.error);}
+   sessionStorage.setItem(draftKey,JSON.stringify({conditions:clean,mealIds:[]}));
+   setIds([]);setMessage(userId?'장보기 설정을 계정에 저장했어요. 홈 추천에 바로 반영됩니다.':'이 탭에 설정을 저장했어요. 홈 추천에 바로 반영됩니다.');
+  }catch(e){setError(e instanceof Error?e.message:'설정을 저장하지 못했어요.');}finally{setBusy(false);}
+ }
  async function save(){
   remember(conditions,ids);if(!userId){onLogin();return;}
   setBusy(true);setError('');setMessage('');
@@ -51,8 +63,8 @@ export function ShoppingPlanner({userId,onLogin,mode='plan'}:{userId?:string;onL
  const schedule=mealSchedule(conditions);
  const rows=basket(ids,products,conditions.owned),total=rows.reduce((n,r)=>n+r.cost,0);
  return <section className="shopping-planner" aria-labelledby="planner-title">
-  <div className="planner-heading"><span>이번 주, 뭐 사서 먹지?</span><h2 id="planner-title">{mode==='cart'?'이번 주 살 것':'내 예산으로 챙기는 일주일'}</h2><p>챙길 끼니만 고르면 냉동식품·간편식·밀키트로 구매 목록을 만들어요. 신체 정보 없이 시작할 수 있어요.</p></div>
-  {mode==='plan'&&<form className="planner-form" onSubmit={e=>{e.preventDefault();generate();}}>
+  <div className="planner-heading"><span>이번 주, 뭐 사서 먹지?</span><h2 id="planner-title">{mode==='settings'?'내 장보기 설정':mode==='cart'?'이번 주 살 것':'내 예산으로 챙기는 일주일'}</h2><p>{mode==='settings'?'자주 쓰는 예산과 식사 취향을 저장해 두세요. 다음 추천부터 다시 입력할 필요 없어요.':'챙길 끼니만 고르면 냉동식품·간편식·밀키트로 구매 목록을 만들어요. 신체 정보 없이 시작할 수 있어요.'}</p></div>
+  {mode!=='cart'&&<form className="planner-form" onSubmit={e=>{e.preventDefault();if(mode==='settings')void savePreferences();else generate();}}>
    <label>며칠을 준비할까요?<select value={conditions.days??5} onChange={e=>update({days:Number(e.target.value),slots:conditions.slots??['dinner']})}><option value={5}>평일 5일</option><option value={7}>일주일 7일</option></select></label>
    <fieldset className="planner-slots"><legend>앱이 챙겨줄 끼니</legend>{(Object.keys(slotLabels) as MealSlot[]).map(slot=><label key={slot}><input type="checkbox" checked={(conditions.slots??['dinner']).includes(slot)} onChange={e=>{const current=conditions.slots??['dinner'];update({days:conditions.days??5,slots:e.target.checked?[...current,slot].sort((a,b)=>Object.keys(slotLabels).indexOf(a)-Object.keys(slotLabels).indexOf(b)):current.filter(s=>s!==slot)});}}/>{slotLabels[slot]}</label>)}</fieldset>
    <small>밖에서 먹는 끼니는 선택하지 마세요. 아침은 아침용 상품이 등록된 경우에만 추천해요.</small>
@@ -61,13 +73,13 @@ export function ShoppingPlanner({userId,onLogin,mode='plan'}:{userId?:string;onL
    <label>조리 방식<select value={conditions.cooking} onChange={e=>update({cooking:e.target.value as PlanConditions['cooking']})}><option value="all">간편식과 밀키트 골고루</option><option value="quick">데우거나 볶는 간편식 위주</option><option value="kit">밀키트 조리 가능</option></select></label>
    <label>피할 재료 (선택)<input value={conditions.avoid} maxLength={200} placeholder="예: 새우, 우유 — 쉼표로 구분" onChange={e=>update({avoid:e.target.value})}/></label>
    <small>등록된 상품명·원문 알레르기 표시에서 찾아 제외해요. 알레르기가 있다면 구매 전 전체 원재료와 제조시설 표시를 확인해 주세요.</small>
-   <button className="primary-button" disabled={loading||busy||!products.length}>{loading?'판매 상품 불러오는 중…':'이번 주 살 것 추천받기 →'}</button>
+   <button className="primary-button" disabled={loading||busy||(mode!=='settings'&&!products.length)}>{loading?'설정 불러오는 중…':busy?'저장 중…':mode==='settings'?'장보기 설정 저장':'이번 주 살 것 추천받기 →'}</button>
   </form>}
-  {!loading&&!products.length&&<p>현재 추천할 수 있는 상품이 없어요. 판매 구성과 출처가 확인된 상품을 준비하고 있어요.</p>}
+  {mode!=='settings'&&!loading&&!products.length&&<p>현재 추천할 수 있는 상품이 없어요. 판매 구성과 출처가 확인된 상품을 준비하고 있어요.</p>}
   {error&&<p className="auth-error" role="alert">{error}</p>}
-  {!loading&&!products.length&&<button type="button" onClick={()=>{setLoading(true);setRetry(n=>n+1);}}>상품 다시 불러오기</button>}
-  {userId&&<button type="button" className="text-link" disabled={loading||busy} onClick={restore}>저장한 식단 불러오기 →</button>}
-  {!!ids.length&&<div className="planner-result">
+  {mode!=='settings'&&!loading&&!products.length&&<button type="button" onClick={()=>{setLoading(true);setRetry(n=>n+1);}}>상품 다시 불러오기</button>}
+  {mode!=='settings'&&userId&&<button type="button" className="text-link" disabled={loading||busy} onClick={restore}>저장한 식단 불러오기 →</button>}
+  {mode!=='settings'&&!!ids.length&&<div className="planner-result">
    <div className="planner-total"><span>{ids.length}끼 장보기 예상금액</span><strong>{won(total)}</strong><small>{total<=conditions.budget?`예산에서 ${won(conditions.budget-total)} 남아요`:`예산을 ${won(total-conditions.budget)} 초과했어요`} · 배송비 별도</small></div>
    <details open={mode==='plan'}><summary>일주일 먹는 순서 · 개별 교체</summary><h3>이렇게 먹어요</h3><p className="body-note">밥·면 중심의 메뉴 구성 제안이에요. 조리 기기·시간은 상품 페이지를 확인하고, 식사량에 따라 양을 조절해 주세요.</p>
    <ol className="planner-meals">{ids.map((id,i)=>{const p=products.find(p=>p.id===id)!;return <li key={`${i}-${id}`}><ProductThumb item={p}/><div><small>{schedule[i].day}일차 · {slotLabels[schedule[i].slot]}</small><strong>{p.name}</strong><small>{p.servingNote} · 1회분 사용</small></div><button type="button" onClick={()=>swap(i)} aria-label={`${i+1}번째 끼니 다른 메뉴`}>교체</button></li>;})}</ol></details>
@@ -78,6 +90,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan'}:{userId?:string;onL
   </div>}
   {mode==='plan'&&!!ids.length&&<Link href="/cart">이번 주 구매 목록 보러 가기 →</Link>}
   {mode==='cart'&&!ids.length&&<p><Link href="/">홈에서 이번 주 살 것 추천받기 →</Link></p>}
+  {mode==='settings'&&<div className="profile-shopping-links"><Link href="/">내 설정으로 추천받기 →</Link><Link href="/cart">이번 주 구매 목록 →</Link>{!userId&&<small>로그인하면 설정을 계정에 저장할 수 있어요.</small>}</div>}
   {message&&<p role="status" className="body-note">{message}</p>}
  </section>;
 }

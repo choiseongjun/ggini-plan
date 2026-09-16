@@ -214,3 +214,9 @@ CREATE TABLE IF NOT EXISTS meal_ingredient_baskets (
  owned JSONB NOT NULL DEFAULT '[]',
  FOREIGN KEY(user_id,month) REFERENCES monthly_meal_plans(user_id,month) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS shopping_preferences (
+ user_id BIGINT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+ conditions JSONB NOT NULL,
+ updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);

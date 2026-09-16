@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS shopping_preferences (
+ user_id BIGINT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+ conditions JSONB NOT NULL,
+ updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
