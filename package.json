@@ -1,0 +1,45 @@
+{
+  "name": "kkiniplan",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "db:setup": "node scripts/setup-local-db.mjs && docker compose up -d --wait && node scripts/migrate.mjs",
+    "db:migrate": "node scripts/migrate.mjs",
+    "db:down": "docker compose down",
+    "test:auth": "node scripts/smoke-auth.mjs",
+    "test:google": "node --env-file=.env.local --import tsx --test tests/google-auth.test.ts",
+    "test:firebase": "node --env-file=.env.local --import tsx --test tests/firebase-auth.test.ts",
+    "test:ocr": "node --import tsx --test tests/nutrition-ocr.test.ts",
+    "test:meals": "node --env-file=.env.local --import tsx --test tests/body-profile.test.ts tests/meal-plan.test.ts tests/meal-plans-api.test.ts",
+    "test:community": "node --env-file=.env.local --import tsx --test tests/community.test.ts",
+    "db:catalog": "node --env-file=.env.local scripts/seed-verified-catalog.mjs",
+    "test:dashboard": "node --env-file=.env.local --import tsx --test tests/dashboard.test.ts"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "firebase": "^12.19.0",
+    "firebase-admin": "^14.4.0",
+    "google-auth-library": "^11.0.2",
+    "next": "16.3.5",
+    "pg": "^8.23.0",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "tesseract.js": "^7.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/pg": "^8.23.1",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.5",
+    "tailwindcss": "^4",
+    "tsx": "^4.23.13",
+    "typescript": "^5"
+  }
+}
