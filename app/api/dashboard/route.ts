@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sessionUser, sameOrigin, authFailure } from "../../../lib/auth";
 import { getPool } from "../../../lib/db";
-import { expenseCategories } from "../../../lib/dashboard";
-import { guestDashboard } from "../../../lib/guest-data";
+import { expenseCategories, emptyDashboard } from "../../../lib/dashboard";
 export const runtime="nodejs";
 const json=(data:unknown)=>NextResponse.json(data,{headers:{"Cache-Control":"no-store"}});
 const week="date_trunc('week',NOW() AT TIME ZONE 'Asia/Seoul')::date";
 export async function GET(request:NextRequest){try{
- const user=await sessionUser(request);if(!user)return json(guestDashboard());const db=getPool();
+ const user=await sessionUser(request);if(!user)return json(emptyDashboard());const db=getPool();
  const dates=(await db.query(`SELECT to_char((NOW() AT TIME ZONE 'Asia/Seoul')::date,'YYYY-MM-DD') AS today,to_char(${week},'YYYY-MM-DD') AS week`)).rows[0];
  const [budget,expenses,plans]=await Promise.all([
  db.query(`SELECT amount FROM weekly_budgets WHERE user_id=$1 AND week_start=${week}`,[user.id]),

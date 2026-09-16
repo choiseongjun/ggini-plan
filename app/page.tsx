@@ -16,7 +16,6 @@ import { catalogCategories, shoppingSearchLinks, unitPrice, type CatalogItem, ty
 import { ProductThumb } from "./product-thumb";
 import { CatalogFilter } from "./catalog-filter";
 import { AppLoading, useLoadingTask } from "./app-loading";
-import { guestDashboard, guestProducts } from "../lib/guest-data";
 
 type Tab = "community" | "home" | "calendar" | "cart" | "compare" | "record" | "profile";
 type IconName = "home" | "bag" | "chart" | "user" | "chevron" | "arrow" | "check" | "spark" | "calendar" | "wallet" | "fire" | "close" | "edit" | "left";
@@ -55,12 +54,14 @@ export default function Home() {
   const setTab = (next: Tab) => router.push(next === "home" ? "/" : `/${next}`);
   const contentRef=useRef<HTMLDivElement>(null);
   const startLoading = useLoadingTask();
-  const [products, setProducts] = useState<CatalogItem[]>(guestProducts);
+  const [products, setProducts] = useState<CatalogItem[]>([]);
   const [showAuth, setShowAuth] = useState(false);
   const [authUser, setAuthUser] = useState<PublicUser | null>(null);
   const [authError, setAuthError] = useState("");
   useEffect(()=>{contentRef.current?.scrollTo({top:0});},[tab]);
   const [dashboard,setDashboard]=useState<DashboardData|null>(null);
+  const [catalogError,setCatalogError]=useState("");
+  const [catalogLoaded,setCatalogLoaded]=useState(false);
   const [dataError,setDataError]=useState("");
   const [showSetup,setShowSetup]=useState(false);
   const [draftBudget,setDraftBudget]=useState("");
@@ -75,7 +76,7 @@ export default function Home() {
   const weeklyProducts = products.filter((product) => product.inWeeklyCart);
   const otherProducts = products.filter((product) => !product.inWeeklyCart && (catalogCategory === "all" || product.category === catalogCategory) && `${product.name} ${product.detail}`.toLocaleLowerCase().includes(catalogQuery.trim().toLocaleLowerCase()));
   const cartTotal = weeklyProducts.reduce((sum, product) => sum + product.price, 0);
-  const compareProduct = products.find((product) => product.id === compareProductId) ?? products[0];
+  const compareProduct = products.find((product) => product.id === compareProductId);
   const compareOffers = [...(comparison?.offers ?? [])].sort((a, b) => sortBy === "unit" ? (a.unitPrice ?? Number.POSITIVE_INFINITY) - (b.unitPrice ?? Number.POSITIVE_INFINITY) || a.price - b.price : a.price - b.price);
   const compareLinks = shoppingSearchLinks(compareProduct?.searchQuery ?? "");
   const openCompare = (itemId: string) => { setComparison(null); setCompareLoading(true); setSortBy("unit"); router.push(`/compare/${encodeURIComponent(itemId)}`); };
@@ -91,13 +92,13 @@ export default function Home() {
       const catalogRequest = fetch("/api/catalog",{cache:"no-store",signal:controller.signal}).then(async response=>{
         const catalog=await response.json();
         if(!response.ok)throw new Error("상품 연결 실패");
-        if(!controller.signal.aborted)setProducts(catalog.items?.length?catalog.items:guestProducts);
-      }).catch(()=>{if(!controller.signal.aborted)setProducts(guestProducts);});
+        if(!controller.signal.aborted){setProducts(catalog.items ?? []);setCatalogError("");setCatalogLoaded(true);}
+      }).catch(()=>{if(!controller.signal.aborted){setProducts([]);setCatalogLoaded(true);setCatalogError("상품을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.");}});
       const dashboardRequest = fetch("/api/dashboard",{cache:"no-store",signal:controller.signal}).then(async response=>{
         const dash=await response.json();
         if(!response.ok)throw new Error(dash.error??"식단을 불러오지 못했어요.");
         if(!controller.signal.aborted){setDashboard(dash);setDataError("");}
-      }).catch(e=>{if(!controller.signal.aborted){if(!authUser?.id){setDashboard(guestDashboard());setDataError("");}else setDataError(e.message);}});
+      }).catch(e=>{if(!controller.signal.aborted){setDashboard(null);setDataError(e.message);}});
       void Promise.allSettled([catalogRequest,dashboardRequest]).finally(finish);
     };
     reload();window.addEventListener("focus",reload);
@@ -171,22 +172,23 @@ export default function Home() {
       <div className="app-content" ref={contentRef}>
         {tab === "home" && <section className="home-guide-entry"><strong>자취 식단과 식비, 함께 계획해요</strong><p>일주일 식비 예산부터 1인 가구 장보기 리스트까지.</p><Link href="/guides">자취 식생활 가이드 읽기 →</Link></section>}
         {authError && <p className="auth-inline-error" role="alert">{authError}</p>}
-        {dashboard?.isSample && <div className="home-guide-entry"><strong>끼니플랜 미리 맛보기 🍚</strong><p>이번 주 7일 식단과 예산·지출은 샘플이에요. 로그인하면 나의 기록으로 시작해요.</p></div>}
-        {products.some(product=>product.isSample) && (tab==="home"||tab==="cart"||tab==="compare") && <p className="body-note">상품과 가격은 둘러보기용 예시예요. 쇼핑몰 검색 링크에서 실제 상품과 현재가를 확인할 수 있어요.</p>}
         {dataError&&<p className="auth-error" role="alert">{dataError}</p>}
 
+        {(tab==="home"||tab==="cart"||tab==="compare") && catalogError && <p className="auth-error" role="alert">{catalogError}</p>}
+        {(tab==="home"||tab==="cart") && catalogLoaded && !catalogError && products.length===0 && <p className="body-note">등록된 상품이 없습니다.</p>}
+        {tab==="compare" && catalogLoaded && !catalogError && !compareProduct && <p className="body-note">상품을 찾을 수 없습니다.</p>}
         {(tab === "home" || tab === "calendar" || tab === "record") && dashboard && <Dashboard key={`${authUser?.id??"guest"}-${tab}`} mode={tab} data={dashboard} userId={authUser?.id} products={products} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")} onCalendar={()=>setTab("calendar")} onBudget={editBudget} onRefresh={refreshDashboard} onCompare={openCompare}/>}
         {tab === "cart" && <>
           <SharedBasket key={authUser?.id ?? "guest"} userId={authUser?.id} onCompare={openCompare}/>
           <div className="page-intro"><div className="week-label"><Icon name="bag" size={15}/> 판매 상품 카탈로그</div><h2>식탁을 채울 <span>장바구니</span></h2><p>식재료와 밀키트, 냉동식품을 눌러 가격과 영양 정보를 확인해 보세요.</p></div>
-          <div className="cart-budget"><div><span>이번 주 장바구니 상품 각 1개 기준</span><strong>{formatWon(cartTotal)}</strong></div><p>배송비 제외 · 옵션에 따라 가격이 달라질 수 있어요.</p></div>
+          {weeklyProducts.length > 0 && <div className="cart-budget"><div><span>이번 주 장바구니 상품 각 1개 기준</span><strong>{formatWon(cartTotal)}</strong></div><p>배송비 제외 · 옵션에 따라 가격이 달라질 수 있어요.</p></div>}
           <div className="list-heading"><h3>이번 주 장바구니 <span>{weeklyProducts.length}</span></h3><small>눌러서 판매처 비교</small></div>
           <div className="food-list">{weeklyProducts.map((food) => <button key={food.id} type="button" className="food-row comparison-entry" onClick={() => openCompare(food.id)}><ProductThumb item={food}/><span className="food-meta"><strong>{food.name}</strong><small>{catalogCategories[food.category]} · {food.detail}</small><em>{(food.nutritionSourceUrl || food.nutritionPhotoUrl) && food.proteinG !== null ? `단백질 ${food.proteinG}g / ${food.nutritionBasis}` : "영양 정보 확인 중"}</em></span><span className="food-price"><strong>{formatWon(food.price)}{food.priceNote?.includes("시작가") ? "~" : ""}</strong><small>{food.unit === "g" ? "100g당" : "1개당"} {formatWon(unitPrice(food.price, food.quantity, food.unit))}</small></span><Icon name="chevron" size={17}/></button>)}</div>
           <p className="body-note">추가 상품 검색</p>
           <CatalogFilter query={catalogQuery} category={catalogCategory} onQuery={setCatalogQuery} onCategory={setCatalogCategory}/>
-          {otherProducts.length === 0 && <p className="body-note">검색 결과가 없습니다.</p>}
+          {catalogLoaded && !catalogError && products.length > 0 && otherProducts.length === 0 && <p className="body-note">검색 결과가 없습니다.</p>}
           {otherProducts.length > 0 && <><div className="list-heading"><h3>다른 상품 둘러보기 <span>{otherProducts.length}</span></h3><small>밀키트 · 냉동식품 · 간편식</small></div><div className="food-list">{otherProducts.map((food) => <button key={food.id} type="button" className="food-row comparison-entry" onClick={() => openCompare(food.id)}><ProductThumb item={food}/><span className="food-meta"><strong>{food.name}</strong><small>{catalogCategories[food.category]} · {food.detail}</small><em>{(food.nutritionSourceUrl || food.nutritionPhotoUrl) && food.proteinG !== null ? `단백질 ${food.proteinG}g / ${food.nutritionBasis}` : "영양 정보 확인 중"}</em></span><span className="food-price"><strong>{formatWon(food.price)}{food.priceNote?.includes("시작가") ? "~" : ""}</strong><small>{food.unit === "g" ? "100g당" : "1개당"} {formatWon(unitPrice(food.price, food.quantity, food.unit))}</small></span><Icon name="chevron" size={17}/></button>)}</div></>}
-          <div className="cart-note"><Icon name="spark" size={17}/><p>{products.some(product=>product.isSample)?"샘플 가격으로 구성한 장바구니예요. 실제 가격은 쇼핑몰 검색에서 확인해 주세요.":"판매 페이지에서 확인한 가격이에요. 구매 전 옵션·배송비·현재 가격을 확인해 주세요."}</p></div>
+          <div className="cart-note"><Icon name="spark" size={17}/><p>판매 페이지에서 확인한 가격이에요. 구매 전 옵션·배송비·현재 가격을 확인해 주세요.</p></div>
         </>}
 
         {tab === "compare" && compareProduct && <>

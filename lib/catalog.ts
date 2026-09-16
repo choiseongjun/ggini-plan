@@ -22,7 +22,6 @@ export const catalogCategories = {
 export type CatalogCategory = keyof typeof catalogCategories;
 
 export type CatalogItem = Product & {
-  isSample?: boolean;
   category: CatalogCategory;
   inWeeklyCart: boolean;
   productImageUrl: string | null;

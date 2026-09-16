@@ -10,7 +10,7 @@ const req=(cookie='',body?:unknown)=>new NextRequest('http://localhost:3000/api/
 test('dashboard stores real budgets/expenses, validates dates, isolates accounts and includes database-only catalog rows',async()=>{
  const db=getPool();const ids:string[]=[];const cookies:string[]=[];
  try{
-  const guest=await(await GET(req())).json();assert.equal(guest.isSample,true);assert.equal(guest.plans.length,7);assert.ok(guest.expenses.length>0);
+  const guest=await(await GET(req())).json();assert.equal(guest.budget,null);assert.deepEqual(guest.plans,[]);assert.deepEqual(guest.expenses,[]);
   assert.equal((await PUT(req('',{action:'budget',amount:70000}))).status,401);
   for(let i=0;i<2;i++){const u=(await db.query<PublicUser>("INSERT INTO users(name,email) VALUES('DB 바인딩 테스트',$1) RETURNING id::text,name,email",[`dash-${randomBytes(8).toString('hex')}@example.test`])).rows[0];ids.push(u.id);cookies.push(`${SESSION_COOKIE}=${(await createSession(u)).cookies.get(SESSION_COOKIE)!.value}`);}
   assert.equal((await PUT(req(cookies[0],{action:'budget',amount:70000}))).status,200);
