@@ -14,7 +14,7 @@ export async function GET(request:NextRequest){try{
  db.query(`SELECT to_char(spent_on,'YYYY-MM-DD') AS date,category,amount FROM daily_expenses WHERE user_id=$1 ORDER BY spent_on DESC LIMIT 2000`,[user.id]),
  db.query(`SELECT DISTINCT ON ((created_at AT TIME ZONE 'Asia/Seoul')::date) id::text,to_char(created_at AT TIME ZONE 'Asia/Seoul','YYYY-MM-DD') AS date,recommendation FROM meal_plans WHERE user_id=$1 ORDER BY (created_at AT TIME ZONE 'Asia/Seoul')::date DESC,created_at DESC,id DESC LIMIT 366`,[user.id])]);
  return json({...dates,budget:budget.rows[0]?.amount??null,expenses:expenses.rows,plans:plans.rows});
- }catch{return authFailure("내 기록을 불러오지 못했어요.",503);}}
+ }catch(error){console.error("Dashboard lookup failed",error);return authFailure("내 기록을 불러오지 못했어요.",503);}}
 export async function PUT(request:NextRequest){if(!sameOrigin(request))return authFailure("요청을 확인해 주세요.",403);try{
  const user=await sessionUser(request);if(!user)return authFailure("로그인이 필요해요.",401);
  let p;try{p=await request.json();}catch{return authFailure("입력을 확인해 주세요.",400);}
