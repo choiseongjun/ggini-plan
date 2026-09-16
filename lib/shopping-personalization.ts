@@ -15,7 +15,8 @@ export function personalizeProducts(products:PlanProduct[],raw:unknown,rawDiet:u
  });
  const result=filtered.map(p=>{
   const basis=p.nutritionBasis?.replaceAll(' ','').match(/^(?:가식부)?(\d+(?:\.\d+)?)g(?:당|기준)?$/);
-  const factor=basis&&Number(basis[1])>0&&p.unit==='g'?p.quantity/p.servings/Number(basis[1]):null;
+  const grams=p.servingGrams??(p.unit==='g'?p.quantity/p.servings:null);
+  const factor=basis&&Number(basis[1])>0&&grams!==null?grams/Number(basis[1]):null;
   const sourced=Boolean(p.nutritionSourceUrl||p.nutritionPhotoUrl);
   const kcal=sourced&&factor!==null&&p.caloriesKcal!=null?p.caloriesKcal*factor:null;
   const protein=sourced&&factor!==null&&p.proteinG!=null?p.proteinG*factor:null;

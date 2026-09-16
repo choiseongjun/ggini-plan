@@ -46,3 +46,7 @@ next-env.d.ts
 
 .vercel
 .env*
+
+# Local product research; reviewed facts are in the versioned shopping manifest
+/data/shopping-source-research.json
+/data/shopping-label-research.json

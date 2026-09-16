@@ -20,3 +20,9 @@ test('saved exclusions and plant preference constrain the actual shopping catalo
  assert.equal(personalizeProducts(products,profile,{...defaultDiet,style:'plant'}).products.length,0);
  assert.equal(personalizeProducts(products,{...profile,pregnancy:true},defaultDiet).personalization.blocked,true);
 });
+
+test('verified serving grams convert selling packs without treating a pack count as grams',()=>{
+ const packed={...product,unit:'개' as const,quantity:1,servings:3,servingGrams:185,nutritionBasis:'185g당',caloriesKcal:538};
+ assert.equal(personalizeProducts([packed],profile,defaultDiet).products[0].servingCalories,538);
+ assert.equal(personalizeProducts([{...packed,servingGrams:undefined}],profile,defaultDiet).products[0].servingCalories,null);
+});

@@ -1,10 +1,16 @@
 import manifest from '../data/catalog-import-2026-09-16.json';
+import reviewed from '../data/shopping-verified-2026-09-17.json';
 import { catalogItems } from './catalog-db';
 import type { PlanProduct } from './shopping-plan';
 
 export async function planProducts():Promise<PlanProduct[]> {
  const products=await catalogItems();
  return products.flatMap(p=>{
+  const verified=reviewed.rows.find(row=>row.id===p.id&&row.name===p.name&&row.detail===p.detail&&row.productUrl===p.productUrl);
+  if(verified){
+   if(!verified.available||!verified.servings||!verified.servingNote)return [];
+   return [{...p,servings:verified.servings,servingGrams:verified.servingGrams??undefined,servingNote:verified.servingNote,avoidanceText:verified.allergyText}];
+  }
   const source=manifest.rows.find(row=>row.id===p.id);
   if(!source || source.name!==p.name || source.detail!==p.detail || !p.productUrl)return [];
   // Start with rice/noodle meals. Soups, sauces and side dishes need additional ingredients.

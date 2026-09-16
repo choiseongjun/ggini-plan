@@ -1,6 +1,6 @@
 import type { CatalogItem } from './catalog';
 
-export type PlanProduct = CatalogItem & { servings: number; servingNote: string; avoidanceText: string | null; personalizationScore?:number; servingCalories?:number|null };
+export type PlanProduct = CatalogItem & { servings: number; servingGrams?:number; servingNote: string; avoidanceText: string | null; personalizationScore?:number; servingCalories?:number|null };
 export type MealSlot = 'breakfast'|'lunch'|'dinner';
 export const slotLabels={breakfast:'아침',lunch:'점심',dinner:'저녁'};
 export type PlanConditions = { budget: number; meals: number; cooking: 'quick' | 'kit' | 'all'; avoid: string; owned: string[]; days?:number; slots?:MealSlot[] };
