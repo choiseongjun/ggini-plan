@@ -12,8 +12,12 @@ export function parseDiet(value: unknown): DietPreferences | null {
   if (typeof p.style !== "string" || !Object.hasOwn(dietStyles, p.style) || !["none", "14:10", "16:8"].includes(String(p.fasting)) || typeof p.start !== "number" || !Number.isInteger(p.start) || p.start < 0 || p.start > 23 || !Array.isArray(p.excluded) || p.excluded.length > Object.keys(excludedFoods).length || p.excluded.some(x => typeof x !== "string" || !Object.hasOwn(excludedFoods, x))) return null;
   return { style: p.style as DietPreferences["style"], fasting: p.fasting as DietPreferences["fasting"], start: p.start, excluded: [...new Set(p.excluded)] };
 }
-// Representative ingredient values per 100 g; recipes are estimates, not product labels.
+// Representative values per 100 g (milk per 100 mL); recipes are estimates, not product labels.
+// Cereal: https://prod.danawa.com/info/?pcode=3230385 (30g: 113kcal, P1/C26/F0.5).
+// Milk: https://www.seoulmilk.co.kr/mobile/product/product_view.sm?nmNo=10000000000587&page=1&subname=P0 (per 100mL).
 const foods = {
+  cereal: ["콘푸라이트 시리얼", 113/30*100, 1/30*100, 26/30*100, 0.5/30*100],
+  milk: ["우유",70,3,5,4],
   rice: ["현미밥 (조리 후)", 153, 3.2, 32, 1], chicken: ["닭가슴살 (익힌 것)", 165, 31, 0, 3.6],
   tofu: ["두부", 85, 9, 2, 4.5], egg: ["달걀", 143, 12.6, 0.7, 9.5],
   salmon: ["연어", 208, 20, 0, 13], veg: ["채소 믹스", 30, 2, 5, 0.3],
@@ -26,6 +30,9 @@ type MealSlot = "breakfast" | "lunch" | "dinner";
 export function mealSlot(hours:number):MealSlot { const hour=((hours%24)+24)%24;return hour>=5&&hour<11?"breakfast":hour>=11&&hour<17?"lunch":"dinner"; }
 type Recipe = { slots:MealSlot[]; name: string; emoji: string; styles: DietPreferences["style"][]; avoid: DietPreferences["excluded"]; ingredients: [Food, number][]; tip: string };
 const recipes: Recipe[] = [
+ {slots:["breakfast"],name:"콘푸라이트와 우유",emoji:"🥣",styles:["balanced","quick"],avoid:["milk","corn","wheat"],ingredients:[["cereal",40],["milk",200]],tip:"시리얼에 우유를 부어 먹어요. 제품 종류에 따라 영양성분이 달라지므로 구매한 포장 표시를 확인해 주세요."},
+ {slots:["breakfast"],name:"바나나 시리얼 우유볼",emoji:"🍌",styles:["balanced","quick"],avoid:["milk","corn","wheat"],ingredients:[["cereal",30],["milk",200],["banana",80]],tip:"시리얼에 우유와 잘게 썬 바나나를 넣어요."},
+ {slots:["breakfast"],name:"시리얼 요거트볼",emoji:"🥣",styles:["balanced","protein","quick"],avoid:["milk","corn","wheat"],ingredients:[["cereal",35],["yogurt",170],["banana",70]],tip:"무가당 요거트에 시리얼과 바나나를 올려 바로 먹어요."},
  {slots:["lunch","dinner"],name:"닭가슴살 통밀 파스타",emoji:"🍝",styles:["balanced","protein","quick"],avoid:["chicken","wheat"],ingredients:[["pasta",200],["chicken",120],["veg",120],["oil",8]],tip:"삶은 파스타에 익힌 닭가슴살과 데친 채소를 넣고 올리브유로 가볍게 볶아요."},
  {slots:["lunch","dinner"],name:"연어 채소 파스타",emoji:"🍝",styles:["balanced","protein"],avoid:["fish","wheat"],ingredients:[["pasta",180],["salmon",120],["veg",150],["oil",5]],tip:"연어를 충분히 익힌 뒤 삶은 파스타와 채소를 올리브유에 함께 볶아요."},
  {slots:["lunch","dinner"],name:"달걀 채소 덮밥",emoji:"🍳",styles:["balanced","quick"],avoid:["egg"],ingredients:[["rice",180],["egg",100],["veg",150],["oil",5]],tip:"채소와 달걀을 올리브유에 충분히 익혀 현미밥 위에 올려요."},
@@ -45,10 +52,10 @@ const recipes: Recipe[] = [
 ];
 export function clockTime(hours: number) { const minutes = Math.round(hours * 60); return `${minutes >= 1440 ? "다음 날 " : ""}${String(Math.floor(minutes / 60) % 24).padStart(2,"0")}:${String(minutes % 60).padStart(2,"0")}`; }
 export function recommendMeals(profile: BodyProfile, diet: DietPreferences, variant = 0, catalog: CatalogItem[] = []) {
-  const ingredientIds: Record<string,string> = {rice:"rice",chicken:"chicken",tofu:"tofu",egg:"eggs",yogurt:"yogurt",banana:"banana",oats:"oats",veg:"vegetable-mix",oil:"olive-oil",salmon:"salmon",beans:"chickpeas",pasta:"whole-wheat-pasta"};
+  const ingredientIds: Record<string,string> = {cereal:"cornflakes",milk:"milk",rice:"rice",chicken:"chicken",tofu:"tofu",egg:"eggs",yogurt:"yogurt",banana:"banana",oats:"oats",veg:"vegetable-mix",oil:"olive-oil",salmon:"salmon",beans:"chickpeas",pasta:"whole-wheat-pasta"};
   const productFor = (food:Food) => catalog.find(p=>p.id===ingredientIds[food]);
   const nutrient = (food:Food,index:1|2|3|4) => {
-    const item=productFor(food);
+    const item=food==='milk'?undefined:productFor(food);
     const basis=item?.nutritionBasis?.replaceAll(" ","").match(/^(?:가식부)?(\d+(?:\.\d+)?)g(?:당|기준)?$/);
     const values=item?[item.caloriesKcal,item.proteinG,item.carbohydratesG,item.fatG]:[];
     const value=values[index-1];
@@ -57,7 +64,7 @@ export function recommendMeals(profile: BodyProfile, diet: DietPreferences, vari
   const energy = calorieEstimate(profile);
   if (!energy) return null;
   const foodExclusions:Record<Food,ExcludedFood[]> = {
-    rice:['rice'],chicken:['chicken'],tofu:['soy'],egg:['egg'],salmon:['fish'],
+    cereal:['corn','wheat'],milk:['milk'],rice:['rice'],chicken:['chicken'],tofu:['soy'],egg:['egg'],salmon:['fish'],
     veg:['broccoli','mushroom','onion','garlic','tomato'],oil:[],oats:['oats'],yogurt:['milk'],banana:['banana'],beans:['soy'],pasta:['wheat'],
   };
   const candidates = recipes.filter(r => !r.avoid.some(a => diet.excluded.includes(a)) && !r.ingredients.some(([food])=>{
@@ -88,7 +95,7 @@ export function recommendMeals(profile: BodyProfile, diet: DietPreferences, vari
     // Breakfast has a smaller planning share. Keep ordinary recipe portions even when energy needs are high.
     const target=energy.daily*weights[i]/weightTotal;
     const ratio = Math.max(0.5,Math.min(slot==='breakfast'?1.2:1.35,(slot==='breakfast'?Math.min(450,target):target)/base));
-    const ingredients = recipe.ingredients.map(([food,g]) => ({name:foods[food][0],grams:Math.round(g*ratio),food,product:productFor(food)?{id:productFor(food)!.id,name:productFor(food)!.name,url:productFor(food)!.productUrl}:null}));
+    const ingredients = recipe.ingredients.map(([food,g]) => ({name:foods[food][0],grams:Math.round(g*ratio),unit:food==='milk'?'mL':'g',food,product:productFor(food)?{id:productFor(food)!.id,name:productFor(food)!.name,url:productFor(food)!.productUrl}:null}));
     const sum = (index: 1|2|3|4) => Math.round(ingredients.reduce((total,item) => total + nutrient(item.food,index)*item.grams/100,0));
     return {...recipe,ingredients,kcal:sum(1),protein:sum(2),carbs:sum(3),fat:sum(4),slot,label:slot==='breakfast'?'아침':slot==='lunch'?'점심':'저녁',time:clockTime(times[i])};
   });

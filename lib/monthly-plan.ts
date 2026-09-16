@@ -17,7 +17,7 @@ export function makeMonth(month:string,profile:BodyProfile,diet:DietPreferences,
  }
  return result;
 }
-const productIds:Record<string,string>={rice:'rice',chicken:'chicken',tofu:'tofu',egg:'eggs',banana:'banana',oats:'oats',yogurt:'yogurt',oil:'olive-oil',salmon:'salmon',beans:'chickpeas',pasta:'whole-wheat-pasta',veg:'vegetable-mix'};
+const productIds:Record<string,string>={cereal:'cornflakes',milk:'milk',rice:'rice',chicken:'chicken',tofu:'tofu',egg:'eggs',banana:'banana',oats:'oats',yogurt:'yogurt',oil:'olive-oil',salmon:'salmon',beans:'chickpeas',pasta:'whole-wheat-pasta',veg:'vegetable-mix'};
 export function ingredientBasket(days:DayPlan[],catalog:CatalogItem[],owned:string[]=[]){
  const grouped=new Map<string,{food:string;name:string;grams:number}>();
  for(const day of days)for(const meal of day.recommendation.meals)for(const i of meal.ingredients){
@@ -26,11 +26,11 @@ export function ingredientBasket(days:DayPlan[],catalog:CatalogItem[],owned:stri
  return [...grouped.values()].map(row=>{
   const product=catalog.find(p=>p.id===productIds[row.food]&&p.productUrl)??null;
   // Do not equate cooked ingredient weights with raw products or grams with millilitres/counts.
-  const sameBasis=product?.unit==='g'&&product.quantity>0&&!product.priceNote?.includes('시작가')&&
+  const sameBasis=row.food!=='milk'&&product?.unit==='g'&&product.quantity>0&&!product.priceNote?.includes('시작가')&&
    (!['rice','chicken','beans','pasta'].includes(row.food)||/익힌|조리 후|즉석밥|햇반/.test(product.name+' '+product.detail));
   const packs=sameBasis?Math.ceil(row.grams/product!.quantity):null;
   const have=owned.includes(row.food);
-  return {...row,product,packs,have,cost:have?0:packs!==null?packs*product!.price:null,leftGrams:packs!==null?packs*product!.quantity-row.grams:null};
+  return {...row,unit:row.food==='milk'?'mL':'g',product,packs,have,cost:have?0:packs!==null?packs*product!.price:null,leftGrams:packs!==null?packs*product!.quantity-row.grams:null};
  });
 }
 export function selectedWeek(days:DayPlan[],start:string){

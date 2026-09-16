@@ -34,7 +34,7 @@ test("invalid settings rejected and pregnancy recommendations disabled", () => {
 
 test("expanded exclusions validate and remove actual recipe ingredients",()=>{
  const excluded=Object.keys(excludedFoods) as (keyof typeof excludedFoods)[];
- assert.equal(parseDiet({...defaultDiet,excluded})?.excluded.length,25);
+ assert.equal(parseDiet({...defaultDiet,excluded})?.excluded.length,26);
  assert.equal(recommendMeals(profile,{...defaultDiet,excluded}),null);
  for(const key of ['rice','banana','oats'] as const)for(let variant=0;variant<8;variant++){
   const plan=recommendMeals(profile,{...defaultDiet,excluded:[key]},variant);
@@ -56,4 +56,15 @@ test("breakfast remains quick and modest across variants; noon first meal is lun
  }
  assert.equal(recommendMeals(profile,{...defaultDiet,start:12})!.meals[0].label,'점심');
  assert.equal(recommendMeals(profile,{...defaultDiet,excluded:['egg','milk','soy','oats'] }),null);
+});
+
+test('cereal breakfasts include milk volume and obey dairy/corn exclusions',()=>{
+ const plans=Array.from({length:24},(_,v)=>recommendMeals(profile,defaultDiet,v)!);
+ assert.ok(plans.some(p=>p.meals[0].ingredients.some(i=>i.food==='cereal')));
+ const milk=plans.flatMap(p=>p.meals[0].ingredients).find(i=>i.food==='milk')!;
+ assert.equal(milk.unit,'mL');
+ for(const key of ['milk','corn'] as const)for(let v=0;v<24;v++){
+  const p=recommendMeals(profile,{...defaultDiet,excluded:[key]},v)!;
+  assert.ok(p.meals.every(m=>m.ingredients.every(i=>key==='milk'?!['milk','yogurt'].includes(i.food):i.food!=='cereal')));
+ }
 });
