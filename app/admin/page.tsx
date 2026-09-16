@@ -15,6 +15,11 @@ const numericFields = [
   ["caloriesKcal", "열량 (kcal)"], ["proteinG", "단백질 (g)"],
   ["carbohydratesG", "탄수화물 (g)"], ["fatG", "지방 (g)"], ["sodiumMg", "나트륨 (mg)"],
 ] as const;
+const nutritionStatus = (item: CatalogItem) => {
+  const count = numericFields.filter(([key]) => item[key] !== null).length;
+  return count === numericFields.length && item.nutritionBasis?.trim() && (item.nutritionSourceUrl || item.nutritionPhotoUrl) ? "complete" : count > 0 ? "partial" : "empty";
+};
+const nutritionLabels = {complete:"영양 수치 등록 완료",partial:"영양 수치 일부 등록",empty:"영양 수치 미입력"} as const;
 
 export default function AdminPage() {
   const router = useRouter();
@@ -23,7 +28,11 @@ export default function AdminPage() {
   const [items, setItems] = useState<CatalogItem[]>([]);
   const [query, setQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
-  const visibleItems = items.filter(item => (categoryFilter === "all" || item.category === categoryFilter) && `${item.name} ${item.detail}`.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()));
+  const [photoFilter, setPhotoFilter] = useState("all");
+  const [nutritionFilter, setNutritionFilter] = useState("all");
+  const searchedItems = items.filter(item => (categoryFilter === "all" || item.category === categoryFilter) && `${item.name} ${item.detail}`.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()));
+  const photoItems = searchedItems.filter(item => photoFilter === "all" || Boolean(item.nutritionPhotoUrl?.trim()) === (photoFilter === "registered"));
+  const visibleItems = photoItems.filter(item => nutritionFilter === "all" || nutritionStatus(item) === nutritionFilter);
   const [selectedId, setSelectedId] = useState("");
   const [draft, setDraft] = useState<CatalogItem | null>(null);
   const [error, setError] = useState("");
@@ -135,7 +144,7 @@ export default function AdminPage() {
     {(saving||recognizing)&&<AppLoading message={recognizing?"영양표를 꼼꼼히 읽고 있어요":"상품 정보를 저장하고 있어요"}/>}
     <header className="admin-header"><div><span className="admin-kicker">KKINIPLAN · CONTENT MANAGER</span><h1>상품·영양 정보 관리</h1><p>판매 상품 링크와 표시된 영양 성분을 원문 출처와 함께 관리합니다.</p></div><Link href="/">앱으로 돌아가기 ↗</Link></header>
     {loading ? <AppLoading message="상품 정보를 불러오고 있어요"/> : !draft ? <div className="admin-message"><strong>{error || "상품이 없습니다."}</strong>{error ? <button type="button" onClick={() => { setError(""); setLoading(true); setLoginAttempt(value => value + 1); }}>다시 불러오기</button> : <button type="button" onClick={newItem}>첫 상품 등록하기</button>}</div> : <div className="admin-grid">
-      <aside className="admin-list" aria-label="상품 선택"><h2>전체 상품 <span>{items.length}</span></h2><button type="button" className="admin-new-button" onClick={newItem}>＋ 새 상품 추가</button><CatalogFilter query={query} category={categoryFilter} onQuery={setQuery} onCategory={setCategoryFilter}/><div className="admin-product-list">{visibleItems.map((item) => <button type="button" key={item.id} disabled={recognizing} className={selectedId === item.id ? "selected" : ""} onClick={() => select(item.id)}><ProductThumb item={item}/><span><strong>{item.name}</strong><small>{catalogCategories[item.category]} · {item.nutritionSourceUrl || item.nutritionPhotoUrl ? "영양 출처 등록됨" : "영양 출처 미등록"}</small></span></button>)}{visibleItems.length === 0 && <p>검색 결과가 없습니다.</p>}</div></aside>
+      <aside className="admin-list" aria-label="상품 선택"><h2>전체 상품 <span>{items.length}</span></h2><button type="button" className="admin-new-button" onClick={newItem}>＋ 새 상품 추가</button><CatalogFilter query={query} category={categoryFilter} onQuery={setQuery} onCategory={setCategoryFilter}/><div className="admin-nutrition-filters"><label>영양성분표 사진<select value={photoFilter} onChange={e=>setPhotoFilter(e.target.value)}><option value="all">전체 ({searchedItems.length})</option><option value="registered">등록 ({searchedItems.filter(item=>item.nutritionPhotoUrl?.trim()).length})</option><option value="missing">미등록 ({searchedItems.filter(item=>!item.nutritionPhotoUrl?.trim()).length})</option></select></label><label>영양 수치 입력 상태<select value={nutritionFilter} onChange={e=>setNutritionFilter(e.target.value)}><option value="all">전체 ({photoItems.length})</option>{Object.entries(nutritionLabels).map(([key,label])=><option key={key} value={key}>{label} ({photoItems.filter(item=>nutritionStatus(item)===key).length})</option>)}</select></label><small>사진 등록은 저장된 영양표 이미지 기준입니다. 수치 완료는 기준량·출처·5개 영양값이 모두 있는 상품입니다.</small><p role="status">검색 결과 {visibleItems.length}개</p>{(photoFilter!=="all"||nutritionFilter!=="all")&&<button type="button" onClick={()=>{setPhotoFilter("all");setNutritionFilter("all");}}>영양 필터 초기화</button>}</div><div className="admin-product-list">{visibleItems.map((item) => <button type="button" key={item.id} disabled={recognizing} className={selectedId === item.id ? "selected" : ""} onClick={() => select(item.id)}><ProductThumb item={item}/><span><strong>{item.name}</strong><small>{catalogCategories[item.category]} · {item.nutritionPhotoUrl?.trim() ? "영양표 사진 등록" : "영양표 사진 미등록"} · {nutritionLabels[nutritionStatus(item)]}</small></span></button>)}{visibleItems.length === 0 && <p>검색 결과가 없습니다.</p>}</div></aside>
       <form className="admin-form" onSubmit={save}>
         <div className="admin-form-head"><div><span className="admin-kicker">PRODUCT · {draft.id ? draft.id.toUpperCase() : "NEW"}</span><h2>{draft.name || "새 상품"}</h2></div><button type="submit" disabled={saving || recognizing}>{saving ? "저장 중…" : draft.id ? "변경사항 저장" : "상품 등록"}</button></div>
         {error && <p className="admin-alert error" role="alert">{error}</p>}{notice && <p className="admin-alert success" role="status">{notice}</p>}
