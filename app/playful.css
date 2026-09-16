@@ -39,3 +39,32 @@
 @media(max-width:480px){.site-shell .home-budget-empty{padding:16px;min-height:154px}.site-shell .home-budget-empty .rice-buddy{width:104px;height:104px}.site-shell .home-budget-empty h3{font-size:20px}.site-shell .home-budget-empty p{font-size:10px}.site-shell .metric-foot{line-height:1.4}}
 
 .home-guide-entry{padding:18px 0;border-bottom:1px solid #deded2;margin-bottom:22px;color:#344638}.home-guide-entry strong{font-size:16px}.home-guide-entry p{font-size:12px;margin:7px 0;color:#657063}.home-guide-entry a{font-size:13px;color:#3e6044;text-underline-offset:4px}
+
+/* Dates, meal counts and full prices must fit together, including wrapped amounts. */
+.site-shell .calendar-grid {
+  grid-auto-rows: minmax(84px, auto);
+  align-items: stretch;
+}
+.site-shell .calendar-cell {
+  height: auto;
+  min-height: 84px;
+  padding: 10px 3px;
+  gap: 5px;
+}
+.site-shell .calendar-cell > * { flex-shrink: 0; }
+.site-shell .calendar-cell small {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  font-size: 10px;
+  line-height: 1.4;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 480px) {
+  .site-shell .calendar-card { padding: 18px 10px 14px; }
+  .site-shell .calendar-grid { gap: 4px; }
+  .site-shell .calendar-cell { padding-inline: 2px; }
+}
