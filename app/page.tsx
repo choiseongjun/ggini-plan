@@ -13,6 +13,8 @@ import { googleAuthErrors, type GoogleAuthErrorCode } from "../lib/auth-messages
 import type { PublicUser } from "../lib/auth";
 import { catalogCategories, shoppingSearchLinks, unitPrice, type CatalogItem, type CompareResponse } from "../lib/catalog";
 import { ProductThumb } from "./product-thumb";
+import { AppLoading, useLoadingTask } from "./app-loading";
+import { guestDashboard, guestProducts } from "../lib/guest-data";
 
 type Tab = "community" | "home" | "calendar" | "cart" | "compare" | "record" | "profile";
 type IconName = "home" | "bag" | "chart" | "user" | "chevron" | "arrow" | "check" | "spark" | "calendar" | "wallet" | "fire" | "close" | "edit" | "left";
@@ -45,7 +47,8 @@ function Brand({ light = false }: { light?: boolean }) {
 
 export default function Home() {
   const contentRef=useRef<HTMLDivElement>(null);
-  const [products, setProducts] = useState<CatalogItem[]>([]);
+  const startLoading = useLoadingTask();
+  const [products, setProducts] = useState<CatalogItem[]>(guestProducts);
   const [showAuth, setShowAuth] = useState(false);
   const [authUser, setAuthUser] = useState<PublicUser | null>(null);
   const [authError, setAuthError] = useState("");
@@ -76,18 +79,26 @@ export default function Home() {
   useEffect(() => {
     const controller=new AbortController();
     const reload=()=>{
-      Promise.all([fetch("/api/catalog",{cache:"no-store",signal:controller.signal}),fetch("/api/dashboard",{cache:"no-store",signal:controller.signal})]).then(async([catalogResponse,dashResponse])=>{
-        const [catalog,dash]=await Promise.all([catalogResponse.json(),dashResponse.json()]);
-        if(!catalogResponse.ok||!dashResponse.ok)throw new Error(catalog.error??dash.error??"데이터를 불러오지 못했어요.");
-        if(!controller.signal.aborted){setProducts(catalog.items);setDashboard(dash);setDataError("");}
-      }).catch(e=>{if(!controller.signal.aborted)setDataError(e.message);});
+      const finish = startLoading("식단과 장바구니를 준비하고 있어요");
+      const catalogRequest = fetch("/api/catalog",{cache:"no-store",signal:controller.signal}).then(async response=>{
+        const catalog=await response.json();
+        if(!response.ok)throw new Error("상품 연결 실패");
+        if(!controller.signal.aborted)setProducts(catalog.items?.length?catalog.items:guestProducts);
+      }).catch(()=>{if(!controller.signal.aborted)setProducts(guestProducts);});
+      const dashboardRequest = fetch("/api/dashboard",{cache:"no-store",signal:controller.signal}).then(async response=>{
+        const dash=await response.json();
+        if(!response.ok)throw new Error(dash.error??"식단을 불러오지 못했어요.");
+        if(!controller.signal.aborted){setDashboard(dash);setDataError("");}
+      }).catch(e=>{if(!controller.signal.aborted){if(!authUser?.id){setDashboard(guestDashboard());setDataError("");}else setDataError(e.message);}});
+      void Promise.allSettled([catalogRequest,dashboardRequest]).finally(finish);
     };
     reload();window.addEventListener("focus",reload);
     return()=>{controller.abort();window.removeEventListener("focus",reload);};
-  },[authUser?.id,tab]);
+  },[authUser?.id,tab,startLoading]);
 
   useEffect(() => {
     const controller = new AbortController();
+    const finish = startLoading("로그인 상태를 확인하고 있어요");
     fetch("/api/auth/me", { credentials: "same-origin", cache: "no-store", signal: controller.signal })
       .then(async (response) => {
         const data = await response.json() as { user: PublicUser | null; error?: string };
@@ -99,6 +110,7 @@ export default function Home() {
         console.error("로그인 상태 확인 실패", error);
       })
       .finally(() => {
+        finish();
         if (controller.signal.aborted) return;
         const url = new URL(window.location.href);
         const code = url.searchParams.get("auth_error");
@@ -109,10 +121,11 @@ export default function Home() {
           window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
         }
       });
-    return () => controller.abort();
-  }, []);
+    return () => { controller.abort(); finish(); };
+  }, [startLoading]);
 
   const signOut = async () => {
+    const finish = startLoading("로그아웃하고 있어요");
     try {
       const response = await fetch("/api/auth/logout", { method: "POST", credentials: "same-origin" });
       if (!response.ok) throw new Error("로그아웃을 처리할 수 없습니다.");
@@ -123,7 +136,7 @@ export default function Home() {
       setTab("home");
     } catch (error) {
       setAuthError(error instanceof Error ? error.message : "로그아웃을 처리할 수 없습니다.");
-    }
+    } finally { finish(); }
   };
 
   useEffect(() => {
@@ -137,6 +150,7 @@ export default function Home() {
   }, [tab, compareProductId]);
 
   return <main className="site-shell">
+    {savingBudget && <AppLoading message="이번 주 예산을 저장하고 있어요"/>}
     <aside className="promo-panel" aria-label="끼니플랜 서비스 소개"><div className="promo-inner">
       <div className="promo-top"><Brand light/><span>MY WEEK, MY TABLE</span></div>
       <div className="promo-copy"><div className="eyebrow">혼자 사는 한 주도 잘 먹기 위한 계획</div><h1>장보기부터 식단까지,<br/><em>가볍게 챙겨요.</em></h1><p>내 예산에 맞는 장바구니를 만들고<br/>매일 뭘 먹을지 달력에서 확인해요.<br/>바쁜 일상에도 내 끼니는 놓치지 않게.</p><div className="promo-rule"><span>내 예산에 맞게</span><span>매일 맛있게</span><span>다음 주는 더 쉽게</span></div></div>
@@ -149,8 +163,10 @@ export default function Home() {
       <div className="app-content" ref={contentRef}>
         {tab === "home" && <section className="home-guide-entry"><strong>자취 식단과 식비, 함께 계획해요</strong><p>일주일 식비 예산부터 1인 가구 장보기 리스트까지.</p><Link href="/guides">자취 식생활 가이드 읽기 →</Link></section>}
         {authError && <p className="auth-inline-error" role="alert">{authError}</p>}
+        {dashboard?.isSample && <div className="home-guide-entry"><strong>끼니플랜 미리 맛보기 🍚</strong><p>이번 주 7일 식단과 예산·지출은 샘플이에요. 로그인하면 나의 기록으로 시작해요.</p></div>}
+        {products.some(product=>product.isSample) && (tab==="home"||tab==="cart"||tab==="compare") && <p className="body-note">상품과 가격은 둘러보기용 예시예요. 쇼핑몰 검색 링크에서 실제 상품과 현재가를 확인할 수 있어요.</p>}
         {dataError&&<p className="auth-error" role="alert">{dataError}</p>}
-        {!dashboard&&!dataError&&<p role="status">내 식탁을 불러오는 중이에요…</p>}
+
         {(tab === "home" || tab === "calendar" || tab === "record") && dashboard && <Dashboard key={`${authUser?.id??"guest"}-${tab}`} mode={tab} data={dashboard} userId={authUser?.id} products={products} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")} onCalendar={()=>setTab("calendar")} onBudget={editBudget} onRefresh={refreshDashboard} onCompare={openCompare}/>}
         {tab === "cart" && <>
           <SharedBasket key={authUser?.id ?? "guest"} userId={authUser?.id} onCompare={openCompare}/>
@@ -159,7 +175,7 @@ export default function Home() {
           <div className="list-heading"><h3>이번 주 장바구니 <span>{weeklyProducts.length}</span></h3><small>눌러서 판매처 비교</small></div>
           <div className="food-list">{weeklyProducts.map((food) => <button key={food.id} type="button" className="food-row comparison-entry" onClick={() => openCompare(food.id)}><ProductThumb item={food}/><span className="food-meta"><strong>{food.name}</strong><small>{catalogCategories[food.category]} · {food.detail}</small><em>{(food.nutritionSourceUrl || food.nutritionPhotoUrl) && food.proteinG !== null ? `단백질 ${food.proteinG}g / ${food.nutritionBasis}` : "영양 정보 확인 중"}</em></span><span className="food-price"><strong>{formatWon(food.price)}{food.priceNote?.includes("시작가") ? "~" : ""}</strong><small>{food.unit === "g" ? "100g당" : "1개당"} {formatWon(unitPrice(food.price, food.quantity, food.unit))}</small></span><Icon name="chevron" size={17}/></button>)}</div>
           {otherProducts.length > 0 && <><div className="list-heading"><h3>다른 상품 둘러보기 <span>{otherProducts.length}</span></h3><small>밀키트 · 냉동식품 · 간편식</small></div><div className="food-list">{otherProducts.map((food) => <button key={food.id} type="button" className="food-row comparison-entry" onClick={() => openCompare(food.id)}><ProductThumb item={food}/><span className="food-meta"><strong>{food.name}</strong><small>{catalogCategories[food.category]} · {food.detail}</small><em>{(food.nutritionSourceUrl || food.nutritionPhotoUrl) && food.proteinG !== null ? `단백질 ${food.proteinG}g / ${food.nutritionBasis}` : "영양 정보 확인 중"}</em></span><span className="food-price"><strong>{formatWon(food.price)}{food.priceNote?.includes("시작가") ? "~" : ""}</strong><small>{food.unit === "g" ? "100g당" : "1개당"} {formatWon(unitPrice(food.price, food.quantity, food.unit))}</small></span><Icon name="chevron" size={17}/></button>)}</div></>}
-          <div className="cart-note"><Icon name="spark" size={17}/><p>판매 페이지에서 확인한 가격이에요. 구매 전 옵션·배송비·현재 가격을 확인해 주세요.</p></div>
+          <div className="cart-note"><Icon name="spark" size={17}/><p>{products.some(product=>product.isSample)?"샘플 가격으로 구성한 장바구니예요. 실제 가격은 쇼핑몰 검색에서 확인해 주세요.":"판매 페이지에서 확인한 가격이에요. 구매 전 옵션·배송비·현재 가격을 확인해 주세요."}</p></div>
         </>}
 
         {tab === "compare" && compareProduct && <>
@@ -171,7 +187,7 @@ export default function Home() {
           <p className="body-note">등록 가격 {formatWon(compareProduct.price)} · {compareProduct.priceNote ?? "관리자 등록 가격"}{compareProduct.priceCheckedAt && ` · 확인 ${new Date(compareProduct.priceCheckedAt).toLocaleDateString("ko-KR")}`}</p>
           <div className={`compare-notice ${comparison?.status ?? "loading"}`}><Icon name="spark" size={17}/><div><strong>{compareLoading ? "가격을 확인하는 중" : comparison?.status === "live" ? "온라인 검색 결과" : compareOffers.length ? "등록 판매처 가격" : "쇼핑몰 검색으로 확인"}</strong><p>{compareLoading ? "잠시만 기다려 주세요." : comparison?.status === "live" ? `조회 ${new Date(comparison.checkedAt!).toLocaleString("ko-KR", { timeZone: "Asia/Seoul" })} · 배송비와 옵션은 판매처에서 확인해 주세요.` : comparison?.message}</p></div></div>
           <div className="compare-section-title"><div><span className="section-kicker">PRICE COMPARISON</span><h3>{compareOffers.length ? `판매 상품 ${compareOffers.length}개` : "온라인 가격 확인"}</h3></div><div className="compare-sort"><button type="button" className={sortBy === "unit" ? "active" : ""} aria-pressed={sortBy === "unit"} onClick={() => setSortBy("unit")}>{compareProduct.unit === "g" ? "100g당" : "1개당"}</button><button type="button" className={sortBy === "total" ? "active" : ""} aria-pressed={sortBy === "total"} onClick={() => setSortBy("total")}>상품가</button></div></div>
-          {compareLoading ? <div className="compare-loading">검색 결과를 불러오고 있어요…</div> : compareOffers.length ? <div className="offer-list">{compareOffers.map((offer, index) => <div className="offer-row" key={offer.id}><div className="offer-rank">{index + 1}</div><div className="offer-main"><span className="offer-seller">{offer.seller}</span><strong>{offer.title}</strong><small>{offer.quantity && offer.unit ? `${offer.quantity.toLocaleString("ko-KR")}${offer.unit} · ` : "용량 확인 필요 · "}{offer.unitPrice !== null ? `${compareProduct.unit === "g" ? "100g당" : "1개당"} ${formatWon(offer.unitPrice)}` : "단위가격 미확인"}</small></div><div className="offer-action"><b>{formatWon(offer.price)}</b><a href={offer.url} target="_blank" rel="noopener noreferrer">{offer.isSearchLink ? "현재가 검색" : "상품 보기"} <Icon name="arrow" size={13}/></a></div></div>)}</div> : <div className="compare-empty">표시할 가격이 없어요. 아래 쇼핑몰 검색에서 직접 확인해 주세요.</div>}
+          {compareLoading ? <AppLoading message="쇼핑몰 가격을 비교하고 있어요"/> : compareOffers.length ? <div className="offer-list">{compareOffers.map((offer, index) => <div className="offer-row" key={offer.id}><div className="offer-rank">{index + 1}</div><div className="offer-main"><span className="offer-seller">{offer.seller}</span><strong>{offer.title}</strong><small>{offer.quantity && offer.unit ? `${offer.quantity.toLocaleString("ko-KR")}${offer.unit} · ` : "용량 확인 필요 · "}{offer.unitPrice !== null ? `${compareProduct.unit === "g" ? "100g당" : "1개당"} ${formatWon(offer.unitPrice)}` : "단위가격 미확인"}</small></div><div className="offer-action"><b>{formatWon(offer.price)}</b><a href={offer.url} target="_blank" rel="noopener noreferrer">{offer.isSearchLink ? "현재가 검색" : "상품 보기"} <Icon name="arrow" size={13}/></a></div></div>)}</div> : <div className="compare-empty">표시할 가격이 없어요. 아래 쇼핑몰 검색에서 직접 확인해 주세요.</div>}
           <div className="search-marketplaces"><div className="section-heading"><div><span className="section-kicker">LIVE SEARCH</span><h3>쇼핑몰에서 현재가 확인</h3></div></div><p>각 쇼핑몰의 실제 검색 결과가 새 창에서 열립니다.</p><div>{compareLinks.map((link) => <a key={link.name} href={link.url} target="_blank" rel="noopener noreferrer">{link.name}<Icon name="arrow" size={15}/></a>)}</div></div>
           <p className="compare-disclaimer">비교 결과의 상품 용량, 배송비, 할인 조건은 판매처마다 달라질 수 있습니다. 결제 전 상품 상세 정보를 확인하세요.</p>
         </>}

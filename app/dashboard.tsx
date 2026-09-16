@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { AppLoading } from "./app-loading";
 import { addDays,expenseCategories,type DashboardData } from "../lib/dashboard";
 import type { CatalogItem } from "../lib/catalog";
 import { BudgetBuddy, RiceBuddy } from "./rice-buddy";
@@ -16,7 +17,7 @@ export function Dashboard({mode,data,userId,products,onLogin,onProfile,onCart,on
  const max=Math.max(1,...weekly.map(w=>w.total));
  const budgetPercent=data.budget?Math.min(100,Math.round(food/data.budget*100)):0;
  async function save(e:React.FormEvent){e.preventDefault();if(!userId){onLogin();return;}setBusy(true);setError("");setMessage("");try{const r=await fetch("/api/dashboard",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"expense",date:selected,category,amount:Number(amount)})});const d=await r.json();if(!r.ok)throw new Error(d.error);await onRefresh();setMessage("기록을 저장했어요.");}catch(e){setError(e instanceof Error?e.message:"저장에 실패했어요.");}finally{setBusy(false);}}
- return <>{mode!=="home"&&<div className="page-intro"><div className="week-label">{mode==="calendar"?month:`${data.week} 시작 주간`}</div><h2>{mode==="calendar"?<>하루하루 <span>나의 식탁</span></>:<>차곡차곡 <span>생활비 기록</span></>}</h2><p>{mode==="calendar"?"식단을 생성한 날짜와 일별 지출을 확인해요.":"직접 기록한 지출로 생활비 변화를 살펴봐요."}</p></div>}
+ return <>{busy&&<AppLoading message="오늘의 지출을 저장하고 있어요"/>}{mode!=="home"&&<div className="page-intro"><div className="week-label">{mode==="calendar"?month:`${data.week} 시작 주간`}</div><h2>{mode==="calendar"?<>하루하루 <span>나의 식탁</span></>:<>차곡차곡 <span>생활비 기록</span></>}</h2><p>{mode==="calendar"?"식단을 생성한 날짜와 일별 지출을 확인해요.":"직접 기록한 지출로 생활비 변화를 살펴봐요."}</p></div>}
  {!userId&&<button className="personal-home-link" onClick={onLogin}>로그인하고 나의 식단·지출 기록 시작하기 →</button>}
  {mode==="home"&&<>{data.budget!==null?<BudgetBuddy budget={data.budget} spent={food} cart={products.filter(p=>p.inWeeklyCart).reduce((s,p)=>s+p.price,0)} onEdit={onBudget}/>:<div className="community-hero home-budget-empty"><RiceBuddy/><div><h3>이번 주 식비, 얼마로 시작할까요?</h3><p>예산을 정하면 장보기와 식단을 한눈에 관리할 수 있어요.</p><button onClick={onBudget}>내 식비 예산 설정 →</button></div></div>}
  <div className="section-heading home-week-heading"><div><span className="section-kicker">매일 맛있게</span><h3>이번 주 식단 달력</h3></div><button className="text-link" onClick={onCalendar}>달력 보기 →</button></div>

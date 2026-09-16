@@ -4,6 +4,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { activities, calorieEstimate, parseBodyProfile, type BodyProfile } from "../lib/body-profile";
 import { defaultDiet, dietStyles, excludedFoods, parseDiet, type recommendMeals, type DietPreferences } from "../lib/meal-plan";
 import { RiceBuddy } from "./rice-buddy";
+import { AppLoading } from "./app-loading";
 
 export function BodyProfilePanel({ userId, name, budget, onBudget, onLogin }: { userId?: string; name: string; budget: number; onBudget: () => void; onLogin: () => void }) {
   const [height, setHeight] = useState("");
@@ -95,7 +96,7 @@ export function BodyProfilePanel({ userId, name, budget, onBudget, onLogin }: { 
     <div className="calorie-detail-grid"><article><span>기초대사량 참고값</span><strong>{number(calories?.resting)} <small>kcal</small></strong><p>휴식 상태의 에너지 소비량 추정</p></article><article><span>최소 섭취 칼로리</span><strong className="calorie-text">개인별 확인</strong><p>키와 체중만으로 안전한 최저 섭취량을 정할 수 없어요.</p></article></div>
     <form className="body-form" onSubmit={save} onChange={() => setMessage("")}>
       <div className="section-heading"><div><span className="section-kicker">ABOUT ME</span><h3>내 신체 정보</h3></div><span className="body-auto">입력하면 자동 계산</span></div>
-      {loading && <p role="status">저장된 정보를 불러오고 있어요…</p>}
+      {(loading||saving) && <AppLoading message={saving?"나에게 맞는 식단을 준비하고 있어요":"저장된 식단과 정보를 불러오는 중이에요"}/>}
       <fieldset disabled={loading || saving || loadError}>
         <div className="body-input-grid">
           <label>키 <span>cm</span><input type="number" min="100" max="250" step="0.1" inputMode="decimal" placeholder="예: 165" required value={height} onChange={e => setHeight(e.target.value)}/></label>

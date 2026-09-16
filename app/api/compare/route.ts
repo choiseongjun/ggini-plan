@@ -1,5 +1,6 @@
 import { unitPrice, type CompareResponse, type Offer, type Product } from "../../../lib/catalog";
 import { catalogItems } from "../../../lib/catalog-db";
+import { guestProducts, guestComparison } from "../../../lib/guest-data";
 
 type ShoppingResult = {
   title?: string;
@@ -58,6 +59,8 @@ function liveOffers(results: ShoppingResult[], product: Product): Offer[] {
 
 export async function GET(request: Request) {
   const itemId = new URL(request.url).searchParams.get("item");
+  const sample = guestProducts.find(product => product.id === itemId);
+  if (sample) return Response.json(guestComparison(sample));
   const product = (await catalogItems()).find((entry) => entry.id === itemId);
   if (!product) return Response.json({ message: "상품을 찾을 수 없습니다." }, { status: 400 });
 

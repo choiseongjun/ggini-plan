@@ -20,6 +20,6 @@ https://supabase-downloads.s3-ap-southeast-1.amazonaws.com/prod/ssl/prod-ca-2021
 
 상품 7개를 기존 카탈로그에서 복사했습니다. 로컬 사용자 계정·세션·신체정보·개인 기록은 클라우드로 복사하지 않았습니다. Google 로그인을 다시 하면 새 DB에 계정이 생성됩니다.
 
-기존 로컬 DB는 그대로 유지했고 원래 연결값은 .env.local의 DATABASE_URL_LOCAL에 보관했습니다. 복구할 경우 해당 값을 DATABASE_URL로 설정하면 됩니다. 별도 .env.supabase.local 파일도 버전 관리에서 제외됩니다.
+기존 로컬 DB는 그대로 유지했고 원래 연결값은 .env.local의 DATABASE_URL_LOCAL에 보관했습니다. 복구할 경우 해당 값을 DATABASE_URL로 설정하면 됩니다. 로컬 설정은 .env.local 하나만 사용합니다.
 
 npm run db:migrate는 현재 DATABASE_URL이 지정한 DB와 스키마에 적용됩니다. 새 Supabase 프로젝트에서 처음 시작할 때는 전용 스키마를 먼저 생성한 후 연결 URL의 search_path를 설정하세요.
