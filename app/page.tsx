@@ -44,7 +44,7 @@ function Icon({ name, size = 20, strokeWidth = 1.8 }: { name: IconName; size?: n
 }
 
 function Brand({ light = false }: { light?: boolean }) {
-  return <div className={`brand ${light ? "brand-light" : ""}`}><span className="brand-mark"><span/><span/><span/><span/></span><span>끼니플랜<span className="brand-dot">.</span></span></div>;
+  return <Link href="/" aria-label="끼니플랜 홈으로" style={{textDecoration:"none"}} className={`brand ${light ? "brand-light" : ""}`}><span className="brand-mark"><span/><span/><span/><span/></span><span>끼니플랜<span className="brand-dot">.</span></span></Link>;
 }
 
 export default function Home() {
