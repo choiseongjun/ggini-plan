@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { activities, calorieEstimate, parseBodyProfile, type BodyProfile } from "../lib/body-profile";
-import { defaultDiet, dietStyles, excludedFoods, parseDiet, type recommendMeals, type DietPreferences } from "../lib/meal-plan";
+import { defaultDiet, dietStyles, excludedFoods, excludedFoodGroups, parseDiet, type recommendMeals, type DietPreferences } from "../lib/meal-plan";
 import { RiceBuddy } from "./rice-buddy";
 import { AppLoading } from "./app-loading";
 
@@ -121,8 +121,12 @@ export function BodyProfilePanel({ userId, name, budget, onBudget, onLogin }: { 
           <label>식사 시간 패턴<select value={diet.fasting} onChange={e => setDiet({...diet,fasting:e.target.value as DietPreferences["fasting"]})}><option value="none">일반 식사</option><option value="14:10">간헐적 단식 14:10 · 10시간 내 식사</option><option value="16:8">간헐적 단식 16:8 · 8시간 내 식사</option></select></label>
           <label>첫 끼 시간<select value={diet.start} onChange={e => setDiet({...diet,start:Number(e.target.value)})}>{Array.from({length:24},(_,h)=><option key={h} value={h}>{String(h).padStart(2,"0")}:00</option>)}</select></label>
           <span className="diet-label">추천에서 빼고 싶은 재료</span>
-          <div className="diet-choices">{Object.entries(excludedFoods).map(([key,label]) => <button type="button" key={key} aria-pressed={diet.excluded.includes(key as keyof typeof excludedFoods)} onClick={() => { const k = key as keyof typeof excludedFoods; setDiet({...diet,excluded:diet.excluded.includes(k)?diet.excluded.filter(x=>x!==k):[...diet.excluded,k]}); }}>{label}</button>)}</div>
-          <p className="body-note">제외 설정은 주요 재료 기준이에요. 알레르기가 있다면 제품 표시와 소스 성분도 확인해 주세요.</p>
+          <p className="body-note">여러 개 선택할 수 있어요. 현재 {diet.excluded.length}개 선택</p>
+          {diet.excluded.length>0 && <button type="button" className="text-link" onClick={()=>setDiet({...diet,excluded:[]})}>제외 선택 초기화</button>}
+          {excludedFoodGroups.map(group=><div key={group.label} role="group" aria-label={group.label}>
+            <h4>{group.label}</h4><div className="diet-choices">{group.keys.map(key=><button type="button" key={key} aria-pressed={diet.excluded.includes(key)} onClick={()=>setDiet({...diet,excluded:diet.excluded.includes(key)?diet.excluded.filter(x=>x!==key):[...diet.excluded,key]})}>{excludedFoods[key]}</button>)}</div>
+          </div>)}
+          <p className="body-note">레시피 재료와 등록 상품 정보를 기준으로 제외해요. 채소 구성이 불명확한 믹스는 선택한 채소가 포함될 수 있어 함께 제외해요. 알레르기가 있다면 제품 원재료·소스·제조시설 표시도 확인해 주세요.</p>
         </div>
         <label className="body-checkbox"><input type="checkbox" checked={pregnancy} onChange={e => setPregnancy(e.target.checked)}/>임신 또는 수유 중이에요</label>
         <button className="primary-button" type="submit">{saving ? "저장하는 중…" : userId ? "저장하고 맞춤 식단 보기" : "내 맞춤 식단 만들기"}</button>

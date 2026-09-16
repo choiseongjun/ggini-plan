@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { defaultDiet, parseDiet, recommendMeals, clockTime } from "../lib/meal-plan";
+import { defaultDiet, excludedFoods, parseDiet, recommendMeals, clockTime } from "../lib/meal-plan";
 import type { BodyProfile } from "../lib/body-profile";
 const profile: BodyProfile = { height:165,weight:60,age:28,sex:"female",activity:"light",meals:3,pregnancy:false };
 test("meal frequency preserves daily energy and respects eating window", () => {
@@ -17,10 +17,10 @@ test("meal frequency preserves daily energy and respects eating window", () => {
 });
 test("plant preference and exclusions always apply, including alternative combinations", () => {
   for(let variant=0;variant<12;variant++) {
-    const plan=recommendMeals(profile,{...defaultDiet,style:"plant",excluded:["soy","wheat"]},variant)!;
+    const plan=recommendMeals(profile,{...defaultDiet,style:"plant",excluded:["oats","wheat"]},variant)!;
     for(const meal of plan.meals) {
       assert.ok(meal.styles.includes("plant"));
-      assert.ok(!meal.avoid.includes("soy") && !meal.avoid.includes("wheat"));
+      assert.ok(!meal.ingredients.some(i=>i.food==="oats"||i.food==="pasta"));
       assert.ok(meal.ingredients.every(i=>i.grams>0));
     }
   }
@@ -30,4 +30,16 @@ test("invalid settings rejected and pregnancy recommendations disabled", () => {
   for(const patch of [{start:24},{start:NaN},{fasting:"20:4"},{excluded:["unknown"]},{style:"__proto__"}]) assert.equal(parseDiet({...defaultDiet,...patch}),null);
   assert.equal(recommendMeals({...profile,pregnancy:true},defaultDiet),null);
   assert.ok(recommendMeals({...profile,meals:1},defaultDiet)!.total < 1829*.9);
+});
+
+test("expanded exclusions validate and remove actual recipe ingredients",()=>{
+ const excluded=Object.keys(excludedFoods) as (keyof typeof excludedFoods)[];
+ assert.equal(parseDiet({...defaultDiet,excluded})?.excluded.length,25);
+ assert.equal(recommendMeals(profile,{...defaultDiet,excluded}),null);
+ for(const key of ['rice','banana','oats','onion'] as const)for(let variant=0;variant<8;variant++){
+  const plan=recommendMeals(profile,{...defaultDiet,excluded:[key]},variant);
+  assert.ok(plan);
+  assert.ok(plan.meals.every(m=>m.ingredients.every(i=>i.food!==(key==='onion'?'veg':key))));
+ }
+ assert.equal(recommendMeals(profile,{...defaultDiet,style:'plant',excluded:['soy','wheat']}),null);
 });

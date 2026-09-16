@@ -1,14 +1,15 @@
 import type { CatalogItem } from "./catalog";
+import { excludedFoods, excludedFoodAliases, type ExcludedFood } from './excluded-foods';
+export { excludedFoods, excludedFoodGroups } from './excluded-foods';
 import { calorieEstimate, type BodyProfile } from "./body-profile";
 
 export const dietStyles = { balanced: "골고루 집밥", protein: "단백질 중심", plant: "식물성 식단", quick: "간편하게" } as const;
-export const excludedFoods = { chicken: "닭고기", fish: "생선", egg: "달걀", soy: "콩·두부", milk: "유제품", wheat: "밀" } as const;
 export type DietPreferences = { style: keyof typeof dietStyles; fasting: "none" | "14:10" | "16:8"; start: number; excluded: (keyof typeof excludedFoods)[] };
 export const defaultDiet: DietPreferences = { style: "balanced", fasting: "none", start: 8, excluded: [] };
 export function parseDiet(value: unknown): DietPreferences | null {
   if (!value || typeof value !== "object") return null;
   const p = value as Record<string, unknown>;
-  if (typeof p.style !== "string" || !Object.hasOwn(dietStyles, p.style) || !["none", "14:10", "16:8"].includes(String(p.fasting)) || typeof p.start !== "number" || !Number.isInteger(p.start) || p.start < 0 || p.start > 23 || !Array.isArray(p.excluded) || p.excluded.length > 6 || p.excluded.some(x => typeof x !== "string" || !Object.hasOwn(excludedFoods, x))) return null;
+  if (typeof p.style !== "string" || !Object.hasOwn(dietStyles, p.style) || !["none", "14:10", "16:8"].includes(String(p.fasting)) || typeof p.start !== "number" || !Number.isInteger(p.start) || p.start < 0 || p.start > 23 || !Array.isArray(p.excluded) || p.excluded.length > Object.keys(excludedFoods).length || p.excluded.some(x => typeof x !== "string" || !Object.hasOwn(excludedFoods, x))) return null;
   return { style: p.style as DietPreferences["style"], fasting: p.fasting as DietPreferences["fasting"], start: p.start, excluded: [...new Set(p.excluded)] };
 }
 // Representative ingredient values per 100 g; recipes are estimates, not product labels.
@@ -45,7 +46,14 @@ export function recommendMeals(profile: BodyProfile, diet: DietPreferences, vari
   };
   const energy = calorieEstimate(profile);
   if (!energy) return null;
-  const candidates = recipes.filter(r => !r.avoid.some(a => diet.excluded.includes(a)) && !r.ingredients.some(([food])=>productFor(food)?.allergens?.some(a=>diet.excluded.some(x=>x===a))) && (diet.style !== "plant" || r.styles.includes("plant")))
+  const foodExclusions:Record<Food,ExcludedFood[]> = {
+    rice:['rice'],chicken:['chicken'],tofu:['soy'],egg:['egg'],salmon:['fish'],
+    veg:['broccoli','mushroom','onion','garlic','tomato'],oil:[],oats:['oats'],yogurt:['milk'],banana:['banana'],beans:['soy'],pasta:['wheat'],
+  };
+  const candidates = recipes.filter(r => !r.avoid.some(a => diet.excluded.includes(a)) && !r.ingredients.some(([food])=>{
+    const product=productFor(food);
+    return diet.excluded.some(key=>foodExclusions[food].includes(key)||product?.allergens?.includes(key)||(product && excludedFoodAliases[key].some(word=>`${product.name} ${product.detail} ${(product.allergens??[]).join(' ')}`.includes(word))));
+  }) && (diet.style !== "plant" || r.styles.includes("plant")))
     .sort((a,b) => Number(b.styles.includes(diet.style))-Number(a.styles.includes(diet.style)));
   if (!candidates.length) return null;
   const preferred = candidates.filter(r => r.styles.includes(diet.style));
