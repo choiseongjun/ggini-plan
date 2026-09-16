@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 
 import { useEffect, useRef, useState } from "react";
 import { Dashboard } from "./dashboard";
+import { ShoppingPlanner } from "./shopping-planner";
 import type { DashboardData } from "../lib/dashboard";
 import { AuthScreen } from "./auth-screen";
 import { CommunityPanel, SharedBasket } from "./community";
@@ -170,6 +171,7 @@ export default function Home() {
       {showAuth ? <AuthScreen initialError={authError} onExplore={() => { setShowAuth(false); setAuthError(""); }} onSuccess={(user) => { setDashboard(null); setAuthUser(user); setAuthError(""); setShowAuth(false); setTab("home"); }}/> : <>
       <header className="app-header"><Brand/><div className="app-header-actions">{authUser ? <button className="logout-link" type="button" onClick={signOut}>로그아웃</button> : <button className="logout-link" type="button" onClick={() => { setAuthError(""); setShowAuth(true); }}>로그인</button>}<button className="avatar" type="button" onClick={() => setTab("profile")} aria-label="내 정보 보기">{displayName.slice(0, 1)}</button></div></header>
       <div className="app-content" ref={contentRef}>
+        {tab === "home" && <ShoppingPlanner userId={authUser?.id} onLogin={()=>setShowAuth(true)}/>}
         {tab === "home" && <section className="home-guide-entry"><strong>자취 식단과 식비, 함께 계획해요</strong><p>일주일 식비 예산부터 1인 가구 장보기 리스트까지.</p><Link href="/guides">자취 식생활 가이드 읽기 →</Link></section>}
         {authError && <p className="auth-inline-error" role="alert">{authError}</p>}
         {dataError&&<p className="auth-error" role="alert">{dataError}</p>}
