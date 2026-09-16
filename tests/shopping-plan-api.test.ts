@@ -26,5 +26,13 @@ test('guest recommendation, authenticated save, account isolation and server val
   assert.equal((await PUT(req(cookies[0],{conditions:{...preferences,slots:[]}}))).status,400);
   assert.equal((await POST(req(cookies[0],{...body,mealIds:['fake',...mealIds.slice(1)]}))).status,409);
   assert.equal((await POST(req(cookies[0],{...body,conditions:{...initialConditions,budget:1000}}))).status,409);
+  await db.query(`INSERT INTO body_profiles(user_id,height,weight,age,sex,activity,meals,pregnancy,diet_preferences) VALUES($1,165,60,28,'female','light',3,false,$2)`,[ids[0],JSON.stringify({style:'balanced',fasting:'none',start:8,excluded:['shrimp']})]);
+  const personalized=await(await GET(req(cookies[0]))).json();
+  assert.equal(personalized.personalization.hasProfile,true);
+  assert.deepEqual(personalized.personalization.excluded,['새우']);
+  const previousCalories=personalized.personalization.dailyCalories;
+  await db.query('UPDATE body_profiles SET weight=80 WHERE user_id=$1',[ids[0]]);
+  assert.ok((await(await GET(req(cookies[0]))).json()).personalization.dailyCalories>previousCalories);
+  assert.equal((await(await GET(req(cookies[1]))).json()).personalization.hasProfile,false);
  }finally{await db.query('DELETE FROM users WHERE id=ANY($1::bigint[])',[ids]);await db.end();}
 });
