@@ -1,6 +1,6 @@
 import type { CatalogItem } from './catalog';
 
-export type PlanProduct = CatalogItem & { servings: number; servingNote: string; avoidanceText: string | null };
+export type PlanProduct = CatalogItem & { servings: number; servingNote: string; avoidanceText: string | null; personalizationScore?:number; servingCalories?:number|null };
 export type MealSlot = 'breakfast'|'lunch'|'dinner';
 export const slotLabels={breakfast:'아침',lunch:'점심',dinner:'저녁'};
 export type PlanConditions = { budget: number; meals: number; cooking: 'quick' | 'kit' | 'all'; avoid: string; owned: string[]; days?:number; slots?:MealSlot[] };
@@ -48,7 +48,7 @@ export function recommendShopping(products: PlanProduct[], c: PlanConditions): s
    const key=[...ids].sort().join('|');
    // Prefer variety while charging the full selling pack, including unused portions.
    const families=new Set(rows.map(r=>r.product.name.match(/볶음밥|솥밥|도시락|파스타|비빔국수|죽|샌드위치|시리얼/)?.[0]??r.product.category));
-   const score=Math.min(new Set(ids).size,Math.ceil(c.meals/2))*300+families.size*150-rows.reduce((n,r)=>n+r.left,0)*100-cost/c.budget*100-(state.ids.at(-1)===p.id?80:0);
+   const score=Math.min(new Set(ids).size,Math.ceil(c.meals/2))*300+families.size*150-rows.reduce((n,r)=>n+r.left,0)*100-cost/c.budget*100-(state.ids.at(-1)===p.id?80:0)+rows.reduce((n,r)=>n+(r.product.personalizationScore??0)*r.uses,0);
    if(!next.has(key))next.set(key,{ids,cost,score});
   }
   states=[...next.values()].sort((a,b)=>b.score-a.score||a.cost-b.cost).slice(0,100);
@@ -58,6 +58,6 @@ export function recommendShopping(products: PlanProduct[], c: PlanConditions): s
 }
 export function swapMeal(ids:string[], index:number, products:PlanProduct[], c:PlanConditions):string[]|null {
  const options=slotCandidates(products,c,index).filter(p=>p.id!==ids[index]).map(p=>ids.map((id,i)=>i===index?p.id:id)).filter(next=>basketTotal(next,products,c.owned)<=c.budget);
- options.sort((a,b)=>new Set(b).size-new Set(a).size||basketTotal(a,products,c.owned)-basketTotal(b,products,c.owned));
+ options.sort((a,b)=>(products.find(p=>p.id===b[index])?.personalizationScore??0)-(products.find(p=>p.id===a[index])?.personalizationScore??0)||new Set(b).size-new Set(a).size||basketTotal(a,products,c.owned)-basketTotal(b,products,c.owned));
  return options[0]??null;
 }

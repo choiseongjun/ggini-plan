@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import type {personalizeProducts} from '../lib/shopping-personalization';
 import { ProductThumb } from './product-thumb';
 import { basket, basketTotal, validMealIds, slotCandidates, mealSchedule, slotLabels, initialConditions, parseConditions, recommendShopping, swapMeal, type MealSlot, type PlanConditions, type PlanProduct } from '../lib/shopping-plan';
 import './shopping-planner.css';
@@ -8,13 +9,14 @@ import './shopping-planner.css';
 const won=(n:number)=>`${n.toLocaleString('ko-KR')}원`;
 export function ShoppingPlanner({userId,onLogin,mode='plan'}:{userId?:string;onLogin:()=>void;mode?:'plan'|'cart'|'settings'}){
  const draftKey=`kkiniplan-shopping-draft-v2-${userId??'guest'}`;
+ const [personalization,setPersonalization]=useState<ReturnType<typeof personalizeProducts>['personalization']|null>(null);
  const [products,setProducts]=useState<PlanProduct[]>([]),[conditions,setConditions]=useState<PlanConditions>(initialConditions);
  const [ids,setIds]=useState<string[]>([]),[loading,setLoading]=useState(true),[busy,setBusy]=useState(false);
  const [error,setError]=useState(''),[message,setMessage]=useState(''),[retry,setRetry]=useState(0);
  useEffect(()=>{
   const controller=new AbortController();
   fetch('/api/shopping-plan',{cache:'no-store',signal:controller.signal}).then(async r=>{const d=await r.json();if(!r.ok)throw new Error(d.error);return d;}).then(d=>{
-   setProducts(d.products);setError('');setIds([]);
+   setProducts(d.products);setPersonalization(d.personalization);setError('');setIds([]);
    const saved=parseConditions(d.preferences);setConditions(saved??initialConditions);
    try{const draft=JSON.parse(sessionStorage.getItem(draftKey)??'null');const c=parseConditions(draft?.conditions);
     if(c){setConditions(c);if(Array.isArray(draft.mealIds)&&validMealIds(draft.mealIds,d.products,c)&&basketTotal(draft.mealIds,d.products,c.owned)<=c.budget)setIds(draft.mealIds);}
@@ -27,6 +29,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan'}:{userId?:string;onL
  function generate(){
   setMessage('');setError('');const c=parseConditions(conditions);
   if(!c){setError('챙길 끼니를 하나 이상 고르고 예산을 1,000~1,000,000원으로 입력해 주세요.');return;}
+  if(personalization?.blocked){setError('현재 신체 정보에서는 자동 맞춤 추천을 제공하지 않아요. 마이페이지 안내를 확인해 주세요.');return;}
   const missing=mealSchedule(c).find((_,i)=>!slotCandidates(products,c,i).length);
   if(missing){setError(`${slotLabels[missing.slot]}에 맞는 등록 상품이 부족해요. 해당 끼니를 빼거나 조리 방식·제외 재료를 조정해 주세요.`);return;}
   const next=recommendShopping(products,c);
@@ -63,7 +66,8 @@ export function ShoppingPlanner({userId,onLogin,mode='plan'}:{userId?:string;onL
  const schedule=mealSchedule(conditions);
  const rows=basket(ids,products,conditions.owned),total=rows.reduce((n,r)=>n+r.cost,0);
  return <section className="shopping-planner" aria-labelledby="planner-title">
-  <div className="planner-heading"><span>이번 주, 뭐 사서 먹지?</span><h2 id="planner-title">{mode==='settings'?'내 장보기 설정':mode==='cart'?'이번 주 살 것':'내 예산으로 챙기는 일주일'}</h2><p>{mode==='settings'?'자주 쓰는 예산과 식사 취향을 저장해 두세요. 다음 추천부터 다시 입력할 필요 없어요.':'챙길 끼니만 고르면 냉동식품·간편식·밀키트로 구매 목록을 만들어요. 신체 정보 없이 시작할 수 있어요.'}</p></div>
+  <div className="planner-heading"><span>이번 주, 뭐 사서 먹지?</span><h2 id="planner-title">{mode==='settings'?'내 장보기 설정':mode==='cart'?'이번 주 살 것':'내 예산으로 챙기는 일주일'}</h2><p>{mode==='settings'?'자주 쓰는 예산과 식사 취향을 저장해 두세요. 다음 추천부터 다시 입력할 필요 없어요.':'챙길 끼니만 고르면 냉동식품·간편식·밀키트로 구매 목록을 만들어요. 저장된 신체 정보와 식단 취향도 함께 반영해요.'}</p></div>
+  {personalization&&<div className="meal-notice">{personalization.blocked?<p>현재 신체 정보에서는 자동 맞춤 추천을 제공하지 않아요.</p>:personalization.hasProfile?<><strong>내 정보 기준 · 하루 유지 필요량 약 {personalization.dailyCalories?.toLocaleString()} kcal</strong><p>하루 {personalization.meals}끼 기준 한 끼 약 {personalization.perMealCalories} kcal와 가까운 상품을 우선해요. 선택한 끼니만 추천하며 하루 전체 영양을 충족하는 식단은 아니에요.</p><small>{personalization.nutritionMatched?`영양 표시를 비교할 수 있는 상품 ${personalization.nutritionMatched}개`:'현재 상품은 영양 정보가 부족해 열량 기준의 비교가 어려워요. 확인되지 않은 값은 추정하지 않아요.'}</small></>:<p><Link href="/profile#profile-settings">신체 정보를 입력하면 내 필요 열량을 기준으로 추천받을 수 있어요 →</Link></p>}{personalization.style&&<p>식단 취향: {personalization.style} · 제외 재료: {personalization.excluded.join(', ')||'없음'}</p>}</div>}
   {mode!=='cart'&&<form className="planner-form" onSubmit={e=>{e.preventDefault();if(mode==='settings')void savePreferences();else generate();}}>
    <label>며칠을 준비할까요?<select value={conditions.days??5} onChange={e=>update({days:Number(e.target.value),slots:conditions.slots??['dinner']})}><option value={5}>평일 5일</option><option value={7}>일주일 7일</option></select></label>
    <fieldset className="planner-slots"><legend>앱이 챙겨줄 끼니</legend>{(Object.keys(slotLabels) as MealSlot[]).map(slot=><label key={slot}><input type="checkbox" checked={(conditions.slots??['dinner']).includes(slot)} onChange={e=>{const current=conditions.slots??['dinner'];update({days:conditions.days??5,slots:e.target.checked?[...current,slot].sort((a,b)=>Object.keys(slotLabels).indexOf(a)-Object.keys(slotLabels).indexOf(b)):current.filter(s=>s!==slot)});}}/>{slotLabels[slot]}</label>)}</fieldset>

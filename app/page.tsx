@@ -50,6 +50,7 @@ function Brand({ light = false }: { light?: boolean }) {
 }
 
 export default function Home() {
+  const [profileRevision,setProfileRevision]=useState(0);
   const pathname = usePathname();
   const router = useRouter();
   const section = pathname.split("/")[1];
@@ -209,7 +210,7 @@ export default function Home() {
           <p className="compare-disclaimer">비교 결과의 상품 용량, 배송비, 할인 조건은 판매처마다 달라질 수 있습니다. 결제 전 상품 상세 정보를 확인하세요.</p>
         </>}
         {tab === "community" && <CommunityPanel key={authUser?.id ?? "guest"} userId={authUser?.id} products={products} budget={budget} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")}/>}
-        {tab === "profile" && <><div className="page-intro"><div className="week-label">MY SHOPPING</div><h2>{displayName}님의 <span>장보기 취향</span></h2><p>내 생활에 맞는 끼니만, 예산 안에서 간편하게.</p></div><ShoppingPlanner key={`preferences-${authUser?.id??"guest"}`} mode="settings" userId={authUser?.id} onLogin={()=>setShowAuth(true)}/><details className="profile-extra"><summary>월 식비 예산·지출 관리</summary><BudgetSettings monthlyOnly key={`budget-${authUser?.id ?? "guest"}`} data={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)} onRefresh={refreshDashboard}/></details><details className="profile-extra"><summary>직접 요리하는 식단·신체 정보 (선택)</summary><BodyProfilePanel key={authUser?.id ?? "guest"} userId={authUser?.id} name={displayName} onLogin={() => setShowAuth(true)}/></details></> }
+        {tab === "profile" && <><div className="page-intro"><div className="week-label">MY SHOPPING</div><h2>{displayName}님의 <span>장보기 취향</span></h2><p>내 생활에 맞는 끼니만, 예산 안에서 간편하게.</p></div><BodyProfilePanel onSaved={()=>setProfileRevision(n=>n+1)} key={authUser?.id ?? "guest"} userId={authUser?.id} name={displayName} onLogin={() => setShowAuth(true)}/><ShoppingPlanner key={`preferences-${authUser?.id??"guest"}-${profileRevision}`} mode="settings" userId={authUser?.id} onLogin={()=>setShowAuth(true)}/><details className="profile-extra"><summary>월 식비 예산·지출 관리</summary><BudgetSettings monthlyOnly key={`budget-${authUser?.id ?? "guest"}`} data={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)} onRefresh={refreshDashboard}/></details></> }
       </div>
       <nav className="bottom-nav" aria-label="앱 메뉴">{([ ["home","홈","home"], ["calendar","달력","calendar"], ["cart","장바구니","bag"], ["record","기록","chart"], ["community","함께","spark"], ["profile","마이","user"] ] as [Tab,string,IconName][]).map(([key,label,icon]) => <button key={key} type="button" className={tab === key ? "active" : ""} onClick={() => setTab(key)} aria-current={tab === key ? "page" : undefined}><Icon name={icon} size={21}/><span>{label}</span></button>)}</nav>
       </>}

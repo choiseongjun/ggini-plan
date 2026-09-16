@@ -7,7 +7,7 @@ import { defaultDiet, dietStyles, excludedFoods, excludedFoodGroups, parseDiet, 
 import { RiceBuddy } from "./rice-buddy";
 import { AppLoading } from "./app-loading";
 
-export function BodyProfilePanel({ userId, name, onLogin }: { userId?: string; name: string; onLogin: () => void }) {
+export function BodyProfilePanel({ userId, name, onLogin, onSaved }: { userId?: string; name: string; onLogin: () => void; onSaved?:()=>void }) {
   const formRef = useRef<HTMLFormElement>(null);
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
@@ -75,7 +75,7 @@ export function BodyProfilePanel({ userId, name, onLogin }: { userId?: string; n
       const response = await fetch("/api/meal-plans", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ profile, diet, variant: nextVariant }) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error ?? "식단을 생성하지 못했어요.");
-      setStoredPlan(data.plan); setVariant(nextVariant);
+      setStoredPlan(data.plan); setVariant(nextVariant);if(data.saved)onSaved?.();
       setMessage(data.saved ? "맞춤 식단을 저장하고 이번 달 식단도 준비했어요. 주간·월간 보기에서 바로 확인하세요." : "맞춤 식단을 만들었어요. 계정 저장은 로그인 후 이용할 수 있어요.");
     } catch (error) { setError(error instanceof Error ? error.message : "식단을 생성하지 못했어요."); }
     finally { setSaving(false); }
@@ -89,7 +89,7 @@ export function BodyProfilePanel({ userId, name, onLogin }: { userId?: string; n
         const response = await fetch("/api/profile", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({...profile,diet}) });
         const data = await response.json();
         if (!response.ok) throw new Error(data.error);
-        setStoredPlan(null); setMessage("신체 정보를 저장했어요. 임신·수유 중에는 자동 식단 추천을 제공하지 않아요.");
+        onSaved?.();setStoredPlan(null); setMessage("신체 정보를 저장했어요. 임신·수유 중에는 자동 식단 추천을 제공하지 않아요.");
       } catch (error) { setError(error instanceof Error ? error.message : "저장하지 못했어요."); }
       finally { setSaving(false); }
       return;
@@ -98,7 +98,7 @@ export function BodyProfilePanel({ userId, name, onLogin }: { userId?: string; n
   }
 
   return <>
-    <div className="home-guide-entry"><strong>한 달 식단과 이번 주 장보기</strong><p>아래 정보를 저장한 뒤 달력에서 월간 식단을 만들고, 필요한 재료를 한 번에 담아 보세요.</p><Link href="/calendar">월간 식단 달력으로 →</Link></div>
+    <div className="home-guide-entry"><strong>한 달 식단과 이번 주 장보기</strong><p>키·체중·활동량과 식단 취향을 저장하면 홈 장보기 추천에도 반영해요. 직접 요리할 식단은 달력에서 볼 수 있어요.</p><Link href="/calendar">월간 식단 달력으로 →</Link></div>
     <div className="page-intro"><div className="week-label">나를 조금 더 알아가는 시간</div><h2>{userId ? `${name}님의` : "나의"} <span>하루 에너지</span></h2><p>지금의 몸과 생활에 맞는 칼로리를 알아봐요.</p></div>
     {!showPlan && <section className="personal-meal-card" aria-label="맞춤 추천 안내" aria-live="polite">
       <h3>{loading ? "저장된 신체 정보를 확인하고 있어요" : loadError ? "신체 정보를 불러오지 못했어요" : !profile ? "맞춤 추천을 위해 신체 정보를 입력해 주세요" : pregnancy ? "현재는 자동 맞춤 추천을 제공하지 않아요" : "맞춤 식단을 만들어 주세요"}</h3>
