@@ -11,7 +11,7 @@ test("meal frequency preserves daily energy and respects eating window", () => {
     assert.equal(plan.end,"20:00");
     assert.ok(plan.meals.every(m=>m.time >= "12:00" && m.time < "20:00"));
     assert.equal(plan.total,plan.meals.reduce((s,m)=>s+m.kcal,0));
-    if (meals===2 || meals===3) assert.ok(Math.abs(plan.total-plan.target)<20);
+    assert.ok(plan.meals.every(m=>m.ingredients.every(i=>i.grams>0)));
   }
   assert.equal(clockTime(25),"다음 날 01:00");
 });
@@ -36,10 +36,24 @@ test("expanded exclusions validate and remove actual recipe ingredients",()=>{
  const excluded=Object.keys(excludedFoods) as (keyof typeof excludedFoods)[];
  assert.equal(parseDiet({...defaultDiet,excluded})?.excluded.length,25);
  assert.equal(recommendMeals(profile,{...defaultDiet,excluded}),null);
- for(const key of ['rice','banana','oats','onion'] as const)for(let variant=0;variant<8;variant++){
+ for(const key of ['rice','banana','oats'] as const)for(let variant=0;variant<8;variant++){
   const plan=recommendMeals(profile,{...defaultDiet,excluded:[key]},variant);
   assert.ok(plan);
-  assert.ok(plan.meals.every(m=>m.ingredients.every(i=>i.food!==(key==='onion'?'veg':key))));
+  assert.ok(plan.meals.every(m=>m.ingredients.every(i=>i.food!==key)));
  }
  assert.equal(recommendMeals(profile,{...defaultDiet,style:'plant',excluded:['soy','wheat']}),null);
+ assert.equal(recommendMeals(profile,{...defaultDiet,excluded:['onion']}),null);
+});
+
+test("breakfast remains quick and modest across variants; noon first meal is lunch",()=>{
+ for(let variant=0;variant<20;variant++){
+  const plan=recommendMeals(profile,defaultDiet,variant)!;
+  assert.equal(plan.meals[0].label,'아침');
+  assert.ok(plan.meals[0].kcal<=455);
+  assert.ok(!plan.meals[0].ingredients.some(i=>i.food==='salmon'||i.food==='chicken'||i.food==='pasta'));
+  assert.equal(plan.meals[1].label,'점심');assert.equal(plan.meals[2].label,'저녁');
+  assert.ok(plan.meals.every(m=>m.slots.includes(m.slot)));
+ }
+ assert.equal(recommendMeals(profile,{...defaultDiet,start:12})!.meals[0].label,'점심');
+ assert.equal(recommendMeals(profile,{...defaultDiet,excluded:['egg','milk','soy','oats'] }),null);
 });

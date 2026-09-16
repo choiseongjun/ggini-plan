@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
     return authFailure("신체 정보와 식단 설정을 확인해 주세요.", 400);
   try {
   const recommendation = recommendMeals(profile, diet, variant, await catalogItems());
-  if (!recommendation) return authFailure("현재 조건에서는 자동 식단을 생성할 수 없어요. 신체 상태와 식단 설정을 확인해 주세요.", 422);
+  if (!recommendation) return authFailure("선택한 시간대와 제외 재료 조건에 맞는 식단이 부족해요. 식사 시간·제외 재료 설정을 확인해 주세요. 임신·수유 중에는 자동 추천을 제공하지 않아요.", 422);
     const user = await sessionUser(request);
     const plan = { profile, diet, recommendation, variant };
     if (!user) return json({ plan: { ...plan, id: null, createdAt: null }, saved: false });
