@@ -1,0 +1,1 @@
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}.filters input,.filters select{box-sizing:border-box;min-width:0;border:1px solid #dce5dc;border-radius:9px;background:#fff;color:#334438;padding:10px;font-size:12px}.filters input{flex:1 1 150px}.filters select{flex:1 1 100px}

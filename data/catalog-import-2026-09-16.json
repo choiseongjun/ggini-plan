@@ -1,0 +1,2775 @@
+{
+  "checkedAt": "2026-09-16T13:46:39.472Z",
+  "rows": [
+    {
+      "id": "kurly-1001866269",
+      "name": "[채선당] 샤브샤브 밀키트(2인분)",
+      "detail": "955G · 1팩 · 냉장",
+      "price": 18810,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "meal_kit",
+      "emoji": "🍲",
+      "color": "mint",
+      "searchQuery": "[채선당] 샤브샤브 밀키트(2인분)",
+      "productUrl": "https://www.kurly.com/goods/1001866269",
+      "productImageUrl": "https://product-image.kurly.com/product/image/8a93c024-48e4-4e90-a6a5-665dda325398.jpg",
+      "checkedAt": "2026-09-16T13:45:33.851Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "밀키트",
+      "sourceVolume": "955G",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 우유, 대두, 밀, 쇠고기, 조개류(굴) 함유\n- 이 제품은 알류, 메밀, 땅콩, 고등어, 게, 새우, 돼지고기, 복숭아, 토마토, 아황산류, 호두, 닭고기, 오징어, 조개류(전복,홍합 포함), 잣을 사용한 제품과 같은 제조시설에서 제조",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/cfee3489-7cb1-46ef-9e81-6c25f10455cb.jpg"
+      ]
+    },
+    {
+      "id": "kurly-5116396",
+      "name": "[김구원선생] 두부 된장찌개 밀키트",
+      "detail": "356g · 1팩 · 냉장",
+      "price": 7200,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "meal_kit",
+      "emoji": "🍲",
+      "color": "mint",
+      "searchQuery": "[김구원선생] 두부 된장찌개 밀키트",
+      "productUrl": "https://www.kurly.com/goods/5116396",
+      "productImageUrl": "https://product-image.kurly.com/product/image/c1ebe507-40f3-4f17-b44a-f64b2da03d2d.jpg",
+      "checkedAt": "2026-09-16T13:45:34.013Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "밀키트",
+      "sourceVolume": "356g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 대두, 소고기, 밀, 새우, 토마토, 우유 함유\n- 이 제품은 계란, 땅콩, 돼지고기, 닭고기, 조개류(홍합, 굴)을 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1001137181",
+      "name": "[하림] 안동식 찜닭 밀키트",
+      "detail": "1,403g · 1팩 · 냉장",
+      "price": 13800,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "meal_kit",
+      "emoji": "🍲",
+      "color": "mint",
+      "searchQuery": "[하림] 안동식 찜닭 밀키트",
+      "productUrl": "https://www.kurly.com/goods/1001137181",
+      "productImageUrl": "https://product-image.kurly.com/product/image/2c40b948-68d5-49fc-b921-27333b361ac0.jpg",
+      "checkedAt": "2026-09-16T13:45:34.250Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "밀키트",
+      "sourceVolume": "1,403g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": " - 닭고기 함유\n* 알류, 우유, 메밀, 땅콩, 대두, 밀, 고등어, 게, 새우, 돼지고기, 복숭아, 토마토, 호두, 쇠고기, 오징어, 조개류, 아황산류, 잣을 사용한 제품과 같은 제조시설에서 제조",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/e1e40584-f111-465f-8a8f-75897952aabd.jpg"
+      ]
+    },
+    {
+      "id": "kurly-5050475",
+      "name": "[하림] 닭한마리 칼국수 밀키트",
+      "detail": "1175g · 1팩 · 냉장",
+      "price": 14700,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "meal_kit",
+      "emoji": "🍲",
+      "color": "mint",
+      "searchQuery": "[하림] 닭한마리 칼국수 밀키트",
+      "productUrl": "https://www.kurly.com/goods/5050475",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1585719524584l0.jpg",
+      "checkedAt": "2026-09-16T13:45:34.588Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "밀키트",
+      "sourceVolume": "1175g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 닭고기함유\n- 치킨스톡 : 알류,우유,대두,밀,돼지고기,닭고기,쇠고기,조개류(바지락,모시조개)함유\n- 칼국수 생면 : 밀함유\n- 본 제품은 알레르기 유발성분(알류,우유,메밀,땅콩,대두,밀,고등어,게,새우,돼지고기,복숭아,토마토,호두,쇠고기,오징어,조개류,아황산류,잣)을 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-5131316",
+      "name": "[수린] 1++ 한우 사골 솥밥 밀키트 (2인분)",
+      "detail": "685g · 1팩 · 냉장",
+      "price": 18900,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "meal_kit",
+      "emoji": "🍲",
+      "color": "mint",
+      "searchQuery": "[수린] 1++ 한우 사골 솥밥 밀키트 (2인분)",
+      "productUrl": "https://www.kurly.com/goods/5131316",
+      "productImageUrl": "https://product-image.kurly.com/product/image/66d32e01-2708-4a05-91fc-6ed5c63bcfb4.jpg",
+      "checkedAt": "2026-09-16T13:45:34.771Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "밀키트",
+      "sourceVolume": "685g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 대두, 밀, 쇠고기 함유 \n- 이 제품은 알레르기 발생 가능성이 있는 알류, 우유, 메밀, 땅콩, 고등어, 게, 새우, 돼지고기, 닭고기, 복숭아, 토마토, 아황산류, 호두, 오징어, 조개류(굴, 전복, 홍합, 바지락, 모시조개 포함), 잣을 사용한 제품과 같은 제조시설에서 제조하고 있습니다. ",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1002380745",
+      "name": "[법송스님] 냉이두부전 밀키트",
+      "detail": "300g · 1팩 · 냉동",
+      "price": 6800,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "meal_kit",
+      "emoji": "🍲",
+      "color": "mint",
+      "searchQuery": "[법송스님] 냉이두부전 밀키트",
+      "productUrl": "https://www.kurly.com/goods/1002380745",
+      "productImageUrl": "https://product-image.kurly.com/product/image/1170cdd9-b628-4c51-b3b7-389450fe9c8e.jpg",
+      "checkedAt": "2026-09-16T13:45:34.994Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "밀키트",
+      "sourceVolume": "300g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 대두, 밀 함유\n- 본 제품은 난류, 우유, 메밀, 땅콩, 고등어, 게, 새우, 돼지고기, 복숭아, 토마토, 아황산류, 호두, 닭고기, 오징어, 조개류",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/0b99ea81-ccee-4f39-8bc2-8eec6de90bcb.jpg"
+      ]
+    },
+    {
+      "id": "kurly-1000552445",
+      "name": "[콜린스 다이닝] 전복솥밥 키트",
+      "detail": "500g · 1팩 · 냉동",
+      "price": 18900,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "meal_kit",
+      "emoji": "🍲",
+      "color": "mint",
+      "searchQuery": "[콜린스 다이닝] 전복솥밥 키트",
+      "productUrl": "https://www.kurly.com/goods/1000552445",
+      "productImageUrl": "https://product-image.kurly.com/product/image/445fc52f-15db-43d5-a639-e4410321b84e.jpg",
+      "checkedAt": "2026-09-16T13:45:35.098Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "밀키트",
+      "sourceVolume": "500g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "-대두, 밀, 새우, 아황산류, 오징어, 조개류(굴, 전복, 바지락, 피뿔고둥) 함유\n-본 제품은 난류, 우유, 메밀, 땅콩, 고등어, 게, 돼지고기, 복숭아, 토마토, 호두, 닭고기, 쇠고기, 조개류(홍합 포함), 잣을 사용하는 제품과 같은 제조시설에서 제조하고 있음",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/e7ad1104-87df-4128-a275-f786875cae8f.jpg"
+      ]
+    },
+    {
+      "id": "kurly-1000144412",
+      "name": "[풀무원] 야채 꼬마김밥 KIT",
+      "detail": "124g · 1개 · 냉장",
+      "price": 4980,
+      "portions": "1개",
+      "quantity": 1,
+      "unit": "개",
+      "category": "meal_kit",
+      "emoji": "🍲",
+      "color": "mint",
+      "searchQuery": "[풀무원] 야채 꼬마김밥 KIT",
+      "productUrl": "https://www.kurly.com/goods/1000144412",
+      "productImageUrl": "https://product-image.kurly.com/product/image/5463e5f8-f747-465f-a6b6-b52d18b1d98a.jpg",
+      "checkedAt": "2026-09-16T13:45:35.211Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "밀키트",
+      "sourceVolume": "124g",
+      "sourceSalesUnit": "1개",
+      "allergyText": "* 대두, 밀, 우유, 계란, 게, 새우, 조개류(바지락) 함유\n* 본 제품은 메밀, 땅콩, 돼지고기, 복숭아, 토마토, 아황산류, 호두, 닭고기, 쇠고기, 오징어, 고등어, 조개류(굴, 전복, 홍합 포함), 잣을 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1001744099",
+      "name": "[오봉집] 곤드레 문어낙지 솥밥키트(밥 포함)",
+      "detail": "530g · 1팩 · 냉동",
+      "price": 10125,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "meal_kit",
+      "emoji": "🍲",
+      "color": "mint",
+      "searchQuery": "[오봉집] 곤드레 문어낙지 솥밥키트(밥 포함)",
+      "productUrl": "https://www.kurly.com/goods/1001744099",
+      "productImageUrl": "https://product-image.kurly.com/product/image/75547ac0-81f3-4dd0-a91d-845e1808e2ad.jpg",
+      "checkedAt": "2026-09-16T13:45:35.341Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "밀키트",
+      "sourceVolume": "530g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": " - 대두, 우유, 밀, 토마토, 쇠고기, 닭고기, 조개류 함유\n*난류, 메밀, 땅콩, 고등어, 게, 새우, 돼지고기, 복숭아, 호두, 오징어, 조개류(굴, 전복, 홍합 포함), 잣, 아황산류를 사용한 제품과 같은 제조시설에서 제조",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/7ff63705-13b7-41dd-a032-fb3b82089fbc.jpg"
+      ]
+    },
+    {
+      "id": "kurly-5131431",
+      "name": "[방방곡곡] 비빔국수 키트 (2인분)",
+      "detail": "872g · 1팩 · 냉장",
+      "price": 10700,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "meal_kit",
+      "emoji": "🍲",
+      "color": "mint",
+      "searchQuery": "[방방곡곡] 비빔국수 키트 (2인분)",
+      "productUrl": "https://www.kurly.com/goods/5131431",
+      "productImageUrl": "https://product-image.kurly.com/product/image/57ececf9-0438-4607-bbe7-0b8dc9189b96.jpg?v=0531",
+      "checkedAt": "2026-09-16T13:45:35.471Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "밀키트",
+      "sourceVolume": "872g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 대두, 밀, 쇠고기, 새우, 함유\r\n- 본 제품은 알류, 우유, 메밀, 땅콩, 고등어, 게, 돼지고기, 복숭아, 토마토, 아황산류, 호두, 닭고기, 오징어, 조개류(굴, 전복, 홍합 포함), 잣을 사용한 제품과 같은 제조시설에서 제조하고 있습니다.\r\n",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/124c8387-95a6-49ee-8c48-68d3e53f41b6.jpg"
+      ]
+    },
+    {
+      "id": "kurly-1000270007",
+      "name": "[도리깨침] 월남쌈 밀키트 ",
+      "detail": "700g · 냉장",
+      "price": 21200,
+      "portions": "판매 구성 1개",
+      "quantity": 1,
+      "unit": "개",
+      "category": "meal_kit",
+      "emoji": "🍲",
+      "color": "mint",
+      "searchQuery": "[도리깨침] 월남쌈 밀키트 ",
+      "productUrl": "https://www.kurly.com/goods/1000270007",
+      "productImageUrl": "https://product-image.kurly.com/product/image/cec23a52-67d0-4d80-bbe1-21f8eb96c58c.jpg?v=0531",
+      "checkedAt": "2026-09-16T13:45:35.579Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "밀키트",
+      "sourceVolume": "700g",
+      "sourceSalesUnit": "",
+      "allergyText": "- 소고기, 계란, 대두, 밀, 새우, 땅콩, 토마토 함유\n- 이 제품은 우유, 메밀, 고등어, 게, 돼지고기, 복숭아, 호두, 닭고기, 오징어, 조개류 (굴, 전복, 홍합 포함), 잣을 사용한 제품과 같은 제조시설에서 제조하고 있습니다. ",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-5050472",
+      "name": "[하림] 태양초 닭볶음탕 밀키트",
+      "detail": "1055g · 1팩 · 냉장",
+      "price": 14300,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "meal_kit",
+      "emoji": "🍲",
+      "color": "mint",
+      "searchQuery": "[하림] 태양초 닭볶음탕 밀키트",
+      "productUrl": "https://www.kurly.com/goods/5050472",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1585720001511l0.jpg",
+      "checkedAt": "2026-09-16T13:45:35.688Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "밀키트",
+      "sourceVolume": "1055g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 닭고기 함유\n- 고추장 양념소스 : 대두,밀,우유,쇠고기,토마토 함유\n- 본 제품은 알류,우유,메밀,땅콩,대두,밀,고등어,게,새우,돼지고기,복숭아,토마토,호두,쇠고기,오징어,조개류,아황산류,잣을 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1000756142",
+      "name": "[채선당] 소고기 버섯 샤브샤브 밀키트",
+      "detail": "784g · 1팩 · 냉장",
+      "price": 17010,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "meal_kit",
+      "emoji": "🍲",
+      "color": "mint",
+      "searchQuery": "[채선당] 소고기 버섯 샤브샤브 밀키트",
+      "productUrl": "https://www.kurly.com/goods/1000756142",
+      "productImageUrl": "https://product-image.kurly.com/product/image/9c1129f9-9153-4209-a7bc-b2002de29304.jpg",
+      "checkedAt": "2026-09-16T13:45:35.930Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "밀키트",
+      "sourceVolume": "784g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 우유, 대두, 밀, 쇠고기, 조개류(굴) 함유\n- 이 제품은 알류, 메밀, 땅콩, 고등어, 게, 새우, 돼지고기, 복숭아, 토마토, 아황산류, 호두, 닭고기, 오징어, 조개류(전복, 홍합 포함), 잣을 사용한 제품과 같은 제조시설에서 제조",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1001346328",
+      "name": "[애슐리] 해물 누룽지탕 밀키트",
+      "detail": "698g · 1팩 · 냉장",
+      "price": 17090,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "meal_kit",
+      "emoji": "🍲",
+      "color": "mint",
+      "searchQuery": "[애슐리] 해물 누룽지탕 밀키트",
+      "productUrl": "https://www.kurly.com/goods/1001346328",
+      "productImageUrl": "https://product-image.kurly.com/product/image/65e9cedd-3bf1-4027-99cf-cdf35922d3a8.jpg",
+      "checkedAt": "2026-09-16T13:45:36.186Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "밀키트",
+      "sourceVolume": "698g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": " - 알류(계란), 대두, 밀, 새우, 돼지고기, 닭고기, 오징어, 조개류(굴) 함유\n - 본 제품은 우유, 메밀, 땅콩, 고등어, 게, 복숭아, 토마토, 아황산류, 호두, 쇠고기, 조개류(전복,홍합 포함), 잣을 사용한 제품과 같은 제조 시설에서 제조하고 있습니다",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/c40f70a6-d799-4291-ab2a-f4f09097e8fb.jpg"
+      ]
+    },
+    {
+      "id": "kurly-5100788",
+      "name": "[마이셰프] 소고기 샤브샤브 밀키트 3~4인분(고기350g)",
+      "detail": "1,215g · 1 팩 · 냉장",
+      "price": 25110,
+      "portions": "1 팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "meal_kit",
+      "emoji": "🍲",
+      "color": "mint",
+      "searchQuery": "[마이셰프] 소고기 샤브샤브 밀키트 3~4인분(고기350g)",
+      "productUrl": "https://www.kurly.com/goods/5100788",
+      "productImageUrl": "https://product-image.kurly.com/product/image/79ee3143-d5cd-47ec-9bc2-4d595434db33.jpeg",
+      "checkedAt": "2026-09-16T13:45:36.382Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "밀키트",
+      "sourceVolume": "1,215g",
+      "sourceSalesUnit": "1 팩",
+      "allergyText": "- 알류(계란), 우유, 대두, 밀, 고등어, 쇠고기 함유\n- 이 제품은 메밀, 땅콩, 게, 새우, 돼지고기, 복숭아, 토마토, 아황산류, 호두, 닭고기, 오징어, 조개류(굴, 전복, 홍합 포함), 잣을 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/bfebdab0-8d9f-4471-8808-6228c728c4bd.jpg"
+      ]
+    },
+    {
+      "id": "kurly-5132849",
+      "name": "[닥터로빈] 저당 단호박 크림스프 밀키트 (리뉴얼)",
+      "detail": "550g · 1팩 · 냉동",
+      "price": 9810,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "meal_kit",
+      "emoji": "🍲",
+      "color": "mint",
+      "searchQuery": "[닥터로빈] 저당 단호박 크림스프 밀키트 (리뉴얼)",
+      "productUrl": "https://www.kurly.com/goods/5132849",
+      "productImageUrl": "https://product-image.kurly.com/product/image/7d433686-7c1f-4023-89d0-1abaa0c1b7ca.jpg",
+      "checkedAt": "2026-09-16T13:45:36.584Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "밀키트",
+      "sourceVolume": "550g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 스프 : 대두, 우유 함유\n- 모닝빵 : 밀, 대두, 우유, 계란 함유\n- 이 제품은 메밀, 땅콩, 고등어, 게, 복숭아, 돼지고기, 토마토, 새우, 닭고기, 쇠고기, 호두, 오징어, 조개류(굴, 전복, 홍합 포함), 아황산류를 사용한 제품과 같은 제조시설에서 생산하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-5099160",
+      "name": "[LITTLENECK] 리틀넥 스테이크 키트",
+      "detail": "340g · 1팩 · 냉동",
+      "price": 19900,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "meal_kit",
+      "emoji": "🍲",
+      "color": "mint",
+      "searchQuery": "[LITTLENECK] 리틀넥 스테이크 키트",
+      "productUrl": "https://www.kurly.com/goods/5099160",
+      "productImageUrl": "https://product-image.kurly.com/product/image/b5a8601f-c837-4d1f-bc7d-f3b3f5daefc2.jpg",
+      "checkedAt": "2026-09-16T13:45:36.700Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "밀키트",
+      "sourceVolume": "340g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 스테이크: 소고기, 대두 함유\r\n- 매쉬드포테이토: 우유 함유\r\n- 치미추리소스: 밀, 우유, 계란, 닭고기, 쇠고기 함유\r\n- 이 제품은 메밀, 새우, 땅콩, 고등어, 게, 돼지고기, 복숭아, 아황산류, 토마토, 호두, 오징어, 조개류(굴, 전복, 홍합 포함), 잣을 사용한 제품과 같은 제조 시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-5095179",
+      "name": "[풀무원] 정통 순두부찌개 KIT",
+      "detail": "602g · 1팩 · 냉장",
+      "price": 4280,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "meal_kit",
+      "emoji": "🍲",
+      "color": "mint",
+      "searchQuery": "[풀무원] 정통 순두부찌개 KIT",
+      "productUrl": "https://www.kurly.com/goods/5095179",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1636437164709l0.jpg",
+      "checkedAt": "2026-09-16T13:45:37.036Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "밀키트",
+      "sourceVolume": "602g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 돼지고기, 쇠고기, 조개류(바지락), 대두, 밀 함유\r\n- 난류(계란), 우유, 닭고기, 새우, 게, 메밀, 땅콩, 고등어, 토마토, 복숭아, 아황산류, 호두, 오징어, 조개류(굴,전복,홍합 포함)을 사용한 제품과 같은 시설에서 제조 ",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1000089155",
+      "name": "[온하루] 만둣국 키트 (2인분)",
+      "detail": "440g · 1팩 · 냉동",
+      "price": 8800,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "meal_kit",
+      "emoji": "🍲",
+      "color": "mint",
+      "searchQuery": "[온하루] 만둣국 키트 (2인분)",
+      "productUrl": "https://www.kurly.com/goods/1000089155",
+      "productImageUrl": "https://product-image.kurly.com/product/image/4d67db9d-26bc-4562-b86a-fd5148d8bb3a.jpg",
+      "checkedAt": "2026-09-16T13:45:37.251Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "밀키트",
+      "sourceVolume": "440g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 대두, 밀, 돼지고기, 소고기, 조개류(굴) 함유\n- 이 제품은 우유, 메밀, 땅콩, 고등어, 게, 새우, 아황산류, 복숭아, 토마토, 호두, 닭고기, 알류, 오징어, 조개류(전복, 홍합 포함), 잣을 원재료로 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-5095180",
+      "name": "[풀무원] 얼큰 순두부찌개 KIT",
+      "detail": "600g · 1팩 · 냉장",
+      "price": 4280,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "meal_kit",
+      "emoji": "🍲",
+      "color": "mint",
+      "searchQuery": "[풀무원] 얼큰 순두부찌개 KIT",
+      "productUrl": "https://www.kurly.com/goods/5095180",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1636437291887l0.jpg",
+      "checkedAt": "2026-09-16T13:45:37.485Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "밀키트",
+      "sourceVolume": "600g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 대두, 밀, 돼지고기, 쇠고기, 닭고기, 오징어, 새우, 조개류(홍합 포함) 함유\r\n- 알류(달걀), 우유, 게, 메밀, 땅콩, 고등어, 토마토, 복숭아, 아황산류, 호두, 조개류(굴,전복,바지락 포함), 잣을 사용한 제품과 같은 시설에서 제조\r\n",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-5095789",
+      "name": "[하코야] 와카메 어묵탕 전골 KIT",
+      "detail": "709g · 1팩 · 냉동",
+      "price": 11900,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "meal_kit",
+      "emoji": "🍲",
+      "color": "mint",
+      "searchQuery": "[하코야] 와카메 어묵탕 전골 KIT",
+      "productUrl": "https://www.kurly.com/goods/5095789",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1648210798662l0.jpg",
+      "checkedAt": "2026-09-16T13:45:37.698Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "밀키트",
+      "sourceVolume": "709g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "-우유, 계란, 대두, 밀 함유 \n-본 제품은 쇠고기, 돼지고기, 닭고기, 새우, 게, 오징어, 고등어, 조개류(굴, 전복, 홍합 포함), 메밀, 호두, 땅콩, 잣, 토마토, 복숭아, 아황산류를 사용한 제품과 동일 시설에서 제조하고 있습니다. ",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1002062294",
+      "name": "[풀무원] 바지락순두부찌개KIT 602g",
+      "detail": "602g · 1팩 · 냉장",
+      "price": 4380,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "meal_kit",
+      "emoji": "🍲",
+      "color": "mint",
+      "searchQuery": "[풀무원] 바지락순두부찌개KIT 602g",
+      "productUrl": "https://www.kurly.com/goods/1002062294",
+      "productImageUrl": "https://product-image.kurly.com/product/image/7d6e06f9-eba5-463a-8d03-fcd2675da7cb.jpg",
+      "checkedAt": "2026-09-16T13:45:37.992Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "밀키트",
+      "sourceVolume": "602g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1001316382",
+      "name": "[Chai797] 시그니처 쇠고기 마늘 볶음밥",
+      "detail": "420g · 1팩 · 냉동",
+      "price": 7200,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🍚",
+      "color": "mint",
+      "searchQuery": "[Chai797] 시그니처 쇠고기 마늘 볶음밥",
+      "productUrl": "https://www.kurly.com/goods/1001316382",
+      "productImageUrl": "https://product-image.kurly.com/product/image/9787d3f3-062f-4f1a-8a6f-8565b7a559d2.jpg",
+      "checkedAt": "2026-09-16T13:45:38.367Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "볶음밥",
+      "sourceVolume": "420g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "계란, 우유, 대두, 밀, 닭고기, 쇠고기, 돼지고기, 조개류(굴) 함유\n- 본 제품은 메밀, 땅콩, 고등어, 게, 새우, 복숭아, 토마토, 아황산류, 호두, 오징어, 조개류(전복,홍합 포함), 잣을 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/fa80615f-4170-4917-a6c7-9167d26b607d.png"
+      ]
+    },
+    {
+      "id": "kurly-1000347446",
+      "name": "[조선호텔] 게살볶음밥 420g",
+      "detail": "420g · 1팩 · 냉동",
+      "price": 7900,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🍚",
+      "color": "mint",
+      "searchQuery": "[조선호텔] 게살볶음밥 420g",
+      "productUrl": "https://www.kurly.com/goods/1000347446",
+      "productImageUrl": "https://product-image.kurly.com/product/image/602221ca-5488-4af7-a490-c76ceb2f09ab.jpg",
+      "checkedAt": "2026-09-16T13:45:38.482Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "볶음밥",
+      "sourceVolume": "420g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "-알류(달걀), 우유, 대두, 밀, 게, 토마토, 닭고기, 쇠고기, 조개류 함유\n*이 제품은 알레르기 발생 가능성이 있는 메밀, 땅콩, 고등어, 새우, 돼지고기, 복숭아, 아황산류, 호두, 오징어, 조개류(굴, 전복, 홍합 포함), 잣을 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1001502057",
+      "name": "[차려낸] 대파 풍미를 더한 새우볶음밥 (4개입)",
+      "detail": "920g (230g x 4개입) · 1팩 (4개입) · 냉동",
+      "price": 9800,
+      "portions": "1팩 (4개입)",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🍚",
+      "color": "mint",
+      "searchQuery": "[차려낸] 대파 풍미를 더한 새우볶음밥 (4개입)",
+      "productUrl": "https://www.kurly.com/goods/1001502057",
+      "productImageUrl": "https://product-image.kurly.com/product/image/989d0b2f-63fb-457f-a33d-e5b82b39ccf2.jpg",
+      "checkedAt": "2026-09-16T13:45:38.573Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "볶음밥",
+      "sourceVolume": "920g (230g x 4개입)",
+      "sourceSalesUnit": "1팩 (4개입)",
+      "allergyText": "알류(달걀), 우유, 대두, 밀, 새우, 조개류(굴) 함유\n- 본 제품은 알레르기 발생 가능성이 있는 메밀, 땅콩, 고등어, 게, 복숭아, 토마토, 아황산류, 호두, 닭고기, 쇠고기, 돼지고기, 오징어, 조개류(전복, 홍합 포함), 잣을 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/dc226174-6095-404e-96b0-90a262a6e71c.jpg"
+      ]
+    },
+    {
+      "id": "kurly-1001401863",
+      "name": "[차려낸] 국산 김치로 만든 김치볶음밥 (4개입)",
+      "detail": "920g (230g x 4팩) · 1팩 (4개입) · 냉동",
+      "price": 8000,
+      "portions": "1팩 (4개입)",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🍚",
+      "color": "mint",
+      "searchQuery": "[차려낸] 국산 김치로 만든 김치볶음밥 (4개입)",
+      "productUrl": "https://www.kurly.com/goods/1001401863",
+      "productImageUrl": "https://product-image.kurly.com/product/image/dff055d4-4cbc-43ca-8a56-662bf7a5e614.jpg",
+      "checkedAt": "2026-09-16T13:45:38.684Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "볶음밥",
+      "sourceVolume": "920g (230g x 4팩)",
+      "sourceSalesUnit": "1팩 (4개입)",
+      "allergyText": "우유, 대두, 밀, 새우, 땅콩, 쇠고기, 닭고기, 조개류(굴) 함유\n- 본 제품은 알류, 메밀, 고등어, 게, 돼지고기, 복숭아, 토마토, 아황산류, 호두, 오징어, 조개류(전복, 홍합 포함), 잣을 사용한 제품과 같은 제조시설에서 제조하고있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/38771a80-fab8-41be-876b-73787211a26e.jpg"
+      ]
+    },
+    {
+      "id": "kurly-5025689",
+      "name": "[LOTS OF LOVE] 차돌듬뿍 묵은지 볶음밥",
+      "detail": "460g · 1PK · 냉동",
+      "price": 8250,
+      "portions": "1PK",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🍚",
+      "color": "mint",
+      "searchQuery": "[LOTS OF LOVE] 차돌듬뿍 묵은지 볶음밥",
+      "productUrl": "https://www.kurly.com/goods/5025689",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/165303656813l0.jpeg?v=0531",
+      "checkedAt": "2026-09-16T13:45:38.777Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "볶음밥",
+      "sourceVolume": "460g",
+      "sourceSalesUnit": "1PK",
+      "allergyText": "- 우유, 대두, 밀, 닭고기, 쇠고기 함유\r\n- 알류, 메밀, 땅콩, 고등어, 게, 새우, 돼지고기, 복숭아, 토마토, 아황산류, 호두, 오징어, 조개류(굴, 전복, 홍합 포함), 잣을 사용한 제품과 같은 제조 시설에서 제조",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-5155567",
+      "name": "[하남돼지집] 철판삼겹살마무리볶음밥 4입",
+      "detail": "920g · 1팩(230g*4개입) · 냉동",
+      "price": 9900,
+      "portions": "1팩(230g*4개입)",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🍚",
+      "color": "mint",
+      "searchQuery": "[하남돼지집] 철판삼겹살마무리볶음밥 4입",
+      "productUrl": "https://www.kurly.com/goods/5155567",
+      "productImageUrl": "https://product-image.kurly.com/product/image/047bfb49-6ce4-4890-b69b-140dd7da32f5.jpg",
+      "checkedAt": "2026-09-16T13:45:38.883Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "볶음밥",
+      "sourceVolume": "920g",
+      "sourceSalesUnit": "1팩(230g*4개입)",
+      "allergyText": "-돼지고기, 대두, 밀, 우유, 쇠고기, 닭고기, 조개류(굴) 함유\n\n-이 제품은 알류, 메밀, 땅콩, 고등어, 게, 새우, 복숭아, 토마토, 아황산류, 호두, 오징어, 조개류(전복, 홍합 포함), 잣을 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-5031704",
+      "name": "[올반] 새우볶음밥 (4개입)",
+      "detail": "880g  · 1봉 (4인분) · 냉동",
+      "price": 8980,
+      "portions": "1봉 (4인분)",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🍚",
+      "color": "mint",
+      "searchQuery": "[올반] 새우볶음밥 (4개입)",
+      "productUrl": "https://www.kurly.com/goods/5031704",
+      "productImageUrl": "https://product-image.kurly.com/product/image/b36c0736-c521-45bd-bb58-74326373ba7a.jpg",
+      "checkedAt": "2026-09-16T13:45:39.166Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "볶음밥",
+      "sourceVolume": "880g ",
+      "sourceSalesUnit": "1봉 (4인분)",
+      "allergyText": "- 우유, 대두, 밀, 게, 새우, 돼지고기, 닭고기, 쇠고기 함유\r\n* 알류, 메밀, 땅콩, 고등어, 복숭아, 토마토, 아황산류, 호두,  오징어, 조개류(굴, 전복, 홍합 포함), 잣을 사용한 제품과 같은 제조시설에서 제조",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1000659853",
+      "name": "[애슐리] 쉬림프 나시고렝 볶음밥 (2개입)",
+      "detail": "460g · 1개 (230g * 2팩) · 냉동",
+      "price": 6990,
+      "portions": "1개 (230g * 2팩)",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🍚",
+      "color": "mint",
+      "searchQuery": "[애슐리] 쉬림프 나시고렝 볶음밥 (2개입)",
+      "productUrl": "https://www.kurly.com/goods/1000659853",
+      "productImageUrl": "https://product-image.kurly.com/product/image/96691baa-a1c1-4feb-ab62-5634b3b56d39.jpg",
+      "checkedAt": "2026-09-16T13:45:39.272Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "볶음밥",
+      "sourceVolume": "460g",
+      "sourceSalesUnit": "1개 (230g * 2팩)",
+      "allergyText": "- 계란, 우유, 대두, 밀, 닭고기, 쇠고기, 이산화황, 새우, 토마토 함유\n- 이 제품은 메밀, 땅콩, 고등어, 게, 돼지고기, 복숭아, 호두, 오징어, 조개류(굴, 전복, 홍합 포함), 잣을 사용한 제품과 동일 시설에서 제조",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1001591196",
+      "name": "[조선호텔] 삼선볶음밥 (2개입)",
+      "detail": "420g · 1팩 (2개입) · 냉동",
+      "price": 7900,
+      "portions": "1팩 (2개입)",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🍚",
+      "color": "mint",
+      "searchQuery": "[조선호텔] 삼선볶음밥 (2개입)",
+      "productUrl": "https://www.kurly.com/goods/1001591196",
+      "productImageUrl": "https://product-image.kurly.com/product/image/5c3173ac-24b7-48f2-9bf2-617848c756c5.jpg",
+      "checkedAt": "2026-09-16T13:45:39.405Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "볶음밥",
+      "sourceVolume": "420g",
+      "sourceSalesUnit": "1팩 (2개입)",
+      "allergyText": "달걀, 대두, 우유, 밀, 쇠고기, 닭고기, 오징어, 토마토 새우, 조개류 함유\n- 본 제품은 아황산류,메밀,땅콩,고등어,게,복숭아,호두, 돼지고기,잣을 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/426f02ed-8bdb-47a4-8ff6-f08bddd20591.jpg"
+      ]
+    },
+    {
+      "id": "kurly-1001205683",
+      "name": "[LOTS OF LOVE] 풍미듬뿍 명란 시래기 볶음밥",
+      "detail": "460g · 1팩 · 냉동",
+      "price": 7000,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🍚",
+      "color": "mint",
+      "searchQuery": "[LOTS OF LOVE] 풍미듬뿍 명란 시래기 볶음밥",
+      "productUrl": "https://www.kurly.com/goods/1001205683",
+      "productImageUrl": "https://product-image.kurly.com/product/image/75c11fbb-da28-410b-a97c-e80b0c7c9aaa.jpg",
+      "checkedAt": "2026-09-16T13:45:39.509Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "볶음밥",
+      "sourceVolume": "460g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "계란, 우유, 대두, 밀, 쇠고기 함유\n- 이 제품은 알레르기 발생 가능성이 있는 메밀, 땅콩, 고등어, 게, 새우, 돼지고기, 복숭아, 토마토, 아황산류, 호두, 닭고기, 오징어, 조개류(굴,전복,홍합 포함), 잣을 사용한 제품과 같은 제조 시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/17f2d7ca-74e9-4125-a804-32cf54f61c47.jpg"
+      ]
+    },
+    {
+      "id": "kurly-1000347344",
+      "name": "[햇반/쿡반] 만능계란볶음밥 400G",
+      "detail": "400g · 1개 (2봉) · 냉동",
+      "price": 3300,
+      "portions": "1개 (2봉)",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🍚",
+      "color": "mint",
+      "searchQuery": "[햇반/쿡반] 만능계란볶음밥 400G",
+      "productUrl": "https://www.kurly.com/goods/1000347344",
+      "productImageUrl": "https://product-image.kurly.com/product/image/06ec8694-aa37-4ce1-b854-f8f38fe2af8b.jpg",
+      "checkedAt": "2026-09-16T13:45:39.644Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "볶음밥",
+      "sourceVolume": "400g",
+      "sourceSalesUnit": "1개 (2봉)",
+      "allergyText": "- 계란, 대두, 우유, 조개류(굴), 밀, 닭고기, 돼지고기, 쇠고기 함유\n- 이 제품은 메밀, 땅콩, 고등어, 게, 새우, 복숭아, 토마토, 아황산류, 호두, 오징어, 잣을 사용한 제품과 동일 시설에서 제조",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1000124055",
+      "name": "[풀무원] 갈릭바베큐 볶음밥 (2개입)",
+      "detail": "420g (210g X 2개입) · 1개 · 냉동",
+      "price": 5480,
+      "portions": "1개",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🍚",
+      "color": "mint",
+      "searchQuery": "[풀무원] 갈릭바베큐 볶음밥 (2개입)",
+      "productUrl": "https://www.kurly.com/goods/1000124055",
+      "productImageUrl": "https://product-image.kurly.com/product/image/545c9270-c634-464e-ae7c-a75e7df973d9.jpg",
+      "checkedAt": "2026-09-16T13:45:39.863Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "볶음밥",
+      "sourceVolume": "420g (210g X 2개입)",
+      "sourceSalesUnit": "1개",
+      "allergyText": "- 대두, 밀, 돼지고기, 닭고기, 쇠고기, 조개류(굴, 전복, 홍합 포함) 함유\n- 이 제품은 우유, 메밀, 땅콩, 고등어, 게, 새우, 복숭아, 토마토, 아황산류, 호두, 오징어, 잣, 알류을 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-5155568",
+      "name": "[유노추보] 와규스테이크볶음밥 4입",
+      "detail": "920g · 1팩(230g*4개입) · 냉동",
+      "price": 9900,
+      "portions": "1팩(230g*4개입)",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🍚",
+      "color": "mint",
+      "searchQuery": "[유노추보] 와규스테이크볶음밥 4입",
+      "productUrl": "https://www.kurly.com/goods/5155568",
+      "productImageUrl": "https://product-image.kurly.com/product/image/8f3e1ec6-1697-48fe-939b-fd81cc2ad92e.jpg",
+      "checkedAt": "2026-09-16T13:45:39.999Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "볶음밥",
+      "sourceVolume": "920g",
+      "sourceSalesUnit": "1팩(230g*4개입)",
+      "allergyText": "-쇠고기, 돼지고기, 대두, 밀, 우유 함유\n-이 제품은 알류, 메밀, 땅콩, 고등어, 게, 새우, 복숭아, 토마토, 아황산류, 호두, 닭고기, 오징어, 조개류(굴, 전복, 홍합 포함), 잣을 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1000660795",
+      "name": "[하림] The미식 춘천 닭갈비 볶음밥 2인분 (2개입)",
+      "detail": "420g · 2개 (210g * 2팩) · 냉동",
+      "price": 7500,
+      "portions": "2개 (210g * 2팩)",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🍚",
+      "color": "mint",
+      "searchQuery": "[하림] The미식 춘천 닭갈비 볶음밥 2인분 (2개입)",
+      "productUrl": "https://www.kurly.com/goods/1000660795",
+      "productImageUrl": "https://product-image.kurly.com/product/image/60bc74af-bdfe-4f44-b1a1-ada99fc252f2.jpg",
+      "checkedAt": "2026-09-16T13:45:40.327Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "볶음밥",
+      "sourceVolume": "420g",
+      "sourceSalesUnit": "2개 (210g * 2팩)",
+      "allergyText": "우유, 대두, 밀, 닭고기, 쇠고기 함유",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1000527167",
+      "name": "[금룡각] 중화 간짜장볶음밥 (2개입)",
+      "detail": "660g · 2개(볶음밥 230g*2팩, 소스 100g*2팩) · 냉동",
+      "price": 8900,
+      "portions": "2개(볶음밥 230g*2팩, 소스 100g*2팩)",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🍚",
+      "color": "mint",
+      "searchQuery": "[금룡각] 중화 간짜장볶음밥 (2개입)",
+      "productUrl": "https://www.kurly.com/goods/1000527167",
+      "productImageUrl": "https://product-image.kurly.com/product/image/93241528-0fa5-4d85-82c5-db54b165c115.jpg",
+      "checkedAt": "2026-09-16T13:45:40.431Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "볶음밥",
+      "sourceVolume": "660g",
+      "sourceSalesUnit": "2개(볶음밥 230g*2팩, 소스 100g*2팩)",
+      "allergyText": "- 달걀, 우유, 대두, 밀, 돼지고기, 닭고기, 쇠고기 함유\n\n- 본 제품은 메밀, 땅콩, 고등어, 게, 새우, 복숭아, 토마토, 아황산류, 호두, 오징어, 조개류(굴, 전복, 홍합 포함), 잣을 사용한 제품과 동일시설에서 제조",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1002140529",
+      "name": "[생어거스틴] 나시고랭 볶음밥 (2개입)",
+      "detail": "470g · 1팩 (2개입) · 냉동",
+      "price": 8900,
+      "portions": "1팩 (2개입)",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🍚",
+      "color": "mint",
+      "searchQuery": "[생어거스틴] 나시고랭 볶음밥 (2개입)",
+      "productUrl": "https://www.kurly.com/goods/1002140529",
+      "productImageUrl": "https://product-image.kurly.com/product/image/f238abd0-1065-4007-8680-0de6fa3c5c04.jpg",
+      "checkedAt": "2026-09-16T13:45:40.551Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "볶음밥",
+      "sourceVolume": "470g",
+      "sourceSalesUnit": "1팩 (2개입)",
+      "allergyText": "대두, 밀, 닭고기, 게, 새우, 오징어, 아황산류, 토마토, 조개류(굴, 바지락) 함유",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/75d741b0-9afe-4a8e-8527-cc406a7a3722.jpg"
+      ]
+    },
+    {
+      "id": "kurly-5031706",
+      "name": "[올반] 김치볶음밥 (2개입)",
+      "detail": "414g · 1봉 · 냉동",
+      "price": 5580,
+      "portions": "1봉",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🍚",
+      "color": "mint",
+      "searchQuery": "[올반] 김치볶음밥 (2개입)",
+      "productUrl": "https://www.kurly.com/goods/5031706",
+      "productImageUrl": "https://product-image.kurly.com/product/image/b81a3fd9-c65f-40cc-a55b-a6bc3b436d65.jpg",
+      "checkedAt": "2026-09-16T13:45:40.654Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "볶음밥",
+      "sourceVolume": "414g",
+      "sourceSalesUnit": "1봉",
+      "allergyText": "- 쇠고기, 닭고기, 대두, 밀, 우유 함유\n-이 제품은 알류, 메밀, 땅콩, 고등어, 게, 새우, 잣, 조개류(굴, 전복, 홍합 포함)를 사용한 제품과 같은 제조시설에서 제조하고 있습니다. ",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/de06d83d-79f5-4641-868a-b7c414bc3a8b.png"
+      ]
+    },
+    {
+      "id": "kurly-5138703",
+      "name": "[풀무원] 식물성 지구식단 제육철판볶음밥 2인분",
+      "detail": "420g · 1개 · 냉동",
+      "price": 4980,
+      "portions": "1개",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🍚",
+      "color": "mint",
+      "searchQuery": "[풀무원] 식물성 지구식단 제육철판볶음밥 2인분",
+      "productUrl": "https://www.kurly.com/goods/5138703",
+      "productImageUrl": "https://product-image.kurly.com/product/image/34362c01-b900-4817-ba3b-018895df6aad.jpg",
+      "checkedAt": "2026-09-16T13:45:40.810Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "볶음밥",
+      "sourceVolume": "420g",
+      "sourceSalesUnit": "1개",
+      "allergyText": "* 대두, 밀 함유\r\n* 본 제품은 우유, 메밀, 땅콩, 고등어, 게, 새우, 돼지고기, 복숭아, 토마토, 아황산류, 호두, 닭고기, 쇠고기, 오징어, 잣, 알류, 조개류(굴, 전복, 홍합 포함)을 사용한 재품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1000357323",
+      "name": "[성수동 분식] 콘치즈 김치볶음밥(2개입)",
+      "detail": "580g · 1개(2팩) · 냉동",
+      "price": 9900,
+      "portions": "1개(2팩)",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🍚",
+      "color": "mint",
+      "searchQuery": "[성수동 분식] 콘치즈 김치볶음밥(2개입)",
+      "productUrl": "https://www.kurly.com/goods/1000357323",
+      "productImageUrl": "https://product-image.kurly.com/product/image/3962c304-57ca-4616-8754-7901ded945c8.jpg?v=0531",
+      "checkedAt": "2026-09-16T13:45:40.934Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "볶음밥",
+      "sourceVolume": "580g",
+      "sourceSalesUnit": "1개(2팩)",
+      "allergyText": "- 우유, 대두, 밀, 돼지고기, 닭고기, 쇠고기, 계란, 조개류(굴) 함유\n- 이 제품은 메밀, 땅콩, 고등어, 게, 새우, 복숭아, 토마토, 아황산류, 호두, 오징어, 조개류(전복, 홍합 포함), 잣을 사용한 제품과 동일시설에서 제조",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1001044520",
+      "name": "[풀무원] 참치&야채 볶음밥 (2개입)",
+      "detail": "400g · 1개 (200g * 2봉) · 냉동",
+      "price": 4980,
+      "portions": "1개 (200g * 2봉)",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🍚",
+      "color": "mint",
+      "searchQuery": "[풀무원] 참치&야채 볶음밥 (2개입)",
+      "productUrl": "https://www.kurly.com/goods/1001044520",
+      "productImageUrl": "https://product-image.kurly.com/product/image/45b44997-bd8e-4867-995b-9107b273fa54.jpg",
+      "checkedAt": "2026-09-16T13:45:41.064Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "볶음밥",
+      "sourceVolume": "400g",
+      "sourceSalesUnit": "1개 (200g * 2봉)",
+      "allergyText": "- 대두, 밀, 알류(달걀), 조개류(굴) 함",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/c84f0b95-791a-4d20-acdd-41e15bbb7079.jpg"
+      ]
+    },
+    {
+      "id": "kurly-1000765126",
+      "name": "[제일맞게컬리] 육즙+왕교자 만두 1.01kg",
+      "detail": "1.01kg · 1팩 · 냉동",
+      "price": 9222,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[제일맞게컬리] 육즙+왕교자 만두 1.01kg",
+      "productUrl": "https://www.kurly.com/goods/1000765126",
+      "productImageUrl": "https://product-image.kurly.com/product/image/8ac2fba2-1973-485d-b6cb-e5804f9eb1b4.jpg",
+      "checkedAt": "2026-09-16T13:45:41.409Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "만두",
+      "sourceVolume": "1.01kg",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "돼지고기, 밀, 대두, 계란, 닭고기, 쇠고기, 우유 함유/ 메밀, 땅콩, 고등어, 게, 새우, 복숭아, 토마토, 아황산류, 호두, 오징어, 조개류(굴,전복, 홍합 포함), 잣 혼입 가능",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-5082274",
+      "name": "[비비고] 왕교자 만두 대용량 1.05kg",
+      "detail": "1050g · 1봉 · 냉동",
+      "price": 9630,
+      "portions": "1봉",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[비비고] 왕교자 만두 대용량 1.05kg",
+      "productUrl": "https://www.kurly.com/goods/5082274",
+      "productImageUrl": "https://product-image.kurly.com/product/image/6b5b8a11-d6fd-475b-a830-8f3313b3c6a7.jpg",
+      "checkedAt": "2026-09-16T13:45:41.548Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "만두",
+      "sourceVolume": "1050g",
+      "sourceSalesUnit": "1봉",
+      "allergyText": "- 밀, 돼지고기, 대두, 쇠고기, 조개류(굴) 함유\r\n* 이 제품은 알류, 우유, 메밀, 땅콩, 고등어, 게, 새우, 복숭아, 토마토, 아황산류, 호두, 닭고기, 오징어, 잣을 사용한 제품과 같은 시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/cca3c412-651c-4596-aaf9-fc5576d2e91f.jpg"
+      ]
+    },
+    {
+      "id": "kurly-1002450519",
+      "name": "[장터만두] 알싸한 땡초고기 만두 840g",
+      "detail": "840g · 1팩 · 냉동",
+      "price": 6090,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[장터만두] 알싸한 땡초고기 만두 840g",
+      "productUrl": "https://www.kurly.com/goods/1002450519",
+      "productImageUrl": "https://product-image.kurly.com/product/image/dc09ef3a-0811-41cf-a6c7-5b855763f4db.jpg",
+      "checkedAt": "2026-09-16T13:45:41.847Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "만두",
+      "sourceVolume": "840g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "-대두, 밀, 돼지고기, 닭고기, 쇠고기, 조개류 (굴) 함유 \n-이 제품은 알류(달걀), 우유, 메밀, 땅콩, 고등어, 게, 새우, 복숭아, 토마토, 아황산류, 호두, 오징어, 잣, 조개류(전복, 홍합 포함) 등을 사용한 제품과 같은 제조시설에서 제조하고 있습니다. ",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/f4aeddaf-2e8f-4d55-af8c-11a82b2e9e4e.jpg"
+      ]
+    },
+    {
+      "id": "kurly-5068190",
+      "name": "[Kurly's] 김치 왕만두 (1,050g/지퍼백)",
+      "detail": "1,050g · 1팩 · 냉동",
+      "price": 9450,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[Kurly's] 김치 왕만두 (1,050g/지퍼백)",
+      "productUrl": "https://www.kurly.com/goods/5068190",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1622535619962l0.jpg",
+      "checkedAt": "2026-09-16T13:45:41.951Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "만두",
+      "sourceVolume": "1,050g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "-대두, 밀, 돼지고기, 쇠고기, 새우, 우유 함유\r\n-본 제품은 토마토, 땅콩, 게, 메밀, 알류(계란), 닭고기, 호두, 오징어, 조개류(굴, 홍합 포함)를 사용한 제품과 같은 제조시설에서 제조",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1001320916",
+      "name": "[장터만두] 시장 고기 만두 840g",
+      "detail": "840g · 팩 · 냉동",
+      "price": 8700,
+      "portions": "팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[장터만두] 시장 고기 만두 840g",
+      "productUrl": "https://www.kurly.com/goods/1001320916",
+      "productImageUrl": "https://product-image.kurly.com/product/image/4baa66e5-a3b0-4484-bd58-d7c21e069713.jpg",
+      "checkedAt": "2026-09-16T13:45:42.069Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "만두",
+      "sourceVolume": "840g",
+      "sourceSalesUnit": "팩",
+      "allergyText": "알류 (달걀), 대두, 밀, 우유, 돼지고기, 쇠고기 함유 \n* 이 제품은 메밀, 땅콩, 고등어, 게, 새우, 복숭아, 토마토, 아황산류, 호두, 닭고기, 오징어, 잣, 조개류(굴, 전복, 홍합 포함)등을 사용한 제품과 같은 제조시설에서 제조하고 있습니다. ",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/f685b291-3031-4cfe-94cf-38ce8711ab8e.jpg"
+      ]
+    },
+    {
+      "id": "kurly-1001505506",
+      "name": "[장터만두] 시장 김치 만두 840g",
+      "detail": "840g · 냉동",
+      "price": 6960,
+      "portions": "판매 구성 1개",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[장터만두] 시장 김치 만두 840g",
+      "productUrl": "https://www.kurly.com/goods/1001505506",
+      "productImageUrl": "https://product-image.kurly.com/product/image/49b6836d-73b9-4445-bdb0-4d514d407bf0.jpg",
+      "checkedAt": "2026-09-16T13:45:42.178Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "만두",
+      "sourceVolume": "840g",
+      "sourceSalesUnit": "",
+      "allergyText": "알류(달걀), 우유, 대두, 밀, 돼지고기, 쇠고기, 새우 함유 \n본 제품은 메밀, 땅콩, 고등어, 게, 복숭아, 토마토, 아황산류, 호두, 닭고기, 오징어, 잣, 조개류(굴, 전복, 홍합 포함)등을 사용한 제품과 같은 제조시설에서 제조하고 있습니다. ",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/785b0b02-fe36-4fa7-a634-3f8998592d19.jpg"
+      ]
+    },
+    {
+      "id": "kurly-5082275",
+      "name": "[비비고] 김치 왕교자 만두 대용량 1.05kg",
+      "detail": "1050g · 1봉 · 냉동",
+      "price": 11072,
+      "portions": "1봉",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[비비고] 김치 왕교자 만두 대용량 1.05kg",
+      "productUrl": "https://www.kurly.com/goods/5082275",
+      "productImageUrl": "https://product-image.kurly.com/product/image/aaff4e11-d72c-45b8-ac17-fc140e7b4634.jpg",
+      "checkedAt": "2026-09-16T13:45:42.381Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "만두",
+      "sourceVolume": "1050g",
+      "sourceSalesUnit": "1봉",
+      "allergyText": "-계란, 돼지고기, 새우, 밀, 대두, 쇠고기, 조개류(굴) 함유 \n* 이 제품은 알류, 우유, 메밀, 땅콩, 고등어, 게, 새우, 복숭아, 토마토, 아황산류, 호두, 닭고기, 오징어, 잣을 사용한 제품과 같은 시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/dba7de9b-85c2-442d-8860-92b5b0f8a47c.jpg"
+      ]
+    },
+    {
+      "id": "kurly-5054455",
+      "name": "[Kurly's] 물만두",
+      "detail": "800g · 1팩 · 냉동",
+      "price": 8280,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[Kurly's] 물만두",
+      "productUrl": "https://www.kurly.com/goods/5054455",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/16272914139l0.jpg",
+      "checkedAt": "2026-09-16T13:45:42.504Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "만두",
+      "sourceVolume": "800g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 돼지고기, 밀, 대두 함유\r\n- 이 제품은 메밀, 땅콩, 게, 새우, 토마토, 계란, 우유, 닭고기, 쇠고기, 조개류(굴, 전복, 홍합 포함), 오징어를 사용한 제품과 같은 제조시설에서 제조",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-5026468",
+      "name": "[사미헌] 갈비탕",
+      "detail": "1KG · 1팩 · 냉동",
+      "price": 14500,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[사미헌] 갈비탕",
+      "productUrl": "https://www.kurly.com/goods/5026468",
+      "productImageUrl": "https://product-image.kurly.com/product/image/c4d41015-d188-4c68-b3e9-36968bf2110a.jpeg",
+      "checkedAt": "2026-09-16T13:45:42.727Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "갈비탕",
+      "sourceVolume": "1KG",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "소고기, 대두, 밀, 우유 함유",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/e5516380-f714-4d74-a33b-85d3a0b18c32.jpg"
+      ]
+    },
+    {
+      "id": "kurly-5051186",
+      "name": "[강남면옥] 갈비탕",
+      "detail": "1kg · 1팩 · 냉동",
+      "price": 11300,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[강남면옥] 갈비탕",
+      "productUrl": "https://www.kurly.com/goods/5051186",
+      "productImageUrl": "https://product-image.kurly.com/product/image/a2880469-82a4-46ee-b0d8-1ec47a05b5ed.jpeg",
+      "checkedAt": "2026-09-16T13:45:42.818Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "갈비탕",
+      "sourceVolume": "1kg",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "* 대두, 밀, 우유, 소고기 함유\n* 본 제품은 알류(가금류에 한함), 메밀, 땅콩, 돼지고기, 고등어, 게, 새우, 복숭아, 토마토,아황산류, 호두, 닭고기, 오징어, 조개류(전복, 홍합, 굴 포함), 잣을 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1000370851",
+      "name": "[소반옥] 왕갈비탕 1KG",
+      "detail": "1KG · 1팩 · 냉동",
+      "price": 12900,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[소반옥] 왕갈비탕 1KG",
+      "productUrl": "https://www.kurly.com/goods/1000370851",
+      "productImageUrl": "https://product-image.kurly.com/product/image/860123d3-be82-4c90-ae47-0b56e2869eca.jpg",
+      "checkedAt": "2026-09-16T13:45:42.919Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "갈비탕",
+      "sourceVolume": "1KG",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 쇠고기, 대두, 밀, 조개류(굴) 함유",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-5034225",
+      "name": "[워커힐] 명월관 갈비탕",
+      "detail": "600g(1인분) · 1 팩 · 냉동",
+      "price": 15030,
+      "portions": "1 팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[워커힐] 명월관 갈비탕",
+      "productUrl": "https://www.kurly.com/goods/5034225",
+      "productImageUrl": "https://product-image.kurly.com/product/image/ce706b94-b20e-406e-a512-7032bc173c24.jpg",
+      "checkedAt": "2026-09-16T13:45:43.043Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "갈비탕",
+      "sourceVolume": "600g(1인분)",
+      "sourceSalesUnit": "1 팩",
+      "allergyText": "- 쇠고기, 대두, 밀, 우유 함유\n- 이 제품은 계란, 메밀, 땅콩, 고등어, 게, 새우, 돼지고기, 복숭아, 토마토, 호두, 닭고기, 오징어, 조개류(굴,전복,모시조개,홍합), 잣을 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-5035913",
+      "name": "[진실된손맛] 뼈없는 인삼 갈비탕",
+      "detail": "700g · 1팩 · 냉동",
+      "price": 9200,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[진실된손맛] 뼈없는 인삼 갈비탕",
+      "productUrl": "https://www.kurly.com/goods/5035913",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1653039722341l0.jpeg?v=0531",
+      "checkedAt": "2026-09-16T13:45:43.149Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "갈비탕",
+      "sourceVolume": "700g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 쇠고기, 대두, 밀, 우유 함유\n- 본 제품은 난류, 메밀, 땅콩, 고등어, 게, 새우, 돼지고기, 아황산류, 복숭아, 토마토, 호두, 닭고기, 오징어, 조개류(굴, 전복, 홍합), 잣을 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-5128143",
+      "name": "[홍익궁중전통] 육개장 (2인분)",
+      "detail": "750g · 냉동",
+      "price": 9720,
+      "portions": "판매 구성 1개",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[홍익궁중전통] 육개장 (2인분)",
+      "productUrl": "https://www.kurly.com/goods/5128143",
+      "productImageUrl": "https://product-image.kurly.com/product/image/4bdb1cc6-59a4-46c9-97de-5156e7bc9377.jpg",
+      "checkedAt": "2026-09-16T13:45:43.391Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "육개장",
+      "sourceVolume": "750g",
+      "sourceSalesUnit": null,
+      "allergyText": "- 소고기, 대두, 밀, 우유, 계란 함유\n- 이 제품은 메밀, 땅콩, 고등어, 게, 새우, 돼지고기, 복숭아, 토마토, 아황산류, 호두, 닭고기, 오징어, 조개류(굴, 전복, 홍합포함), 잣을 사용하는 시설과 같은 시설에서 제조하고 있습니다. ",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1000128435",
+      "name": "[조선호텔] 육개장 730g",
+      "detail": "730g · 1팩 · 냉동",
+      "price": 7900,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[조선호텔] 육개장 730g",
+      "productUrl": "https://www.kurly.com/goods/1000128435",
+      "productImageUrl": "https://product-image.kurly.com/product/image/a27e4424-f6df-45ab-9736-1027a9cdd574.jpg",
+      "checkedAt": "2026-09-16T13:45:43.487Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "육개장",
+      "sourceVolume": "730g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 대두, 밀, 쇠고기 함유\n- 알류, 우유, 메밀, 땅콩, 고등어, 게, 새우, 돼지고기, 아황산류, 오징어, 조개류(굴,전복,홍합 포함), 닭고기, 복숭아, 호두, 토마토, 잣을 사용한 제품과 같은 제조시설에서 제조 ",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-5097307",
+      "name": "[엄마밥상] 대파 육개장",
+      "detail": "600g · 1개 · 냉동",
+      "price": 6700,
+      "portions": "1개",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[엄마밥상] 대파 육개장",
+      "productUrl": "https://www.kurly.com/goods/5097307",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/163755717596l0.jpg",
+      "checkedAt": "2026-09-16T13:45:43.646Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "육개장",
+      "sourceVolume": "600g",
+      "sourceSalesUnit": "1개",
+      "allergyText": "- 쇠고기, 닭고기, 대두, 밀, 조개류(굴)\r\n- 이 제품은 알류(가금류), 우유, 메밀, 땅콩, 고등어, 게, 새우, 돼지고기, 복숭아, 토마토, 오징어, 호두, 잣, 조개류(바지락, 전복, 홍합, 포함)를 사용한 제품과 같은 시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-5044756",
+      "name": "[외할머니댁] 갈빗살 육개장 (2인분)",
+      "detail": "1,000g · 1팩  · 냉동",
+      "price": 13000,
+      "portions": "1팩 ",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[외할머니댁] 갈빗살 육개장 (2인분)",
+      "productUrl": "https://www.kurly.com/goods/5044756",
+      "productImageUrl": "https://product-image.kurly.com/product/image/a7da72ca-0bf1-4e31-a8f9-f2b5a854caef.jpeg?v=0531",
+      "checkedAt": "2026-09-16T13:45:43.764Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "육개장",
+      "sourceVolume": "1,000g",
+      "sourceSalesUnit": "1팩 ",
+      "allergyText": "- 쇠고기, 닭고기, 대두, 밀, 조개류(굴)\r\n- 이 제품은 알류(가금류), 우유, 메밀, 땅콩, 고등어, 게, 새우, 돼지고기, 복숭아, 토마토, 오징어, 호두, 잣, 조개류(바지락, 전복, 홍합 포함)를 사용한 제품과 같은 제소시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-5037568",
+      "name": "[피코크] 진한 육개장",
+      "detail": "500g · 1개 · 냉장",
+      "price": 6110,
+      "portions": "1개",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ready_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[피코크] 진한 육개장",
+      "productUrl": "https://www.kurly.com/goods/5037568",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1623377785441l0.jpg",
+      "checkedAt": "2026-09-16T13:45:43.857Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "육개장",
+      "sourceVolume": "500g",
+      "sourceSalesUnit": "1개",
+      "allergyText": "- 대두, 밀, 쇠고기, 조개류 함유\r\n* 알류, 우유, 메밀, 땅콩, 고등어, 게, 돼지고기, 복숭아, 토마토, 아황산류, 호두, 닭고기, 오징어, 잣, 새우를 사용한 제품과 같은 제조시설에서 제조 ",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1000315302",
+      "name": "[성수동 팩피 : FAGP] 감바스 파스타 ",
+      "detail": "321g · 1팩 · 냉동",
+      "price": 9600,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[성수동 팩피 : FAGP] 감바스 파스타 ",
+      "productUrl": "https://www.kurly.com/goods/1000315302",
+      "productImageUrl": "https://product-image.kurly.com/product/image/f16d346d-1a89-4620-8c18-9d29e7666971.jpg",
+      "checkedAt": "2026-09-16T13:45:44.110Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "파스타",
+      "sourceVolume": "321g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 대두, 밀, 우유, 토마토, 쇠고기, 새우, 조개류(굴, 바지락) 함유\n- 이 제품은 난류, 메밀, 땅콩, 고등어, 게, 돼지고기, 복숭아, 아황산류, 호두, 닭고기, 오징어, 조개류(전복, 홍합 포함), 잣을 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1001740698",
+      "name": "[콜린스 다이닝] 바지락 술찜 파스타",
+      "detail": "827g · 1 · 냉동",
+      "price": 11900,
+      "portions": "1",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[콜린스 다이닝] 바지락 술찜 파스타",
+      "productUrl": "https://www.kurly.com/goods/1001740698",
+      "productImageUrl": "https://product-image.kurly.com/product/image/6a1b51ef-88c6-4157-95f0-5902d99dfa4f.jpg",
+      "checkedAt": "2026-09-16T13:45:44.219Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "파스타",
+      "sourceVolume": "827g",
+      "sourceSalesUnit": "1",
+      "allergyText": "조개류(바지락, 굴, 홍합) 대두, 밀, 계란, 닭고기, 쇠고기, 우유, 새우, 게, 오징어, 이산화황 함유 ",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/f93266d3-88b4-4778-99e7-55d834d5e49d.jpg"
+      ]
+    },
+    {
+      "id": "kurly-1001487713",
+      "name": "[애슐리] 베이컨 투움바 빠네 파스타",
+      "detail": "600g · 1팩 · 냉동",
+      "price": 10690,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[애슐리] 베이컨 투움바 빠네 파스타",
+      "productUrl": "https://www.kurly.com/goods/1001487713",
+      "productImageUrl": "https://product-image.kurly.com/product/image/edfa6b36-511a-48ba-98ca-93de47b221a7.jpg",
+      "checkedAt": "2026-09-16T13:45:44.599Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "파스타",
+      "sourceVolume": "600g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "대두, 우유, 밀, 돼지고기, 달걀, 닭고기, 쇠고기, 조개류, 토마토 함유",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/2a800e8e-bf45-4696-8c11-6f01279b6b7d.jpg"
+      ]
+    },
+    {
+      "id": "kurly-1001528218",
+      "name": "[김호윤키친] 더이탈리안클럽 화이트라구 파스타",
+      "detail": "355g · 1팩 · 냉동",
+      "price": 10965,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[김호윤키친] 더이탈리안클럽 화이트라구 파스타",
+      "productUrl": "https://www.kurly.com/goods/1001528218",
+      "productImageUrl": "https://product-image.kurly.com/product/image/19837e9f-192a-4e28-8a51-57d333ede479.jpg",
+      "checkedAt": "2026-09-16T13:45:44.766Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "파스타",
+      "sourceVolume": "355g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 알류(계란), 우유, 대두, 밀, 돼지고기, 아황산류, 닭고기, 쇠고기 함유\n- 이 제품은 메밀, 땅콩, 고등어, 게, 새우, 복숭아, 토마토, 호두, 오징어, 조개류(굴, 전복, 홍합 포함), 잣을 사용한 제품과 같은 제조 시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/b1df91be-cab7-46ab-8430-19cdec210948.jpg"
+      ]
+    },
+    {
+      "id": "kurly-1000951627",
+      "name": "[콜린스 다이닝] 투움바 파스타",
+      "detail": "420g · 1팩 · 냉동",
+      "price": 9500,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[콜린스 다이닝] 투움바 파스타",
+      "productUrl": "https://www.kurly.com/goods/1000951627",
+      "productImageUrl": "https://product-image.kurly.com/product/image/4bf86d77-f8a1-4049-9e46-bcb8a499e34c.jpg",
+      "checkedAt": "2026-09-16T13:45:44.904Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "파스타",
+      "sourceVolume": "420g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "본 제품은 우유, 메밀, 땅콩, 고등어, 게, 새우,  복숭아, 호두, 오징어, 아황산류, 닭고기, 쇠고기, 조개류(굴, 전복, 홍합, 바지락포함), 잣을 사용한 제품과 같은 제조시설에서 제조하고 있습니다. \n",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1002430753",
+      "name": "[미즈컨테이너] 샐러드 파스타",
+      "detail": "300g · 1개 · 냉장",
+      "price": 6900,
+      "portions": "1개",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ready_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[미즈컨테이너] 샐러드 파스타",
+      "productUrl": "https://www.kurly.com/goods/1002430753",
+      "productImageUrl": "https://product-image.kurly.com/product/image/48e2d3ae-1ec4-4fd3-a01e-42fef3103077.jpg",
+      "checkedAt": "2026-09-16T13:45:45.010Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "파스타",
+      "sourceVolume": "300g",
+      "sourceSalesUnit": "1개",
+      "allergyText": "- 계란, 대두, 밀, 우유, 굴, 이산화황 함유\n- 본 제품은 난류, 메밀, 땅콩, 고등어, 게, 새우, 돼지고기, 복숭아, 토마토, 아황산류, 호두, 닭고기, 쇠고기, 오징어, 조개류(전복, 홍합 포함), 잣을 사용하는 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/98e679d5-1144-497b-860c-9882abf678bf.jpg"
+      ]
+    },
+    {
+      "id": "kurly-5048683",
+      "name": "[우주인피자] 마르게리따",
+      "detail": "290g · 1개 · 냉동",
+      "price": 11900,
+      "portions": "1개",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[우주인피자] 마르게리따",
+      "productUrl": "https://www.kurly.com/goods/5048683",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1653039993170l0.jpeg",
+      "checkedAt": "2026-09-16T13:45:45.275Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "피자",
+      "sourceVolume": "290g",
+      "sourceSalesUnit": "1개",
+      "allergyText": "-밀, 우유, 토마토 함유\n-이 제품은 계란, 대두, 새우, 돼지고기, 아황산류, 닭고기, 쇠고기를 사용하는 제품과 같은 공간에서 제조하고 있습니다. ",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-5048681",
+      "name": "[우주인피자] 허니 고르곤졸라",
+      "detail": "338g · 1개 · 냉동",
+      "price": 11900,
+      "portions": "1개",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[우주인피자] 허니 고르곤졸라",
+      "productUrl": "https://www.kurly.com/goods/5048681",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/165303997425l0.jpeg",
+      "checkedAt": "2026-09-16T13:45:45.382Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "피자",
+      "sourceVolume": "338g",
+      "sourceSalesUnit": "1개",
+      "allergyText": "-난류, 밀, 대두, 우유, 쇠고기 함유\r\n-이 제품은 새우, 계란, 대두, 조개류(굴, 전복, 홍합)를 사용하는 제품과 같은 공간에서 제조",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-5044304",
+      "name": "[톰볼라] 버섯 피자",
+      "detail": "425g · 1개  · 냉동",
+      "price": 16600,
+      "portions": "1개 ",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[톰볼라] 버섯 피자",
+      "productUrl": "https://www.kurly.com/goods/5044304",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/15881272270l0.jpg",
+      "checkedAt": "2026-09-16T13:45:45.493Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "피자",
+      "sourceVolume": "425g",
+      "sourceSalesUnit": "1개 ",
+      "allergyText": "-토마토, 우유, 대두, 밀, 계란, 돼지고기, 쇠고기 함유 \n-이 제품은 잣, 새우를 사용한 제품과 같은 제조시설에서 제조하고 있습니다. ",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1002491010",
+      "name": "[라운디] 시카고 모짜렐라 치즈 피자",
+      "detail": "330g · 1개 · 냉동",
+      "price": 5400,
+      "portions": "1개",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[라운디] 시카고 모짜렐라 치즈 피자",
+      "productUrl": "https://www.kurly.com/goods/1002491010",
+      "productImageUrl": "https://product-image.kurly.com/product/image/9fca07a9-e79b-4872-84d6-9f66466777da.jpg",
+      "checkedAt": "2026-09-16T13:45:45.594Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "피자",
+      "sourceVolume": "330g",
+      "sourceSalesUnit": "1개",
+      "allergyText": "- 밀, 대두, 우유, 토마토, 닭고기 함유\n- 알류, 메밀, 땅콩, 고등어, 게, 새우, 돼지고기, 복숭아, 호두, 오징어, 잣을 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/705664fe-573d-4980-ac5f-3b164f60bc5b.jpg"
+      ]
+    },
+    {
+      "id": "kurly-1002491075",
+      "name": "[라운디] 시카고 베이컨 포테이토 피자",
+      "detail": "355g · 1개 · 냉동",
+      "price": 5400,
+      "portions": "1개",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[라운디] 시카고 베이컨 포테이토 피자",
+      "productUrl": "https://www.kurly.com/goods/1002491075",
+      "productImageUrl": "https://product-image.kurly.com/product/image/69baddbe-32d1-408d-8e91-dd51b5b722fc.jpg",
+      "checkedAt": "2026-09-16T13:45:45.791Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "피자",
+      "sourceVolume": "355g",
+      "sourceSalesUnit": "1개",
+      "allergyText": "- 밀, 대두, 우유, 토마토, 닭고기, 돼지고기, 알류 함유\n- 알류, 메밀, 땅콩, 고등어, 게, 새우, 돼지고기, 복숭아, 호두, 오징어, 잣을 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/80edb42b-a539-4b76-81a8-83f533c8937d.jpg"
+      ]
+    },
+    {
+      "id": "kurly-5072939",
+      "name": "[모노키친] 롱롱 돈까스",
+      "detail": "320g · 1개 · 냉동",
+      "price": 7900,
+      "portions": "1개",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[모노키친] 롱롱 돈까스",
+      "productUrl": "https://www.kurly.com/goods/5072939",
+      "productImageUrl": "https://product-image.kurly.com/product/image/dc487413-8557-446a-9bdd-46f075635093.jpeg",
+      "checkedAt": "2026-09-16T13:45:46.043Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "돈까스",
+      "sourceVolume": "320g",
+      "sourceSalesUnit": "1개",
+      "allergyText": "- 돼지고기, 대두, 밀, 계란, 우유 함유 \r\n- 쇠고기, 닭고기, 새우, 게, 오징어, 고등어, 조개류(굴, 전복, 홍합 포함), 메밀, 호두, 땅콩, 잣, 토마토, 복숭아, 아황산류와 같은 시설에서 제조",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-5041236",
+      "name": "[고메] 통등심 돈카츠",
+      "detail": "450g · 1봉 · 냉동",
+      "price": 9980,
+      "portions": "1봉",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[고메] 통등심 돈카츠",
+      "productUrl": "https://www.kurly.com/goods/5041236",
+      "productImageUrl": "https://product-image.kurly.com/product/image/44a9ff3c-dd70-4d50-a128-954f11d956e3.jpg",
+      "checkedAt": "2026-09-16T13:45:46.139Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "돈까스",
+      "sourceVolume": "450g",
+      "sourceSalesUnit": "1봉",
+      "allergyText": "- 돼지고기,밀,대두,우유,달걀 함유\r\n- 이 제품은 메밀,땅콩,고등어,게,새우,복숭아,토마토,아황산류,호두,닭고기,쇠고기,오징어,조개류(굴,전복,홍합 포함) , 잣을 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-5054960",
+      "name": "[Kurly's] 간편하게 바삭, 통등심 돈까스",
+      "detail": "270g(135g*2ea) · 1팩 · 냉동",
+      "price": 5600,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[Kurly's] 간편하게 바삭, 통등심 돈까스",
+      "productUrl": "https://www.kurly.com/goods/5054960",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1656061856259l0.jpg",
+      "checkedAt": "2026-09-16T13:45:46.253Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "돈까스",
+      "sourceVolume": "270g(135g*2ea)",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 돼지고기, 밀, 대두, 우유, 쇠고기 함유\n- 알류, 메밀, 땅콩, 고등어, 게, 새우, 복숭아, 토마토, 호두, 닭고기, 오징어, 조개류(굴, 전복, 홍합 포함), 아황산류, 잣을 사용한 제품과 같은 시설에서 제조",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1001770406",
+      "name": "[비쇼쿠] 고구마치즈 돈카츠 350g(냉동)",
+      "detail": "350g · 1팩 · 냉동",
+      "price": 8980,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[비쇼쿠] 고구마치즈 돈카츠 350g(냉동)",
+      "productUrl": "https://www.kurly.com/goods/1001770406",
+      "productImageUrl": "https://product-image.kurly.com/product/image/f73c3e94-e8d0-4db7-816a-7d2353014b64.jpg",
+      "checkedAt": "2026-09-16T13:45:46.355Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "돈까스",
+      "sourceVolume": "350g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 돼지고기, 우유, 밀, 대두 함유\n- 본 제품은 알류, 메밀, 땅콩, 고등어, 게, 새우, 복숭아, 토마토, 아황산류, 호두, 닭고기, 쇠고기, 오징어, 조개류(굴, 전복, 홍합 포함), 잣을 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/7ad9636f-fbaa-48b3-bb77-5367e51aeec1.jpg"
+      ]
+    },
+    {
+      "id": "kurly-1002295972",
+      "name": "[조선호텔] 돈까스 320g",
+      "detail": "320g · 1팩 · 냉동",
+      "price": 7980,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[조선호텔] 돈까스 320g",
+      "productUrl": "https://www.kurly.com/goods/1002295972",
+      "productImageUrl": "https://product-image.kurly.com/product/image/74c20492-da93-4a07-91ae-0cd0cea4d2db.jpg",
+      "checkedAt": "2026-09-16T13:45:46.564Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "돈까스",
+      "sourceVolume": "320g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "이 제품은 알류, 우유, 메밀, 땅콩, 고등어, 게, 새우, 복숭아, 토마토, 아황산류, 호두, 닭고기, 쇠고기, 오징어, 조개류(굴, 전복, 홍합 포함) 잣을 사용한 제품과 같은 제조시설에서 제조하고 있습니다. ",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/12824ca7-37d1-4eb4-b8c3-12d3066b93bb.jpg"
+      ]
+    },
+    {
+      "id": "kurly-1001422945",
+      "name": "[미미네] 옛날 떡볶이",
+      "detail": "465g · 1팩 · 냉동",
+      "price": 6000,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[미미네] 옛날 떡볶이",
+      "productUrl": "https://www.kurly.com/goods/1001422945",
+      "productImageUrl": "https://product-image.kurly.com/product/image/e760886c-062a-4042-936d-743005b9d152.jpg",
+      "checkedAt": "2026-09-16T13:45:46.767Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "떡볶이",
+      "sourceVolume": "465g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": " - 판밀떡 : 밀, 대두 함유\n - 상기 제품은 난류(계란), 우유, 땅콩, 돼지고기, 토마토, 쇠고기를 사용한 제품과 같은 제조시설에서 제조하고 있습니다.\n\n - 한입어묵 : 밀, 대두 함유\n - 상기 제품은 난류(계란), 우유, 메밀, 땅콩, 고등어, 게, 새우, 돼지고기, 복숭아, 토마토, 아황산류, 호두, 닭고기, 쇠고기, 오징어, 조개류(굴, 전복, 홍합 포함), 잣을 사용한 제품과 같은 제조시설에서 제조하고 있습니다.\n\n - 소스 : 밀, 대두 함유\n - 상기 제품은 난류(계란), 우유, 메밀, 땅콩, 고등어, 게, 새우, 돼지고기, 복숭아, 토마토, 아황산류, 호두, 닭고기, 쇠고기, 오징어, 조개류(굴, 전복, 홍합 포함), 잣을 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/d42312dc-2a4c-4013-adfb-e93d1d9a43be.jpg"
+      ]
+    },
+    {
+      "id": "kurly-1000342044",
+      "name": "[고래사] 어묵 떡볶이",
+      "detail": "520g · 1팩 · 냉동",
+      "price": 6900,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[고래사] 어묵 떡볶이",
+      "productUrl": "https://www.kurly.com/goods/1000342044",
+      "productImageUrl": "https://product-image.kurly.com/product/image/e6eba9b8-1436-4cc3-94cf-23a6ce516b97.jpg",
+      "checkedAt": "2026-09-16T13:45:46.875Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "떡볶이",
+      "sourceVolume": "520g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 대두, 밀, 새우, 쇠고기, 조개류(굴, 바지락) 함유\n- 본 제품은 달걀, 우유, 메밀, 땅콩, 고등어, 게, 돼지고기, 복숭아, 토마토, 아황산류, 호두, 닭고기, 오징어, 조개류(전복, 홍합 등), 잣을 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-5119349",
+      "name": "[오마뎅] 진짜 부산 떡볶이 352g",
+      "detail": "352g · 1팩 · 냉동",
+      "price": 6290,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[오마뎅] 진짜 부산 떡볶이 352g",
+      "productUrl": "https://www.kurly.com/goods/5119349",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1647244459401l0.jpg",
+      "checkedAt": "2026-09-16T13:45:47.016Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "떡볶이",
+      "sourceVolume": "352g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 가래떡 : 대두 함유\n- 어묵 : 대두 함유\n- 떡볶이 비법소스 : 대두, 밀, 우유, 새우, 쇠고기, 조개류(굴, 홍합 함유)\n- 상품별 알레르기 유발 요소의 자세한 사항은 콘텐츠 하단 상품 한글표시사항을 참조 부탁드립니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/661e767a-de24-413d-9848-f0df1741e08f.jpg"
+      ]
+    },
+    {
+      "id": "kurly-1000347095",
+      "name": "[석관동 떡볶이] 국물 떡볶이",
+      "detail": "490g · 1팩 · 냉동",
+      "price": 7000,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[석관동 떡볶이] 국물 떡볶이",
+      "productUrl": "https://www.kurly.com/goods/1000347095",
+      "productImageUrl": "https://product-image.kurly.com/product/image/0fa64656-fcd8-4ba4-a3c3-3c22d3666e54.jpg",
+      "checkedAt": "2026-09-16T13:45:47.158Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "떡볶이",
+      "sourceVolume": "490g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 떡, 어묵 : 밀, 대두 함유 (새우, 오징어, 땅콩, 우유, 달걀, 게를 사용한 제품과 같은 제조시설에서 제조)\n- 소스 : 밀, 대두, 쇠고기, 우유, 새우, 조개류 함유(알류, 메밀, 땅콩, 고등어, 게, 돼지고기, 복숭아, 토마토, 닭고기, 호두, 오징어, 아황산류를 사용한 제품과 같은 제조시설에서 제조",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/dd6cb39a-5f9b-4dc4-b47e-da5aab063a09.jpg"
+      ]
+    },
+    {
+      "id": "kurly-1000347099",
+      "name": "[석관동 떡볶이] 치즈 쭈욱 떡볶이",
+      "detail": "420g · 1팩 · 냉동",
+      "price": 7000,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[석관동 떡볶이] 치즈 쭈욱 떡볶이",
+      "productUrl": "https://www.kurly.com/goods/1000347099",
+      "productImageUrl": "https://product-image.kurly.com/product/image/4decce13-62f3-45b7-929c-0ed409e9893a.jpg",
+      "checkedAt": "2026-09-16T13:45:47.339Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "떡볶이",
+      "sourceVolume": "420g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 치즈떡 : 우유, 대두, 밀 함유 (돼지고기, 소고기, 토마토, 달걀, 땅콩을 사용한 제품과 같은 제조시설에서 제조)\n- 어묵 : 밀, 대두 함유(새우, 오징어, 땅콩, 우유, 달걀, 게를 사용한 제품과 같은 제조시설에서 제조)\n- 소스 : 밀, 대두, 쇠고기, 우유, 새우, 조개류 함유 (알류, 메밀, 땅콩, 고등어, 게, 돼지고기, 복숭아, 토마토, 닭고기, 호두, 오징어, 아황산류를 사용한 제품과 같은 제조시설에서 제조)",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1000235782",
+      "name": "[모두의맛집] 정호영 명란감자채 솥밥 도시락",
+      "detail": "283g · 1팩 · 냉동",
+      "price": 5520,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[모두의맛집] 정호영 명란감자채 솥밥 도시락",
+      "productUrl": "https://www.kurly.com/goods/1000235782",
+      "productImageUrl": "https://product-image.kurly.com/product/image/4ea837aa-5744-47d2-adf2-bd49fe60d2ec.jpg",
+      "checkedAt": "2026-09-16T13:45:47.954Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "도시락",
+      "sourceVolume": "283g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 계란, 우유, 대두, 닭고기 함유\n* 난류, 메밀, 땅콩, 밀, 고등어, 게, 새우, 돼지고기, 복숭아, 토마토, 아황산류, 호두, 쇠고기, 오징어, 조개류(굴, 전복, 홍합 포함), 잣을 사용한 제품과 같은 제조시설에서 제조",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1000235786",
+      "name": "[모두의맛집] 오세득 소고기 가지 솥밥 도시락",
+      "detail": "345g · 1팩 · 냉동",
+      "price": 5520,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[모두의맛집] 오세득 소고기 가지 솥밥 도시락",
+      "productUrl": "https://www.kurly.com/goods/1000235786",
+      "productImageUrl": "https://product-image.kurly.com/product/image/cb59eaa5-4dbb-48f6-b839-03bf5adf8069.jpg",
+      "checkedAt": "2026-09-16T13:45:48.371Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "도시락",
+      "sourceVolume": "345g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 대두, 밀, 쇠고기, 조개류(굴)함유\n* 난류, 우유, 메밀, 땅콩, 고등어, 게, 새우, 돼지고기, 복숭아, 토마토, 아황산류, 호두, 닭고기, 오징어, 조개류(전복, 홍합 포함), 잣을 사용한 제품과 같은 제조시설에서 제조",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1000235784",
+      "name": "[모두의맛집] 유현수 우엉 소불고기 솥밥 도시락",
+      "detail": "298g · 1팩 · 냉동",
+      "price": 5520,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[모두의맛집] 유현수 우엉 소불고기 솥밥 도시락",
+      "productUrl": "https://www.kurly.com/goods/1000235784",
+      "productImageUrl": "https://product-image.kurly.com/product/image/65c84755-0f85-410f-aacc-9d1cc626631f.jpg",
+      "checkedAt": "2026-09-16T13:45:48.782Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "도시락",
+      "sourceVolume": "298g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 대두, 밀, 쇠고기, 조개류(굴)함유\n*난류, 우유, 메밀, 땅콩, 고등어, 게, 새우, 돼지고기, 복숭아, 토마토, 아황산류, 호두, 닭고기, 오징어, 조개류(전복, 홍합 포함), 잣을 사용하는 제품과 같은 제조시설에서 제조",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-5041364",
+      "name": "[팜에이트] 친환경 유러피안 샐러드 130g",
+      "detail": "130g · 1팩 · 냉장",
+      "price": 4990,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ready_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[팜에이트] 친환경 유러피안 샐러드 130g",
+      "productUrl": "https://www.kurly.com/goods/5041364",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1575526922728l0.jpg",
+      "checkedAt": "2026-09-16T13:45:49.096Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "샐러드",
+      "sourceVolume": "130g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1001765937",
+      "name": "[바름팜] 수분 가득 프레시 가든 샐러드 150g",
+      "detail": "150g · 1팩 · 냉장",
+      "price": 3861,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ready_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[바름팜] 수분 가득 프레시 가든 샐러드 150g",
+      "productUrl": "https://www.kurly.com/goods/1001765937",
+      "productImageUrl": "https://product-image.kurly.com/product/image/a385eda6-3a33-4c65-a114-92e409005b54.jpg",
+      "checkedAt": "2026-09-16T13:45:49.197Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "샐러드",
+      "sourceVolume": "150g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "이 제품은 알류(가금류만 해당), 우유, 땅콩, 대두,밀, 고등어, 게, 새우, 돼지고기, 복숭아, 아황산류, 호두, 닭고기, 쇠고기, 오징어, 조개류(굴, 전복, 홍합 포함), 잣을 사용한 제품과 같은 시설에서 제조하였습니다. ",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "해당사항 없음",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/a881ad61-97dc-47bf-8432-a5be59267309.jpg"
+      ]
+    },
+    {
+      "id": "kurly-5062673",
+      "name": "[저스트그린] 모짜렐라치즈 과일 샐러드",
+      "detail": "210g · 1팩 · 냉장",
+      "price": 6480,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ready_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[저스트그린] 모짜렐라치즈 과일 샐러드",
+      "productUrl": "https://www.kurly.com/goods/5062673",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1647589247168l0.jpg",
+      "checkedAt": "2026-09-16T13:45:49.563Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "샐러드",
+      "sourceVolume": "210g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 토마토, 우유, 대두, 아황산류 함유\n- 알류, 메밀, 땅콩, 밀, 고등어, 게, 새우, 돼지고기, 쇠고기, 복숭아, 호두, 닭고기, 오징어, 조개류, 잣 혼입가능",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-5053110",
+      "name": "[KART] 버섯 비프 카레",
+      "detail": "150g · 1봉 · 상온",
+      "price": 4890,
+      "portions": "1봉",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ready_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[KART] 버섯 비프 카레",
+      "productUrl": "https://www.kurly.com/goods/5053110",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1590133780777l0.jpg",
+      "checkedAt": "2026-09-16T13:46:11.808Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "카레",
+      "sourceVolume": "150g",
+      "sourceSalesUnit": "1봉",
+      "allergyText": "- 계란, 우유, 대두, 밀, 돼지고기, 토마토, 닭고기, 쇠고기, 조개류(바지락,모시조개) 함유\r\n- 이 제품은 메밀, 땅콩, 고등어, 게, 새우, 복숭아, 아황산류, 호두, 오징어, 조개류(굴, 전복, 홍합포함)를 사용한 제품과 같은 조리시설에서 제조",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1000272650",
+      "name": "[제주담음] 제주 흑돼지 카레",
+      "detail": "250g · 1개 · 상온",
+      "price": 3650,
+      "portions": "1개",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ready_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[제주담음] 제주 흑돼지 카레",
+      "productUrl": "https://www.kurly.com/goods/1000272650",
+      "productImageUrl": "https://product-image.kurly.com/product/image/3956cd74-505a-4681-8a34-cacc731399bd.jpg",
+      "checkedAt": "2026-09-16T13:46:12.130Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "카레",
+      "sourceVolume": "250g",
+      "sourceSalesUnit": "1개",
+      "allergyText": "닭고기,계란,게,새우,오징어,조개류,잣,아황산류 혼입가능",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1002042275",
+      "name": "[비비고] 365 교자만두287g*2",
+      "detail": "287g*2 · 팩 · 냉동",
+      "price": 5480,
+      "portions": "팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[비비고] 365 교자만두287g*2",
+      "productUrl": "https://www.kurly.com/goods/1002042275",
+      "productImageUrl": "https://product-image.kurly.com/product/image/a1fc1b8c-d3e3-4a9b-b9d6-88d2c0d33918.jpg",
+      "checkedAt": "2026-09-16T13:46:37.075Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "만두",
+      "sourceVolume": "287g*2",
+      "sourceSalesUnit": "팩",
+      "allergyText": "-밀, 대두, 돼지고기, 쇠고기, 우유, 계란 함유 \n-새우, 오징어, 메밀, 땅콩, 토마토, 고등어, 게, 복숭아, 아황산류, 호두, 닭고기, 조개류 (굴, 전복, 홍합 포함), 잣 혼입 가능",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-5066066",
+      "name": "[황생가] 고기왕만두",
+      "detail": "420g · 1팩 · 냉동",
+      "price": 7300,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[황생가] 고기왕만두",
+      "productUrl": "https://www.kurly.com/goods/5066066",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1653034702455l0.jpeg",
+      "checkedAt": "2026-09-16T13:46:37.213Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "만두",
+      "sourceVolume": "420g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "-알류(달걀),우유,대두,밀,돼지고기,쇠고기함유\n*이 제품은 메밀,  땅콩, 고등어, 게, 새우, 복숭아, 토마토, 아황산류, 호두, 닭고기, 오징어, 잣, 조개류 (굴, 전복, 홍합 포함) 등을 사용한 제품과 같은 제조시설에서 제조하고 있습니다. ",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    },
+    {
+      "id": "kurly-1001230899",
+      "name": "[탄단지] 세끼 뚝딱 도시락 3종 세트 시즌2",
+      "detail": "605g · 1팩 · 냉동",
+      "price": 9900,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "frozen_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[탄단지] 세끼 뚝딱 도시락 3종 세트 시즌2",
+      "productUrl": "https://www.kurly.com/goods/1001230899",
+      "productImageUrl": "https://product-image.kurly.com/product/image/1455f34f-9ce9-4cf5-8d85-457cffd83c0e.jpg",
+      "checkedAt": "2026-09-16T13:46:38.232Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "도시락",
+      "sourceVolume": "605g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "간장불고기 계란덮밥\n- 알류, 우유, 대두, 밀, 닭고기, 쇠고기, 조개류(굴포함)\n- 본 제품은 돼지고기, 메밀, 땅콩, 고등어, 게, 새우, 오징어, 조개류(홍합, 전복 포함), 복숭아, 토마토, 호두, 잣, 아황산류를 사용한 제품과 같은 제조시설에서 제조하고 있습니다.\n\n김치볶음밥&콘치즈\n- 알류, 우유, 대두, 밀, 닭고기, 쇠고기, 새우 함유\n- 본 제품은 돼지고기, 메밀, 땅콩, 고등어, 게, 오징어, 조개류(홍합, 전복, 굴 포함), 복숭아, 토마토, 호두, 잣, 아황산류를 사용한 제품과 같은 제조시설에서 제조하고 있습니다.\n\n모짜렐라 굴림만두 볶음밥\n- 알류, 우유, 대두, 밀, 닭고기, 돼지고기, 쇠고기, 조개류(굴포함), 토마토\n- 본 제품은 메밀, 땅콩, 고등어, 게, 새우, 오징어, 조개류(홍합, 전복 포함), 복숭아, 호두, 잣, 아황산류를 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": [
+        "https://product-image.kurly.com/product/image/b58d69ca-f416-4e96-ac15-73244799aca0.jpg",
+        "https://product-image.kurly.com/product/image/be9e451a-ccfe-41eb-89cd-5a9292d92a49.jpg",
+        "https://product-image.kurly.com/product/image/781ee331-7497-4423-939a-5f7253df8ef1.jpg"
+      ]
+    },
+    {
+      "id": "kurly-1000167771",
+      "name": "[하코야] 어니언 포크커리",
+      "detail": "200g · 1팩 · 상온",
+      "price": 4900,
+      "portions": "1팩",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ready_meal",
+      "emoji": "🥣",
+      "color": "mint",
+      "searchQuery": "[하코야] 어니언 포크커리",
+      "productUrl": "https://www.kurly.com/goods/1000167771",
+      "productImageUrl": "https://product-image.kurly.com/product/image/6324de93-e243-4832-963d-097053219aaa.jpg",
+      "checkedAt": "2026-09-16T13:46:39.471Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "카레",
+      "sourceVolume": "200g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "※ 대두, 밀, 알류(달걀), 우유, 토마토, 돼지고기, 닭고기, 이산화황(아황산류) 포함\n※ 본 제품은 땅콩, 고등어, 게, 새우, 복숭아, 호두,  오징어, 쇠고기, 조개류(굴,홍합,전복 포함)를 사용한 제품과 같은 제조 시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "noticeImages": []
+    }
+  ],
+  "skipped": []
+}

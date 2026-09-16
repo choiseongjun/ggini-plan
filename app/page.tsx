@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 
 import { useEffect, useRef, useState } from "react";
 import { Dashboard } from "./dashboard";
@@ -13,6 +14,7 @@ import { googleAuthErrors, type GoogleAuthErrorCode } from "../lib/auth-messages
 import type { PublicUser } from "../lib/auth";
 import { catalogCategories, shoppingSearchLinks, unitPrice, type CatalogItem, type CompareResponse } from "../lib/catalog";
 import { ProductThumb } from "./product-thumb";
+import { CatalogFilter } from "./catalog-filter";
 import { AppLoading, useLoadingTask } from "./app-loading";
 import { guestDashboard, guestProducts } from "../lib/guest-data";
 
@@ -46,13 +48,17 @@ function Brand({ light = false }: { light?: boolean }) {
 }
 
 export default function Home() {
+  const pathname = usePathname();
+  const router = useRouter();
+  const section = pathname.split("/")[1];
+  const tab: Tab = (["calendar", "cart", "record", "community", "profile", "compare"] as string[]).includes(section) ? section as Tab : "home";
+  const setTab = (next: Tab) => router.push(next === "home" ? "/" : `/${next}`);
   const contentRef=useRef<HTMLDivElement>(null);
   const startLoading = useLoadingTask();
   const [products, setProducts] = useState<CatalogItem[]>(guestProducts);
   const [showAuth, setShowAuth] = useState(false);
   const [authUser, setAuthUser] = useState<PublicUser | null>(null);
   const [authError, setAuthError] = useState("");
-  const [tab, setTab] = useState<Tab>("home");
   useEffect(()=>{contentRef.current?.scrollTo({top:0});},[tab]);
   const [dashboard,setDashboard]=useState<DashboardData|null>(null);
   const [dataError,setDataError]=useState("");
@@ -60,17 +66,19 @@ export default function Home() {
   const [draftBudget,setDraftBudget]=useState("");
   const [savingBudget,setSavingBudget]=useState(false);
   const budget=dashboard?.budget ?? 0;
-  const [compareProductId, setCompareProductId] = useState("");
+  const compareProductId = tab === "compare" ? decodeURIComponent(pathname.split("/")[2] ?? "") : "";
   const [comparison, setComparison] = useState<CompareResponse | null>(null);
   const [compareLoading, setCompareLoading] = useState(false);
   const [sortBy, setSortBy] = useState<"unit" | "total">("unit");
+  const [catalogQuery, setCatalogQuery] = useState("");
+  const [catalogCategory, setCatalogCategory] = useState("all");
   const weeklyProducts = products.filter((product) => product.inWeeklyCart);
-  const otherProducts = products.filter((product) => !product.inWeeklyCart);
+  const otherProducts = products.filter((product) => !product.inWeeklyCart && (catalogCategory === "all" || product.category === catalogCategory) && `${product.name} ${product.detail}`.toLocaleLowerCase().includes(catalogQuery.trim().toLocaleLowerCase()));
   const cartTotal = weeklyProducts.reduce((sum, product) => sum + product.price, 0);
   const compareProduct = products.find((product) => product.id === compareProductId) ?? products[0];
   const compareOffers = [...(comparison?.offers ?? [])].sort((a, b) => sortBy === "unit" ? (a.unitPrice ?? Number.POSITIVE_INFINITY) - (b.unitPrice ?? Number.POSITIVE_INFINITY) || a.price - b.price : a.price - b.price);
   const compareLinks = shoppingSearchLinks(compareProduct?.searchQuery ?? "");
-  const openCompare = (itemId: string) => { setCompareProductId(itemId); setComparison(null); setCompareLoading(true); setSortBy("unit"); setTab("compare"); };
+  const openCompare = (itemId: string) => { setComparison(null); setCompareLoading(true); setSortBy("unit"); router.push(`/compare/${encodeURIComponent(itemId)}`); };
   async function refreshDashboard(){const r=await fetch("/api/dashboard",{cache:"no-store"});const d=await r.json();if(!r.ok)throw new Error(d.error);setDashboard(d);}
   const editBudget=()=>{if(!authUser){setShowAuth(true);return;}setDraftBudget(dashboard?.budget?.toString()??"");setShowSetup(true);};
   async function saveSetup(event:React.FormEvent){event.preventDefault();setSavingBudget(true);setDataError("");try{const r=await fetch("/api/dashboard",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"budget",amount:Number(draftBudget)})});const d=await r.json();if(!r.ok)throw new Error(d.error);await refreshDashboard();setShowSetup(false);}catch(e){setDataError(e instanceof Error?e.message:"저장하지 못했어요.");}finally{setSavingBudget(false);}}
@@ -174,6 +182,9 @@ export default function Home() {
           <div className="cart-budget"><div><span>이번 주 장바구니 상품 각 1개 기준</span><strong>{formatWon(cartTotal)}</strong></div><p>배송비 제외 · 옵션에 따라 가격이 달라질 수 있어요.</p></div>
           <div className="list-heading"><h3>이번 주 장바구니 <span>{weeklyProducts.length}</span></h3><small>눌러서 판매처 비교</small></div>
           <div className="food-list">{weeklyProducts.map((food) => <button key={food.id} type="button" className="food-row comparison-entry" onClick={() => openCompare(food.id)}><ProductThumb item={food}/><span className="food-meta"><strong>{food.name}</strong><small>{catalogCategories[food.category]} · {food.detail}</small><em>{(food.nutritionSourceUrl || food.nutritionPhotoUrl) && food.proteinG !== null ? `단백질 ${food.proteinG}g / ${food.nutritionBasis}` : "영양 정보 확인 중"}</em></span><span className="food-price"><strong>{formatWon(food.price)}{food.priceNote?.includes("시작가") ? "~" : ""}</strong><small>{food.unit === "g" ? "100g당" : "1개당"} {formatWon(unitPrice(food.price, food.quantity, food.unit))}</small></span><Icon name="chevron" size={17}/></button>)}</div>
+          <p className="body-note">추가 상품 검색</p>
+          <CatalogFilter query={catalogQuery} category={catalogCategory} onQuery={setCatalogQuery} onCategory={setCatalogCategory}/>
+          {otherProducts.length === 0 && <p className="body-note">검색 결과가 없습니다.</p>}
           {otherProducts.length > 0 && <><div className="list-heading"><h3>다른 상품 둘러보기 <span>{otherProducts.length}</span></h3><small>밀키트 · 냉동식품 · 간편식</small></div><div className="food-list">{otherProducts.map((food) => <button key={food.id} type="button" className="food-row comparison-entry" onClick={() => openCompare(food.id)}><ProductThumb item={food}/><span className="food-meta"><strong>{food.name}</strong><small>{catalogCategories[food.category]} · {food.detail}</small><em>{(food.nutritionSourceUrl || food.nutritionPhotoUrl) && food.proteinG !== null ? `단백질 ${food.proteinG}g / ${food.nutritionBasis}` : "영양 정보 확인 중"}</em></span><span className="food-price"><strong>{formatWon(food.price)}{food.priceNote?.includes("시작가") ? "~" : ""}</strong><small>{food.unit === "g" ? "100g당" : "1개당"} {formatWon(unitPrice(food.price, food.quantity, food.unit))}</small></span><Icon name="chevron" size={17}/></button>)}</div></>}
           <div className="cart-note"><Icon name="spark" size={17}/><p>{products.some(product=>product.isSample)?"샘플 가격으로 구성한 장바구니예요. 실제 가격은 쇼핑몰 검색에서 확인해 주세요.":"판매 페이지에서 확인한 가격이에요. 구매 전 옵션·배송비·현재 가격을 확인해 주세요."}</p></div>
         </>}
