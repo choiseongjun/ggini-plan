@@ -26,6 +26,12 @@ type MealSlot = "breakfast" | "lunch" | "dinner";
 export function mealSlot(hours:number):MealSlot { const hour=((hours%24)+24)%24;return hour>=5&&hour<11?"breakfast":hour>=11&&hour<17?"lunch":"dinner"; }
 type Recipe = { slots:MealSlot[]; name: string; emoji: string; styles: DietPreferences["style"][]; avoid: DietPreferences["excluded"]; ingredients: [Food, number][]; tip: string };
 const recipes: Recipe[] = [
+ {slots:["lunch","dinner"],name:"닭가슴살 통밀 파스타",emoji:"🍝",styles:["balanced","protein","quick"],avoid:["chicken","wheat"],ingredients:[["pasta",200],["chicken",120],["veg",120],["oil",8]],tip:"삶은 파스타에 익힌 닭가슴살과 데친 채소를 넣고 올리브유로 가볍게 볶아요."},
+ {slots:["lunch","dinner"],name:"연어 채소 파스타",emoji:"🍝",styles:["balanced","protein"],avoid:["fish","wheat"],ingredients:[["pasta",180],["salmon",120],["veg",150],["oil",5]],tip:"연어를 충분히 익힌 뒤 삶은 파스타와 채소를 올리브유에 함께 볶아요."},
+ {slots:["lunch","dinner"],name:"달걀 채소 덮밥",emoji:"🍳",styles:["balanced","quick"],avoid:["egg"],ingredients:[["rice",180],["egg",100],["veg",150],["oil",5]],tip:"채소와 달걀을 올리브유에 충분히 익혀 현미밥 위에 올려요."},
+ {slots:["lunch","dinner"],name:"병아리콩 두부 볶음밥",emoji:"🍚",styles:["plant","balanced","protein"],avoid:["soy"],ingredients:[["rice",160],["beans",100],["tofu",150],["oil",5]],tip:"삶은 병아리콩과 물기를 뺀 두부를 올리브유에 볶고 준비된 밥을 넣어요."},
+ {slots:["breakfast"],name:"달걀 오트밀죽",emoji:"🥣",styles:["balanced","protein","quick"],avoid:["egg"],ingredients:[["oats",45],["egg",100]],tip:"오트밀에 물을 조금씩 넣어 끓이고 달걀을 풀어 완전히 익혀요."},
+ {slots:["breakfast"],name:"두부 바나나 오트볼",emoji:"🥣",styles:["plant","quick"],avoid:["soy"],ingredients:[["oats",40],["tofu",120],["banana",100]],tip:"오트밀을 물에 익히고 충분히 데운 두부와 바나나를 곁들여요."},
   {slots:["breakfast"],name:"달걀 바나나 한 접시",emoji:"🥚",styles:["balanced","protein","quick"],avoid:["egg"],ingredients:[["egg",100],["banana",120],["yogurt",100]],tip:"달걀을 삶아 바나나와 무가당 요거트를 곁들여요. 달걀은 미리 삶아 두면 준비가 간단해요."},
   {slots:["breakfast"],name:"간단 두부 현미볼",emoji:"🥣",styles:["balanced","plant","protein","quick"],avoid:["soy"],ingredients:[["rice",120],["tofu",150],["oil",3]],tip:"준비된 현미밥과 두부를 충분히 데우고 올리브유를 조금 곁들여요."},
   {slots:["lunch","dinner"],name:"닭가슴살 채소 덮밥",emoji:"🍚",styles:["balanced","protein","quick"],avoid:["chicken"],ingredients:[["rice",200],["chicken",120],["veg",150],["oil",8]],tip:"익힌 닭가슴살과 데친 채소를 밥 위에 올려요."},
@@ -39,7 +45,7 @@ const recipes: Recipe[] = [
 ];
 export function clockTime(hours: number) { const minutes = Math.round(hours * 60); return `${minutes >= 1440 ? "다음 날 " : ""}${String(Math.floor(minutes / 60) % 24).padStart(2,"0")}:${String(minutes % 60).padStart(2,"0")}`; }
 export function recommendMeals(profile: BodyProfile, diet: DietPreferences, variant = 0, catalog: CatalogItem[] = []) {
-  const ingredientIds: Record<string,string> = {rice:"rice",chicken:"chicken",tofu:"tofu",egg:"eggs",yogurt:"yogurt",banana:"banana",oats:"oats",veg:"broccoli"};
+  const ingredientIds: Record<string,string> = {rice:"rice",chicken:"chicken",tofu:"tofu",egg:"eggs",yogurt:"yogurt",banana:"banana",oats:"oats",veg:"vegetable-mix",oil:"olive-oil",salmon:"salmon",beans:"chickpeas",pasta:"whole-wheat-pasta"};
   const productFor = (food:Food) => catalog.find(p=>p.id===ingredientIds[food]);
   const nutrient = (food:Food,index:1|2|3|4) => {
     const item=productFor(food);

@@ -42,7 +42,7 @@ test("expanded exclusions validate and remove actual recipe ingredients",()=>{
   assert.ok(plan.meals.every(m=>m.ingredients.every(i=>i.food!==key)));
  }
  assert.equal(recommendMeals(profile,{...defaultDiet,style:'plant',excluded:['soy','wheat']}),null);
- assert.equal(recommendMeals(profile,{...defaultDiet,excluded:['onion']}),null);
+ assert.ok(recommendMeals(profile,{...defaultDiet,excluded:['onion']})!.meals.every(m=>m.ingredients.every(i=>i.food!=='veg')));
 });
 
 test("breakfast remains quick and modest across variants; noon first meal is lunch",()=>{

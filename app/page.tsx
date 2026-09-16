@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 import { useEffect, useRef, useState } from "react";
+import { MonthlyPlanner } from "./monthly-planner";
 import { Dashboard } from "./dashboard";
 import { ShoppingPlanner } from "./shopping-planner";
 import type { DashboardData } from "../lib/dashboard";
@@ -77,7 +78,6 @@ export default function Home() {
   const [catalogCategory, setCatalogCategory] = useState("all");
   const weeklyProducts = products.filter((product) => product.inWeeklyCart);
   const otherProducts = products.filter((product) => !product.inWeeklyCart && (catalogCategory === "all" || product.category === catalogCategory) && `${product.name} ${product.detail}`.toLocaleLowerCase().includes(catalogQuery.trim().toLocaleLowerCase()));
-  const cartTotal = weeklyProducts.reduce((sum, product) => sum + product.price, 0);
   const compareProduct = products.find((product) => product.id === compareProductId);
   const compareOffers = [...(comparison?.offers ?? [])].sort((a, b) => sortBy === "unit" ? (a.unitPrice ?? Number.POSITIVE_INFINITY) - (b.unitPrice ?? Number.POSITIVE_INFINITY) || a.price - b.price : a.price - b.price);
   const compareLinks = shoppingSearchLinks(compareProduct?.searchQuery ?? "");
@@ -180,12 +180,13 @@ export default function Home() {
         {(tab==="home"||tab==="cart"||tab==="compare") && catalogError && <p className="auth-error" role="alert">{catalogError}</p>}
         {(tab==="home"||tab==="cart") && catalogLoaded && !catalogError && products.length===0 && <p className="body-note">등록된 상품이 없습니다.</p>}
         {tab==="compare" && catalogLoaded && !catalogError && !compareProduct && <p className="body-note">상품을 찾을 수 없습니다.</p>}
-        {(tab === "home" || tab === "calendar" || tab === "record") && dashboard && <Dashboard key={`${authUser?.id??"guest"}-${tab}`} mode={tab} data={dashboard} userId={authUser?.id} products={products} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")} onCalendar={()=>setTab("calendar")} onBudget={editBudget} onRefresh={refreshDashboard} onCompare={openCompare}/>}
+        {(tab === "home" || tab === "record") && dashboard && <Dashboard key={`${authUser?.id??"guest"}-${tab}`} mode={tab} data={dashboard} userId={authUser?.id} products={products} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")} onCalendar={()=>setTab("calendar")} onBudget={editBudget} onRefresh={refreshDashboard} onCompare={openCompare}/>}
+        {tab === "calendar" && <><MonthlyPlanner key={`month-${authUser?.id??"guest"}`} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/>{dashboard&&<details><summary>지출 기록·기존 하루 식단 보기</summary><Dashboard key={`${authUser?.id??"guest"}-calendar`} mode="calendar" data={dashboard} userId={authUser?.id} products={products} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")} onCalendar={()=>setTab("calendar")} onBudget={editBudget} onRefresh={refreshDashboard} onCompare={openCompare}/></details>}</>}
         {tab === "cart" && <>
+          <MonthlyPlanner key={`ingredients-${authUser?.id??"guest"}`} mode="cart" userId={authUser?.id} onLogin={()=>setShowAuth(true)}/>
           <SharedBasket key={authUser?.id ?? "guest"} userId={authUser?.id} onCompare={openCompare}/>
           <div className="page-intro"><div className="week-label"><Icon name="bag" size={15}/> 판매 상품 카탈로그</div><h2>식탁을 채울 <span>장바구니</span></h2><p>식재료와 밀키트, 냉동식품을 눌러 가격과 영양 정보를 확인해 보세요.</p></div>
-          {weeklyProducts.length > 0 && <div className="cart-budget"><div><span>이번 주 장바구니 상품 각 1개 기준</span><strong>{formatWon(cartTotal)}</strong></div><p>배송비 제외 · 옵션에 따라 가격이 달라질 수 있어요.</p></div>}
-          <div className="list-heading"><h3>이번 주 장바구니 <span>{weeklyProducts.length}</span></h3><small>눌러서 판매처 비교</small></div>
+          <div className="list-heading"><h3>등록된 식재료 <span>{weeklyProducts.length}</span></h3><small>눌러서 판매처 비교</small></div>
           <div className="food-list">{weeklyProducts.map((food) => <button key={food.id} type="button" className="food-row comparison-entry" onClick={() => openCompare(food.id)}><ProductThumb item={food}/><span className="food-meta"><strong>{food.name}</strong><small>{catalogCategories[food.category]} · {food.detail}</small><em>{(food.nutritionSourceUrl || food.nutritionPhotoUrl) && food.proteinG !== null ? `단백질 ${food.proteinG}g / ${food.nutritionBasis}` : "영양 정보 확인 중"}</em></span><span className="food-price"><strong>{formatWon(food.price)}{food.priceNote?.includes("시작가") ? "~" : ""}</strong><small>{food.unit === "g" ? "100g당" : "1개당"} {formatWon(unitPrice(food.price, food.quantity, food.unit))}</small></span><Icon name="chevron" size={17}/></button>)}</div>
           <p className="body-note">추가 상품 검색</p>
           <CatalogFilter query={catalogQuery} category={catalogCategory} onQuery={setCatalogQuery} onCategory={setCatalogCategory}/>

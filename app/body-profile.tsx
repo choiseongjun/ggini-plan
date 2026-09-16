@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { activities, calorieEstimate, parseBodyProfile, type BodyProfile } from "../lib/body-profile";
 import { defaultDiet, dietStyles, excludedFoods, excludedFoodGroups, parseDiet, type recommendMeals, type DietPreferences } from "../lib/meal-plan";
@@ -97,6 +98,7 @@ export function BodyProfilePanel({ userId, name, onLogin }: { userId?: string; n
   }
 
   return <>
+    <div className="home-guide-entry"><strong>한 달 식단과 이번 주 장보기</strong><p>아래 정보를 저장한 뒤 달력에서 월간 식단을 만들고, 필요한 재료를 한 번에 담아 보세요.</p><Link href="/calendar">월간 식단 달력으로 →</Link></div>
     <div className="page-intro"><div className="week-label">나를 조금 더 알아가는 시간</div><h2>{userId ? `${name}님의` : "나의"} <span>하루 에너지</span></h2><p>지금의 몸과 생활에 맞는 칼로리를 알아봐요.</p></div>
     {!showPlan && <section className="personal-meal-card" aria-label="맞춤 추천 안내" aria-live="polite">
       <h3>{loading ? "저장된 신체 정보를 확인하고 있어요" : loadError ? "신체 정보를 불러오지 못했어요" : !profile ? "맞춤 추천을 위해 신체 정보를 입력해 주세요" : pregnancy ? "현재는 자동 맞춤 추천을 제공하지 않아요" : "맞춤 식단을 만들어 주세요"}</h3>

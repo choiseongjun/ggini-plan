@@ -1,0 +1,60 @@
+'use client';
+import Link from 'next/link';
+import {useEffect,useState} from 'react';
+import type {DayPlan,ingredientBasket} from '../lib/monthly-plan';
+import {shoppingSearchLinks} from '../lib/catalog';
+import {ProductThumb} from './product-thumb';
+import './monthly-planner.css';
+type Items=ReturnType<typeof ingredientBasket>;
+type Plan={days:DayPlan[];items:Items};
+type Basket={month:string;start:string;end:string;owned:string[];items:Items};
+const won=(n:number)=>`${n.toLocaleString('ko-KR')}원`;
+const thisMonth=()=>new Date(Date.now()+9*3600000).toISOString().slice(0,7);
+function IngredientRows({items,onOwned,disabled=false}:{items:Items;onOwned?:(food:string)=>void;disabled?:boolean}){
+ return <div className="ingredient-rows">{items.map(row=><article key={row.food}>
+  <div className="ingredient-title">{row.product&&<ProductThumb item={row.product}/>}<div><strong>{row.name}</strong><span>필요량 {row.grams.toLocaleString('ko-KR')}g · 레시피의 조리 상태 기준</span></div></div>
+  {row.product?<><a href={row.product.productUrl!} target="_blank" rel="noopener noreferrer">{row.product.name} ↗</a><p>{row.product.detail}{row.packs!==null?` × ${row.packs}개 · ${won(row.cost??0)}`:' · 구매 수량 확인 필요'}</p>{row.leftGrams!==null&&<small>판매 묶음 기준 {row.leftGrams.toLocaleString('ko-KR')}g 남을 예정</small>}</>:<><p>상품 연결 필요 · 가격 미확인</p><a href={shoppingSearchLinks(row.name)[0].url} target="_blank" rel="noopener noreferrer">판매 상품 직접 검색 ↗</a></>}
+  {onOwned&&<label><input type="checkbox" checked={row.have} disabled={disabled} onChange={()=>onOwned(row.food)}/>필요한 양이 집에 있어요 · 구매에서 제외</label>}
+ </article>)}</div>;
+}
+export function MonthlyPlanner({userId,onLogin,mode='calendar'}:{userId?:string;onLogin:()=>void;mode?:'calendar'|'cart'}){
+ const [month,setMonth]=useState(thisMonth),[plan,setPlan]=useState<Plan|null>(null),[cart,setCart]=useState<Basket|null>(null),[budget,setBudget]=useState<number|null>(null);
+ const [date,setDate]=useState(''),[busy,setBusy]=useState(false),[loading,setLoading]=useState(true),[error,setError]=useState(''),[message,setMessage]=useState(''),[revision,setRevision]=useState(0),[replace,setReplace]=useState(false);
+ useEffect(()=>{
+  if(!userId)return;
+  const controller=new AbortController();
+  fetch(mode==='cart'?'/api/monthly-plan?basket=1':`/api/monthly-plan?month=${month}`,{cache:'no-store',signal:controller.signal}).then(async r=>{const d=await r.json();if(!r.ok)throw new Error(d.error);return d;}).then(d=>{
+   if(mode==='cart')setCart(d.basket);else{setPlan(d.plan);setBudget(d.budget);setDate(current=>current.startsWith(month)?current:`${month}-01`);}setError('');
+  }).catch(e=>{if(!controller.signal.aborted)setError(e.message);}).finally(()=>{if(!controller.signal.aborted)setLoading(false);});
+  return()=>controller.abort();
+ },[userId,month,mode,revision]);
+ async function act(action:string,extra:Record<string,unknown>={}){
+  if(!userId){onLogin();return;}setBusy(true);setError('');setMessage('');
+  try{const r=await fetch('/api/monthly-plan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({month:mode==='cart'?cart?.month:month,action,...extra})});const d=await r.json();if(!r.ok)throw new Error(d.error);
+   setRevision(n=>n+1);setReplace(false);setMessage(action==='basket'?'선택한 기간의 재료를 장보기 목록에 담았어요. 기존 목록은 이 기간으로 바뀌었어요.':action==='swap'?'이 끼니를 교체했어요. 장보기 수량도 다시 계산돼요.':action==='owned'?'보유 재료를 반영했어요.':'월간 식단을 저장했어요.');
+  }catch(e){setError(e instanceof Error?e.message:'요청을 처리하지 못했어요.');}finally{setBusy(false);}
+ }
+ const chosen=plan?.days.find(d=>d.date===date),items=mode==='cart'?cart?.items:plan?.items;
+ const total=items?.reduce((sum,r)=>sum+(r.cost??0),0)??0,unknown=items?.filter(r=>!r.have&&r.cost===null).length??0;
+ const end=new Date(`${date||month+'-01'}T00:00:00Z`);end.setUTCDate(end.getUTCDate()+6);const last=new Date(Number(month.slice(0,4)),Number(month.slice(5,7)),0).getDate();
+ const rangeEnd=end.toISOString().slice(0,7)===month?end.toISOString().slice(0,10):`${month}-${last}`;
+ return <section className="monthly-planner" aria-label={mode==='cart'?'식단에서 담은 장보기':'월간 식단 달력'}>
+  <h2>{mode==='cart'?'식단에서 담은 장보기':'한 달 식단 달력'}</h2>
+  {!userId?<><p>로그인하면 내 설정으로 월간 식단과 장보기 목록을 저장할 수 있어요.</p><button className="primary-button" onClick={onLogin}>로그인하기</button></>:<>
+   {mode==='calendar'&&<><label className="real-date">계획할 달<input type="month" min="2000-01" max="2099-12" value={month} disabled={busy} onChange={e=>{if(e.target.value){setMonth(e.target.value);setPlan(null);setLoading(true);setReplace(false);setMessage('');}}}/></label><p className="body-note">마이에 저장한 식사 횟수·시간·제외 재료를 반영해요. 제공 메뉴 수에 따라 같은 메뉴가 반복될 수 있어요.</p><Link href="/profile#profile-settings">신체 정보·식단 취향 설정 →</Link></>}
+   {loading?<p role="status">저장된 내용을 불러오는 중이에요.</p>:mode==='calendar'?<>
+    <p className="body-note">월 예산 {budget!==null?won(budget):'미설정'} · {plan?`계산 가능한 상품 합계 ${won(total)}${unknown?` + 미확인 재료 ${unknown}종`:' (배송비 제외)'}`:'아직 이달 식단이 없어요.'}</p>
+    {plan&&<p className="body-note">{unknown?'전체 재료 가격이 확인되지 않아 예산 안에 드는지는 아직 확정할 수 없어요.':budget!==null&&total>budget?'계산된 구매 비용이 월 예산을 초과해요. 메뉴나 예산을 조정해 주세요.':'월 합계는 한 번에 구매할 때의 묶음 계산값이에요. 주별로 나누어 구매하면 달라질 수 있어요.'}</p>}
+    {!plan?<button className="primary-button" disabled={busy||!!error} onClick={()=>act('generate')}>{busy?'식단 만드는 중…':'이달 식단 만들기'}</button>:<>
+     <button className="text-link" disabled={busy} onClick={()=>setReplace(!replace)}>설정 반영해 한 달 다시 만들기</button>
+     {replace&&<div className="meal-notice">수정한 메뉴가 현재 마이 설정으로 바뀝니다.<button disabled={busy} onClick={()=>act('generate',{replace:true})}>다시 만들기</button><button onClick={()=>setReplace(false)}>취소</button></div>}
+     <div className="month-meal-grid">{['월','화','수','목','금','토','일'].map(x=><span key={x}>{x}</span>)}{Array.from({length:(new Date(`${month}-01T00:00:00Z`).getUTCDay()+6)%7},(_,i)=><span key={`blank-${i}`}/>)}{plan.days.map(day=><button key={day.date} aria-pressed={date===day.date} onClick={()=>setDate(day.date)}><b>{Number(day.date.slice(-2))}</b><small>{day.recommendation.meals.length}끼</small></button>)}</div>
+     {chosen&&<><h3>{date} 식단</h3>{chosen.recommendation.meals.map((meal,index)=><article className="personal-meal-card" key={`${date}-${index}`}><small>{meal.label} · {meal.time}</small><h4>{meal.emoji} {meal.name}</h4><p>예상 {meal.kcal} kcal · 단백질 {meal.protein}g</p><ul>{meal.ingredients.map(i=><li key={i.food}>{i.name} <b>{i.grams}g</b></li>)}</ul><p>{meal.tip}</p><button disabled={busy} onClick={()=>act('swap',{date,index})}>이 끼니 다른 메뉴로</button></article>)}</>}
+     <div className="meal-notice"><strong>{date} ~ {rangeEnd} 장보기</strong><p>선택일부터 7일, 월말까지의 재료를 합산해요.</p><button className="primary-button" disabled={busy} onClick={()=>act('basket',{start:date})}>이 기간 재료 모두 장바구니에 담기</button><Link href="/cart">장보기 목록 열기 →</Link></div>
+     <details><summary>한 달에 필요한 전체 재료</summary><IngredientRows items={plan.items}/></details>
+    </>}
+   </>:cart?<><p>{cart.start} ~ {cart.end} 식단 기준</p><strong>확인된 구매 금액 {won(total)}</strong><p className="body-note">{unknown?`미확인 재료 ${unknown}종의 비용과 배송비는 별도예요.`:'배송비는 별도예요.'} 이미 있는 재료는 필요한 양을 모두 보유한 경우 체크해 주세요.</p><IngredientRows items={cart.items} disabled={busy} onOwned={food=>act('owned',{owned:cart.owned.includes(food)?cart.owned.filter(x=>x!==food):[...cart.owned,food]})}/><p className="body-note">식단 메뉴가 바뀌면 필요량도 갱신돼요. 외부 쇼핑몰 구매는 각 상품 링크에서 진행해 주세요.</p><Link href="/calendar">기간·식단 변경하기 →</Link></>:<><p>아직 식단에서 담은 재료가 없어요.</p><Link href="/calendar">달력에서 이번 주 재료 담기 →</Link></>}
+  </>}
+  {error&&<p role="alert" className="auth-error">{error}<button onClick={()=>{setLoading(true);setRevision(n=>n+1);}}>다시 불러오기</button></p>}{message&&<p role="status" className="body-success">{message}{message.includes('담았')&&<Link href="/cart"> 장보기 목록 열기 →</Link>}</p>}
+ </section>;
+}
