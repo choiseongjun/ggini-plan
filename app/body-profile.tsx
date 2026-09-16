@@ -6,7 +6,7 @@ import { defaultDiet, dietStyles, excludedFoods, excludedFoodGroups, parseDiet, 
 import { RiceBuddy } from "./rice-buddy";
 import { AppLoading } from "./app-loading";
 
-export function BodyProfilePanel({ userId, name, budget, onBudget, onLogin }: { userId?: string; name: string; budget: number; onBudget: () => void; onLogin: () => void }) {
+export function BodyProfilePanel({ userId, name, onLogin }: { userId?: string; name: string; onLogin: () => void }) {
   const formRef = useRef<HTMLFormElement>(null);
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
@@ -155,7 +155,6 @@ export function BodyProfilePanel({ userId, name, budget, onBudget, onLogin }: { 
         {diet.fasting !== "none" && <p className="body-note">혈당을 낮추는 약을 복용 중이라면 단식 전에 의료진과 상의해 주세요. <a href="https://www.niddk.nih.gov/health-information/professionals/diabetes-discoveries-practice/fasting-safely-with-diabetes" target="_blank" rel="noopener noreferrer">안내 보기 ↗</a></p>}
       </> : <p className="meal-notice">{pregnancy ? "임신·수유 중에는 자동 식단 추천 대신 개인별 영양 상담을 권해요." : "신체 정보를 확인해 주세요. 선택한 조건에 맞는 식단이 있어야 추천할 수 있어요."}</p>}
     </section>}
-    <div className="body-budget"><div><span>이번 주 식비 한도</span><strong>{budget > 0 ? `${budget.toLocaleString("ko-KR")}원` : "아직 설정하지 않았어요"}</strong></div><button className="text-link" onClick={onBudget}>수정하기 →</button></div>
     <details className="calorie-method"><summary>칼로리는 어떻게 계산하나요?</summary><p>Mifflin–St Jeor 식으로 휴식 에너지 소비량을 추정하고, 선택한 활동계수(1.2~1.725)를 곱해 하루 유지 필요량을 계산해요. 실제 섭취 기록의 평균이나 측정된 대사량은 아니에요.</p><p>기초대사량은 최소 섭취 칼로리가 아니에요. 만 19~78세 성인용 참고값이며 임신·수유 중에는 계산하지 않아요. 한 끼 평균은 간식을 포함한 하루 총량을 식사 횟수로 나눈 값이에요.</p><a href="https://pubmed.ncbi.nlm.nih.gov/2305711/" target="_blank" rel="noopener noreferrer">계산식 연구 보기 ↗</a></details>
   </>;
 }
