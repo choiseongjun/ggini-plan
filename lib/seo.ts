@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 
 export const siteUrl = new URL(process.env.SITE_URL || "https://gginiplan.kr").origin;
-export const indexable = process.env.SEO_INDEXING_ENABLED === "true" && new URL(siteUrl).protocol === "https:" && !["localhost", "127.0.0.1"].includes(new URL(siteUrl).hostname) && process.env.VERCEL_ENV !== "preview";
+// Production defaults to searchable after launch. Keep preview and local builds out.
+// An explicit false remains available for staging and emergency exclusion.
+const indexingRequested = process.env.SEO_INDEXING_ENABLED === "true" ||
+  (process.env.SEO_INDEXING_ENABLED !== "false" && process.env.NODE_ENV === "production");
+export const indexable = indexingRequested && new URL(siteUrl).protocol === "https:" && !["localhost", "127.0.0.1"].includes(new URL(siteUrl).hostname) && (!process.env.VERCEL_ENV || process.env.VERCEL_ENV === "production");
 export function pageMetadata(title: string, description: string, path: string): Metadata {
   return {
     title: { absolute: title }, description,

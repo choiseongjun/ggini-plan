@@ -9,7 +9,7 @@ GOOGLE_SITE_VERIFICATION=소유권_확인_태그의_content_값
 NAVER_SITE_VERIFICATION=소유권_확인_태그의_content_값
 ```
 
-인증 값은 실제 발급된 값만 입력합니다. 공개 HTTPS 배포가 완료된 운영 환경에서만 검색 노출을 켜고 재빌드합니다. 로컬·스테이징은 SEO_INDEXING_ENABLED를 설정하지 않습니다. Vercel preview는 자동 제외됩니다. www 등 다른 도메인은 호스팅 설정에서 대표 주소로 영구 리디렉션합니다.
+인증 값은 실제 발급된 값만 입력합니다. 공개 배포 이후 production 빌드는 기본적으로 검색을 허용합니다. 기존 배포 환경에 SEO_INDEXING_ENABLED=false가 있다면 true로 변경하고 재빌드합니다. 로컬 개발은 기본 검색 제외, 별도 스테이징 production 빌드는 SEO_INDEXING_ENABLED=false를 설정합니다. Vercel preview는 자동 제외됩니다. www 등 다른 도메인은 호스팅 설정에서 대표 주소로 영구 리디렉션합니다.
 
 ## 적용 내용
 - 고유 제목·설명·canonical 및 Open Graph/Twitter 메타데이터
