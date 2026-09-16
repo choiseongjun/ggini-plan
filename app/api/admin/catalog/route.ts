@@ -1,3 +1,4 @@
+import { importProductImage, storeImage, ImageStorageError } from "../../../../lib/catalog-storage";
 import { NextRequest } from "next/server";
 import { randomUUID } from "node:crypto";
 import { adminUser } from "../../../../lib/admin";
@@ -64,24 +65,27 @@ async function saveItem(request: NextRequest, create: boolean) {
       return Response.json({ error: "상품명, 구성, 가격, 수량과 검색어를 확인해 주세요." }, { status: 400 });
     }
     const productUrl = httpsUrl(input.productUrl);
-    const productImageUrl = httpsUrl(input.productImageUrl);
+    const imageSourceUrl = httpsUrl(input.productImageUrl);
     if (create && !productUrl) return Response.json({ error: "새 상품에는 실제 판매 상품 링크가 필요합니다." }, { status: 400 });
     const sourceUrl = httpsUrl(input.nutritionSourceUrl);
     const sourceName = optionalText(input.nutritionSourceName, 120);
     const basis = optionalText(input.nutritionBasis, 80);
     const nutrients = [input.caloriesKcal, input.proteinG, input.carbohydratesG, input.fatG, input.sodiumMg].map(optionalNumber);
-    const existingPhoto = await getPool().query<{ has_photo: boolean }>("SELECT nutrition_photo IS NOT NULL AS has_photo FROM catalog_items WHERE id=$1", [id]);
+    const existingPhoto = await getPool().query<{ has_photo: boolean }>("SELECT (nutrition_photo IS NOT NULL OR nutrition_photo_url IS NOT NULL) AS has_photo FROM catalog_items WHERE id=$1", [id]);
     if (nutrients.some((value) => value !== null) && (!sourceName || !basis || (!sourceUrl && !photo && !existingPhoto.rows[0]?.has_photo))) {
       return Response.json({ error: "영양 수치를 입력하려면 기준량, 출처 이름과 원문 링크 또는 사진이 필요합니다." }, { status: 400 });
     }
+    const productImageUrl = imageSourceUrl ? await importProductImage(imageSourceUrl) : null;
+    const photoUrl = photo ? await storeImage(photo, "nutrition") : null;
     await getPool().query(
-      `INSERT INTO catalog_items (id, name, detail, price, portions, quantity, search_query, product_url, nutrition_source_name, nutrition_source_url, nutrition_basis, calories_kcal, protein_g, carbohydrates_g, fat_g, sodium_mg, updated_by, nutrition_photo, nutrition_photo_mime, category, in_weekly_cart, unit, emoji, color, price_checked_at, product_image_url)
+      `INSERT INTO catalog_items (id, name, detail, price, portions, quantity, search_query, product_url, nutrition_source_name, nutrition_source_url, nutrition_basis, calories_kcal, protein_g, carbohydrates_g, fat_g, sodium_mg, updated_by, nutrition_photo_url, nutrition_photo_mime, category, in_weekly_cart, unit, emoji, color, price_checked_at, product_image_url)
        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,CASE WHEN $8::text IS NOT NULL THEN NOW() ELSE NULL END,$25)
-       ON CONFLICT (id) DO UPDATE SET name=$2, detail=$3, price=$4, portions=$5, quantity=$6, search_query=$7, product_url=$8, nutrition_source_name=$9, nutrition_source_url=$10, nutrition_basis=$11, calories_kcal=$12, protein_g=$13, carbohydrates_g=$14, fat_g=$15, sodium_mg=$16, updated_by=$17, nutrition_photo=COALESCE($18,catalog_items.nutrition_photo), nutrition_photo_mime=COALESCE($19,catalog_items.nutrition_photo_mime), category=$20, in_weekly_cart=$21, unit=$22, emoji=$23, color=$24, product_image_url=$25, price_checked_at=CASE WHEN $8::text IS NOT NULL THEN NOW() ELSE NULL END, updated_at=NOW()`,
-      [id, name, detail, price, portions, quantity, searchQuery, productUrl, sourceName, sourceUrl, basis, ...nutrients, user.id, photo?.bytes ?? null, photo?.mime ?? null, category, inWeeklyCart, unit, emoji, color, productImageUrl],
+       ON CONFLICT (id) DO UPDATE SET name=$2, detail=$3, price=$4, portions=$5, quantity=$6, search_query=$7, product_url=$8, nutrition_source_name=$9, nutrition_source_url=$10, nutrition_basis=$11, calories_kcal=$12, protein_g=$13, carbohydrates_g=$14, fat_g=$15, sodium_mg=$16, updated_by=$17, nutrition_photo_url=COALESCE($18,catalog_items.nutrition_photo_url), nutrition_photo=CASE WHEN $18::text IS NOT NULL THEN NULL ELSE catalog_items.nutrition_photo END, nutrition_photo_mime=COALESCE($19,catalog_items.nutrition_photo_mime), category=$20, in_weekly_cart=$21, unit=$22, emoji=$23, color=$24, product_image_url=$25, price_checked_at=CASE WHEN $8::text IS NOT NULL THEN NOW() ELSE NULL END, updated_at=NOW()`,
+      [id, name, detail, price, portions, quantity, searchQuery, productUrl, sourceName, sourceUrl, basis, ...nutrients, user.id, photoUrl, photo?.mime ?? null, category, inWeeklyCart, unit, emoji, color, productImageUrl],
     );
     return Response.json({ id, items: await catalogItems() }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
+    if (error instanceof ImageStorageError) return Response.json({ error: error.message }, { status: 503 });
     if (error instanceof SyntaxError || error instanceof TypeError) return Response.json({ error: "입력 형식을 확인해 주세요." }, { status: 400 });
     if (error instanceof Error && (error.message.includes("링크") || error.message.includes("영양"))) return Response.json({ error: error.message }, { status: 400 });
     console.error("Admin catalog update failed", error);

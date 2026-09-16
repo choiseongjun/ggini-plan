@@ -180,3 +180,5 @@ CREATE TABLE IF NOT EXISTS daily_expenses (
  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(), PRIMARY KEY(user_id,spent_on,category)
 );
 CREATE INDEX IF NOT EXISTS daily_expenses_user_date_idx ON daily_expenses(user_id,spent_on);
+
+ALTER TABLE catalog_items ADD COLUMN IF NOT EXISTS nutrition_photo_url TEXT CHECK (nutrition_photo_url IS NULL OR nutrition_photo_url ~ '^https://');
