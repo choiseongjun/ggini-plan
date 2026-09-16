@@ -4,7 +4,7 @@ import {getPool} from '../../../lib/db';
 import {catalogItems} from '../../../lib/catalog-db';
 import {parseBodyProfile} from '../../../lib/body-profile';
 import {parseDiet,recommendMeals} from '../../../lib/meal-plan';
-import {validMonth,makeMonth,ingredientBasket,selectedWeek,type DayPlan} from '../../../lib/monthly-plan';
+import {validMonth,makeMonth,upgradeMonth,ingredientBasket,selectedWeek,type DayPlan} from '../../../lib/monthly-plan';
 export const runtime='nodejs';
 const json=(v:unknown,status=200)=>NextResponse.json(v,{status,headers:{'Cache-Control':'no-store'}});
 export async function GET(request:NextRequest){try{
@@ -28,7 +28,17 @@ export async function POST(request:NextRequest){
  const {month,action}=input??{};if(!validMonth(month))return authFailure('월을 확인해 주세요.',400);
  const db=getPool();
  if(action==='generate'||action==='ensure'){
-  if(action==='ensure'){const exists=await db.query('SELECT 1 FROM monthly_meal_plans WHERE user_id=$1 AND month=$2',[user.id,month]);if(exists.rowCount)return json({ok:true});}
+  if(action==='ensure'){
+   const exists=await db.query('SELECT profile,diet,days FROM monthly_meal_plans WHERE user_id=$1 AND month=$2',[user.id,month]);
+   const stored=exists.rows[0];
+   if(stored){
+    if(stored.days.some((d:DayPlan)=>d.recommendation.scheduleVersion!==1)){
+     const updated=upgradeMonth(month,stored.profile,stored.diet,await catalogItems(),stored.days);
+     if(updated)await db.query('UPDATE monthly_meal_plans SET days=$3,updated_at=NOW() WHERE user_id=$1 AND month=$2 AND days=$4::jsonb',[user.id,month,JSON.stringify(updated),JSON.stringify(stored.days)]);
+    }
+    return json({ok:true});
+   }
+  }
   const r=await db.query('SELECT height::float8,weight::float8,age,sex,activity,meals,pregnancy,diet_preferences FROM body_profiles WHERE user_id=$1',[user.id]);
   const profile=parseBodyProfile(r.rows[0]),diet=parseDiet(r.rows[0]?.diet_preferences);
   if(!profile||!diet)return authFailure('마이에서 신체 정보와 식단 취향을 먼저 저장해 주세요.',422);

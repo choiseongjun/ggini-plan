@@ -1,14 +1,18 @@
 import {recommendMeals, type DietPreferences} from './meal-plan';
 import type {BodyProfile} from './body-profile';
 import type {CatalogItem} from './catalog';
-export type DayPlan={date:string;recommendation:NonNullable<ReturnType<typeof recommendMeals>>};
+export type DayPlan={date:string;recommendation:NonNullable<ReturnType<typeof recommendMeals>> & {scheduleVersion?:number}};
 export function validMonth(value:unknown):value is string{return typeof value==='string'&&/^20\d{2}-(0[1-9]|1[0-2])$/.test(value);}
 export function makeMonth(month:string,profile:BodyProfile,diet:DietPreferences,catalog:CatalogItem[]):DayPlan[]|null{
  if(!validMonth(month))return null;
  const [year,m]=month.split('-').map(Number),days=new Date(Date.UTC(year,m,0)).getUTCDate();
  const result:DayPlan[]=[];
  for(let i=0;i<days;i++){
-  const recommendation=recommendMeals(profile,diet,i,catalog);if(!recommendation)return null;
+  const choices=Array.from({length:24},(_,v)=>recommendMeals(profile,diet,v,catalog)).filter((p):p is NonNullable<typeof p>=>p!==null);
+  if(!choices.length)return null;
+  const score=(p:typeof choices[number])=>p.meals.reduce((sum,meal,slot)=>sum+result.reduce((cost,day,j)=>cost+(day.recommendation.meals[slot]?.name===meal.name?(j===i-1?10000:j>=i-3?100:1):0),0),0);
+  choices.sort((a,b)=>score(a)-score(b));
+  const recommendation={...choices[0],scheduleVersion:1};
   result.push({date:`${month}-${String(i+1).padStart(2,'0')}`,recommendation});
  }
  return result;
@@ -32,4 +36,17 @@ export function ingredientBasket(days:DayPlan[],catalog:CatalogItem[],owned:stri
 export function selectedWeek(days:DayPlan[],start:string){
  const end=new Date(`${start}T00:00:00Z`);end.setUTCDate(end.getUTCDate()+7);
  return days.filter(d=>d.date>=start&&d.date<end.toISOString().slice(0,10));
+}
+
+export function upgradeMonth(month:string,profile:BodyProfile,diet:DietPreferences,catalog:CatalogItem[],previous:DayPlan[]):DayPlan[]|null {
+ const fresh=makeMonth(month,profile,diet,catalog);if(!fresh)return null;
+ // Older month plans used their day index as the recipe variant. Preserve deviations as manual edits.
+ for(let i=0;i<fresh.length;i++){
+  const old=previous.find(d=>d.date===fresh[i].date),baseline=recommendMeals(profile,diet,i,catalog);
+  if(!old||!baseline)continue;
+  old.recommendation.meals.forEach((meal,slot)=>{if(meal.name!==baseline.meals[slot]?.name&&fresh[i].recommendation.meals[slot])fresh[i].recommendation.meals[slot]=meal;});
+  fresh[i].recommendation.total=fresh[i].recommendation.meals.reduce((sum,m)=>sum+m.kcal,0);
+  fresh[i].recommendation.protein=fresh[i].recommendation.meals.reduce((sum,m)=>sum+m.protein,0);
+ }
+ return fresh;
 }

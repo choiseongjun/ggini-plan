@@ -28,7 +28,7 @@ export function MonthlyPlanner({userId,onLogin,mode='calendar'}:{userId?:string;
   if(!userId)return;
   const controller=new AbortController();
   fetch(mode==='cart'?'/api/monthly-plan?basket=1':`/api/monthly-plan?month=${month}`,{cache:'no-store',signal:controller.signal}).then(async r=>{const d=await r.json();if(!r.ok)throw new Error(d.error);
-   if(mode==='calendar'&&!d.plan){
+   if(mode==='calendar'&&(!d.plan||d.plan.days.some((day:DayPlan)=>day.recommendation.scheduleVersion!==1))){
     const prepared=await fetch('/api/monthly-plan',{method:'POST',headers:{'Content-Type':'application/json'},signal:controller.signal,body:JSON.stringify({month,action:'ensure'})});
     const result=await prepared.json();if(!prepared.ok)throw new Error(result.error);
     const refreshed=await fetch(`/api/monthly-plan?month=${month}`,{cache:'no-store',signal:controller.signal});const ready=await refreshed.json();if(!refreshed.ok)throw new Error(ready.error);return ready;

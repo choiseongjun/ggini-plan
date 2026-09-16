@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {makeMonth,ingredientBasket,selectedWeek,validMonth} from '../lib/monthly-plan';
-import {defaultDiet} from '../lib/meal-plan';
+import {makeMonth,upgradeMonth,ingredientBasket,selectedWeek,validMonth} from '../lib/monthly-plan';
+import {defaultDiet,recommendMeals} from '../lib/meal-plan';
 import type {CatalogItem} from '../lib/catalog';
 const profile={height:165,weight:60,age:28,sex:'female' as const,activity:'light' as const,meals:3,pregnancy:false};
 test('full calendar includes leap day and date-specific meals with ingredient totals',()=>{
@@ -23,4 +23,19 @@ test('pack costs round up and missing conversion is not fabricated',()=>{
  assert.equal(tofu.packs,Math.ceil(tofu.grams/300));assert.equal(tofu.cost,tofu.packs!*2000);
  const egg={...p,id:'eggs',name:'달걀',unit:'개',quantity:20} as CatalogItem;
  assert.equal(ingredientBasket(days,[egg]).find(r=>r.food==='egg')?.packs,null);
+});
+
+test('month rotation avoids repeating breakfast on consecutive days',()=>{
+ const days=makeMonth('2026-09',profile,defaultDiet,[])!;
+ const names=days.map(d=>d.recommendation.meals[0].name);
+ assert.ok(new Set(names.slice(0,7)).size>=3);
+ assert.ok(names.every((name,i)=>i===0||name!==names[i-1]));
+});
+
+test('upgrading old month preserves changed meals',()=>{
+ const previous=Array.from({length:30},(_,i)=>({date:`2026-09-${String(i+1).padStart(2,'0')}`,recommendation:recommendMeals(profile,defaultDiet,i)!}));
+ previous[0].recommendation.meals[0]=recommendMeals(profile,defaultDiet,1)!.meals[0];
+ const updated=upgradeMonth('2026-09',profile,defaultDiet,[],previous)!;
+ assert.equal(updated[0].recommendation.meals[0].name,previous[0].recommendation.meals[0].name);
+ assert.ok(updated.every(d=>d.recommendation.scheduleVersion===1));
 });
