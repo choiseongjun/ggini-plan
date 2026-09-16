@@ -32,6 +32,19 @@ test('month rotation avoids repeating breakfast on consecutive days',()=>{
  assert.ok(names.every((name,i)=>i===0||name!==names[i-1]));
 });
 
+test('weekly menus vary across meal times and cooking styles',()=>{
+ const days=makeMonth('2026-09',profile,defaultDiet,[])!;
+ const week=days.slice(0,7);
+ assert.equal(new Set(week.map(d=>d.recommendation.meals[0].name)).size,7);
+ assert.ok(new Set(week.flatMap(d=>d.recommendation.meals.map(m=>m.family))).size>=6);
+ for(let i=1;i<days.length;i++){
+  const yesterday=new Set(days[i-1].recommendation.meals.map(m=>m.name));
+  assert.ok(days[i].recommendation.meals.every(m=>!yesterday.has(m.name)));
+ }
+ assert.ok(week.every(d=>new Set(d.recommendation.meals.map(m=>m.family)).size===3));
+ assert.ok(week.flatMap(d=>d.recommendation.meals).every(m=>!m.name.includes('콘푸라이트')));
+});
+
 test('upgrading old month preserves changed meals',()=>{
  const previous=Array.from({length:30},(_,i)=>({date:`2026-09-${String(i+1).padStart(2,'0')}`,recommendation:recommendMeals(profile,defaultDiet,i)!}));
  previous[0].recommendation.meals[0]=recommendMeals(profile,defaultDiet,1)!.meals[0];

@@ -8,11 +8,9 @@ export function makeMonth(month:string,profile:BodyProfile,diet:DietPreferences,
  const [year,m]=month.split('-').map(Number),days=new Date(Date.UTC(year,m,0)).getUTCDate();
  const result:DayPlan[]=[];
  for(let i=0;i<days;i++){
-  const choices=Array.from({length:24},(_,v)=>recommendMeals(profile,diet,v,catalog)).filter((p):p is NonNullable<typeof p>=>p!==null);
-  if(!choices.length)return null;
-  const score=(p:typeof choices[number])=>p.meals.reduce((sum,meal,slot)=>sum+result.reduce((cost,day,j)=>cost+(day.recommendation.meals[slot]?.name===meal.name?(j===i-1?10000:j>=i-3?100:1):0),0),0);
-  choices.sort((a,b)=>score(a)-score(b));
-  const recommendation={...choices[0],scheduleVersion:1};
+  const chosen=recommendMeals(profile,diet,i+year*12+m,catalog,result.map(day=>day.recommendation.meals));
+  if(!chosen)return null;
+  const recommendation={...chosen,scheduleVersion:1};
   result.push({date:`${month}-${String(i+1).padStart(2,'0')}`,recommendation});
  }
  return result;

@@ -16,7 +16,7 @@ export function parseDiet(value: unknown): DietPreferences | null {
 // Cereal: https://prod.danawa.com/info/?pcode=3230385 (30g: 113kcal, P1/C26/F0.5).
 // Milk: https://www.seoulmilk.co.kr/mobile/product/product_view.sm?nmNo=10000000000587&page=1&subname=P0 (per 100mL).
 const foods = {
-  cereal: ["콘푸라이트 시리얼", 113/30*100, 1/30*100, 26/30*100, 0.5/30*100],
+  cereal: ["시리얼", 113/30*100, 1/30*100, 26/30*100, 0.5/30*100],
   milk: ["우유",70,3,5,4],
   rice: ["현미밥 (조리 후)", 153, 3.2, 32, 1], chicken: ["닭가슴살 (익힌 것)", 165, 31, 0, 3.6],
   tofu: ["두부", 85, 9, 2, 4.5], egg: ["달걀", 143, 12.6, 0.7, 9.5],
@@ -30,7 +30,15 @@ type MealSlot = "breakfast" | "lunch" | "dinner";
 export function mealSlot(hours:number):MealSlot { const hour=((hours%24)+24)%24;return hour>=5&&hour<11?"breakfast":hour>=11&&hour<17?"lunch":"dinner"; }
 type Recipe = { slots:MealSlot[]; name: string; emoji: string; styles: DietPreferences["style"][]; avoid: DietPreferences["excluded"]; ingredients: [Food, number][]; tip: string };
 const recipes: Recipe[] = [
- {slots:["breakfast"],name:"콘푸라이트와 우유",emoji:"🥣",styles:["balanced","quick"],avoid:["milk","corn","wheat"],ingredients:[["cereal",40],["milk",200]],tip:"시리얼에 우유를 부어 먹어요. 제품 종류에 따라 영양성분이 달라지므로 구매한 포장 표시를 확인해 주세요."},
+ {slots:["breakfast"],name:"바나나 오트 팬케이크",emoji:"🥞",styles:["balanced","quick"],avoid:["egg"],ingredients:[["oats",40],["banana",80],["egg",50],["oil",3]],tip:"으깬 바나나에 잘게 간 오트밀과 달걀을 섞고 기름을 두른 팬에서 양면을 충분히 익혀요."},
+ {slots:["breakfast"],name:"채소 달걀찜과 작은 밥",emoji:"🍳",styles:["balanced","protein"],avoid:["egg"],ingredients:[["egg",100],["veg",60],["rice",90]],tip:"잘게 썬 채소와 달걀에 물을 섞어 속까지 익도록 찐 뒤 작은 밥을 곁들여요."},
+ {slots:["breakfast"],name:"두부 스크램블과 밥",emoji:"🍳",styles:["plant","balanced","quick"],avoid:["soy"],ingredients:[["tofu",150],["veg",70],["rice",90],["oil",3]],tip:"으깬 두부와 잘게 썬 채소를 기름에 볶아 밥을 곁들여요."},
+ {slots:["lunch","dinner"],name:"닭고기 채소죽",emoji:"🥣",styles:["balanced","protein"],avoid:["chicken"],ingredients:[["rice",200],["chicken",100],["veg",120],["oil",4]],tip:"익힌 닭고기를 잘게 찢고 밥, 채소, 물을 넣어 부드럽게 끓여요. 마지막에 올리브유를 곁들여요."},
+ {slots:["lunch","dinner"],name:"채소 오믈렛과 현미밥",emoji:"🍳",styles:["balanced","protein","quick"],avoid:["egg"],ingredients:[["rice",170],["egg",150],["veg",150],["oil",5]],tip:"잘게 썬 채소를 볶다가 달걀물을 부어 속까지 익혀 접고 밥과 함께 먹어요."},
+ {slots:["lunch","dinner"],name:"두부 채소전과 밥",emoji:"🥞",styles:["balanced","protein"],avoid:["soy","egg"],ingredients:[["rice",170],["tofu",150],["egg",70],["veg",100],["oats",20],["oil",6]],tip:"물기를 뺀 두부에 잘게 썬 채소, 달걀, 간 오트밀을 섞어 작게 빚고 양면을 충분히 익혀 밥과 먹어요."},
+ {slots:["lunch","dinner"],name:"병아리콩 채소 수프와 밥",emoji:"🥣",styles:["plant","balanced"],avoid:[],ingredients:[["rice",150],["beans",160],["veg",180],["oil",6]],tip:"채소를 올리브유에 볶은 뒤 삶은 병아리콩과 물을 넣고 부드럽게 끓여 밥을 곁들여요."},
+ {slots:["lunch","dinner"],name:"닭고기 파스타 샐러드",emoji:"🥗",styles:["balanced","protein","quick"],avoid:["chicken","wheat"],ingredients:[["pasta",180],["chicken",100],["veg",180],["yogurt",70],["oil",5]],tip:"익힌 닭고기, 삶은 파스타와 익혀 식힌 채소를 섞고 요거트와 올리브유를 소스로 곁들여요."},
+ {slots:["breakfast"],name:"시리얼과 우유",emoji:"🥣",styles:["balanced","quick"],avoid:["milk","corn","wheat"],ingredients:[["cereal",40],["milk",200]],tip:"시리얼에 우유를 부어 먹어요. 영양값은 콘 시리얼 기준 예상치이며, 그래놀라 등 제품 종류에 따라 달라져요. 구매한 포장 표시를 확인해 주세요."},
  {slots:["breakfast"],name:"바나나 시리얼 우유볼",emoji:"🍌",styles:["balanced","quick"],avoid:["milk","corn","wheat"],ingredients:[["cereal",30],["milk",200],["banana",80]],tip:"시리얼에 우유와 잘게 썬 바나나를 넣어요."},
  {slots:["breakfast"],name:"시리얼 요거트볼",emoji:"🥣",styles:["balanced","protein","quick"],avoid:["milk","corn","wheat"],ingredients:[["cereal",35],["yogurt",170],["banana",70]],tip:"무가당 요거트에 시리얼과 바나나를 올려 바로 먹어요."},
  {slots:["lunch","dinner"],name:"닭가슴살 통밀 파스타",emoji:"🍝",styles:["balanced","protein","quick"],avoid:["chicken","wheat"],ingredients:[["pasta",200],["chicken",120],["veg",120],["oil",8]],tip:"삶은 파스타에 익힌 닭가슴살과 데친 채소를 넣고 올리브유로 가볍게 볶아요."},
@@ -51,7 +59,19 @@ const recipes: Recipe[] = [
   {slots:["breakfast"],name:"바나나 병아리콩 오트볼",emoji:"🍌",styles:["plant","quick"],avoid:[],ingredients:[["oats",40],["beans",80],["banana",100]],tip:"오트밀을 물에 익히고 으깬 병아리콩과 바나나를 섞어요."},
 ];
 export function clockTime(hours: number) { const minutes = Math.round(hours * 60); return `${minutes >= 1440 ? "다음 날 " : ""}${String(Math.floor(minutes / 60) % 24).padStart(2,"0")}:${String(minutes % 60).padStart(2,"0")}`; }
-export function recommendMeals(profile: BodyProfile, diet: DietPreferences, variant = 0, catalog: CatalogItem[] = []) {
+export type MealHistory = {name:string; family:string}[][];
+function recipeFamily(recipe:Recipe) {
+  if(recipe.ingredients.some(([food])=>food==='cereal'))return 'cereal';
+  if(/죽|수프/.test(recipe.name))return 'soup';
+  if(/팬케이크|채소전/.test(recipe.name))return 'pancake';
+  if(/샐러드|라이스볼/.test(recipe.name))return 'salad';
+  if(/파스타/.test(recipe.name))return 'pasta';
+  if(/오트볼/.test(recipe.name))return 'oats';
+  if(/볶음밥/.test(recipe.name))return 'fried-rice';
+  if(/찜|오믈렛|스크램블/.test(recipe.name))return 'egg-tofu';
+  return 'rice-plate';
+}
+export function recommendMeals(profile: BodyProfile, diet: DietPreferences, variant = 0, catalog: CatalogItem[] = [], history:MealHistory = []) {
   const ingredientIds: Record<string,string> = {cereal:"cornflakes",milk:"milk",rice:"rice",chicken:"chicken",tofu:"tofu",egg:"eggs",yogurt:"yogurt",banana:"banana",oats:"oats",veg:"vegetable-mix",oil:"olive-oil",salmon:"salmon",beans:"chickpeas",pasta:"whole-wheat-pasta"};
   const productFor = (food:Food) => catalog.find(p=>p.id===ingredientIds[food]);
   const nutrient = (food:Food,index:1|2|3|4) => {
@@ -78,14 +98,25 @@ export function recommendMeals(profile: BodyProfile, diet: DietPreferences, vari
   const weights=times.map(time=>mealSlot(time)==='breakfast'?0.7:1.15);
   const weightTotal=weights.reduce((a,b)=>a+b,0);
   const used=new Set<string>();
+  const today:{name:string;family:string}[]=[];
   const selected=times.map(time=>{
     const eligible=candidates.filter(r=>r.slots.includes(mealSlot(time)));
     if(!eligible.length)return null;
     const fresh=eligible.filter(r=>!used.has(r.name));
     const pool=fresh.length?fresh:eligible;
-    const preferred=pool.filter(r=>r.styles.includes(diet.style));
+    const preferred=diet.style==='balanced'?pool:pool.filter(r=>r.styles.includes(diet.style));
     const choices=preferred.length?preferred:pool;
-    const recipe=choices[variant%choices.length];used.add(recipe.name);return recipe;
+    const offset=((variant%choices.length)+choices.length)%choices.length;
+    const rotated=[...choices.slice(offset),...choices.slice(0,offset)];
+    const score=(r:Recipe)=>{
+      const family=recipeFamily(r);
+      return today.reduce((s,m)=>s+(m.family===family?250:0),0)+history.reduce((s,day,index)=>{
+        const age=history.length-index;
+        return s+day.reduce((cost,m)=>cost+(m.name===r.name?(age===1?10000:age<=7?1000:10):0)+(age===1&&m.family===family?100:0),0);
+      },0);
+    };
+    rotated.sort((a,b)=>score(a)-score(b));
+    const recipe=rotated[0];used.add(recipe.name);today.push({name:recipe.name,family:recipeFamily(recipe)});return recipe;
   });
   if(selected.some(r=>r===null))return null;
   const meals = selected.map((selectedRecipe, i) => {
@@ -97,7 +128,7 @@ export function recommendMeals(profile: BodyProfile, diet: DietPreferences, vari
     const ratio = Math.max(0.5,Math.min(slot==='breakfast'?1.2:1.35,(slot==='breakfast'?Math.min(450,target):target)/base));
     const ingredients = recipe.ingredients.map(([food,g]) => ({name:foods[food][0],grams:Math.round(g*ratio),unit:food==='milk'?'mL':'g',food,product:productFor(food)?{id:productFor(food)!.id,name:productFor(food)!.name,url:productFor(food)!.productUrl}:null}));
     const sum = (index: 1|2|3|4) => Math.round(ingredients.reduce((total,item) => total + nutrient(item.food,index)*item.grams/100,0));
-    return {...recipe,ingredients,kcal:sum(1),protein:sum(2),carbs:sum(3),fat:sum(4),slot,label:slot==='breakfast'?'아침':slot==='lunch'?'점심':'저녁',time:clockTime(times[i])};
+    return {...recipe,family:recipeFamily(recipe),ingredients,kcal:sum(1),protein:sum(2),carbs:sum(3),fat:sum(4),slot,label:slot==='breakfast'?'아침':slot==='lunch'?'점심':'저녁',time:clockTime(times[i])};
   });
   return {version:2,target:energy.daily, meals,total:meals.reduce((s,m)=>s+m.kcal,0),protein:meals.reduce((s,m)=>s+m.protein,0),end:clockTime(diet.start+windowHours)};
 }
