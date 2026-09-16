@@ -1,5 +1,7 @@
 'use client';
 import Link from 'next/link';
+import {usePathname} from 'next/navigation';
+import {addDays} from '../lib/dashboard';
 import {useEffect,useState} from 'react';
 import type {DayPlan,ingredientBasket} from '../lib/monthly-plan';
 import {shoppingSearchLinks} from '../lib/catalog';
@@ -18,13 +20,14 @@ function IngredientRows({items,onOwned,disabled=false}:{items:Items;onOwned?:(fo
  </article>)}</div>;
 }
 export function MonthlyPlanner({userId,onLogin,mode='calendar'}:{userId?:string;onLogin:()=>void;mode?:'calendar'|'cart'}){
+ const weekly=usePathname()==='/calendar/week';
  const [month,setMonth]=useState(thisMonth),[plan,setPlan]=useState<Plan|null>(null),[cart,setCart]=useState<Basket|null>(null),[budget,setBudget]=useState<number|null>(null);
  const [date,setDate]=useState(''),[busy,setBusy]=useState(false),[loading,setLoading]=useState(true),[error,setError]=useState(''),[message,setMessage]=useState(''),[revision,setRevision]=useState(0),[replace,setReplace]=useState(false);
  useEffect(()=>{
   if(!userId)return;
   const controller=new AbortController();
   fetch(mode==='cart'?'/api/monthly-plan?basket=1':`/api/monthly-plan?month=${month}`,{cache:'no-store',signal:controller.signal}).then(async r=>{const d=await r.json();if(!r.ok)throw new Error(d.error);return d;}).then(d=>{
-   if(mode==='cart')setCart(d.basket);else{setPlan(d.plan);setBudget(d.budget);setDate(current=>current.startsWith(month)?current:`${month}-01`);}setError('');
+   if(mode==='cart')setCart(d.basket);else{setPlan(d.plan);setBudget(d.budget);setDate(current=>current.startsWith(month)?current:month===thisMonth()?new Date(Date.now()+9*3600000).toISOString().slice(0,10):`${month}-01`);}setError('');
   }).catch(e=>{if(!controller.signal.aborted)setError(e.message);}).finally(()=>{if(!controller.signal.aborted)setLoading(false);});
   return()=>controller.abort();
  },[userId,month,mode,revision]);
@@ -37,9 +40,12 @@ export function MonthlyPlanner({userId,onLogin,mode='calendar'}:{userId?:string;
  const chosen=plan?.days.find(d=>d.date===date),items=mode==='cart'?cart?.items:plan?.items;
  const total=items?.reduce((sum,r)=>sum+(r.cost??0),0)??0,unknown=items?.filter(r=>!r.have&&r.cost===null).length??0;
  const end=new Date(`${date||month+'-01'}T00:00:00Z`);end.setUTCDate(end.getUTCDate()+6);const last=new Date(Number(month.slice(0,4)),Number(month.slice(5,7)),0).getDate();
+ const weekStart=addDays(date||month+'-01',-((new Date(`${date||month+'-01'}T00:00:00Z`).getUTCDay()+6)%7));
+ const visibleDays=plan?.days.filter(d=>!weekly||(d.date>=weekStart&&d.date<addDays(weekStart,7)))??[];
  const rangeEnd=end.toISOString().slice(0,7)===month?end.toISOString().slice(0,10):`${month}-${last}`;
- return <section className="monthly-planner" aria-label={mode==='cart'?'식단에서 담은 장보기':'월간 식단 달력'}>
-  <h2>{mode==='cart'?'식단에서 담은 장보기':'한 달 식단 달력'}</h2>
+ return <section className="monthly-planner" aria-label={mode==='cart'?'식단에서 담은 장보기':weekly?'주간 식단':'월간 식단 달력'}>
+  <h2>{mode==='cart'?'식단에서 담은 장보기':weekly?'이번 주 식단':'한 달 식단 달력'}</h2>
+  {mode==='calendar'&&<nav className="meal-period-links" aria-label="식단 기간별 보기"><Link href="/calendar/week" aria-current={weekly?'page':undefined}>주간 보기</Link><Link href="/calendar" aria-current={!weekly?'page':undefined}>월간 보기</Link></nav>}
   {!userId?<><p>로그인하면 내 설정으로 월간 식단과 장보기 목록을 저장할 수 있어요.</p><button className="primary-button" onClick={onLogin}>로그인하기</button></>:<>
    {mode==='calendar'&&<><label className="real-date">계획할 달<input type="month" min="2000-01" max="2099-12" value={month} disabled={busy} onChange={e=>{if(e.target.value){setMonth(e.target.value);setPlan(null);setLoading(true);setReplace(false);setMessage('');}}}/></label><p className="body-note">마이에 저장한 식사 횟수·시간·제외 재료를 반영해요. 제공 메뉴 수에 따라 같은 메뉴가 반복될 수 있어요.</p><Link href="/profile#profile-settings">신체 정보·식단 취향 설정 →</Link></>}
    {loading?<p role="status">저장된 내용을 불러오는 중이에요.</p>:mode==='calendar'?<>
@@ -48,7 +54,8 @@ export function MonthlyPlanner({userId,onLogin,mode='calendar'}:{userId?:string;
     {!plan?<button className="primary-button" disabled={busy||!!error} onClick={()=>act('generate')}>{busy?'식단 만드는 중…':'이달 식단 만들기'}</button>:<>
      <button className="text-link" disabled={busy} onClick={()=>setReplace(!replace)}>설정 반영해 한 달 다시 만들기</button>
      {replace&&<div className="meal-notice">수정한 메뉴가 현재 마이 설정으로 바뀝니다.<button disabled={busy} onClick={()=>act('generate',{replace:true})}>다시 만들기</button><button onClick={()=>setReplace(false)}>취소</button></div>}
-     <div className="month-meal-grid">{['월','화','수','목','금','토','일'].map(x=><span key={x}>{x}</span>)}{Array.from({length:(new Date(`${month}-01T00:00:00Z`).getUTCDay()+6)%7},(_,i)=><span key={`blank-${i}`}/>)}{plan.days.map(day=><button key={day.date} aria-pressed={date===day.date} onClick={()=>setDate(day.date)}><b>{Number(day.date.slice(-2))}</b><small>{day.recommendation.meals.length}끼</small></button>)}</div>
+     {weekly&&<><div className="meal-period-links"><button disabled={busy} onClick={()=>{const next=addDays(weekStart,-7);setDate(next);if(next.slice(0,7)!==month){setMonth(next.slice(0,7));setPlan(null);setLoading(true);}}}>← 이전 주</button><span>{weekStart} ~ {addDays(weekStart,6)}</span><button disabled={busy} onClick={()=>{const next=addDays(weekStart,7);setDate(next);if(next.slice(0,7)!==month){setMonth(next.slice(0,7));setPlan(null);setLoading(true);}}}>다음 주 →</button></div><p className="body-note">선택한 달에 속한 날짜를 표시해요. 월을 넘는 날짜는 계획할 달을 변경해 확인하세요.</p>{visibleDays.map(day=><article className="personal-meal-card" key={day.date}><strong>{day.date}</strong><ul>{day.recommendation.meals.map((meal,i)=><li key={i}>{meal.label} · {meal.name}</li>)}</ul><button onClick={()=>setDate(day.date)}>이날 재료·조리법 보기</button></article>)}</>}
+     <div className="month-meal-grid">{['월','화','수','목','금','토','일'].map(x=><span key={x}>{x}</span>)}{Array.from({length:(new Date(`${visibleDays[0]?.date??month+'-01'}T00:00:00Z`).getUTCDay()+6)%7},(_,i)=><span key={`blank-${i}`}/>)}{visibleDays.map(day=><button key={day.date} aria-pressed={date===day.date} onClick={()=>setDate(day.date)}><b>{Number(day.date.slice(-2))}</b><small>{day.recommendation.meals.length}끼</small></button>)}</div>
      {chosen&&<><h3>{date} 식단</h3>{chosen.recommendation.meals.map((meal,index)=><article className="personal-meal-card" key={`${date}-${index}`}><small>{meal.label} · {meal.time}</small><h4>{meal.emoji} {meal.name}</h4><p>예상 {meal.kcal} kcal · 단백질 {meal.protein}g</p><ul>{meal.ingredients.map(i=><li key={i.food}>{i.name} <b>{i.grams}g</b></li>)}</ul><p>{meal.tip}</p><button disabled={busy} onClick={()=>act('swap',{date,index})}>이 끼니 다른 메뉴로</button></article>)}</>}
      <div className="meal-notice"><strong>{date} ~ {rangeEnd} 장보기</strong><p>선택일부터 7일, 월말까지의 재료를 합산해요.</p><button className="primary-button" disabled={busy} onClick={()=>act('basket',{start:date})}>이 기간 재료 모두 장바구니에 담기</button><Link href="/cart">장보기 목록 열기 →</Link></div>
      <details><summary>한 달에 필요한 전체 재료</summary><IngredientRows items={plan.items}/></details>
