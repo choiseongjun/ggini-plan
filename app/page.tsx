@@ -164,7 +164,7 @@ export default function Home() {
     {savingBudget && <AppLoading message="이번 주 예산을 저장하고 있어요"/>}
     <aside className="promo-panel" aria-label="끼니플랜 서비스 소개"><div className="promo-inner">
       <div className="promo-top"><Brand light/><span>MY WEEK, MY TABLE</span></div>
-      <div className="promo-copy"><div className="eyebrow">혼자 사는 한 주도 잘 먹기 위한 계획</div><h1>장보기부터 식단까지,<br/><em>가볍게 챙겨요.</em></h1><p>내 예산에 맞는 장바구니를 만들고<br/>매일 뭘 먹을지 달력에서 확인해요.<br/>바쁜 일상에도 내 끼니는 놓치지 않게.</p><div className="promo-rule"><span>내 예산에 맞게</span><span>매일 맛있게</span><span>다음 주는 더 쉽게</span></div></div>
+      <div className="promo-copy"><div className="eyebrow">혼자 사는 한 주도 잘 먹기 위한 계획</div><h1>장보기부터 식단까지,<br/><em>가볍게 챙겨요.</em></h1><p>냉동식품부터 밀키트까지 골라<br/>일주일 살 것과 먹을 순서를 정해요.<br/>바쁜 일상에도 내 끼니는 놓치지 않게.</p><div className="promo-rule"><span>내 예산에 맞게</span><span>매일 맛있게</span><span>다음 주는 더 쉽게</span></div></div>
       <div className="promo-playground"><span className="promo-sticker sticker-one">잘 먹고 🥄</span><span className="promo-sticker sticker-two">조금씩 아끼고 🌱</span><div className="promo-buddy-circle"><RiceBuddy/></div><span className="promo-veggie veggie-one">🥦</span><span className="promo-veggie veggie-two">🍅</span><div className="promo-character-caption">밥 친구 끼니랑, 매일 한 끼씩.</div></div>
       <div className="promo-footer"><span>© 끼니플랜</span><span>GOOD FOOD, GOOD WEEK</span></div>
     </div></aside>
@@ -180,10 +180,10 @@ export default function Home() {
         {(tab==="home"||tab==="cart"||tab==="compare") && catalogError && <p className="auth-error" role="alert">{catalogError}</p>}
         {(tab==="home"||tab==="cart") && catalogLoaded && !catalogError && products.length===0 && <p className="body-note">등록된 상품이 없습니다.</p>}
         {tab==="compare" && catalogLoaded && !catalogError && !compareProduct && <p className="body-note">상품을 찾을 수 없습니다.</p>}
-        {(tab === "home" || tab === "record") && dashboard && <Dashboard key={`${authUser?.id??"guest"}-${tab}`} mode={tab} data={dashboard} userId={authUser?.id} products={products} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")} onCalendar={()=>setTab("calendar")} onBudget={editBudget} onRefresh={refreshDashboard} onCompare={openCompare}/>}
+        {tab === "record" && dashboard && <Dashboard key={`${authUser?.id??"guest"}-${tab}`} mode={tab} data={dashboard} userId={authUser?.id} products={products} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")} onCalendar={()=>setTab("calendar")} onBudget={editBudget} onRefresh={refreshDashboard} onCompare={openCompare}/>}
         {tab === "calendar" && <><MonthlyPlanner key={`month-${authUser?.id??"guest"}`} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/>{dashboard&&<details><summary>지출 기록·기존 하루 식단 보기</summary><Dashboard key={`${authUser?.id??"guest"}-calendar`} mode="calendar" data={dashboard} userId={authUser?.id} products={products} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")} onCalendar={()=>setTab("calendar")} onBudget={editBudget} onRefresh={refreshDashboard} onCompare={openCompare}/></details>}</>}
         {tab === "cart" && <>
-          <MonthlyPlanner key={`ingredients-${authUser?.id??"guest"}`} mode="cart" userId={authUser?.id} onLogin={()=>setShowAuth(true)}/>
+          <ShoppingPlanner mode="cart" userId={authUser?.id} onLogin={()=>setShowAuth(true)}/><details><summary>직접 요리할 식단의 재료 보기</summary><MonthlyPlanner key={`ingredients-${authUser?.id??"guest"}`} mode="cart" userId={authUser?.id} onLogin={()=>setShowAuth(true)}/></details>
           <SharedBasket key={authUser?.id ?? "guest"} userId={authUser?.id} onCompare={openCompare}/>
           <div className="page-intro"><div className="week-label"><Icon name="bag" size={15}/> 판매 상품 카탈로그</div><h2>식탁을 채울 <span>장바구니</span></h2><p>식재료와 밀키트, 냉동식품을 눌러 가격과 영양 정보를 확인해 보세요.</p></div>
           <div className="list-heading"><h3>등록된 식재료 <span>{weeklyProducts.length}</span></h3><small>눌러서 판매처 비교</small></div>
@@ -209,7 +209,7 @@ export default function Home() {
           <p className="compare-disclaimer">비교 결과의 상품 용량, 배송비, 할인 조건은 판매처마다 달라질 수 있습니다. 결제 전 상품 상세 정보를 확인하세요.</p>
         </>}
         {tab === "community" && <CommunityPanel key={authUser?.id ?? "guest"} userId={authUser?.id} products={products} budget={budget} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")}/>}
-        {tab === "profile" && <><BudgetSettings key={`budget-${authUser?.id ?? "guest"}`} data={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)} onRefresh={refreshDashboard}/><BodyProfilePanel key={authUser?.id ?? "guest"} userId={authUser?.id} name={displayName} onLogin={() => setShowAuth(true)}/></> }
+        {tab === "profile" && <><BudgetSettings key={`budget-${authUser?.id ?? "guest"}`} data={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)} onRefresh={refreshDashboard}/><section className="home-guide-entry"><strong>이번 주 구매 계획</strong><p>예산과 챙길 끼니만 고르면 시작할 수 있어요.</p><Link href="/">이번 주 살 것 추천받기 →</Link></section><details><summary>직접 요리하는 식단·신체 정보 (선택)</summary><BodyProfilePanel key={authUser?.id ?? "guest"} userId={authUser?.id} name={displayName} onLogin={() => setShowAuth(true)}/></details></> }
       </div>
       <nav className="bottom-nav" aria-label="앱 메뉴">{([ ["home","홈","home"], ["calendar","달력","calendar"], ["cart","장바구니","bag"], ["record","기록","chart"], ["community","함께","spark"], ["profile","마이","user"] ] as [Tab,string,IconName][]).map(([key,label,icon]) => <button key={key} type="button" className={tab === key ? "active" : ""} onClick={() => setTab(key)} aria-current={tab === key ? "page" : undefined}><Icon name={icon} size={21}/><span>{label}</span></button>)}</nav>
       </>}
