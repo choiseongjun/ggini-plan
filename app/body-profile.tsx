@@ -1,5 +1,7 @@
 "use client";
 
+import { Checkbox } from "./components/checkbox";
+
 import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { activities, calorieEstimate, parseBodyProfile, type BodyProfile } from "../lib/body-profile";
@@ -128,7 +130,7 @@ export function BodyProfilePanel({ userId, name, onLogin, onSaved }: { userId?: 
           </div>)}
           <p className="body-note">레시피 재료와 등록 상품 정보를 기준으로 제외해요. 채소 구성이 불명확한 믹스는 선택한 채소가 포함될 수 있어 함께 제외해요. 알레르기가 있다면 제품 원재료·소스·제조시설 표시도 확인해 주세요.</p>
         </div>
-        <label className="body-checkbox"><input type="checkbox" checked={pregnancy} onChange={e => setPregnancy(e.target.checked)}/>임신 또는 수유 중이에요</label>
+        <label className="body-checkbox"><Checkbox checked={pregnancy} onChange={e => setPregnancy(e.target.checked)}/>임신 또는 수유 중이에요</label>
         <button className="primary-button" type="submit">{saving ? "저장하는 중…" : userId ? "내 정보 저장하고 상품 추천으로" : "로그인하고 내 정보 저장"}</button>
       </fieldset>
       {error && <p className="auth-error" role="alert">{error}</p>}

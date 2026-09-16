@@ -1,0 +1,3145 @@
+[
+  {
+    "id": "kurly-1000089155",
+    "expected": {
+      "id": "kurly-1000089155",
+      "name": "[온하루] 만둣국 키트 (2인분)",
+      "detail": "440g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1000089155",
+      "allergens": []
+    },
+    "allergens": [
+      "soy",
+      "wheat",
+      "beef",
+      "pork",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 밀, 돼지고기, 소고기, 조개류(굴) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1000089155",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20241024/gv30001603027_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1000124055",
+    "expected": {
+      "id": "kurly-1000124055",
+      "name": "[풀무원] 갈릭바베큐 볶음밥 (2개입)",
+      "detail": "420g (210g X 2개입) · 1개 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1000124055",
+      "allergens": []
+    },
+    "allergens": [
+      "soy",
+      "wheat",
+      "chicken",
+      "beef",
+      "pork",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 밀, 돼지고기, 닭고기, 쇠고기, 조개류(굴, 가리비) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1000124055",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230926/gv00000728900_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1000128435",
+    "expected": {
+      "id": "kurly-1000128435",
+      "name": "[조선호텔] 육개장 730g",
+      "detail": "730g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1000128435",
+      "allergens": []
+    },
+    "allergens": [
+      "soy",
+      "wheat",
+      "beef"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 밀, 쇠고기 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1000128435",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240118/gv10000794559_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1000144412",
+    "expected": {
+      "id": "kurly-1000144412",
+      "name": "[풀무원] 야채 꼬마김밥 KIT",
+      "detail": "124g · 1개 · 냉장",
+      "product_url": "https://www.kurly.com/goods/1000144412",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "shrimp",
+      "crab",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 밀, 우유, 계란, 게, 새우, 조개류(바지락) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1000144412",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250301/gv00001643066_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1000167771",
+    "expected": {
+      "id": "kurly-1000167771",
+      "name": "[하코야] 어니언 포크커리",
+      "detail": "200g · 1팩 · 상온",
+      "product_url": "https://www.kurly.com/goods/1000167771",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "pork",
+      "tomato",
+      "sulfites"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 밀, 알류(달걀), 우유, 토마토, 돼지고기, 닭고기, 이산화황(아황산류) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1000167771",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230503/gv10000693564_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1000235782",
+    "expected": {
+      "id": "kurly-1000235782",
+      "name": "[모두의맛집] 정호영 명란감자채 솥밥 도시락",
+      "detail": "283g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1000235782",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "chicken",
+      "fish",
+      "sesame"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "계란, 우유, 대두, 닭고기 함유",
+      "note": "원재료에 명태알, 참깨도 표시됨",
+      "sourceUrl": "https://www.kurly.com/goods/1000235782",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230811/gv00000716468_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1000235784",
+    "expected": {
+      "id": "kurly-1000235784",
+      "name": "[모두의맛집] 유현수 우엉 소불고기 솥밥 도시락",
+      "detail": "298g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1000235784",
+      "allergens": []
+    },
+    "allergens": [
+      "soy",
+      "wheat",
+      "beef",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 밀, 쇠고기, 조개류(굴) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1000235784",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230811/gv10000716470_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1000235786",
+    "expected": {
+      "id": "kurly-1000235786",
+      "name": "[모두의맛집] 오세득 소고기 가지 솥밥 도시락",
+      "detail": "345g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1000235786",
+      "allergens": []
+    },
+    "allergens": [
+      "soy",
+      "wheat",
+      "beef",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 밀, 쇠고기, 조개류(굴) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1000235786",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230811/gv40000716469_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1000270007",
+    "expected": {
+      "id": "kurly-1000270007",
+      "name": "[도리깨침] 월남쌈 밀키트 ",
+      "detail": "700g · 냉장",
+      "product_url": "https://www.kurly.com/goods/1000270007",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "soy",
+      "wheat",
+      "beef",
+      "shrimp",
+      "peanut",
+      "tomato"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "소고기, 계란, 대두, 밀, 새우, 땅콩, 토마토 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1000270007",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230915/gv30000726612_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1000272650",
+    "expected": {
+      "id": "kurly-1000272650",
+      "name": "[제주담음] 제주 흑돼지 카레",
+      "detail": "250g · 1개 · 상온",
+      "product_url": "https://www.kurly.com/goods/1000272650",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "beef",
+      "pork",
+      "tomato"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 밀, 쇠고기, 돼지고기, 토마토, 우유 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1000272650",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240802/gv00001539402_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1000315302",
+    "expected": {
+      "id": "kurly-1000315302",
+      "name": "[성수동 팩피 : FAGP] 감바스 파스타 ",
+      "detail": "321g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1000315302",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "beef",
+      "shrimp",
+      "shellfish",
+      "tomato"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 밀, 우유, 토마토, 쇠고기, 새우, 조개류(굴, 바지락) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1000315302",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20251024/gv20001739850_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1000342044",
+    "expected": {
+      "id": "kurly-1000342044",
+      "name": "[고래사] 어묵 떡볶이",
+      "detail": "520g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1000342044",
+      "allergens": []
+    },
+    "allergens": [
+      "soy",
+      "wheat",
+      "beef",
+      "shrimp",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 밀, 새우, 쇠고기, 조개류(굴, 바지락) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1000342044",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250708/gv30001661304_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1000347095",
+    "expected": {
+      "id": "kurly-1000347095",
+      "name": "[석관동 떡볶이] 국물 떡볶이",
+      "detail": "490g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1000347095",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "beef",
+      "shrimp",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 밀, 우유, 새우, 쇠고기, 조개류(굴, 홍합) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1000347095",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250122/gv00001636226_1.jpg",
+        "https://product-image.kurly.com/product/image/dd6cb39a-5f9b-4dc4-b47e-da5aab063a09.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1000347099",
+    "expected": {
+      "id": "kurly-1000347099",
+      "name": "[석관동 떡볶이] 치즈 쭈욱 떡볶이",
+      "detail": "420g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1000347099",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "beef",
+      "shrimp",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 밀, 우유, 새우, 쇠고기, 조개류(굴, 홍합) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1000347099",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260506/gv30001774726_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1000347344",
+    "expected": {
+      "id": "kurly-1000347344",
+      "name": "[햇반/쿡반] 만능계란볶음밥 400G",
+      "detail": "400g · 1개 (2봉) · 냉동",
+      "product_url": "https://www.kurly.com/goods/1000347344",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "beef",
+      "pork",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "계란, 대두, 우유, 조개류(굴), 밀, 닭고기, 돼지고기, 쇠고기 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1000347344",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20231214/gv20000786213_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1000347446",
+    "expected": {
+      "id": "kurly-1000347446",
+      "name": "[조선호텔] 게살볶음밥 420g",
+      "detail": "420g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1000347446",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "beef",
+      "crab",
+      "shellfish",
+      "tomato"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "알류(달걀), 우유, 대두, 밀, 게, 토마토, 닭고기, 쇠고기, 조개류 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1000347446",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20231218/gv10000786604_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1000357323",
+    "expected": {
+      "id": "kurly-1000357323",
+      "name": "[성수동 분식] 콘치즈 김치볶음밥(2개입)",
+      "detail": "580g · 1개(2팩) · 냉동",
+      "product_url": "https://www.kurly.com/goods/1000357323",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "beef",
+      "pork",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "우유, 대두, 밀, 돼지고기, 닭고기, 쇠고기, 계란, 조개류(굴) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1000357323",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240116/gv00000793835_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1000370851",
+    "expected": {
+      "id": "kurly-1000370851",
+      "name": "[소반옥] 왕갈비탕 1KG",
+      "detail": "1KG · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1000370851",
+      "allergens": []
+    },
+    "allergens": [
+      "soy",
+      "wheat",
+      "beef",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "쇠고기, 대두, 밀, 조개류(굴) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1000370851",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240125/gv20000796247_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1000527167",
+    "expected": {
+      "id": "kurly-1000527167",
+      "name": "[금룡각] 중화 간짜장볶음밥 (2개입)",
+      "detail": "660g · 2개(볶음밥 230g*2팩, 소스 100g*2팩) · 냉동",
+      "product_url": "https://www.kurly.com/goods/1000527167",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "beef",
+      "pork"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "달걀, 우유, 대두, 밀, 돼지고기, 닭고기, 쇠고기 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1000527167",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240529/gv10000863384_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1000552445",
+    "expected": {
+      "id": "kurly-1000552445",
+      "name": "[콜린스 다이닝] 전복솥밥 키트",
+      "detail": "500g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1000552445",
+      "allergens": []
+    },
+    "allergens": [
+      "soy",
+      "wheat",
+      "shrimp",
+      "squid",
+      "shellfish",
+      "sulfites"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 밀, 새우, 아황산류, 오징어, 조개류(굴, 전복, 바지락, 피뿔고둥) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1000552445",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20241224/gv40001627219_1.jpg",
+        "https://product-image.kurly.com/product/image/e7ad1104-87df-4128-a275-f786875cae8f.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1000659853",
+    "expected": {
+      "id": "kurly-1000659853",
+      "name": "[애슐리] 쉬림프 나시고렝 볶음밥 (2개입)",
+      "detail": "460g · 1개 (230g * 2팩) · 냉동",
+      "product_url": "https://www.kurly.com/goods/1000659853",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "beef",
+      "shrimp",
+      "tomato",
+      "sulfites"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "계란, 우유, 대두, 밀, 닭고기, 쇠고기, 이산화황, 새우, 토마토 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1000659853",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240722/gv30000945100_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1000660795",
+    "expected": {
+      "id": "kurly-1000660795",
+      "name": "[하림] The미식 춘천 닭갈비 볶음밥 2인분 (2개입)",
+      "detail": "420g · 2개 (210g * 2팩) · 냉동",
+      "product_url": "https://www.kurly.com/goods/1000660795",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "beef"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "우유, 대두, 밀, 닭고기, 쇠고기 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1000660795",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240731/gv00000949089_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1000756142",
+    "expected": {
+      "id": "kurly-1000756142",
+      "name": "[채선당] 소고기 버섯 샤브샤브 밀키트",
+      "detail": "784g · 1팩 · 냉장",
+      "product_url": "https://www.kurly.com/goods/1000756142",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "beef",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "우유, 대두, 밀, 쇠고기, 조개류(굴) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1000756142",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260105/gv20001743193_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1000765126",
+    "expected": {
+      "id": "kurly-1000765126",
+      "name": "[제일맞게컬리] 육즙+왕교자 만두 1.01kg",
+      "detail": "1.01kg · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1000765126",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "beef",
+      "pork"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "돼지고기, 밀, 대두, 계란, 닭고기, 쇠고기, 우유 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1000765126",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240912/gv10001557307_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1000951627",
+    "expected": {
+      "id": "kurly-1000951627",
+      "name": "[콜린스 다이닝] 투움바 파스타",
+      "detail": "420g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1000951627",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "shrimp",
+      "shellfish",
+      "tomato"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "토마토, 닭고기, 대두, 밀, 우유, 새우, 조개류(굴), 알류 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1000951627",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20241210/gv40001622568_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1001044520",
+    "expected": {
+      "id": "kurly-1001044520",
+      "name": "[풀무원] 참치&야채 볶음밥 (2개입)",
+      "detail": "400g · 1개 (200g * 2봉) · 냉동",
+      "product_url": "https://www.kurly.com/goods/1001044520",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "soy",
+      "wheat",
+      "shellfish",
+      "fish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 밀, 알류(달걀), 조개류(굴) 함유",
+      "note": "원재료에 가다랑어, 멸치 표시됨",
+      "sourceUrl": "https://www.kurly.com/goods/1001044520",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250106/gv40001631298_1.jpg",
+        "https://product-image.kurly.com/product/image/c84f0b95-791a-4d20-acdd-41e15bbb7079.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1001137181",
+    "expected": {
+      "id": "kurly-1001137181",
+      "name": "[하림] 안동식 찜닭 밀키트",
+      "detail": "1,403g · 1팩 · 냉장",
+      "product_url": "https://www.kurly.com/goods/1001137181",
+      "allergens": []
+    },
+    "allergens": [
+      "soy",
+      "wheat",
+      "chicken"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "닭고기, 대두, 밀 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1001137181",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/e1e40584-f111-465f-8a8f-75897952aabd.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1001205683",
+    "expected": {
+      "id": "kurly-1001205683",
+      "name": "[LOTS OF LOVE] 풍미듬뿍 명란 시래기 볶음밥",
+      "detail": "460g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1001205683",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "beef",
+      "fish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "계란, 우유, 대두, 밀, 쇠고기 함유",
+      "note": "원재료에 명태알 표시됨",
+      "sourceUrl": "https://www.kurly.com/goods/1001205683",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/17f2d7ca-74e9-4125-a804-32cf54f61c47.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1001230899",
+    "expected": {
+      "id": "kurly-1001230899",
+      "name": "[탄단지] 세끼 뚝딱 도시락 3종 세트 시즌2",
+      "detail": "605g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1001230899",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "beef",
+      "pork",
+      "shrimp",
+      "shellfish",
+      "tomato"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "알류, 우유, 대두, 밀, 닭고기, 돼지고기, 쇠고기, 조개류(굴), 새우, 토마토 함유",
+      "note": "3종 옵션의 함유 표시를 합산. 옵션별 실제 성분은 원문 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1001230899",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/b58d69ca-f416-4e96-ac15-73244799aca0.jpg",
+        "https://product-image.kurly.com/product/image/be9e451a-ccfe-41eb-89cd-5a9292d92a49.jpg",
+        "https://product-image.kurly.com/product/image/781ee331-7497-4423-939a-5f7253df8ef1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1001316382",
+    "expected": {
+      "id": "kurly-1001316382",
+      "name": "[Chai797] 시그니처 쇠고기 마늘 볶음밥",
+      "detail": "420g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1001316382",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "beef",
+      "pork",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "계란, 우유, 대두, 밀, 닭고기, 쇠고기, 돼지고기, 조개류(굴) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1001316382",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/fa80615f-4170-4917-a6c7-9167d26b607d.png"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1001320916",
+    "expected": {
+      "id": "kurly-1001320916",
+      "name": "[장터만두] 시장 고기 만두 840g",
+      "detail": "840g · 팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1001320916",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "beef",
+      "pork"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "알류(달걀), 대두, 밀, 우유, 돼지고기, 쇠고기 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1001320916",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/f685b291-3031-4cfe-94cf-38ce8711ab8e.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1001346328",
+    "expected": {
+      "id": "kurly-1001346328",
+      "name": "[애슐리] 해물 누룽지탕 밀키트",
+      "detail": "698g · 1팩 · 냉장",
+      "product_url": "https://www.kurly.com/goods/1001346328",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "soy",
+      "wheat",
+      "chicken",
+      "pork",
+      "shrimp",
+      "squid",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "알류(계란), 대두, 밀, 새우, 돼지고기, 닭고기, 오징어, 조개류(굴) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1001346328",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/c40f70a6-d799-4291-ab2a-f4f09097e8fb.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1001401863",
+    "expected": {
+      "id": "kurly-1001401863",
+      "name": "[차려낸] 국산 김치로 만든 김치볶음밥 (4개입)",
+      "detail": "920g (230g x 4팩) · 1팩 (4개입) · 냉동",
+      "product_url": "https://www.kurly.com/goods/1001401863",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "beef",
+      "shrimp",
+      "shellfish",
+      "peanut"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "우유, 대두, 밀, 새우, 땅콩, 쇠고기, 닭고기, 조개류(굴) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1001401863",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/38771a80-fab8-41be-876b-73787211a26e.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1001422945",
+    "expected": {
+      "id": "kurly-1001422945",
+      "name": "[미미네] 옛날 떡볶이",
+      "detail": "465g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1001422945",
+      "allergens": []
+    },
+    "allergens": [
+      "soy",
+      "wheat"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "밀, 대두 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1001422945",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/d42312dc-2a4c-4013-adfb-e93d1d9a43be.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1001487713",
+    "expected": {
+      "id": "kurly-1001487713",
+      "name": "[애슐리] 베이컨 투움바 빠네 파스타",
+      "detail": "600g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1001487713",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "beef",
+      "pork",
+      "shellfish",
+      "tomato"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 우유, 밀, 돼지고기, 달걀, 닭고기, 쇠고기, 조개류, 토마토 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1001487713",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/2a800e8e-bf45-4696-8c11-6f01279b6b7d.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1001502057",
+    "expected": {
+      "id": "kurly-1001502057",
+      "name": "[차려낸] 대파 풍미를 더한 새우볶음밥 (4개입)",
+      "detail": "920g (230g x 4개입) · 1팩 (4개입) · 냉동",
+      "product_url": "https://www.kurly.com/goods/1001502057",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "shrimp",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "알류(달걀), 우유, 대두, 밀, 새우, 조개류(굴) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1001502057",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/dc226174-6095-404e-96b0-90a262a6e71c.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1001505506",
+    "expected": {
+      "id": "kurly-1001505506",
+      "name": "[장터만두] 시장 김치 만두 840g",
+      "detail": "840g · 냉동",
+      "product_url": "https://www.kurly.com/goods/1001505506",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "beef",
+      "pork",
+      "shrimp"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "알류(달걀), 우유, 대두, 밀, 돼지고기, 쇠고기, 새우 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1001505506",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/785b0b02-fe36-4fa7-a634-3f8998592d19.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1001528218",
+    "expected": {
+      "id": "kurly-1001528218",
+      "name": "[김호윤키친] 더이탈리안클럽 화이트라구 파스타",
+      "detail": "355g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1001528218",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "beef",
+      "pork",
+      "sulfites"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "알류(계란), 우유, 대두, 밀, 돼지고기, 아황산류, 닭고기, 쇠고기 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1001528218",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/b1df91be-cab7-46ab-8430-19cdec210948.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1001591196",
+    "expected": {
+      "id": "kurly-1001591196",
+      "name": "[조선호텔] 삼선볶음밥 (2개입)",
+      "detail": "420g · 1팩 (2개입) · 냉동",
+      "product_url": "https://www.kurly.com/goods/1001591196",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "beef",
+      "shrimp",
+      "squid",
+      "shellfish",
+      "tomato"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "달걀, 대두, 우유, 밀, 쇠고기, 닭고기, 오징어, 토마토, 새우, 조개류 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1001591196",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/426f02ed-8bdb-47a4-8ff6-f08bddd20591.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1001740698",
+    "expected": {
+      "id": "kurly-1001740698",
+      "name": "[콜린스 다이닝] 바지락 술찜 파스타",
+      "detail": "827g · 1 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1001740698",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "beef",
+      "shrimp",
+      "crab",
+      "squid",
+      "shellfish",
+      "sulfites"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "조개류(바지락, 굴, 홍합), 대두, 밀, 계란, 닭고기, 쇠고기, 우유, 새우, 게, 오징어, 이산화황 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1001740698",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/f93266d3-88b4-4778-99e7-55d834d5e49d.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1001744099",
+    "expected": {
+      "id": "kurly-1001744099",
+      "name": "[오봉집] 곤드레 문어낙지 솥밥키트(밥 포함)",
+      "detail": "530g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1001744099",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "beef",
+      "shellfish",
+      "tomato"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 우유, 밀, 토마토, 쇠고기, 닭고기, 조개류 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1001744099",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/7ff63705-13b7-41dd-a032-fb3b82089fbc.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1001765937",
+    "expected": {
+      "id": "kurly-1001765937",
+      "name": "[바름팜] 수분 가득 프레시 가든 샐러드 150g",
+      "detail": "150g · 1팩 · 냉장",
+      "product_url": "https://www.kurly.com/goods/1001765937",
+      "allergens": []
+    },
+    "allergens": [],
+    "allergyInfo": {
+      "status": "unknown",
+      "statement": "",
+      "note": "표시사항에 제조시설 주의 문구만 있고 원재료 목록은 확인되지 않음",
+      "sourceUrl": "https://www.kurly.com/goods/1001765937",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/a881ad61-97dc-47bf-8432-a5be59267309.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1001770406",
+    "expected": {
+      "id": "kurly-1001770406",
+      "name": "[비쇼쿠] 고구마치즈 돈카츠 350g(냉동)",
+      "detail": "350g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1001770406",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "pork"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "돼지고기, 우유, 밀, 대두 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1001770406",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/7ad9636f-fbaa-48b3-bb77-5367e51aeec1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1001866269",
+    "expected": {
+      "id": "kurly-1001866269",
+      "name": "[채선당] 샤브샤브 밀키트(2인분)",
+      "detail": "955G · 1팩 · 냉장",
+      "product_url": "https://www.kurly.com/goods/1001866269",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "beef",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "우유, 대두, 밀, 쇠고기, 조개류(굴) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1001866269",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/cfee3489-7cb1-46ef-9e81-6c25f10455cb.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1002140529",
+    "expected": {
+      "id": "kurly-1002140529",
+      "name": "[생어거스틴] 나시고랭 볶음밥 (2개입)",
+      "detail": "470g · 1팩 (2개입) · 냉동",
+      "product_url": "https://www.kurly.com/goods/1002140529",
+      "allergens": []
+    },
+    "allergens": [
+      "soy",
+      "wheat",
+      "chicken",
+      "shrimp",
+      "crab",
+      "squid",
+      "shellfish",
+      "tomato",
+      "sulfites"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 밀, 닭고기, 게, 새우, 오징어, 아황산류, 토마토, 조개류(굴, 바지락) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1002140529",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/75d741b0-9afe-4a8e-8527-cc406a7a3722.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1002295972",
+    "expected": {
+      "id": "kurly-1002295972",
+      "name": "[조선호텔] 돈까스 320g",
+      "detail": "320g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1002295972",
+      "allergens": []
+    },
+    "allergens": [
+      "soy",
+      "wheat",
+      "beef",
+      "pork",
+      "shellfish",
+      "tomato",
+      "sulfites"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 밀, 돼지고기, 토마토, 아황산류, 쇠고기, 조개류(굴) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1002295972",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/12824ca7-37d1-4eb4-b8c3-12d3066b93bb.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1002380745",
+    "expected": {
+      "id": "kurly-1002380745",
+      "name": "[법송스님] 냉이두부전 밀키트",
+      "detail": "300g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1002380745",
+      "allergens": []
+    },
+    "allergens": [
+      "soy",
+      "wheat"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 밀 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1002380745",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/0b99ea81-ccee-4f39-8bc2-8eec6de90bcb.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1002430753",
+    "expected": {
+      "id": "kurly-1002430753",
+      "name": "[미즈컨테이너] 샐러드 파스타",
+      "detail": "300g · 1개 · 냉장",
+      "product_url": "https://www.kurly.com/goods/1002430753",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "shellfish",
+      "sulfites"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "계란, 대두, 밀, 우유, 굴, 이산화황 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1002430753",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/98e679d5-1144-497b-860c-9882abf678bf.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1002450519",
+    "expected": {
+      "id": "kurly-1002450519",
+      "name": "[장터만두] 알싸한 땡초고기 만두 840g",
+      "detail": "840g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1002450519",
+      "allergens": []
+    },
+    "allergens": [
+      "soy",
+      "wheat",
+      "chicken",
+      "beef",
+      "pork",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 밀, 돼지고기, 닭고기, 쇠고기, 조개류(굴) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1002450519",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/f4aeddaf-2e8f-4d55-af8c-11a82b2e9e4e.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1002491010",
+    "expected": {
+      "id": "kurly-1002491010",
+      "name": "[라운디] 시카고 모짜렐라 치즈 피자",
+      "detail": "330g · 1개 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1002491010",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "tomato"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "밀, 대두, 우유, 토마토, 닭고기 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1002491010",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/705664fe-573d-4980-ac5f-3b164f60bc5b.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1002491075",
+    "expected": {
+      "id": "kurly-1002491075",
+      "name": "[라운디] 시카고 베이컨 포테이토 피자",
+      "detail": "355g · 1개 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1002491075",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "pork",
+      "tomato"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "밀, 대두, 우유, 토마토, 닭고기, 돼지고기, 알류 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1002491075",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/80edb42b-a539-4b76-81a8-83f533c8937d.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5025689",
+    "expected": {
+      "id": "kurly-5025689",
+      "name": "[LOTS OF LOVE] 차돌듬뿍 묵은지 볶음밥",
+      "detail": "460g · 1PK · 냉동",
+      "product_url": "https://www.kurly.com/goods/5025689",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "beef"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "우유, 대두, 밀, 닭고기, 쇠고기 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5025689",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230111/gv20000476140_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5026468",
+    "expected": {
+      "id": "kurly-5026468",
+      "name": "[사미헌] 갈비탕",
+      "detail": "1KG · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/5026468",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "beef"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "소고기, 대두, 밀, 우유 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5026468",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20231222/gv00000788340_1.jpg",
+        "https://product-image.kurly.com/product/image/e5516380-f714-4d74-a33b-85d3a0b18c32.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5031704",
+    "expected": {
+      "id": "kurly-5031704",
+      "name": "[올반] 새우볶음밥 (4개입)",
+      "detail": "880g  · 1봉 (4인분) · 냉동",
+      "product_url": "https://www.kurly.com/goods/5031704",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "beef",
+      "pork",
+      "shrimp",
+      "crab"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "우유, 대두, 밀, 게, 새우, 돼지고기, 닭고기, 쇠고기 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5031704",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250305/gv10001643265_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5031706",
+    "expected": {
+      "id": "kurly-5031706",
+      "name": "[올반] 김치볶음밥 (2개입)",
+      "detail": "414g · 1봉 · 냉동",
+      "product_url": "https://www.kurly.com/goods/5031706",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "beef"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "우유, 대두, 밀, 닭고기, 쇠고기 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5031706",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250306/gv10001643689_1.jpg",
+        "https://product-image.kurly.com/product/image/de06d83d-79f5-4641-868a-b7c414bc3a8b.png"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5034225",
+    "expected": {
+      "id": "kurly-5034225",
+      "name": "[워커힐] 명월관 갈비탕",
+      "detail": "600g(1인분) · 1 팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/5034225",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "beef"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "우유, 대두, 밀, 쇠고기 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5034225",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260826/gv20001792639_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5035913",
+    "expected": {
+      "id": "kurly-5035913",
+      "name": "[진실된손맛] 뼈없는 인삼 갈비탕",
+      "detail": "700g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/5035913",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "beef"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "쇠고기, 대두, 밀, 우유 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5035913",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260609/gv20001788559_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5037568",
+    "expected": {
+      "id": "kurly-5037568",
+      "name": "[피코크] 진한 육개장",
+      "detail": "500g · 1개 · 냉장",
+      "product_url": "https://www.kurly.com/goods/5037568",
+      "allergens": []
+    },
+    "allergens": [
+      "soy",
+      "wheat",
+      "beef",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 밀, 쇠고기, 조개류 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5037568",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20231124/gv10000782166_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5041236",
+    "expected": {
+      "id": "kurly-5041236",
+      "name": "[고메] 통등심 돈카츠",
+      "detail": "450g · 1봉 · 냉동",
+      "product_url": "https://www.kurly.com/goods/5041236",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "pork"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "돼지고기, 밀, 대두, 우유, 달걀 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5041236",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240919/gv40001560215_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5041364",
+    "expected": {
+      "id": "kurly-5041364",
+      "name": "[팜에이트] 친환경 유러피안 샐러드 130g",
+      "detail": "130g · 1팩 · 냉장",
+      "product_url": "https://www.kurly.com/goods/5041364",
+      "allergens": []
+    },
+    "allergens": [],
+    "allergyInfo": {
+      "status": "ingredients",
+      "statement": "",
+      "note": "원재료: 버터헤드레터스, 카이피라, 이자트릭스, 스텔릭스. 별도 함유 문구 미표시; 알레르기 없음 보장 아님",
+      "sourceUrl": "https://www.kurly.com/goods/5041364",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230719/gv20000711861_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5044304",
+    "expected": {
+      "id": "kurly-5044304",
+      "name": "[톰볼라] 버섯 피자",
+      "detail": "425g · 1개  · 냉동",
+      "product_url": "https://www.kurly.com/goods/5044304",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "beef",
+      "pork",
+      "tomato"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "토마토, 우유, 대두, 밀, 계란, 돼지고기, 쇠고기 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5044304",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250220/gv30001641671_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5044756",
+    "expected": {
+      "id": "kurly-5044756",
+      "name": "[외할머니댁] 갈빗살 육개장 (2인분)",
+      "detail": "1,000g · 1팩  · 냉동",
+      "product_url": "https://www.kurly.com/goods/5044756",
+      "allergens": []
+    },
+    "allergens": [
+      "soy",
+      "wheat",
+      "chicken",
+      "beef",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "쇠고기, 닭고기, 대두, 밀, 조개류(굴) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5044756",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250109/gv30001632596_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5048681",
+    "expected": {
+      "id": "kurly-5048681",
+      "name": "[우주인피자] 허니 고르곤졸라",
+      "detail": "338g · 1개 · 냉동",
+      "product_url": "https://www.kurly.com/goods/5048681",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "beef"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "밀, 우유, 계란, 대두, 쇠고기 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5048681",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260319/gv20001772597_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5048683",
+    "expected": {
+      "id": "kurly-5048683",
+      "name": "[우주인피자] 마르게리따",
+      "detail": "290g · 1개 · 냉동",
+      "product_url": "https://www.kurly.com/goods/5048683",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "wheat",
+      "tomato"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "밀, 토마토, 우유 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5048683",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250704/gv30001660578_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5050472",
+    "expected": {
+      "id": "kurly-5050472",
+      "name": "[하림] 태양초 닭볶음탕 밀키트",
+      "detail": "1055g · 1팩 · 냉장",
+      "product_url": "https://www.kurly.com/goods/5050472",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "beef",
+      "tomato"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "닭고기, 대두, 밀, 우유, 쇠고기, 토마토 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5050472",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20231215/gv20000786476_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5050475",
+    "expected": {
+      "id": "kurly-5050475",
+      "name": "[하림] 닭한마리 칼국수 밀키트",
+      "detail": "1175g · 1팩 · 냉장",
+      "product_url": "https://www.kurly.com/goods/5050475",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "beef",
+      "pork",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "닭고기, 알류, 우유, 대두, 밀, 돼지고기, 쇠고기, 조개류(바지락, 모시조개) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5050475",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240125/gv30000796293_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5051186",
+    "expected": {
+      "id": "kurly-5051186",
+      "name": "[강남면옥] 갈비탕",
+      "detail": "1kg · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/5051186",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "beef"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 밀, 우유, 소고기 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5051186",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240314/gv00000805900_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5053110",
+    "expected": {
+      "id": "kurly-5053110",
+      "name": "[KART] 버섯 비프 카레",
+      "detail": "150g · 1봉 · 상온",
+      "product_url": "https://www.kurly.com/goods/5053110",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "beef",
+      "pork",
+      "shellfish",
+      "tomato"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "계란, 우유, 대두, 밀, 돼지고기, 토마토, 닭고기, 쇠고기, 조개류(바지락, 모시조개) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5053110",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240806/gv20001540918_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5054455",
+    "expected": {
+      "id": "kurly-5054455",
+      "name": "[Kurly's] 물만두",
+      "detail": "800g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/5054455",
+      "allergens": []
+    },
+    "allergens": [
+      "soy",
+      "wheat",
+      "pork"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "돼지고기, 밀, 대두 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5054455",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230824/gv10000719811_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5054960",
+    "expected": {
+      "id": "kurly-5054960",
+      "name": "[Kurly's] 간편하게 바삭, 통등심 돈까스",
+      "detail": "270g(135g*2ea) · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/5054960",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "beef",
+      "pork"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "돼지고기, 밀, 대두, 우유, 쇠고기 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5054960",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260311/gv20001772384_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5062673",
+    "expected": {
+      "id": "kurly-5062673",
+      "name": "[저스트그린] 모짜렐라치즈 과일 샐러드",
+      "detail": "210g · 1팩 · 냉장",
+      "product_url": "https://www.kurly.com/goods/5062673",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "nuts",
+      "tomato",
+      "sulfites"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 우유, 아황산류, 토마토 함유",
+      "note": "원재료에 피칸 표시됨",
+      "sourceUrl": "https://www.kurly.com/goods/5062673",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250703/gv00001660542_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5066066",
+    "expected": {
+      "id": "kurly-5066066",
+      "name": "[황생가] 고기왕만두",
+      "detail": "420g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/5066066",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "beef",
+      "pork"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "알류(달걀), 우유, 대두, 밀, 돼지고기, 쇠고기 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5066066",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250214/gv00001640651_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5068190",
+    "expected": {
+      "id": "kurly-5068190",
+      "name": "[Kurly's] 김치 왕만두 (1,050g/지퍼백)",
+      "detail": "1,050g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/5068190",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "beef",
+      "pork",
+      "shrimp"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "우유, 대두, 밀, 새우, 돼지고기, 쇠고기 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5068190",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20221031/gv00000441960_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5072939",
+    "expected": {
+      "id": "kurly-5072939",
+      "name": "[모노키친] 롱롱 돈까스",
+      "detail": "320g · 1개 · 냉동",
+      "product_url": "https://www.kurly.com/goods/5072939",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "pork"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "돼지고기, 대두, 밀, 난류(알류), 우유 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5072939",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250218/gv40001641268_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5082274",
+    "expected": {
+      "id": "kurly-5082274",
+      "name": "[비비고] 왕교자 만두 대용량 1.05kg",
+      "detail": "1050g · 1봉 · 냉동",
+      "product_url": "https://www.kurly.com/goods/5082274",
+      "allergens": []
+    },
+    "allergens": [
+      "soy",
+      "wheat",
+      "beef",
+      "pork",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "밀, 돼지고기, 대두, 쇠고기, 조개류(굴) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5082274",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250922/gv30001664857_1.jpg",
+        "https://product-image.kurly.com/product/image/cca3c412-651c-4596-aaf9-fc5576d2e91f.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5082275",
+    "expected": {
+      "id": "kurly-5082275",
+      "name": "[비비고] 김치 왕교자 만두 대용량 1.05kg",
+      "detail": "1050g · 1봉 · 냉동",
+      "product_url": "https://www.kurly.com/goods/5082275",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "soy",
+      "wheat",
+      "beef",
+      "pork",
+      "shrimp",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "계란, 돼지고기, 밀, 대두, 쇠고기, 새우, 조개류(굴) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5082275",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250708/gv10001661290_1.jpg",
+        "https://product-image.kurly.com/product/image/dba7de9b-85c2-442d-8860-92b5b0f8a47c.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5095179",
+    "expected": {
+      "id": "kurly-5095179",
+      "name": "[풀무원] 정통 순두부찌개 KIT",
+      "detail": "602g · 1팩 · 냉장",
+      "product_url": "https://www.kurly.com/goods/5095179",
+      "allergens": []
+    },
+    "allergens": [
+      "soy",
+      "wheat",
+      "beef",
+      "pork",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 밀, 돼지고기, 쇠고기, 조개류(바지락) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5095179",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230208/gv10000488158_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5095180",
+    "expected": {
+      "id": "kurly-5095180",
+      "name": "[풀무원] 얼큰 순두부찌개 KIT",
+      "detail": "600g · 1팩 · 냉장",
+      "product_url": "https://www.kurly.com/goods/5095180",
+      "allergens": []
+    },
+    "allergens": [
+      "soy",
+      "wheat",
+      "beef",
+      "pork",
+      "shrimp",
+      "squid",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 밀, 돼지고기, 쇠고기, 오징어, 새우, 조개류(바지락, 홍합) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5095180",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230206/gv10000485456_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5095789",
+    "expected": {
+      "id": "kurly-5095789",
+      "name": "[하코야] 와카메 어묵탕 전골 KIT",
+      "detail": "709g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/5095789",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "우유, 계란, 대두, 밀 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5095789",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250121/gv30001635704_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5097307",
+    "expected": {
+      "id": "kurly-5097307",
+      "name": "[엄마밥상] 대파 육개장",
+      "detail": "600g · 1개 · 냉동",
+      "product_url": "https://www.kurly.com/goods/5097307",
+      "allergens": []
+    },
+    "allergens": [
+      "soy",
+      "wheat",
+      "chicken",
+      "beef",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "쇠고기, 닭고기, 대두, 밀, 조개류(굴) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5097307",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230313/gv40000500377_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5099160",
+    "expected": {
+      "id": "kurly-5099160",
+      "name": "[LITTLENECK] 리틀넥 스테이크 키트",
+      "detail": "340g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/5099160",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "beef"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "소고기, 대두, 밀, 우유, 계란, 닭고기, 쇠고기 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5099160",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20241024/gv10001603003_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5100788",
+    "expected": {
+      "id": "kurly-5100788",
+      "name": "[마이셰프] 소고기 샤브샤브 밀키트 3~4인분(고기350g)",
+      "detail": "1,215g · 1 팩 · 냉장",
+      "product_url": "https://www.kurly.com/goods/5100788",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "beef",
+      "fish",
+      "sulfites"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "알류(계란), 우유, 대두, 밀, 고등어, 아황산류, 쇠고기 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5100788",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230718/gv40000711635_1.jpg",
+        "https://product-image.kurly.com/product/image/bfebdab0-8d9f-4471-8808-6228c728c4bd.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5116396",
+    "expected": {
+      "id": "kurly-5116396",
+      "name": "[김구원선생] 두부 된장찌개 밀키트",
+      "detail": "356g · 1팩 · 냉장",
+      "product_url": "https://www.kurly.com/goods/5116396",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "beef",
+      "shrimp",
+      "tomato"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 소고기, 밀, 새우, 토마토, 우유 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5116396",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20231219/gv40000787133_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5119349",
+    "expected": {
+      "id": "kurly-5119349",
+      "name": "[오마뎅] 진짜 부산 떡볶이 352g",
+      "detail": "352g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/5119349",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "beef",
+      "shrimp",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 밀, 우유, 새우, 쇠고기, 조개류(굴, 홍합) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5119349",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240108/gv30000791557_1.jpg",
+        "https://product-image.kurly.com/product/image/661e767a-de24-413d-9848-f0df1741e08f.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5128143",
+    "expected": {
+      "id": "kurly-5128143",
+      "name": "[홍익궁중전통] 육개장 (2인분)",
+      "detail": "750g · 냉동",
+      "product_url": "https://www.kurly.com/goods/5128143",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "beef"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "소고기, 대두, 밀, 우유, 계란 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5128143",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250110/gv30001632649_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5131316",
+    "expected": {
+      "id": "kurly-5131316",
+      "name": "[수린] 1++ 한우 사골 솥밥 밀키트 (2인분)",
+      "detail": "685g · 1팩 · 냉장",
+      "product_url": "https://www.kurly.com/goods/5131316",
+      "allergens": []
+    },
+    "allergens": [
+      "soy",
+      "wheat",
+      "beef"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 밀, 쇠고기 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5131316",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250702/gv30001660431_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5131431",
+    "expected": {
+      "id": "kurly-5131431",
+      "name": "[방방곡곡] 비빔국수 키트 (2인분)",
+      "detail": "872g · 1팩 · 냉장",
+      "product_url": "https://www.kurly.com/goods/5131431",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "beef"
+    ],
+    "allergyInfo": {
+      "status": "partial",
+      "statement": "대두, 밀, 쇠고기, 우유 함유",
+      "note": "판매 페이지에 서로 다른 제조사 라벨 2종이 있어 합산. 수령 제품 확인 필요",
+      "sourceUrl": "https://www.kurly.com/goods/5131431",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20241231/gv30001629523_1.jpg",
+        "https://product-image.kurly.com/product/image/124c8387-95a6-49ee-8c48-68d3e53f41b6.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5132849",
+    "expected": {
+      "id": "kurly-5132849",
+      "name": "[닥터로빈] 저당 단호박 크림스프 밀키트 (리뉴얼)",
+      "detail": "550g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/5132849",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "밀, 대두, 우유, 계란 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5132849",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250704/gv40001660572_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5138703",
+    "expected": {
+      "id": "kurly-5138703",
+      "name": "[풀무원] 식물성 지구식단 제육철판볶음밥 2인분",
+      "detail": "420g · 1개 · 냉동",
+      "product_url": "https://www.kurly.com/goods/5138703",
+      "allergens": []
+    },
+    "allergens": [
+      "soy",
+      "wheat"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 밀 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5138703",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20231024/gv10000772923_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5155567",
+    "expected": {
+      "id": "kurly-5155567",
+      "name": "[하남돼지집] 철판삼겹살마무리볶음밥 4입",
+      "detail": "920g · 1팩(230g*4개입) · 냉동",
+      "product_url": "https://www.kurly.com/goods/5155567",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "beef",
+      "pork",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "돼지고기, 대두, 밀, 우유, 쇠고기, 닭고기, 조개류(굴) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5155567",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20220812/gv20000408348_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5155568",
+    "expected": {
+      "id": "kurly-5155568",
+      "name": "[유노추보] 와규스테이크볶음밥 4입",
+      "detail": "920g · 1팩(230g*4개입) · 냉동",
+      "product_url": "https://www.kurly.com/goods/5155568",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "beef",
+      "pork"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "쇠고기, 돼지고기, 대두, 밀, 우유 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5155568",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20220812/gv20000408343_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "banana",
+    "expected": {
+      "id": "banana",
+      "name": "[KF365] 실속 바나나",
+      "detail": "1kg 내외 · 원산지 선택",
+      "product_url": "https://www.kurly.com/goods/1001872242",
+      "allergens": []
+    },
+    "allergens": [
+      "banana"
+    ],
+    "allergyInfo": {
+      "status": "ingredients",
+      "statement": "바나나 (원재료 확인)",
+      "note": "단일 농산물 바나나 확인. 별도 알레르기 함유·교차접촉 문구 미확인",
+      "sourceUrl": "https://www.kurly.com/goods/1001872242",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/abc0e607-ef34-42e1-9a62-566c00723a06.jpg",
+        "https://product-image.kurly.com/product/image/9379158e-57d6-4120-8b0a-300c9cdb36f4.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "chicken",
+    "expected": {
+      "id": "chicken",
+      "name": "[모두의식단] 냉장 닭가슴살",
+      "detail": "100g · 맛/수량 선택",
+      "product_url": "https://www.kurly.com/goods/1001384157",
+      "allergens": [
+        "chicken",
+        "soy",
+        "milk"
+      ]
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "chicken"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "닭고기, 대두, 우유 함유",
+      "note": "오리지널·블랙페퍼 라벨 확인. 판매 페이지의 맛/수량 옵션은 수령 제품 표시사항 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1001384157",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/411c098c-f294-4f7f-89c1-b4b5ab7992d8.jpg",
+        "https://product-image.kurly.com/product/image/d0d03e99-53b4-408b-bc14-95b12a2573a1.jpg",
+        "https://product-image.kurly.com/product/image/32db4f72-f527-412a-bbe9-010361001722.jpg",
+        "https://product-image.kurly.com/product/image/dcfa72e7-163f-4167-a7f1-01ab125b122c.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "eggs",
+    "expected": {
+      "id": "eggs",
+      "name": "[KF365] 무항생제 달걀 L(대란)",
+      "detail": "20구 · 1팩",
+      "product_url": "https://www.kurly.com/goods/1000179412",
+      "allergens": [
+        "egg"
+      ]
+    },
+    "allergens": [
+      "egg"
+    ],
+    "allergyInfo": {
+      "status": "ingredients",
+      "statement": "계란 (원재료 확인)",
+      "note": "식용란 단일 원재료 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1000179412",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240425/gv00000819375_1.jpg",
+        "https://product-image.kurly.com/product/image/84863839-7286-41b1-bdca-62611330c5b6.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "tofu",
+    "expected": {
+      "id": "tofu",
+      "name": "[Kurly’s] 국산콩 두부",
+      "detail": "300g × 1팩",
+      "product_url": "https://www.kurly.com/goods/5053329",
+      "allergens": [
+        "soy"
+      ]
+    },
+    "allergens": [
+      "soy"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5053329",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240126/gv40000796768_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "meal-kit-kimchi-stew",
+    "expected": {
+      "id": "meal-kit-kimchi-stew",
+      "name": "[마이셰프] 묵은지 김치찌개 밀키트",
+      "detail": "755g · 2인분",
+      "product_url": "https://www.kurly.com/goods/1000136401",
+      "allergens": [
+        "egg",
+        "soy",
+        "wheat",
+        "chicken"
+      ]
+    },
+    "allergens": [
+      "egg",
+      "soy",
+      "wheat",
+      "chicken",
+      "beef",
+      "pork",
+      "shrimp",
+      "crab",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "알류(계란), 대두, 밀, 게, 새우, 돼지고기, 닭고기, 쇠고기, 조개류(굴, 홍합, 바지락) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1000136401",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260206/gv30001762101_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1000085902",
+    "expected": {
+      "id": "kurly-1000085902",
+      "name": "[LITTLENECK] 리틀넥 비프 머쉬룸 리조또",
+      "detail": "480g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1000085902",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "chicken",
+      "beef"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 우유, 계란, 닭고기, 소고기 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1000085902",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240129/gv10000797489_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1000430679",
+    "expected": {
+      "id": "kurly-1000430679",
+      "name": "[본죽] 소고기버섯죽",
+      "detail": "270g · 1개 · 냉장",
+      "product_url": "https://www.kurly.com/goods/1000430679",
+      "allergens": []
+    },
+    "allergens": [
+      "soy",
+      "wheat",
+      "beef"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "쇠고기, 대두, 밀 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1000430679",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240415/gv20000815902_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1000956905",
+    "expected": {
+      "id": "kurly-1000956905",
+      "name": "[베키아에누보] 바질토마토치즈 치아바타 샌드위치 (3입)",
+      "detail": "555g · 1팩 (3입) · 냉동",
+      "product_url": "https://www.kurly.com/goods/1000956905",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "beef",
+      "tomato"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "달걀, 우유, 대두, 밀, 토마토, 쇠고기 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1000956905",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260227/gv00001771697_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1001793482",
+    "expected": {
+      "id": "kurly-1001793482",
+      "name": "[차려낸] 크림 소스가 진한 트러플크림리조또",
+      "detail": "360g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1001793482",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "chicken"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "우유, 대두, 밀, 닭고기 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1001793482",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/7e1510e5-31f1-47e1-883b-54d0ac1a9a41.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1002066866",
+    "expected": {
+      "id": "kurly-1002066866",
+      "name": "[니뽕내뽕] 크림불고기리조또",
+      "detail": "440g · 1팩  · 냉동",
+      "product_url": "https://www.kurly.com/goods/1002066866",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "beef",
+      "pork",
+      "shellfish",
+      "tomato"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 우유, 밀, 돼지고기, 토마토, 쇠고기, 닭고기, 조개류(굴, 홍합, 바지락, 모시조개) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1002066866",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/22b0acd5-52fe-4d3d-b3d7-eebb2d60e9f6.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1002115423",
+    "expected": {
+      "id": "kurly-1002115423",
+      "name": "[김호윤키친] 더이탈리안클럽 게살 로제 리조또",
+      "detail": "430g · 1팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1002115423",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy",
+      "wheat",
+      "chicken",
+      "shrimp",
+      "crab",
+      "squid",
+      "shellfish",
+      "tomato",
+      "sulfites"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "우유, 대두, 밀, 게, 새우, 토마토, 아황산류, 닭고기, 오징어, 조개류(바지락, 굴, 홍합) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1002115423",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/c651354d-d402-4b88-8c27-f6dcf4728825.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5011223",
+    "expected": {
+      "id": "kurly-5011223",
+      "name": "[섬죽] 닭녹두죽",
+      "detail": "300g · 1팩 · 냉장",
+      "product_url": "https://www.kurly.com/goods/5011223",
+      "allergens": []
+    },
+    "allergens": [
+      "wheat",
+      "chicken"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "닭고기, 밀 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5011223",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240617/gv30000928264_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5011225",
+    "expected": {
+      "id": "kurly-5011225",
+      "name": "[섬죽] 소고기 야채죽",
+      "detail": "300g · 1팩 · 냉장",
+      "product_url": "https://www.kurly.com/goods/5011225",
+      "allergens": []
+    },
+    "allergens": [
+      "wheat",
+      "beef"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "쇠고기, 밀 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5011225",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240617/gv20000928265_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5011229",
+    "expected": {
+      "id": "kurly-5011229",
+      "name": "[섬죽] 전복죽",
+      "detail": "300g · 1팩 · 냉장",
+      "product_url": "https://www.kurly.com/goods/5011229",
+      "allergens": []
+    },
+    "allergens": [
+      "wheat",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "조개류(전복), 밀 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5011229",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240617/gv40000928266_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5036742",
+    "expected": {
+      "id": "kurly-5036742",
+      "name": "[아침엔본죽] 호박죽",
+      "detail": "270g · 1팩 · 냉장",
+      "product_url": "https://www.kurly.com/goods/5036742",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "soy"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "우유, 대두 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5036742",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20231226/gv20000788688_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5040715",
+    "expected": {
+      "id": "kurly-5040715",
+      "name": "[아침엔본죽] 누룽지 닭죽",
+      "detail": "270g · 1팩 · 냉장",
+      "product_url": "https://www.kurly.com/goods/5040715",
+      "allergens": []
+    },
+    "allergens": [
+      "soy",
+      "wheat",
+      "chicken",
+      "beef"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 밀, 닭고기, 쇠고기 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5040715",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20231226/gv40000788650_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5067010",
+    "expected": {
+      "id": "kurly-5067010",
+      "name": "[블랑제리코팡] 바게트 샌드위치",
+      "detail": "200g · 1개 · 냉장",
+      "product_url": "https://www.kurly.com/goods/5067010",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "wheat",
+      "pork"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "돼지고기, 계란, 우유, 밀 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5067010",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250421/gv30001648295_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5141864",
+    "expected": {
+      "id": "kurly-5141864",
+      "name": "[아침엔본죽] 전복죽",
+      "detail": "271.5g · 1개 · 냉장",
+      "product_url": "https://www.kurly.com/goods/5141864",
+      "allergens": []
+    },
+    "allergens": [
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "조개류 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5141864",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240415/gv40000815962_1.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-5161538",
+    "expected": {
+      "id": "kurly-5161538",
+      "name": "[소금집] 잠봉뵈르 샌드위치 ",
+      "detail": "145g · 1개 · 냉장",
+      "product_url": "https://www.kurly.com/goods/5161538",
+      "allergens": []
+    },
+    "allergens": [
+      "milk",
+      "wheat",
+      "pork"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "우유, 돼지고기, 밀 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/5161538",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240510/gv10000856597_1.jpg",
+        "https://product-image.kurly.com/product/image/28bb9c3b-8bb0-43a6-8055-c6215d052b8f.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1002062294",
+    "expected": {
+      "id": "kurly-1002062294",
+      "name": "[풀무원] 바지락순두부찌개KIT 602g",
+      "detail": "602g · 1팩 · 냉장",
+      "product_url": "https://www.kurly.com/goods/1002062294",
+      "allergens": []
+    },
+    "allergens": [
+      "soy",
+      "wheat",
+      "pork",
+      "shrimp",
+      "crab",
+      "shellfish"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "대두, 밀, 돼지고기, 게, 새우, 조개류(바지락) 함유",
+      "note": "",
+      "sourceUrl": "https://www.kurly.com/goods/1002062294",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/3f646d42-235e-4eff-a47a-659e2d898c11.jpg"
+      ],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "kurly-1002042275",
+    "expected": {
+      "id": "kurly-1002042275",
+      "name": "[비비고] 365 교자만두287g*2",
+      "detail": "287g*2 · 팩 · 냉동",
+      "product_url": "https://www.kurly.com/goods/1002042275",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "milk",
+      "soy",
+      "wheat",
+      "beef",
+      "pork"
+    ],
+    "allergyInfo": {
+      "status": "verified",
+      "statement": "밀, 대두, 돼지고기, 쇠고기, 우유, 계란 함유",
+      "note": "컬리 상품정보 고시 및 SSG 판매 표시사항 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1002042275",
+      "evidenceUrls": [],
+      "crossContactNote": "새우, 오징어, 메밀, 땅콩, 토마토, 고등어, 게, 복숭아, 아황산류, 호두, 닭고기, 조개류(굴, 전복, 홍합), 잣 혼입 가능"
+    }
+  },
+  {
+    "id": "rice",
+    "expected": {
+      "id": "rice",
+      "name": "햇반 발아현미밥",
+      "detail": "210g × 1개",
+      "product_url": "https://www.cjthemarket.com/the/product/product-main?prdCd=40119245",
+      "allergens": []
+    },
+    "allergens": [
+      "rice"
+    ],
+    "allergyInfo": {
+      "status": "ingredients",
+      "statement": "쌀 (원재료 확인)",
+      "note": "원재료 표시는 발아현미·멥쌀·쌀미강추출물. 별도 알레르기 함유 문구 미확인",
+      "sourceUrl": "https://www.elandmall.co.kr/i/item?itemNo=2112035190",
+      "evidenceUrls": [],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  },
+  {
+    "id": "frozen-shrimp-fried-rice",
+    "expected": {
+      "id": "frozen-shrimp-fried-rice",
+      "name": "햇반 새우 볶음밥",
+      "detail": "420g · 냉동",
+      "product_url": "https://www.cjthemarket.com/the/product/product-main?prdCd=40164886",
+      "allergens": []
+    },
+    "allergens": [
+      "egg",
+      "soy",
+      "shrimp"
+    ],
+    "allergyInfo": {
+      "status": "partial",
+      "statement": "새우, 계란, 대두 함유",
+      "note": "판매 원재료에서 확인된 성분만 등록. 소스의 전체 함유 표시 미확인",
+      "sourceUrl": "https://m.shinsegaetvshopping.com/display/detail/48365577?category_code=20100240",
+      "evidenceUrls": [],
+      "crossContactNote": "제조시설·혼입 가능성 목록은 별도 확인 필요. 함유 성분 목록만으로 섭취 안전을 판단하지 마세요. 원문 표시사항과 수령한 포장지를 확인하세요."
+    }
+  }
+]

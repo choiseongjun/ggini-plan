@@ -150,6 +150,7 @@ ALTER TABLE catalog_items ADD COLUMN IF NOT EXISTS color TEXT NOT NULL DEFAULT '
 ALTER TABLE catalog_items ADD COLUMN IF NOT EXISTS price_checked_at TIMESTAMPTZ;
 ALTER TABLE catalog_items ADD COLUMN IF NOT EXISTS price_note TEXT;
 ALTER TABLE catalog_items ADD COLUMN IF NOT EXISTS allergens TEXT[] NOT NULL DEFAULT '{}';
+ALTER TABLE catalog_items ADD COLUMN IF NOT EXISTS allergy_info JSONB;
 ALTER TABLE catalog_items ADD COLUMN IF NOT EXISTS category TEXT NOT NULL DEFAULT 'ingredient' CHECK(category IN ('ingredient','meal_kit','frozen_meal','ready_meal','other'));
 ALTER TABLE catalog_items ADD COLUMN IF NOT EXISTS in_weekly_cart BOOLEAN NOT NULL DEFAULT TRUE;
 ALTER TABLE catalog_items ADD COLUMN IF NOT EXISTS product_image_url TEXT CHECK (product_image_url IS NULL OR product_image_url ~ '^https://');
@@ -219,4 +220,30 @@ CREATE TABLE IF NOT EXISTS shopping_preferences (
  user_id BIGINT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
  conditions JSONB NOT NULL,
  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS submissions (
+ id UUID PRIMARY KEY,
+ user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+ payload JSONB NOT NULL CHECK(jsonb_typeof(payload)='object'),
+ status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending','approved','needs_changes','rejected')),
+ review_note TEXT NOT NULL DEFAULT '',
+ photo_path TEXT,
+ version INTEGER NOT NULL DEFAULT 1,
+ catalog_id TEXT REFERENCES catalog_items(id) ON DELETE SET NULL,
+ reviewed_by BIGINT REFERENCES users(id) ON DELETE SET NULL,
+ reviewed_at TIMESTAMPTZ,
+ created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+ updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS submissions_owner_idx ON submissions(user_id,created_at DESC);
+CREATE INDEX IF NOT EXISTS submissions_status_idx ON submissions(status,created_at DESC);
+
+CREATE TABLE IF NOT EXISTS shopping_progress (
+ user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+ scope TEXT NOT NULL CHECK(scope IN ('products','ingredients')),
+ stock JSONB NOT NULL DEFAULT '{}' CHECK(jsonb_typeof(stock)='object'),
+ version INTEGER NOT NULL DEFAULT 1,
+ updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+ PRIMARY KEY(user_id,scope)
 );

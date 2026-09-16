@@ -3,6 +3,7 @@ import { sessionUser, sameOrigin, authFailure } from '../../../lib/auth';
 import { getPool } from '../../../lib/db';
 import { planProducts } from '../../../lib/shopping-plan-catalog';
 import { parseConditions, validMealIds, basketTotal } from '../../../lib/shopping-plan';
+import {parseStock} from '../../../lib/shopping-progress';
 import {personalizeProducts} from '../../../lib/shopping-personalization';
 async function personalizedCatalog(userId?:string){
  const row=userId?(await getPool().query('SELECT height::float8,weight::float8,age,sex,activity,meals,pregnancy,diet_preferences FROM body_profiles WHERE user_id=$1',[userId])).rows[0]:null;
@@ -29,7 +30,7 @@ export async function PUT(request:NextRequest){
   let input;try{input=await request.json();}catch{return authFailure('입력을 확인해 주세요.',400);}
   const conditions=parseConditions(input?.conditions);
   if(!conditions)return authFailure('예산과 챙길 끼니를 확인해 주세요.',400);
-  conditions.owned=[];
+  conditions.owned=[];delete conditions.supply;
   await getPool().query('INSERT INTO shopping_preferences(user_id,conditions) VALUES($1,$2) ON CONFLICT(user_id) DO UPDATE SET conditions=EXCLUDED.conditions,updated_at=NOW()',[user.id,JSON.stringify(conditions)]);
   return json({saved:true,conditions});
  }catch{return authFailure('장보기 설정을 저장하지 못했어요. 다시 시도해 주세요.',503);}
@@ -43,8 +44,10 @@ export async function POST(request:NextRequest){
   if(!c||!Array.isArray(ids)||ids.length!==c.meals||ids.some(id=>typeof id!=='string'))return authFailure('식단 설정을 확인해 주세요.',400);
   const personalized=await personalizedCatalog(user.id);
   if(personalized.personalization.blocked)return authFailure('현재 신체 정보에서는 자동 맞춤 추천을 제공하지 않아요.',422);
+  const stock=parseStock((await getPool().query("SELECT stock FROM shopping_progress WHERE user_id=$1 AND scope='products'",[user.id])).rows[0]?.stock??{})??{};
+  c.supply=Object.fromEntries(Object.values(stock).map(i=>[i.id,i.owned+i.ordered]));
   const products=personalized.products;
-  if(!validMealIds(ids,products,c)||basketTotal(ids,products,c.owned)>c.budget)return authFailure('상품 또는 가격이 변경됐어요. 식단을 다시 추천받아 주세요.',409);
+  if(!validMealIds(ids,products,c)||basketTotal(ids,products,c.owned,c.supply)>c.budget)return authFailure('상품 또는 가격이 변경됐어요. 식단을 다시 추천받아 주세요.',409);
   await getPool().query('INSERT INTO shopping_plans(user_id,conditions,meal_ids) VALUES($1,$2,$3)',[user.id,JSON.stringify(c),JSON.stringify(ids)]);
   return json({saved:true},201);
  }catch{return authFailure('식단을 저장하지 못했어요. 잠시 후 다시 시도해 주세요.',503);}

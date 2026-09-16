@@ -1,0 +1,15 @@
+.control{position:relative;display:inline-flex;flex:0 0 26px;width:26px;height:26px;vertical-align:middle;isolation:isolate}
+.control .input{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;min-height:0!important;max-height:none!important;margin:0!important;padding:0!important;opacity:0;cursor:pointer;z-index:2}
+.mark{display:grid;place-items:center;width:26px;height:26px;box-sizing:border-box;border:1.5px solid #b9c7aa;border-radius:9px;background:#fffef8;box-shadow:0 2px 0 #dfe5d5;transition:background .16s,border-color .16s,transform .16s,box-shadow .16s;pointer-events:none}
+.mark svg{width:20px;height:20px;stroke:#fffef8;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;transform:scale(.55);opacity:0;transition:transform .18s,opacity .16s}
+.input:checked+.mark{background:#52764c;border-color:#52764c;box-shadow:0 2px 0 #385934}
+.input:checked+.mark svg{opacity:1;transform:scale(1)}
+.input:focus-visible+.mark{outline:3px solid #b17c49;outline-offset:4px}
+.input:active:not(:disabled)+.mark{transform:translateY(2px);box-shadow:none}
+.input:disabled+.mark{opacity:.45;box-shadow:none}
+.input:disabled{cursor:not-allowed}
+:global(label):has(>.control){display:flex;align-items:center;gap:10px;min-height:44px;box-sizing:border-box;padding:9px 12px;border:1px solid #e0e5d6;border-radius:15px;background:#fafbf5;color:#516044;cursor:pointer;line-height:1.45;transition:background .16s,border-color .16s}
+:global(label):has(>.control>.input:checked){background:#edf4e6;border-color:#b8cda7;color:#35552f}
+:global(label):has(>.control>.input:disabled){cursor:not-allowed}
+@media(hover:hover){:global(label):has(>.control>.input:not(:disabled)):hover{border-color:#9cb38c;background:#f1f6e9}}
+@media(prefers-reduced-motion:reduce){.mark,.mark svg,:global(label):has(>.control){transition:none}}

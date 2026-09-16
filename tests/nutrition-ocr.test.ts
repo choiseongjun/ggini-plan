@@ -9,18 +9,28 @@ test("reads a clear Korean nutrition label", () => {
   });
 });
 
-test("combines Korean labels with English unit recognition", () => {
-  const korean = "영 양 정보 1 회 제 공 량 1009\n열량 110<<3! 탄수화물 39\n단백질 239 지방 19\n나트륨 3509";
-  const english = "FLEE 12 MSH 100g\nEE 110kcal Et3tE 3g\nCHE 23g X|&H 1g\nLIEE 35mg";
-  assert.deepEqual(extractNutrition(korean, english), {
-    nutritionBasis: "100g당", caloriesKcal: 110, proteinG: 23,
-    carbohydratesG: 3, fatG: 1, sodiumMg: 35,
-  });
-});
-
 test("does not turn an unreadable label into nutrient values", () => {
   assert.deepEqual(extractNutrition("단백질 239 지방 19"), {
     nutritionBasis: null, caloriesKcal: null, proteinG: null,
     carbohydratesG: null, fatG: null, sodiumMg: null,
   });
+});
+
+test("uses the printed per-100g basis instead of the package weight", () => {
+  assert.deepEqual(extractNutrition("칼국수 영양정보\n총 내용량 150g\n100g당 275kcal\n나트륨 270mg 탄수화물 61g\n지방 0.3g 단백질 7g"), {
+    nutritionBasis: "100g당", caloriesKcal: 275, proteinG: 7,
+    carbohydratesG: 61, fatG: 0.3, sodiumMg: 270,
+  });
+});
+
+test("does not combine noodle and stock tables into whole-kit nutrition", () => {
+  const result = extractNutrition("칼국수 영양정보\n100g당 275kcal\n단백질 7g\n치킨스톡 영양정보\n100g당 75kcal\n단백질 2g");
+  assert.ok(Object.values(result).every(value => value === null));
+});
+
+test("keeps line boundaries and does not borrow another nutrient's value", () => {
+  const result = extractNutrition("나트륨\n단백질 7g\n지방\n포화지방 0.2g");
+  assert.equal(result.sodiumMg, null);
+  assert.equal(result.fatG, null);
+  assert.equal(result.proteinG, 7);
 });

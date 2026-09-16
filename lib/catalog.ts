@@ -28,6 +28,7 @@ export type CatalogItem = Product & {
   priceCheckedAt?: string | null;
   priceNote?: string | null;
   allergens?: string[];
+  allergyInfo?: import('./catalog-allergy').AllergyInfo | null;
   productUrl: string | null;
   nutritionSourceName: string | null;
   nutritionSourceUrl: string | null;

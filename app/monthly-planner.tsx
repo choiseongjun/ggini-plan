@@ -1,4 +1,6 @@
 'use client';
+
+import { Checkbox } from "./components/checkbox";
 import Link from 'next/link';
 import {usePathname} from 'next/navigation';
 import {addDays} from '../lib/dashboard';
@@ -7,6 +9,7 @@ import type {DayPlan,ingredientBasket} from '../lib/monthly-plan';
 import {shoppingSearchLinks} from '../lib/catalog';
 import {ProductThumb} from './product-thumb';
 import './monthly-planner.css';
+import {ShoppingProgress,useShoppingProgress} from './shopping-progress';
 type Items=ReturnType<typeof ingredientBasket>;
 type Plan={days:DayPlan[];items:Items};
 type Basket={month:string;start:string;end:string;owned:string[];items:Items};
@@ -16,10 +19,11 @@ function IngredientRows({items,onOwned,disabled=false}:{items:Items;onOwned?:(fo
  return <div className="ingredient-rows">{items.map(row=><article key={row.food}>
   <div className="ingredient-title">{row.product&&<ProductThumb item={row.product}/>}<div><strong>{row.name}</strong><span>필요량 {row.grams.toLocaleString('ko-KR')}{row.unit} · 레시피의 조리 상태 기준</span></div></div>
   {row.product?<><a href={row.product.productUrl!} target="_blank" rel="noopener noreferrer">{row.product.name} ↗</a><p>{row.product.detail}{row.packs!==null?` × ${row.packs}개 · ${won(row.cost??0)}`:' · 구매 수량 확인 필요'}</p>{row.leftGrams!==null&&<small>판매 묶음 기준 {row.leftGrams.toLocaleString('ko-KR')}g 남을 예정</small>}</>:<><p>상품 연결 필요 · 가격 미확인</p><a href={shoppingSearchLinks(row.name)[0].url} target="_blank" rel="noopener noreferrer">판매 상품 직접 검색 ↗</a></>}
-  {onOwned&&<label><input type="checkbox" checked={row.have} disabled={disabled} onChange={()=>onOwned(row.food)}/>필요한 양이 집에 있어요 · 구매에서 제외</label>}
+  {onOwned&&<label><Checkbox checked={row.have} disabled={disabled} onChange={()=>onOwned(row.food)}/>필요한 양이 집에 있어요 · 구매에서 제외</label>}
  </article>)}</div>;
 }
 export function MonthlyPlanner({userId,onLogin,mode='calendar'}:{userId?:string;onLogin:()=>void;mode?:'calendar'|'cart'}){
+ const progress=useShoppingProgress(userId,'ingredients');
  const [today]=useState(()=>new Date(Date.now()+9*3600000).toISOString().slice(0,10));
  const weekly=usePathname()==='/calendar/week';
  const [month,setMonth]=useState(thisMonth),[plan,setPlan]=useState<Plan|null>(null),[cart,setCart]=useState<Basket|null>(null),[budget,setBudget]=useState<number|null>(null);
@@ -69,7 +73,7 @@ export function MonthlyPlanner({userId,onLogin,mode='calendar'}:{userId?:string;
      <div className="meal-notice"><strong>{date} ~ {rangeEnd} 장보기</strong><p>선택일부터 7일, 월말까지의 재료를 합산해요.</p><button className="primary-button" disabled={busy} onClick={()=>act('basket',{start:date})}>이 기간 재료 모두 장바구니에 담기</button><Link href="/cart">장보기 목록 열기 →</Link></div>
      <details><summary>한 달에 필요한 전체 재료</summary><IngredientRows items={plan.items}/></details>
     </>}
-   </>:cart?<><p>{cart.start} ~ {cart.end} 식단 기준</p><strong>확인된 구매 금액 {won(total)}</strong><p className="body-note">{unknown?`미확인 재료 ${unknown}종의 비용과 배송비는 별도예요.`:'배송비는 별도예요.'} 이미 있는 재료는 필요한 양을 모두 보유한 경우 체크해 주세요.</p><IngredientRows items={cart.items} disabled={busy} onOwned={food=>act('owned',{owned:cart.owned.includes(food)?cart.owned.filter(x=>x!==food):[...cart.owned,food]})}/><p className="body-note">식단 메뉴가 바뀌면 필요량도 갱신돼요. 외부 쇼핑몰 구매는 각 상품 링크에서 진행해 주세요.</p><Link href="/calendar">기간·식단 변경하기 →</Link></>:<><p>아직 식단에서 담은 재료가 없어요.</p><Link href="/calendar">달력에서 이번 주 재료 담기 →</Link></>}
+   </>:cart?<><p>{cart.start} ~ {cart.end} 식단 기준</p><ShoppingProgress progress={progress} items={cart.items.map(r=>({id:r.food,name:r.name,unit:r.unit,required:r.have?0:Math.ceil(r.grams),url:r.product?.productUrl??shoppingSearchLinks(r.name)[0].url,price:r.packs!==null?r.product!.price:null,packSize:r.packs!==null?r.product!.quantity:undefined,detail:`필요량 ${r.grams.toLocaleString('ko-KR')}${r.unit} · 레시피의 조리 상태 기준${r.product?' · '+r.product.detail:''}${r.packs===null?' · 판매 수량·가격 확인 필요':''}`}))}/><details><summary>상품 정보·이전에 체크한 보유 재료</summary><IngredientRows items={cart.items} disabled={busy} onOwned={food=>act('owned',{owned:cart.owned.includes(food)?cart.owned.filter(x=>x!==food):[...cart.owned,food]})}/></details><Link href="/calendar">기간·식단 변경하기 →</Link></>:<><ShoppingProgress progress={progress} items={[]}/><p>아직 식단에서 담은 재료가 없어요.</p><Link href="/calendar">달력에서 이번 주 재료 담기 →</Link></>}
   </>}
   {error&&<p role="alert" className="auth-error">{error}{error.includes("마이")&&<Link href="/profile#profile-settings">신체 정보 설정으로 →</Link>}<button onClick={()=>{setLoading(true);setRevision(n=>n+1);}}>다시 불러오기</button></p>}{message&&<p role="status" className="body-success">{message}{message.includes('담았')&&<Link href="/cart"> 장보기 목록 열기 →</Link>}</p>}
  </section>;

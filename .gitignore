@@ -50,3 +50,6 @@ next-env.d.ts
 # Local product research; reviewed facts are in the versioned shopping manifest
 /data/shopping-source-research.json
 /data/shopping-label-research.json
+
+# Local nutrition research images, OCR, and before/after audit snapshots
+/data/nutrition-review/

@@ -3,7 +3,7 @@ import type { CatalogItem } from './catalog';
 export type PlanProduct = CatalogItem & { servings: number; servingGrams?:number; servingNote: string; avoidanceText: string | null; personalizationScore?:number; servingCalories?:number|null };
 export type MealSlot = 'breakfast'|'lunch'|'dinner';
 export const slotLabels={breakfast:'아침',lunch:'점심',dinner:'저녁'};
-export type PlanConditions = { budget: number; meals: number; cooking: 'quick' | 'kit' | 'all'; avoid: string; owned: string[]; days?:number; slots?:MealSlot[] };
+export type PlanConditions = { budget: number; meals: number; cooking: 'quick' | 'kit' | 'all'; avoid: string; owned: string[]; supply?:Record<string,number>; days?:number; slots?:MealSlot[] };
 export const initialConditions: PlanConditions = {budget:50000,meals:7,cooking:'all',avoid:'',owned:[],days:7,slots:['dinner']};
 export function mealSchedule(c:PlanConditions){
  const slots=c.slots??(c.meals>=10?['lunch','dinner'] as MealSlot[]:['dinner'] as MealSlot[]);
@@ -14,6 +14,7 @@ export function parseConditions(value: unknown): PlanConditions | null {
  const p=value as PlanConditions;
  if(!Number.isSafeInteger(p.budget)||p.budget<1000||p.budget>1000000||!Number.isInteger(p.meals)||p.meals<1||p.meals>21||!['quick','kit','all'].includes(p.cooking)||typeof p.avoid!=='string'||p.avoid.length>200||!Array.isArray(p.owned)||p.owned.length>100||p.owned.some(x=>typeof x!=='string'||x.length>100))return null;
  if(p.days!==undefined||p.slots!==undefined){if(![5,7].includes(p.days!)||!Array.isArray(p.slots)||!p.slots.length||p.slots.some(s=>!Object.hasOwn(slotLabels,s))||new Set(p.slots).size!==p.slots.length||p.meals!==p.days!*p.slots.length)return null;}
+ if(p.supply!==undefined&&(!p.supply||typeof p.supply!=='object'||Array.isArray(p.supply)||Object.keys(p.supply).length>300||Object.entries(p.supply).some(([id,n])=>!/^[a-zA-Z0-9_-]{1,100}$/.test(id)||!Number.isSafeInteger(n)||n<0||n>20000000)))return null;
  return {...p,owned:[...new Set(p.owned)]};
 }
 export function slotCandidates(products:PlanProduct[],c:PlanConditions,index:number){
@@ -26,24 +27,24 @@ export function candidates(products: PlanProduct[], c: PlanConditions) {
  const avoid=c.avoid.split(/[,，\n]/).map(x=>x.trim().toLowerCase()).filter(Boolean);
  return products.filter(p=>p.productUrl && p.price>0 && (c.cooking==='all'||(c.cooking==='kit'?p.category==='meal_kit':p.category!=='meal_kit')) && (!avoid.length || (p.avoidanceText!==null && !avoid.some(word=>(aliases[word]??[word]).some(a=>`${p.name} ${p.avoidanceText}`.toLowerCase().includes(a))))));
 }
-export function basket(ids: string[], products: PlanProduct[], owned: string[]) {
+export function basket(ids: string[], products: PlanProduct[], owned: string[], supply:Record<string,number>={}) {
  const counts=new Map<string,number>();
  ids.forEach(id=>counts.set(id,(counts.get(id)??0)+1));
  return [...counts].map(([id,uses])=>{
   const product=products.find(p=>p.id===id);
   if(!product)throw new Error('상품 정보가 변경됐어요. 식단을 다시 추천받아 주세요.');
   const packs=Math.ceil(uses/product.servings), have=owned.includes(id);
-  return {product,uses,packs,have,left: packs*product.servings-uses,cost:have?0:packs*product.price};
+  return {product,uses,packs,have,left: packs*product.servings-uses,cost:have?0:Math.max(0,packs-(supply[id]??0))*product.price};
  });
 }
-export const basketTotal=(ids:string[], products:PlanProduct[], owned:string[])=>basket(ids,products,owned).reduce((n,p)=>n+p.cost,0);
+export const basketTotal=(ids:string[], products:PlanProduct[], owned:string[],supply:Record<string,number>={})=>basket(ids,products,owned,supply).reduce((n,p)=>n+p.cost,0);
 export function recommendShopping(products: PlanProduct[], c: PlanConditions): string[] | null {
  const pool=candidates(products,c);
  let states: {ids:string[];cost:number;score:number}[]=[{ids:[],cost:0,score:0}];
  for(let i=0;i<c.meals;i++){
   const next=new Map<string,{ids:string[];cost:number;score:number}>();
   for(const state of states)for(const p of slotCandidates(pool,c,i)){
-   const ids=[...state.ids,p.id], rows=basket(ids,pool,c.owned), cost=rows.reduce((n,r)=>n+r.cost,0);
+   const ids=[...state.ids,p.id], rows=basket(ids,pool,c.owned,c.supply), cost=rows.reduce((n,r)=>n+r.cost,0);
    if(cost>c.budget)continue;
    const key=[...ids].sort().join('|');
    // Prefer variety while charging the full selling pack, including unused portions.
@@ -57,7 +58,7 @@ export function recommendShopping(products: PlanProduct[], c: PlanConditions): s
  return states[0]?.ids??null;
 }
 export function swapMeal(ids:string[], index:number, products:PlanProduct[], c:PlanConditions):string[]|null {
- const options=slotCandidates(products,c,index).filter(p=>p.id!==ids[index]).map(p=>ids.map((id,i)=>i===index?p.id:id)).filter(next=>basketTotal(next,products,c.owned)<=c.budget);
- options.sort((a,b)=>(products.find(p=>p.id===b[index])?.personalizationScore??0)-(products.find(p=>p.id===a[index])?.personalizationScore??0)||new Set(b).size-new Set(a).size||basketTotal(a,products,c.owned)-basketTotal(b,products,c.owned));
+ const options=slotCandidates(products,c,index).filter(p=>p.id!==ids[index]).map(p=>ids.map((id,i)=>i===index?p.id:id)).filter(next=>basketTotal(next,products,c.owned,c.supply)<=c.budget);
+ options.sort((a,b)=>(products.find(p=>p.id===b[index])?.personalizationScore??0)-(products.find(p=>p.id===a[index])?.personalizationScore??0)||new Set(b).size-new Set(a).size||basketTotal(a,products,c.owned,c.supply)-basketTotal(b,products,c.owned,c.supply));
  return options[0]??null;
 }
