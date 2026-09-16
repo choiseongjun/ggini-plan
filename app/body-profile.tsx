@@ -98,16 +98,13 @@ export function BodyProfilePanel({ userId, name, budget, onBudget, onLogin }: { 
 
   return <>
     <div className="page-intro"><div className="week-label">나를 조금 더 알아가는 시간</div><h2>{userId ? `${name}님의` : "나의"} <span>하루 에너지</span></h2><p>지금의 몸과 생활에 맞는 칼로리를 알아봐요.</p></div>
-    {userId && !loading && !loadError && !showPlan && <section className="personal-meal-card" aria-label="맞춤 추천 안내" aria-live="polite">
-      <h3>{!profile ? "맞춤 추천을 위해 신체 정보를 입력해 주세요" : pregnancy ? "현재는 자동 맞춤 추천을 제공하지 않아요" : "맞춤 식단을 만들어 주세요"}</h3>
-      <p className="body-note">{missingFields.length ? `아직 입력하지 않은 항목: ${missingFields.join(" · ")}. 아래 정보를 입력하고 ‘저장하고 맞춤 식단 보기’를 눌러 주세요.` : !profile ? "키·체중·나이의 입력 범위를 확인해 주세요. 모든 필수 항목이 입력되어야 맞춤 추천을 만들 수 있어요." : pregnancy ? "임신·수유 중에는 개인별 영양 상담이 필요해요." : storedPlan ? "변경한 설정으로 식단을 다시 만들면 추천이 표시돼요." : "신체 정보가 준비됐어요. 버튼을 누르면 선택한 취향에 맞는 식단을 만들어요."}</p>
-      {!profile ? <button type="button" className="text-link" onClick={focusProfile}>신체 정보 입력하기 →</button> : !pregnancy && <button type="button" className="primary-button" disabled={saving} onClick={()=>formRef.current?.requestSubmit()}>{saving?"맞춤 식단을 만드는 중…":"저장하고 맞춤 식단 보기"}</button>}
+    {!showPlan && <section className="personal-meal-card" aria-label="맞춤 추천 안내" aria-live="polite">
+      <h3>{loading ? "저장된 신체 정보를 확인하고 있어요" : loadError ? "신체 정보를 불러오지 못했어요" : !profile ? "맞춤 추천을 위해 신체 정보를 입력해 주세요" : pregnancy ? "현재는 자동 맞춤 추천을 제공하지 않아요" : "맞춤 식단을 만들어 주세요"}</h3>
+      <p className="body-note">{loading ? "확인이 끝나면 바로 아래 설정에서 정보를 입력할 수 있어요." : loadError ? "다시 불러오기를 눌러 저장된 정보를 확인해 주세요." : missingFields.length ? `아직 입력하지 않은 항목: ${missingFields.join(" · ")}. 아래 정보를 입력하고 ‘저장하고 맞춤 식단 보기’를 눌러 주세요.` : !profile ? "키·체중·나이의 입력 범위를 확인해 주세요. 모든 필수 항목이 입력되어야 맞춤 추천을 만들 수 있어요." : pregnancy ? "임신·수유 중에는 개인별 영양 상담이 필요해요." : storedPlan ? "변경한 설정으로 식단을 다시 만들면 추천이 표시돼요." : "신체 정보가 준비됐어요. 버튼을 누르면 선택한 취향에 맞는 식단을 만들어요."}</p>
+      {loadError ? <button type="button" className="primary-button" onClick={()=>window.location.reload()}>다시 불러오기</button> : !profile ? <button type="button" className="primary-button" disabled={loading} onClick={focusProfile}>신체 정보 설정으로 바로 가기 →</button> : !pregnancy && <button type="button" className="primary-button" disabled={saving} onClick={()=>formRef.current?.requestSubmit()}>{saving?"맞춤 식단을 만드는 중…":"저장하고 맞춤 식단 보기"}</button>}
     </section>}
-    <div className="body-buddy-banner"><RiceBuddy/><div><strong>나에게 딱 맞게, 무리하지 않게.</strong><span>하루에 필요한 에너지를 같이 살펴볼게요.</span></div></div>
-    <section className="calorie-hero" aria-label="하루 유지 칼로리"><span>평균 하루 필요량 · 체중 유지 기준</span><strong>{number(calories?.daily)} <small>kcal</small></strong><p>{calories ? "일상생활과 운동에 쓰는 에너지의 추정치예요." : pregnancy ? "임신·수유 중에는 개인별 영양 상담이 필요해요." : "아래 신체 정보를 입력하면 바로 계산해 드려요."}</p><div><span>한 끼 평균 · 하루 {meals}끼 기준</span><b>{number(calories?.perMeal)} kcal</b></div></section>
-    <div className="calorie-detail-grid"><article><span>기초대사량 참고값</span><strong>{number(calories?.resting)} <small>kcal</small></strong><p>휴식 상태의 에너지 소비량 추정</p></article><article><span>최소 섭취 칼로리</span><strong className="calorie-text">개인별 확인</strong><p>키와 체중만으로 안전한 최저 섭취량을 정할 수 없어요.</p></article></div>
-    <form ref={formRef} className="body-form" onSubmit={save} onChange={() => setMessage("")}>
-      <div className="section-heading"><div><span className="section-kicker">ABOUT ME</span><h3>내 신체 정보</h3></div><span className="body-auto">입력하면 자동 계산</span></div>
+    <form ref={formRef} id="profile-settings" className="body-form" onSubmit={save} onChange={() => setMessage("")}>
+      <div className="section-heading"><div><span className="section-kicker">ABOUT ME</span><h3>신체 정보 설정</h3></div><span className="body-auto">입력하면 자동 계산</span></div>
       {(loading||saving) && <AppLoading message={saving?"나에게 맞는 식단을 준비하고 있어요":"저장된 식단과 정보를 불러오는 중이에요"}/>}
       <fieldset disabled={loading || saving || loadError}>
         <div className="body-input-grid">
@@ -136,6 +133,10 @@ export function BodyProfilePanel({ userId, name, budget, onBudget, onLogin }: { 
       {!userId && <p className="body-note">로그인 없이 계산과 추천을 이용할 수 있어요.</p>}
       {!userId && <button type="button" className="text-link" onClick={onLogin}>로그인하기 →</button>}
     </form>
+    <div className="body-buddy-banner"><RiceBuddy/><div><strong>나에게 딱 맞게, 무리하지 않게.</strong><span>하루에 필요한 에너지를 같이 살펴볼게요.</span></div></div>
+    <section className="calorie-hero" aria-label="하루 유지 칼로리"><span>평균 하루 필요량 · 체중 유지 기준</span><strong>{number(calories?.daily)} <small>kcal</small></strong><p>{calories ? "일상생활과 운동에 쓰는 에너지의 추정치예요." : pregnancy ? "임신·수유 중에는 개인별 영양 상담이 필요해요." : "아래 신체 정보를 입력하면 바로 계산해 드려요."}</p><div><span>한 끼 평균 · 하루 {meals}끼 기준</span><b>{number(calories?.perMeal)} kcal</b></div></section>
+    <div className="calorie-detail-grid"><article><span>기초대사량 참고값</span><strong>{number(calories?.resting)} <small>kcal</small></strong><p>휴식 상태의 에너지 소비량 추정</p></article><article><span>최소 섭취 칼로리</span><strong className="calorie-text">개인별 확인</strong><p>키와 체중만으로 안전한 최저 섭취량을 정할 수 없어요.</p></article></div>
+
     {storedPlan && !planMatches && <p className="body-note">설정이 바뀌었어요. 위 버튼을 눌러 식단을 다시 만들어 주세요.</p>}
     {showPlan && <section className="personal-meals" aria-label="맞춤 식단 추천" aria-live="polite">
       <div className="section-heading"><div><span className="section-kicker">JUST FOR YOU</span><h3>나를 위한 하루 식단</h3></div><span className="personal-meal-badge">하루 {meals}끼</span></div>
