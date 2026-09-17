@@ -1,0 +1,5 @@
+node_modules/
+dist/
+.granite/
+*.ait
+release/test-qr.png

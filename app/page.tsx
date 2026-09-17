@@ -1,5 +1,6 @@
 "use client";
 
+import {LanguageSwitcher} from './language-switcher';
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -154,7 +155,7 @@ export default function Home() {
   return <AppShell>
     {savingBudget && <AppLoading message="이번 주 예산을 저장하고 있어요"/>}
       {showAuth ? <AuthScreen initialError={authError} onExplore={() => { setShowAuth(false); setAuthError(""); }} onSuccess={(user) => { setDashboard(null); setAuthUser(user); setAuthError(""); setShowAuth(false); setTab("home"); }}/> : <>
-      <header className="app-header"><Brand/><div className="app-header-actions"><Link href="/tw" className="logout-link" lang="zh-TW" aria-label="台灣版 · 繁體中文">台灣</Link>{authUser ? <button className="logout-link" type="button" onClick={signOut}>로그아웃</button> : <button className="logout-link" type="button" onClick={() => { setAuthError(""); setShowAuth(true); }}>로그인</button>}<button className="avatar" type="button" onClick={() => setTab("profile")} aria-label="내 정보 보기">{displayName.slice(0, 1)}</button></div></header>
+      <header className="app-header"><Brand/><div className="app-header-actions"><LanguageSwitcher market="KR"/>{authUser ? <button className="logout-link" type="button" onClick={signOut}>로그아웃</button> : <button className="logout-link" type="button" onClick={() => { setAuthError(""); setShowAuth(true); }}>로그인</button>}<button className="avatar" type="button" onClick={() => setTab("profile")} aria-label="내 정보 보기">{displayName.slice(0, 1)}</button></div></header>
       <div className="app-content" ref={contentRef}>
         {tab === "record" && <FoodIntake key={`intake-${authUser?.id??"guest"}-${tab}`} userId={authUser?.id} onLogin={()=>setShowAuth(true)} history={tab==="record"} recordDate={recordDate} onDateChange={setRecordDate}/>}
         {tab === "home" && <ShoppingPlanner key={`shopping-home-${authUser?.id??"guest"}`} dashboard={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/>}

@@ -1,6 +1,7 @@
 'use client';
 import {useEffect,useState,type ReactNode} from 'react';
 import Link from 'next/link';
+import {LanguageSwitcher} from '../language-switcher';
 import {usePathname,useRouter} from 'next/navigation';
 import {AppShell,Brand,Icon,type IconName} from '../app-shell';
 import {PlannerLocale} from '../planner-locale';
@@ -12,7 +13,7 @@ export default function RegionalHome({introduction}:{introduction?:ReactNode}){
  const [confirm,setConfirm]=useState(false);
  useEffect(()=>{const before=document.documentElement.lang;document.documentElement.lang='zh-TW';return()=>{document.documentElement.lang=before;};},[]);
  return <PlannerLocale value="TW"><AppShell>
-  <header className="app-header"><Brand/><div className="app-header-actions"><Link href={tab==='home'?'/':`/${tab}`} className="logout-link" lang="ko">한국</Link><span className="logout-link">台灣 · NT$</span></div></header>
+  <header className="app-header"><Brand/><div className="app-header-actions"><LanguageSwitcher market="TW"/></div></header>
   <div className="app-content">
    {tab==='home'&&introduction}
    {(tab==='home'||tab==='cart')&&<ShoppingPlanner key={tab} userId="tw-local" mode={tab==='cart'?'cart':'plan'} onLogin={()=>{}}/>}

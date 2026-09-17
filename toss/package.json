@@ -1,0 +1,9 @@
+{
+  "name": "kkiniplan-toss",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {"dev":"vite --host 0.0.0.0", "build":"vite build", "bundle":"ait build", "check":"tsc --noEmit"},
+  "dependencies": {"@apps-in-toss/web-framework":"3.4.1", "@toss/tds-mobile":"2.5.1", "@toss/tds-mobile-ait":"2.5.1", "@emotion/react":"^11.14.0", "react":"^18.3.1", "react-dom":"^18.3.1"},
+  "devDependencies": {"vite":"^6.4.1", "typescript":"^5", "@types/react":"^18", "@types/react-dom":"^18"}
+}
