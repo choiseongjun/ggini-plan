@@ -12,10 +12,14 @@ test('guest recommendation, authenticated save, account isolation and server val
  try{
   const response=await GET(req());assert.equal(response.status,200);const {products}=await response.json();assert.ok(products.length>0);
   const mealIds=recommendShopping(products,initialConditions)!;assert.equal(mealIds.length,initialConditions.meals);
-  const body={conditions:initialConditions,mealIds};assert.equal((await POST(req('',body))).status,401);
+  const body={conditions:{...initialConditions,startDate:'2026-09-17'},mealIds};assert.equal((await POST(req('',body))).status,401);
   for(let i=0;i<2;i++){const user=(await db.query<PublicUser>("INSERT INTO users(name,email) VALUES('장보기 기능 테스트',$1) RETURNING id::text,name,email",[`planner-${randomUUID()}@example.test`])).rows[0];ids.push(user.id);cookies.push(`${SESSION_COOKIE}=${(await createSession(user)).cookies.get(SESSION_COOKIE)!.value}`);}
   assert.equal((await POST(req(cookies[0],body))).status,201);
   assert.deepEqual((await(await GET(req(cookies[0],undefined,true))).json()).plan.mealIds,mealIds);
+  const homePlan=(await(await GET(req(cookies[0]))).json()).plan;
+  assert.deepEqual(homePlan.mealIds,mealIds);
+  assert.equal(homePlan.conditions.startDate,'2026-09-17');
+  assert.equal((await(await GET(req(cookies[1]))).json()).plan,null);
   assert.equal((await(await GET(req(cookies[1],undefined,true))).json()).plan,null);
   assert.equal((await PUT(req('',{conditions:initialConditions}))).status,401);
   const preferences={...initialConditions,budget:70000,days:5,slots:['lunch','dinner'],meals:10,owned:['temporary-stock']};

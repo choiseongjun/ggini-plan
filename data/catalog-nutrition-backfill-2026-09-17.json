@@ -156,6 +156,66 @@
       }
     },
     {
+      "id": "kurly-1000021640",
+      "name": "[하림] 치킨스테이크 다리살 320g",
+      "detail": "320g · 1팩 · 냉장",
+      "productUrl": "https://www.kurly.com/goods/1000021640",
+      "basis": "100g당",
+      "calories_kcal": 165,
+      "protein_g": 15,
+      "carbohydrates_g": 6,
+      "fat_g": 9,
+      "sodium_mg": 400,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1000021640",
+      "photoUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20231221/gv30000788009_1.jpg",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20231221/gv30000788009_1.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-1000047929",
+      "name": "[삼진어묵] 김치 우동 어묵 전골",
+      "detail": "620g · 1팩 · 냉동",
+      "productUrl": "https://www.kurly.com/goods/1000047929",
+      "basis": "620g당 (표시 구성품 합산)",
+      "calories_kcal": 825,
+      "protein_g": 32,
+      "carbohydrates_g": 129,
+      "fat_g": 21,
+      "sodium_mg": 4233,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1000047929",
+      "photoUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260129/gv10001744675_1.jpg",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260129/gv10001744675_1.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
       "id": "kurly-1000048437",
       "name": "[요이벤] 코코넛크림 치킨 카레",
       "detail": "150g · 1팩 · 상온",
@@ -443,6 +503,37 @@
       "photoUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250203/gv40001637569_1.jpg",
       "evidenceUrls": [
         "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250203/gv40001637569_1.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-1000114260",
+      "name": "[하이디라오] 훠궈소스 110g (마라맛 탕용)",
+      "detail": "110g · 1개 · 상온",
+      "productUrl": "https://www.kurly.com/goods/1000114260",
+      "basis": "110g당",
+      "calories_kcal": 748,
+      "protein_g": 3,
+      "carbohydrates_g": 13,
+      "fat_g": 76,
+      "sodium_mg": 3120,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1000114260",
+      "photoUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250203/gv20001637592_1.jpg",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250203/gv20001637592_1.jpg",
+        "https://product-image.kurly.com/product/image/291a5e53-5ddc-4d65-aca0-2c752782a04c.jpg"
       ],
       "expectedNutrition": {
         "calories_kcal": null,
@@ -2332,9 +2423,9 @@
       "name": "[청정원] 클래식 돈카츠 소스 250g",
       "detail": "250g · 1개 · 상온",
       "productUrl": "https://www.kurly.com/goods/1000819872",
-      "basis": "100g당",
+      "basis": "100g당 (단백질 1g 미만)",
       "calories_kcal": 105,
-      "protein_g": 1,
+      "protein_g": null,
       "carbohydrates_g": 26,
       "fat_g": 0,
       "sodium_mg": 1240,
@@ -7445,36 +7536,6 @@
       }
     },
     {
-      "id": "kurly-5035913",
-      "name": "[진실된손맛] 뼈없는 인삼 갈비탕",
-      "detail": "700g · 1팩 · 냉동",
-      "productUrl": "https://www.kurly.com/goods/5035913",
-      "basis": "700g당",
-      "calories_kcal": 170,
-      "protein_g": 25,
-      "carbohydrates_g": 3,
-      "fat_g": 6,
-      "sodium_mg": 1870,
-      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
-      "sourceUrl": "https://www.kurly.com/goods/5035913",
-      "photoUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260609/gv20001788559_1.jpg",
-      "evidenceUrls": [
-        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260609/gv20001788559_1.jpg"
-      ],
-      "expectedNutrition": {
-        "calories_kcal": null,
-        "protein_g": null,
-        "carbohydrates_g": null,
-        "fat_g": null,
-        "sodium_mg": null
-      },
-      "expectedSource": {
-        "nutrition_basis": null,
-        "nutrition_source_name": null,
-        "nutrition_source_url": null
-      }
-    },
-    {
       "id": "kurly-5036690",
       "name": "[ardo] 유기농 수프채소믹스 600g (냉동)",
       "detail": "600g · 1봉 · 냉동",
@@ -7717,36 +7778,6 @@
       }
     },
     {
-      "id": "kurly-5044756",
-      "name": "[외할머니댁] 갈빗살 육개장 (2인분)",
-      "detail": "1,000g · 1팩  · 냉동",
-      "productUrl": "https://www.kurly.com/goods/5044756",
-      "basis": "100g당",
-      "calories_kcal": 60,
-      "protein_g": 4,
-      "carbohydrates_g": null,
-      "fat_g": 4.7,
-      "sodium_mg": 450,
-      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
-      "sourceUrl": "https://www.kurly.com/goods/5044756",
-      "photoUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250109/gv30001632596_1.jpg",
-      "evidenceUrls": [
-        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250109/gv30001632596_1.jpg"
-      ],
-      "expectedNutrition": {
-        "calories_kcal": null,
-        "protein_g": null,
-        "carbohydrates_g": null,
-        "fat_g": null,
-        "sodium_mg": null
-      },
-      "expectedSource": {
-        "nutrition_basis": null,
-        "nutrition_source_name": null,
-        "nutrition_source_url": null
-      }
-    },
-    {
       "id": "kurly-5045195",
       "name": "[콜린스 다이닝] 브리또볼",
       "detail": "390g · 1통 · 냉장",
@@ -7931,9 +7962,9 @@
       "name": "[오뚜기] 돈까스소스 470g",
       "detail": "470g · 1병 · 상온",
       "productUrl": "https://www.kurly.com/goods/5052290",
-      "basis": "100g당",
+      "basis": "100g당 (단백질 1g 미만)",
       "calories_kcal": 120,
-      "protein_g": 1,
+      "protein_g": null,
       "carbohydrates_g": 29,
       "fat_g": 0,
       "sodium_mg": 1750,
@@ -9175,6 +9206,998 @@
       "photoUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230925/gv30000728518_1.jpg",
       "evidenceUrls": [
         "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230925/gv30000728518_1.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-1000205851",
+      "name": "[서촌 영화루] 고추 짬뽕 2인분",
+      "detail": "1,340g · 1팩 · 냉동",
+      "productUrl": "https://www.kurly.com/goods/1000205851",
+      "basis": "670g당 (표시 구성품 합산)",
+      "calories_kcal": 526,
+      "protein_g": 23,
+      "carbohydrates_g": 83,
+      "fat_g": 11.3,
+      "sodium_mg": 3199,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1000205851",
+      "photoUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20241230/gv20001628647_1.jpg",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20241230/gv20001628647_1.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-1000428415",
+      "name": "[리틀 차이나] 짬뽕 2인분",
+      "detail": "1300g · 1개 (2인분) · 냉동",
+      "productUrl": "https://www.kurly.com/goods/1000428415",
+      "basis": "650g당 (표시 구성품 합산) (지방 표기 단위와 기준치 비율 불일치로 지방 확인 필요)",
+      "calories_kcal": 559,
+      "protein_g": 28,
+      "carbohydrates_g": 81,
+      "fat_g": null,
+      "sodium_mg": 3467,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1000428415",
+      "photoUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250320/gv40001645411_1.jpg",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250320/gv40001645411_1.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-1000763351",
+      "name": "[리틀 차이나] 삼선 짬뽕 2인분",
+      "detail": "1460g · 1개 (2인분) · 냉동",
+      "productUrl": "https://www.kurly.com/goods/1000763351",
+      "basis": "730g당 (표시 구성품 합산)",
+      "calories_kcal": 678,
+      "protein_g": 22,
+      "carbohydrates_g": 119,
+      "fat_g": 13.3,
+      "sodium_mg": 3218,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1000763351",
+      "photoUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260803/gv40001791752_1.jpg",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260803/gv40001791752_1.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-1000794395",
+      "name": "[조선호텔] 유니짜장삼선볶음밥 500g",
+      "detail": "500g · 1개 (2팩) · 냉동",
+      "productUrl": "https://www.kurly.com/goods/1000794395",
+      "basis": "500g당 (표시 구성품 합산)",
+      "calories_kcal": 740,
+      "protein_g": 28,
+      "carbohydrates_g": 121,
+      "fat_g": 16.2,
+      "sodium_mg": 2160,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1000794395",
+      "photoUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240909/gv40001555908_1.jpg",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240909/gv40001555908_1.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-1000818981",
+      "name": "[톰볼라] 쉬림프 바질 크림 파스타",
+      "detail": "360g · 1팩 · 냉동",
+      "productUrl": "https://www.kurly.com/goods/1000818981",
+      "basis": "360g당",
+      "calories_kcal": 921,
+      "protein_g": 38,
+      "carbohydrates_g": 102,
+      "fat_g": 40,
+      "sodium_mg": 3686,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1000818981",
+      "photoUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240919/gv40001560021_1.jpg",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240919/gv40001560021_1.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-1000921398",
+      "name": "[에머이] 매운 소고기 쌀국수",
+      "detail": "280g · 1팩 · 냉동",
+      "productUrl": "https://www.kurly.com/goods/1000921398",
+      "basis": "280g당 (표시 구성품 합산)",
+      "calories_kcal": 379,
+      "protein_g": 16,
+      "carbohydrates_g": 57,
+      "fat_g": 9.8,
+      "sodium_mg": 3702,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1000921398",
+      "photoUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250206/gv20001638284_1.jpg",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250206/gv20001638284_1.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-1001029618",
+      "name": "[미식당] 덮밥용 돈카츠 (가츠동 소스 포함)",
+      "detail": "580g (소스110g *2입 포함) · 1팩 · 냉동",
+      "productUrl": "https://www.kurly.com/goods/1001029618",
+      "basis": "290g당 (표시 구성품 합산)",
+      "calories_kcal": 516,
+      "protein_g": 34.34,
+      "carbohydrates_g": 26.8,
+      "fat_g": 30.04,
+      "sodium_mg": 1416,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1001029618",
+      "photoUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20241230/gv10001628687_1.jpg",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20241230/gv10001628687_1.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-1001623562",
+      "name": "[경자국밥] 돼지국밥",
+      "detail": "700g · 1팩 · 냉동",
+      "productUrl": "https://www.kurly.com/goods/1001623562",
+      "basis": "700g당 (표시 구성품 합산)",
+      "calories_kcal": 569.1,
+      "protein_g": 36.1,
+      "carbohydrates_g": 18,
+      "fat_g": 39.34,
+      "sodium_mg": 1482.8,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1001623562",
+      "photoUrl": "https://product-image.kurly.com/product/image/37bdf82f-fe34-42df-9228-e03e1f8f6766.jpg",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/37bdf82f-fe34-42df-9228-e03e1f8f6766.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-1001623564",
+      "name": "[경자국밥] 순대국밥",
+      "detail": "720g · 1팩 · 냉동",
+      "productUrl": "https://www.kurly.com/goods/1001623564",
+      "basis": "720g당 (표시 구성품 합산)",
+      "calories_kcal": 507.7,
+      "protein_g": 28.5,
+      "carbohydrates_g": 38.2,
+      "fat_g": 26.9,
+      "sodium_mg": 1956,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1001623564",
+      "photoUrl": "https://product-image.kurly.com/product/image/21080048-8ef6-4509-af45-972f09d6bc21.jpg",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/21080048-8ef6-4509-af45-972f09d6bc21.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-1001623566",
+      "name": "[경자국밥] 살고기국밥",
+      "detail": "650g · 1팩 · 냉동",
+      "productUrl": "https://www.kurly.com/goods/1001623566",
+      "basis": "650g당 (표시 구성품 합산)",
+      "calories_kcal": 441.7,
+      "protein_g": 33.6,
+      "carbohydrates_g": 8.8,
+      "fat_g": 30.33,
+      "sodium_mg": 1393.9,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1001623566",
+      "photoUrl": "https://product-image.kurly.com/product/image/5134d3f8-d6bb-49dc-aa49-80b5ad6a1aa3.jpg",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/5134d3f8-d6bb-49dc-aa49-80b5ad6a1aa3.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-1001778539",
+      "name": "[브레밀] 브리오슈 버거번 (50g x 12개)",
+      "detail": "600g (50g X 12개) · 1봉(12개입) · 냉동",
+      "productUrl": "https://www.kurly.com/goods/1001778539",
+      "basis": "50g당",
+      "calories_kcal": 194,
+      "protein_g": 5,
+      "carbohydrates_g": 30,
+      "fat_g": 6,
+      "sodium_mg": 202,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1001778539",
+      "photoUrl": "https://product-image.kurly.com/product/image/0b6e4c23-cca1-4dfb-b7fc-74a6716e9b71.jpg",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/0b6e4c23-cca1-4dfb-b7fc-74a6716e9b71.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-1001802153",
+      "name": "[후쿠오카 함바그] 함박 스테이크",
+      "detail": "400g (함박 150gX2개, 소스 50gX2개) · 1팩 · 냉동",
+      "productUrl": "https://www.kurly.com/goods/1001802153",
+      "basis": "200g당 (표시 구성품 합산) (단백질 1g 미만인 소스 포함)",
+      "calories_kcal": 498,
+      "protein_g": null,
+      "carbohydrates_g": 16,
+      "fat_g": 39.5,
+      "sodium_mg": 830,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1001802153",
+      "photoUrl": "https://product-image.kurly.com/product/image/af63f286-2b58-4ed5-9f39-f85089c2fdda.jpg",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/af63f286-2b58-4ed5-9f39-f85089c2fdda.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-1001837837",
+      "name": "[김호윤키친] 더이탈리안클럽 부채살 스테이크",
+      "detail": "390g · 1팩 · 냉동",
+      "productUrl": "https://www.kurly.com/goods/1001837837",
+      "basis": "390g당 (표시 구성품 합산) (탄수화물·단백질 1g 미만인 구성품 포함)",
+      "calories_kcal": 689,
+      "protein_g": null,
+      "carbohydrates_g": null,
+      "fat_g": 41.9,
+      "sodium_mg": 1157,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1001837837",
+      "photoUrl": "https://product-image.kurly.com/product/image/49388b3f-f501-4cf6-83b3-d9b637b9ced2.jpg",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/49388b3f-f501-4cf6-83b3-d9b637b9ced2.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-1002187799",
+      "name": "[감자밭] 새참도시락 세트 590g",
+      "detail": "590g · 1box · 냉동",
+      "productUrl": "https://www.kurly.com/goods/1002187799",
+      "basis": "590g당 (표시 구성품 합산)",
+      "calories_kcal": 1604,
+      "protein_g": 18,
+      "carbohydrates_g": 258,
+      "fat_g": 52,
+      "sodium_mg": 1554,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1002187799",
+      "photoUrl": "https://product-image.kurly.com/product/image/8cf6d484-c5fc-4c83-8f6d-ed9e4be5680f.jpg",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/8cf6d484-c5fc-4c83-8f6d-ed9e4be5680f.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-1001987974",
+      "name": "[The미식] 참치김치 덮밥소스 150g",
+      "detail": "150g · 1팩 · 상온",
+      "productUrl": "https://www.kurly.com/goods/1001987974",
+      "basis": "150g당",
+      "calories_kcal": 210,
+      "protein_g": 9,
+      "carbohydrates_g": 19,
+      "fat_g": 11,
+      "sodium_mg": 1060,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1001987974",
+      "photoUrl": "https://product-image.kurly.com/product/image/3788b8da-46a2-47c0-ad9d-fd42bb2e2439.jpg",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/3788b8da-46a2-47c0-ad9d-fd42bb2e2439.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-1001987976",
+      "name": "[The미식] 비프카레 덮밥소스 140g",
+      "detail": "140g · 1팩 · 상온",
+      "productUrl": "https://www.kurly.com/goods/1001987976",
+      "basis": "140g당",
+      "calories_kcal": 125,
+      "protein_g": 8,
+      "carbohydrates_g": 15,
+      "fat_g": 3.4,
+      "sodium_mg": 710,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1001987976",
+      "photoUrl": "https://product-image.kurly.com/product/image/a62b9793-b11d-47e7-b68c-c0a11b185e4c.jpg",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/a62b9793-b11d-47e7-b68c-c0a11b185e4c.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-1002041895",
+      "name": "[풀무원] 황금밥알 새우&갈릭 볶음밥 (4개입)",
+      "detail": "840g (210g*4팩) · 1팩 (4개입) · 냉동",
+      "productUrl": "https://www.kurly.com/goods/1002041895",
+      "basis": "210g당",
+      "calories_kcal": 430,
+      "protein_g": 11,
+      "carbohydrates_g": 60,
+      "fat_g": 17,
+      "sodium_mg": 730,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1002041895",
+      "photoUrl": "https://product-image.kurly.com/product/image/45c5871a-9828-4058-b6e9-e2d974af8c70.png",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/45c5871a-9828-4058-b6e9-e2d974af8c70.png"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-1002043612",
+      "name": "[풀무원] 지구식단 라이트 불고기 브리또 (110gX3개입)",
+      "detail": "110g*3개입 · 1팩 · 냉동",
+      "productUrl": "https://www.kurly.com/goods/1002043612",
+      "basis": "110g당",
+      "calories_kcal": 200,
+      "protein_g": 6,
+      "carbohydrates_g": 32,
+      "fat_g": 6,
+      "sodium_mg": 560,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1002043612",
+      "photoUrl": "https://product-image.kurly.com/product/image/3723c27a-4661-4560-b891-ebf9043c64e0.png",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/3723c27a-4661-4560-b891-ebf9043c64e0.png"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-1002347620",
+      "name": "[포케올데이] 저당 토마토 병아리콩스프250g",
+      "detail": "250g · 1개 · 냉동",
+      "productUrl": "https://www.kurly.com/goods/1002347620",
+      "basis": "250g당",
+      "calories_kcal": 165,
+      "protein_g": 4,
+      "carbohydrates_g": 22,
+      "fat_g": 7,
+      "sodium_mg": 815,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1002347620",
+      "photoUrl": "https://product-image.kurly.com/product/image/907ec3b8-45e9-4333-9b42-ede89b11dc56.png",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/907ec3b8-45e9-4333-9b42-ede89b11dc56.png"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-1002427580",
+      "name": "[미식당] 등심 스틱 돈까스 370g",
+      "detail": "370g · 1개 (돈까스 320g, 소스 50g) · 냉동",
+      "productUrl": "https://www.kurly.com/goods/1002427580",
+      "basis": "370g당 (표시 구성품 합산)",
+      "calories_kcal": 944,
+      "protein_g": 38.9,
+      "carbohydrates_g": 88.4,
+      "fat_g": 46.8,
+      "sodium_mg": 1734,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1002427580",
+      "photoUrl": "https://product-image.kurly.com/product/image/62a4da89-689a-477e-91f8-6a8b3d0099c0.png",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/62a4da89-689a-477e-91f8-6a8b3d0099c0.png"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-1002432635",
+      "name": "[꽁티드툴레아] 레몬엔쵸비 오일파스타",
+      "detail": "300g · 1팩 · 냉동",
+      "productUrl": "https://www.kurly.com/goods/1002432635",
+      "basis": "300g당 (표시 구성품 합산)",
+      "calories_kcal": 472.1,
+      "protein_g": 9.3,
+      "carbohydrates_g": 55.7,
+      "fat_g": 10.8,
+      "sodium_mg": 883.7,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1002432635",
+      "photoUrl": "https://product-image.kurly.com/product/image/10de0679-0a75-41c6-9216-b43fd87ada7f.jpg",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/10de0679-0a75-41c6-9216-b43fd87ada7f.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-1002045911",
+      "name": "[풀무원]  직화 짜장소스 180g",
+      "detail": "180g · 1개 · 냉장",
+      "productUrl": "https://www.kurly.com/goods/1002045911",
+      "basis": "180g당",
+      "calories_kcal": 205,
+      "protein_g": 5,
+      "carbohydrates_g": 23,
+      "fat_g": 11,
+      "sodium_mg": 1100,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1002045911",
+      "photoUrl": "https://product-image.kurly.com/product/image/da2e2111-5485-439d-9faf-1d62b3729213.jpg",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/da2e2111-5485-439d-9faf-1d62b3729213.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-5042765",
+      "name": "[외할머니댁] 차돌 된장찌개",
+      "detail": "660g · 1팩 · 냉동",
+      "productUrl": "https://www.kurly.com/goods/5042765",
+      "basis": "660g당",
+      "calories_kcal": 270,
+      "protein_g": 20,
+      "carbohydrates_g": 20,
+      "fat_g": 12,
+      "sodium_mg": 2930,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/5042765",
+      "photoUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230330/gv00000561617_1.jpg",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230330/gv00000561617_1.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-5090388",
+      "name": "[고래사어묵] 김치 우동 전골",
+      "detail": "640g · 1팩 · 냉동",
+      "productUrl": "https://www.kurly.com/goods/5090388",
+      "basis": "640g당 (표시 구성품 합산)",
+      "calories_kcal": 988.4,
+      "protein_g": 37.68,
+      "carbohydrates_g": 123.1,
+      "fat_g": 38.55,
+      "sodium_mg": 3746.6,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/5090388",
+      "photoUrl": "https://product-image.kurly.com/product/image/f3e62c06-1488-4b85-9c0d-f3654a2e4116.jpg",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240119/gv00000795054_1.jpg",
+        "https://product-image.kurly.com/product/image/70a64e31-3827-4161-8929-b0db54afab84.jpg",
+        "https://product-image.kurly.com/product/image/f3e62c06-1488-4b85-9c0d-f3654a2e4116.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-5097405",
+      "name": "[정호영셰프의 우동카덴] 오리지널 우동",
+      "detail": "281g · 1개 · 냉동",
+      "productUrl": "https://www.kurly.com/goods/5097405",
+      "basis": "281g당 (표시 구성품 합산)",
+      "calories_kcal": 538,
+      "protein_g": 14,
+      "carbohydrates_g": 118,
+      "fat_g": 1,
+      "sodium_mg": 2950,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/5097405",
+      "photoUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20251103/gv40001740206_1.jpg",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20251103/gv40001740206_1.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-5099160",
+      "name": "[LITTLENECK] 리틀넥 스테이크 키트",
+      "detail": "340g · 1팩 · 냉동",
+      "productUrl": "https://www.kurly.com/goods/5099160",
+      "basis": "340g당 (표시 구성품 합산) (단백질 1g 미만인 소스 포함)",
+      "calories_kcal": 827,
+      "protein_g": null,
+      "carbohydrates_g": 25.66,
+      "fat_g": 62,
+      "sodium_mg": 510,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/5099160",
+      "photoUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20241024/gv10001603003_1.jpg",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20241024/gv10001603003_1.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-5127265",
+      "name": "[정호영셰프의 우동카덴] 키츠네 유부우동",
+      "detail": "330g · 1개 · 냉동",
+      "productUrl": "https://www.kurly.com/goods/5127265",
+      "basis": "330g당 (표시 구성품 합산)",
+      "calories_kcal": 624,
+      "protein_g": 18,
+      "carbohydrates_g": 123,
+      "fat_g": 6,
+      "sodium_mg": 3080,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/5127265",
+      "photoUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260303/gv40001771716_1.jpg",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260303/gv40001771716_1.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-5069404",
+      "name": "[김구원선생] 우삼겹 순두부찌개",
+      "detail": "870g · 1팩 · 냉장",
+      "productUrl": "https://www.kurly.com/goods/5069404",
+      "basis": "100g당",
+      "calories_kcal": 75,
+      "protein_g": 4,
+      "carbohydrates_g": 3,
+      "fat_g": 6,
+      "sodium_mg": 203,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/5069404",
+      "photoUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250218/gv30001641162_1.jpg",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250218/gv30001641162_1.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-5131216",
+      "name": "[미식당] 등심 돈카츠 180g * 2입 (소스포함)",
+      "detail": "460g (돈까스360g, 소스 100g) · 1개 · 냉동",
+      "productUrl": "https://www.kurly.com/goods/5131216",
+      "basis": "460g당 (표시 구성품 합산)",
+      "calories_kcal": 1208,
+      "protein_g": 64.9,
+      "carbohydrates_g": 67,
+      "fat_g": 75,
+      "sodium_mg": 1544,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/5131216",
+      "photoUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20251222/gv30001742814_1.jpg",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20251222/gv30001742814_1.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-5131217",
+      "name": "[미식당] 치즈롤 돈카츠 150g * 2입 (소스포함)",
+      "detail": "400g (돈까스300g, 소스 100g) · 1개 · 냉동",
+      "productUrl": "https://www.kurly.com/goods/5131217",
+      "basis": "400g당 (표시 구성품 합산)",
+      "calories_kcal": 838,
+      "protein_g": 33.3,
+      "carbohydrates_g": 62,
+      "fat_g": 51,
+      "sodium_mg": 1249,
+      "sourceName": "컬리 판매처 상품 포장 영양표 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/5131217",
+      "photoUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240307/gv00000803987_1.jpg",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240307/gv00000803987_1.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-1000604678",
+      "name": "[에스비] 오뎅용 시즈닝 스프 믹스 80g ",
+      "detail": "80g · 1개 · 상온",
+      "productUrl": "https://www.kurly.com/goods/1000604678",
+      "basis": "3.3g당 (탄수화물 1g 미만)",
+      "calories_kcal": 5,
+      "protein_g": 0,
+      "carbohydrates_g": null,
+      "fat_g": 0,
+      "sodium_mg": 620,
+      "sourceName": "S&B Foods 공식 제품 영양정보",
+      "sourceUrl": "https://www.sbfoods-worldwide.com/ko/products/search/041.html",
+      "photoUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240701/gv20000935680_1.jpg",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240701/gv20000935680_1.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-5136048",
+      "name": "[에스비] 하이라이스 160g (고형카레)",
+      "detail": "160g · 1 · 상온",
+      "productUrl": "https://www.kurly.com/goods/5136048",
+      "basis": "20g당",
+      "calories_kcal": 100,
+      "protein_g": 1,
+      "carbohydrates_g": 11,
+      "fat_g": 6,
+      "sodium_mg": 670,
+      "sourceName": "S&B Foods 공식 제품 영양정보",
+      "sourceUrl": "https://www.sbfoods-worldwide.com/ko/products/search/054.html",
+      "photoUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250123/gv00001636429_1.jpg",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250123/gv00001636429_1.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-5060366",
+      "name": "[퀴네] 치폴레 버거 스타일 소스",
+      "detail": "235ml · 1병 · 상온",
+      "productUrl": "https://www.kurly.com/goods/5060366",
+      "basis": "100ml당 (나트륨 미표시, 소금 2.2g 별도 표시)",
+      "calories_kcal": 294,
+      "protein_g": 1.1,
+      "carbohydrates_g": 17,
+      "fat_g": 24,
+      "sodium_mg": null,
+      "sourceName": "Kühne 공식 제품 영양정보",
+      "sourceUrl": "https://www.kuehne-international.com/products/sauces/made-for-meat-chip-burger-style",
+      "photoUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250116/gv40001634907_1.jpg",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250116/gv40001634907_1.jpg"
       ],
       "expectedNutrition": {
         "calories_kcal": null,

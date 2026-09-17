@@ -1,9 +1,10 @@
+import {validPlanDate} from './daily-plan';
 import type { CatalogItem } from './catalog';
 
 export type PlanProduct = CatalogItem & { servings: number; servingGrams?:number; servingNote: string; avoidanceText: string | null; personalizationScore?:number; servingCalories?:number|null };
 export type MealSlot = 'breakfast'|'lunch'|'dinner';
 export const slotLabels={breakfast:'아침',lunch:'점심',dinner:'저녁'};
-export type PlanConditions = { budget: number; meals: number; cooking: 'quick' | 'kit' | 'all'; avoid: string; owned: string[]; supply?:Record<string,number>; days?:number; slots?:MealSlot[] };
+export type PlanConditions = { startDate?:string; budget: number; meals: number; cooking: 'quick' | 'kit' | 'all'; avoid: string; owned: string[]; supply?:Record<string,number>; days?:number; slots?:MealSlot[] };
 export const initialConditions: PlanConditions = {budget:50000,meals:7,cooking:'all',avoid:'',owned:[],days:7,slots:['dinner']};
 export function mealSchedule(c:PlanConditions){
  const slots=c.slots??(c.meals>=10?['lunch','dinner'] as MealSlot[]:['dinner'] as MealSlot[]);
@@ -12,6 +13,7 @@ export function mealSchedule(c:PlanConditions){
 export function parseConditions(value: unknown): PlanConditions | null {
  if(!value || typeof value!=='object')return null;
  const p=value as PlanConditions;
+ if(p.startDate!==undefined&&!validPlanDate(p.startDate))return null;
  if(!Number.isSafeInteger(p.budget)||p.budget<1000||p.budget>1000000||!Number.isInteger(p.meals)||p.meals<1||p.meals>21||!['quick','kit','all'].includes(p.cooking)||typeof p.avoid!=='string'||p.avoid.length>200||!Array.isArray(p.owned)||p.owned.length>100||p.owned.some(x=>typeof x!=='string'||x.length>100))return null;
  if(p.days!==undefined||p.slots!==undefined){if(!Number.isInteger(p.days)||p.days!<1||p.days!>7||!Array.isArray(p.slots)||!p.slots.length||p.slots.some(s=>!Object.hasOwn(slotLabels,s))||new Set(p.slots).size!==p.slots.length||p.meals!==p.days!*p.slots.length)return null;}
  if(p.supply!==undefined&&(!p.supply||typeof p.supply!=='object'||Array.isArray(p.supply)||Object.keys(p.supply).length>300||Object.entries(p.supply).some(([id,n])=>!/^[a-zA-Z0-9_-]{1,100}$/.test(id)||!Number.isFinite(n)||n<0||n>20000000)))return null;

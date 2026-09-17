@@ -270,3 +270,4 @@ CREATE TABLE IF NOT EXISTS shopping_progress_imports (
  scope TEXT NOT NULL CHECK(scope IN ('products','ingredients')),
  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+ALTER TABLE food_intake_logs ADD COLUMN IF NOT EXISTS cost NUMERIC CHECK(cost>=0);

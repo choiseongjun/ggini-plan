@@ -15,7 +15,7 @@ export async function GET(request:NextRequest){
   if(!validDate(date))return authFailure('날짜를 확인해 주세요.',400);
   const [progress,logs,products]=await Promise.all([
    getPool().query("SELECT stock,version FROM shopping_progress WHERE user_id=$1 AND scope='products'",[user.id]),
-   getPool().query(`SELECT id::text,product_id AS "productId",product_name AS name,portions::float8,packs::float8,calories::float8,protein::float8,created_at AS "createdAt" FROM food_intake_logs WHERE user_id=$1 AND undone_at IS NULL AND created_at>=($2::date::timestamp AT TIME ZONE 'Asia/Seoul') AND created_at<(($2::date+1)::timestamp AT TIME ZONE 'Asia/Seoul') ORDER BY created_at DESC,id DESC`,[user.id,date]),
+   getPool().query(`SELECT id::text,product_id AS "productId",product_name AS name,portions::float8,packs::float8,calories::float8,protein::float8,cost::float8,created_at AS "createdAt" FROM food_intake_logs WHERE user_id=$1 AND undone_at IS NULL AND created_at>=($2::date::timestamp AT TIME ZONE 'Asia/Seoul') AND created_at<(($2::date+1)::timestamp AT TIME ZONE 'Asia/Seoul') ORDER BY created_at DESC,id DESC`,[user.id,date]),
    planProducts(),
   ]);
   const stock=parseStock(progress.rows[0]?.stock??{});if(!stock)throw new Error('Invalid stock');
@@ -50,7 +50,7 @@ export async function POST(request:NextRequest){
     if(!product){await client.query('ROLLBACK');return authFailure('상품의 1회분 정보를 확인할 수 없어요.',422);}
     let consumed;try{consumed=consumeFood(stock,product,input.portions);}catch(e){await client.query('ROLLBACK');return authFailure(e instanceof Error?e.message:'보유 수량을 확인해 주세요.',422);}
     next=consumed.stock;
-    await client.query('INSERT INTO food_intake_logs(user_id,id,product_id,product_name,portions,packs,calories,protein,stock_item) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)',[user.id,input.id,product.id,product.name,input.portions,consumed.packs,consumed.calories,consumed.protein,JSON.stringify(stock[product.id])]);
+    await client.query('INSERT INTO food_intake_logs(user_id,id,product_id,product_name,portions,packs,calories,protein,stock_item,cost) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)',[user.id,input.id,product.id,product.name,input.portions,consumed.packs,consumed.calories,consumed.protein,JSON.stringify(stock[product.id]),Math.round(product.price/product.servings*input.portions)]);
    }else{
     try{next=restoreFood(stock,previous.stock_item,Number(previous.packs));}catch(e){await client.query('ROLLBACK');return authFailure(e instanceof Error?e.message:'수량을 확인해 주세요.',422);}
     await client.query('UPDATE food_intake_logs SET undone_at=NOW() WHERE user_id=$1 AND id=$2',[user.id,input.id]);

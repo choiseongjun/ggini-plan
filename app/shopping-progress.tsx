@@ -80,7 +80,7 @@ export function ShoppingProgress({items,progress,guest=false,recommended=false,s
      {i.recommendation}
      <div className="purchase-stock-summary">
      {recommended&&<span className="purchase-stock-title"><span aria-hidden="true">🧺</span> {buying?'장보기는 한 번에':tab==='ordered'?'주문한 수량':'우리 집에 있어요'}</span>}
-     <p className="purchase-item-status">{buying&&quantity(i)===0?'추가 구매 없이 준비됐어요':recommended&&buying?`추가 구매 ${defaultQuantity(i).toLocaleString('ko-KR')}${i.unit}${i.price!==null?' · '+cost(i,quantity(i)).toLocaleString('ko-KR')+'원':''}`:`${quantity(i).toLocaleString('ko-KR')}${i.unit}${buying?' 더 필요해요':tab==='ordered'?' 주문했어요':' 있어요'}`}</p>
+     <p className="purchase-item-status">{buying&&quantity(i)===0?'추가 구매할 수량이 없어요':recommended&&buying?`추가 구매 ${defaultQuantity(i).toLocaleString('ko-KR')}${i.unit}${i.price!==null?' · '+cost(i,quantity(i)).toLocaleString('ko-KR')+'원':''}`:`${quantity(i).toLocaleString('ko-KR')}${i.unit}${buying?' 더 필요해요':tab==='ordered'?' 주문했어요':' 있어요'}`}</p>
      {tab==='plan'&&((stock[i.id]?.ordered??0)>0||(stock[i.id]?.owned??0)>0)&&<small>주문 {stock[i.id]?.ordered??0}{i.unit} · 보유 {stock[i.id]?.owned??0}{i.unit}</small>}
      {i.detail&&<small>{i.detail}</small>}{!recommended&&buying&&quantity(i)>0&&i.packSize&&<small>판매 묶음에 맞춰 {defaultQuantity(i).toLocaleString('ko-KR')}{i.unit} 구매 기준이에요.</small>}
      {!recommended&&buying&&i.price!==null&&<b>추가 구매 {cost(i,quantity(i)).toLocaleString('ko-KR')}원</b>}

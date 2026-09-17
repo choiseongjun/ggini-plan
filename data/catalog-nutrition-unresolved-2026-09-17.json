@@ -1,0 +1,1557 @@
+{
+  "checkedAt": "2026-09-17T01:10:14.342Z",
+  "counts": {
+    "total": 500,
+    "complete": 421,
+    "partial": 17,
+    "empty": 62
+  },
+  "policy": "유사 상품 값, 일반 식품 평균값, 미확인 0값으로 대체하지 않음",
+  "items": [
+    {
+      "id": "kurly-1000016600",
+      "name": "[투다리] 시그니처 김치우동 (2인분)",
+      "status": "partial",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g"
+      ],
+      "reason": "영양표 일부 수치 미공개 또는 판독 불가",
+      "basis": "431g당",
+      "productUrl": "https://www.kurly.com/goods/1000016600",
+      "sourceUrl": "https://www.kurly.com/goods/1000016600",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250311/gv40001644382_1.jpg",
+        "https://product-image.kurly.com/product/image/fa97dcc8-fb7a-474b-8f9d-695c38885186.png"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1000040524",
+      "name": "[성수동 팩피 : FAGP] 봉골레 오일 파스타",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "일부 구성품의 영양표 누락으로 완제품 합계 산출 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1000040524",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250919/gv40001664845_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1000071849",
+      "name": "[샐러드판다] 판다의 카프레제 샐러드",
+      "status": "partial",
+      "missingFields": [
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "영양표 일부 수치 미공개 또는 판독 불가",
+      "basis": "241g당",
+      "productUrl": "https://www.kurly.com/goods/1000071849",
+      "sourceUrl": "https://www.kurly.com/goods/1000071849",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250930/gv40001665261_1.jpg",
+        "https://product-image.kurly.com/product/image/391d8b6a-f7d1-4837-b744-fdf428bff722.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1000107848",
+      "name": "[바름팜] 친환경 볶음밥용 채소 120g x 3입",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "상품별 공식 영양표 확인 불가. 일반 식품 평균값으로 대체하지 않음",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1000107848",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20221220/gv10000468897_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1000117696",
+      "name": "[애슐리] 봉골레 크림 빠네 파스타",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1000117696",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240730/gv20000948473_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1000128848",
+      "name": "[진실된손맛] 남포동식 얼큰 돼지국밥",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1000128848",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230222/gv10000495561_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1000133922",
+      "name": "[바름팜] 친환경 카레 용 간편채소 250g * 2팩 (500g)",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "상품별 공식 영양표 확인 불가. 일반 식품 평균값으로 대체하지 않음",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1000133922",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230223/gv00000495907_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1000167771",
+      "name": "[하코야] 어니언 포크커리",
+      "status": "partial",
+      "missingFields": [
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "영양표 일부 수치 미공개 또는 판독 불가",
+      "basis": "총 내용량 200g당",
+      "productUrl": "https://www.kurly.com/goods/1000167771",
+      "sourceUrl": "https://www.kurly.com/goods/1000167771",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230503/gv10000693564_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1000176652",
+      "name": "[저스트그린] 양배추 샐러드 300g",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "상품별 공식 영양표 확인 불가. 일반 식품 평균값으로 대체하지 않음",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1000176652",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250220/gv00001641719_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1000270007",
+      "name": "[도리깨침] 월남쌈 밀키트 ",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1000270007",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230915/gv30000726612_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1000281727",
+      "name": "[쌉 : SAAP] 팟타이 2인분",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1000281727",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250214/gv20001640634_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1000420052",
+      "name": "[모현상회] 마라 점보새우",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "일부 구성품의 영양표 누락으로 완제품 합계 산출 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1000420052",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240305/gv20000804072_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1000428415",
+      "name": "[리틀 차이나] 짬뽕 2인분",
+      "status": "partial",
+      "missingFields": [
+        "fat_g"
+      ],
+      "reason": "원문 단위 오류 또는 기준치 비율 불일치로 제조사 확인 필요",
+      "basis": "650g당 (표시 구성품 합산) (지방 표기 단위와 기준치 비율 불일치로 지방 확인 필요)",
+      "productUrl": "https://www.kurly.com/goods/1000428415",
+      "sourceUrl": "https://www.kurly.com/goods/1000428415",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250320/gv40001645411_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1000433113",
+      "name": "[Kurly's] 1++ 한우 불고기 250g (냉장)",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "상품별 공식 영양표 확인 불가. 일반 식품 평균값으로 대체하지 않음",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1000433113",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240321/gv20000807992_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1000483511",
+      "name": "[바름팜] 친환경 채소믹스 샐러드 500g(250g*2봉)",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "상품별 공식 영양표 확인 불가. 일반 식품 평균값으로 대체하지 않음",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1000483511",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240524/gv00000862760_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1000604678",
+      "name": "[에스비] 오뎅용 시즈닝 스프 믹스 80g ",
+      "status": "partial",
+      "missingFields": [
+        "carbohydrates_g"
+      ],
+      "reason": "1g 미만을 정확한 단일 수치로 저장할 수 없어 해당 항목 null 유지",
+      "basis": "3.3g당 (탄수화물 1g 미만)",
+      "productUrl": "https://www.kurly.com/goods/1000604678",
+      "sourceUrl": "https://www.sbfoods-worldwide.com/ko/products/search/041.html",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240701/gv20000935680_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1000819872",
+      "name": "[청정원] 클래식 돈카츠 소스 250g",
+      "status": "partial",
+      "missingFields": [
+        "protein_g"
+      ],
+      "reason": "1g 미만을 정확한 단일 수치로 저장할 수 없어 해당 항목 null 유지",
+      "basis": "100g당 (단백질 1g 미만)",
+      "productUrl": "https://www.kurly.com/goods/1000819872",
+      "sourceUrl": "https://www.kurly.com/goods/1000819872",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240924/gv40001561484_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1000881147",
+      "name": "[까사델리카] 스페인식 꿀대구 스테이크",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1000881147",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20241212/gv00001622901_1.jpg",
+        "https://product-image.kurly.com/product/image/833a232a-90e8-404e-a1f9-aa57aa6e1eef.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1000892003",
+      "name": "[미트엔조이] 티본 스테이크 500g (냉장)",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "상품별 공식 영양표 확인 불가. 일반 식품 평균값으로 대체하지 않음",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1000892003",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20241104/gv10001606445_1.jpg",
+        "https://product-image.kurly.com/product/image/9516ce2d-9496-480a-bfa8-16c7eba1a12d.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1000892007",
+      "name": "[미트엔조이] 미국산 프라임 등심 스테이크 300g(냉장)",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "상품별 공식 영양표 확인 불가. 일반 식품 평균값으로 대체하지 않음",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1000892007",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250310/gv10001644242_1.jpg",
+        "https://product-image.kurly.com/product/image/6a355bf8-b723-4273-8d75-e212e858e7ca.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1000956650",
+      "name": "[일상味소] 국내산 소고기 꽃등심 스테이크 250g",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "상품별 공식 영양표 확인 불가. 일반 식품 평균값으로 대체하지 않음",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1000956650",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250103/gv10001630999_1.jpg",
+        "https://product-image.kurly.com/product/image/4bd689df-49d9-4a4b-bf77-b534830132ec.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1001137181",
+      "name": "[하림] 안동식 찜닭 밀키트",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "일부 구성품의 영양표 누락으로 완제품 합계 산출 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1001137181",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/e1e40584-f111-465f-8a8f-75897952aabd.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1001203621",
+      "name": "[현우동] 카케우동",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "일부 구성품의 영양표 누락으로 완제품 합계 산출 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1001203621",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/57e23cd1-761a-4ffc-9af3-3bd815bcd882.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1001203623",
+      "name": "[현우동] 멘타이 가마바타우동",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "일부 구성품의 영양표 누락으로 완제품 합계 산출 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1001203623",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/e6be99a2-8b17-44fd-a592-0c717b1639c6.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1001207688",
+      "name": "[정호영의 우동카덴] 니꾸 우동",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "일부 구성품의 영양표 누락으로 완제품 합계 산출 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1001207688",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/fe1cf160-04fa-4b96-8eb6-5693f97520f7.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1001346328",
+      "name": "[애슐리] 해물 누룽지탕 밀키트",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1001346328",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/c40f70a6-d799-4291-ab2a-f4f09097e8fb.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1001361814",
+      "name": "[애슐리] 타이 시푸드 팟타이",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1001361814",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/2afd6233-f6f6-4a23-a270-fecd536fea9f.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1001481719",
+      "name": "[아우름] 바다를 품은 명란 솥밥",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1001481719",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/0dc098c5-d077-4285-863c-9be0ab5900e3.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1001586017",
+      "name": "[김호윤키친] 더이탈리안클럽 봉골레파스타",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1001586017",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/65a0027b-3f1c-4771-8f21-3e3b083c383f.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1001586019",
+      "name": "[김호윤키친] 더이탈리안클럽 엔초비&푸타네스카 파스타",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1001586019",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/ade1aa08-a1df-4c54-9c31-5693bf6d7549.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1001730529",
+      "name": "[6다이닝] 이베리코 목살 스테이크",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "상품별 공식 영양표 확인 불가. 일반 식품 평균값으로 대체하지 않음",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1001730529",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/cf2877de-c50a-4e08-bf59-c3e9e2ee0c39.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1001738356",
+      "name": "[오늘바다] 버터갈릭 새우 솥밥",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1001738356",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/7ba131a9-c4ea-4ced-9f49-44939476e9b4.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1001738358",
+      "name": "[오늘바다] 전복게우장 솥밥",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1001738358",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/2771abe8-12a2-4998-a649-eb21c13b7a5f.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1001740698",
+      "name": "[콜린스 다이닝] 바지락 술찜 파스타",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1001740698",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/f93266d3-88b4-4778-99e7-55d834d5e49d.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1001765937",
+      "name": "[바름팜] 수분 가득 프레시 가든 샐러드 150g",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "상품별 공식 영양표 확인 불가. 일반 식품 평균값으로 대체하지 않음",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1001765937",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/a881ad61-97dc-47bf-8432-a5be59267309.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1001765974",
+      "name": "[바름팜] 사과&루꼴라 샐러드 150g",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "상품별 공식 영양표 확인 불가. 일반 식품 평균값으로 대체하지 않음",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1001765974",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/4c144f5c-00f3-4738-b8d0-20ec9e13561b.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1001793482",
+      "name": "[차려낸] 크림 소스가 진한 트러플크림리조또",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1001793482",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/7e1510e5-31f1-47e1-883b-54d0ac1a9a41.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1001802153",
+      "name": "[후쿠오카 함바그] 함박 스테이크",
+      "status": "partial",
+      "missingFields": [
+        "protein_g"
+      ],
+      "reason": "1g 미만을 정확한 단일 수치로 저장할 수 없어 해당 항목 null 유지",
+      "basis": "200g당 (표시 구성품 합산) (단백질 1g 미만인 소스 포함)",
+      "productUrl": "https://www.kurly.com/goods/1001802153",
+      "sourceUrl": "https://www.kurly.com/goods/1001802153",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/af63f286-2b58-4ed5-9f39-f85089c2fdda.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1001810783",
+      "name": "[마이셰프] 묵은지 들기름 파스타",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1001810783",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/2dc08085-0177-4d91-bcbe-96781a6153f8.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1001826488",
+      "name": "[도우룸] 이준셰프의 트러플 머쉬룸 수제 뇨끼",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1001826488",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/a73dc46a-9416-4262-ad99-5e53cdd907f4.png"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1001837837",
+      "name": "[김호윤키친] 더이탈리안클럽 부채살 스테이크",
+      "status": "partial",
+      "missingFields": [
+        "protein_g",
+        "carbohydrates_g"
+      ],
+      "reason": "1g 미만을 정확한 단일 수치로 저장할 수 없어 해당 항목 null 유지",
+      "basis": "390g당 (표시 구성품 합산) (탄수화물·단백질 1g 미만인 구성품 포함)",
+      "productUrl": "https://www.kurly.com/goods/1001837837",
+      "sourceUrl": "https://www.kurly.com/goods/1001837837",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/49388b3f-f501-4cf6-83b3-d9b637b9ced2.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1001929284",
+      "name": "[오근내닭갈비] 국산 닭다리살 닭갈비 (냉장)",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1001929284",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/33b39e35-7137-41df-a194-8990c409810c.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1002011348",
+      "name": "[바름팜] 생기 톡톡 스틱채소 도시락 240g",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "상품별 공식 영양표 확인 불가. 일반 식품 평균값으로 대체하지 않음",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1002011348",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/1ba244f2-f9a3-4652-badd-671b4519a225.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1002049353",
+      "name": "[청정원] 미니돈카츠 340g",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1002049353",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/9a8aeff7-4419-48cb-b2fd-c6b8c58d01c4.png"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1002051835",
+      "name": "[김호윤키친] 더이탈리안클럽 쉬림프 토마토 파스타",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1002051835",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/f64b0ea3-1029-4faf-a6c7-741e26b0dc64.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1002108438",
+      "name": "[카페아모제] 임실치즈 마르게리따 파스타",
+      "status": "partial",
+      "missingFields": [
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "영양표 일부 수치 미공개 또는 판독 불가",
+      "basis": "350g당",
+      "productUrl": "https://www.kurly.com/goods/1002108438",
+      "sourceUrl": "https://www.kurly.com/goods/1002108438",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/5b082223-94c4-4fcc-ba1d-b90f9d9398ad.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1002108442",
+      "name": "[카페아모제] 트러플 머쉬룸 크림파스타",
+      "status": "partial",
+      "missingFields": [
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "영양표 일부 수치 미공개 또는 판독 불가",
+      "basis": "310g당",
+      "productUrl": "https://www.kurly.com/goods/1002108442",
+      "sourceUrl": "https://www.kurly.com/goods/1002108442",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/d2233f7e-c8e0-4b74-aec7-7eb6c7766bcf.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1002115429",
+      "name": "[김호윤키친] 더이탈리안클럽 명란 꽈리고추 오일 파스타",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1002115429",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/4d5d0cda-7870-41ec-a763-75a68f55617e.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1002172673",
+      "name": "[카페아모제] 불고기 매콤 크림 파스타",
+      "status": "partial",
+      "missingFields": [
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "영양표 일부 수치 미공개 또는 판독 불가",
+      "basis": "330g당",
+      "productUrl": "https://www.kurly.com/goods/1002172673",
+      "sourceUrl": "https://www.kurly.com/goods/1002172673",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/510fbefc-1280-43f8-8505-90fd9b0b06af.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-1002327715",
+      "name": "[베키아에누보] 트러플 감자 스프 180g",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/1002327715",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/232abfcd-fc3e-4763-8235-f1290107bf7f.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5006172",
+      "name": "[일상味소] 국내산 소고기 안심 스테이크 200g (냉장)",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "상품별 공식 영양표 확인 불가. 일반 식품 평균값으로 대체하지 않음",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/5006172",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230831/gv20000722094_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5006173",
+      "name": "[일상味소] 국내산 소고기 채끝 스테이크 250g (냉장)",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "상품별 공식 영양표 확인 불가. 일반 식품 평균값으로 대체하지 않음",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/5006173",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230831/gv10000722095_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5026358",
+      "name": "[사랑과정성] 돈가스소스",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/5026358",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20241021/gv20001602075_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5034171",
+      "name": "[미트클레버] 춘천 닭갈비",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/5034171",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20221220/gv10000469027_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5035913",
+      "name": "[진실된손맛] 뼈없는 인삼 갈비탕",
+      "status": "partial",
+      "missingFields": [
+        "protein_g"
+      ],
+      "reason": "원문 단위 오류 또는 기준치 비율 불일치로 제조사 확인 필요",
+      "basis": "총 내용량 700g당 (단백질 표기 단위 오류로 확인 필요)",
+      "productUrl": "https://www.kurly.com/goods/5035913",
+      "sourceUrl": "https://www.kurly.com/goods/5035913",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260609/gv20001788559_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5037880",
+      "name": "[고메공방] 미친 치즈돈까스",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/5037880",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240422/gv40000817640_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5041364",
+      "name": "[팜에이트] 친환경 유러피안 샐러드 130g",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "상품별 공식 영양표 확인 불가. 일반 식품 평균값으로 대체하지 않음",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/5041364",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230719/gv20000711861_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5041753",
+      "name": "[피그인더가든] 데일리믹스 샐러드키트 6봉",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "일부 구성품의 영양표 누락으로 완제품 합계 산출 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/5041753",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250304/gv20001643127_1.jpg",
+        "https://product-image.kurly.com/product/image/b22f2d07-a98f-4f9e-94b0-a9de36410971.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5044756",
+      "name": "[외할머니댁] 갈빗살 육개장 (2인분)",
+      "status": "partial",
+      "missingFields": [
+        "carbohydrates_g"
+      ],
+      "reason": "1g 미만을 정확한 단일 수치로 저장할 수 없어 해당 항목 null 유지",
+      "basis": "100g당 (탄수화물은 1g 미만으로 표시)",
+      "productUrl": "https://www.kurly.com/goods/5044756",
+      "sourceUrl": "https://www.kurly.com/goods/5044756",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250109/gv30001632596_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5047857",
+      "name": "[델리치오] 호주산 소고기 목초육 안심 스테이크 250g (냉장)",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "상품별 공식 영양표 확인 불가. 일반 식품 평균값으로 대체하지 않음",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/5047857",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260728/gv20001791514_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5050062",
+      "name": "[델리치오] 호주산 소고기 채끝 스테이크 200g (냉장)",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "상품별 공식 영양표 확인 불가. 일반 식품 평균값으로 대체하지 않음",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/5050062",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260728/gv30001791506_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5050472",
+      "name": "[하림] 태양초 닭볶음탕 밀키트",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/5050472",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20231215/gv20000786476_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5050475",
+      "name": "[하림] 닭한마리 칼국수 밀키트",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/5050475",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240125/gv30000796293_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5051186",
+      "name": "[강남면옥] 갈비탕",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/5051186",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240314/gv00000805900_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5052290",
+      "name": "[오뚜기] 돈까스소스 470g",
+      "status": "partial",
+      "missingFields": [
+        "protein_g"
+      ],
+      "reason": "1g 미만을 정확한 단일 수치로 저장할 수 없어 해당 항목 null 유지",
+      "basis": "100g당 (단백질 1g 미만)",
+      "productUrl": "https://www.kurly.com/goods/5052290",
+      "sourceUrl": "https://www.kurly.com/goods/5052290",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240809/gv20001542434_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5055940",
+      "name": "[모노키친] 베이징풍 찹쌀탕수육",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/5055940",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250723/gv30001661818_1.jpg",
+        "https://product-image.kurly.com/product/image/c179d60f-a279-44c1-9325-31949b70e521.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5060366",
+      "name": "[퀴네] 치폴레 버거 스타일 소스",
+      "status": "partial",
+      "missingFields": [
+        "sodium_mg"
+      ],
+      "reason": "제조사 소금 함량 공개, 나트륨 직접 표시 없음",
+      "basis": "100ml당 (나트륨 미표시, 소금 2.2g 별도 표시)",
+      "productUrl": "https://www.kurly.com/goods/5060366",
+      "sourceUrl": "https://www.kuehne-international.com/products/sauces/made-for-meat-chip-burger-style",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250116/gv40001634907_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5060528",
+      "name": "[피그인더가든] 프레쉬믹스 베이직샐러드",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "상품별 공식 영양표 확인 불가. 일반 식품 평균값으로 대체하지 않음",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/5060528",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260430/gv20001774551_1.jpg",
+        "https://product-image.kurly.com/product/image/a1708af4-ca1c-4a35-b1f4-5f463da98dfa.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5060529",
+      "name": "[피그인더가든] 데일리믹스 베이직샐러드",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "상품별 공식 영양표 확인 불가. 일반 식품 평균값으로 대체하지 않음",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/5060529",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260430/gv20001774550_1.jpg",
+        "https://product-image.kurly.com/product/image/75d1d189-1c43-4952-bd41-5189efa91ff3.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5072943",
+      "name": "[샐러드판다] 판다의 부라타치즈 샐러드",
+      "status": "partial",
+      "missingFields": [
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "영양표 일부 수치 미공개 또는 판독 불가",
+      "basis": "190g당",
+      "productUrl": "https://www.kurly.com/goods/5072943",
+      "sourceUrl": "https://www.kurly.com/goods/5072943",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250930/gv10001665260_1.jpg",
+        "https://product-image.kurly.com/product/image/0b3a609e-a71d-4a4b-a1f9-e6d5a89637aa.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5074327",
+      "name": "[사자표] 거장 짜장소스 250g",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/5074327",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20210610/gv00000191994_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5095789",
+      "name": "[하코야] 와카메 어묵탕 전골 KIT",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/5095789",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250121/gv30001635704_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5097407",
+      "name": "[정호영셰프의 우동카덴] 명란 크림 우동",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "일부 구성품의 영양표 누락으로 완제품 합계 산출 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/5097407",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20241128/gv20001617788_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5099160",
+      "name": "[LITTLENECK] 리틀넥 스테이크 키트",
+      "status": "partial",
+      "missingFields": [
+        "protein_g"
+      ],
+      "reason": "1g 미만을 정확한 단일 수치로 저장할 수 없어 해당 항목 null 유지",
+      "basis": "340g당 (표시 구성품 합산) (단백질 1g 미만인 소스 포함)",
+      "productUrl": "https://www.kurly.com/goods/5099160",
+      "sourceUrl": "https://www.kurly.com/goods/5099160",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20241024/gv10001603003_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5103616",
+      "name": "[KF365] 1+ 한우 불고기용 300g(냉장)",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "상품별 공식 영양표 확인 불가. 일반 식품 평균값으로 대체하지 않음",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/5103616",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250915/gv10001664446_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5116396",
+      "name": "[김구원선생] 두부 된장찌개 밀키트",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/5116396",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20231219/gv40000787133_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5125772",
+      "name": "뚝딱! 볶음밥용 채소 500g (냉동)",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "상품별 공식 영양표 확인 불가. 일반 식품 평균값으로 대체하지 않음",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/5125772",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240102/gv20000790050_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5128143",
+      "name": "[홍익궁중전통] 육개장 (2인분)",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/5128143",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250110/gv30001632649_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    },
+    {
+      "id": "kurly-5131316",
+      "name": "[수린] 1++ 한우 사골 솥밥 밀키트 (2인분)",
+      "status": "empty",
+      "missingFields": [
+        "calories_kcal",
+        "protein_g",
+        "carbohydrates_g",
+        "fat_g",
+        "sodium_mg"
+      ],
+      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
+      "basis": null,
+      "productUrl": "https://www.kurly.com/goods/5131316",
+      "sourceUrl": null,
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250702/gv30001660431_1.jpg"
+      ],
+      "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
+    }
+  ]
+}

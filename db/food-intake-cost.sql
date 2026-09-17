@@ -1,0 +1,1 @@
+ALTER TABLE food_intake_logs ADD COLUMN IF NOT EXISTS cost NUMERIC CHECK(cost>=0);

@@ -10,7 +10,7 @@ type Command={action:'eat'|'undo';id:string;version:number;productId?:string;por
 const number=(n:number)=>n.toLocaleString('ko-KR',{maximumFractionDigits:1});
 const nutrition=(n:number|null,unit:string)=>n===null?'미확인':`${number(n)}${unit}`;
 
-export function FoodIntake({userId,onLogin,history=false}:{userId?:string;onLogin:()=>void;history?:boolean}){
+export function useFoodIntake(userId?:string,history=false){
  const [today,setToday]=useState(()=>emptyDashboard().today),[date,setDate]=useState(()=>emptyDashboard().today);
  const [data,setData]=useState<IntakeData|null>(null),[revision,setRevision]=useState(0),[busy,setBusy]=useState(false),[loading,setLoading]=useState(Boolean(userId));
  const [error,setError]=useState(''),[message,setMessage]=useState(''),[pending,setPending]=useState<Command|null>(null),[amounts,setAmounts]=useState<Record<string,number>>({});
@@ -25,7 +25,7 @@ export function FoodIntake({userId,onLogin,history=false}:{userId?:string;onLogi
  },[userId,selectedDate,revision]);
  useEffect(()=>{
   const refresh=()=>{setToday(emptyDashboard().today);setRevision(n=>n+1);};
-  const changed=(event:Event)=>{const detail=(event as CustomEvent).detail;if(detail?.scope==='products'&&detail?.source==='cart')refresh();};
+  const changed=(event:Event)=>{const detail=(event as CustomEvent).detail;if(detail?.scope==='products'&&['cart','intake'].includes(detail?.source))refresh();};
   window.addEventListener('shopping-progress-changed',changed);window.addEventListener('focus',refresh);
   const timer=window.setInterval(()=>setToday(emptyDashboard().today),60000);
   return()=>{window.removeEventListener('shopping-progress-changed',changed);window.removeEventListener('focus',refresh);window.clearInterval(timer);};
@@ -47,14 +47,19 @@ export function FoodIntake({userId,onLogin,history=false}:{userId?:string;onLogi
   }catch(e){setError(e instanceof Error?e.message:'연결이 끊겼어요. 같은 요청으로 다시 확인해 주세요.');}
   finally{locked.current=false;setBusy(false);}
  }
- function eat(p:IntakeProduct){
+ function eat(p:IntakeProduct,portions=amounts[p.id]??1){
   if(!data||pendingRef.current)return;
-  void send({action:'eat',id:crypto.randomUUID(),version:data.version,productId:p.id,portions:amounts[p.id]??1});
+  void send({action:'eat',id:crypto.randomUUID(),version:data.version,productId:p.id,portions});
  }
  const current=data?.date===selectedDate?data:null;
  const totals=current?intakeTotals(current.logs):null;
  const products=current?.products??[],visible=showAll?products:products.slice(0,3);
  const disabled=busy||Boolean(pending)||loading;
+ return {today,date,setDate,current,totals,products,visible,disabled,loading,error,message,pending,busy,reload,send,eat,editing,setEditing,amounts,setAmounts,showAll,setShowAll,setLoading,setError,selectedDate,pendingRef};
+}
+
+export function FoodIntake({userId,onLogin,history=false}:{userId?:string;onLogin:()=>void;history?:boolean}){
+ const {today,date,setDate,current,totals,products,visible,disabled,loading,error,message,pending,busy,reload,send,eat,editing,setEditing,amounts,setAmounts,showAll,setShowAll,setLoading,setError,selectedDate,pendingRef}=useFoodIntake(userId,history);
  return <section className="food-intake" aria-label={history?'먹은 음식 기록':'오늘 먹은 음식'}>
   <header><span className="section-kicker">한 번 누르면 기록 끝</span><h2>{history?'실제로 먹은 기록':'오늘, 얼마나 챙겨 먹었나요?'}</h2><p>먹었어요를 누르면 칼로리·단백질과 남은 음식이 함께 반영돼요.</p></header>
   {!userId?<div className="intake-empty"><p>구매한 음식의 영양정보를 불러와요. 음식 이름과 영양 수치를 다시 입력하지 않아도 돼요.</p><button type="button" onClick={onLogin}>로그인하고 먹은 기록 시작하기</button></div>:<>
@@ -66,8 +71,8 @@ export function FoodIntake({userId,onLogin,history=false}:{userId?:string;onLogi
     <div className="intake-totals"><div><span>{selectedDate===today?'오늘':'이날'} 섭취 칼로리</span><strong>{number(totals.calories)}<small> kcal</small></strong>{totals.missingCalories>0&&<small>칼로리 미확인 {totals.missingCalories}건 별도</small>}</div><div><span>섭취 단백질</span><strong>{number(totals.protein)}<small> g</small></strong>{totals.missingProtein>0&&<small>단백질 미확인 {totals.missingProtein}건 별도</small>}</div></div>
     <p className="intake-note">{current!.logs.length?'직접 먹었다고 기록한 음식의 합계예요.':'아직 먹은 기록이 없어요.'} 상품 표시 영양 기준이며 미확인 수치는 합계에 포함하지 않아요.</p>
    </>}
-   {!history&&current&&<>
-    <div className="intake-section-title"><h3>산 음식, 드셨나요?</h3><Link href="/cart">구매한 음식 관리 →</Link></div>
+   {(!history||selectedDate===today)&&current&&<>
+    <div className="intake-section-title"><h3>보유한 음식 기록하기</h3><Link href="/cart">구매한 음식 관리 →</Link></div>
     {!products.length?<div className="intake-empty"><p>장바구니에서 산 음식을 한꺼번에 선택하고 ‘직접 샀어요’ 또는 ‘받았어요’를 눌러 주세요. 1회분이 확인된 상품이 여기에 표시돼요.</p><Link href="/cart">구매한 음식 등록하기 →</Link></div>:<>
      <div className="intake-foods">{visible.map(p=>{const amount=amounts[p.id]??1;return <article key={p.id}>
       <div className="intake-food-heading"><ProductThumb item={{color:"",productImageUrl:p.image,emoji:"🍽️"}}/><div><h4>{p.name}</h4><small>남은 양 {number(p.available)}회분 · {p.servingNote}</small></div></div>

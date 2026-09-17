@@ -24,6 +24,7 @@ test('eating and undo are atomic, idempotent, isolated, and use server nutrition
   assert.equal((await POST(req(cookies[0],command))).status,200);
   const first=await(await GET(req(cookies[0]))).json();assert.equal(first.logs.length,1);
   assert.equal(first.logs[0].calories,Math.round(servingNutrition(p).calories!*0.5*10)/10);
+  assert.equal(first.logs[0].cost,Math.round(p.price/p.servings*0.5));
   assert.equal(first.version,2);assert.equal((await(await GET(req(cookies[1]))).json()).logs.length,0);
   assert.equal((await POST(req(cookies[1],{action:'undo',id:command.id,version:0}))).status,404);
   assert.equal((await cartPUT(cartReq(cookies[0],{stock,version:1}))).status,409);
