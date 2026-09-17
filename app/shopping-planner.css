@@ -60,3 +60,5 @@
 .planner-controls{scroll-margin-top:90px}
 .planner-exclusions-toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 15px;border:1px solid #dce2ca;border-radius:15px;background:#fafbf5;font-size:13px;color:#455a3d}
 .planner-exclusions-toggle button{min-height:44px;padding:8px 15px;border:1px solid #dce2ca;border-radius:12px;background:white;color:#455a3d;font:inherit;cursor:pointer}
+
+.plan-purchase-summary{padding:20px;border:1px solid #dbe4d5;background:#f5f8ef;border-radius:16px;margin:20px 0}.plan-purchase-summary h3{margin:0 0 10px}.plan-purchase-summary>strong{font-size:20px}.plan-purchase-summary p,.plan-purchase-summary small{line-height:1.65}.plan-purchase-summary ul{list-style:none;padding:0}.plan-purchase-summary li{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;padding:12px 0;border-top:1px solid #dbe4d5}.plan-purchase-summary li small{width:100%}.recommendation-reasons{background:#edf4e6;border-radius:8px;padding:10px 12px;font-size:13px;line-height:1.6;color:#38513b}.planner-more-options>summary{padding:12px 0;cursor:pointer}
