@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { pageMetadata, siteUrl, indexable } from "../lib/seo";
 import "./globals.css";
 import "./playful.css";
@@ -16,5 +17,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
-  return <html lang="ko"><body><AppLoadingProvider>{children}</AppLoadingProvider></body></html>;
+  return <html lang="ko"><body><AppLoadingProvider>{children}</AppLoadingProvider><Analytics /></body></html>;
 }
