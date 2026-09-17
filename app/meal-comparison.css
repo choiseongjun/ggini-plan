@@ -1,0 +1,16 @@
+.meal-comparison{margin-top:12px;border-top:1px dashed #d9dfcc;padding-top:12px;color:#354b39}
+.meal-comparison>button,.meal-comparison article button{border:1px solid #ccd9bb;border-radius:16px;background:#f3f8e9;padding:10px 14px;font:inherit;cursor:pointer}
+.meal-comparison button:disabled{opacity:.6;cursor:default}
+.meal-comparison section{margin-top:12px;padding:14px;border-radius:18px;background:#fbf7ee}
+.meal-comparison article{display:grid;gap:8px;margin:10px 0;padding:16px;border:1px solid #e5e6d4;border-radius:18px;background:white}
+.meal-comparison article>span,.meal-comparison small{font-size:.8rem;color:#65735d;line-height:1.6}
+.meal-comparison dl{margin:0;display:grid;gap:6px}.meal-comparison dl>div{display:flex;justify-content:space-between;gap:12px}.meal-comparison dd{margin:0;font-weight:700}.meal-comparison p{font-size:.85rem;line-height:1.65}
+.recipe-instructions{padding:12px;margin-bottom:10px;background:#f6f7eb;border-radius:14px}.recipe-instructions summary{cursor:pointer;font-weight:600}.recipe-instructions li{margin:6px 0;line-height:1.6}
+.meal-comparison .recipe-products{background:#f5f8ed;padding:12px;border:1px solid #dce5d0;border-radius:16px;min-width:0}
+.recipe-products h5{font-size:.95rem;margin:0 0 12px}.recipe-products ul{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.recipe-products li{padding:12px;background:white;border-radius:12px;display:grid;gap:8px;min-width:0}
+.recipe-product-title{display:flex;align-items:center;gap:10px}.recipe-product-title>div{min-width:0;display:grid;gap:4px}.recipe-product-title a{overflow-wrap:anywhere;color:#376347;font-size:.85rem;line-height:1.5}
+.recipe-products li>span{font-size:.8rem;line-height:1.6}.recipe-products dl{font-size:.8rem}.recipe-products dd{max-width:58%;text-align:right;overflow-wrap:anywhere}
+.recipe-plan-list{display:grid;gap:12px;padding:14px;background:#fcf8ef;border-radius:20px;margin:12px 0}.recipe-plan-list>article{padding:16px;border-radius:16px;background:white;border:1px solid #e4e6d7}.recipe-plan-list h4{margin:8px 0}
+.recipe-estimate>label{display:grid;gap:8px;font-size:.85rem;font-weight:600}.recipe-estimate select{width:100%;min-width:0;border:1px solid #ccd9bb;border-radius:12px;padding:12px;background:#fff;font:inherit;color:inherit}
+.recipe-estimate h4,.recipe-estimate h5{margin:8px 0}.recipe-estimate .recipe-products label{display:flex;align-items:center;gap:8px;font-size:.8rem;line-height:1.5;cursor:pointer}.recipe-estimate input[type=checkbox]{width:18px;height:18px;flex-shrink:0;accent-color:#557344}.recipe-estimate dd{text-align:right}.recipe-estimate ol{padding-left:22px}

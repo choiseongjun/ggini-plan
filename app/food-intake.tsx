@@ -71,7 +71,7 @@ export function FoodIntake({userId,onLogin,history=false,recordDate,onDateChange
    {message&&<p role="status" className="intake-message">{message}</p>}
    {totals&&<>
     <div className="intake-totals"><div><span>{selectedDate===today?'오늘':'이날'} 섭취 칼로리</span><strong>{number(totals.calories)}<small> kcal</small></strong>{totals.missingCalories>0&&<small>칼로리 미확인 {totals.missingCalories}건 별도</small>}</div><div><span>섭취 단백질</span><strong>{number(totals.protein)}<small> g</small></strong>{totals.missingProtein>0&&<small>단백질 미확인 {totals.missingProtein}건 별도</small>}</div></div>
-    <p className="intake-note">{current!.logs.length?'직접 먹었다고 기록한 음식의 합계예요.':'아직 먹은 기록이 없어요.'} 상품 표시 영양 기준이며 미확인 수치는 합계에 포함하지 않아요.</p>
+    <p className="intake-note">{current!.logs.length?'직접 먹었다고 기록한 음식의 합계예요.':'아직 먹은 기록이 없어요.'} 간편식은 상품 표시, 직접 요리는 재료 영양의 합산 예상치예요. 미확인 수치는 합계에 포함하지 않아요.</p>
     <div className="intake-meal-cost"><span>{selectedDate===today?'오늘':'이날'} 먹은 음식 비용 · 예상</span><strong>{number(mealCost)}원</strong><small>기록 당시 상품 가격을 먹은 양만큼 나눈 금액{missingCost?` · 금액 미확인 ${missingCost}건 별도`:''}</small></div>
     <p className="intake-note">먹은 음식 비용은 위에 쌓이고, 실제 결제한 식비는 아래 생활비에 쌓여요. 구매할 때 기록한 금액을 먹을 때 다시 더하지 않아요. 구매금액이 빠져 있다면 <Link href="/cart">장바구니에서 구매금액 기록하기 →</Link></p>
    </>}

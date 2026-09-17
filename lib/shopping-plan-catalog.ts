@@ -1,3 +1,4 @@
+import {cookingProducts} from './cooking-recipes';
 import manifest from '../data/catalog-import-2026-09-16.json';
 import reviewed from '../data/shopping-verified-2026-09-17.json';
 import { catalogItems } from './catalog-db';
@@ -5,7 +6,7 @@ import type { PlanProduct } from './shopping-plan';
 
 export async function planProducts():Promise<PlanProduct[]> {
  const products=await catalogItems();
- return products.flatMap(p=>{
+ const ready=products.flatMap(p=>{
   const verified=reviewed.rows.find(row=>row.id===p.id&&row.name===p.name&&row.detail===p.detail&&row.productUrl===p.productUrl);
   if(verified){
    if(!verified.available||!verified.servings||!verified.servingNote)return [];
@@ -22,4 +23,5 @@ export async function planProducts():Promise<PlanProduct[]> {
   if(servings<1||servings>10)return [];
   return [{...p,servings,servingNote:explicit?`판매 구성 ${servings}인분/개입 기준`:'판매 1팩을 한 끼로 배정',avoidanceText:source.allergyText?.trim()||null}];
  });
+ return [...ready,...cookingProducts(products)];
 }

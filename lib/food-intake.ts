@@ -2,6 +2,7 @@ import type {PlanProduct} from './shopping-plan';
 import type {ShoppingStock,StockItem} from './shopping-progress';
 
 export function servingNutrition(p:PlanProduct){
+ if(p.recipe)return p.recipe.nutrition;
  const basis=p.nutritionBasis?.replaceAll(' ','').match(/^(?:가식부)?(\d+(?:\.\d+)?)g(?:당|기준)?$/);
  const grams=p.servingGrams??(p.unit==='g'&&p.servings>0?p.quantity/p.servings:null);
  const factor=basis&&Number(basis[1])>0&&grams!==null&&grams>0?grams/Number(basis[1]):null;
@@ -17,10 +18,20 @@ export type IntakeProduct={id:string;name:string;servingNote:string;servings:num
 export type IntakeData={date:string;version:number;products:IntakeProduct[];logs:IntakeLog[]};
 export function consumeFood(stock:ShoppingStock,p:PlanProduct,portions:number){
  if(!validPortions(portions)||!Number.isFinite(p.servings)||p.servings<=0)throw new Error('먹은 양을 확인해 주세요.');
+ if(p.recipe){
+  let next=stock;const consumed:{item:StockItem;packs:number}[]=[];
+  for(const part of p.recipe.ingredients){
+   const packs=stockPrecision(part.packs*portions),item=next[part.product.id];
+   if(!item||item.unit!=='묶음'||item.owned+0.000001<packs)throw new Error(`${part.product.name} 보유 수량이 부족해요. 재료의 구매·보유 상태를 확인해 주세요.`);
+   consumed.push({item:{...item},packs});next={...next,[item.id]:{...item,owned:stockPrecision(item.owned-packs)}};
+  }
+  const n=servingNutrition(p);
+  return {stock:next,packs:portions,snapshot:{kind:'recipe' as const,ingredients:consumed},calories:n.calories===null?null:Math.round(n.calories*portions*10)/10,protein:n.protein===null?null:Math.round(n.protein*portions*10)/10};
+ }
  const item=stock[p.id],packs=Math.round(portions/p.servings*1000000)/1000000;
  if(!item||item.unit!=='묶음'||item.owned+0.000001<packs)throw new Error('보유 수량이 부족해요. 구매한 음식과 먹은 양을 확인해 주세요.');
  const nutrition=servingNutrition(p);
- return {stock:{...stock,[p.id]:{...item,owned:stockPrecision(item.owned-packs)}},packs,
+ return {stock:{...stock,[p.id]:{...item,owned:stockPrecision(item.owned-packs)}},packs,snapshot:item,
   calories:nutrition.calories===null?null:Math.round(nutrition.calories*portions*10)/10,
   protein:nutrition.protein===null?null:Math.round(nutrition.protein*portions*10)/10};
 }
@@ -37,3 +48,12 @@ export function intakeTotals(logs:IntakeLog[]){return {
  missingCalories:logs.filter(l=>l.calories===null).length,
  missingProtein:logs.filter(l=>l.protein===null).length,
 };}
+
+export function availablePortions(stock:ShoppingStock,p:PlanProduct){
+ const parts=p.recipe?.ingredients??[{product:p,packs:1/p.servings}];
+ return stockPrecision(Math.min(...parts.map(part=>stock[part.product.id]?.unit==='묶음'?(stock[part.product.id].owned/part.packs):0)));
+}
+export function restoreConsumption(stock:ShoppingStock,snapshot:StockItem|{kind:'recipe';ingredients:{item:StockItem;packs:number}[]},packs:number):ShoppingStock{
+ if('kind' in snapshot&&snapshot.kind==='recipe')return snapshot.ingredients.reduce((next,part)=>restoreFood(next,part.item,part.packs),stock);
+ return restoreFood(stock,snapshot as StockItem,packs);
+}

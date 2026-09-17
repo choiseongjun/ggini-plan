@@ -53,5 +53,21 @@ test('eating and undo are atomic, idempotent, isolated, and use server nutrition
   assert.equal((await cartPUT(cartReq(cookies[0],{stock:{},version:finalStock.version,resetConditions:initialConditions}))).status,200);
   assert.deepEqual((await(await cartGET(cartReq(cookies[0]))).json()).stock,{});
   assert.equal((await(await GET(req(cookies[0],undefined,'2026-09-18'))).json()).logs.length,1);
+
+  // A recipe stores all consumed ingredient snapshots in the same atomic log.
+  const recipe=(await planProducts()).find(p=>p.id==='cook-tofu-egg')!;assert.ok(recipe?.recipe);
+  const ingredients=Object.fromEntries(recipe.recipe!.ingredients.map(({product})=>[product.id,{id:product.id,name:product.name,unit:'묶음',url:product.productUrl,owned:1,ordered:0}]));
+  const resetVersion=(await(await cartGET(cartReq(cookies[0]))).json()).version;
+  assert.equal((await cartPUT(cartReq(cookies[0],{stock:ingredients,version:resetVersion}))).status,200);
+  const recipeRequest={action:'eat',id:randomUUID(),version:resetVersion+1,productId:recipe.id,portions:1};
+  assert.equal((await POST(req(cookies[0],recipeRequest))).status,200);
+  assert.equal((await POST(req(cookies[0],recipeRequest))).status,200);
+  const eaten=(await(await cartGET(cartReq(cookies[0]))).json());
+  assert.equal(eaten.stock.eggs.owned,0.9);assert.equal(eaten.stock.tofu.owned,0.5);assert.equal(eaten.stock.rice.owned,0.5);
+  const log=(await db.query('SELECT product_name,cost,stock_item FROM food_intake_logs WHERE user_id=$1 AND id=$2',[ids[0],recipeRequest.id])).rows[0];
+  assert.equal(log.product_name,recipe.name);assert.equal(Number(log.cost),recipe.price);assert.equal(log.stock_item.ingredients.length,3);
+  assert.equal((await POST(req(cookies[1],{action:'undo',id:recipeRequest.id,version:0}))).status,404);
+  assert.equal((await POST(req(cookies[0],{action:'undo',id:recipeRequest.id,version:eaten.version}))).status,200);
+  assert.deepEqual((await(await cartGET(cartReq(cookies[0]))).json()).stock,ingredients);
  }finally{await db.query('DELETE FROM users WHERE id=ANY($1::bigint[])',[ids]);await db.end();}
 });

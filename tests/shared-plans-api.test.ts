@@ -24,7 +24,7 @@ test('authenticated snapshot sharing, anonymous reads, privacy, replay and perso
   assert.equal((await(await POST(req(cookies[0],body))).json()).path,path);
   const sharedResponse=await GET(req('',undefined,id));assert.equal(sharedResponse.status,200);
   const shared=await sharedResponse.json();
-  assert.deepEqual(Object.keys(shared.plan).sort(),['days','meals','products','slots','total']);
+  assert.deepEqual(Object.keys(shared.plan).sort(),['days','meals','products','purchases','slots','total']);
   assert.equal(shared.plan.total,basketTotal(mealIds,products,[]));
   assert.equal(shared.plan.days,2);assert.equal(shared.plan.meals.length,2);
   const text=JSON.stringify(shared);

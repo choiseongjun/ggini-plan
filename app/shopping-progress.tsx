@@ -45,7 +45,7 @@ export type PurchaseItem={id:string;name:string;unit:string;required:number;url:
 type Progress=ReturnType<typeof useShoppingProgress>;
 const labels={plan:'추천 메뉴',buy:'살 것',ordered:'주문한 것',owned:'보유 재료'};
 function seller(url:string|null){try{return url?new URL(url).hostname.replace(/^www\./,''):'판매처 미연결';}catch{return '판매처 미연결';}}
-export function ShoppingProgress({items,progress,guest=false,recommended=false,single=false,summary,heading}:{items:PurchaseItem[];progress:Progress;guest?:boolean;recommended?:boolean;single?:boolean;summary?:ReactNode;heading?:ReactNode}){
+export function ShoppingProgress({items,progress,guest=false,recommended=false,single=false,restrictToItems=false,summary,heading}:{items:PurchaseItem[];progress:Progress;guest?:boolean;recommended?:boolean;single?:boolean;restrictToItems?:boolean;summary?:ReactNode;heading?:ReactNode}){
  const [tab,setTab]=useState<keyof typeof labels>(recommended?'plan':'buy'),[selected,setSelected]=useState<string[]>(()=>single?items.map(i=>i.id):[]),[checkout,setCheckout]=useState(false),[message,setMessage]=useState('');
  const checkoutRef=useRef<HTMLDivElement>(null);
  const paymentRef=useRef<HTMLDivElement>(null);
@@ -56,7 +56,7 @@ export function ShoppingProgress({items,progress,guest=false,recommended=false,s
  const {stock,ready,busy,error}=progress;
  const merged=new Map<string,PurchaseItem>();
  for(const i of items){const prev=merged.get(i.id);merged.set(i.id,prev?{...prev,required:prev.required+i.required}:i);}
- const all:PurchaseItem[]=[...merged.values(),...Object.values(stock).filter(i=>!merged.has(i.id)&&(i.ordered||i.owned)).map(i=>({...i,required:0,price:null}))].filter(i=>!single||merged.has(i.id));
+ const all:PurchaseItem[]=[...merged.values(),...Object.values(stock).filter(i=>!merged.has(i.id)&&(i.ordered||i.owned)).map(i=>({...i,required:0,price:null}))].filter(i=>!(single||restrictToItems)||merged.has(i.id));
  const buying=tab==='buy'||tab==='plan';
  const tabs: (keyof typeof labels)[]=recommended?['plan','ordered','owned']:['buy','ordered','owned'];
  const quantity=(i:PurchaseItem,t=tab)=>(t==='buy'||t==='plan')?remainingQuantity(i.required,stock[i.id]):t==='ordered'?(stock[i.id]?.ordered??0):(stock[i.id]?.owned??0);
