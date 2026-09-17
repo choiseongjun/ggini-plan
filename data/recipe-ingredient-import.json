@@ -1,0 +1,368 @@
+{
+  "rows": [
+    {
+      "key": "rice",
+      "id": "kurly-1000144509",
+      "name": "[KF365] 밥상의 진미 쌀 4kg ",
+      "detail": "4000g · 1봉 · 냉장",
+      "unit": "g",
+      "quantity": 4000,
+      "price": 18900,
+      "isNew": true,
+      "sourceUrl": "https://www.kurly.com/goods/1000144509",
+      "imageUrl": "https://product-image.kurly.com/product/image/183782dc-05d5-4641-9b66-1e1e6d0baf13.jpg",
+      "checkedAt": "2026-09-17T10:30:46.852Z",
+      "amount": 4000,
+      "amountUnit": "g",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "4kg"
+      },
+      "allergyText": ""
+    },
+    {
+      "key": "onion",
+      "id": "kurly-5067935",
+      "name": "[바름팜] 깐 양파 500g",
+      "detail": "500g · 1봉 · 냉장",
+      "unit": "g",
+      "quantity": 500,
+      "price": 4490,
+      "isNew": true,
+      "sourceUrl": "https://www.kurly.com/goods/5067935",
+      "imageUrl": "https://img-cf.kurly.com/shop/data/goods/1614228450971l0.jpg",
+      "checkedAt": "2026-09-17T10:30:46.851Z",
+      "amount": 500,
+      "amountUnit": "g",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "500g"
+      },
+      "allergyText": null
+    },
+    {
+      "key": "carrot",
+      "id": "kurly-5063380",
+      "name": "[바름팜] 친환경 세척 당근 500g",
+      "detail": "500g · 1봉 · 냉장",
+      "unit": "g",
+      "quantity": 500,
+      "price": 4590,
+      "isNew": true,
+      "sourceUrl": "https://www.kurly.com/goods/5063380",
+      "imageUrl": "https://img-cf.kurly.com/shop/data/goods/1608190610850l0.jpg",
+      "checkedAt": "2026-09-17T10:30:46.849Z",
+      "amount": 500,
+      "amountUnit": "g",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "500g"
+      },
+      "allergyText": null
+    },
+    {
+      "key": "mushroom",
+      "id": "kurly-5031390",
+      "name": "양송이버섯 140g",
+      "detail": "140g · 팩 · 냉장",
+      "unit": "g",
+      "quantity": 140,
+      "price": 3490,
+      "isNew": true,
+      "sourceUrl": "https://www.kurly.com/goods/5031390",
+      "imageUrl": "https://product-image.kurly.com/product/image/b05d4066-bdca-45e0-8875-8c0ab05ee54a.jpg",
+      "checkedAt": "2026-09-17T10:30:46.915Z",
+      "amount": 140,
+      "amountUnit": "g",
+      "amountEvidence": {
+        "field": "name",
+        "value": "양송이버섯 140g"
+      },
+      "allergyText": null
+    },
+    {
+      "key": "sesameOil",
+      "id": "kurly-1002206637",
+      "name": "[백설] 고소함 가득 참기름 320ML",
+      "detail": "320ml · 1병 · 상온",
+      "unit": "개",
+      "quantity": 1,
+      "price": 4990,
+      "isNew": true,
+      "sourceUrl": "https://www.kurly.com/goods/1002206637",
+      "imageUrl": "https://product-image.kurly.com/product/image/4d9763e0-bd06-4d06-b7b7-76b6b73fc73c.jpg",
+      "checkedAt": "2026-09-17T10:30:46.939Z",
+      "amount": 320,
+      "amountUnit": "ml",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "320ml"
+      },
+      "allergyText": ""
+    },
+    {
+      "key": "oil",
+      "id": "kurly-1002206715",
+      "name": "[백설] 콩기름 0.5L",
+      "detail": "500ml · 1개 · 상온",
+      "unit": "개",
+      "quantity": 1,
+      "price": 2810,
+      "isNew": true,
+      "sourceUrl": "https://www.kurly.com/goods/1002206715",
+      "imageUrl": "https://product-image.kurly.com/product/image/8a2c0417-bcda-44f7-b3c6-bb9bc5cdff4e.jpg",
+      "checkedAt": "2026-09-17T10:30:46.940Z",
+      "amount": 500,
+      "amountUnit": "ml",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "500ml"
+      },
+      "allergyText": ""
+    },
+    {
+      "key": "salt",
+      "id": "kurly-1002051587",
+      "name": "[청정원] 천일염가는소금500g",
+      "detail": "500g · 1개 · 상온",
+      "unit": "g",
+      "quantity": 500,
+      "price": 4280,
+      "isNew": true,
+      "sourceUrl": "https://www.kurly.com/goods/1002051587",
+      "imageUrl": "https://product-image.kurly.com/product/image/b4af34d0-1ac4-4159-abc1-29d40e2be17b.jpg",
+      "checkedAt": "2026-09-17T10:30:47.030Z",
+      "amount": 500,
+      "amountUnit": "g",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "500g"
+      },
+      "allergyText": "하단 표시사항 참조"
+    },
+    {
+      "key": "pumpkin",
+      "id": "kurly-1000157460",
+      "name": "무농약 냉동 단호박 500g",
+      "detail": "500g · 1묶음 · 냉동",
+      "unit": "g",
+      "quantity": 500,
+      "price": 7990,
+      "isNew": true,
+      "sourceUrl": "https://www.kurly.com/goods/1000157460",
+      "imageUrl": "https://product-image.kurly.com/product/image/fb0444b6-8341-4853-9c17-ec3ce3553dfd.jpg",
+      "checkedAt": "2026-09-17T10:30:47.031Z",
+      "amount": 500,
+      "amountUnit": "g",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "500g"
+      },
+      "allergyText": ""
+    },
+    {
+      "key": "riceFlour",
+      "id": "kurly-1002108207",
+      "name": "[청오건강] 유기농 찹쌀가루 300g",
+      "detail": "300g · 1개 · 상온",
+      "unit": "g",
+      "quantity": 300,
+      "price": 4680,
+      "isNew": true,
+      "sourceUrl": "https://www.kurly.com/goods/1002108207",
+      "imageUrl": "https://product-image.kurly.com/product/image/3b7fa3e5-add0-4f68-90ae-fedbb56babcb.png",
+      "checkedAt": "2026-09-17T10:30:47.028Z",
+      "amount": 300,
+      "amountUnit": "g",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "300g"
+      },
+      "allergyText": "하단 표시사항 참조"
+    },
+    {
+      "key": "sugar",
+      "id": "kurly-1000929774",
+      "name": "[백설] 하얀설탕 400g",
+      "detail": "400g · 1묶음 · 상온",
+      "unit": "g",
+      "quantity": 400,
+      "price": 1780,
+      "isNew": true,
+      "sourceUrl": "https://www.kurly.com/goods/1000929774",
+      "imageUrl": "https://product-image.kurly.com/product/image/9e771a0c-5a9a-4629-a7d3-247df74fa065.jpg",
+      "checkedAt": "2026-09-17T10:30:47.120Z",
+      "amount": 400,
+      "amountUnit": "g",
+      "amountEvidence": {
+        "field": "name",
+        "value": "[백설] 하얀설탕 400g"
+      },
+      "allergyText": ""
+    },
+    {
+      "key": "shrimp",
+      "id": "kurly-5056554",
+      "name": "[Sea to Table] 볶음밥용 손질 생새우살 200g(91/120) (냉동)",
+      "detail": "200g · 1팩 · 냉동",
+      "unit": "g",
+      "quantity": 200,
+      "price": 5290,
+      "isNew": true,
+      "sourceUrl": "https://www.kurly.com/goods/5056554",
+      "imageUrl": "https://img-cf.kurly.com/shop/data/goods/1597907343855l0.jpg",
+      "checkedAt": "2026-09-17T10:30:47.123Z",
+      "amount": 200,
+      "amountUnit": "g",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "200g"
+      },
+      "allergyText": "새우 함유"
+    },
+    {
+      "key": "chicken",
+      "id": "kurly-1000459595",
+      "name": "[Kurly's] 동물복지 닭 가슴살 500g",
+      "detail": "500g · 1개 · 냉장",
+      "unit": "g",
+      "quantity": 500,
+      "price": 9990,
+      "isNew": true,
+      "sourceUrl": "https://www.kurly.com/goods/1000459595",
+      "imageUrl": "https://product-image.kurly.com/product/image/8644746a-973c-4656-a87c-0a4063f1f4d5.jpg",
+      "checkedAt": "2026-09-17T10:30:47.121Z",
+      "amount": 500,
+      "amountUnit": "g",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "500g"
+      },
+      "allergyText": "닭고기 함유"
+    },
+    {
+      "key": "milk",
+      "id": "kurly-5044571",
+      "name": "[서울우유] 나 100% 우유 1000mL",
+      "detail": "1000ml · 1통 · 냉장",
+      "unit": "개",
+      "quantity": 1,
+      "price": 2980,
+      "isNew": true,
+      "sourceUrl": "https://www.kurly.com/goods/5044571",
+      "imageUrl": "https://product-image.kurly.com/product/image/efd06fe8-35ab-4256-af74-fe93cb633962.jpg",
+      "checkedAt": "2026-09-17T10:30:47.221Z",
+      "amount": 1000,
+      "amountUnit": "ml",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "1L"
+      },
+      "allergyText": "- 우유함유"
+    },
+    {
+      "key": "cheese",
+      "id": "kurly-1001573924",
+      "name": "[소와나무] 체다 슬라이스 치즈 15매입",
+      "detail": "270g · 1개 · 냉장",
+      "unit": "g",
+      "quantity": 270,
+      "price": 5980,
+      "isNew": true,
+      "sourceUrl": "https://www.kurly.com/goods/1001573924",
+      "imageUrl": "https://product-image.kurly.com/product/image/5e61f4ed-f02b-4864-9a6a-6d17bda43f24.jpg",
+      "checkedAt": "2026-09-17T10:30:47.197Z",
+      "amount": 270,
+      "amountUnit": "g",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "270g (18g X 15매입)"
+      },
+      "allergyText": "*우유 함유"
+    },
+    {
+      "key": "beef",
+      "id": "kurly-5103616",
+      "name": "[KF365] 1+ 한우 불고기용 300g(냉장)",
+      "detail": "300g · 1팩 · 냉장",
+      "unit": "개",
+      "quantity": 1,
+      "price": 15540,
+      "product_url": "https://www.kurly.com/goods/5103616",
+      "isNew": false,
+      "sourceUrl": "https://www.kurly.com/goods/5103616",
+      "imageUrl": "https://product-image.kurly.com/product/image/b962b647-f50a-49fb-ae7a-132484ed9a43.jpg",
+      "checkedAt": "2026-09-17T10:30:47.216Z",
+      "amount": 300,
+      "amountUnit": "g",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "300g"
+      },
+      "allergyText": "- 소고기 함유\n- 본 제품은 돼지고기를 사용한 제품과 같은 시설에서 제조하고 있습니다.\n"
+    },
+    {
+      "key": "egg",
+      "id": "eggs",
+      "name": "[KF365] 무항생제 달걀 L(대란)",
+      "detail": "20구 · 1팩",
+      "unit": "개",
+      "quantity": 20,
+      "price": 7700,
+      "product_url": "https://www.kurly.com/goods/1000179412",
+      "isNew": false,
+      "sourceUrl": "https://www.kurly.com/goods/1000179412",
+      "imageUrl": "https://product-image.kurly.com/product/image/08d74bf7-d39f-43d3-bd5b-67ae0e2b480c.jpg",
+      "checkedAt": "2026-09-17T10:30:47.325Z",
+      "amount": 20,
+      "amountUnit": "개",
+      "amountEvidence": {
+        "field": "salesUnit",
+        "value": "1팩(20구)"
+      },
+      "allergyText": "- 계란 함유"
+    },
+    {
+      "key": "pasta",
+      "id": "kurly-1001574263",
+      "name": "[그라노로] 2분 파스타 500g",
+      "detail": "500g · 1개 · 상온",
+      "unit": "개",
+      "quantity": 1,
+      "price": 2980,
+      "product_url": "https://www.kurly.com/goods/1001574263",
+      "isNew": false,
+      "sourceUrl": "https://www.kurly.com/goods/1001574263",
+      "imageUrl": "https://product-image.kurly.com/product/image/358e565f-29e8-4bef-9f56-4e7a010e8de0.jpg",
+      "checkedAt": "2026-09-17T10:30:47.309Z",
+      "amount": 500,
+      "amountUnit": "g",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "500g"
+      },
+      "allergyText": "본 제품은 대두,계란을 사용한 제품과 같은 제조시설에서 제조하고 있습니다."
+    },
+    {
+      "key": "tomatoSauce",
+      "id": "kurly-1001994989",
+      "name": "[폰타나] 저당 토마토 파스타 소스 600g",
+      "detail": "600g · 상온",
+      "unit": "개",
+      "quantity": 1,
+      "price": 6980,
+      "product_url": "https://www.kurly.com/goods/1001994989",
+      "isNew": false,
+      "sourceUrl": "https://www.kurly.com/goods/1001994989",
+      "imageUrl": "https://product-image.kurly.com/product/image/46e3f668-b4e7-4c65-9f07-d67b29ff2a5c.jpg",
+      "checkedAt": "2026-09-17T10:30:47.302Z",
+      "amount": 600,
+      "amountUnit": "g",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "600g"
+      },
+      "allergyText": "한글표시사항 참고"
+    }
+  ]
+}

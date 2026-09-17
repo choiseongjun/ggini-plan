@@ -2,6 +2,7 @@
 import {useState} from 'react';
 import {ProductThumb} from './product-thumb';
 import {RecipeEstimate} from './recipe-estimate';
+import {MealChoiceCards} from './meal-choice-cards';
 import {servingNutrition} from '../lib/food-intake';
 import {matchesCookingAlternative} from '../lib/cooking-recipes';
 import {basketTotal,slotCandidates,type PlanProduct,type PlanConditions,purchaseBasket} from '../lib/shopping-plan';
@@ -36,12 +37,13 @@ export function MealComparison({product,index,ids,products,conditions,onChoose,d
  return <div className="meal-comparison">
   {product.recipe&&<details className="recipe-instructions"><summary>🍳 약 {product.recipe.minutes}분 · 재료와 만드는 법</summary><RecipeIngredients product={product} conditions={conditions}/><ol>{product.recipe.steps.map(s=><li key={s}>{s}</li>)}</ol><small>기본 재료와 물만으로 만드는 구성입니다. 양념을 더하면 비용·영양은 별도예요. 영양은 등록된 재료값의 합산 예상치예요.</small></details>}
   <button type="button" aria-expanded={open} onClick={()=>setOpen(!open)}>{product.recipe?'🛍️ 간편식으로 먹으면?':'🍳 직접 만들면?'}</button>
-  {open&&<section aria-label="한 끼 준비 방법 비교"><p>{options.length>0?'주재료와 음식 종류가 맞는 요리를 비교해요. ':''}판매 상품을 그대로 재현한 레시피는 아니며, 사용하는 재료와 양은 아래에서 확인하세요.</p>
+  {open&&<section className="cook-comparison-panel" aria-label="한 끼 선택지 비교">{options.length>0&&<p><strong>오늘 한 끼, 어떻게 먹을까요?</strong></p>}
    {!options.length?(product.recipe?<p>이 요리의 주재료에 맞는 간편식이 아직 연결되지 않았어요.</p>:<RecipeEstimate key={product.id} product={product} conditions={conditions}/>):options.map(({product:p,total,one})=>{const n=servingNutrition(p);return <article key={p.id}>
-    <strong>{p.emoji} {p.name}</strong><span>{p.recipe?`직접 요리 · 약 ${p.recipe.minutes}분`:'간편식 · 조리 시간은 포장 안내 확인'}</span>
-    <dl><div><dt>한 끼 {p.recipe?'재료비':'비용'}</dt><dd>약 {won(p.price/p.servings)}</dd></div><div><dt>이 끼니만 추가 구매</dt><dd>{won(one)}</dd></div><div><dt>교체 후 전체 장보기</dt><dd>{won(total)}</dd></div></dl>
-    <small>{n.calories===null?'칼로리 미확인':`${Math.round(n.calories)} kcal`} · 단백질 {n.protein===null?'미확인':`${Math.round(n.protein)}g`}{p.recipe?' · 합산 예상':''}</small>
-    {p.recipe&&<RecipeIngredients product={p} conditions={conditions}/>}
+    <MealChoiceCards ready={p.recipe?product:p} recipeName={p.recipe?p.name:product.name} recipeCost={p.recipe?p.price/p.servings:product.price/product.servings} minutes={String((p.recipe??product.recipe)!.minutes)}/>
+    <details className="cook-shopping-details"><summary>바꾸면 필요한 장보기</summary><div className="cook-shopping-body">
+    <dl><div><dt>이 끼니만 추가 구매</dt><dd>{won(one)}</dd></div><div><dt>교체 후 전체 장보기</dt><dd>{won(total)}</dd></div></dl>
+    {p.recipe&&<><small>레시피 영양 예상 · {n.calories===null?'칼로리 미확인':`${Math.round(n.calories)} kcal`} · 단백질 {n.protein===null?'미확인':`${Math.round(n.protein)}g`}</small><RecipeIngredients product={p} conditions={conditions}/></>}
+    </div></details>
     <p>{total===current?'전체 구매 금액이 같아요':total<current?`전체 구매에서 ${won(current-total)} 줄어요`:`전체 구매에 ${won(total-current)} 더 필요해요`}</p>
     <button type="button" disabled={disabled||total>conditions.budget} onClick={()=>{onChoose(index,p.id);setOpen(false);}}>{total>conditions.budget?`예산보다 ${won(total-conditions.budget)} 많아요`:p.recipe?'이 요리로 바꾸고 재료 담기':'이 메뉴로 바꾸기'}</button>
    </article>;})}

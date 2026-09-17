@@ -1,0 +1,723 @@
+{
+  "schemaVersion": 1,
+  "market": "KR",
+  "currency": "KRW",
+  "ingredients": {
+    "rice": {
+      "name": "쌀",
+      "unit": "g",
+      "exclude": [
+        "rice"
+      ],
+      "form": "dry",
+      "priceStatus": "catalog-linked"
+    },
+    "beef": {
+      "name": "소고기 (죽·볶음용)",
+      "unit": "g",
+      "exclude": [
+        "beef"
+      ],
+      "form": "recipe-specified",
+      "priceStatus": "catalog-linked"
+    },
+    "mushroom": {
+      "name": "버섯",
+      "unit": "g",
+      "exclude": [
+        "mushroom"
+      ],
+      "form": "recipe-specified",
+      "priceStatus": "catalog-linked"
+    },
+    "onion": {
+      "name": "양파",
+      "unit": "g",
+      "exclude": [
+        "onion"
+      ],
+      "form": "recipe-specified",
+      "priceStatus": "catalog-linked"
+    },
+    "sesameOil": {
+      "name": "참기름",
+      "unit": "ml",
+      "exclude": [
+        "sesame"
+      ],
+      "form": "recipe-specified",
+      "priceStatus": "catalog-linked"
+    },
+    "salt": {
+      "name": "소금",
+      "unit": "g",
+      "exclude": [],
+      "form": "recipe-specified",
+      "priceStatus": "catalog-linked"
+    },
+    "pumpkin": {
+      "name": "손질 단호박",
+      "unit": "g",
+      "exclude": [],
+      "form": "recipe-specified",
+      "priceStatus": "catalog-linked"
+    },
+    "riceFlour": {
+      "name": "찹쌀가루",
+      "unit": "g",
+      "exclude": [
+        "rice"
+      ],
+      "form": "recipe-specified",
+      "priceStatus": "catalog-linked"
+    },
+    "sugar": {
+      "name": "설탕",
+      "unit": "g",
+      "exclude": [],
+      "form": "recipe-specified",
+      "priceStatus": "catalog-linked"
+    },
+    "chicken": {
+      "name": "생 닭가슴살",
+      "unit": "g",
+      "exclude": [
+        "chicken"
+      ],
+      "form": "raw",
+      "priceStatus": "catalog-linked"
+    },
+    "carrot": {
+      "name": "당근",
+      "unit": "g",
+      "exclude": [],
+      "form": "recipe-specified",
+      "priceStatus": "catalog-linked"
+    },
+    "egg": {
+      "name": "달걀",
+      "unit": "개",
+      "exclude": [
+        "egg"
+      ],
+      "form": "recipe-specified",
+      "priceStatus": "catalog-linked"
+    },
+    "oil": {
+      "name": "식용유 (대두유)",
+      "unit": "ml",
+      "exclude": [
+        "soy"
+      ],
+      "form": "recipe-specified",
+      "priceStatus": "catalog-linked"
+    },
+    "shrimp": {
+      "name": "손질 냉동 새우",
+      "unit": "g",
+      "exclude": [
+        "shrimp"
+      ],
+      "form": "recipe-specified",
+      "priceStatus": "catalog-linked"
+    },
+    "pasta": {
+      "name": "마른 스파게티",
+      "unit": "g",
+      "exclude": [
+        "wheat"
+      ],
+      "form": "recipe-specified",
+      "priceStatus": "catalog-linked"
+    },
+    "tomatoSauce": {
+      "name": "토마토 파스타 소스",
+      "unit": "g",
+      "exclude": [
+        "tomato",
+        "onion",
+        "garlic"
+      ],
+      "form": "recipe-specified",
+      "priceStatus": "catalog-linked"
+    },
+    "milk": {
+      "name": "우유",
+      "unit": "ml",
+      "exclude": [
+        "milk"
+      ],
+      "form": "recipe-specified",
+      "priceStatus": "catalog-linked"
+    },
+    "cheese": {
+      "name": "슬라이스 치즈",
+      "unit": "g",
+      "exclude": [
+        "milk"
+      ],
+      "form": "recipe-specified",
+      "priceStatus": "catalog-linked"
+    }
+  },
+  "recipes": [
+    {
+      "id": "beef-mushroom-porridge",
+      "name": "소고기 버섯죽",
+      "minutes": "40~50분",
+      "match": "소고기.*죽|쇠고기.*죽|한우.*죽",
+      "parts": [
+        [
+          "rice",
+          60
+        ],
+        [
+          "beef",
+          70
+        ],
+        [
+          "mushroom",
+          50
+        ],
+        [
+          "onion",
+          30
+        ],
+        [
+          "sesameOil",
+          3
+        ],
+        [
+          "salt",
+          1
+        ]
+      ],
+      "steps": [
+        "쌀 60g을 씻어 20분 정도 불려요. 소고기와 버섯, 양파를 잘게 썰어요.",
+        "냄비에 참기름을 두르고 소고기를 볶다가 쌀과 채소를 넣어요.",
+        "물 약 500ml를 넣고 쌀알이 부드러워질 때까지 저으며 끓여요. 물은 농도에 맞춰 더하고 고기는 완전히 익혀요. 소금으로 간해요."
+      ],
+      "portionCount": 1,
+      "source": {
+        "kind": "editorial",
+        "note": "앱 기본 조리 예시. 판매 상품 재현 레시피가 아님."
+      }
+    },
+    {
+      "id": "pumpkin-porridge",
+      "name": "단호박죽",
+      "minutes": "25~35분",
+      "match": "호박.*죽",
+      "parts": [
+        [
+          "pumpkin",
+          250
+        ],
+        [
+          "riceFlour",
+          25
+        ],
+        [
+          "sugar",
+          5
+        ],
+        [
+          "salt",
+          0.5
+        ]
+      ],
+      "steps": [
+        "손질한 단호박과 물을 냄비에 넣고 부드럽게 익혀요.",
+        "호박을 으깨고 물을 더해 원하는 농도로 맞춰요.",
+        "찹쌀가루를 찬물에 풀어 조금씩 넣고 저으며 충분히 끓여요. 설탕과 소금으로 간해요."
+      ],
+      "portionCount": 1,
+      "source": {
+        "kind": "editorial",
+        "note": "앱 기본 조리 예시. 판매 상품 재현 레시피가 아님."
+      }
+    },
+    {
+      "id": "chicken-porridge",
+      "name": "닭고기 채소죽",
+      "minutes": "40~50분",
+      "match": "닭.*죽|치킨.*죽",
+      "parts": [
+        [
+          "rice",
+          60
+        ],
+        [
+          "chicken",
+          100
+        ],
+        [
+          "carrot",
+          30
+        ],
+        [
+          "onion",
+          30
+        ],
+        [
+          "salt",
+          1
+        ]
+      ],
+      "steps": [
+        "쌀을 씻어 20분 정도 불리고 당근과 양파를 잘게 썰어요.",
+        "닭가슴살을 속까지 충분히 삶은 뒤 잘게 찢어요.",
+        "쌀과 채소에 물 약 500ml를 넣어 부드럽게 끓인 뒤 닭고기를 넣고 다시 충분히 끓여요. 소금으로 간해요."
+      ],
+      "portionCount": 1,
+      "source": {
+        "kind": "editorial",
+        "note": "앱 기본 조리 예시. 판매 상품 재현 레시피가 아님."
+      }
+    },
+    {
+      "id": "egg-fried-rice",
+      "name": "달걀 채소볶음밥",
+      "minutes": "15~20분 · 밥 짓는 시간 별도",
+      "match": "계란.*볶음밥|달걀.*볶음밥",
+      "parts": [
+        [
+          "rice",
+          70
+        ],
+        [
+          "egg",
+          2
+        ],
+        [
+          "carrot",
+          30
+        ],
+        [
+          "onion",
+          30
+        ],
+        [
+          "oil",
+          5
+        ],
+        [
+          "salt",
+          1
+        ]
+      ],
+      "steps": [
+        "쌀 70g으로 지은 밥 한 공기를 준비하고 채소를 잘게 썰어요.",
+        "팬에 식용유를 두르고 달걀을 완전히 익도록 볶아요.",
+        "채소를 넣어 익힌 뒤 밥을 넣고 볶아 소금으로 간해요."
+      ],
+      "portionCount": 1,
+      "source": {
+        "kind": "editorial",
+        "note": "앱 기본 조리 예시. 판매 상품 재현 레시피가 아님."
+      }
+    },
+    {
+      "id": "shrimp-fried-rice",
+      "name": "새우 달걀볶음밥",
+      "minutes": "20분 · 밥 짓는 시간 별도",
+      "match": "새우.*볶음밥|쉬림프.*볶음밥",
+      "parts": [
+        [
+          "rice",
+          70
+        ],
+        [
+          "shrimp",
+          80
+        ],
+        [
+          "egg",
+          1
+        ],
+        [
+          "carrot",
+          30
+        ],
+        [
+          "onion",
+          30
+        ],
+        [
+          "oil",
+          5
+        ],
+        [
+          "salt",
+          1
+        ]
+      ],
+      "steps": [
+        "쌀 70g으로 지은 밥을 준비해요. 새우는 냉장 해동하고 채소를 잘게 썰어요.",
+        "팬에 식용유를 두르고 새우와 채소를 충분히 익혀요.",
+        "달걀을 넣어 완전히 익힌 뒤 밥을 넣고 볶아 소금으로 간해요."
+      ],
+      "portionCount": 1,
+      "source": {
+        "kind": "editorial",
+        "note": "앱 기본 조리 예시. 판매 상품 재현 레시피가 아님."
+      }
+    },
+    {
+      "id": "tomato-pasta",
+      "name": "기본 토마토 파스타",
+      "minutes": "20분",
+      "match": "토마토.*파스타|토마토.*스파게티",
+      "parts": [
+        [
+          "pasta",
+          90
+        ],
+        [
+          "tomatoSauce",
+          120
+        ],
+        [
+          "onion",
+          40
+        ],
+        [
+          "oil",
+          5
+        ],
+        [
+          "salt",
+          2
+        ]
+      ],
+      "steps": [
+        "끓는 물에 소금을 넣고 면을 포장에 적힌 시간만큼 삶아요.",
+        "팬에 식용유를 두르고 잘게 썬 양파를 익힌 뒤 토마토 소스를 넣어요.",
+        "삶은 면을 소스와 섞고 면수를 조금 더해 농도를 맞춰요."
+      ],
+      "portionCount": 1,
+      "source": {
+        "kind": "editorial",
+        "note": "앱 기본 조리 예시. 판매 상품 재현 레시피가 아님."
+      }
+    },
+    {
+      "id": "mushroom-cream-pasta",
+      "name": "버섯 우유 크림파스타",
+      "minutes": "20~25분",
+      "match": "버섯.*파스타|머쉬룸.*파스타|크림.*파스타",
+      "parts": [
+        [
+          "pasta",
+          90
+        ],
+        [
+          "mushroom",
+          80
+        ],
+        [
+          "milk",
+          150
+        ],
+        [
+          "cheese",
+          20
+        ],
+        [
+          "onion",
+          40
+        ],
+        [
+          "oil",
+          5
+        ],
+        [
+          "salt",
+          2
+        ]
+      ],
+      "steps": [
+        "면을 포장 안내에 맞춰 삶고 버섯과 양파를 썰어요.",
+        "팬에 식용유를 두르고 버섯과 양파를 익힌 뒤 우유와 치즈를 넣어요.",
+        "약한 불에서 소스를 저어가며 데우고 면을 섞어요. 소금으로 간하고 면수로 농도를 맞춰요."
+      ],
+      "portionCount": 1,
+      "source": {
+        "kind": "editorial",
+        "note": "앱 기본 조리 예시. 판매 상품 재현 레시피가 아님."
+      }
+    }
+  ],
+  "productLinks": [
+    {
+      "key": "rice",
+      "id": "kurly-1000144509",
+      "name": "[KF365] 밥상의 진미 쌀 4kg ",
+      "detail": "4000g · 1봉 · 냉장",
+      "unit": "g",
+      "quantity": 4000,
+      "amount": 4000,
+      "amountUnit": "g",
+      "sourceUrl": "https://www.kurly.com/goods/1000144509",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "4kg"
+      }
+    },
+    {
+      "key": "onion",
+      "id": "kurly-5067935",
+      "name": "[바름팜] 깐 양파 500g",
+      "detail": "500g · 1봉 · 냉장",
+      "unit": "g",
+      "quantity": 500,
+      "amount": 500,
+      "amountUnit": "g",
+      "sourceUrl": "https://www.kurly.com/goods/5067935",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "500g"
+      }
+    },
+    {
+      "key": "carrot",
+      "id": "kurly-5063380",
+      "name": "[바름팜] 친환경 세척 당근 500g",
+      "detail": "500g · 1봉 · 냉장",
+      "unit": "g",
+      "quantity": 500,
+      "amount": 500,
+      "amountUnit": "g",
+      "sourceUrl": "https://www.kurly.com/goods/5063380",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "500g"
+      }
+    },
+    {
+      "key": "mushroom",
+      "id": "kurly-5031390",
+      "name": "양송이버섯 140g",
+      "detail": "140g · 팩 · 냉장",
+      "unit": "g",
+      "quantity": 140,
+      "amount": 140,
+      "amountUnit": "g",
+      "sourceUrl": "https://www.kurly.com/goods/5031390",
+      "amountEvidence": {
+        "field": "name",
+        "value": "양송이버섯 140g"
+      }
+    },
+    {
+      "key": "sesameOil",
+      "id": "kurly-1002206637",
+      "name": "[백설] 고소함 가득 참기름 320ML",
+      "detail": "320ml · 1병 · 상온",
+      "unit": "개",
+      "quantity": 1,
+      "amount": 320,
+      "amountUnit": "ml",
+      "sourceUrl": "https://www.kurly.com/goods/1002206637",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "320ml"
+      }
+    },
+    {
+      "key": "oil",
+      "id": "kurly-1002206715",
+      "name": "[백설] 콩기름 0.5L",
+      "detail": "500ml · 1개 · 상온",
+      "unit": "개",
+      "quantity": 1,
+      "amount": 500,
+      "amountUnit": "ml",
+      "sourceUrl": "https://www.kurly.com/goods/1002206715",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "500ml"
+      }
+    },
+    {
+      "key": "salt",
+      "id": "kurly-1002051587",
+      "name": "[청정원] 천일염가는소금500g",
+      "detail": "500g · 1개 · 상온",
+      "unit": "g",
+      "quantity": 500,
+      "amount": 500,
+      "amountUnit": "g",
+      "sourceUrl": "https://www.kurly.com/goods/1002051587",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "500g"
+      }
+    },
+    {
+      "key": "pumpkin",
+      "id": "kurly-1000157460",
+      "name": "무농약 냉동 단호박 500g",
+      "detail": "500g · 1묶음 · 냉동",
+      "unit": "g",
+      "quantity": 500,
+      "amount": 500,
+      "amountUnit": "g",
+      "sourceUrl": "https://www.kurly.com/goods/1000157460",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "500g"
+      }
+    },
+    {
+      "key": "riceFlour",
+      "id": "kurly-1002108207",
+      "name": "[청오건강] 유기농 찹쌀가루 300g",
+      "detail": "300g · 1개 · 상온",
+      "unit": "g",
+      "quantity": 300,
+      "amount": 300,
+      "amountUnit": "g",
+      "sourceUrl": "https://www.kurly.com/goods/1002108207",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "300g"
+      }
+    },
+    {
+      "key": "sugar",
+      "id": "kurly-1000929774",
+      "name": "[백설] 하얀설탕 400g",
+      "detail": "400g · 1묶음 · 상온",
+      "unit": "g",
+      "quantity": 400,
+      "amount": 400,
+      "amountUnit": "g",
+      "sourceUrl": "https://www.kurly.com/goods/1000929774",
+      "amountEvidence": {
+        "field": "name",
+        "value": "[백설] 하얀설탕 400g"
+      }
+    },
+    {
+      "key": "shrimp",
+      "id": "kurly-5056554",
+      "name": "[Sea to Table] 볶음밥용 손질 생새우살 200g(91/120) (냉동)",
+      "detail": "200g · 1팩 · 냉동",
+      "unit": "g",
+      "quantity": 200,
+      "amount": 200,
+      "amountUnit": "g",
+      "sourceUrl": "https://www.kurly.com/goods/5056554",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "200g"
+      }
+    },
+    {
+      "key": "chicken",
+      "id": "kurly-1000459595",
+      "name": "[Kurly's] 동물복지 닭 가슴살 500g",
+      "detail": "500g · 1개 · 냉장",
+      "unit": "g",
+      "quantity": 500,
+      "amount": 500,
+      "amountUnit": "g",
+      "sourceUrl": "https://www.kurly.com/goods/1000459595",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "500g"
+      }
+    },
+    {
+      "key": "milk",
+      "id": "kurly-5044571",
+      "name": "[서울우유] 나 100% 우유 1000mL",
+      "detail": "1000ml · 1통 · 냉장",
+      "unit": "개",
+      "quantity": 1,
+      "amount": 1000,
+      "amountUnit": "ml",
+      "sourceUrl": "https://www.kurly.com/goods/5044571",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "1L"
+      }
+    },
+    {
+      "key": "cheese",
+      "id": "kurly-1001573924",
+      "name": "[소와나무] 체다 슬라이스 치즈 15매입",
+      "detail": "270g · 1개 · 냉장",
+      "unit": "g",
+      "quantity": 270,
+      "amount": 270,
+      "amountUnit": "g",
+      "sourceUrl": "https://www.kurly.com/goods/1001573924",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "270g (18g X 15매입)"
+      }
+    },
+    {
+      "key": "beef",
+      "id": "kurly-5103616",
+      "name": "[KF365] 1+ 한우 불고기용 300g(냉장)",
+      "detail": "300g · 1팩 · 냉장",
+      "unit": "개",
+      "quantity": 1,
+      "amount": 300,
+      "amountUnit": "g",
+      "sourceUrl": "https://www.kurly.com/goods/5103616",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "300g"
+      }
+    },
+    {
+      "key": "egg",
+      "id": "eggs",
+      "name": "[KF365] 무항생제 달걀 L(대란)",
+      "detail": "20구 · 1팩",
+      "unit": "개",
+      "quantity": 20,
+      "amount": 20,
+      "amountUnit": "개",
+      "sourceUrl": "https://www.kurly.com/goods/1000179412",
+      "amountEvidence": {
+        "field": "salesUnit",
+        "value": "1팩(20구)"
+      }
+    },
+    {
+      "key": "pasta",
+      "id": "kurly-1001574263",
+      "name": "[그라노로] 2분 파스타 500g",
+      "detail": "500g · 1개 · 상온",
+      "unit": "개",
+      "quantity": 1,
+      "amount": 500,
+      "amountUnit": "g",
+      "sourceUrl": "https://www.kurly.com/goods/1001574263",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "500g"
+      }
+    },
+    {
+      "key": "tomatoSauce",
+      "id": "kurly-1001994989",
+      "name": "[폰타나] 저당 토마토 파스타 소스 600g",
+      "detail": "600g · 상온",
+      "unit": "개",
+      "quantity": 1,
+      "amount": 600,
+      "amountUnit": "g",
+      "sourceUrl": "https://www.kurly.com/goods/1001994989",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "600g"
+      }
+    }
+  ]
+}

@@ -1,0 +1,166 @@
+{
+  "schemaVersion": 1,
+  "contracts": {
+    "rice": {
+      "unit": "g",
+      "quantity": 210,
+      "match": "210g.*1개",
+      "grams": 210
+    },
+    "tofu": {
+      "unit": "g",
+      "quantity": 300,
+      "match": "300g.*1팩",
+      "grams": 300
+    },
+    "eggs": {
+      "unit": "개",
+      "quantity": 20,
+      "match": "20구",
+      "grams": 1000
+    },
+    "chicken": {
+      "unit": "g",
+      "quantity": 100,
+      "match": "100g",
+      "grams": 100
+    },
+    "kurly-5036690": {
+      "unit": "개",
+      "quantity": 1,
+      "match": "600g",
+      "grams": 600
+    }
+  },
+  "recipes": [
+    {
+      "id": "cook-egg-rice",
+      "name": "달걀 채소 덮밥",
+      "emoji": "🍳",
+      "family": "rice",
+      "minutes": 15,
+      "slots": [
+        "lunch",
+        "dinner"
+      ],
+      "parts": [
+        [
+          "rice",
+          1,
+          "현미밥 210g"
+        ],
+        [
+          "eggs",
+          0.1,
+          "달걀 2개"
+        ],
+        [
+          "kurly-5036690",
+          0.2,
+          "채소 120g"
+        ]
+      ],
+      "steps": [
+        "채소와 물을 팬에 넣고 익혀요.",
+        "달걀 2개를 풀어 넣고 완전히 익힌 뒤 데운 밥에 올려요."
+      ]
+    },
+    {
+      "id": "cook-tofu-rice",
+      "name": "두부 채소 현미볼",
+      "emoji": "🥦",
+      "family": "rice",
+      "minutes": 15,
+      "slots": [
+        "lunch",
+        "dinner"
+      ],
+      "parts": [
+        [
+          "rice",
+          1,
+          "현미밥 210g"
+        ],
+        [
+          "tofu",
+          0.5,
+          "두부 150g"
+        ],
+        [
+          "kurly-5036690",
+          0.2,
+          "채소 120g"
+        ]
+      ],
+      "steps": [
+        "두부와 채소에 물을 조금 넣고 뚜껑을 덮어 충분히 익혀요.",
+        "데운 현미밥 위에 두부와 채소를 올려요."
+      ]
+    },
+    {
+      "id": "cook-chicken-porridge",
+      "name": "닭고기 채소죽",
+      "emoji": "🥣",
+      "family": "porridge",
+      "minutes": 20,
+      "slots": [
+        "lunch",
+        "dinner"
+      ],
+      "parts": [
+        [
+          "rice",
+          1,
+          "현미밥 210g"
+        ],
+        [
+          "chicken",
+          1,
+          "오리지널 닭가슴살 100g"
+        ],
+        [
+          "kurly-5036690",
+          0.2,
+          "채소 120g"
+        ]
+      ],
+      "steps": [
+        "밥과 채소에 물을 넣고 부드러워질 때까지 끓여요.",
+        "잘게 찢은 닭가슴살을 넣고 제품 조리 안내에 따라 충분히 가열해요."
+      ]
+    },
+    {
+      "id": "cook-tofu-egg",
+      "name": "두부 달걀찜과 작은 밥",
+      "emoji": "🍚",
+      "family": "rice",
+      "minutes": 15,
+      "slots": [
+        "breakfast",
+        "lunch",
+        "dinner"
+      ],
+      "parts": [
+        [
+          "rice",
+          0.5,
+          "현미밥 105g"
+        ],
+        [
+          "tofu",
+          0.5,
+          "두부 150g"
+        ],
+        [
+          "eggs",
+          0.1,
+          "달걀 2개"
+        ]
+      ],
+      "steps": [
+        "으깬 두부와 달걀, 물을 섞어 찜기에 넣어요.",
+        "속까지 완전히 익힌 뒤 데운 밥 반 개를 곁들여요. 남은 밥은 바로 식혀 냉장 보관하세요."
+      ]
+    }
+  ]
+}

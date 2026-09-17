@@ -1,26 +1,27 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
-import {estimateRecipes,recipeEstimate,allowedEstimateRecipes} from '../lib/recipe-estimates';
+import data from '../data/recipe-comparison.json';
+import cooking from '../data/cooking-recipes.json';
+import {estimateRecipes,recipeIngredientsFor,allowedEstimateRecipes} from '../lib/recipe-estimates';
 import {initialConditions} from '../lib/shopping-plan';
 const beef=estimateRecipes.find(r=>r.id==='beef-mushroom-porridge')!;
-test('beef porridge shows usage costs separately from whole pack purchases',()=>{
- const result=recipeEstimate(beef);
- assert.equal(result.usedLow,2800);
- assert.equal(result.usedHigh,5800);
- assert.equal(result.buyLow,20500);
- assert.equal(result.buyHigh,40500);
- assert.ok(beef.match.test('[본죽] 소고기버섯죽'));
- assert.equal(beef.match.test('단호박죽'),false);
+test('recipe data has valid references, units, portions and no assumed prices',()=>{
+ assert.equal(data.schemaVersion,1);
+ assert.equal(new Set(estimateRecipes.map(r=>r.id)).size,estimateRecipes.length);
+ for(const r of estimateRecipes){
+  assert.ok(r.steps.length);assert.equal(r.portionCount,1);assert.equal(r.source.kind,'editorial');
+  assert.equal(new Set(r.parts.map(([id])=>id)).size,r.parts.length);
+  for(const row of recipeIngredientsFor(r)){assert.ok(row.name);assert.ok(['g','ml','개'].includes(row.unit));assert.ok(row.amount>0);assert.ok(!('low' in row));assert.ok(!('pack' in row));}
+ }
+ for(const link of data.productLinks){const ingredient=data.ingredients[link.key as keyof typeof data.ingredients];assert.ok(ingredient);assert.equal(ingredient.unit,link.amountUnit);assert.ok(link.amount>0);assert.ok(link.sourceUrl.startsWith('https://'));}
+ for(const recipe of cooking.recipes)for(const [id,amount] of recipe.parts){assert.ok(id in cooking.contracts);assert.ok(Number(amount)>0);}
 });
-test('owned ingredients reduce purchasing only, without changing consumed value',()=>{
- const result=recipeEstimate(beef,beef.parts.map(([id])=>id));
- assert.equal(result.buyLow,0);assert.equal(result.buyHigh,0);
- assert.equal(result.usedLow,recipeEstimate(beef).usedLow);
- const partial=recipeEstimate(beef,['rice','salt']);
- assert.equal(partial.buyLow,16500);
- assert.equal(partial.buyHigh,33500);
+test('beef porridge preserves raw rice quantity and matching',()=>{
+ assert.equal(recipeIngredientsFor(beef).find(r=>r.id==='rice')!.amount,60);
+ assert.equal(data.ingredients.rice.form,'dry');
+ assert.ok(beef.match.test('[본죽] 소고기버섯죽'));assert.equal(beef.match.test('단호박죽'),false);
 });
-test('estimated recipes respect excluded ingredients and free text',()=>{
+test('recipes respect excluded ingredients and free text',()=>{
  assert.ok(allowedEstimateRecipes(initialConditions).some(r=>r.id===beef.id));
  assert.equal(allowedEstimateRecipes({...initialConditions,excluded:['beef']}).some(r=>r.id===beef.id),false);
  assert.equal(allowedEstimateRecipes({...initialConditions,avoid:'버섯'}).some(r=>r.id===beef.id),false);
