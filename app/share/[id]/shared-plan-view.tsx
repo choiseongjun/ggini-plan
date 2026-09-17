@@ -24,7 +24,7 @@ export function SharedPlanView({id}:{id:string}){
    await importGuestStock(userId);
    const r=await fetch('/api/shared-plans',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'adopt',id,budget})});const d=await r.json();
    if(!r.ok){if(r.status===401){setUserId(undefined);setAuth(true);}throw new Error(d.error);}
-   localStorage.setItem(`kkiniplan-shopping-draft-v2-${d.userId}`,JSON.stringify({conditions:d.conditions,mealIds:d.mealIds}));
+   localStorage.setItem(`kkiniplan-shopping-draft-v2-${d.userId}`,JSON.stringify({conditions:d.conditions,mealIds:d.mealIds,savedAt:Date.now()}));
    setSaved(true);setMessage(d.adjusted?'내 예산과 취향에 맞게 일부 메뉴를 다시 추천해 저장했어요. 홈에서 확인해 주세요.':'이 식단을 내 계정에 저장했어요. 오늘부터 홈에서 이어서 볼 수 있어요.');
   }catch(e){setError(e instanceof Error?e.message:'식단을 가져오지 못했어요.');}finally{lock.current=false;setBusy(false);}
  }

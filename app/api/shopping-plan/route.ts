@@ -21,9 +21,10 @@ export async function GET(request:NextRequest){
    return json({plan:result.rows[0]??null});
   }
   const user=await sessionUser(request);
+  const resetAt=user?(await getPool().query('SELECT reset_at AS "resetAt" FROM user_data_resets WHERE user_id=$1',[user.id])).rows[0]?.resetAt:null;
   const preferences=user?(await getPool().query('SELECT conditions FROM shopping_preferences WHERE user_id=$1',[user.id])).rows[0]?.conditions:null;
   const plan=user?(await getPool().query('SELECT conditions,meal_ids AS "mealIds" FROM shopping_plans WHERE user_id=$1 ORDER BY id DESC LIMIT 1',[user.id])).rows[0]:null;
-  return json({...await personalizedCatalog(user?.id),preferences:preferences??null,plan:plan??null});
+  return json({...await personalizedCatalog(user?.id),preferences:preferences??null,plan:plan??null,resetAt:resetAt??null});
  }catch{return authFailure('장보기 식단을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.',503);}
 }
 export async function PUT(request:NextRequest){

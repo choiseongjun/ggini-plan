@@ -19,6 +19,7 @@ import {ShoppingProgress,useShoppingProgress} from './shopping-progress';
 
 function useBudgetGuide(products:PlanProduct[],key:string){return useMemo(()=>shoppingBudgetGuide(products,JSON.parse(key)),[products,key]);}
 const won=(n:number)=>`${n.toLocaleString('ko-KR')}원`;
+function encodeDraft(conditions:PlanConditions,mealIds:string[]){return JSON.stringify({conditions,mealIds,savedAt:Date.now()});}
 export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:string;onLogin:()=>void;mode?:'plan'|'cart'|'settings';dashboard?:DashboardData|null}){
  const draftKey=`kkiniplan-shopping-draft-v2-${userId??'guest'}`;
  const setupRef=useRef<HTMLDetailsElement>(null);
@@ -43,17 +44,21 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    const saved=parseConditions(d.preferences);setConditions(resolveShoppingExclusions(saved??initialConditions,defaults));
    try{
     const guestKey='kkiniplan-shopping-draft-v2-guest';
+    if(d.resetAt)for(const storage of [localStorage,sessionStorage])for(const key of [draftKey,guestKey]){
+     const raw=storage.getItem(key);
+     if(raw&&Number(JSON.parse(raw)?.savedAt??0)<=Date.parse(d.resetAt))storage.removeItem(key);
+    }
     if(draftKey!==guestKey&&!localStorage.getItem(draftKey)&&!sessionStorage.getItem(draftKey)){
      const guest=localStorage.getItem(guestKey)??sessionStorage.getItem(guestKey);
      if(guest&&parseConditions(JSON.parse(guest)?.conditions)){localStorage.setItem(draftKey,guest);localStorage.removeItem(guestKey);sessionStorage.removeItem(guestKey);}
     }
     const draft=JSON.parse(localStorage.getItem(draftKey)??sessionStorage.getItem(draftKey)??'null')??d.plan;const c=parseConditions(draft?.conditions);
-    if(c){const resolved=resolveShoppingExclusions(c,defaults);resolved.startDate??=emptyDashboard().today;setConditions(resolved);if(Array.isArray(draft.mealIds)&&validMealIds(draft.mealIds,catalog,resolved)){setIds(draft.mealIds);localStorage.setItem(draftKey,JSON.stringify({conditions:resolved,mealIds:draft.mealIds}));}}
+    if(c){const resolved=resolveShoppingExclusions(c,defaults);resolved.startDate??=emptyDashboard().today;setConditions(resolved);if(Array.isArray(draft.mealIds)&&validMealIds(draft.mealIds,catalog,resolved)){setIds(draft.mealIds);localStorage.setItem(draftKey,JSON.stringify({conditions:resolved,mealIds:draft.mealIds,savedAt:Date.now()}));}}
    }catch{/* An expired draft should not stop browsing. */}
   }).catch(e=>{if(!controller.signal.aborted)setError(e.message);}).finally(()=>{if(!controller.signal.aborted)setLoading(false);});
   return()=>controller.abort();
  },[retry,draftKey]);
- function remember(c:PlanConditions,mealIds:string[]){try{localStorage.setItem(draftKey,JSON.stringify({conditions:c,mealIds}));}catch{/* Saving to an account remains available. */}}
+ function remember(c:PlanConditions,mealIds:string[]){try{localStorage.setItem(draftKey,encodeDraft(c,mealIds));}catch{/* Saving to an account remains available. */}}
  function returnToSetup(){
   setIds([]);setError('');setMessage('');setAllowSingleMenu(false);remember(conditions,[]);
   requestAnimationFrame(()=>{setupRef.current?.focus({preventScroll:true});setupRef.current?.scrollIntoView({behavior:'smooth',block:'start'});});
@@ -94,7 +99,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   try{
    const clean={...c,owned:[],supply:conditions.supply};
    if(userId){const r=await fetch('/api/shopping-plan',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({conditions:clean})});const d=await r.json();if(!r.ok)throw new Error(d.error);}
-   localStorage.setItem(draftKey,JSON.stringify({conditions:clean,mealIds:[]}));
+   localStorage.setItem(draftKey,encodeDraft(clean,[]));
    setIds([]);await generate(clean);
   }catch(e){setError(e instanceof Error?e.message:'설정을 저장하지 못했어요.');}finally{setBusy(false);}
  }

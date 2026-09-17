@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { MonthlyPlanner } from "./monthly-planner";
 import { Dashboard } from "./dashboard";
+import { ResetData } from "./reset-data";
 import { FoodIntake } from "./food-intake";
 import { ShoppingPlanner } from "./shopping-planner";
 import { emptyDashboard, type DashboardData } from "../lib/dashboard";
@@ -64,6 +65,13 @@ export default function Home() {
   const [showAuth, setShowAuth] = useState(false);
   const [authUser, setAuthUser] = useState<PublicUser | null>(null);
   const [authError, setAuthError] = useState("");
+  useEffect(()=>{
+    const reset=(event:StorageEvent)=>{
+      if(event.key!=='kkiniplan-data-reset'||!event.newValue)return;
+      try{const data=JSON.parse(event.newValue);if(data.userId===(authUser?.id??'guest')){sessionStorage.removeItem(`kkiniplan-shopping-draft-v2-${authUser?.id??'guest'}`);window.location.reload();}}catch{/* Ignore an invalid cross-tab notification. */}
+    };
+    window.addEventListener('storage',reset);return()=>window.removeEventListener('storage',reset);
+  },[authUser?.id]);
   useEffect(()=>{contentRef.current?.scrollTo({top:0});},[tab]);
   const [dashboard,setDashboard]=useState<DashboardData|null>(null);
   const [catalogError,setCatalogError]=useState("");
@@ -213,7 +221,7 @@ export default function Home() {
           <p className="compare-disclaimer">비교 결과의 상품 용량, 배송비, 할인 조건은 판매처마다 달라질 수 있습니다. 결제 전 상품 상세 정보를 확인하세요.</p>
         </>}
         {tab === "community" && <CommunityPanel key={authUser?.id ?? "guest"} userId={authUser?.id} products={products} budget={budget} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")}/>}
-        {tab === "profile" && <><div className="page-intro"><div className="week-label">MY SHOPPING</div><h2>{displayName}님의 <span>장보기 취향</span></h2><p>내 생활에 맞는 끼니만, 예산 안에서 간편하게.</p></div><BodyProfilePanel onSaved={()=>setProfileRevision(n=>n+1)} key={authUser?.id ?? "guest"} userId={authUser?.id} name={displayName} onLogin={() => setShowAuth(true)}/><ShoppingPlanner key={`preferences-${authUser?.id??"guest"}-${profileRevision}`} mode="settings" userId={authUser?.id} onLogin={()=>setShowAuth(true)}/><details className="profile-extra"><summary>월 식비 예산·지출 관리</summary><BudgetSettings monthlyOnly key={`budget-${authUser?.id ?? "guest"}`} data={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)} onRefresh={refreshDashboard}/></details></> }
+        {tab === "profile" && <><div className="page-intro"><div className="week-label">MY SHOPPING</div><h2>{displayName}님의 <span>장보기 취향</span></h2><p>내 생활에 맞는 끼니만, 예산 안에서 간편하게.</p></div><BodyProfilePanel onSaved={()=>setProfileRevision(n=>n+1)} key={authUser?.id ?? "guest"} userId={authUser?.id} name={displayName} onLogin={() => setShowAuth(true)}/><ShoppingPlanner key={`preferences-${authUser?.id??"guest"}-${profileRevision}`} mode="settings" userId={authUser?.id} onLogin={()=>setShowAuth(true)}/><details className="profile-extra"><summary>월 식비 예산·지출 관리</summary><BudgetSettings monthlyOnly key={`budget-${authUser?.id ?? "guest"}`} data={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)} onRefresh={refreshDashboard}/></details><ResetData key={`reset-${authUser?.id??"guest"}`} userId={authUser?.id}/></> }
       </div>
       <nav className="bottom-nav" aria-label="앱 메뉴">{([ ["home","홈","home"], ["cart","장바구니","bag"], ["record","기록","chart"], ["community","함께","spark"], ["profile","마이","user"] ] as [Tab,string,IconName][]).map(([key,label,icon]) => <button key={key} type="button" className={tab === key ? "active" : ""} onClick={() => setTab(key)} aria-current={tab === key ? "page" : undefined}><Icon name={icon} size={21}/><span>{label}</span></button>)}</nav>
       </>}

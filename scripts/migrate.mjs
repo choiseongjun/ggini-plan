@@ -11,8 +11,14 @@ if (!databaseUrl) throw new Error(`${key} is missing from .env.local`);
 const client = new pg.Client({ connectionString: databaseUrl });
 try {
   await client.connect();
+  await client.query('BEGIN');
   await client.query(readFileSync(resolve(root, "db/schema.sql"), "utf8"));
+  await client.query(readFileSync(resolve(root, "db/internationalization.sql"), "utf8"));
+  await client.query('COMMIT');
   console.log("PostgreSQL schema is ready.");
+} catch (error) {
+  await client.query('ROLLBACK');
+  throw error;
 } finally {
   await client.end();
 }

@@ -17,7 +17,7 @@ export async function GET(request:NextRequest){try{
  }
  const month=request.nextUrl.searchParams.get('month');if(!validMonth(month))return authFailure('월을 확인해 주세요.',400);
  const r=await db.query('SELECT days,updated_at AS "updatedAt" FROM monthly_meal_plans WHERE user_id=$1 AND month=$2',[user.id,month]);
- const budget=await db.query('SELECT amount FROM monthly_budgets WHERE user_id=$1 AND month_start=$2::date',[user.id,`${month}-01`]);
+ const budget=await db.query("SELECT amount FROM monthly_budgets WHERE user_id=$1 AND market_code='KR' AND currency_code='KRW' AND month_start=$2::date",[user.id,`${month}-01`]);
  const plan=r.rows[0];return json({plan:plan?{...plan,items:ingredientBasket(plan.days,catalog)}:null,budget:budget.rows[0]?.amount??null});
  }catch{return authFailure('월간 식단을 불러오지 못했어요.',503);}}
 export async function POST(request:NextRequest){

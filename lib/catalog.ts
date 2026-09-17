@@ -22,6 +22,7 @@ export const catalogCategories = {
 export type CatalogCategory = keyof typeof catalogCategories;
 
 export type CatalogItem = Product & {
+  market?:string;currency?:string;locale?:string;minorUnits?:number;translationFallback?:boolean;
   category: CatalogCategory;
   inWeeklyCart: boolean;
   productImageUrl: string | null;

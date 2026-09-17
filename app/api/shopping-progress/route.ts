@@ -89,7 +89,7 @@ export async function PUT(request:NextRequest){
     :await db.query('UPDATE shopping_progress SET stock=$3,version=version+1,updated_at=NOW() WHERE user_id=$1 AND scope=$2 AND version=$4 RETURNING stock,version',[user.id,scope,JSON.stringify(stock),version]);
    if(!result.rowCount){await db.query('ROLLBACK');return authFailure('다른 화면에서 목록이 변경됐어요. 다시 불러온 뒤 변경해 주세요.',409);}
    if(expense){
-    const added=await db.query("INSERT INTO daily_expenses(user_id,spent_on,category,amount) VALUES($1,$2,'food',$3) ON CONFLICT(user_id,spent_on,category) DO UPDATE SET amount=daily_expenses.amount+EXCLUDED.amount,updated_at=NOW() WHERE daily_expenses.amount+EXCLUDED.amount<=10000000 RETURNING amount",[user.id,expense.date,expense.amount]);
+    const added=await db.query("INSERT INTO daily_expenses(user_id,spent_on,category,amount) VALUES($1,$2,'food',$3) ON CONFLICT(user_id,market_code,currency_code,spent_on,category) DO UPDATE SET amount=daily_expenses.amount+EXCLUDED.amount,updated_at=NOW() WHERE daily_expenses.amount+EXCLUDED.amount<=10000000 RETURNING amount",[user.id,expense.date,expense.amount]);
     if(!added.rowCount){await db.query('ROLLBACK');return authFailure('하루 식비 합계는 1,000만 원까지 기록할 수 있어요.',422);}
    }
    if(reset)await db.query("INSERT INTO shopping_plans(user_id,conditions,meal_ids) VALUES($1,$2,'[]')",[user.id,JSON.stringify({...reset,owned:[],supply:{}})]);
