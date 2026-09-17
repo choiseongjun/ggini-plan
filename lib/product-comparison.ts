@@ -25,15 +25,15 @@ export function comparablePrice(p:CatalogItem){
  }
  return {amount:p.price/p.quantity*(p.unit==='g'?100:1),basis:p.unit==='g'?'100g':'1개'};
 }
-export function filterComparison(items:CatalogItem[],query:string,sort:ComparisonSort){
+export function filterComparison(items:CatalogItem[],query:string,sort:ComparisonSort,locale='ko-KR'){
  const result=items.filter(p=>(p.name+' '+p.detail).toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()));
  return result.sort((a,b)=>{
-  if(sort==='name')return a.name.localeCompare(b.name,'ko');
-  if(sort==='price')return a.price-b.price||a.name.localeCompare(b.name,'ko');
+  if(sort==='name')return a.name.localeCompare(b.name,locale);
+  if(sort==='price')return a.price-b.price||a.name.localeCompare(b.name,locale);
   const an=comparableNutrition(a),bn=comparableNutrition(b);
   const av=an.unit==='g'?an[sort]:null,bv=bn.unit==='g'?bn[sort]:null;
-  if(av===null||bv===null)return av===bv?a.name.localeCompare(b.name,'ko'):av===null?1:-1;
-  return (sort==='protein'?bv-av:av-bv)||a.name.localeCompare(b.name,'ko');
+  if(av===null||bv===null)return av===bv?a.name.localeCompare(b.name,locale):av===null?1:-1;
+  return (sort==='protein'?bv-av:av-bv)||a.name.localeCompare(b.name,locale);
  });
 }
 export const nutritionDisplay=(n:number|null,unit:string)=>n===null?'미확인':new Intl.NumberFormat('ko-KR',{maximumFractionDigits:1}).format(n)+unit;

@@ -1,0 +1,505 @@
+{
+  "description": "初期搜尋意圖規劃，並非已驗證搜尋量或排名。100 個主題集中對應有實際商品的比較頁面。",
+  "keywords": [
+    {
+      "query": "炒飯價格比較",
+      "path": "/tw/foods/fried_rice",
+      "intent": "價格比較"
+    },
+    {
+      "query": "炒飯營養標示",
+      "path": "/tw/foods/fried_rice",
+      "intent": "營養標示"
+    },
+    {
+      "query": "炒飯包裝規格",
+      "path": "/tw/foods/fried_rice",
+      "intent": "包裝規格"
+    },
+    {
+      "query": "炒飯選購比較",
+      "path": "/tw/foods/fried_rice",
+      "intent": "選購比較"
+    },
+    {
+      "query": "燴飯丼飯米食價格比較",
+      "path": "/tw/foods/rice_meals",
+      "intent": "價格比較"
+    },
+    {
+      "query": "燴飯丼飯米食營養標示",
+      "path": "/tw/foods/rice_meals",
+      "intent": "營養標示"
+    },
+    {
+      "query": "燴飯丼飯米食包裝規格",
+      "path": "/tw/foods/rice_meals",
+      "intent": "包裝規格"
+    },
+    {
+      "query": "燴飯丼飯米食選購比較",
+      "path": "/tw/foods/rice_meals",
+      "intent": "選購比較"
+    },
+    {
+      "query": "麵食義大利麵價格比較",
+      "path": "/tw/foods/noodles",
+      "intent": "價格比較"
+    },
+    {
+      "query": "麵食義大利麵營養標示",
+      "path": "/tw/foods/noodles",
+      "intent": "營養標示"
+    },
+    {
+      "query": "麵食義大利麵包裝規格",
+      "path": "/tw/foods/noodles",
+      "intent": "包裝規格"
+    },
+    {
+      "query": "麵食義大利麵選購比較",
+      "path": "/tw/foods/noodles",
+      "intent": "選購比較"
+    },
+    {
+      "query": "水餃餛飩價格比較",
+      "path": "/tw/foods/dumplings",
+      "intent": "價格比較"
+    },
+    {
+      "query": "水餃餛飩營養標示",
+      "path": "/tw/foods/dumplings",
+      "intent": "營養標示"
+    },
+    {
+      "query": "水餃餛飩包裝規格",
+      "path": "/tw/foods/dumplings",
+      "intent": "包裝規格"
+    },
+    {
+      "query": "水餃餛飩選購比較",
+      "path": "/tw/foods/dumplings",
+      "intent": "選購比較"
+    },
+    {
+      "query": "包子饅頭價格比較",
+      "path": "/tw/foods/buns",
+      "intent": "價格比較"
+    },
+    {
+      "query": "包子饅頭營養標示",
+      "path": "/tw/foods/buns",
+      "intent": "營養標示"
+    },
+    {
+      "query": "包子饅頭包裝規格",
+      "path": "/tw/foods/buns",
+      "intent": "包裝規格"
+    },
+    {
+      "query": "包子饅頭選購比較",
+      "path": "/tw/foods/buns",
+      "intent": "選購比較"
+    },
+    {
+      "query": "蔥油餅餡餅價格比較",
+      "path": "/tw/foods/pancakes",
+      "intent": "價格比較"
+    },
+    {
+      "query": "蔥油餅餡餅營養標示",
+      "path": "/tw/foods/pancakes",
+      "intent": "營養標示"
+    },
+    {
+      "query": "蔥油餅餡餅包裝規格",
+      "path": "/tw/foods/pancakes",
+      "intent": "包裝規格"
+    },
+    {
+      "query": "蔥油餅餡餅選購比較",
+      "path": "/tw/foods/pancakes",
+      "intent": "選購比較"
+    },
+    {
+      "query": "披薩價格比較",
+      "path": "/tw/foods/pizza",
+      "intent": "價格比較"
+    },
+    {
+      "query": "披薩營養標示",
+      "path": "/tw/foods/pizza",
+      "intent": "營養標示"
+    },
+    {
+      "query": "披薩包裝規格",
+      "path": "/tw/foods/pizza",
+      "intent": "包裝規格"
+    },
+    {
+      "query": "披薩選購比較",
+      "path": "/tw/foods/pizza",
+      "intent": "選購比較"
+    },
+    {
+      "query": "湯品火鍋湯底價格比較",
+      "path": "/tw/foods/soup",
+      "intent": "價格比較"
+    },
+    {
+      "query": "湯品火鍋湯底營養標示",
+      "path": "/tw/foods/soup",
+      "intent": "營養標示"
+    },
+    {
+      "query": "湯品火鍋湯底包裝規格",
+      "path": "/tw/foods/soup",
+      "intent": "包裝規格"
+    },
+    {
+      "query": "湯品火鍋湯底選購比較",
+      "path": "/tw/foods/soup",
+      "intent": "選購比較"
+    },
+    {
+      "query": "雞胸肉價格比較",
+      "path": "/tw/foods/chicken_breast",
+      "intent": "價格比較"
+    },
+    {
+      "query": "雞胸肉營養標示",
+      "path": "/tw/foods/chicken_breast",
+      "intent": "營養標示"
+    },
+    {
+      "query": "雞胸肉包裝規格",
+      "path": "/tw/foods/chicken_breast",
+      "intent": "包裝規格"
+    },
+    {
+      "query": "雞胸肉選購比較",
+      "path": "/tw/foods/chicken_breast",
+      "intent": "選購比較"
+    },
+    {
+      "query": "雞肉鴨肉價格比較",
+      "path": "/tw/foods/chicken",
+      "intent": "價格比較"
+    },
+    {
+      "query": "雞肉鴨肉營養標示",
+      "path": "/tw/foods/chicken",
+      "intent": "營養標示"
+    },
+    {
+      "query": "雞肉鴨肉包裝規格",
+      "path": "/tw/foods/chicken",
+      "intent": "包裝規格"
+    },
+    {
+      "query": "雞肉鴨肉選購比較",
+      "path": "/tw/foods/chicken",
+      "intent": "選購比較"
+    },
+    {
+      "query": "豬肉價格比較",
+      "path": "/tw/foods/pork",
+      "intent": "價格比較"
+    },
+    {
+      "query": "豬肉營養標示",
+      "path": "/tw/foods/pork",
+      "intent": "營養標示"
+    },
+    {
+      "query": "豬肉包裝規格",
+      "path": "/tw/foods/pork",
+      "intent": "包裝規格"
+    },
+    {
+      "query": "豬肉選購比較",
+      "path": "/tw/foods/pork",
+      "intent": "選購比較"
+    },
+    {
+      "query": "牛肉價格比較",
+      "path": "/tw/foods/beef",
+      "intent": "價格比較"
+    },
+    {
+      "query": "牛肉營養標示",
+      "path": "/tw/foods/beef",
+      "intent": "營養標示"
+    },
+    {
+      "query": "牛肉包裝規格",
+      "path": "/tw/foods/beef",
+      "intent": "包裝規格"
+    },
+    {
+      "query": "牛肉選購比較",
+      "path": "/tw/foods/beef",
+      "intent": "選購比較"
+    },
+    {
+      "query": "魚海鮮價格比較",
+      "path": "/tw/foods/seafood",
+      "intent": "價格比較"
+    },
+    {
+      "query": "魚海鮮營養標示",
+      "path": "/tw/foods/seafood",
+      "intent": "營養標示"
+    },
+    {
+      "query": "魚海鮮包裝規格",
+      "path": "/tw/foods/seafood",
+      "intent": "包裝規格"
+    },
+    {
+      "query": "魚海鮮選購比較",
+      "path": "/tw/foods/seafood",
+      "intent": "選購比較"
+    },
+    {
+      "query": "蔬菜菇類價格比較",
+      "path": "/tw/foods/vegetables",
+      "intent": "價格比較"
+    },
+    {
+      "query": "蔬菜菇類營養標示",
+      "path": "/tw/foods/vegetables",
+      "intent": "營養標示"
+    },
+    {
+      "query": "蔬菜菇類包裝規格",
+      "path": "/tw/foods/vegetables",
+      "intent": "包裝規格"
+    },
+    {
+      "query": "蔬菜菇類選購比較",
+      "path": "/tw/foods/vegetables",
+      "intent": "選購比較"
+    },
+    {
+      "query": "水果價格比較",
+      "path": "/tw/foods/fruit",
+      "intent": "價格比較"
+    },
+    {
+      "query": "水果營養標示",
+      "path": "/tw/foods/fruit",
+      "intent": "營養標示"
+    },
+    {
+      "query": "水果包裝規格",
+      "path": "/tw/foods/fruit",
+      "intent": "包裝規格"
+    },
+    {
+      "query": "水果選購比較",
+      "path": "/tw/foods/fruit",
+      "intent": "選購比較"
+    },
+    {
+      "query": "豆腐豆製品價格比較",
+      "path": "/tw/foods/tofu",
+      "intent": "價格比較"
+    },
+    {
+      "query": "豆腐豆製品營養標示",
+      "path": "/tw/foods/tofu",
+      "intent": "營養標示"
+    },
+    {
+      "query": "豆腐豆製品包裝規格",
+      "path": "/tw/foods/tofu",
+      "intent": "包裝規格"
+    },
+    {
+      "query": "豆腐豆製品選購比較",
+      "path": "/tw/foods/tofu",
+      "intent": "選購比較"
+    },
+    {
+      "query": "雞蛋價格比較",
+      "path": "/tw/foods/eggs",
+      "intent": "價格比較"
+    },
+    {
+      "query": "雞蛋營養標示",
+      "path": "/tw/foods/eggs",
+      "intent": "營養標示"
+    },
+    {
+      "query": "雞蛋包裝規格",
+      "path": "/tw/foods/eggs",
+      "intent": "包裝規格"
+    },
+    {
+      "query": "雞蛋選購比較",
+      "path": "/tw/foods/eggs",
+      "intent": "選購比較"
+    },
+    {
+      "query": "鮮乳保久乳價格比較",
+      "path": "/tw/foods/milk",
+      "intent": "價格比較"
+    },
+    {
+      "query": "鮮乳保久乳營養標示",
+      "path": "/tw/foods/milk",
+      "intent": "營養標示"
+    },
+    {
+      "query": "鮮乳保久乳包裝規格",
+      "path": "/tw/foods/milk",
+      "intent": "包裝規格"
+    },
+    {
+      "query": "鮮乳保久乳選購比較",
+      "path": "/tw/foods/milk",
+      "intent": "選購比較"
+    },
+    {
+      "query": "豆漿米漿價格比較",
+      "path": "/tw/foods/soy_milk",
+      "intent": "價格比較"
+    },
+    {
+      "query": "豆漿米漿營養標示",
+      "path": "/tw/foods/soy_milk",
+      "intent": "營養標示"
+    },
+    {
+      "query": "豆漿米漿包裝規格",
+      "path": "/tw/foods/soy_milk",
+      "intent": "包裝規格"
+    },
+    {
+      "query": "豆漿米漿選購比較",
+      "path": "/tw/foods/soy_milk",
+      "intent": "選購比較"
+    },
+    {
+      "query": "優格優酪乳價格比較",
+      "path": "/tw/foods/yogurt",
+      "intent": "價格比較"
+    },
+    {
+      "query": "優格優酪乳營養標示",
+      "path": "/tw/foods/yogurt",
+      "intent": "營養標示"
+    },
+    {
+      "query": "優格優酪乳包裝規格",
+      "path": "/tw/foods/yogurt",
+      "intent": "包裝規格"
+    },
+    {
+      "query": "優格優酪乳選購比較",
+      "path": "/tw/foods/yogurt",
+      "intent": "選購比較"
+    },
+    {
+      "query": "起司奶油價格比較",
+      "path": "/tw/foods/cheese",
+      "intent": "價格比較"
+    },
+    {
+      "query": "起司奶油營養標示",
+      "path": "/tw/foods/cheese",
+      "intent": "營養標示"
+    },
+    {
+      "query": "起司奶油包裝規格",
+      "path": "/tw/foods/cheese",
+      "intent": "包裝規格"
+    },
+    {
+      "query": "起司奶油選購比較",
+      "path": "/tw/foods/cheese",
+      "intent": "選購比較"
+    },
+    {
+      "query": "火鍋料丸類價格比較",
+      "path": "/tw/foods/hotpot",
+      "intent": "價格比較"
+    },
+    {
+      "query": "火鍋料丸類營養標示",
+      "path": "/tw/foods/hotpot",
+      "intent": "營養標示"
+    },
+    {
+      "query": "火鍋料丸類包裝規格",
+      "path": "/tw/foods/hotpot",
+      "intent": "包裝規格"
+    },
+    {
+      "query": "火鍋料丸類選購比較",
+      "path": "/tw/foods/hotpot",
+      "intent": "選購比較"
+    },
+    {
+      "query": "湯圓甜點價格比較",
+      "path": "/tw/foods/dessert",
+      "intent": "價格比較"
+    },
+    {
+      "query": "湯圓甜點營養標示",
+      "path": "/tw/foods/dessert",
+      "intent": "營養標示"
+    },
+    {
+      "query": "湯圓甜點包裝規格",
+      "path": "/tw/foods/dessert",
+      "intent": "包裝規格"
+    },
+    {
+      "query": "湯圓甜點選購比較",
+      "path": "/tw/foods/dessert",
+      "intent": "選購比較"
+    },
+    {
+      "query": "零食點心價格比較",
+      "path": "/tw/foods/snacks",
+      "intent": "價格比較"
+    },
+    {
+      "query": "零食點心營養標示",
+      "path": "/tw/foods/snacks",
+      "intent": "營養標示"
+    },
+    {
+      "query": "零食點心包裝規格",
+      "path": "/tw/foods/snacks",
+      "intent": "包裝規格"
+    },
+    {
+      "query": "零食點心選購比較",
+      "path": "/tw/foods/snacks",
+      "intent": "選購比較"
+    },
+    {
+      "query": "台灣食品價格比較",
+      "path": "/tw/products",
+      "intent": "商品比較"
+    },
+    {
+      "query": "台灣食品營養成分比較",
+      "path": "/tw/products",
+      "intent": "商品比較"
+    },
+    {
+      "query": "一人採買商品比較",
+      "path": "/tw/products",
+      "intent": "商品比較"
+    },
+    {
+      "query": "冷凍即食食品比較",
+      "path": "/tw/products",
+      "intent": "商品比較"
+    }
+  ]
+}
