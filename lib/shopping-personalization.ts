@@ -1,7 +1,8 @@
 import {servingNutrition} from './food-intake';
 import {calorieEstimate, parseBodyProfile} from './body-profile';
 import {parseDiet, dietStyles} from './meal-plan';
-import {excludedFoodAliases, excludedFoods, type ExcludedFood} from './excluded-foods';
+import {excludedFoods, type ExcludedFood} from './excluded-foods';
+import {allowsExcludedFoods} from './shopping-exclusions';
 import type {PlanProduct} from './shopping-plan';
 
 export function personalizeProducts(products:PlanProduct[],raw:unknown,rawDiet:unknown){
@@ -10,7 +11,7 @@ export function personalizeProducts(products:PlanProduct[],raw:unknown,rawDiet:u
  const exclusions=diet?.excluded??[];
  const filtered=products.filter(p=>{
   const text=`${p.name} ${p.avoidanceText??''}`;
-  if(exclusions.length&&(p.avoidanceText===null||exclusions.some(key=>p.allergens?.includes(key)||excludedFoodAliases[key].some(word=>text.includes(word)))))return false;
+  if(!allowsExcludedFoods(p,exclusions))return false;
   if(diet?.style==='plant'&&!/비건|vegan/i.test(text))return false;
   return true;
  });

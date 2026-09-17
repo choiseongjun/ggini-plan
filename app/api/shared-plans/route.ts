@@ -8,6 +8,7 @@ import {initialConditions,parseConditions,validMealIds,basketTotal,recommendShop
 import {personalizeProducts} from '../../../lib/shopping-personalization';
 import {parseStock} from '../../../lib/shopping-progress';
 import {emptyDashboard} from '../../../lib/dashboard';
+import {defaultDiet,parseDiet} from '../../../lib/meal-plan';
 export const runtime='nodejs';
 const json=(data:unknown,status=200)=>NextResponse.json(data,{status,headers:{'Cache-Control':'no-store','X-Robots-Tag':'noindex, nofollow'}});
 export async function GET(request:NextRequest){
@@ -33,7 +34,9 @@ export async function POST(request:NextRequest){
     getPool().query('SELECT conditions FROM shopping_preferences WHERE user_id=$1',[user.id]),
     getPool().query("SELECT stock FROM shopping_progress WHERE user_id=$1 AND scope='products'",[user.id]),planProducts(),
    ]);
-   const body=profile.rows[0],personalized=personalizeProducts(catalog,body,body?.diet_preferences);
+   const body=profile.rows[0],savedConditions=parseConditions(preferences.rows[0]?.conditions);
+   const diet=parseDiet(body?.diet_preferences)??defaultDiet;
+   const personalized=personalizeProducts(catalog,body,{...diet,excluded:savedConditions?.excluded??diet.excluded});
    if(personalized.personalization.blocked)return authFailure('현재 신체 정보에서는 자동 맞춤 추천을 제공하지 않아요.',422);
    const stock=parseStock(progress.rows[0]?.stock??{})??{};
    const conditions=parseConditions({...initialConditions,...parseConditions(preferences.rows[0]?.conditions),budget:input.budget,days:shared.days,slots:shared.slots,meals:shared.days*shared.slots.length,owned:[],supply:Object.fromEntries(Object.values(stock).map(i=>[i.id,i.owned+i.ordered])),startDate:emptyDashboard().today});

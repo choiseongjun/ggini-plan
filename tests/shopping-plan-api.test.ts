@@ -34,6 +34,17 @@ test('guest recommendation, authenticated save, account isolation and server val
   const personalized=await(await GET(req(cookies[0]))).json();
   assert.equal(personalized.personalization.hasProfile,true);
   assert.deepEqual(personalized.personalization.excluded,['새우']);
+  assert.deepEqual(personalized.excluded,['shrimp']);
+  assert.ok(personalized.baseProducts.length>personalized.products.length);
+  const restoredProduct=personalized.baseProducts.find((p:{id:string;name:string})=>!personalized.products.some((q:{id:string})=>q.id===p.id)&&!/시리얼|그래놀라/.test(p.name));
+  assert.ok(restoredProduct);
+  const cleared={...initialConditions,budget:200000,days:1,meals:1,excluded:[]};
+  assert.equal((await POST(req(cookies[0],{conditions:cleared,mealIds:[restoredProduct.id]}))).status,201);
+  assert.equal((await POST(req(cookies[0],{conditions:{...cleared,excluded:['shrimp']},mealIds:[restoredProduct.id]}))).status,409);
+  assert.equal((await POST(req(cookies[0],{conditions:{...cleared,excluded:['invalid']},mealIds:[restoredProduct.id]}))).status,400);
+  assert.deepEqual((await(await GET(req(cookies[0],undefined,true))).json()).plan.conditions.excluded,[]);
+  // A per-plan choice must not silently clear the profile's default exclusions.
+  assert.deepEqual((await(await GET(req(cookies[0]))).json()).excluded,['shrimp']);
   const previousCalories=personalized.personalization.dailyCalories;
   await db.query('UPDATE body_profiles SET weight=80 WHERE user_id=$1',[ids[0]]);
   assert.ok((await(await GET(req(cookies[0]))).json()).personalization.dailyCalories>previousCalories);

@@ -5,9 +5,11 @@ import { planProducts } from '../../../lib/shopping-plan-catalog';
 import { parseConditions, validMealIds, basketTotal } from '../../../lib/shopping-plan';
 import {parseStock} from '../../../lib/shopping-progress';
 import {personalizeProducts} from '../../../lib/shopping-personalization';
+import {defaultDiet,parseDiet} from '../../../lib/meal-plan';
 async function personalizedCatalog(userId?:string){
  const row=userId?(await getPool().query('SELECT height::float8,weight::float8,age,sex,activity,meals,pregnancy,diet_preferences FROM body_profiles WHERE user_id=$1',[userId])).rows[0]:null;
- return personalizeProducts(await planProducts(),row,row?.diet_preferences);
+ const catalog=await planProducts(),diet=parseDiet(row?.diet_preferences)??defaultDiet;
+ return {...personalizeProducts(catalog,row,row?.diet_preferences),baseProducts:personalizeProducts(catalog,row,{...diet,excluded:[]}).products,excluded:diet.excluded};
 }
 export const runtime='nodejs';
 const json=(data:unknown,status=200)=>NextResponse.json(data,{status,headers:{'Cache-Control':'no-store'}});
@@ -47,7 +49,7 @@ export async function POST(request:NextRequest){
   if(personalized.personalization.blocked)return authFailure('현재 신체 정보에서는 자동 맞춤 추천을 제공하지 않아요.',422);
   const stock=parseStock((await getPool().query("SELECT stock FROM shopping_progress WHERE user_id=$1 AND scope='products'",[user.id])).rows[0]?.stock??{})??{};
   c.supply=Object.fromEntries(Object.values(stock).map(i=>[i.id,i.owned+i.ordered]));
-  const products=personalized.products;
+  const products=c.excluded===undefined?personalized.products:personalized.baseProducts;
   if(!validMealIds(ids,products,c)||basketTotal(ids,products,c.owned,c.supply)>c.budget)return authFailure('상품 또는 가격이 변경됐어요. 식단을 다시 추천받아 주세요.',409);
   await getPool().query('INSERT INTO shopping_plans(user_id,conditions,meal_ids) VALUES($1,$2,$3)',[user.id,JSON.stringify(c),JSON.stringify(ids)]);
   return json({saved:true},201);
