@@ -23,7 +23,13 @@ export function ShoppingPlanner({userId,onLogin,mode='plan'}:{userId?:string;onL
   fetch('/api/shopping-plan',{cache:'no-store',signal:controller.signal}).then(async r=>{const d=await r.json();if(!r.ok)throw new Error(d.error);return d;}).then(d=>{
    setProducts(d.products);setPersonalization(d.personalization);setError('');setIds([]);
    const saved=parseConditions(d.preferences);setConditions(saved??initialConditions);
-   try{const draft=JSON.parse(localStorage.getItem(draftKey)??sessionStorage.getItem(draftKey)??'null');const c=parseConditions(draft?.conditions);
+   try{
+    const guestKey='kkiniplan-shopping-draft-v2-guest';
+    if(draftKey!==guestKey&&!localStorage.getItem(draftKey)&&!sessionStorage.getItem(draftKey)){
+     const guest=localStorage.getItem(guestKey)??sessionStorage.getItem(guestKey);
+     if(guest&&parseConditions(JSON.parse(guest)?.conditions)){localStorage.setItem(draftKey,guest);localStorage.removeItem(guestKey);sessionStorage.removeItem(guestKey);}
+    }
+    const draft=JSON.parse(localStorage.getItem(draftKey)??sessionStorage.getItem(draftKey)??'null');const c=parseConditions(draft?.conditions);
     if(c){setConditions(c);if(Array.isArray(draft.mealIds)&&validMealIds(draft.mealIds,d.products,c)&&basketTotal(draft.mealIds,d.products,c.owned,c.supply)<=c.budget)setIds(draft.mealIds);}
    }catch{/* An expired draft should not stop browsing. */}
   }).catch(e=>{if(!controller.signal.aborted)setError(e.message);}).finally(()=>{if(!controller.signal.aborted)setLoading(false);});

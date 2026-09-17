@@ -4,6 +4,7 @@ import {useEffect,useRef,useState,type ReactNode} from 'react';
 import {Checkbox} from './components/checkbox';
 import {changeStock,parseStock,remainingQuantity,type ShoppingStock,type StockAction,type StockChange} from '../lib/shopping-progress';
 import './shopping-progress.css';
+import {importGuestStock,withGuestStockLock} from '../lib/guest-shopping-progress';
 import {validStockQuantity} from '../lib/food-intake';
 
 export function useShoppingProgress(userId:string|undefined,scope:'products'|'ingredients'){
@@ -14,6 +15,8 @@ export function useShoppingProgress(userId:string|undefined,scope:'products'|'in
   const c=new AbortController();
   (async()=>{
    try{
+    if(userId)await importGuestStock(userId);
+    if(c.signal.aborted)return;
     const data=userId?await fetch(endpoint,{cache:'no-store',signal:c.signal}).then(async r=>{const d=await r.json();if(!r.ok)throw new Error(d.error);return d;}):JSON.parse(localStorage.getItem(key)??'{"stock":{},"version":0}');
     const parsed=parseStock(data.stock);if(!parsed)throw new Error('저장된 구매 목록을 읽지 못했어요.');
     if(!c.signal.aborted){setStock(parsed);setVersion(data.version);setReady(true);}
@@ -26,7 +29,7 @@ export function useShoppingProgress(userId:string|undefined,scope:'products'|'in
   try{
    const next=changeStock(stock,changes,action);let data={stock:next,version:version+1};
    if(userId){const r=await fetch(endpoint,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({stock:next,version})});const d=await r.json();if(!r.ok){setReady(false);throw new Error(d.error);}data=d;}
-   else {const previous=JSON.parse(localStorage.getItem(key)??'{"version":0}');if(previous.version!==version){setReady(false);throw new Error('다른 화면에서 목록이 변경됐어요. 다시 불러와 주세요.');}localStorage.setItem(key,JSON.stringify(data));}
+   else await withGuestStockLock(async()=>{const previous=JSON.parse(localStorage.getItem(key)??'{"version":0}');if(previous.importId)throw new Error('로그인한 계정으로 목록을 옮기는 중이에요. 해당 계정에서 다시 불러와 주세요.');if(previous.version!==version){setReady(false);throw new Error('다른 화면에서 목록이 변경됐어요. 다시 불러와 주세요.');}localStorage.setItem(key,JSON.stringify(data));});
    setStock(data.stock);setVersion(data.version);window.dispatchEvent(new CustomEvent('shopping-progress-changed',{detail:{scope,source:'cart'}}));return true;
   }catch(e){setError(e instanceof Error?e.message:'구매 상태를 저장하지 못했어요.');return false;}
   finally{lock.current=false;setBusy(false);}
@@ -65,7 +68,7 @@ export function ShoppingProgress({items,progress,guest=false,recommended=false,s
  return <section className={`purchase-progress${recommended?' purchase-recommended':''}`} aria-label="구매와 보유 상태 관리">
   {summary??<div className="purchase-summary"><span>앞으로 살 것</span><strong>{total.toLocaleString('ko-KR')}원{unknown?' + 미확인 금액':''}</strong><small>등록 가격 기준 · 배송비 별도</small></div>}
   {heading}
-  <p className="body-note">{guest?'이 브라우저에 구매 상태를 저장해요. 로그인한 계정의 목록과는 별도로 관리해요.':'구매 상태는 계정에 자동 저장해요.'} 주문·보유 수량은 다음 구매 목록에서도 반영돼요.</p>
+  <p className="body-note">{guest?'이 브라우저에 구매 상태를 저장해요. 로그인하면 주문·보유 목록을 계정에 합쳐요.':'구매 상태는 계정에 자동 저장해요.'} 주문·보유 수량은 다음 구매 목록에서도 반영돼요.</p>
   <nav className="purchase-tabs" aria-label="구매 상태">{tabs.map(t=><button type="button" key={t} aria-pressed={tab===t} onClick={()=>{setTab(t);setSelected([]);setCheckout(false);setQuantities({});setMessage('');}}>{labels[t]} <b>{count(t)}</b></button>)}</nav>
   {error&&<p role="alert">{error} <button type="button" disabled={busy} onClick={progress.reload}>다시 불러오기</button></p>}
   {!ready&&!error&&<p role="status">구매 상태를 불러오는 중…</p>}
