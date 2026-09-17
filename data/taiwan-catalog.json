@@ -1,0 +1,177 @@
+{
+  "market": "TW",
+  "currency": "TWD",
+  "locale": "zh-TW",
+  "checkedAt": "2026-09-17T14:39:23.282Z",
+  "seller": "桂冠官方商城",
+  "products": [
+    {
+      "id": "tw-laurel-58",
+      "sellerId": "58",
+      "name": "蝦仁炒飯",
+      "grams": 275,
+      "servings": 1,
+      "priceMinor": 7200,
+      "calories": 547,
+      "protein": 13.5,
+      "fat": 18.2,
+      "carbs": 82.2,
+      "sodium": 762,
+      "productUrl": "https://www.laurel.com.tw/index.php?action=product&id=58",
+      "imageUrl": "https://www.laurel.com.tw/upload/2024/07/20240701175251368.jpg",
+      "nutritionLabelUrl": "https://www.laurel.com.tw/upload/2025/02/20250205183047105.jpg",
+      "mealSlots": [
+        "lunch",
+        "dinner"
+      ],
+      "family": "rice"
+    },
+    {
+      "id": "tw-laurel-1347",
+      "sellerId": "1347",
+      "name": "醬香肉絲蛋炒飯",
+      "grams": 270,
+      "servings": 1,
+      "priceMinor": 6700,
+      "calories": 564,
+      "protein": 15.1,
+      "fat": 14.9,
+      "carbs": 92.6,
+      "sodium": 1077,
+      "productUrl": "https://www.laurel.com.tw/index.php?action=product&id=1347",
+      "imageUrl": "https://www.laurel.com.tw/upload/2026/09/20260904141946186.png",
+      "nutritionLabelUrl": "https://www.laurel.com.tw/upload/2026/09/20260904142004098.png",
+      "mealSlots": [
+        "lunch",
+        "dinner"
+      ],
+      "family": "rice"
+    },
+    {
+      "id": "tw-laurel-1346",
+      "sellerId": "1346",
+      "name": "蒜香牛肉蛋炒飯",
+      "grams": 270,
+      "servings": 1,
+      "priceMinor": 6700,
+      "calories": 591,
+      "protein": 15.1,
+      "fat": 18.9,
+      "carbs": 90.2,
+      "sodium": 1023,
+      "productUrl": "https://www.laurel.com.tw/index.php?action=product&id=1346",
+      "imageUrl": "https://www.laurel.com.tw/upload/2026/09/20260904141149413.png",
+      "nutritionLabelUrl": "https://www.laurel.com.tw/upload/2026/09/20260904141527267.png",
+      "mealSlots": [
+        "lunch",
+        "dinner"
+      ],
+      "family": "rice"
+    },
+    {
+      "id": "tw-laurel-1043",
+      "sellerId": "1043",
+      "name": "墨西哥嫩雞飯",
+      "grams": 310,
+      "servings": 1,
+      "priceMinor": 7200,
+      "calories": 524,
+      "protein": 16.1,
+      "fat": 15.5,
+      "carbs": 79.7,
+      "sodium": 822,
+      "productUrl": "https://www.laurel.com.tw/index.php?action=product&id=1043",
+      "imageUrl": "https://www.laurel.com.tw/upload/2025/07/20250715110553822.png",
+      "nutritionLabelUrl": "https://www.laurel.com.tw/upload/2025/07/20250711170116252.jpg",
+      "mealSlots": [
+        "lunch",
+        "dinner"
+      ],
+      "family": "rice"
+    },
+    {
+      "id": "tw-laurel-846",
+      "sellerId": "846",
+      "name": "松露野菇燉飯",
+      "grams": 310,
+      "servings": 1,
+      "priceMinor": 7200,
+      "calories": 415,
+      "protein": 7.1,
+      "fat": 12.1,
+      "carbs": 69.1,
+      "sodium": 961,
+      "productUrl": "https://www.laurel.com.tw/index.php?action=product&id=846",
+      "imageUrl": "https://www.laurel.com.tw/upload/2024/07/20240730133206211.png",
+      "nutritionLabelUrl": "https://www.laurel.com.tw/upload/2024/07/20240729112841859.jpg",
+      "mealSlots": [
+        "lunch",
+        "dinner"
+      ],
+      "family": "rice"
+    },
+    {
+      "id": "tw-laurel-140",
+      "sellerId": "140",
+      "name": "蕃茄肉醬義大利麵",
+      "grams": 330,
+      "servings": 1,
+      "priceMinor": 7200,
+      "calories": 442,
+      "protein": 17.8,
+      "fat": 14.2,
+      "carbs": 60.7,
+      "sodium": 822,
+      "productUrl": "https://www.laurel.com.tw/index.php?action=product&id=140",
+      "imageUrl": "https://www.laurel.com.tw/upload/2026/04/20260429171121238.png",
+      "nutritionLabelUrl": "https://www.laurel.com.tw/upload/2025/04/20250430194538924.jpg",
+      "mealSlots": [
+        "lunch",
+        "dinner"
+      ],
+      "family": "pasta"
+    },
+    {
+      "id": "tw-laurel-141",
+      "sellerId": "141",
+      "name": "奶油培根義大利麵",
+      "grams": 335,
+      "servings": 1,
+      "priceMinor": 7200,
+      "calories": 476,
+      "protein": 14.4,
+      "fat": 20,
+      "carbs": 59.3,
+      "sodium": 734,
+      "productUrl": "https://www.laurel.com.tw/index.php?action=product&id=141",
+      "imageUrl": "https://www.laurel.com.tw/upload/2026/04/20260429171134054.png",
+      "nutritionLabelUrl": "https://www.laurel.com.tw/upload/2025/05/20250502155214054.jpg",
+      "mealSlots": [
+        "lunch",
+        "dinner"
+      ],
+      "family": "pasta"
+    },
+    {
+      "id": "tw-laurel-145",
+      "sellerId": "145",
+      "name": "清炒蒜香雞肉義大利麵",
+      "grams": 290,
+      "servings": 1,
+      "priceMinor": 7200,
+      "calories": 467,
+      "protein": 18.3,
+      "fat": 15.7,
+      "carbs": 62.9,
+      "sodium": 1438,
+      "productUrl": "https://www.laurel.com.tw/index.php?action=product&id=145",
+      "imageUrl": "https://www.laurel.com.tw/upload/2023/12/20231228132245148.png",
+      "nutritionLabelUrl": "https://www.laurel.com.tw/upload/2026/07/20260701151025411.jpg",
+      "mealSlots": [
+        "lunch",
+        "dinner"
+      ],
+      "family": "pasta"
+    }
+  ]
+}

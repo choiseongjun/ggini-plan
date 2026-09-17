@@ -1,9 +1,12 @@
+'use client';
+import {usePlannerLocale} from './planner-locale';
 import type {PlanProduct} from '../lib/shopping-plan';
 import {ProductThumb} from './product-thumb';
 import './meal-source.css';
 
 export function MealSourceBadge({product}:{product:PlanProduct}){
- return <span className={`meal-source-badge ${product.recipe?'is-recipe':'is-product'}`}>{product.recipe?'🍳 직접 만드는 요리':'🛍️ 판매 상품'}</span>;
+ const locale=usePlannerLocale();
+ return <span className={`meal-source-badge ${product.recipe?'is-recipe':'is-product'}`}>{locale.text(product.recipe?'🍳 직접 만드는 요리':'🛍️ 판매 상품')}</span>;
 }
 
 export function RecipeProductPreview({product}:{product:PlanProduct}){

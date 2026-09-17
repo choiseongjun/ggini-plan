@@ -26,6 +26,7 @@ test('isolated migration, Japanese catalog, translations, currencies, budgets, p
  try{
   assert.equal((await db.query('SELECT current_schema() AS s')).rows[0].s,schema);
   await db.query(readFileSync('db/schema.sql','utf8'));
+  await db.query(readFileSync('db/catalog-food-types.sql','utf8'));
   const user=(await db.query<PublicUser>("INSERT INTO users(name,email) VALUES('International test','intl@example.test') RETURNING id::text,name,email")).rows[0];
   await db.query("INSERT INTO daily_expenses(user_id,spent_on,category,amount) VALUES($1,'2026-09-17','food',9000)",[user.id]);
   const sql=readFileSync('db/internationalization.sql','utf8');await db.query(sql);await db.query(sql);
@@ -38,7 +39,7 @@ test('isolated migration, Japanese catalog, translations, currencies, budgets, p
   const jp=await(await catalog(request('/api/catalog?market=JP&locale=ja-JP'))).json();assert.equal(jp.items.length,1);assert.equal(jp.items[0].name,'日本の弁当');assert.equal(jp.region.currency,'JPY');assert.equal(jp.region.status,'preview');
   assert.equal((await(await catalog(request('/api/catalog?market=JP&locale=ko-KR'))).json()).items[0].name,'일본 도시락');
   assert.equal((await(await catalog(request('/api/catalog?market=JP&locale=en-US'))).json()).items[0].translationFallback,true);
-  assert.ok(!(await(await catalog()).json()).items.some((p:{id:string})=>p.id==='jp-test'));
+  assert.ok(!(await(await catalog(request('/api/catalog'))).json()).items.some((p:{id:string})=>p.id==='jp-test'));
   assert.equal((await catalog(request('/api/catalog?market=XX'))).status,400);
   await db.query("INSERT INTO market_sellers VALUES('JP','test','Test seller','https://example.test')");
   await db.query("INSERT INTO catalog_offers(id,product_id,market_code,currency_code,seller_key,seller_product_id,price_minor,product_url,availability,checked_at,source_url) VALUES('offer','jp-test','JP','JPY','test','sku',850,'https://example.test/sku','in_stock',NOW(),'https://example.test/sku')");

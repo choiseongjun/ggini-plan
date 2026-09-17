@@ -14,43 +14,17 @@ import { AuthScreen } from "./auth-screen";
 import { CommunityPanel, SharedBasket } from "./community";
 import { BudgetSettings } from "./budget-settings";
 import { BodyProfilePanel } from "./body-profile";
-import { RiceBuddy } from "./rice-buddy";
+import {AppShell,Brand,Icon,type IconName} from './app-shell';
 import { googleAuthErrors, type GoogleAuthErrorCode } from "../lib/auth-messages";
 import type { PublicUser } from "../lib/auth";
 import { catalogCategories, shoppingSearchLinks, unitPrice, type CatalogItem, type CompareResponse } from "../lib/catalog";
 import { ProductThumb } from "./product-thumb";
 import { CatalogFilter } from "./catalog-filter";
 import { AppLoading, useLoadingTask } from "./app-loading";
+import {ServiceFeedback} from './service-feedback';
 
 type Tab = "community" | "home" | "calendar" | "cart" | "compare" | "record" | "profile";
-type IconName = "home" | "bag" | "chart" | "user" | "chevron" | "arrow" | "check" | "spark" | "calendar" | "wallet" | "fire" | "close" | "edit" | "left";
-
-const formatWon = (n: number) => `${Math.round(n).toLocaleString("ko-KR")}원`;
-
-function Icon({ name, size = 20, strokeWidth = 1.8 }: { name: IconName; size?: number; strokeWidth?: number }) {
-  const paths: Record<IconName, React.ReactNode> = {
-    home: <><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M9 21v-7h6v7"/></>,
-    bag: <><path d="M4 8h16l-1.3 12H5.3L4 8Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></>,
-    chart: <><path d="M4 20V10m6 10V4m6 16v-7m4 7H2"/></>,
-    user: <><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></>,
-    chevron: <path d="m9 18 6-6-6-6"/>,
-    left: <path d="m15 18-6-6 6-6"/>,
-    arrow: <path d="M5 12h14m-6-6 6 6-6 6"/>,
-    check: <path d="m5 12 4 4L19 6"/>,
-    spark: <><path d="m12 2 1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2Z"/><path d="m19 17 .6 1.4L21 19l-1.4.6L19 21l-.6-1.4L17 19l1.4-.6L19 17Z"/></>,
-    calendar: <><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18"/></>,
-    wallet: <><rect x="3" y="6" width="18" height="15" rx="2"/><path d="M3 9V5a2 2 0 0 1 2-2h13m-1 12h4m-3 0h.01"/></>,
-    fire: <path d="M12 22c4.5 0 7-3.2 7-7 0-2.5-1.2-4.4-3-6-1 2-2 2.5-2 2.5C14 7 12 4.5 10 2c.5 4-1 5.5-3 7.5C5.5 11 5 12.8 5 15c0 3.8 2.5 7 7 7Z"/>,
-    close: <path d="M5 5 19 19M19 5 5 19"/>,
-    edit: <><path d="m4 20 4-.8L20 7a2.1 2.1 0 0 0-3-3L5 16l-1 4Z"/><path d="m15 6 3 3"/></>,
-  };
-  return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[name]}</svg>;
-}
-
-function Brand({ light = false }: { light?: boolean }) {
-  return <Link href="/" aria-label="끼니플랜 홈으로" style={{textDecoration:"none"}} className={`brand ${light ? "brand-light" : ""}`}><span className="brand-mark"><span/><span/><span/><span/></span><span>끼니플랜<span className="brand-dot">.</span></span></Link>;
-}
-
+const formatWon=(value:number)=>new Intl.NumberFormat('ko-KR').format(value)+'원';
 export default function Home() {
   const [profileRevision,setProfileRevision]=useState(0);
   const [recordDate,setRecordDate]=useState(()=>emptyDashboard().today);
@@ -177,21 +151,15 @@ export default function Home() {
     return () => controller.abort();
   }, [tab, compareProductId]);
 
-  return <main className="site-shell">
+  return <AppShell>
     {savingBudget && <AppLoading message="이번 주 예산을 저장하고 있어요"/>}
-    <aside className="promo-panel" aria-label="끼니플랜 서비스 소개"><div className="promo-inner">
-      <div className="promo-top"><Brand light/><span>MY WEEK, MY TABLE</span></div>
-      <div className="promo-copy"><div className="eyebrow">혼자 사는 한 주도 잘 먹기 위한 계획</div><h1>장보기부터 식단까지,<br/><em>가볍게 챙겨요.</em></h1><p>간편식과 직접 요리하는 한 끼를 비교해<br/>내 예산에 맞는 장보기와 식단을 정해요.<br/>바쁜 일상에도 내 끼니는 놓치지 않게.</p><div className="promo-rule"><span>내 예산에 맞게</span><span>매일 맛있게</span><span>다음 주는 더 쉽게</span></div></div>
-      <div className="promo-playground"><span className="promo-sticker sticker-one">잘 먹고 🥄</span><span className="promo-sticker sticker-two">조금씩 아끼고 🌱</span><div className="promo-buddy-circle"><RiceBuddy/></div><span className="promo-veggie veggie-one">🥦</span><span className="promo-veggie veggie-two">🍅</span><div className="promo-character-caption">밥 친구 끼니랑, 매일 한 끼씩.</div></div>
-      <div className="promo-footer"><span>© 끼니플랜</span><span>GOOD FOOD, GOOD WEEK</span></div>
-    </div></aside>
-    <section className="app-side" aria-label="끼니플랜 앱"><div className="app-frame">
       {showAuth ? <AuthScreen initialError={authError} onExplore={() => { setShowAuth(false); setAuthError(""); }} onSuccess={(user) => { setDashboard(null); setAuthUser(user); setAuthError(""); setShowAuth(false); setTab("home"); }}/> : <>
-      <header className="app-header"><Brand/><div className="app-header-actions">{authUser ? <button className="logout-link" type="button" onClick={signOut}>로그아웃</button> : <button className="logout-link" type="button" onClick={() => { setAuthError(""); setShowAuth(true); }}>로그인</button>}<button className="avatar" type="button" onClick={() => setTab("profile")} aria-label="내 정보 보기">{displayName.slice(0, 1)}</button></div></header>
+      <header className="app-header"><Brand/><div className="app-header-actions"><Link href="/tw" className="logout-link" lang="zh-TW" aria-label="台灣版 · 繁體中文">台灣</Link>{authUser ? <button className="logout-link" type="button" onClick={signOut}>로그아웃</button> : <button className="logout-link" type="button" onClick={() => { setAuthError(""); setShowAuth(true); }}>로그인</button>}<button className="avatar" type="button" onClick={() => setTab("profile")} aria-label="내 정보 보기">{displayName.slice(0, 1)}</button></div></header>
       <div className="app-content" ref={contentRef}>
         {tab === "record" && <FoodIntake key={`intake-${authUser?.id??"guest"}-${tab}`} userId={authUser?.id} onLogin={()=>setShowAuth(true)} history={tab==="record"} recordDate={recordDate} onDateChange={setRecordDate}/>}
         {tab === "home" && <ShoppingPlanner key={`shopping-home-${authUser?.id??"guest"}`} dashboard={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/>}
-        {(tab === "home" || tab === "cart" || tab === "profile") && <section className="home-guide-entry"><strong>{tab === "profile" ? "내가 제보한 한 끼" : "괜찮은 한 끼를 찾았나요?"}</strong><p>메뉴·상품을 제보하면 검토 후 함께 나눌 수 있어요.</p><Link href={tab === "profile" ? "/submissions#mine" : "/submissions"}>{tab === "profile" ? "내 제보와 검토 결과 보기 →" : "메뉴·상품 제보하기 →"}</Link></section>}
+        <ServiceFeedback page={`/${tab==='home'?'':tab}`}/>
+        {(tab === "home" || tab === "cart" || tab === "profile") && <section className="home-guide-entry"><strong>{tab === "profile" ? "내가 제보한 한 끼" : "찾는 상품이 없거나 영양정보가 빠졌나요?"}</strong><p>상품 판매 링크와 영양성분표 사진을 제보해 주세요. 검토 후 상품 정보를 보완해요.</p><Link href={tab === "profile" ? "/submissions#mine" : "/submissions"}>{tab === "profile" ? "내 제보와 검토 결과 보기 →" : "상품·영양정보 제보하기 →"}</Link></section>}
         {tab === "home" && <section className="home-guide-entry"><strong>자취 식단과 식비, 함께 계획해요</strong><p>일주일 식비 예산부터 1인 가구 장보기 리스트까지.</p><Link href="/guides">자취 식생활 가이드 읽기 →</Link></section>}
         {(tab === "home" || tab === "profile") && <section className="home-guide-entry contact-entry" aria-label="문의 및 협업 연락처"><strong>💌 문의·협업 제안</strong><p>불편한 점이나 함께하고 싶은 아이디어를 보내주세요.</p><a href={`mailto:choisj2702@gmail.com?subject=${encodeURIComponent('[끼니플랜] 문의 및 협업 제안')}`}>메일 보내기 ↗</a><span>choisj2702@gmail.com</span></section>}
         {authError && <p className="auth-inline-error" role="alert">{authError}</p>}
@@ -233,7 +201,7 @@ export default function Home() {
       </div>
       <nav className="bottom-nav" aria-label="앱 메뉴">{([ ["home","홈","home"], ["cart","장바구니","bag"], ["record","기록","chart"], ["community","함께","spark"], ["profile","마이","user"] ] as [Tab,string,IconName][]).map(([key,label,icon]) => <button key={key} type="button" className={tab === key ? "active" : ""} onClick={() => setTab(key)} aria-current={tab === key ? "page" : undefined}><Icon name={icon} size={21}/><span>{label}</span></button>)}</nav>
       </>}
-    </div></section>
+
     {showSetup && <div className="modal-backdrop" role="presentation" onMouseDown={() => setShowSetup(false)}><div className="setup-modal" role="dialog" aria-modal="true" aria-labelledby="setup-title" onMouseDown={(e) => e.stopPropagation()}>{dataError&&<p className="auth-error" role="alert">{dataError}</p>}<div className="modal-header"><div><span className="section-kicker">MY PLAN</span><h2 id="setup-title">내 목표 수정하기</h2></div><button type="button" onClick={() => setShowSetup(false)} aria-label="닫기"><Icon name="close" size={21}/></button></div><form onSubmit={saveSetup}><label htmlFor="budget">이번 주 식비 한도</label><div className="input-wrap"><input id="budget" type="number" min="1" max="10000000" required inputMode="numeric" value={draftBudget} onChange={(e) => setDraftBudget(e.target.value)}/><span>원</span></div><button className="primary-button" type="submit" disabled={savingBudget}>저장하고 계속하기 <Icon name="arrow" size={17}/></button></form></div></div>}
-  </main>;
+  </AppShell>;
 }

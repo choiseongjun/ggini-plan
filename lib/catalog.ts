@@ -24,6 +24,7 @@ export type CatalogCategory = keyof typeof catalogCategories;
 export type CatalogItem = Product & {
   market?:string;currency?:string;locale?:string;minorUnits?:number;translationFallback?:boolean;
   category: CatalogCategory;
+  foodType?: import("./catalog-food-types").FoodType | null;
   inWeeklyCart: boolean;
   productImageUrl: string | null;
   priceCheckedAt?: string | null;

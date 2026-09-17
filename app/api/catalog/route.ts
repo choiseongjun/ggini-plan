@@ -3,9 +3,9 @@ import {marketContext,RegionError} from '../../../lib/regional-db';
 
 export const runtime = "nodejs";
 
-export async function GET(request?:Request) {
+export async function GET(request:Request) {
   try {
-    const params=request?new URL(request.url).searchParams:null;
+    const params=new URL(request.url).searchParams;
     const region=await marketContext(params?.get('market')??'KR',params?.get('locale')??undefined);
     return Response.json({ items: await catalogItems(region),region }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {

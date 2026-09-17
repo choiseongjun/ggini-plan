@@ -1,0 +1,1886 @@
+{
+  "market": "TW",
+  "currency": "TWD",
+  "locale": "zh-TW",
+  "seller": "萬家福線上購物",
+  "sellerKey": "uniprosperity",
+  "sellerUrl": "https://online.uni-prosperity.com.tw",
+  "collectedAt": "2026-09-17T15:00:20.958Z",
+  "products": [
+    {
+      "id": "tw-uniprosperity-2401044900101",
+      "sellerId": "2401044900101",
+      "name": "冷凍澳洲12盎司嫩肩厚切牛排(每包約400g)",
+      "priceMinor": 35000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2401044900101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwb1f37643/images/large/2401044900101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "牛",
+        "澳洲牛肉"
+      ],
+      "packLabel": "1Pack包 x 1 x 1PacK包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:58:54.554Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2401044900101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2410093500101",
+      "sellerId": "2410093500101",
+      "name": "立大食品冷凍台灣豬後腿肉絲250g(貼體)",
+      "priceMinor": 12000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E7%AB%8B%E5%A4%A7%E9%A3%9F%E5%93%81/2410093500101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw2ca261da/images/large/0161519_250g.jpeg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "豬",
+        "豬肉"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:58:55.703Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%AB%8B%E5%A4%A7%E9%A3%9F%E5%93%81/2410093500101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2432002000101",
+      "sellerId": "2432002000101",
+      "name": "舒康雞 雞骨架(每包約500克)",
+      "priceMinor": 9500,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2432002000101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw9d06425f/images/large/2432002000101-2026.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "雞．鴨",
+        "雞分切品"
+      ],
+      "packLabel": "1Pack包 x 1 x 1PacK包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:58:56.627Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2432002000101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2420000200101",
+      "sellerId": "2420000200101",
+      "name": "冷凍紐西蘭全羊火鍋肉片(每包約1kg)",
+      "priceMinor": 64500,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2420000200101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwa81aa877/images/large/2420000200101-2.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "羊"
+      ],
+      "packLabel": "1PC包 x 1 x 1PC包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:58:57.500Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2420000200101.html"
+    },
+    {
+      "id": "tw-uniprosperity-1511201300101",
+      "sellerId": "1511201300101",
+      "name": "新東陽黑胡椒德式香腸",
+      "priceMinor": 8300,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E6%96%B0%E6%9D%B1%E9%99%BD/1511201300101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwfcb3675b/images/large/0052375.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "培根．香腸．臘肉",
+        "香腸．熱狗"
+      ],
+      "packLabel": "160g克 x 1 x 1Pack包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:58:58.266Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%96%B0%E6%9D%B1%E9%99%BD/1511201300101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2461201700101",
+      "sellerId": "2461201700101",
+      "name": "大成冷凍法式香草雞胸肉(每包約330克)",
+      "priceMinor": 9800,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E5%A4%A7%E6%88%90/2461201700101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dweee969a0/images/large/24612017001-1.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "調味肉品",
+        "醃肉"
+      ],
+      "packLabel": "1Pack包 x 1 x 1PacK包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:58:59.054Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%A4%A7%E6%88%90/2461201700101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2460100200101",
+      "sellerId": "2460100200101",
+      "name": "冷凍澳洲板腱火鍋片 (每包約1Kg)",
+      "priceMinor": 65000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2460100200101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw47c75dc3/images/large/2460100200101.png",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "火鍋肉片",
+        "牛肉火鍋"
+      ],
+      "packLabel": "1Pack包 x 1 x 1Pack包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:58:59.865Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2460100200101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2103105000101",
+      "sellerId": "2103105000101",
+      "name": "冷凍職人虱目魚柳300g",
+      "priceMinor": 9900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2103105000101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwfbdca303/images/large/2103105000101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "鮮魚",
+        "魚(尾)"
+      ],
+      "packLabel": "1Bag包 x 1 x 1Bag包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:00.681Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2103105000101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2110101100101",
+      "sellerId": "2110101100101",
+      "name": "荷卡廚坊_極鮮蝦仁200g",
+      "priceMinor": 26800,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2110101100101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw9d10cce8/images/large/2110102300101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "甲殼/軟體水產",
+        "蟹類"
+      ],
+      "packLabel": "1Bag包 x 1 x 1Bag包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:01.478Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2110101100101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2110339500101",
+      "sellerId": "2110339500101",
+      "name": "冷凍帝王蟹風味棒(因各地區供貨商不同，實際出貨包裝以出貨店庫存為準。)",
+      "priceMinor": 34900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E6%B5%B7%E9%AE%AE%E9%A3%9F%E6%9D%90/2110339500101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw31fc349b/images/large/0268474_-10.png",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "加工海鮮",
+        "其他海鮮"
+      ],
+      "packLabel": "1Bag袋 x 1 x 1Bag袋",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:02.320Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%B5%B7%E9%AE%AE%E9%A3%9F%E6%9D%90/2110339500101.html"
+    },
+    {
+      "id": "tw-uniprosperity-1473101100101",
+      "sellerId": "1473101100101",
+      "name": "【安心價】福壽柴魚花-5g*5",
+      "priceMinor": 7900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/1473101100101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw02541a9c/images/large/0115145_5g5.jpeg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "紫菜/魚乾/烏魚子"
+      ],
+      "packLabel": "5g克 x 5 x 1Pack包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:03.195Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1473101100101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2400002000101",
+      "sellerId": "2400002000101",
+      "name": "CAB冷藏美國安格斯肩小排火鍋片(每盒約200g)-貼體包裝※實際到貨效期約4天以上",
+      "priceMinor": 35000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2400002000101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw0aa6c659/images/large/2400002000101-2026.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "牛",
+        "牛肉"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:04.034Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2400002000101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2410012400101",
+      "sellerId": "2410012400101",
+      "name": "嚴選冷藏台灣豬後腿絞肉300g-貼體包裝※因配送關係實際到貨效期約2-3天",
+      "priceMinor": 10500,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2410012400101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw5dad336d/images/large/2410012400101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "豬",
+        "豬肉"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:04.836Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2410012400101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2432002400101",
+      "sellerId": "2432002400101",
+      "name": "產銷履歷全氣冷雞冷藏雞胸肉片250g(貼體)※因配送關係實際到貨效期約2-3天",
+      "priceMinor": 11800,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E9%87%91%E8%B1%90%E7%9B%9B/2432002400101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwfac48c7e/images/large/2432002400101-202604.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "雞．鴨",
+        "雞分切品"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:05.744Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%87%91%E8%B1%90%E7%9B%9B/2432002400101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2420004800101",
+      "sellerId": "2420004800101",
+      "name": "【清真認證】冷凍澳洲小羊燉肉塊(每盒約500克)",
+      "priceMinor": 32000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B7%E5%87%8D%E8%82%89%E5%93%81/2420004800101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwb0383b2e/images/large/0164713_500g.jpeg",
+      "category": "ingredient",
+      "categoryPath": [
+        "促銷活動(商品價格及活動生效時間為促銷起始日早上9:00起)",
+        "週二新鮮事"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:06.625Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B7%E5%87%8D%E8%82%89%E5%93%81/2420004800101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2440005000101",
+      "sellerId": "2440005000101",
+      "name": "冷藏台灣豬原味一口香腸真空包(每包約350g)",
+      "priceMinor": 16000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B7%E8%97%8F%E8%82%89%E5%93%81/2440005000101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw5e8d7f76/images/large/0185869_350g.jpeg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "培根．香腸．臘肉",
+        "香腸．熱狗"
+      ],
+      "packLabel": "1Pack包 x 1 x 1PacK包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:07.588Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B7%E8%97%8F%E8%82%89%E5%93%81/2440005000101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2461205300101",
+      "sellerId": "2461205300101",
+      "name": "大成冷凍脆皮金嫩雞腿排200g",
+      "priceMinor": 7900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2461205300101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwd7363fa8/images/large/2461205300101-1.jpg",
+      "category": "frozen_meal",
+      "categoryPath": [
+        "生鮮冷凍",
+        "冷凍調理",
+        "微波餐點",
+        "油炸速食"
+      ],
+      "packLabel": "1PC包 x 1 x 1PC包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:08.471Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2461205300101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2460009200101",
+      "sellerId": "2460009200101",
+      "name": "冷凍豬梅花火鍋片 (每包約1kg)",
+      "priceMinor": 50000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2460009200101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw7ba3b31d/images/large/2460009200101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "火鍋肉片",
+        "豬肉火鍋"
+      ],
+      "packLabel": "1Pack包 x 1 x 1Pack包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:09.289Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2460009200101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2103121500101",
+      "sellerId": "2103121500101",
+      "name": "鯛魚腹片(每包約500克±10%)因各地區供貨商不同，實際出貨包裝以出貨店庫存為準。",
+      "priceMinor": 23900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2103121500101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw6afca4c4/images/large/2103121500101_NR_00.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "鮮魚",
+        "魚(尾)"
+      ],
+      "packLabel": "1Bag袋 x 1 x 1Bag袋",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:10.126Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2103121500101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2110200800101",
+      "sellerId": "2110200800101",
+      "name": "台灣船釣燈捕大透抽 (每盒500g/約2~3隻)",
+      "priceMinor": 35900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2110200800101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw99b2a9aa/images/large/2110200800101-2024.png",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "甲殼/軟體水產",
+        "軟體水產"
+      ],
+      "packLabel": "1Bag包 x 1 x 1Bag包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:10.944Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2110200800101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2111061200101",
+      "sellerId": "2111061200101",
+      "name": "品興行 澎湖花枝蝦卷(每盒約300g)",
+      "priceMinor": 28900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E5%93%81%E8%88%88%E8%A1%8C/2111061200101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwcc403a1f/images/large/2111061200101_NR_00.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "火烤料理",
+        "火鍋料．丸類",
+        "火鍋餃/火鍋料"
+      ],
+      "packLabel": "1Box盒 x 1 x 1Box盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:11.847Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%93%81%E8%88%88%E8%A1%8C/2111061200101.html"
+    },
+    {
+      "id": "tw-uniprosperity-1473101300101",
+      "sellerId": "1473101300101",
+      "name": "登豐 柴魚片45g",
+      "priceMinor": 9900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/1473101300101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw355c4ba4/images/large/0123145_-45g.jpeg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "紫菜/魚乾/烏魚子"
+      ],
+      "packLabel": "45g克 x 1 x 1Pack包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:12.698Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1473101300101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2401040900201",
+      "sellerId": "2401040900201",
+      "name": "澳洲穀飼牛絞肉170g※因配送關係實際到貨效期約4-6天",
+      "priceMinor": 12000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2401040900201.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw6a3b5f16/images/large/2401040900101.png",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "牛",
+        "澳洲牛肉"
+      ],
+      "packLabel": "1Pack包 x 1 x 1Pack包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:13.505Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2401040900201.html"
+    },
+    {
+      "id": "tw-uniprosperity-2410093300101",
+      "sellerId": "2410093300101",
+      "name": "【台灣豬】立大食品冷凍豬小排切塊(每盒約250克)",
+      "priceMinor": 14000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E7%AB%8B%E5%A4%A7%E9%A3%9F%E5%93%81/2410093300101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw1863dc20/images/large/2410093300101-202410.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "豬",
+        "豬肉"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:14.356Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%AB%8B%E5%A4%A7%E9%A3%9F%E5%93%81/2410093300101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2432005900101",
+      "sellerId": "2432005900101",
+      "name": "安心雞翅中300g(貼體)※因配送關係實際到貨效期約2-3天",
+      "priceMinor": 12500,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2432005900101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwa93e7759/images/large/2432005900101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "雞．鴨",
+        "雞分切品"
+      ],
+      "packLabel": "1Box盒 x 1 x 1Box盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:15.210Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2432005900101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2420004300101",
+      "sellerId": "2420004300101",
+      "name": "【清真認證】冷凍澳洲小羊肉片(每盒約200克)",
+      "priceMinor": 18000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B7%E5%87%8D%E8%82%89%E5%93%81/2420004300101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwc4d7bd6d/images/large/0142388_200g.jpeg",
+      "category": "ingredient",
+      "categoryPath": [
+        "促銷活動(商品價格及活動生效時間為促銷起始日早上9:00起)",
+        "週二新鮮事"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:16.080Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B7%E5%87%8D%E8%82%89%E5%93%81/2420004300101.html"
+    },
+    {
+      "id": "tw-uniprosperity-1510201500101",
+      "sellerId": "1510201500101",
+      "name": "新東陽德國香腸(每包640g)",
+      "priceMinor": 32900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E6%96%B0%E6%9D%B1%E9%99%BD/1510201500101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw14f85df6/images/large/1510201500101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "培根．香腸．臘肉",
+        "香腸．熱狗"
+      ],
+      "packLabel": "640g克 x 1 x 1Bag包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:16.906Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%96%B0%E6%9D%B1%E9%99%BD/1510201500101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2010012600101",
+      "sellerId": "2010012600101",
+      "name": "主廚煙燻雞胸(每包100g)冷藏即食",
+      "priceMinor": 5800,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2010012600101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw7dac0bf4/images/large/2010012600101-202405.png",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "調味肉品",
+        "醃肉"
+      ],
+      "packLabel": "1Pack包 x 1 x 1PACK包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:17.742Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2010012600101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2460110700101",
+      "sellerId": "2460110700101",
+      "name": "美國CR安格斯牛五花火鍋片1000g",
+      "priceMinor": 52000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2460110700101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw10b996f0/images/large/2460110700101-202607.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "火鍋肉片",
+        "牛肉火鍋"
+      ],
+      "packLabel": "1Pack包 x 1 x 1PacK包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:18.525Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2460110700101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2103115100101",
+      "sellerId": "2103115100101",
+      "name": "冷凍智利鮭魚切片(每包約500克±10%(含冰率20%))",
+      "priceMinor": 34900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2103115100101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw40843fec/images/large/2103115100101_NR_00.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "鮮魚",
+        "魚(尾)"
+      ],
+      "packLabel": "1PC片 x 1 x 1PC片",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:19.527Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2103115100101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2110120800101",
+      "sellerId": "2110120800101",
+      "name": "冷凍阿根廷天使紅蝦(每盒約2公斤,約30-40尾)因各地區供貨商不同，實際出貨包裝以出貨店庫存為準。",
+      "priceMinor": 139900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E7%B7%AF%E5%8B%B5/2110120800101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw49d67994/images/large/2110120800101-2026.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "甲殼/軟體水產",
+        "蟹類"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:20.462Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%B7%AF%E5%8B%B5/2110120800101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2110306500101",
+      "sellerId": "2110306500101",
+      "name": "冷凍薄鹽槍魷一夜干(每包約220克)",
+      "priceMinor": 16900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2110306500101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw216760cd/images/large/2110306500101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "加工海鮮",
+        "其他海鮮"
+      ],
+      "packLabel": "1Bag包 x 1 x 1Bag包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:21.268Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2110306500101.html"
+    },
+    {
+      "id": "tw-uniprosperity-1473089800101",
+      "sellerId": "1473089800101",
+      "name": "橘平屋特選燒海苔20.8g",
+      "priceMinor": 7900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E6%A9%98%E5%B9%B3%E5%B1%8B/1473089800101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw4a10938c/images/large/0005265_208g.jpeg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "紫菜/魚乾/烏魚子"
+      ],
+      "packLabel": "20.8g克 x 1 x 1Pack包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:22.099Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%A9%98%E5%B9%B3%E5%B1%8B/1473089800101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2461111000101",
+      "sellerId": "2461111000101",
+      "name": "冷凍澳洲帶骨牛小排500g",
+      "priceMinor": 44000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2461111000101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw470c4777/images/large/2461111000101-2026-1.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "牛",
+        "牛肉"
+      ],
+      "packLabel": "1Bag包 x 1 x 1Bag包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:22.938Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2461111000101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2410011600101",
+      "sellerId": "2410011600101",
+      "name": "嚴選冷藏台灣豬後腿肉片300g-貼體包裝※因配送關係實際到貨效期約2-3天",
+      "priceMinor": 12500,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2410011600101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwe69efe63/images/large/2410011600101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "豬",
+        "豬肉"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:23.748Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2410011600101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2432006100101",
+      "sellerId": "2432006100101",
+      "name": "【有心肉舖子】去油原味土雞高湯4入",
+      "priceMinor": 15000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E6%9C%89%E5%BF%83%E8%82%89%E8%88%96%E5%AD%90/2432006100101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwf42f3a54/images/large/0012224_-250ml4.jpeg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "雞．鴨",
+        "雞分切品"
+      ],
+      "packLabel": "1Box盒 x 1 x 1Box盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:24.599Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%9C%89%E5%BF%83%E8%82%89%E8%88%96%E5%AD%90/2432006100101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2420005900101",
+      "sellerId": "2420005900101",
+      "name": "冷凍澳洲帶皮小羊肉塊500g",
+      "priceMinor": 38000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B7%E5%87%8D%E8%82%89%E5%93%81/2420005900101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw7520e52e/images/large/2420005900101.png",
+      "category": "ingredient",
+      "categoryPath": [
+        "促銷活動(商品價格及活動生效時間為促銷起始日早上9:00起)",
+        "週二新鮮事"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:25.429Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B7%E5%87%8D%E8%82%89%E5%93%81/2420005900101.html"
+    },
+    {
+      "id": "tw-uniprosperity-1510101700101",
+      "sellerId": "1510101700101",
+      "name": "新東陽 DHA三明治火腿",
+      "priceMinor": 11900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E6%96%B0%E6%9D%B1%E9%99%BD/1510101700101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw7a8b02f9/images/large/1510101700101-202509.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "培根．香腸．臘肉",
+        "培根．火腿"
+      ],
+      "packLabel": "400g克 x 1 x 1Pack包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:26.263Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%96%B0%E6%9D%B1%E9%99%BD/1510101700101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2462002600101",
+      "sellerId": "2462002600101",
+      "name": "冷藏高津鐵路排骨(每包3片/約300g)",
+      "priceMinor": 14500,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2462002600101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwdf424041/images/large/2462002600101-202503.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "調味肉品",
+        "醃肉"
+      ],
+      "packLabel": "1Pack包 x 1 x 1Pack包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:27.115Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2462002600101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2460108800101",
+      "sellerId": "2460108800101",
+      "name": "冷凍美國牛五花火鍋片 (每包約1kg)",
+      "priceMinor": 58000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2460108800101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw7bb3e1ac/images/large/2460108800101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "火鍋肉片",
+        "牛肉火鍋"
+      ],
+      "packLabel": "1Pack包 x 1 x 1Pack包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:27.984Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2460108800101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2103124700101",
+      "sellerId": "2103124700101",
+      "name": "美威鮭魚菲力(附醬包)",
+      "priceMinor": 28900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%8E%E5%A8%81/2103124700101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw46b819a4/images/large/2103124700101_NR_00.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "鮮魚",
+        "魚(尾)"
+      ],
+      "packLabel": "1Bag袋 x 1 x 1Bag袋",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:28.847Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%8E%E5%A8%81/2103124700101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2110219600101",
+      "sellerId": "2110219600101",
+      "name": "澎湖花枝切片(每盒約300g)因各地區供貨商不同，實際出貨包裝以出貨店庫存為準。",
+      "priceMinor": 25900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2110219600101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwf499ca3c/images/large/2110219600101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "甲殼/軟體水產",
+        "軟體水產"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:29.754Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2110219600101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2110308300101",
+      "sellerId": "2110308300101",
+      "name": "鱈場蟹味棒(每包約250克)因各地區供貨商不同，實際出貨包裝以出貨店庫存為準。",
+      "priceMinor": 12900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2110308300101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwc427ed2f/images/large/2110308300101_NR_00.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "加工海鮮",
+        "其他海鮮"
+      ],
+      "packLabel": "1Bag袋 x 1 x 1Bag袋",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:30.627Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2110308300101.html"
+    },
+    {
+      "id": "tw-uniprosperity-1473100200101",
+      "sellerId": "1473100200101",
+      "name": "雅媽吉柴魚片(花)100g克",
+      "priceMinor": 24900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E9%9B%85%E5%AA%BD%E5%90%89/1473100200101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwcabd9614/images/large/1473100200101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "紫菜/魚乾/烏魚子"
+      ],
+      "packLabel": "100g克 x 1 x 1Bag袋",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:31.460Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%9B%85%E5%AA%BD%E5%90%89/1473100200101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2400006000101",
+      "sellerId": "2400006000101",
+      "name": "CAB冷藏美國安格斯肋眼牛排280g(貼體包裝)※實際到貨效期約4天以上",
+      "priceMinor": 65000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2400006000101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwf598d345/images/large/2400006000101-2026.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "牛",
+        "牛肉"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:32.402Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2400006000101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2410010100101",
+      "sellerId": "2410010100101",
+      "name": "嚴選冷藏台灣豬胛心肉330g-貼體包裝※因配送關係實際到貨效期約2-3天",
+      "priceMinor": 13000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2410010100101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwdd080cf2/images/large/2410010100101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "豬",
+        "豬肉"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:33.200Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2410010100101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2432000200101",
+      "sellerId": "2432000200101",
+      "name": "舒康雞冷凍雞胸肉300g(貼體)",
+      "priceMinor": 17500,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E8%88%92%E5%BA%B7%E9%9B%9E/2432000200101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw08c843c5/images/large/2432000200101-202604.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "雞．鴨",
+        "雞分切品"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BoX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:34.202Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E8%88%92%E5%BA%B7%E9%9B%9E/2432000200101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2420007500101",
+      "sellerId": "2420007500101",
+      "name": "澳洲帶皮山羊塊(每包約1000g)",
+      "priceMinor": 59000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2420007500101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw20ffc100/images/large/2420007500101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "羊"
+      ],
+      "packLabel": "1PC包 x 1 x 1PC包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:35.046Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2420007500101.html"
+    },
+    {
+      "id": "tw-uniprosperity-1511103000101",
+      "sellerId": "1511103000101",
+      "name": "黑橋牌蒜味台灣小香腸※實際出貨包裝依賣場實際販售為主",
+      "priceMinor": 11100,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/1511103000101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw7d721e50/images/large/1511103000101-2025.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "培根．香腸．臘肉",
+        "香腸．熱狗"
+      ],
+      "packLabel": "240g克 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:35.826Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1511103000101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2461211700101",
+      "sellerId": "2461211700101",
+      "name": "大成冷凍椒麻翅小腿(每包約330克)",
+      "priceMinor": 8800,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E5%A4%A7%E6%88%90/2461211700101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw8d995fc4/images/large/0258697_330g.png",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "調味肉品",
+        "醃肉"
+      ],
+      "packLabel": "1Pack包 x 1 x 1PacK包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:36.711Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%A4%A7%E6%88%90/2461211700101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2460005700101",
+      "sellerId": "2460005700101",
+      "name": "冷凍台灣豬梅花火鍋片(每盒約500克)",
+      "priceMinor": 26000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B7%E5%87%8D%E8%82%89%E5%93%81/2460005700101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw5bb63509/images/large/0200217_-500g.jpeg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "火鍋肉片",
+        "豬肉火鍋"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:37.692Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B7%E5%87%8D%E8%82%89%E5%93%81/2460005700101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2103107700101",
+      "sellerId": "2103107700101",
+      "name": "金目鱸魚片(每包約200-250g)",
+      "priceMinor": 15900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2103107700101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwf22c6760/images/large/2103107700101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "鮮魚",
+        "魚(尾)"
+      ],
+      "packLabel": "1Bag包 x 1 x 1Bag包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:38.482Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2103107700101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2110127800101",
+      "sellerId": "2110127800101",
+      "name": "藍鑽蝦(每盒約1kg/40-50尾)※實際出貨包裝依賣場實際販售為主",
+      "priceMinor": 50900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E6%B5%B7%E9%AE%AE%E9%A3%9F%E6%9D%90/2110127800101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwe11d6ed9/images/large/2110127800101-202401.png",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "甲殼/軟體水產",
+        "蟹類"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BoX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:39.374Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%B5%B7%E9%AE%AE%E9%A3%9F%E6%9D%90/2110127800101.html"
+    },
+    {
+      "id": "tw-uniprosperity-1526301900101",
+      "sellerId": "1526301900101",
+      "name": "慶豐花枝丸",
+      "priceMinor": 8900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/1526301900101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwafff1ceb/images/large/1526301900101-202410.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "火烤料理",
+        "火鍋料．丸類"
+      ],
+      "packLabel": "300g克 x 1 x 1Pack包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:40.235Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1526301900101.html"
+    },
+    {
+      "id": "tw-uniprosperity-1473004100101",
+      "sellerId": "1473004100101",
+      "name": "登豐海帶芽120g",
+      "priceMinor": 13500,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/1473004100101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwafe425e2/images/large/0134287_120g.jpeg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "紫菜/魚乾/烏魚子"
+      ],
+      "packLabel": "120g克 x 1 x 1Pack包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:41.149Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1473004100101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2461111700101",
+      "sellerId": "2461111700101",
+      "name": "美國CR安格斯牛五花燒烤片1000g",
+      "priceMinor": 55000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2461111700101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw5bd20c64/images/large/2461111700101.png",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "牛",
+        "牛肉"
+      ],
+      "packLabel": "1PC包 x 1 x 1Pack包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:41.965Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2461111700101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2410099400101",
+      "sellerId": "2410099400101",
+      "name": "香里食品冷凍台灣霜降豬肉286g",
+      "priceMinor": 25000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2410099400101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwa59912c5/images/large/2410099400101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "豬",
+        "豬肉"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:42.846Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2410099400101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2432003500101",
+      "sellerId": "2432003500101",
+      "name": "舒康雞冷凍雞胸絞肉200g(貼體)",
+      "priceMinor": 15000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2432003500101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw25984f0c/images/large/2432003500101-202604.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "雞．鴨",
+        "雞分切品"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:43.832Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2432003500101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2420007600101",
+      "sellerId": "2420007600101",
+      "name": "冷凍紐西蘭嫩肩羊排500g",
+      "priceMinor": 32500,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2420007600101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw0cf9d32d/images/large/2420007600101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "羊"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:44.648Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2420007600101.html"
+    },
+    {
+      "id": "tw-uniprosperity-1511202300101",
+      "sellerId": "1511202300101",
+      "name": "博客Q肉丁德國香腸(香蒜)50g*4",
+      "priceMinor": 9900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E7%B5%B1%E4%B8%80/1511202300101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw6476166e/images/large/1511202300101_NR_00.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "培根．香腸．臘肉",
+        "香腸．熱狗"
+      ],
+      "packLabel": "50g克 x 4 x 1Bag包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:45.509Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%B5%B1%E4%B8%80/1511202300101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2461210500101",
+      "sellerId": "2461210500101",
+      "name": "舒康雞野菜洋芋雞飽排(每包約130克)",
+      "priceMinor": 14000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E8%88%92%E5%BA%B7%E9%9B%9E/2461210500101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwddde4800/images/large/2461210500101-202603.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "調味肉品",
+        "醃肉"
+      ],
+      "packLabel": "1Pack包 x 1 x 1PACK包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:46.409Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E8%88%92%E5%BA%B7%E9%9B%9E/2461210500101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2460000600101",
+      "sellerId": "2460000600101",
+      "name": "巴拉圭豬五花火鍋片(每包約1000g)",
+      "priceMinor": 45000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2460000600101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw9c61184e/images/large/2460000600101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "火鍋肉片",
+        "豬肉火鍋"
+      ],
+      "packLabel": "1Pack包 x 1 x 1PacK包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:47.278Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2460000600101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2103100400101",
+      "sellerId": "2103100400101",
+      "name": "台灣鯛下巴(每包約980g)",
+      "priceMinor": 20900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2103100400101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw3575022a/images/large/2103100400101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "鮮魚",
+        "魚(尾)"
+      ],
+      "packLabel": "1Bag包 x 1 x 1Bag包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:48.117Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2103100400101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2110219500101",
+      "sellerId": "2110219500101",
+      "name": "澎湖透抽切圈(每盒約300克)因各地區供貨商不同，實際出貨包裝以出貨店庫存為準。",
+      "priceMinor": 25900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2110219500101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw92a8efc7/images/large/2110219500101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "甲殼/軟體水產",
+        "軟體水產"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:49.028Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2110219500101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2111057300101",
+      "sellerId": "2111057300101",
+      "name": "品興行-澎湖花枝蝦餅",
+      "priceMinor": 45900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2111057300101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwf090c29b/images/large/2111057300101_NR_00.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "火烤料理",
+        "火鍋料．丸類",
+        "火鍋餃/火鍋料"
+      ],
+      "packLabel": "1Bag袋 x 1 x 1Bag袋",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:49.890Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2111057300101.html"
+    },
+    {
+      "id": "tw-uniprosperity-1473189900101",
+      "sellerId": "1473189900101",
+      "name": "登豐 蝦皮150g",
+      "priceMinor": 9900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/1473189900101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwa8888d92/images/large/0123149_-150g.jpeg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "紫菜/魚乾/烏魚子"
+      ],
+      "packLabel": "150g克 x 1 x 1Pack包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:50.775Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1473189900101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2400008600101",
+      "sellerId": "2400008600101",
+      "name": "冷凍美國嫩肩骰子牛肉(每盒約400克)",
+      "priceMinor": 34000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2400008600101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw739322b0/images/large/0012420_400g.jpeg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "牛",
+        "牛肉"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:51.637Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2400008600101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2410014100101",
+      "sellerId": "2410014100101",
+      "name": "嚴選冷藏台灣豬里肌火鍋肉片330g-貼體包裝※因配送關係實際到貨效期約2-3天",
+      "priceMinor": 15500,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2410014100101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwd0b6c8ba/images/large/2410014100101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "豬",
+        "豬肉"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:52.470Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2410014100101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2430095500101",
+      "sellerId": "2430095500101",
+      "name": "冷藏台東後山雞-半雞切盤(約500g)※本商品保存期限為7天，因配送關係到府後使用期限3天",
+      "priceMinor": 23000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B7%E8%97%8F%E8%82%89%E5%93%81/2430095500101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw688e9bd4/images/large/0196959_600g.jpeg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "雞．鴨",
+        "雞肉"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:53.408Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B7%E8%97%8F%E8%82%89%E5%93%81/2430095500101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2420004400101",
+      "sellerId": "2420004400101",
+      "name": "【清真認證】冷凍澳洲小羊羽上燒烤片(每盒約300克)",
+      "priceMinor": 44000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B7%E5%87%8D%E8%82%89%E5%93%81/2420004400101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwe7c6dd65/images/large/0246859_300.jpeg",
+      "category": "ingredient",
+      "categoryPath": [
+        "促銷活動(商品價格及活動生效時間為促銷起始日早上9:00起)",
+        "週二新鮮事"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:54.445Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B7%E5%87%8D%E8%82%89%E5%93%81/2420004400101.html"
+    },
+    {
+      "id": "tw-uniprosperity-1510300500101",
+      "sellerId": "1510300500101",
+      "name": "台畜美式厚切培根",
+      "priceMinor": 25200,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E5%8F%B0%E7%95%9C/1510300500101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw65c14bf4/images/large/1510300500101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "培根．香腸．臘肉",
+        "培根．火腿"
+      ],
+      "packLabel": "350g克 x 1 x 1Pack包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:55.281Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%8F%B0%E7%95%9C/1510300500101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2461201800101",
+      "sellerId": "2461201800101",
+      "name": "蒜味迷迭香雞翅(每包約300克)",
+      "priceMinor": 8800,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E5%A4%A7%E6%88%90/2461201800101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw4c61c701/images/large/2461201800101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "調味肉品"
+      ],
+      "packLabel": "1Pack包 x 1 x 1PacK包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:56.225Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%A4%A7%E6%88%90/2461201800101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2460110300101",
+      "sellerId": "2460110300101",
+      "name": "冷凍美國牛霜降火鍋片(每盒約250g)",
+      "priceMinor": 30000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2460110300101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw6591e276/images/large/0161844_250g.jpeg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "火鍋肉片",
+        "牛肉火鍋"
+      ],
+      "packLabel": "1Box盒 x 1 x 1Box盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:57.008Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2460110300101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2103102800101",
+      "sellerId": "2103102800101",
+      "name": "大比目魚切片(每包約260g)",
+      "priceMinor": 21900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2103102800101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw7f7ff233/images/large/2103102800101_NR_00.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "鮮魚",
+        "魚(尾)"
+      ],
+      "packLabel": "1Bag包 x 1 x 1Bag包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:57.898Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2103102800101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2110101000101",
+      "sellerId": "2110101000101",
+      "name": "冷凍大白蝦BAP(每盒約250g)",
+      "priceMinor": 13900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2110101000101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw7b30d9ec/images/large/2110101000101_NR_00.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "甲殼/軟體水產",
+        "蟹類"
+      ],
+      "packLabel": "1Box盒 x 1 x 1Box盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:58.744Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2110101000101.html"
+    },
+    {
+      "id": "tw-uniprosperity-1524106800101",
+      "sellerId": "1524106800101",
+      "name": "宏裕行蝦仁花枝漿",
+      "priceMinor": 10500,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/1524106800101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw244e510f/images/large/1524106800101-202607.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "加工海鮮",
+        "其他海鮮"
+      ],
+      "packLabel": "130g克 x 1 x 1Bag包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T14:59:59.515Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1524106800101.html"
+    },
+    {
+      "id": "tw-uniprosperity-1473095900101",
+      "sellerId": "1473095900101",
+      "name": "聯昇珍味海帶芽100g",
+      "priceMinor": 9900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E8%81%AF%E6%98%87/1473095900101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwd2458e1c/images/large/1473095900101.png",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "紫菜/魚乾/烏魚子"
+      ],
+      "packLabel": "100g克 x 1 x 1Bag包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T15:00:00.423Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E8%81%AF%E6%98%87/1473095900101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2461112100101",
+      "sellerId": "2461112100101",
+      "name": "冷凍烤肉片牛肉雙拼400g(牛五花+板腱)",
+      "priceMinor": 32000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2461112100101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwac59d662/images/large/2461112100101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "牛",
+        "牛肉"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T15:00:01.211Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2461112100101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2410028500101",
+      "sellerId": "2410028500101",
+      "name": "台灣豬軟骨丁330g-貼體包裝※因配送關係實際到貨效期約2-3天",
+      "priceMinor": 14500,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2410028500101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw67a69d67/images/large/2410028500101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "豬",
+        "豬肉"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T15:00:02.059Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2410028500101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2430095200101",
+      "sellerId": "2430095200101",
+      "name": "冷藏台東後山雞(每隻約1.6-2.0公斤)※本商品保存期限為7天，因配送關係到府後使用期限3天",
+      "priceMinor": 52000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2430095200101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw2d763e6d/images/large/2430095200101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "雞．鴨",
+        "雞肉"
+      ],
+      "packLabel": "1PC隻 x 1 x 1PC隻",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T15:00:02.967Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2430095200101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2420005000101",
+      "sellerId": "2420005000101",
+      "name": "【清真認證】冷凍澳洲小羊戰斧(每盒約250克)",
+      "priceMinor": 47500,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B7%E5%87%8D%E8%82%89%E5%93%81/2420005000101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwbe98ce82/images/large/0185314_250g.jpeg",
+      "category": "ingredient",
+      "categoryPath": [
+        "促銷活動(商品價格及活動生效時間為促銷起始日早上9:00起)",
+        "週二新鮮事"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T15:00:03.821Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B7%E5%87%8D%E8%82%89%E5%93%81/2420005000101.html"
+    },
+    {
+      "id": "tw-uniprosperity-1528101800101",
+      "sellerId": "1528101800101",
+      "name": "桂冠 德式起司腸 120g",
+      "priceMinor": 7600,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E6%A1%82%E5%86%A0/1528101800101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwf6950b02/images/large/0064243_-.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "火烤料理",
+        "火鍋料．丸類",
+        "火鍋餃/火鍋料"
+      ],
+      "packLabel": "120g克 x 1 x 1Pack包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T15:00:04.808Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%A1%82%E5%86%A0/1528101800101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2461207400101",
+      "sellerId": "2461207400101",
+      "name": "大成美式香檸辣雞翅-真空包(每袋約300克)",
+      "priceMinor": 8800,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E5%A4%A7%E6%88%90/2461207400101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw45dc89ce/images/large/0248639_-300g.png",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "調味肉品",
+        "醃肉"
+      ],
+      "packLabel": "1Pack包 x 1 x 1PacK包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T15:00:05.688Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%A4%A7%E6%88%90/2461207400101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2460101800101",
+      "sellerId": "2460101800101",
+      "name": "冷凍美國菲瑞霜降牛肉火鍋片250g",
+      "priceMinor": 19900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2460101800101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw026e17ef/images/large/2460101800101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "火鍋肉片",
+        "牛肉火鍋"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX箱",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T15:00:06.503Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2460101800101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2103119800101",
+      "sellerId": "2103119800101",
+      "name": "大比目魚切片(每包淨重約215g/4-5片)因各地區供貨商不同，實際出貨包裝以出貨店庫存為準。",
+      "priceMinor": 13900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2103119800101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw11181ce9/images/large/2103119800101_NR_00.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "鮮魚",
+        "魚(尾)"
+      ],
+      "packLabel": "1Bag袋 x 1 x 1Bag袋",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T15:00:07.385Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2103119800101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2110224200101",
+      "sellerId": "2110224200101",
+      "name": "爭鮮澎湖鮮凍小卷切圈 200g",
+      "priceMinor": 17900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2110224200101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwfe1b558d/images/large/2110224200101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "甲殼/軟體水產",
+        "軟體水產"
+      ],
+      "packLabel": "1Box盒 x 1 x 1Box盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T15:00:08.278Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2110224200101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2110327800101",
+      "sellerId": "2110327800101",
+      "name": "挪威鹽漬鯖魚片(每包約190±20g/包)因各地區供貨商不同，實際出貨包裝以出貨店庫存為準。",
+      "priceMinor": 14900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2110327800101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw6603c206/images/large/2110327800101_NR_00.png",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "加工海鮮",
+        "其他海鮮"
+      ],
+      "packLabel": "1Bag袋 x 1 x 1Bag袋",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T15:00:09.235Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2110327800101.html"
+    },
+    {
+      "id": "tw-uniprosperity-1473096000101",
+      "sellerId": "1473096000101",
+      "name": "聯昇海藻蔬菜湯100g",
+      "priceMinor": 9900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E8%81%AF%E6%98%87/1473096000101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw0fa5a3dc/images/large/1473096000101.png",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "紫菜/魚乾/烏魚子"
+      ],
+      "packLabel": "100g克 x 1 x 1Bag包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T15:00:10.093Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E8%81%AF%E6%98%87/1473096000101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2461100300101",
+      "sellerId": "2461100300101",
+      "name": "冷凍澳洲穀飼紐約克燒烤片300g",
+      "priceMinor": 37500,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2461100300101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw91bcb292/images/large/2461100300101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "牛",
+        "牛肉"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T15:00:10.943Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2461100300101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2410014300101",
+      "sellerId": "2410014300101",
+      "name": "嚴選冷藏台灣豬五花白肉片330g-貼體包裝※因配送關係實際到貨效期約2-3天",
+      "priceMinor": 17500,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2410014300101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw0518d838/images/large/2410014300101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "豬",
+        "豬肉"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T15:00:11.722Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2410014300101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2432000700101",
+      "sellerId": "2432000700101",
+      "name": "產銷履歷全氣冷雞冷藏雞胸肉300g(貼體)※因配送關係實際到貨效期約2-3天",
+      "priceMinor": 9000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E9%87%91%E8%B1%90%E7%9B%9B/2432000700101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwda310239/images/large/2432000700101-202604.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "雞．鴨",
+        "雞分切品"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T15:00:12.713Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%87%91%E8%B1%90%E7%9B%9B/2432000700101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2420003900101",
+      "sellerId": "2420003900101",
+      "name": "【清真認證】冷凍澳洲嫩肩小羊排(每盒約300克)",
+      "priceMinor": 32000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B7%E5%87%8D%E8%82%89%E5%93%81/2420003900101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwabe6fc42/images/large/0142386_300g.jpeg",
+      "category": "ingredient",
+      "categoryPath": [
+        "促銷活動(商品價格及活動生效時間為促銷起始日早上9:00起)",
+        "週二新鮮事"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T15:00:13.615Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B7%E5%87%8D%E8%82%89%E5%93%81/2420003900101.html"
+    },
+    {
+      "id": "tw-uniprosperity-1510301200101",
+      "sellerId": "1510301200101",
+      "name": "黑橋牌 舒食培根 170g",
+      "priceMinor": 10900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E9%BB%91%E6%A9%8B%E7%89%8C/1510301200101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwf9d6ebb9/images/large/1510301200101-202309.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "培根．香腸．臘肉",
+        "培根．火腿"
+      ],
+      "packLabel": "170g克 x 1 x 1PACK包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T15:00:14.445Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%BB%91%E6%A9%8B%E7%89%8C/1510301200101.html"
+    },
+    {
+      "id": "tw-uniprosperity-1515196900101",
+      "sellerId": "1515196900101",
+      "name": "台畜鹹水雞胸肉",
+      "priceMinor": 6900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/1515196900101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw45d676ce/images/large/1515196900101.PNG",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "調味肉品",
+        "醃肉"
+      ],
+      "packLabel": "90g克 x 1 x 1Bag包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T15:00:15.335Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1515196900101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2460010500101",
+      "sellerId": "2460010500101",
+      "name": "冷凍豬五花火鍋肉片1000g",
+      "priceMinor": 50000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2460010500101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw7bad1f96/images/large/2460010500101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "火鍋肉片",
+        "豬肉火鍋"
+      ],
+      "packLabel": "1Pack包 x 1 x 1PACK包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T15:00:16.479Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2460010500101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2103100300101",
+      "sellerId": "2103100300101",
+      "name": "冷凍去刺虱目魚肚(二片裝)※因各地區供貨商不同，實際出貨包裝以出貨店庫存為準。",
+      "priceMinor": 21900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2103100300101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw9a8bc687/images/large/2103100300101_NR_00.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "鮮魚",
+        "魚(尾)"
+      ],
+      "packLabel": "1Bag袋 x 1 x 1Bag袋",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T15:00:17.443Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2103100300101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2110007700101",
+      "sellerId": "2110007700101",
+      "name": "鳳螺 700g因各地區供貨商不同，實際出貨包裝以出貨店庫存為準。",
+      "priceMinor": 19900,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E6%B5%B7%E9%AE%AE%E9%A3%9F%E6%9D%90/2110007700101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw5597ec83/images/large/2110007700101_NR_01.png",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "甲殼/軟體水產",
+        "蝦"
+      ],
+      "packLabel": "1Bag袋 x 1 x 1Bag袋",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T15:00:18.336Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%B5%B7%E9%AE%AE%E9%A3%9F%E6%9D%90/2110007700101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2110314000101",
+      "sellerId": "2110314000101",
+      "name": "龍蝦風味沙拉(每包約250克)因各地區供貨商不同，實際出貨包裝以出貨店庫存為準。",
+      "priceMinor": 13500,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2110314000101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw42ec8549/images/large/2110314000101_NR_00.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "加工海鮮",
+        "其他海鮮"
+      ],
+      "packLabel": "1Pack包 x 1 x 1Pack包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T15:00:19.224Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2110314000101.html"
+    },
+    {
+      "id": "tw-uniprosperity-1473096100101",
+      "sellerId": "1473096100101",
+      "name": "聯昇進口海帶芽55g",
+      "priceMinor": 7200,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/%E8%81%AF%E6%98%87/1473096100101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dwc4735e1e/images/large/1473096100101_NR_00.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "海鮮水產",
+        "紫菜/魚乾/烏魚子"
+      ],
+      "packLabel": "55g克 x 1 x 1Bag包",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T15:00:20.104Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E8%81%AF%E6%98%87/1473096100101.html"
+    },
+    {
+      "id": "tw-uniprosperity-2461112000101",
+      "sellerId": "2461112000101",
+      "name": "冷凍美國牛梅花燒烤片250g",
+      "priceMinor": 25000,
+      "productUrl": "https://online.uni-prosperity.com.tw/zh/2461112000101.html",
+      "imageUrl": "https://online.uni-prosperity.com.tw/on/demandware.static/-/Sites-uniprosperity-tw-m-inner/default/dw5ac248c8/images/large/2461112000101.jpg",
+      "category": "ingredient",
+      "categoryPath": [
+        "生鮮冷凍",
+        "肉品",
+        "牛",
+        "牛肉"
+      ],
+      "packLabel": "1Box盒 x 1 x 1BOX盒",
+      "availability": "in_stock",
+      "checkedAt": "2026-09-17T15:00:20.956Z",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2461112000101.html"
+    }
+  ],
+  "rejected": []
+}

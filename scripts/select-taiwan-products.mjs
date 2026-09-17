@@ -1,0 +1,13 @@
+import fs from 'node:fs';
+const base=JSON.parse(fs.readFileSync('data/taiwan-products.json','utf8'));
+const supplement=JSON.parse(fs.readFileSync('data/taiwan-protein-products.json','utf8'));
+const unique=new Map([...base.products,...supplement.products].map(p=>[p.id,p]));
+const dairy=p=>p.categoryPath.includes('奶蛋點心食品');
+const core=[...unique.values()].filter(p=>!dairy(p));
+const dairyItems=[...unique.values()].filter(dairy);
+const selected=[...core,...dairyItems].slice(0,492);
+if(selected.length!==492)throw new Error('Not enough distinct products');
+base.products=selected;base.seller='萬家福線上購物';
+base.selection={selectedAt:new Date().toISOString(),candidateCount:unique.size,reason:'Retain frozen foods, vegetables, meat and seafood; cap the overrepresented dairy group at the remaining slots.'};
+fs.writeFileSync('data/taiwan-products.json',JSON.stringify(base,null,2)+'\n');
+console.log({selected:selected.length,groups:selected.reduce((a,p)=>{const group=p.categoryPath[1]??'other';a[group]=(a[group]??0)+1;return a;},{})});

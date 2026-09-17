@@ -12,6 +12,10 @@ import { ProductThumb } from "../product-thumb";
 import { CatalogFilter } from "../catalog-filter";
 import { catalogCategories, type CatalogItem, type CatalogCategory } from "../../lib/catalog";
 import "./style.css";
+import { foodTypes, type FoodType } from "../../lib/catalog-food-types";
+import {korea, type MarketContext} from '../../lib/regional';
+const countryName=(code?:string)=>({KR:'한국',TW:'대만',JP:'일본'}[code??'KR']??code);
+
 import { allergenOptions, allergyStatuses, emptyAllergyInfo, type AllergyInfo } from "../../lib/catalog-allergy";
 
 const numericFields = [
@@ -29,11 +33,15 @@ export default function AdminPage() {
   const [loginRequired, setLoginRequired] = useState(false);
   const [loginAttempt, setLoginAttempt] = useState(0);
   const [items, setItems] = useState<CatalogItem[]>([]);
+  const [regions,setRegions]=useState<(MarketContext & {name:string})[]>([]);
+  const [marketFilter,setMarketFilter]=useState('all');
+  const marketItems=items.filter(item=>marketFilter==='all'||item.market===marketFilter);
   const [query, setQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
+  const [foodTypeFilter,setFoodTypeFilter] = useState("all");
   const [photoFilter, setPhotoFilter] = useState("all");
   const [nutritionFilter, setNutritionFilter] = useState("all");
-  const searchedItems = items.filter(item => (categoryFilter === "all" || item.category === categoryFilter) && `${item.name} ${item.detail}`.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()));
+  const searchedItems = marketItems.filter(item => (categoryFilter === "all" || item.category === categoryFilter) && (foodTypeFilter === "all" || (foodTypeFilter === "unclassified" ? !item.foodType : item.foodType === foodTypeFilter)) && `${item.name} ${item.detail}`.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()));
   const photoItems = searchedItems.filter(item => photoFilter === "all" || Boolean(item.nutritionPhotoUrl?.trim()) === (photoFilter === "registered"));
   const visibleItems = photoItems.filter(item => nutritionFilter === "all" || nutritionStatus(item) === nutritionFilter);
   const [selectedId, setSelectedId] = useState("");
@@ -59,6 +67,7 @@ export default function AdminPage() {
           return null;
         }
         if (!response.ok) throw new Error(data.error ?? "상품을 불러오지 못했습니다.");
+        setRegions(data.regions ?? []);
         return data.items as CatalogItem[];
       })
       .then((data) => { if (!data) return; setLoginRequired(false); setItems(data); setSelectedId(data[0]?.id ?? ""); setDraft(data[0] ?? null); })
@@ -74,10 +83,11 @@ export default function AdminPage() {
     setError(""); setNotice("");
   }
 
-  function newItem() {
+  function newItem(market=marketFilter==='all'?'KR':marketFilter) {
+    const region=regions.find(r=>r.market===market)??korea;
     if (recognizing) return;
     setSelectedId("");
-    setDraft({ id: "", name: "", detail: "", price: 0, portions: "1끼", quantity: 1, unit: "g", emoji: "🥣", color: "mint", protein: "미확인", searchQuery: "", category: "ready_meal", inWeeklyCart: false, productUrl: null, productImageUrl: null, nutritionSourceName: null, nutritionSourceUrl: null, nutritionPhotoUrl: null, nutritionBasis: null, caloriesKcal: null, proteinG: null, carbohydratesG: null, fatG: null, sodiumMg: null, updatedAt: null });
+    setDraft({ market:region.market,currency:region.currency,minorUnits:region.minorUnits,locale:region.locale,id: "", name: "", detail: "", price: 0, portions: "1끼", quantity: 1, unit: "g", emoji: "🥣", color: "mint", protein: "미확인", searchQuery: "", category: "ready_meal", foodType: null, inWeeklyCart: false, productUrl: null, productImageUrl: null, nutritionSourceName: null, nutritionSourceUrl: null, nutritionPhotoUrl: null, nutritionBasis: null, caloriesKcal: null, proteinG: null, carbohydratesG: null, fatG: null, sodiumMg: null, updatedAt: null });
     setPhoto(null); setPhotoPreview(null); setOcrText(""); setError(""); setNotice("");
   }
 
@@ -142,6 +152,7 @@ export default function AdminPage() {
       if (!response.ok) throw new Error(data.error ?? "저장하지 못했습니다.");
       const saved = data.items as CatalogItem[];
       setItems(saved);
+      setRegions(data.regions ?? regions);
       setSelectedId(data.id);
       setDraft(saved.find((item) => item.id === data.id) ?? null);
       setPhoto(null); setPhotoPreview(null); setOcrText("");
@@ -155,20 +166,22 @@ export default function AdminPage() {
 
   return <main className="admin-shell">
     {(saving||recognizing)&&<AppLoading message={recognizing?"영양표를 꼼꼼히 읽고 있어요":"상품 정보를 저장하고 있어요"}/>}
-    <header className="admin-header"><div><span className="admin-kicker">KKINIPLAN · CONTENT MANAGER</span><h1>상품·영양 정보 관리</h1><p>판매 상품 링크와 표시된 영양 성분을 원문 출처와 함께 관리합니다.</p></div><div><Link href="/admin/submissions">제보 관리 →</Link><br/><Link href="/">앱으로 돌아가기 ↗</Link></div></header>
-    {loading ? <AppLoading message="상품 정보를 불러오고 있어요"/> : !draft ? <div className="admin-message"><strong>{error || "상품이 없습니다."}</strong>{error ? <button type="button" onClick={() => { setError(""); setLoading(true); setLoginAttempt(value => value + 1); }}>다시 불러오기</button> : <button type="button" onClick={newItem}>첫 상품 등록하기</button>}</div> : <div className="admin-grid">
-      <aside className="admin-list" aria-label="상품 선택"><h2>전체 상품 <span>{items.length}</span></h2><button type="button" className="admin-new-button" onClick={newItem}>＋ 새 상품 추가</button><CatalogFilter query={query} category={categoryFilter} onQuery={setQuery} onCategory={setCategoryFilter}/><div className="admin-nutrition-filters"><label>영양성분표 사진<select value={photoFilter} onChange={e=>setPhotoFilter(e.target.value)}><option value="all">전체 ({searchedItems.length})</option><option value="registered">등록 ({searchedItems.filter(item=>item.nutritionPhotoUrl?.trim()).length})</option><option value="missing">미등록 ({searchedItems.filter(item=>!item.nutritionPhotoUrl?.trim()).length})</option></select></label><label>영양 수치 입력 상태<select value={nutritionFilter} onChange={e=>setNutritionFilter(e.target.value)}><option value="all">전체 ({photoItems.length})</option>{Object.entries(nutritionLabels).map(([key,label])=><option key={key} value={key}>{label} ({photoItems.filter(item=>nutritionStatus(item)===key).length})</option>)}</select></label><small>사진 등록은 저장된 영양표 이미지 기준입니다. 수치 완료는 기준량·출처·5개 영양값이 모두 있는 상품입니다.</small><p role="status">검색 결과 {visibleItems.length}개</p>{(photoFilter!=="all"||nutritionFilter!=="all")&&<button type="button" onClick={()=>{setPhotoFilter("all");setNutritionFilter("all");}}>영양 필터 초기화</button>}</div><div className="admin-product-list">{visibleItems.map((item) => <button type="button" key={item.id} disabled={recognizing} className={selectedId === item.id ? "selected" : ""} onClick={() => select(item.id)}><ProductThumb item={item}/><span><strong>{item.name}</strong><small>{catalogCategories[item.category]} · {item.nutritionPhotoUrl?.trim() ? "영양표 사진 등록" : "영양표 사진 미등록"} · {nutritionLabels[nutritionStatus(item)]}</small><small>알레르기: {allergyStatuses[item.allergyInfo?.status ?? "unknown"]} · {(item.allergens ?? []).map(key => allergenOptions[key] ?? key).join(", ") || "확인된 성분 미등록"}</small></span></button>)}{visibleItems.length === 0 && <p>검색 결과가 없습니다.</p>}</div></aside>
+    <header className="admin-header"><div><span className="admin-kicker">KKINIPLAN · CONTENT MANAGER</span><h1>상품·영양 정보 관리</h1><p>판매 상품 링크와 표시된 영양 성분을 원문 출처와 함께 관리합니다.</p></div><div><Link href="/admin/feedback">서비스 이용 의견 →</Link><br/><Link href="/admin/submissions">제보 관리 →</Link><br/><Link href="/">앱으로 돌아가기 ↗</Link></div></header>
+    {loading ? <AppLoading message="상품 정보를 불러오고 있어요"/> : !draft ? <div className="admin-message"><strong>{error || "상품이 없습니다."}</strong>{error ? <button type="button" onClick={() => { setError(""); setLoading(true); setLoginAttempt(value => value + 1); }}>다시 불러오기</button> : <button type="button" onClick={()=>newItem()}>첫 상품 등록하기</button>}</div> : <div className="admin-grid">
+      <aside className="admin-list" aria-label="상품 선택"><h2>전체 상품 <span>{items.length}</span></h2><div className="admin-market-filters" aria-label="국가별 상품"><button type="button" aria-pressed={marketFilter==='all'} disabled={saving||recognizing} onClick={()=>setMarketFilter('all')}>전체 {items.length}</button>{regions.map(region=><button key={region.market} type="button" aria-pressed={marketFilter===region.market} disabled={saving||recognizing} onClick={()=>{setMarketFilter(region.market);setQuery('');setCategoryFilter('all');setFoodTypeFilter('all');setPhotoFilter('all');setNutritionFilter('all');const first=items.find(item=>item.market===region.market);if(first)select(first.id);else newItem(region.market);}}>{countryName(region.market)} {items.filter(item=>item.market===region.market).length}</button>)}</div><button type="button" className="admin-new-button" onClick={()=>newItem()}>＋ 새 상품 추가</button><CatalogFilter query={query} category={categoryFilter} onQuery={setQuery} onCategory={setCategoryFilter}/><div className="admin-nutrition-filters"><label>음식 종류<select value={foodTypeFilter} onChange={e=>setFoodTypeFilter(e.target.value)}><option value="all">전체 음식</option><option value="unclassified">미분류 ({marketItems.filter(item=>!item.foodType).length})</option>{Object.entries(foodTypes).map(([key,label])=><option key={key} value={key}>{label} ({marketItems.filter(item=>item.foodType===key).length})</option>)}</select></label><label>영양성분표 사진<select value={photoFilter} onChange={e=>setPhotoFilter(e.target.value)}><option value="all">전체 ({searchedItems.length})</option><option value="registered">등록 ({searchedItems.filter(item=>item.nutritionPhotoUrl?.trim()).length})</option><option value="missing">미등록 ({searchedItems.filter(item=>!item.nutritionPhotoUrl?.trim()).length})</option></select></label><label>영양 수치 입력 상태<select value={nutritionFilter} onChange={e=>setNutritionFilter(e.target.value)}><option value="all">전체 ({photoItems.length})</option>{Object.entries(nutritionLabels).map(([key,label])=><option key={key} value={key}>{label} ({photoItems.filter(item=>nutritionStatus(item)===key).length})</option>)}</select></label><small>사진 등록은 저장된 영양표 이미지 기준입니다. 수치 완료는 기준량·출처·5개 영양값이 모두 있는 상품입니다.</small><p role="status">검색 결과 {visibleItems.length}개</p>{(photoFilter!=="all"||nutritionFilter!=="all")&&<button type="button" onClick={()=>{setPhotoFilter("all");setNutritionFilter("all");}}>영양 필터 초기화</button>}</div><div className="admin-product-list">{visibleItems.map((item) => <button type="button" key={item.id} disabled={recognizing} className={selectedId === item.id ? "selected" : ""} onClick={() => select(item.id)}><ProductThumb item={item}/><span><strong>{item.name}</strong><small>{countryName(item.market)} · {item.currency??'KRW'} · {catalogCategories[item.category]} · {item.foodType ? foodTypes[item.foodType] : "음식 미분류"} · {item.nutritionPhotoUrl?.trim() ? "영양표 사진 등록" : "영양표 사진 미등록"} · {nutritionLabels[nutritionStatus(item)]}</small><small>알레르기: {allergyStatuses[item.allergyInfo?.status ?? "unknown"]} · {(item.allergens ?? []).map(key => allergenOptions[key] ?? key).join(", ") || "확인된 성분 미등록"}</small></span></button>)}{visibleItems.length === 0 && <p>검색 결과가 없습니다.</p>}</div></aside>
       <form className="admin-form" onSubmit={save}>
         <div className="admin-form-head"><div><span className="admin-kicker">PRODUCT · {draft.id ? draft.id.toUpperCase() : "NEW"}</span><h2>{draft.name || "새 상품"}</h2></div><button type="submit" disabled={saving || recognizing}>{saving ? "저장 중…" : draft.id ? "변경사항 저장" : "상품 등록"}</button></div>
         {error && <p className="admin-alert error" role="alert">{error}</p>}{notice && <p className="admin-alert success" role="status">{notice}</p>}
         <section><h3>판매 상품</h3><p>실제 상품 페이지의 상품명·구성·가격을 확인해 입력하세요. 가격은 확인 시점의 참고값입니다.</p><div className="admin-fields">
-          <label>상품 종류<select value={draft.category} onChange={(e) => change("category", e.target.value as CatalogCategory)}>{Object.entries(catalogCategories).map(([key, label]) => <option key={key} value={key}>{label}</option>)}</select></label>
+          <label>판매 국가<select disabled={!!draft.id} value={draft.market??'KR'} onChange={e=>{const region=regions.find(r=>r.market===e.target.value);if(region)setDraft({...draft,market:region.market,currency:region.currency,minorUnits:region.minorUnits,locale:region.locale,price:0});}}>{regions.filter(r=>r.status!=='disabled'||r.market===draft.market).map(region=><option key={region.market} value={region.market}>{countryName(region.market)} · {region.currency}</option>)}</select></label>
+          <label>음식 종류<select value={draft.foodType??""} onChange={e=>change("foodType",(e.target.value||null) as FoodType|null)}><option value="">미분류</option>{Object.entries(foodTypes).map(([key,label])=><option key={key} value={key}>{label}</option>)}</select><small>닭가슴살·볶음밥 등 음식 종류를 선택해요. 아래 상품 형태와 별도로 저장됩니다.</small></label>
+          <label>상품 형태<select value={draft.category} onChange={(e) => change("category", e.target.value as CatalogCategory)}>{Object.entries(catalogCategories).map(([key, label]) => <option key={key} value={key}>{label}</option>)}</select></label>
           <label>수량 단위<select value={draft.unit} onChange={(e) => change("unit", e.target.value as "g" | "개")}><option value="g">g</option><option value="개">개</option></select></label>
           <label>상품 아이콘<input required maxLength={10} value={draft.emoji} onChange={(e) => change("emoji", e.target.value)}/></label>
           <label className="admin-check"><Checkbox checked={draft.inWeeklyCart} onChange={(e) => change("inWeeklyCart", e.target.checked)}/> 이번 주 장바구니에 포함</label>
           <label>상품명<input required maxLength={120} value={draft.name} onChange={(e) => change("name", e.target.value)}/></label>
           <label>구성·용량<input required maxLength={200} value={draft.detail} onChange={(e) => change("detail", e.target.value)}/></label>
-          <label>예상 가격 (원)<input required type="number" min="0" max="10000000" step="1" value={draft.price} onChange={(e) => change("price", Number(e.target.value))}/></label>
+          <label>예상 가격 ({draft.currency??'KRW'})<input required type="number" min="0" max={10000000/10**(draft.minorUnits??0)} step={1/10**(draft.minorUnits??0)} value={draft.price/10**(draft.minorUnits??0)} onChange={(e) => change("price", Math.round(Number(e.target.value)*10**(draft.minorUnits??0)))}/></label>
           <label>계획 사용 횟수<input required maxLength={80} value={draft.portions} onChange={(e) => change("portions", e.target.value)}/></label>
           <label>총 수량 ({draft.unit})<input required type="number" min="0.01" max="1000000" step="0.01" value={draft.quantity} onChange={(e) => change("quantity", Number(e.target.value))}/></label>
           <label>가격 검색어<input required maxLength={200} value={draft.searchQuery} onChange={(e) => change("searchQuery", e.target.value)}/></label>

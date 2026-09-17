@@ -14,6 +14,11 @@ try {
   await client.query('BEGIN');
   await client.query(readFileSync(resolve(root, "db/schema.sql"), "utf8"));
   await client.query(readFileSync(resolve(root, "db/internationalization.sql"), "utf8"));
+  await client.query(readFileSync(resolve(root, "db/taiwan.sql"), "utf8"));
+  await client.query(readFileSync(resolve(root, "db/taiwan-catalog-details.sql"), "utf8"));
+  await client.query(readFileSync(resolve(root, "db/service-feedback.sql"), "utf8"));
+  await client.query(readFileSync(resolve(root, "db/catalog-food-types.sql"), "utf8"));
+  await client.query(readFileSync(resolve(root, "db/recommendation-feedback.sql"), "utf8"));
   await client.query('COMMIT');
   console.log("PostgreSQL schema is ready.");
 } catch (error) {

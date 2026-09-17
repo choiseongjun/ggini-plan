@@ -1,0 +1,3945 @@
+{
+  "checkedAt": "2026-09-17T15:51:31.358Z",
+  "total": 500,
+  "verified": 139,
+  "unverified": 361,
+  "note": "Unverified is not zero nutrition and does not establish that the manufacturer publishes no label. OCR, unreadable images, mismatched variants and conflicting values require additional source verification.",
+  "products": [
+    {
+      "id": "tw-uniprosperity-1526100300101",
+      "name": "桂冠花生小湯圓",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%A1%82%E5%86%A0/1526100300101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:24:10.167Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1522211100101",
+      "name": "荷卡 黑松露佐嫩雞奶油焗飯",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1522211100101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:24:11.057Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2461205700101",
+      "name": "元榆天然回甘黑蒜雞湯-土雞(小包裝/每盒550g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2461205700101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:24:12.161Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1522207000101",
+      "name": "金品冠軍炒飯(每盒約280g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%87%91%E5%93%81/1522207000101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:24:16.682Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1521202200101",
+      "name": "草山嚴選-吉鮮肉包(6入)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E8%8D%89%E5%B1%B1%E5%9A%B4%E9%81%B8/1521202200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:24:18.744Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2010412100101",
+      "name": "藥燉排骨(每碗約900g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2010412100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:24:19.655Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1522205900101",
+      "name": "義美ｅ家小館夏威夷炒飯",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1522205900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:24:20.587Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1522205800101",
+      "name": "義美ｅ家小館蝦仁炒飯",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1522205800101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:24:21.875Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1523202600101",
+      "name": "卜蜂黑胡椒雞塊 700g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1523202600101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:24:23.253Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1522208800101",
+      "name": "金品蕃茄肉醬寬扁麵",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1522208800101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:24:24.802Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1522201900101",
+      "name": "金品特濃咖哩雞肉焗飯",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%87%91%E5%93%81/1522201900101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:24:26.857Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1512000200101",
+      "name": "手打式宇龍麵 250g*3",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1512000200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:24:27.948Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1522200700101",
+      "name": "輕鬆生活桂冠起司海鮮飯",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%A1%82%E5%86%A0/1522200700101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:24:28.884Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1522205000101",
+      "name": "桂冠青醬蛤蜊義大利麵",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%A1%82%E5%86%A0/1522205000101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:24:29.881Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1522203500101",
+      "name": "金品奶香咖哩雞肉焗飯",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%87%91%E5%93%81/1522203500101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:24:32.668Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1521207100101",
+      "name": "UNIDESIGN經典蔥燒肉包",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1521207100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:24:33.685Z",
+      "evidenceImages": 5
+    },
+    {
+      "id": "tw-uniprosperity-2010430700101",
+      "name": "TOMMI湯米-炭香燒肉米漢堡(3入/盒)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2010430700101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:24:35.197Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1523205200101",
+      "name": "大成雞塊小不點-原味-400g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1523205200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:24:36.130Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1521393200101",
+      "name": "UNIDESIGN奶黃包",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1521393200101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:24:37.165Z",
+      "evidenceImages": 4
+    },
+    {
+      "id": "tw-uniprosperity-2010411900101",
+      "name": "瓦城 椰汁炒牛肉(每盒330g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2010411900101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:24:38.115Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1522208200101",
+      "name": "金品鮮蝦燒賣(旺角鳳城點心樓)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%87%91%E5%93%81/1522208200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:24:44.211Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1522210400101",
+      "name": "金品乳酪蘑菇筆管麵",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1522210400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:24:45.464Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1522206100101",
+      "name": "義美奶油培根義大利麵340g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1522206100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:24:46.402Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1522401900101",
+      "name": "村子口功夫菜紅燒獅子頭",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%9D%91%E5%AD%90%E5%8F%A3/1522401900101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:24:48.474Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2010415700101",
+      "name": "狀元油飯 糯米包香腸(每盒約190g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2010415700101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:24:49.401Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2020105600101",
+      "name": "狀元油飯-鼠麴草仔粿-(每盒3粒)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2020105600101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:24:50.283Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2010414500101",
+      "name": "狀元油飯 紫米芋心糕(每盒約200g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2010414500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:24:51.135Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2020105100101",
+      "name": "狀元油飯 鼠麴草仔粿-香菇肉(每盒3粒)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2020105100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:24:51.995Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1521201400101",
+      "name": "義美芝麻包子(全素)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1521201400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:24:52.894Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1521200800101",
+      "name": "義美鮮肉包子",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1521200800101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:24:53.911Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1521403700101",
+      "name": "灣仔碼頭 灌湯小籠包豬肉口味(12入) 300g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%81%A3%E4%BB%94%E7%A2%BC%E9%A0%AD/1521403700101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:24:55.180Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1521001100101",
+      "name": "奇美沖繩黑糖捲(全素)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%A5%87%E7%BE%8E/1521001100101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:24:58.511Z",
+      "evidenceImages": 4
+    },
+    {
+      "id": "tw-uniprosperity-1521202400101",
+      "name": "義美筍香鮮肉包-85g*6",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1521202400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:24:59.487Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1521391300101",
+      "name": "奇美冷凍紅豆包6入(全素)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/chimei%E5%A5%87%E7%BE%8E/1521391300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:25:02.709Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1521393400101",
+      "name": "UNIDESIGN麥味芝麻包",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1521393400101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:25:03.707Z",
+      "evidenceImages": 4
+    },
+    {
+      "id": "tw-uniprosperity-1521207200101",
+      "name": "UNIDESIGN黃金筍丁鮮肉包",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1521207200101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:25:04.609Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1521300400101",
+      "name": "桂冠紅豆包",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1521300400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:25:05.561Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1521002800101",
+      "name": "義美南瓜堅果饅頭(奶素)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1521002800101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:25:06.504Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1521200100101",
+      "name": "義美蔥燒包子",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1521200100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:25:07.348Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1521393300101",
+      "name": "UNIDESIGN芋泥包",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1521393300101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:25:08.217Z",
+      "evidenceImages": 4
+    },
+    {
+      "id": "tw-uniprosperity-1516000500101",
+      "name": "原鄉人牛奶饅頭 10入(蛋奶素)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%8E%9F%E9%84%89%E4%BA%BA/1516000500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:25:09.137Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1521010100101",
+      "name": "義美手撕蔥花捲",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1521010100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:25:09.980Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1521100400101",
+      "name": "奇美冷凍香菇高麗菜包6入(全素)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%A5%87%E7%BE%8E/1521100400101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:25:16.224Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1521392500101",
+      "name": "奇美冷凍香麥芝麻包(全素)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%A5%87%E7%BE%8E/1521392500101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:25:20.884Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1521000600101",
+      "name": "義美銀絲卷",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1521000600101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:25:21.792Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1521200400101",
+      "name": "義美叉燒包子",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1521200400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:25:22.737Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1521010000101",
+      "name": "義美鮮乳黑糖雙色饅頭(奶素)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1521010000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:25:23.663Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1521201200101",
+      "name": "桂冠-活力Ohiyo筍香包",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%A1%82%E5%86%A0/1521201200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:25:24.976Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1522004100101",
+      "name": "田家千層韭菜拉餅",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1522004100101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:25:25.993Z",
+      "evidenceImages": 4
+    },
+    {
+      "id": "tw-uniprosperity-2010205000101",
+      "name": "饗福月亮蝦餅-原味(每包約240g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2010205000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:25:26.959Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1522006700101",
+      "name": "金品夏威夷火腿鳳梨6吋手工比薩",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1522006700101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:25:27.918Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1522198900101",
+      "name": "蔥阿伯輕食系香蒜抓餅",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1522198900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:25:28.797Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1522003300101",
+      "name": "日清媽媽迷你大阪燒",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1522003300101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:25:29.821Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1522199900101",
+      "name": "UNIDESIGN蔥抓餅",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1522199900101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:25:30.874Z",
+      "evidenceImages": 4
+    },
+    {
+      "id": "tw-uniprosperity-1522199000101",
+      "name": "蔥阿伯輕食系香蔥抓餅",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1522199000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:25:31.800Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1522194400101",
+      "name": "蔥阿伯九層塔千層拔絲抓餅700g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E8%94%A5%E9%98%BF%E4%BC%AF/1522194400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:25:32.761Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1522009200101",
+      "name": "好姨食堂香蔥蛋餅皮(每包720g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%A5%BD%E5%A7%A8%E9%A3%9F%E5%A0%82/1522009200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:25:33.787Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1522197000101",
+      "name": "義美鮮蔥蔥抓餅",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1522197000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:25:34.890Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1522199100101",
+      "name": "蔥阿伯家鄉味蔥肉餡餅",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1522199100101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:25:35.771Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1522199200101",
+      "name": "蔥阿伯家鄉味韭菜餡餅",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1522199200101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:25:36.665Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1522103900101",
+      "name": "金品孫班長蔥燒大餅",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%87%91%E5%93%81/1522103900101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:25:40.954Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1522196800101",
+      "name": "義美鮮蔥蛋餅皮",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1522196800101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:25:41.886Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1522196900101",
+      "name": "義美鮮蔥蔥油餅",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1522196900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:25:42.785Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1522192400101",
+      "name": "義美蔥肉酥餅",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1522192400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:25:43.674Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1522189900101",
+      "name": "義美香酥芝麻抓餅(全素)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1522189900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:25:44.658Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1522100800101",
+      "name": "金品蔥抓餅600g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%87%91%E5%93%81/1522100800101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:25:55.572Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1522101400101",
+      "name": "義美咖哩蔥抓餅",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1522101400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:25:56.661Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1522192800101",
+      "name": "義美九層塔蛋餅皮205g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1522192800101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:25:57.570Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1522189800101",
+      "name": "金品胡麻子燒餅",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%87%91%E5%93%81/1522189800101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:26:01.647Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1522101000101",
+      "name": "達人上菜小餡餅(牛肉)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1522101000101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:26:02.560Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1522199600101",
+      "name": "村子口蔥肉捲餅",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1522199600101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:26:03.505Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1522007600101",
+      "name": "金品薩克森香腸切達起司8吋比薩(每盒約260g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%87%91%E5%93%81/1522007600101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:26:08.981Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1526003400101",
+      "name": "義美家常餛飩",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1526003400101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:26:10.094Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1526001700101",
+      "name": "桂冠鮮蝦雲吞",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%A1%82%E5%86%A0/1526001700101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:26:11.079Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1525000100101",
+      "name": "UNIDESIGN冷凍高麗菜水餃",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1525000100101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:26:11.971Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1512002300101",
+      "name": "愛麵族鍋燒麵-香辣牛肉200gx3",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%84%9B%E9%BA%B5%E6%97%8F/1512002300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:26:13.067Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1525195700101",
+      "name": "UNIDESIGN冷凍韭菜水餃",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1525195700101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:26:14.106Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1522207400101",
+      "name": "味之素蝦燒賣",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1522207400101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:26:15.402Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1525002300101",
+      "name": "及第豬肉水餃",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%B5%B1%E4%B8%80/1525002300101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:26:19.681Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1526001500101",
+      "name": "桂冠雲吞(每盒220g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%A1%82%E5%86%A0/1526001500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:26:20.768Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1512001900101",
+      "name": "愛麵族紅燒牛肉刀削麵 220g*3",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%84%9B%E9%BA%B5%E6%97%8F/1512001900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:26:21.768Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1528104900101",
+      "name": "桂冠筍香水晶餃",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1528104900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:26:22.684Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1526004600101",
+      "name": "王品嚴選鮮蝦大餛飩",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1526004600101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:26:23.698Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1525101200101",
+      "name": "及第水餃-韭菜",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%B5%B1%E4%B8%80/1525101200101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:26:28.523Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1512003200101",
+      "name": "達人上菜烏龍麵",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%81%94%E4%BA%BA%E4%B8%8A%E8%8F%9C/1512003200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:26:29.460Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1526003600101",
+      "name": "王品嚴選鮮肉大餛飩",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1526003600101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:26:30.331Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1525094300101",
+      "name": "義美家常豬肉高麗菜水餃(約50顆)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1525094300101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:26:31.759Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1512000100101",
+      "name": "愛麵族鍋燒麵-韓式泡菜風味200gx3",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%84%9B%E9%BA%B5%E6%97%8F/1512000100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:26:32.748Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1512200600101",
+      "name": "愛麵族美濃板條-肉燥風味(湯)200gx3",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%84%9B%E9%BA%B5%E6%97%8F/1512200600101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:26:33.746Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1525194400101",
+      "name": "冰冰好料理手工韭菜霸王餃",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B0%E5%86%B0%E5%A5%BD%E6%96%99%E7%90%86/1525194400101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:26:34.641Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1525201100101",
+      "name": "龍鳳大口吃和風鮮蝦豬肉熟水餃-720g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%BE%8D%E9%B3%B3/1525201100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:26:35.502Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1526004300101",
+      "name": "台南府城招牌鮮肉餛飩",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1526004300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:26:36.350Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1525101600101",
+      "name": "台糖冷凍豬肉韭菜手工水餃",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1525101600101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:26:37.264Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1525002600101",
+      "name": "【冷凍水餃】台糖冷凍豬肉玉米蔬菜手工水餃",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1525002600101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:26:38.205Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1525001900101",
+      "name": "達人上菜豬肉香菜捏花水餃 (每袋約572克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1525001900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:26:41.432Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1526103800101",
+      "name": "桂冠 芝麻湯圓 200g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%A1%82%E5%86%A0/1526103800101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:26:42.373Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1526100400101",
+      "name": "桂冠 芝麻小湯圓 200g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%A1%82%E5%86%A0/1526100400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:26:43.308Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1526100200101",
+      "name": "桂冠 小湯圓 300g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%A1%82%E5%86%A0/1526100200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:26:44.292Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1532004200101",
+      "name": "桂冠芝麻晶彩小圓子",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1532004200101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:26:45.724Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1532010100101",
+      "name": "桂冠花生晶彩小圓子",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1532010100101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:26:47.139Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1532010400101",
+      "name": "桂冠X春水堂紅茶拿鐵晶彩小圓子",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1532010400101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:26:48.223Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2010303300101",
+      "name": "大興吉 冷凍日式烤麻糬(每包200g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E4%BD%B3%E4%BD%B3/2010303300101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:26:49.191Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1526102000101",
+      "name": "義美小湯圓(全素)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1526102000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:26:50.118Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1522006200101",
+      "name": "Sara Lee草莓起司蛋糕",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/sara-lee/1522006200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:26:51.083Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1526103900101",
+      "name": "桂冠 花生湯圓 200g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%A1%82%E5%86%A0/1526103900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:26:52.106Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1522005500101",
+      "name": "Sara Lee巧克力磅蛋糕",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/sara-lee/1522005500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:26:53.117Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1526104000101",
+      "name": "桂冠 鮮肉湯圓 200g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%A1%82%E5%86%A0/1526104000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:26:54.128Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1522010100101",
+      "name": "法國Pasquier覆盆莓塔",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1522010100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:26:55.114Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1522010400101",
+      "name": "法國Pasquier經典馬卡龍",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/pasquier/1522010400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:26:56.154Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1522006000101",
+      "name": "Sara Lee提拉米蘇",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1522006000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:26:57.049Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-2010302900101",
+      "name": "大興吉 冷凍脆皮年糕(每包約240g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2010302900101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:26:57.998Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1522005900101",
+      "name": "Sara Lee雪藏蛋糕",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/sara-lee/1522005900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:26:58.934Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1522000600101",
+      "name": "迷你鬆餅",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1522000600101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:26:59.881Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2010301700101",
+      "name": "大興吉 爆漿起司夯麻糬(每包約132g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2010301700101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:27:00.781Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1522001800101",
+      "name": "韓國Samlip起司蛋糕(原味)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1522001800101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:27:01.694Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1522222700101",
+      "name": "金品麻油雞炒飯",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%87%91%E5%93%81/1522222700101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:27:06.263Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1522204400101",
+      "name": "荷卡 日式牛丼飯",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1522204400101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:27:07.166Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1524203800101",
+      "name": "珍珍鮮蝦卷",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1524203800101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:27:08.666Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1522212300101",
+      "name": "金品青醬干貝鮮蝦焗麵",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%87%91%E5%93%81/1522212300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:27:13.048Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1522201100101",
+      "name": "義美青醬蛤蜊義大利麵",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1522201100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:27:13.929Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2010314600101",
+      "name": "阿濤師 綠豆紅薏仁湯360g(即食)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%98%BF%E6%BF%A4%E5%B8%AB/2010314600101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:27:14.877Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-2010461200101",
+      "name": "十八匠作酸菜鴨(湯)420g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%8D%81%E5%85%AB%E5%8C%A0%E4%BD%9C/2010461200101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:27:15.886Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1528542400101",
+      "name": "韓國水協-傳統綜合魚板(附高湯)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1528542400101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:27:16.824Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2010435700101",
+      "name": "十八匠作 冷凍剝皮辣椒雞(湯)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%8D%81%E5%85%AB%E5%8C%A0%E4%BD%9C/2010435700101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:27:17.851Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1520003900101",
+      "name": "素之都 麻油猴頭菇煲",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1520003900101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:27:18.761Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2010435900101",
+      "name": "十八匠作 冷凍鳳梨苦瓜雞(湯)(每碗約420g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%8D%81%E5%85%AB%E5%8C%A0%E4%BD%9C/2010435900101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:27:19.825Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-2010314400101",
+      "name": "阿濤師 銀耳蓮子湯360g(即食)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%98%BF%E6%BF%A4%E5%B8%AB/2010314400101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:27:20.809Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-2010435800101",
+      "name": "十八匠作山藥百合雞湯(熟品每盒含湯汁約420g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%8D%81%E5%85%AB%E5%8C%A0%E4%BD%9C/2010435800101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:27:21.931Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2010409800101",
+      "name": "四神豬肚(每碗約900g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2010409800101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:27:22.850Z",
+      "evidenceImages": 4
+    },
+    {
+      "id": "tw-uniprosperity-2010408200101",
+      "name": "老協珍佛跳牆-寶可夢款(附精靈球造型甕)※熟品每盒含湯汁約1520克",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2010408200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:27:23.823Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-2432006100101",
+      "name": "【有心肉舖子】去油原味土雞高湯4入",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%9C%89%E5%BF%83%E8%82%89%E8%88%96%E5%AD%90/2432006100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:27:24.897Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2432099900101",
+      "name": "舒康雞 清高湯(每包約300克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2432099900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:27:25.989Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2410007700101",
+      "name": "【台灣豬】去油原味豚骨高湯4入",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%9C%89%E5%BF%83%E8%82%89%E8%88%96%E5%AD%90/2410007700101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:27:26.967Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2010314300101",
+      "name": "阿濤師 芋頭湯360g(即食)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%98%BF%E6%BF%A4%E5%B8%AB/2010314300101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:27:27.911Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-2462110400101",
+      "name": "冷凍清燉澳洲牛三寶湯500g(固形物120g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2462110400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:27:28.892Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2010409900101",
+      "name": "龍涎居 蛤蜊雞湯750g(冷凍)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2010409900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:27:29.788Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2010410000101",
+      "name": "龍涎居 胡椒豬肚雞湯750g(冷凍)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2010410000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:27:30.643Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2461205900101",
+      "name": "冷凍元榆剝皮辣椒雞湯-小包裝550g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2461205900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:27:31.557Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-2010436300101",
+      "name": "十八匠作 冷凍麻油雞湯(每碗熟品約420g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2010436300101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:27:32.492Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2010300200101",
+      "name": "阿濤師 花生湯360g(即食)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%98%BF%E6%BF%A4%E5%B8%AB/2010300200101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:27:33.432Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2430098500101",
+      "name": "冷凍土雞韓式人參糯米燉雞湯2500g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2430098500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:27:34.354Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2010421500101",
+      "name": "狀元油飯x熟好味 麻油雞湯",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2010421500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:27:35.278Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1520202200101",
+      "name": "大椰髮菜(金針)什錦湯(冷藏)(全素)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1520202200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:27:36.277Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2011819200101",
+      "name": "福義軒 湘辣蘇打餅(每包約306克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%A6%8F%E7%BE%A9%E8%BB%92/2011819200101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:27:38.590Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-2111000900101",
+      "name": "豬血糕(每包約300g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2111000900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:27:39.503Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2011106500101",
+      "name": "小林煎餅分享包(每包約300公克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%B0%8F%E6%9E%97%E7%85%8E%E9%A4%85/2011106500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:27:40.420Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2021103300101",
+      "name": "快車杏仁香脆肉紙-海苔",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%BF%AB%E8%BB%8A%E8%82%89%E4%B9%BE/2021103300101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:27:41.385Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2021103100101",
+      "name": "快車杏仁香脆肉紙-櫻花蝦",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%BF%AB%E8%BB%8A%E8%82%89%E4%B9%BE/2021103100101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:27:42.267Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2021103400101",
+      "name": "快車杏仁香脆肉紙-黑胡椒",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%BF%AB%E8%BB%8A%E8%82%89%E4%B9%BE/2021103400101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:27:43.166Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2024105000101",
+      "name": "所長爆汁方干-蒜味(每袋240G/8入)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2024105000101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:27:44.025Z",
+      "evidenceImages": 4
+    },
+    {
+      "id": "tw-uniprosperity-2011115200101",
+      "name": "軒香關廟麵(細)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2011115200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:27:45.455Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2021106300101",
+      "name": "快車特厚黑胡椒豬肉乾",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%BF%AB%E8%BB%8A%E8%82%89%E4%B9%BE/2021106300101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:27:46.391Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2024110900101",
+      "name": "所長爆汁方干-沙茶(8入/240克±10%)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2024110900101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:27:47.425Z",
+      "evidenceImages": 4
+    },
+    {
+      "id": "tw-uniprosperity-2011100500101",
+      "name": "軒香關廟麵(每包1200公克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%9D%8E%E5%AE%B6/2011100500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:27:48.458Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2010004400101",
+      "name": "生發號鴨皮蛋",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%94%9F%E7%99%BC%E8%99%9F/2010004400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:27:49.433Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2010511500101",
+      "name": "好料-鹽味毛豆300g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2010511500101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:27:50.425Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2011100400101",
+      "name": "軒香刀削麵(每包900公克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%9D%8E%E5%AE%B6/2011100400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:27:51.279Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2024109800101",
+      "name": "清清琉球寶烘培麻花捲(焦糖)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%B8%85%E6%B8%85%E7%90%89%E7%90%83%E5%AF%B6/2024109800101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:27:52.164Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2204027800501",
+      "name": "有機黑美人菇150g/盒",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2204027800501.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:27:53.891Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2204027600101",
+      "name": "有機雪白菇(每包約120克±10%)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2204027600101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:27:57.057Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-2217203000101",
+      "name": "履歷珍珠芭樂(每袋2顆/約750克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%94%A2%E9%8A%B7%E5%B1%A5%E6%AD%B7%E8%BE%B2%E7%94%A2%E5%93%81/2217203000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:27:59.040Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2204028100501",
+      "name": "有機黑木耳200g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2204028100501.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:00.932Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2204027900101",
+      "name": "有機杏鮑菇180g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2204027900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:02.845Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1471100100101",
+      "name": "登豐 油蔥300g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1471100100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:03.745Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2212045100105",
+      "name": "紐西蘭Diva 女神蘋果#90 5 入(每粒約180-200克）",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%94%9F%E9%AE%AE%E8%94%AC%E6%9E%9C/2212045100105.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:05.806Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2204027500101",
+      "name": "有機鴻喜菇(每包約120g±10%)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2204027500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:07.640Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2217018200101",
+      "name": "履歷香蕉 (每袋約1公斤)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2217018200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:09.406Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-2204024000501",
+      "name": "彥廷有機黑木耳(每盒約450g±10%)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%9C%89%E6%A9%9F%E8%BE%B2%E7%94%A2%E5%93%81/2204024000501.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:11.266Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2217018700101",
+      "name": "金蕉伯履歷香蕉(每袋3-6條/約600g±10%)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%94%A2%E9%8A%B7%E5%B1%A5%E6%AD%B7%E8%BE%B2%E7%94%A2%E5%93%81/2217018700101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:13.288Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2202131700401",
+      "name": "有機小黃瓜(每盒約300克±10%)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2202131700401.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:15.076Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2200004600101",
+      "name": "履歷油菜(每袋約250克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%94%A2%E9%8A%B7%E5%B1%A5%E6%AD%B7%E8%BE%B2%E7%94%A2%E5%93%81/2200004600101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:15.958Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2202109000101",
+      "name": "履歷去殼玉米筍(每盒約120G)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2202109000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:17.728Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2201002300101",
+      "name": "紐西蘭洋蔥1kg/袋",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2201002300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:19.498Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2202120300101",
+      "name": "履歷玉米 2入(每盒約380克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2202120300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:21.492Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2203214700401",
+      "name": "有機朝天椒100g/盒",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2203214700401.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:23.196Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2200031100101",
+      "name": "履歷小白菜(每袋約250克±10%)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%94%A2%E9%8A%B7%E5%B1%A5%E6%AD%B7%E8%BE%B2%E7%94%A2%E5%93%81/2200031100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:25.041Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2204027700101",
+      "name": "有機金針菇(每包約200g±10%)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2204027700101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:27.949Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-2216004900101",
+      "name": "美濃瓜600克/2入/盒",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2216004900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:29.753Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2200031300101",
+      "name": "履歷空心菜(每包約250公克±10%)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%94%A2%E9%8A%B7%E5%B1%A5%E6%AD%B7%E8%BE%B2%E7%94%A2%E5%93%81/2200031300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:31.551Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2212102000101",
+      "name": "龍安果園履歷新興梨(每盒800克/2入)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2212102000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:33.390Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2200301700101",
+      "name": "越南娃娃菜200g/袋",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%94%9F%E9%AE%AE%E8%94%AC%E6%9E%9C/2200301700101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:35.205Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2212013500104",
+      "name": "紐西蘭富士蘋果#90 4入(每粒約180-200克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%94%9F%E9%AE%AE%E8%94%AC%E6%9E%9C/2212013500104.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:37.293Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2219024400101",
+      "name": "日本長野麝香葡萄PE盒裝(每盒約350g±10%)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2219024400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:39.116Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2219024500101",
+      "name": "日本山梨麝香葡萄PE盒350g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2219024500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:40.991Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2212007900101",
+      "name": "樂淇蘋果-家庭號(每桶約897g±10%)※實際顆數依實際賣場販售為主",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2212007900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:43.022Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2212104400101",
+      "name": "高接梨(每盒4粒/約1.2公斤±10%)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%94%9F%E9%AE%AE%E8%94%AC%E6%9E%9C/2212104400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:45.181Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2214006400105",
+      "name": "紐西蘭陽光金圓頭奇異果#52 (每粒約105g±10%x5粒)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/zespri/2214006400105.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:48.393Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-2214025200101",
+      "name": "Zespri 低溫熟成盒裝綠奇異果(每粒約90g±10%/6入)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2214025200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:51.478Z",
+      "evidenceImages": 5
+    },
+    {
+      "id": "tw-uniprosperity-2212047900101",
+      "name": "盒裝水蜜桃蘋果2入(每盒約550g±10%)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2212047900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:57.231Z",
+      "evidenceImages": 6
+    },
+    {
+      "id": "tw-uniprosperity-2213014200101",
+      "name": "巨峰葡萄(每盒約400g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%94%9F%E9%AE%AE%E8%94%AC%E6%9E%9C/2213014200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:28:59.473Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2210326500101",
+      "name": "進口袋裝茂谷柑(每袋約900克±10%)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%94%9F%E9%AE%AE%E8%94%AC%E6%9E%9C/2210326500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:29:01.575Z",
+      "evidenceImages": 5
+    },
+    {
+      "id": "tw-uniprosperity-2214008400122",
+      "name": "陽光金圓頭奇異果大品規Jumbo#22 (每盒約3公斤±10%/22粒入)※實際包裝以實際收貨為主",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/zespri/2214008400122.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:29:03.663Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2212046200105",
+      "name": "紐西蘭水蜜桃蘋果#90 5入",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2212046200105.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:29:09.506Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2214008400105",
+      "name": "Zespri陽光金圓頭奇異果大品規Jumbo#22(每粒約135g±10%/5粒)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2214008400105.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:29:13.501Z",
+      "evidenceImages": 4
+    },
+    {
+      "id": "tw-uniprosperity-2217303100701",
+      "name": "臺灣富有柿(7A/粒)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2217303100701.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:29:15.655Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2217401800112",
+      "name": "進口藍莓(12盒/箱,每盒約125克±10%)※實際出貨包裝以出貨店庫存為準",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%94%9F%E9%AE%AE%E8%94%AC%E6%9E%9C/2217401800112.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:29:18.200Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2212046300106",
+      "name": "紐西蘭 愛妃Envy#35禮盒裝(每盒6粒)※本商品最低購買數量為 5 盒",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2212046300106.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:29:20.250Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2202010700101",
+      "name": "進口青花菜2入(每盒約400克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2202010700101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:29:22.403Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2200300400101",
+      "name": "有機高麗菜800g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2200300400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:29:24.529Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2201009900101",
+      "name": "有機一番蔘胡蘿蔔500g/袋",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2201009900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:29:26.589Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2204027300101",
+      "name": "有機特級杏鮑菇1kg/袋",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2204027300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:29:28.759Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2204029900101",
+      "name": "有機雙享菇150g/盒",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2204029900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:29:32.070Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-2202100200101",
+      "name": "有機櫛瓜(每盒約500克±10%)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2202100200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:29:34.125Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2202123301501",
+      "name": "有機去殼玉米筍100g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2202123301501.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:29:36.087Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2202103200101",
+      "name": "履歷牛番茄500g/盒",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2202103200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:29:37.997Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2204030000501",
+      "name": "有機白精靈200g/袋",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2204030000501.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:29:41.958Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-2204002600501",
+      "name": "履歷香菇350g/包",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2204002600501.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:29:44.608Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2204028500501",
+      "name": "履歷洋菇200g/盒",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2204028500501.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:29:47.597Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2204028000501",
+      "name": "有機秀珍菇150g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2204028000501.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:29:50.483Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2204029800501",
+      "name": "有機銀耳(每盒約200克±10%)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2204029800501.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:29:53.950Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-2204009500101",
+      "name": "有機金針菇(森甜金菇)333g/包",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2204009500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:29:56.149Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2204007100101",
+      "name": "有機杏鮑菇(小)500g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2204007100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:29:58.474Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2204005500101",
+      "name": "有機銀耳露(每瓶200ml)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%9C%89%E6%A9%9F%E8%BE%B2%E7%94%A2%E5%93%81/2204005500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:29:59.544Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2204005500106",
+      "name": "有機銀耳露(200ml x 6)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%9C%89%E6%A9%9F%E8%BE%B2%E7%94%A2%E5%93%81/2204005500106.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:30:03.008Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2204000200501",
+      "name": "有機黑美人菇500g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2204000200501.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:30:05.014Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2204019400106",
+      "name": "莫爾露禮盒-原味(6瓶/每瓶約225ml)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2204019400106.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:30:06.034Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2204099900601",
+      "name": "日本舞菇100g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2204099900601.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:30:08.483Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2204019300106",
+      "name": "莫爾露禮盒-黑糖(6瓶/每瓶約225ml)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2204019300106.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:30:09.480Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2203117000101",
+      "name": "履歷青蔥(每袋約200克±10%)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2203117000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:30:11.480Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2203013000101",
+      "name": "履歷老薑(每袋約300克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2203013000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:30:12.488Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1471107800101",
+      "name": "康健生機-有機日曬黑木耳乾70g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%BA%B7%E5%81%A5%E7%94%9F%E6%A9%9F/1471107800101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:30:16.192Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2203118800101",
+      "name": "履歷芹菜(每袋約250g±10%)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%B1%A5%E6%AD%B7%E7%94%A2%E9%8A%B7%E8%BE%B2%E7%94%A2%E5%93%81/2203118800101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:30:17.114Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2203018000101",
+      "name": "履歷蒜頭600g/袋",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2203018000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:30:20.055Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2203014400101",
+      "name": "履歷嫩薑(每盒150公克 ±10%)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%94%A2%E9%8A%B7%E5%B1%A5%E6%AD%B7%E8%BE%B2%E7%94%A2%E5%93%81/2203014400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:30:23.119Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2203014700101",
+      "name": "履歷蒜米300g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%94%A2%E9%8A%B7%E5%B1%A5%E6%AD%B7%E8%BE%B2%E7%94%A2%E5%93%81/2203014700101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:30:26.287Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2203118600701",
+      "name": "三星蔥180g/袋",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2203118600701.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:30:28.683Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1471101400101",
+      "name": "日正油蔥酥",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%97%A5%E6%AD%A3/1471101400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:30:29.643Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1471190700101",
+      "name": "譽方媽媽油蔥酥",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E8%AD%BD%E6%96%B9%E5%AA%BD%E5%AA%BD/1471190700101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:30:33.667Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2203014500101",
+      "name": "履歷老薑300g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2203014500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:30:37.254Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1471102000101",
+      "name": "超賀辣椒乾100g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1471102000101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:30:43.538Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1471191200101",
+      "name": "譽方媽媽日本北海道早煮昆布70g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E8%AD%BD%E6%96%B9%E5%AA%BD%E5%AA%BD/1471191200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:30:46.398Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1471103300101",
+      "name": "TAYA特級泰國香茅草",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/taya/1471103300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:30:47.401Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1471103100101",
+      "name": "TAYA特級泰國南薑乾",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/taya/1471103100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:30:48.332Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2203000900501",
+      "name": "手剝鮮蒜仁120g_包",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2203000900501.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:30:49.272Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2203101800101",
+      "name": "大蒜(蒜苗)180g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2203101800101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:30:51.174Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2203110900101",
+      "name": "芹菜(每包約250公克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%94%9F%E9%AE%AE%E8%94%AC%E6%9E%9C/2203110900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:30:53.080Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2203121901501",
+      "name": "有機香菜30g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2203121901501.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:30:54.975Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2203214800401",
+      "name": "有機紅辣椒100g/盒",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2203214800401.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:30:56.777Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2214006400110",
+      "name": "紐西蘭陽光金圓頭奇異果#52 (每粒約105g±10%x10粒)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/zespri/2214006400110.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:30:59.873Z",
+      "evidenceImages": 5
+    },
+    {
+      "id": "tw-uniprosperity-2212012600106",
+      "name": "紐西蘭富士蘋果#110 (每粒約150克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%94%9F%E9%AE%AE%E8%94%AC%E6%9E%9C/2212012600106.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:02.104Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2217401800103",
+      "name": "進口藍莓3入裝※實際出貨包裝以出貨店庫存為準",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2217401800103.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:04.067Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2214005300105",
+      "name": "大粒綠奇異果#25(每粒約130g*5粒)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2214005300105.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:06.301Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2212123200101",
+      "name": "台灣高接梨(每盒約1公斤/2粒裝)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2212123200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:08.524Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2210100500110",
+      "name": "進口柳橙#138 (每粒約120克x10入)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2210100500110.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:10.667Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2210100800101",
+      "name": "進口柳橙 #88(每粒約180-200g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2210100800101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:12.519Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2212013000103",
+      "name": "富士蘋果#70",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2212013000103.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:14.553Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2217200200101",
+      "name": "芭樂哥燕巢芭樂1.2kg/盒",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%94%9F%E9%AE%AE%E8%94%AC%E6%9E%9C/2217200200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:16.487Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2210204000101",
+      "name": "斗六履歷文旦(每粒約600g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%94%A2%E9%8A%B7%E5%B1%A5%E6%AD%B7%E8%BE%B2%E7%94%A2%E5%93%81/2210204000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:18.713Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1527100900101",
+      "name": "龍門冷凍什錦蔬菜-1000g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%BE%8D%E9%96%80/1527100900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:19.626Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1527108100101",
+      "name": "達人上菜台農57號冰烤地瓜500g(全素)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%81%94%E4%BA%BA%E4%B8%8A%E8%8F%9C/1527108100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:20.596Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1527108600101",
+      "name": "冷凍青花菜1KG",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1527108600101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:21.530Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1527106300101",
+      "name": "永昇冷凍毛豆仁(全素)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1527106300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:25.243Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1527104600101",
+      "name": "永昇冷凍低鹽黑豆-400g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1527104600101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:31:28.474Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1527100100101",
+      "name": "雅方火腿丁綜合蔬菜",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1527100100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:29.430Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1527103400101",
+      "name": "【安心價】義美冷凍玉米粒(全素)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1527103400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:30.401Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1527107600101",
+      "name": "冰冰好料理薄鹽毛豆(每包400g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B0%E5%86%B0%E5%A5%BD%E6%96%99%E7%90%86/1527107600101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:31.385Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1527108200101",
+      "name": "Greens綜合炒蔬菜1KG",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/greens/1527108200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:32.281Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1527102800101",
+      "name": "龍鳳冷凍蔬菜-三色混蔬-500g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%BE%8D%E9%B3%B3/1527102800101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:33.184Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1527111800101",
+      "name": "小粒納豆四付綠納豆(冷凍)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1527111800101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:31:34.112Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2401044900101",
+      "name": "冷凍澳洲12盎司嫩肩厚切牛排(每包約400g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2401044900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:36.064Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-2410093500101",
+      "name": "立大食品冷凍台灣豬後腿肉絲250g(貼體)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%AB%8B%E5%A4%A7%E9%A3%9F%E5%93%81/2410093500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:38.053Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2432002000101",
+      "name": "舒康雞 雞骨架(每包約500克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2432002000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:40.348Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2420000200101",
+      "name": "冷凍紐西蘭全羊火鍋肉片(每包約1kg)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2420000200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:41.236Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1511201300101",
+      "name": "新東陽黑胡椒德式香腸",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%96%B0%E6%9D%B1%E9%99%BD/1511201300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:42.171Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2461201700101",
+      "name": "大成冷凍法式香草雞胸肉(每包約330克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%A4%A7%E6%88%90/2461201700101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:44.962Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2460100200101",
+      "name": "冷凍澳洲板腱火鍋片 (每包約1Kg)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2460100200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:47.495Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2103105000101",
+      "name": "冷凍職人虱目魚柳300g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2103105000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:49.829Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2110101100101",
+      "name": "荷卡廚坊_極鮮蝦仁200g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2110101100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:52.096Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2110339500101",
+      "name": "冷凍帝王蟹風味棒(因各地區供貨商不同，實際出貨包裝以出貨店庫存為準。)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%B5%B7%E9%AE%AE%E9%A3%9F%E6%9D%90/2110339500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:53.556Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1473101100101",
+      "name": "【安心價】福壽柴魚花-5g*5",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1473101100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:54.463Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2400002000101",
+      "name": "CAB冷藏美國安格斯肩小排火鍋片(每盒約200g)-貼體包裝※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2400002000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:56.970Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-2410012400101",
+      "name": "嚴選冷藏台灣豬後腿絞肉300g-貼體包裝※因配送關係實際到貨效期約2-3天",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2410012400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:31:59.038Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2432002400101",
+      "name": "產銷履歷全氣冷雞冷藏雞胸肉片250g(貼體)※因配送關係實際到貨效期約2-3天",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%87%91%E8%B1%90%E7%9B%9B/2432002400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:32:01.215Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2420004800101",
+      "name": "【清真認證】冷凍澳洲小羊燉肉塊(每盒約500克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B7%E5%87%8D%E8%82%89%E5%93%81/2420004800101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:32:09.065Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2440005000101",
+      "name": "冷藏台灣豬原味一口香腸真空包(每包約350g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B7%E8%97%8F%E8%82%89%E5%93%81/2440005000101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:32:14.880Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2461205300101",
+      "name": "大成冷凍脆皮金嫩雞腿排200g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2461205300101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:32:17.406Z",
+      "evidenceImages": 4
+    },
+    {
+      "id": "tw-uniprosperity-2460009200101",
+      "name": "冷凍豬梅花火鍋片 (每包約1kg)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2460009200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:32:19.378Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2103121500101",
+      "name": "鯛魚腹片(每包約500克±10%)因各地區供貨商不同，實際出貨包裝以出貨店庫存為準。",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2103121500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:32:20.352Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2110200800101",
+      "name": "台灣船釣燈捕大透抽 (每盒500g/約2~3隻)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2110200800101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:32:22.444Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2111061200101",
+      "name": "品興行 澎湖花枝蝦卷(每盒約300g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%93%81%E8%88%88%E8%A1%8C/2111061200101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:32:23.994Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1473101300101",
+      "name": "登豐 柴魚片45g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1473101300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:32:24.943Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2401040900201",
+      "name": "澳洲穀飼牛絞肉170g※因配送關係實際到貨效期約4-6天",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2401040900201.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:32:26.978Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2410093300101",
+      "name": "【台灣豬】立大食品冷凍豬小排切塊(每盒約250克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%AB%8B%E5%A4%A7%E9%A3%9F%E5%93%81/2410093300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:32:29.283Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-2432005900101",
+      "name": "安心雞翅中300g(貼體)※因配送關係實際到貨效期約2-3天",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2432005900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:32:31.385Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2420004300101",
+      "name": "【清真認證】冷凍澳洲小羊肉片(每盒約200克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B7%E5%87%8D%E8%82%89%E5%93%81/2420004300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:32:37.896Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1510201500101",
+      "name": "新東陽德國香腸(每包640g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%96%B0%E6%9D%B1%E9%99%BD/1510201500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:32:38.805Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2010012600101",
+      "name": "主廚煙燻雞胸(每包100g)冷藏即食",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2010012600101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:32:39.770Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2460110700101",
+      "name": "美國CR安格斯牛五花火鍋片1000g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2460110700101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:32:41.672Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2103115100101",
+      "name": "冷凍智利鮭魚切片(每包約500克±10%(含冰率20%))",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2103115100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:32:43.587Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2110120800101",
+      "name": "冷凍阿根廷天使紅蝦(每盒約2公斤,約30-40尾)因各地區供貨商不同，實際出貨包裝以出貨店庫存為準。",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%B7%AF%E5%8B%B5/2110120800101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:32:44.513Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2110306500101",
+      "name": "冷凍薄鹽槍魷一夜干(每包約220克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2110306500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:32:46.488Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1473089800101",
+      "name": "橘平屋特選燒海苔20.8g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%A9%98%E5%B9%B3%E5%B1%8B/1473089800101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:32:47.406Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2461111000101",
+      "name": "冷凍澳洲帶骨牛小排500g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2461111000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:32:49.608Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-2410011600101",
+      "name": "嚴選冷藏台灣豬後腿肉片300g-貼體包裝※因配送關係實際到貨效期約2-3天",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2410011600101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:32:51.499Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2420005900101",
+      "name": "冷凍澳洲帶皮小羊肉塊500g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B7%E5%87%8D%E8%82%89%E5%93%81/2420005900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:32:53.747Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1510101700101",
+      "name": "新東陽 DHA三明治火腿",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%96%B0%E6%9D%B1%E9%99%BD/1510101700101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:32:54.686Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-2462002600101",
+      "name": "冷藏高津鐵路排骨(每包3片/約300g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2462002600101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:32:55.548Z",
+      "evidenceImages": 4
+    },
+    {
+      "id": "tw-uniprosperity-2460108800101",
+      "name": "冷凍美國牛五花火鍋片 (每包約1kg)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2460108800101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:32:57.435Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2103124700101",
+      "name": "美威鮭魚菲力(附醬包)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%8E%E5%A8%81/2103124700101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:32:59.200Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2110219600101",
+      "name": "澎湖花枝切片(每盒約300g)因各地區供貨商不同，實際出貨包裝以出貨店庫存為準。",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2110219600101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:33:00.188Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2110308300101",
+      "name": "鱈場蟹味棒(每包約250克)因各地區供貨商不同，實際出貨包裝以出貨店庫存為準。",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2110308300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:33:01.101Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1473100200101",
+      "name": "雅媽吉柴魚片(花)100g克",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%9B%85%E5%AA%BD%E5%90%89/1473100200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:33:02.176Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2400006000101",
+      "name": "CAB冷藏美國安格斯肋眼牛排280g(貼體包裝)※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2400006000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:33:04.100Z",
+      "evidenceImages": 4
+    },
+    {
+      "id": "tw-uniprosperity-2410010100101",
+      "name": "嚴選冷藏台灣豬胛心肉330g-貼體包裝※因配送關係實際到貨效期約2-3天",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2410010100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:33:05.889Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2432000200101",
+      "name": "舒康雞冷凍雞胸肉300g(貼體)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E8%88%92%E5%BA%B7%E9%9B%9E/2432000200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:33:06.876Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2420007500101",
+      "name": "澳洲帶皮山羊塊(每包約1000g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2420007500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:33:07.802Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1511103000101",
+      "name": "黑橋牌蒜味台灣小香腸※實際出貨包裝依賣場實際販售為主",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1511103000101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:33:11.308Z",
+      "evidenceImages": 5
+    },
+    {
+      "id": "tw-uniprosperity-2461211700101",
+      "name": "大成冷凍椒麻翅小腿(每包約330克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%A4%A7%E6%88%90/2461211700101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:33:12.757Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2460005700101",
+      "name": "冷凍台灣豬梅花火鍋片(每盒約500克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B7%E5%87%8D%E8%82%89%E5%93%81/2460005700101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:33:14.962Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2103107700101",
+      "name": "金目鱸魚片(每包約200-250g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2103107700101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:33:17.623Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2110127800101",
+      "name": "藍鑽蝦(每盒約1kg/40-50尾)※實際出貨包裝依賣場實際販售為主",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%B5%B7%E9%AE%AE%E9%A3%9F%E6%9D%90/2110127800101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:33:18.546Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1526301900101",
+      "name": "慶豐花枝丸",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1526301900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:33:19.556Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1473004100101",
+      "name": "登豐海帶芽120g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1473004100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:33:20.473Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2461111700101",
+      "name": "美國CR安格斯牛五花燒烤片1000g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2461111700101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:33:22.860Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2410099400101",
+      "name": "香里食品冷凍台灣霜降豬肉286g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2410099400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:33:23.779Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2432003500101",
+      "name": "舒康雞冷凍雞胸絞肉200g(貼體)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2432003500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:33:24.759Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2420007600101",
+      "name": "冷凍紐西蘭嫩肩羊排500g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2420007600101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:33:26.777Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1511202300101",
+      "name": "博客Q肉丁德國香腸(香蒜)50g*4",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%B5%B1%E4%B8%80/1511202300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:33:27.845Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2461210500101",
+      "name": "舒康雞野菜洋芋雞飽排(每包約130克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E8%88%92%E5%BA%B7%E9%9B%9E/2461210500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:33:28.746Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2460000600101",
+      "name": "巴拉圭豬五花火鍋片(每包約1000g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2460000600101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:33:30.963Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-2103100400101",
+      "name": "台灣鯛下巴(每包約980g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2103100400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:33:33.405Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2110219500101",
+      "name": "澎湖透抽切圈(每盒約300克)因各地區供貨商不同，實際出貨包裝以出貨店庫存為準。",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2110219500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:33:34.425Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2111057300101",
+      "name": "品興行-澎湖花枝蝦餅",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2111057300101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:33:35.926Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1473189900101",
+      "name": "登豐 蝦皮150g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1473189900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:33:36.902Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2400008600101",
+      "name": "冷凍美國嫩肩骰子牛肉(每盒約400克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2400008600101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:33:44.567Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-2410014100101",
+      "name": "嚴選冷藏台灣豬里肌火鍋肉片330g-貼體包裝※因配送關係實際到貨效期約2-3天",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2410014100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:33:46.758Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2430095500101",
+      "name": "冷藏台東後山雞-半雞切盤(約500g)※本商品保存期限為7天，因配送關係到府後使用期限3天",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B7%E8%97%8F%E8%82%89%E5%93%81/2430095500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:33:49.084Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2420004400101",
+      "name": "【清真認證】冷凍澳洲小羊羽上燒烤片(每盒約300克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B7%E5%87%8D%E8%82%89%E5%93%81/2420004400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:33:55.807Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1510300500101",
+      "name": "台畜美式厚切培根",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%8F%B0%E7%95%9C/1510300500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:33:56.694Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2461201800101",
+      "name": "蒜味迷迭香雞翅(每包約300克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%A4%A7%E6%88%90/2461201800101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:33:58.520Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2460110300101",
+      "name": "冷凍美國牛霜降火鍋片(每盒約250g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2460110300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:34:00.688Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2103102800101",
+      "name": "大比目魚切片(每包約260g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2103102800101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:34:01.829Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2110101000101",
+      "name": "冷凍大白蝦BAP(每盒約250g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2110101000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:34:02.732Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1524106800101",
+      "name": "宏裕行蝦仁花枝漿",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1524106800101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:34:03.636Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1473095900101",
+      "name": "聯昇珍味海帶芽100g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E8%81%AF%E6%98%87/1473095900101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:34:06.475Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2461112100101",
+      "name": "冷凍烤肉片牛肉雙拼400g(牛五花+板腱)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2461112100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:34:08.433Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2410028500101",
+      "name": "台灣豬軟骨丁330g-貼體包裝※因配送關係實際到貨效期約2-3天",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2410028500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:34:10.459Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2430095200101",
+      "name": "冷藏台東後山雞(每隻約1.6-2.0公斤)※本商品保存期限為7天，因配送關係到府後使用期限3天",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2430095200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:34:12.459Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2420005000101",
+      "name": "【清真認證】冷凍澳洲小羊戰斧(每盒約250克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B7%E5%87%8D%E8%82%89%E5%93%81/2420005000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:34:21.541Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1528101800101",
+      "name": "桂冠 德式起司腸 120g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%A1%82%E5%86%A0/1528101800101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:34:22.587Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2461207400101",
+      "name": "大成美式香檸辣雞翅-真空包(每袋約300克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%A4%A7%E6%88%90/2461207400101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:34:25.697Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2460101800101",
+      "name": "冷凍美國菲瑞霜降牛肉火鍋片250g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2460101800101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:34:26.547Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2103119800101",
+      "name": "大比目魚切片(每包淨重約215g/4-5片)因各地區供貨商不同，實際出貨包裝以出貨店庫存為準。",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2103119800101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:34:27.561Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2110224200101",
+      "name": "爭鮮澎湖鮮凍小卷切圈 200g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2110224200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:34:29.565Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2110327800101",
+      "name": "挪威鹽漬鯖魚片(每包約190±20g/包)因各地區供貨商不同，實際出貨包裝以出貨店庫存為準。",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2110327800101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:34:30.918Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1473096000101",
+      "name": "聯昇海藻蔬菜湯100g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E8%81%AF%E6%98%87/1473096000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:34:31.799Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2461100300101",
+      "name": "冷凍澳洲穀飼紐約克燒烤片300g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2461100300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:34:33.634Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2410014300101",
+      "name": "嚴選冷藏台灣豬五花白肉片330g-貼體包裝※因配送關係實際到貨效期約2-3天",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2410014300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:34:35.514Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2432000700101",
+      "name": "產銷履歷全氣冷雞冷藏雞胸肉300g(貼體)※因配送關係實際到貨效期約2-3天",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%87%91%E8%B1%90%E7%9B%9B/2432000700101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:34:37.399Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2420003900101",
+      "name": "【清真認證】冷凍澳洲嫩肩小羊排(每盒約300克)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%86%B7%E5%87%8D%E8%82%89%E5%93%81/2420003900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:34:45.700Z",
+      "evidenceImages": 4
+    },
+    {
+      "id": "tw-uniprosperity-1510301200101",
+      "name": "黑橋牌 舒食培根 170g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%BB%91%E6%A9%8B%E7%89%8C/1510301200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:34:46.575Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1515196900101",
+      "name": "台畜鹹水雞胸肉",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1515196900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:34:47.543Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2460010500101",
+      "name": "冷凍豬五花火鍋肉片1000g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2460010500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:34:49.432Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2103100300101",
+      "name": "冷凍去刺虱目魚肚(二片裝)※因各地區供貨商不同，實際出貨包裝以出貨店庫存為準。",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2103100300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:34:50.370Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-2110007700101",
+      "name": "鳳螺 700g因各地區供貨商不同，實際出貨包裝以出貨店庫存為準。",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%B5%B7%E9%AE%AE%E9%A3%9F%E6%9D%90/2110007700101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:34:51.335Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-2110314000101",
+      "name": "龍蝦風味沙拉(每包約250克)因各地區供貨商不同，實際出貨包裝以出貨店庫存為準。",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2110314000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:34:52.284Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1473096100101",
+      "name": "聯昇進口海帶芽55g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E8%81%AF%E6%98%87/1473096100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:34:55.178Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-2461112000101",
+      "name": "冷凍美國牛梅花燒烤片250g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/2461112000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:34:57.354Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1502303100106",
+      "name": "統一蜜豆奶營養+豆奶(草莓口味)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1502303100106.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:35:00.740Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1502004700124",
+      "name": "光泉全脂保久牛乳-200ml",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%85%89%E6%B3%89/1502004700124.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:35:02.882Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1502401800106",
+      "name": "光泉薏仁糙米漿200ml",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1502401800106.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:35:08.948Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1502300400106",
+      "name": "義美黑豆奶250ml",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1502300400106.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:35:09.891Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1508000200101",
+      "name": "大漢家常火鍋豆腐(非基改)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%A4%A7%E6%BC%A2/1508000200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:35:10.781Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1502000100124",
+      "name": "光泉低脂保久牛乳-200ml",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%85%89%E6%B3%89/1502000100124.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:35:13.080Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1502005000106",
+      "name": "光泉高鈣牛乳-200ml",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%85%89%E6%B3%89/1502005000106.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:35:15.317Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1502105700106",
+      "name": "克寧國小生草莓優酪乳(198mlx6)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%85%8B%E5%AF%A7/1502105700106.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:35:18.537Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1502000100106",
+      "name": "光泉低脂保久牛乳-200ml",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%85%89%E6%B3%89/1502000100106.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:35:20.704Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1502004700106",
+      "name": "光泉全脂保久牛乳-200ml",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%85%89%E6%B3%89/1502004700106.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:35:22.801Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1502200400106",
+      "name": "光泉巧克力牛乳-200ml",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%85%89%E6%B3%89/1502200400106.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:35:25.543Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1502100100106",
+      "name": "光泉果汁牛乳-200ml",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%85%89%E6%B3%89/1502100100106.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:35:27.871Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1508002800101",
+      "name": "中華 非基因改造超嫩豆腐 300g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E4%B8%AD%E8%8F%AF%E9%A3%9F%E5%93%81/1508002800101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:35:28.784Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1502309300124",
+      "name": "統一陽光無加糖豆奶250ml",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%B5%B1%E4%B8%80%E9%99%BD%E5%85%89/1502309300124.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:35:37.533Z",
+      "evidenceImages": 8
+    },
+    {
+      "id": "tw-uniprosperity-1502005000124",
+      "name": "光泉高鈣牛乳-200ml",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%85%89%E6%B3%89/1502005000124.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:35:40.074Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1530295300101",
+      "name": "盛香珍大果實葡萄果凍240g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1530295300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:35:41.012Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1502103500124",
+      "name": "福樂蘋果牛乳(保久乳)200ml",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%A6%8F%E6%A8%82/1502103500124.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:35:42.047Z",
+      "evidenceImages": 4
+    },
+    {
+      "id": "tw-uniprosperity-1502203300124",
+      "name": "阿華田營養麥芽牛奶飲品can340ml",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%98%BF%E8%8F%AF%E7%94%B0/1502203300124.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:35:46.749Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1502000700112",
+      "name": "澳洲奶協會全脂牛奶1000ml",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%BE%B3%E6%B4%B2%E5%A5%B6%E5%8D%94%E6%9C%83/1502000700112.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:35:47.724Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1502001200112",
+      "name": "有機囍瑞-澳洲有機全脂牛奶1000ml(箱購依實際收貨為主，無法保證原封箱出貨)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1502001200112.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:35:55.770Z",
+      "evidenceImages": 8
+    },
+    {
+      "id": "tw-uniprosperity-1502300400124",
+      "name": "義美黑豆奶250ml",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1502300400124.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:35:56.761Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1508000200103",
+      "name": "大漢家常火鍋豆腐(非基改) 3入",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%A4%A7%E6%BC%A2/1508000200103.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:35:57.790Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1502200400124",
+      "name": "光泉巧克力牛乳-200ml",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%85%89%E6%B3%89/1502200400124.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:35:59.763Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1507006300101",
+      "name": "UNIDESIGN嚴選非籠飼放牧蛋(冷藏6入)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1507006300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:36:01.542Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1507005100101",
+      "name": "統一元氣御選臻赤卵(非籠飼冷藏)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1507005100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:36:03.353Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1507009500101",
+      "name": "蛋黃香人道雞蛋(平飼冷藏)  每盒15入",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%8B%A4%E5%84%84%E8%9B%8B%E5%93%81/1507009500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:36:04.270Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1507006000101",
+      "name": "【非籠飼】貞馨動福蛋非籠飼冷藏10入",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%9C%9F%E9%A6%A8%E5%8B%95%E7%A6%8F%E8%9B%8B/1507006000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:36:05.989Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1507007300101",
+      "name": "【非籠飼】茂林伊利蛋非籠飼(冷藏) 10入",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E8%8C%82%E6%9E%97%E7%95%9C%E7%89%A7%E5%A0%B4/1507007300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:36:06.963Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1507000300101",
+      "name": "大成散步雞(非籠飼冷藏)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1507000300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:36:09.132Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1507007400101",
+      "name": "【非籠飼】御品園土雞蛋(放牧冷藏) 400g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%BE%A1%E5%93%81%E5%9C%92/1507007400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:36:10.089Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1507009600101",
+      "name": "蛋黃香人道雞蛋8入(非籠飼冷藏)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1507009600101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:36:12.013Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1507003600101",
+      "name": "大武山牧場非籠飼養白殼蛋(非籠飼冷藏)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1507003600101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:36:14.065Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1507001000101",
+      "name": "大武山牧場非籠飼養紅殼蛋(非籠飼冷藏)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1507001000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:36:16.397Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1507099900101",
+      "name": "大鳴堂平飼紅殼卵(非籠飼冷藏)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1507099900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:36:18.235Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1507006200101",
+      "name": "快樂腳神氣放牧蛋-非籠飼冷藏(每盒6顆)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1507006200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:36:20.143Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1507003400101",
+      "name": "【非籠飼】鮮活走地蛋非籠飼冷藏10入",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%AE%AE%E6%B4%BB%E8%B5%B0%E5%9C%B0%E8%9B%8B/1507003400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:36:21.762Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1507007200101",
+      "name": "【非籠飼】一顆好蛋非籠飼冷藏10入",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E4%B8%80%E9%A1%86%E5%A5%BD%E8%9B%8B/1507007200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:36:24.471Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1507201600101",
+      "name": "福記香鐵蛋--鵪鶉蛋(原味)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%A6%8F%E8%A8%98/1507201600101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:36:27.420Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1508000300101",
+      "name": "義美 傳統料理豆腐(非基改) 300g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1508000300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:36:28.349Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1508000900101",
+      "name": "中華 有機豆腐 300g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E4%B8%AD%E8%8F%AF%E9%A3%9F%E5%93%81/1508000900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:36:29.300Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1507100400101",
+      "name": "廣大利熟鹹蛋",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1507100400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:36:31.111Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1508090200103",
+      "name": "大漢非基改涼拌豆腐-3入",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1508090200103.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:36:32.035Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1508001200101",
+      "name": "大漢傳統板豆腐(非基改)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%A4%A7%E6%BC%A2/1508001200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:36:32.938Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1508002700101",
+      "name": "中華 非基因改造火鍋豆腐 300g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E4%B8%AD%E8%8F%AF%E9%A3%9F%E5%93%81/1508002700101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:36:33.957Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1501000200101",
+      "name": "UNIDESIGN優質鮮乳(無調整)※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1501000200101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:36:34.868Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1501101800101",
+      "name": "光泉低脂鮮乳1857ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%85%89%E6%B3%89/1501101800101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:36:35.872Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1501002300101",
+      "name": "光泉100％純鮮乳(無調整)1857ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%85%89%E6%B3%89/1501002300101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:36:36.822Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1501000500101",
+      "name": "義美2公升全脂鮮乳※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1501000500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:36:37.778Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1501003400101",
+      "name": "福樂一番鮮全脂鮮乳1830ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%A6%8F%E6%A8%82/1501003400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:36:38.741Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1501294000101",
+      "name": "果實繆繆大果粒牛乳(蜜桃)930ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1501294000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:36:39.571Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1501005400101",
+      "name": "瑞穗鮮乳-全脂1858ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%B5%B1%E4%B8%80/1501005400101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:36:46.282Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1501002100101",
+      "name": "萬丹酪農戶限定鮮奶1857ml(無調整)※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%91%B3%E5%85%A8/1501002100101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:36:47.890Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1501100300101",
+      "name": "光泉乳香世家低脂鮮乳1857ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%85%89%E6%B3%89/1501100300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:36:48.853Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1501004100101",
+      "name": "福爾摩沙小農精選鮮乳 1858ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1501004100101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:36:49.715Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1501290800101",
+      "name": "光泉調味乳飲品-木瓜牛乳-400ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%85%89%E6%B3%89/1501290800101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:36:50.588Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1501103400101",
+      "name": "義美低脂鮮奶1000ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1501103400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:36:51.502Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1501100400101",
+      "name": "瑞穗鮮乳-低脂1858ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%B5%B1%E4%B8%80/1501100400101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:36:59.453Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1501201500101",
+      "name": "光泉調味乳飲品-蘋果牛乳936ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%85%89%E6%B3%89/1501201500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:37:00.410Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1501302800101",
+      "name": "光泉調味乳飲品-麥芽牛乳-1857ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%85%89%E6%B3%89/1501302800101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:37:01.362Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1501000400101",
+      "name": "光泉乳香世家鮮乳1857ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%85%89%E6%B3%89/1501000400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:37:02.654Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1501102500101",
+      "name": "義美低脂鮮乳2000ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1501102500101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:37:03.551Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1501102900101",
+      "name": "福樂一番鮮低脂鮮乳1830ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%A6%8F%E6%A8%82/1501102900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:37:04.498Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1501590000101",
+      "name": "光泉富維他牛乳936ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%85%89%E6%B3%89/1501590000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:37:05.477Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1501306000101",
+      "name": "福樂鈣多多健康牛乳--全脂※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%A6%8F%E6%A8%82/1501306000101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:37:06.404Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1501005100101",
+      "name": "高大牧場 鮮乳(動福認證) 936ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1501005100101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:37:07.235Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1501007500101",
+      "name": "阿猴在地鮮乳1858ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1501007500101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:37:08.110Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1501001400101",
+      "name": "林鳳營全脂鮮乳家庭號2728ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%91%B3%E5%85%A8/1501001400101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:37:09.049Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1501003100101",
+      "name": "福樂一番鮮全脂鮮乳936ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%A6%8F%E6%A8%82/1501003100101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:37:14.099Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1501415600101",
+      "name": "喜樂之泉有機黃豆漿(有糖)【Mia C'bon 限定】",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1501415600101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:37:15.032Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1501406300101",
+      "name": "義美無加糖黑豆奶 2000ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1501406300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:37:15.924Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1501401800101",
+      "name": "義美無加糖豆奶2000ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1501401800101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:37:16.850Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1501406200101",
+      "name": "義美低糖豆奶2000ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1501406200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:37:18.085Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1502307300106",
+      "name": "光泉黑豆漿200ml",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1502307300106.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:37:19.914Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1501402000101",
+      "name": "義美古早傳統豆奶2000ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1501402000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:37:20.845Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1501407000101",
+      "name": "義美無糖黑芝麻豆奶2000ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1501407000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:37:21.780Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1501400900101",
+      "name": "光泉原味米漿-1857ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%85%89%E6%B3%89/1501400900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:37:22.865Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1501406100101",
+      "name": "義美低糖豆奶-1000ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1501406100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:37:23.786Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1501401600101",
+      "name": "光泉無加糖鮮豆漿-2720ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%85%89%E6%B3%89/1501401600101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:37:24.824Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1501404800101",
+      "name": "光泉黑芝麻鮮豆漿-1857ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%85%89%E6%B3%89/1501404800101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:37:25.804Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1501403700101",
+      "name": "大醇豆無糖豆漿1857ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%91%B3%E5%85%A8/1501403700101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:37:27.161Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1501418700101",
+      "name": "光泉米漿-紫米燕麥糙米漿936ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1501418700101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:37:30.237Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1501401200101",
+      "name": "大醇豆原味豆漿936ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%91%B3%E5%85%A8/1501401200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:37:31.426Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1501410300101",
+      "name": "豆豆濃非基改白豆漿微糖900ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E8%B1%86%E8%B1%86%E6%BF%83/1501410300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:37:32.307Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1501404200101",
+      "name": "統一生機有機無加糖豆漿-每瓶245毫升",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%B5%B1%E4%B8%80/1501404200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:37:33.281Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1501415300101",
+      "name": "豆豆濃高優質黑豆漿無糖900ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E8%B1%86%E8%B1%86%E6%BF%83/1501415300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:37:34.219Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1501403600101",
+      "name": "統一陽光陽光黃金豆低糖豆漿1858ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%B5%B1%E4%B8%80%E9%99%BD%E5%85%89/1501403600101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:37:39.066Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1501404500101",
+      "name": "光泉無加糖黑豆漿-1857ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%85%89%E6%B3%89/1501404500101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:37:41.119Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1501403200101",
+      "name": "光泉低糖鮮豆漿-1857ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%85%89%E6%B3%89/1501403200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:37:42.096Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1501404000101",
+      "name": "光泉紫米燕麥糙米漿-1857ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%85%89%E6%B3%89/1501404000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:37:43.101Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1501415400101",
+      "name": "豆豆濃高優質黑豆漿微糖900ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E8%B1%86%E8%B1%86%E6%BF%83/1501415400101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:37:43.975Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1501405900101",
+      "name": "義美無糖黑豆奶946ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1501405900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:37:44.881Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1501403400101",
+      "name": "光泉無加糖鮮豆漿-1857ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%85%89%E6%B3%89/1501403400101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:37:47.408Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1500308600104",
+      "name": "福樂自然零熱帶水果優酪※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%A6%8F%E6%A8%82/1500308600104.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:37:48.705Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1500321900101",
+      "name": "林鳳營特濃燕麥優格(綜合莓果)400g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1500321900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:37:50.368Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1500100900101",
+      "name": "福樂自然零蔓越莓優酪乳920ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%A6%8F%E6%A8%82/1500100900101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:37:57.359Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1500205600101",
+      "name": "福樂自然零水蜜桃優酪乳920ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1500205600101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:38:03.523Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1500400400101",
+      "name": "比菲多稀釋活性發酵乳(減糖原味)1795ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1500400400101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:38:04.784Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1500489900110",
+      "name": "養樂多300Light發酵乳※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%A4%8A%E6%A8%82%E5%A4%9A/1500489900110.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:38:07.406Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1500313600101",
+      "name": "林鳳營特濃重乳優格-草莓(每瓶400g)※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%9E%97%E9%B3%B3%E7%87%9F/1500313600101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:38:08.696Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1500301900101",
+      "name": "西班牙草莓果粒優格120gx4※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1500301900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:38:09.564Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1500301300104",
+      "name": "福樂自然零蔓越莓優酪100克※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%A6%8F%E6%A8%82/1500301300104.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:38:10.898Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1500312700101",
+      "name": "林鳳營特濃重乳優格(藍莓)400g※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1500312700101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:38:13.078Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1500307900101",
+      "name": "愛樂薇Elle&Vire水果優格-藍莓※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%84%9B%E6%A8%82%E8%96%87/1500307900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:38:15.104Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1500004000101",
+      "name": "統一AB無加糖優酪乳1830ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%B5%B1%E4%B8%80/1500004000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:38:16.387Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1500404900101",
+      "name": "比菲多發酵乳-原味-1177ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%AF%94%E8%8F%B2%E5%A4%9A/1500404900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:38:17.352Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1500005600101",
+      "name": "LP33機能優酪乳1830ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/lp33%E6%A9%9F%E8%83%BD%E5%84%AA%E9%85%AA%E4%B9%B3/1500005600101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:38:18.344Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1500310400104",
+      "name": "福樂自然零無加糖優酪100g※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%A6%8F%E6%A8%82/1500310400104.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:38:19.420Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1500005000101",
+      "name": "LP33機能優酪乳900ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/lp33%E6%A9%9F%E8%83%BD%E5%84%AA%E9%85%AA%E4%B9%B3/1500005000101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:38:20.382Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1500102700101",
+      "name": "統一AB草莓優酪乳902ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1500102700101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:38:21.510Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1500000700101",
+      "name": "統一AB原味優酪乳1830ml/瓶※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%B5%B1%E4%B8%80/1500000700101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:38:22.783Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1500400600110",
+      "name": "養樂多-100ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E9%A4%8A%E6%A8%82%E5%A4%9A/1500400600110.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:38:24.063Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1500302700101",
+      "name": "好優頂級牛奶優酪(每瓶約500g)※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1500302700101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:38:29.058Z",
+      "evidenceImages": 3
+    },
+    {
+      "id": "tw-uniprosperity-1500314000102",
+      "name": "大粒果實橘瓣蘆薈優格※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1500314000102.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:38:31.208Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1500101800101",
+      "name": "林鳳營益生菌優酪乳(草莓)880ml※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%9E%97%E9%B3%B3%E7%87%9F/1500101800101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:38:38.598Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1500301100101",
+      "name": "福樂低脂優酪-草莓-100gx2※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%A6%8F%E6%A8%82/1500301100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:38:39.603Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1500310700101",
+      "name": "林鳳營特濃重乳優格(原味)400g※實際到貨效期約4天以上",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%91%B3%E5%85%A8/1500310700101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:38:42.576Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1502300500106",
+      "name": "義美低糖黑豆奶-250ml",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1502300500106.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:38:43.478Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1502200500124",
+      "name": "福樂巧克力牛乳(保久乳)200ml",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%A6%8F%E6%A8%82/1502200500124.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:38:49.327Z",
+      "evidenceImages": 4
+    },
+    {
+      "id": "tw-uniprosperity-1502200500106",
+      "name": "福樂巧克力牛乳(保久乳)200ml",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%A6%8F%E6%A8%82/1502200500106.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:38:54.616Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1502001600124",
+      "name": "光泉富維他牛乳200mlx24",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%85%89%E6%B3%89/1502001600124.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:38:55.953Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1502400400124",
+      "name": "義美糙米奶",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%BE%A9%E7%BE%8E/1502400400124.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:38:57.034Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1504000600101",
+      "name": "芝司樂 高鈣起司-低脂 500g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E8%8A%9D%E5%8F%B8%E6%A8%82/1504000600101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:38:58.364Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1504003400101",
+      "name": "安佳原味乳酪24片",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%AE%89%E4%BD%B3/1504003400101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:39:00.028Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1504000100101",
+      "name": "安佳較低脂乳酪 24片",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%AE%89%E4%BD%B3/1504000100101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:39:01.487Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1504191200101",
+      "name": "明治北海道十勝乾酪片【Mia C'bon 限定】",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E6%98%8E%E6%B2%BB/1504191200101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:39:02.420Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1503201200101",
+      "name": "總統牌動物性鮮奶油1L",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%B8%BD%E7%B5%B1%E7%89%8C/1503201200101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:39:04.485Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1504001400101",
+      "name": "總統牌 較低脂切片乾酪 200g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E7%B8%BD%E7%B5%B1%E7%89%8C/1504001400101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:39:05.759Z",
+      "evidenceImages": 2
+    },
+    {
+      "id": "tw-uniprosperity-1503003100101",
+      "name": "EMBORG奶油-無鹽82%-200g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1503003100101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:39:07.005Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1504201300101",
+      "name": "DP 高達乾酪片(每盒150g)",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1504201300101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:39:07.946Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1504201900101",
+      "name": "DP 瑪斯登乾酪片",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/1504201900101.html",
+      "status": "unverified",
+      "pageCheckedAt": "2026-09-17T15:39:08.931Z",
+      "evidenceImages": 0
+    },
+    {
+      "id": "tw-uniprosperity-1504000300101",
+      "name": "光泉 北海道原味起司片 210g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%85%89%E6%B3%89/1504000300101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:39:10.521Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1504212700101",
+      "name": "安佳 頂級大師專用乳酪絲 300g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%AE%89%E4%BD%B3/1504212700101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:39:12.346Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1503001800101",
+      "name": "紐西蘭安佳奶油 (有鹽) 1LB",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%AE%89%E4%BD%B3/1503001800101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:39:13.592Z",
+      "evidenceImages": 1
+    },
+    {
+      "id": "tw-uniprosperity-1504214100101",
+      "name": "光泉 北海道原味起司球 150g",
+      "sourceUrl": "https://online.uni-prosperity.com.tw/zh/%E5%85%89%E6%B3%89/1504214100101.html",
+      "status": "verified_label",
+      "pageCheckedAt": "2026-09-17T15:39:15.209Z",
+      "evidenceImages": 1
+    }
+  ]
+}

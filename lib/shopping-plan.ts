@@ -4,7 +4,7 @@ import type { CatalogItem } from './catalog';
 import {excludedFoods,type ExcludedFood} from './excluded-foods';
 import {allowsExcludedFoods} from './shopping-exclusions';
 
-export type PlanProduct = CatalogItem & { servings: number; servingGrams?:number; servingNote: string; avoidanceText: string | null; personalizationScore?:number; servingCalories?:number|null; recipe?: {minutes:number;slots:MealSlot[];family:string;steps:string[];ingredients:{product:PlanProduct;packs:number;label:string}[];nutrition:{calories:number|null;protein:number|null}} };
+export type PlanProduct = CatalogItem & { mealSlots?:MealSlot[]; servings: number; servingGrams?:number; servingNote: string; avoidanceText: string | null; personalizationScore?:number; servingCalories?:number|null; recipe?: {minutes:number;slots:MealSlot[];family:string;steps:string[];ingredients:{product:PlanProduct;packs:number;label:string}[];nutrition:{calories:number|null;protein:number|null}} };
 export type MealSlot = 'breakfast'|'lunch'|'dinner';
 export const slotLabels={breakfast:'아침',lunch:'점심',dinner:'저녁'};
 export const MAX_PLAN_DAYS=15;
@@ -29,7 +29,7 @@ export function parseConditions(value: unknown): PlanConditions | null {
 }
 export function slotCandidates(products:PlanProduct[],c:PlanConditions,index:number){
  const breakfast=mealSchedule(c)[index]?.slot==='breakfast';
- return candidates(products,c).filter(p=>p.recipe?p.recipe.slots.includes(mealSchedule(c)[index]?.slot):breakfast?/시리얼|그래놀라|샌드위치|오트밀|죽/.test(p.name):!/시리얼|그래놀라/.test(p.name));
+ return candidates(products,c).filter(p=>p.recipe?p.recipe.slots.includes(mealSchedule(c)[index]?.slot):p.mealSlots?p.mealSlots.includes(mealSchedule(c)[index]?.slot):breakfast?/시리얼|그래놀라|샌드위치|오트밀|죽/.test(p.name):!/시리얼|그래놀라/.test(p.name));
 }
 export function validMealIds(ids:string[],products:PlanProduct[],c:PlanConditions){return ids.length===c.meals&&ids.every((id,i)=>slotCandidates(products,c,i).some(p=>p.id===id));}
 const aliases: Record<string,string[]> = {우유:['우유','유제품','치즈','크림'],달걀:['달걀','계란','알류'],계란:['달걀','계란','알류'],소고기:['소고기','쇠고기','한우','비프'],돼지고기:['돼지고기','돈육','베이컨','삼겹'],닭고기:['닭','치킨'],콩:['콩','대두','두부'],밀:['밀','소맥'],새우:['새우','쉬림프']};
@@ -65,7 +65,7 @@ export function purchaseBasket(ids:string[],products:PlanProduct[],owned:string[
  });
 }
 export const basketTotal=(ids:string[], products:PlanProduct[], owned:string[],supply:Record<string,number>={})=>basket(ids,products,owned,supply).reduce((n,p)=>n+p.cost,0);
-function mealFamily(p:PlanProduct){return p.name.match(/볶음밥|솥밥|도시락|파스타|리조또|비빔국수|죽|샌드위치|시리얼|그래놀라/)?.[0]??p.category;}
+function mealFamily(p:PlanProduct){return p.name.match(/炒飯|燉飯|義大利麵|볶음밥|솥밥|도시락|파스타|리조또|비빔국수|죽|샌드위치|시리얼|그래놀라/)?.[0]??p.category;}
 function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,schedule:ReturnType<typeof mealSchedule>){
  const products=new Map(rows.map(r=>[r.product.id,r.product]));
  const families=new Map<string,number>();

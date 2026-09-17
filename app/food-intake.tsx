@@ -1,9 +1,11 @@
 'use client';
+import {usePlannerLocale} from './planner-locale';
 import {useEffect,useRef,useState} from 'react';
 import Link from 'next/link';
-import {emptyDashboard} from '../lib/dashboard';
 import {intakeTotals,type IntakeData,type IntakeProduct} from '../lib/food-intake';
 import './food-intake.css';
+import {taiwanIntakeData,updateTaiwanIntake} from '../lib/taiwan-intake';
+import type {PlanProduct} from '../lib/shopping-plan';
 import {ProductThumb} from './product-thumb';
 
 type Command={action:'eat'|'undo';id:string;version:number;productId?:string;portions?:number};
@@ -11,7 +13,9 @@ const number=(n:number)=>n.toLocaleString('ko-KR',{maximumFractionDigits:1});
 const nutrition=(n:number|null,unit:string)=>n===null?'미확인':`${number(n)}${unit}`;
 
 export function useFoodIntake(userId?:string,history=false,externalDate?:string){
- const [today,setToday]=useState(()=>emptyDashboard().today),[date,setDate]=useState(()=>emptyDashboard().today);
+ const locale=usePlannerLocale();
+ const regionalProducts=useRef<PlanProduct[]>([]);
+ const [today,setToday]=useState(()=>locale.today()),[date,setDate]=useState(()=>locale.today());
  const [data,setData]=useState<IntakeData|null>(null),[revision,setRevision]=useState(0),[busy,setBusy]=useState(false),[loading,setLoading]=useState(Boolean(userId));
  const [error,setError]=useState(''),[message,setMessage]=useState(''),[pending,setPending]=useState<Command|null>(null),[amounts,setAmounts]=useState<Record<string,number>>({});
  const [editing,setEditing]=useState<string|null>(null),[showAll,setShowAll]=useState(false);
@@ -20,21 +24,21 @@ export function useFoodIntake(userId?:string,history=false,externalDate?:string)
  useEffect(()=>{
   if(!userId)return;
   const controller=new AbortController();
-  fetch(`/api/food-intake?date=${selectedDate}`,{cache:'no-store',signal:controller.signal}).then(async r=>{const d=await r.json();if(!r.ok)throw new Error(d.error);return d as IntakeData;}).then(d=>{if(!controller.signal.aborted){setData(d);setLoading(false);}}).catch(e=>{if(!controller.signal.aborted){setLoading(false);setError(e instanceof Error?e.message:'기록을 불러오지 못했어요.');}});
+  (locale.isTaiwan?fetch('/api/taiwan/catalog',{signal:controller.signal}).then(async r=>{const d=await r.json();if(!r.ok)throw new Error(d.error);regionalProducts.current=d.products;return Response.json(taiwanIntakeData(d.products,selectedDate));}):fetch(`/api/food-intake?date=${selectedDate}`,{cache:'no-store',signal:controller.signal})).then(async r=>{const d=await r.json();if(!r.ok)throw new Error(d.error);return d as IntakeData;}).then(d=>{if(!controller.signal.aborted){setData(d);setLoading(false);}}).catch(e=>{if(!controller.signal.aborted){setLoading(false);setError(e instanceof Error?e.message:'기록을 불러오지 못했어요.');}});
   return()=>controller.abort();
- },[userId,selectedDate,revision]);
+ },[userId,selectedDate,revision,locale.isTaiwan]);
  useEffect(()=>{
-  const refresh=()=>{setToday(emptyDashboard().today);setRevision(n=>n+1);};
+  const refresh=()=>{setToday(locale.today());setRevision(n=>n+1);};
   const changed=(event:Event)=>{const detail=(event as CustomEvent).detail;if(detail?.scope==='products'&&['cart','intake'].includes(detail?.source))refresh();};
   window.addEventListener('shopping-progress-changed',changed);window.addEventListener('focus',refresh);
-  const timer=window.setInterval(()=>setToday(emptyDashboard().today),60000);
+  const timer=window.setInterval(()=>setToday(locale.today()),60000);
   return()=>{window.removeEventListener('shopping-progress-changed',changed);window.removeEventListener('focus',refresh);window.clearInterval(timer);};
- },[]);
+ },[locale]);
  function reload(){setError('');setLoading(true);setRevision(n=>n+1);}
  async function send(command:Command){
   if(locked.current)return;locked.current=true;pendingRef.current=command;setPending(command);setBusy(true);setError('');setMessage('');
   try{
-   const r=await fetch('/api/food-intake',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(command)});
+   const r=locale.isTaiwan?await updateTaiwanIntake(command,regionalProducts.current,locale.today()).then(()=>Response.json({ok:true})).catch(error=>Response.json({error:error instanceof Error?error.message:'無法儲存紀錄。'},{status:409})):await fetch('/api/food-intake',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(command)});
    const d=await r.json();
    if(!r.ok){
     if(r.status<500){pendingRef.current=null;setPending(null);setLoading(true);setRevision(n=>n+1);}
@@ -42,7 +46,7 @@ export function useFoodIntake(userId?:string,history=false,externalDate?:string)
    }
    pendingRef.current=null;setPending(null);setEditing(null);
    setMessage(command.action==='eat'?'먹은 양·영양·예상 음식 비용을 기록하고 보유 수량을 줄였어요.':'기록을 취소하고 보유 수량을 되돌렸어요.');
-   setLoading(true);setToday(emptyDashboard().today);setRevision(n=>n+1);
+   setLoading(true);setToday(locale.today());setRevision(n=>n+1);
    window.dispatchEvent(new CustomEvent('shopping-progress-changed',{detail:{scope:'products',source:'intake'}}));
   }catch(e){setError(e instanceof Error?e.message:'연결이 끊겼어요. 같은 요청으로 다시 확인해 주세요.');}
   finally{locked.current=false;setBusy(false);}
@@ -59,10 +63,11 @@ export function useFoodIntake(userId?:string,history=false,externalDate?:string)
 }
 
 export function FoodIntake({userId,onLogin,history=false,recordDate,onDateChange}:{userId?:string;onLogin:()=>void;history?:boolean;recordDate?:string;onDateChange?:(date:string)=>void}){
+ const locale=usePlannerLocale();
  const {today,setDate,current,totals,products,visible,disabled,loading,error,message,pending,busy,reload,send,eat,editing,setEditing,amounts,setAmounts,showAll,setShowAll,setLoading,setError,selectedDate,pendingRef}=useFoodIntake(userId,history,recordDate);
  const mealCost=current?.logs.reduce((sum,log)=>sum+(log.cost??0),0)??0;
  const missingCost=current?.logs.filter(log=>log.cost==null).length??0;
- return <section className="food-intake" aria-label={history?'먹은 음식 기록':'오늘 먹은 음식'}>
+ return locale.render(<section className="food-intake" aria-label={history?'먹은 음식 기록':'오늘 먹은 음식'}>
   <header><span className="section-kicker">한 번 누르면 기록 끝</span><h2>{history?'실제로 먹은 기록':'오늘, 얼마나 챙겨 먹었나요?'}</h2><p>먹었어요를 누르면 칼로리·단백질과 남은 음식이 함께 반영돼요.</p></header>
   {!userId?<div className="intake-empty"><p>구매한 음식의 영양정보를 불러와요. 음식 이름과 영양 수치를 다시 입력하지 않아도 돼요.</p><button type="button" onClick={onLogin}>로그인하고 먹은 기록 시작하기</button></div>:<>
    {history&&<label className="intake-date">기록 날짜<input type="date" value={selectedDate} max={today} disabled={busy||Boolean(pending)} onChange={e=>{if(e.target.value){setDate(e.target.value);onDateChange?.(e.target.value);setLoading(true);setError('');}}}/></label>}
@@ -72,8 +77,8 @@ export function FoodIntake({userId,onLogin,history=false,recordDate,onDateChange
    {totals&&<>
     <div className="intake-totals"><div><span>{selectedDate===today?'오늘':'이날'} 섭취 칼로리</span><strong>{number(totals.calories)}<small> kcal</small></strong>{totals.missingCalories>0&&<small>칼로리 미확인 {totals.missingCalories}건 별도</small>}</div><div><span>섭취 단백질</span><strong>{number(totals.protein)}<small> g</small></strong>{totals.missingProtein>0&&<small>단백질 미확인 {totals.missingProtein}건 별도</small>}</div></div>
     <p className="intake-note">{current!.logs.length?'직접 먹었다고 기록한 음식의 합계예요.':'아직 먹은 기록이 없어요.'} 간편식은 상품 표시, 직접 요리는 재료 영양의 합산 예상치예요. 미확인 수치는 합계에 포함하지 않아요.</p>
-    <div className="intake-meal-cost"><span>{selectedDate===today?'오늘':'이날'} 먹은 음식 비용 · 예상</span><strong>{number(mealCost)}원</strong><small>기록 당시 상품 가격을 먹은 양만큼 나눈 금액{missingCost?` · 금액 미확인 ${missingCost}건 별도`:''}</small></div>
-    <p className="intake-note">먹은 음식 비용은 위에 쌓이고, 실제 결제한 식비는 아래 생활비에 쌓여요. 구매할 때 기록한 금액을 먹을 때 다시 더하지 않아요. 구매금액이 빠져 있다면 <Link href="/cart">장바구니에서 구매금액 기록하기 →</Link></p>
+    <div className="intake-meal-cost"><span>{selectedDate===today?'오늘':'이날'} 먹은 음식 비용 · 예상</span><strong>{locale.money(mealCost)}</strong><small>기록 당시 상품 가격을 먹은 양만큼 나눈 금액{missingCost?` · 금액 미확인 ${missingCost}건 별도`:''}</small></div>
+    {!locale.isTaiwan&&<p className="intake-note">먹은 음식 비용은 위에 쌓이고, 실제 결제한 식비는 아래 생활비에 쌓여요. 구매할 때 기록한 금액을 먹을 때 다시 더하지 않아요. 구매금액이 빠져 있다면 <Link href="/cart">장바구니에서 구매금액 기록하기 →</Link></p>}
    </>}
    {(!history||selectedDate===today)&&current&&<>
     <div className="intake-section-title"><h3>보유한 음식 기록하기</h3><Link href="/cart">구매한 음식 관리 →</Link></div>
@@ -89,8 +94,8 @@ export function FoodIntake({userId,onLogin,history=false,recordDate,onDateChange
     </>}
    </>}
    {current&&<div className="intake-history"><div className="intake-section-title"><h3>{history?'선택한 날의 기록':'오늘 먹은 기록'}</h3>{!history&&<Link href="/record">날짜별로 보기 →</Link>}</div>
-    {!current.logs.length?<p className="intake-note">먹은 음식을 기록하면 시간과 섭취량이 여기에 쌓여요.</p>:current.logs.map(log=><article key={log.id}><div><small>{new Date(log.createdAt).toLocaleTimeString('ko-KR',{timeZone:'Asia/Seoul',hour:'2-digit',minute:'2-digit'})} · {log.portions}회분</small><strong>{log.name}</strong><span>{nutrition(log.calories,'kcal')} · 단백질 {nutrition(log.protein,'g')}</span><span>먹은 음식 비용 {log.cost==null?'미확인':`약 ${number(log.cost)}원`}</span></div><button type="button" disabled={disabled} aria-label={`${log.name} 기록 취소`} onClick={()=>{if(!pendingRef.current)void send({action:'undo',id:log.id,version:current.version});}}>취소</button></article>)}
+    {!current.logs.length?<p className="intake-note">먹은 음식을 기록하면 시간과 섭취량이 여기에 쌓여요.</p>:current.logs.map(log=><article key={log.id}><div><small>{new Date(log.createdAt).toLocaleTimeString(locale.isTaiwan?'zh-TW':'ko-KR',{timeZone:locale.isTaiwan?'Asia/Taipei':'Asia/Seoul',hour:'2-digit',minute:'2-digit'})} · {log.portions}회분</small><strong>{log.name}</strong><span>{nutrition(log.calories,'kcal')} · 단백질 {nutrition(log.protein,'g')}</span><span>먹은 음식 비용 {log.cost==null?'미확인':locale.money(log.cost)}</span></div><button type="button" disabled={disabled} aria-label={`${log.name} 기록 취소`} onClick={()=>{if(!pendingRef.current)void send({action:'undo',id:log.id,version:current.version});}}>취소</button></article>)}
    </div>}
   </>}
- </section>;
+ </section>);
 }
