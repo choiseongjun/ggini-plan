@@ -99,23 +99,30 @@ export default function Home() {
 
   useEffect(() => {
     const controller=new AbortController();
-    const reload=()=>{
-      const finish = startLoading("식단과 장바구니를 준비하고 있어요");
-      const catalogRequest = fetch("/api/catalog",{cache:"no-store",signal:controller.signal}).then(async response=>{
+    const finish = startLoading("식단과 장바구니를 준비하고 있어요");
+    void fetch("/api/catalog",{cache:"no-store",signal:controller.signal}).then(async response=>{
         const catalog=await response.json();
         if(!response.ok)throw new Error("상품 연결 실패");
         if(!controller.signal.aborted){setProducts(catalog.items ?? []);setCatalogError("");setCatalogLoaded(true);}
-      }).catch(()=>{if(!controller.signal.aborted){setProducts([]);setCatalogLoaded(true);setCatalogError("상품을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.");}});
-      const dashboardRequest = fetch("/api/dashboard",{cache:"no-store",signal:controller.signal}).then(async response=>{
+      }).catch(()=>{if(!controller.signal.aborted){setCatalogLoaded(true);setCatalogError("상품을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.");}}).finally(finish);
+    return()=>{controller.abort();finish();};
+  },[startLoading]);
+
+  useEffect(() => {
+    let controller:AbortController|undefined;
+    const reload=()=>{
+      controller?.abort();
+      const request=new AbortController();controller=request;
+      // Refresh records after an expense change without restarting the catalog or toast.
+      void fetch("/api/dashboard",{cache:"no-store",signal:request.signal}).then(async response=>{
         const dash=await response.json();
         if(!response.ok)throw new Error(dash.error??"식단을 불러오지 못했어요.");
-        if(!controller.signal.aborted){setDashboard(dash);setDataError("");}
-      }).catch(e=>{if(!controller.signal.aborted){setDashboard(null);setDataError(e.message);}});
-      void Promise.allSettled([catalogRequest,dashboardRequest]).finally(finish);
+        if(!request.signal.aborted){setDashboard(dash);setDataError("");}
+      }).catch(e=>{if(!request.signal.aborted)setDataError(e.message);});
     };
-    reload();window.addEventListener("focus",reload);window.addEventListener("expenses-changed",reload);
-    return()=>{controller.abort();window.removeEventListener("focus",reload);window.removeEventListener("expenses-changed",reload);};
-  },[authUser?.id,tab,startLoading]);
+    reload();window.addEventListener("expenses-changed",reload);
+    return()=>{controller?.abort();window.removeEventListener("expenses-changed",reload);};
+  },[authUser?.id]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -186,6 +193,7 @@ export default function Home() {
         {tab === "home" && <ShoppingPlanner key={`shopping-home-${authUser?.id??"guest"}`} dashboard={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/>}
         {(tab === "home" || tab === "cart" || tab === "profile") && <section className="home-guide-entry"><strong>{tab === "profile" ? "내가 제보한 한 끼" : "괜찮은 한 끼를 찾았나요?"}</strong><p>메뉴·상품을 제보하면 검토 후 함께 나눌 수 있어요.</p><Link href={tab === "profile" ? "/submissions#mine" : "/submissions"}>{tab === "profile" ? "내 제보와 검토 결과 보기 →" : "메뉴·상품 제보하기 →"}</Link></section>}
         {tab === "home" && <section className="home-guide-entry"><strong>자취 식단과 식비, 함께 계획해요</strong><p>일주일 식비 예산부터 1인 가구 장보기 리스트까지.</p><Link href="/guides">자취 식생활 가이드 읽기 →</Link></section>}
+        {(tab === "home" || tab === "profile") && <section className="home-guide-entry contact-entry" aria-label="문의 및 협업 연락처"><strong>💌 문의·협업 제안</strong><p>불편한 점이나 함께하고 싶은 아이디어를 보내주세요.</p><a href={`mailto:choisj2702@gmail.com?subject=${encodeURIComponent('[끼니플랜] 문의 및 협업 제안')}`}>메일 보내기 ↗</a><span>choisj2702@gmail.com</span></section>}
         {authError && <p className="auth-inline-error" role="alert">{authError}</p>}
         {dataError&&<p className="auth-error" role="alert">{dataError}</p>}
 
