@@ -104,7 +104,10 @@ export function ShoppingProgress({items,progress,guest=false,recommended=false,s
      {tab==='plan'&&((stock[i.id]?.ordered??0)>0||(stock[i.id]?.owned??0)>0)&&<small>주문 {stock[i.id]?.ordered??0}{i.unit} · 보유 {stock[i.id]?.owned??0}{i.unit}</small>}
      {i.detail&&<small>{i.detail}</small>}{!recommended&&buying&&quantity(i)>0&&i.packSize&&<small>판매 묶음에 맞춰 {defaultQuantity(i).toLocaleString('ko-KR')}{i.unit} 구매 기준이에요.</small>}
      {!recommended&&buying&&i.price!==null&&<b>추가 구매 {cost(i,quantity(i)).toLocaleString('ko-KR')}원</b>}
-     {buying&&<small>{seller(i.url)}</small>}
+     {buying&&<div className="purchase-product-links">
+      {i.url&&<a className="purchase-seller-link" href={i.url} target="_blank" rel="noopener noreferrer" aria-label={`${i.name} 판매 상품 보기 (새 창)`}>판매 상품 보기 ↗ <span>{seller(i.url)}</span></a>}
+      <a href={`https://search.naver.com/search.naver?query=${encodeURIComponent(i.name)}`} target="_blank" rel="noopener noreferrer" aria-label={`${i.name} 네이버에서 검색 (새 창)`}>네이버에서 상품 검색 ↗</a>
+     </div>}
      </div>
      {chosen.some(c=>c.id===i.id)&&<label className="purchase-quantity">처리할 수량<input aria-label={`${i.name} 처리할 수량`} type="number" min={0.000001} max={buying?10000000:quantity(i)} step="any" disabled={busy||!!payment} value={quantities[i.id]??defaultQuantity(i)} onChange={e=>setQuantities(v=>({...v,[i.id]:Number(e.target.value)}))}/>{i.unit}</label>}
     </article>)}</div>

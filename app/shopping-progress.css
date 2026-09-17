@@ -7,3 +7,6 @@
 .purchase-payment input{width:100%;min-width:0;box-sizing:border-box;padding:12px;border:1px solid #d0d9c3;border-radius:10px;background:white;font:inherit}
 .purchase-payment>div{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
 .purchase-payment button{min-height:44px;padding:10px 16px;border-radius:12px;cursor:pointer}
+.purchase-product-links{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:10px}
+.purchase-product-links>a{display:inline-flex;flex-wrap:wrap;align-items:center;gap:5px;min-height:44px;padding:9px 12px;border:1px solid #dce4ce;border-radius:12px;background:#fffdf8;color:#526c47;font-size:12px;text-decoration:none;line-height:1.5;box-sizing:border-box;overflow-wrap:anywhere;max-width:100%}
+.purchase-product-links>a.purchase-seller-link{background:#edf3df;font-weight:600}.purchase-product-links>a>span{font-size:10px;font-weight:400;color:#728065}.purchase-product-links>a:hover{background:#e5edd7}.purchase-product-links>a:focus-visible{outline:2px solid #526c47;outline-offset:3px}
