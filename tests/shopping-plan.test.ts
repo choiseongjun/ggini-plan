@@ -32,6 +32,23 @@ test('rejects malformed conditions',()=>{
  assert.equal(parseConditions({...initialConditions,owned:[1]}),null);
 });
 
+test('a high personalization score cannot fill a two-meal week with pumpkin porridge',()=>{
+ const products=[product('pumpkin',4000,1,{name:'호박죽',personalizationScore:160}),...Array.from({length:8},(_,i)=>product(`meal${i}`,5000,1,{name:`다른 죽 ${i}`,personalizationScore:-150}))];
+ const c={...initialConditions,budget:100000,days:7,slots:['lunch','dinner'] as const,meals:14};
+ const conditions={...c,slots:[...c.slots]};
+ const ids=recommendShopping(products,conditions)!;
+ assert.equal(ids.length,14);assert.ok(basketTotal(ids,products,[])<=100000);
+ assert.ok(new Set(ids).size>=7);
+ assert.ok(basket(ids,products,[]).every(r=>r.uses<=2));
+ assert.ok(ids.every((id,i)=>i===0||id!==ids[i-1]));
+});
+test('limited candidates remain usable without breaking exclusions or budget',()=>{
+ const products=[product('pumpkin',4000,1,{name:'호박죽'}),product('shrimp',5000,1,{name:'새우 볶음밥',avoidanceText:'새우 함유'})];
+ const c={...initialConditions,budget:60000,days:7,slots:['lunch','dinner'] as ('lunch'|'dinner')[],meals:14,avoid:'새우'};
+ assert.deepEqual(recommendShopping(products,c),Array(14).fill('pumpkin'));
+ assert.equal(recommendShopping(products,{...c,budget:55000}),null);
+});
+
 test('selected meal times persist and breakfast never falls back to fried rice',()=>{
  const c={...initialConditions,days:5,slots:['breakfast','dinner'] as ('breakfast'|'dinner')[],meals:10};
  assert.ok(parseConditions(c));

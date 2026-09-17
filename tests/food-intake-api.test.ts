@@ -8,6 +8,7 @@ import {createSession,SESSION_COOKIE,type PublicUser} from '../lib/auth';
 import {getPool} from '../lib/db';
 import {planProducts} from '../lib/shopping-plan-catalog';
 import {servingNutrition} from '../lib/food-intake';
+import {initialConditions} from '../lib/shopping-plan';
 const req=(cookie='',body?:unknown,date?:string,origin='http://localhost:3000')=>new NextRequest(`http://localhost:3000/api/food-intake${date?'?date='+date:''}`,{method:body?'POST':'GET',headers:{Cookie:cookie,origin,'Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{})});
 const cartReq=(cookie:string,body?:unknown)=>new NextRequest('http://localhost:3000/api/shopping-progress?scope=products',{method:body?'PUT':'GET',headers:{Cookie:cookie,origin:'http://localhost:3000','Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{})});
 test('eating and undo are atomic, idempotent, isolated, and use server nutrition snapshots',async()=>{
@@ -47,6 +48,10 @@ test('eating and undo are atomic, idempotent, isolated, and use server nutrition
   // A UTC evening belongs to the following Korean calendar day.
   await db.query("UPDATE food_intake_logs SET created_at='2026-09-17T16:00:00Z' WHERE user_id=$1 AND undone_at IS NULL",[ids[0]]);
   assert.equal((await(await GET(req(cookies[0],undefined,'2026-09-17'))).json()).logs.length,0);
+  assert.equal((await(await GET(req(cookies[0],undefined,'2026-09-18'))).json()).logs.length,1);
+  const finalStock=await(await cartGET(cartReq(cookies[0]))).json();
+  assert.equal((await cartPUT(cartReq(cookies[0],{stock:{},version:finalStock.version,resetConditions:initialConditions}))).status,200);
+  assert.deepEqual((await(await cartGET(cartReq(cookies[0]))).json()).stock,{});
   assert.equal((await(await GET(req(cookies[0],undefined,'2026-09-18'))).json()).logs.length,1);
  }finally{await db.query('DELETE FROM users WHERE id=ANY($1::bigint[])',[ids]);await db.end();}
 });

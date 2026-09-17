@@ -3,6 +3,7 @@
 import {useFoodIntake} from './food-intake';
 import {remainingPlanPortions,planDate} from '../lib/daily-plan';
 import {TodayMeals} from './today-meals';
+import {SharePlanButton} from './share-plan-button';
 import {emptyDashboard,type DashboardData} from '../lib/dashboard';
 import { Checkbox } from "./components/checkbox";
 import { useEffect, useState } from 'react';
@@ -22,6 +23,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
  const [products,setProducts]=useState<PlanProduct[]>([]),[baseConditions,setConditions]=useState<PlanConditions>(initialConditions);
  const conditions:PlanConditions={...baseConditions,supply:Object.fromEntries(Object.values(progress.stock).map(i=>[i.id,i.owned+i.ordered]))};
  const [ids,setIds]=useState<string[]>([]),[loading,setLoading]=useState(true),[busy,setBusy]=useState(false);
+ const [confirmReset,setConfirmReset]=useState(false);
  const [error,setError]=useState(''),[message,setMessage]=useState(''),[retry,setRetry]=useState(0);
  useEffect(()=>{
   const controller=new AbortController();
@@ -56,8 +58,13 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    if(missing)throw new Error(`${slotLabels[missing.slot]}에 맞는 등록 상품이 부족해요. 해당 끼니를 빼거나 조리 방식·제외 재료를 조정해 주세요.`);
    const next=recommendShopping(fresh,c);
    if(!next)throw new Error('현재 등록 상품으로는 조건에 맞는 식단을 채울 수 없어요. 예산·끼니 수·조리 방식을 조정해 주세요.');
-   setConditions(c);setIds(next);remember(c,next);setMessage('저장된 최신 내 정보와 장보기 조건으로 추천했어요. 아래 상품을 교체하거나 구매 목록을 확인하세요.');
+   setConditions(c);setIds(next);remember(c,next);setMessage(`${next.length}끼를 ${new Set(next).size}종 메뉴로 구성했어요. 예산과 제외 재료를 지키면서 같은 메뉴가 덜 반복되도록 골랐어요.`);
   }catch(e){setError(e instanceof Error?e.message:'추천을 불러오지 못했어요.');}finally{setBusy(false);}
+ }
+ async function resetCart(){
+  const clean={...conditions,owned:[],supply:{}};
+  const ok=await progress.reset(clean);
+  if(ok){setIds([]);setConditions(clean);setConfirmReset(false);setError('');setMessage('추천 메뉴와 주문·보유 목록을 모두 초기화했어요. 새 식단을 추천받아 보세요.');}
  }
  function swap(index:number){const next=swapMeal(ids,index,products,conditions);if(!next){setMessage('예산과 제외 재료 조건에 맞는 다른 메뉴가 없어요.');return;}setIds(next);remember(conditions,next);setMessage('메뉴와 구매 수량을 함께 바꿨어요.');}
  function own(id:string){const c={...conditions,owned:conditions.owned.includes(id)?conditions.owned.filter(x=>x!==id):[...conditions.owned,id]};setConditions(c);remember(c,ids);setMessage('');}
@@ -80,7 +87,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
  }
  async function restore(){
   setBusy(true);setError('');setMessage('');
-  try{const r=await fetch('/api/shopping-plan?saved=1',{cache:'no-store'});const d=await r.json();if(!r.ok)throw new Error(d.error);if(!d.plan){setMessage('아직 저장한 장보기 식단이 없어요.');return;}
+  try{const r=await fetch('/api/shopping-plan?saved=1',{cache:'no-store'});const d=await r.json();if(!r.ok)throw new Error(d.error);if(!d.plan||!d.plan.mealIds?.length){setMessage('저장한 식단이 없거나 초기화된 상태예요. 새로 추천받아 주세요.');return;}
    const c=parseConditions({...d.plan.conditions,startDate:d.plan.conditions.startDate??emptyDashboard().today,supply:conditions.supply});if(!c)throw new Error('저장된 조건을 읽을 수 없어요.');setConditions(c);
    const valid=Array.isArray(d.plan.mealIds)&&validMealIds(d.plan.mealIds,products,c)&&basketTotal(d.plan.mealIds,products,c.owned,c.supply)<=c.budget;
    const next=valid?d.plan.mealIds:[];setIds(next);remember(c,next);setMessage(valid?'저장한 식단을 불러왔어요. 금액은 현재 등록 가격으로 계산했어요.':'상품 또는 가격이 바뀌었어요. 저장한 조건으로 다시 추천받아 주세요.');
@@ -90,7 +97,13 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
  const remaining=remainingPlanPortions(ids.map((id,i)=>({id,date:planDate(conditions.startDate??intake.today,schedule[i].day)})),intake.today,intake.current?.logs??[]);
  const rows=basket(ids,products,conditions.owned,conditions.supply).map(r=>({...r,required:r.have?0:(remaining[r.product.id]??0)/r.product.servings,cost:r.have?0:Math.ceil(Math.max(0,(remaining[r.product.id]??0)/r.product.servings-(conditions.supply?.[r.product.id]??0)-0.000001))*r.product.price})),total=rows.reduce((n,r)=>n+r.cost,0);
  return <section id={mode==='settings'?'shopping-settings':undefined} className="shopping-planner" aria-labelledby="planner-title">
+  {mode==='cart'&&<section className="cart-reset" aria-label="장바구니 초기화">
+   <button type="button" disabled={loading||busy||progress.busy||!progress.ready||(!ids.length&&!Object.values(progress.stock).some(i=>i.owned||i.ordered))} onClick={()=>setConfirmReset(true)}>모두 초기화</button>
+   {confirmReset&&<div role="group" aria-label="장바구니 초기화 확인"><strong>추천 메뉴와 주문·보유 목록을 모두 비울까요?</strong><p>홈의 현재 추천 식단도 함께 비워요. 먹은 기록·식비 기록·예산과 취향·공유 링크는 유지돼요. 판매처의 실제 주문은 취소되지 않아요. 직접 요리 재료와 따라 담은 장바구니는 별도예요.</p><button type="button" disabled={progress.busy} onClick={()=>setConfirmReset(false)}>취소</button><button type="button" disabled={progress.busy||!progress.ready} onClick={()=>void resetCart()}>{progress.busy?'초기화 중…':'확인, 모두 초기화'}</button></div>}
+  </section>}
   {mode==='plan'&&<TodayMeals intake={intake} userId={userId} onLogin={onLogin} ids={ids} products={products} conditions={conditions} startDate={conditions.startDate??emptyDashboard().today} onStartDate={date=>{const c=parseConditions({...conditions,startDate:date});if(c){setConditions(c);remember(c,ids);}}} onSwap={swap} progress={progress} dailyCalories={personalization?.blocked?null:personalization?.dailyCalories??null} dashboard={dashboard}/>}
+  {mode!=='settings'&&ids.length>1&&new Set(ids).size===1&&<p className="body-note" role="status">현재 조건에서는 한 가지 메뉴로만 구성됐어요. 예산·조리 방식·제외 재료 설정을 확인해 주세요. 다른 메뉴를 원하면 조건을 조정하고 다시 추천받아 주세요.</p>}
+  {mode!=='settings'&&ids.length>0&&<SharePlanButton key={JSON.stringify([ids,conditions.days,conditions.slots])} userId={userId} onLogin={onLogin} conditions={conditions} mealIds={ids}/>}
   <details className="planner-controls" open={mode==='settings'||(mode==='plan'&&!ids.length)}><summary>{ids.length?'예산·취향 바꿔서 새로 추천받기':'내 예산으로 식단 준비하기'}</summary>
   <div className="planner-heading"><span>이번 주, 뭐 사서 먹지?</span><h2 id="planner-title">{mode==='settings'?'내 장보기 설정':mode==='cart'?'이번 주 살 것':'내 예산으로 챙기는 일주일'}</h2><p>{mode==='settings'?'자주 쓰는 예산과 식사 취향을 저장해 두세요. 다음 추천부터 다시 입력할 필요 없어요.':'챙길 끼니만 고르면 냉동식품·간편식·밀키트로 구매 목록을 만들어요. 저장된 신체 정보와 식단 취향도 함께 반영해요.'}</p></div>
   {personalization&&<div className="meal-notice">{personalization.blocked?<p>현재 신체 정보에서는 자동 맞춤 추천을 제공하지 않아요.</p>:personalization.hasProfile?<><strong>내 정보 기준 · 하루 유지 필요량 약 {personalization.dailyCalories?.toLocaleString()} kcal</strong><p>하루 {personalization.meals}끼 기준 한 끼 약 {personalization.perMealCalories} kcal와 가까운 상품을 우선해요. 선택한 끼니만 추천하며 하루 전체 영양을 충족하는 식단은 아니에요.</p><small>{personalization.nutritionMatched?`영양 표시를 비교할 수 있는 상품 ${personalization.nutritionMatched}개`:'현재 상품은 영양 정보가 부족해 열량 기준의 비교가 어려워요. 확인되지 않은 값은 추정하지 않아요.'}</small></>:<p><Link href="/profile#profile-settings">신체 정보를 입력하면 내 필요 열량을 기준으로 추천받을 수 있어요 →</Link></p>}{personalization.style&&<p>식단 취향: {personalization.style} · 제외 재료: {personalization.excluded.join(', ')||'없음'}</p>}</div>}

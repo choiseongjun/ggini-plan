@@ -5,6 +5,7 @@ import {NextRequest} from 'next/server';
 import {GET,PUT,POST} from '../app/api/shopping-progress/route';
 import {createSession,SESSION_COOKIE,type PublicUser} from '../lib/auth';
 import {getPool} from '../lib/db';
+import {initialConditions} from '../lib/shopping-plan';
 const req=(cookie='',body?:unknown,scope='products',origin='http://localhost:3000')=>new NextRequest(`http://localhost:3000/api/shopping-progress?scope=${scope}`,{method:body?'PUT':'GET',headers:{Cookie:cookie,origin,'Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{})});
 test('progress persists per account and scope; stale writes cannot overwrite newer receipts',async()=>{
  const db=getPool(),ids:string[]=[],cookies:string[]=[];
@@ -39,5 +40,18 @@ test('progress persists per account and scope; stale writes cannot overwrite new
   assert.equal((await PUT(req(cookies[0],{stock:received,version:3}))).status,200);
   assert.equal((await merge()).status,200);
   assert.deepEqual((await(await GET(req(cookies[0]))).json()).stock,received);
+  await db.query('INSERT INTO shopping_plans(user_id,conditions,meal_ids) VALUES($1,$2,$3)',[ids[0],JSON.stringify(initialConditions),JSON.stringify(['rice'])]);
+  const planCount=(await db.query('SELECT count(*)::int AS n FROM shopping_plans WHERE user_id=$1',[ids[0]])).rows[0].n;
+  const reset={stock:{},version:4,resetConditions:initialConditions};
+  assert.equal((await PUT(req('',reset))).status,401);
+  assert.equal((await PUT(req(cookies[0],{...reset,version:3}))).status,409);
+  assert.equal((await db.query('SELECT count(*)::int AS n FROM shopping_plans WHERE user_id=$1',[ids[0]])).rows[0].n,planCount);
+  assert.equal((await PUT(req(cookies[0],reset,'ingredients'))).status,400);
+  assert.equal((await PUT(req(cookies[0],reset))).status,200);
+  assert.deepEqual((await(await GET(req(cookies[0]))).json()),{stock:{},version:5});
+  const latest=(await db.query('SELECT conditions,meal_ids FROM shopping_plans WHERE user_id=$1 ORDER BY id DESC LIMIT 1',[ids[0]])).rows[0];
+  assert.deepEqual(latest.meal_ids,[]);assert.equal(latest.conditions.budget,initialConditions.budget);
+  assert.equal((await merge()).status,200);
+  assert.deepEqual((await(await GET(req(cookies[0]))).json()).stock,{});
  }finally{await db.query('DELETE FROM users WHERE id=ANY($1::bigint[])',[ids]);await db.end();}
 });

@@ -7,7 +7,7 @@ import {servingNutrition} from '../lib/food-intake';
 import {slotLabels,type PlanProduct,type PlanConditions,mealSchedule} from '../lib/shopping-plan';
 import {planDay,planDate,recordedForSlot} from '../lib/daily-plan';
 import {addDays,type DashboardData} from '../lib/dashboard';
-import type {useShoppingProgress} from './shopping-progress';
+import {ShoppingProgress,type useShoppingProgress} from './shopping-progress';
 import './today-meals.css';
 
 const won=(n:number)=>`${Math.round(n).toLocaleString('ko-KR')}원`;
@@ -18,6 +18,7 @@ export function TodayMeals({intake,userId,onLogin,ids,products,conditions,startD
  const days=conditions.days??Math.max(1,...schedule.map(s=>s.day));
  const active=planDay(startDate,today,days);
  const [chosenDay,setChosenDay]=useState<number|null>(null);
+ const [managing,setManaging]=useState<number|null>(null),[purchaseMessage,setPurchaseMessage]=useState('');
  const day=chosenDay!==null&&chosenDay<=days?chosenDay:active.day;
  const date=planDate(startDate,day),isToday=date===today;
  const entries=ids.flatMap((id,index)=>{const product=products.find(p=>p.id===id);return product&&schedule[index]?.day===day?[{product,index,slot:schedule[index].slot}]:[];});
@@ -40,11 +41,12 @@ export function TodayMeals({intake,userId,onLogin,ids,products,conditions,startD
   {intake.loading&&<p role="status">오늘 기록을 불러오는 중…</p>}
   {intake.error&&<p role="alert">{intake.error} <button type="button" disabled={intake.busy} onClick={()=>intake.pending?void intake.send(intake.pending):intake.reload()}>다시 확인</button></p>}
   {intake.message&&<p role="status">{intake.message}</p>}
+  {purchaseMessage&&<p role="status">{purchaseMessage}</p>}
   {ids.length>0?<>
    <div className="today-title"><h3>{isToday?'오늘 이렇게 먹어요':`${day}일차 이렇게 먹어요`}</h3><span>{date.slice(5).replace('-','/')}</span></div>
-   <label className="today-start">식단 시작일<input type="date" value={startDate} onChange={e=>{if(e.target.value){onStartDate(e.target.value);setChosenDay(null);}}}/></label>
+   <label className="today-start">식단 시작일<input type="date" value={startDate} onChange={e=>{if(e.target.value){onStartDate(e.target.value);setChosenDay(null);setManaging(null);}}}/></label>
    {!active.active&&<p className="today-note">{today<startDate?'아직 시작 전인 식단이에요.':'이 식단의 일정이 끝났어요.'} 시작일을 바꾸거나 새로 추천받을 수 있어요.</p>}
-   <nav className="today-days" aria-label="준비한 식단 날짜">{Array.from({length:days},(_,i)=>i+1).map(n=><button type="button" key={n} aria-pressed={n===day} onClick={()=>setChosenDay(n)}><strong>{planDate(startDate,n)===today?'오늘':planDate(startDate,n)===addDays(today,1)?'내일':`${n}일차`}</strong><small>{planDate(startDate,n).slice(5).replace('-','/')}</small></button>)}</nav>
+   <nav className="today-days" aria-label="준비한 식단 날짜">{Array.from({length:days},(_,i)=>i+1).map(n=><button type="button" key={n} aria-pressed={n===day} onClick={()=>{setChosenDay(n);setManaging(null);}}><strong>{planDate(startDate,n)===today?'오늘':planDate(startDate,n)===addDays(today,1)?'내일':`${n}일차`}</strong><small>{planDate(startDate,n).slice(5).replace('-','/')}</small></button>)}</nav>
    <div className="today-menu-list">{entries.map(({product:p,index,slot},entryIndex)=>{
     const owned=intake.products.find(i=>i.id===p.id),stock=progress.stock[p.id];
     const nutrition=servingNutrition(p),portions=isToday?(current?.logs.filter(l=>l.productId===p.id).reduce((sum,l)=>sum+l.portions,0)??0):0;
@@ -53,7 +55,11 @@ export function TodayMeals({intake,userId,onLogin,ids,products,conditions,startD
     return <article key={index} className={done?'today-menu done':'today-menu'}>
      <div className="today-menu-label"><span>{slot==='breakfast'?'☀️':slot==='lunch'?'🌤️':'🌙'} {slotLabels[slot]} · 1회분</span><b>{done?'먹었어요 ✓':stock?.owned?'집에 있어요':stock?.ordered?'배송 기다리는 중':'구매 전'}</b></div>
      <div className="today-product"><ProductThumb item={p}/><div><h4>{p.name}</h4><strong>한 끼 약 {won(p.price/p.servings)}</strong><p>{nutrition.calories===null?'칼로리 미확인':`${amount(nutrition.calories)} kcal`} · 단백질 {nutrition.protein===null?'미확인':`${amount(nutrition.protein)} g`}</p></div></div>
-     <div className="today-actions">{done?<Link href="/record">기록 확인·취소 →</Link>:!userId?<button type="button" onClick={onLogin}>로그인하고 먹었어요 기록</button>:canEat?<button className="primary-button" type="button" disabled={disabled||!isToday} onClick={()=>intake.eat(owned,1-recorded)}>먹었어요</button>:(stock?.ordered??0)>0?<button className="primary-button" type="button" disabled={disabled} onClick={()=>void progress.update([{item:stock,quantity:stock.ordered}],'receive')}>받았어요 ({stock.ordered}묶음)</button>:<Link href="/cart">구매·보유 상태 등록 →</Link>}<button type="button" disabled={disabled||done} onClick={()=>onSwap(index)}>다른 메뉴로 ↻</button></div>
+     <div className="today-actions">{done?<Link href="/record">기록 확인·취소 →</Link>:!userId?<button type="button" onClick={onLogin}>로그인하고 먹었어요 기록</button>:canEat?<button className="primary-button" type="button" disabled={disabled||!isToday} onClick={()=>intake.eat(owned,1-recorded)}>먹었어요</button>:(stock?.ordered??0)>0?<button className="primary-button" type="button" disabled={disabled} onClick={()=>void progress.update([{item:stock,quantity:stock.ordered}],'receive')}>받았어요 ({stock.ordered}묶음)</button>:<button type="button" disabled={disabled} aria-expanded={managing===index} onClick={()=>{setManaging(managing===index?null:index);setPurchaseMessage('');}}>구매·보유 상태 등록</button>}<button type="button" disabled={disabled||done} onClick={()=>{setManaging(null);onSwap(index);}}>다른 메뉴로 ↻</button></div>
+     {managing===index&&<div className="today-purchase-panel">
+      <div className="today-purchase-heading"><strong>이 음식만 등록해요</strong><button type="button" disabled={progress.busy} onClick={()=>setManaging(null)}>닫기</button></div>
+      <ShoppingProgress key={p.id} single guest={!userId} progress={{...progress,update:async(changes,action)=>{const ok=await progress.update(changes,action);if(ok){setManaging(null);setPurchaseMessage('이 음식의 구매·보유 상태를 반영했어요.');}return ok;}}} items={[{id:p.id,name:p.name,unit:'묶음',required:(1-recorded)/p.servings,packSize:1,url:p.productUrl,price:p.price,detail:`판매 1묶음 ${p.servings}회분 · 지금 고른 끼니 기준`}]} summary={<p className="today-note">지금 고른 음식의 수량만 반영해요. 실제 구매한 묶음 수로 조절해 주세요.</p>}/>
+     </div>}
      {!isToday&&<small>먹은 기록은 오늘 날짜의 메뉴에서 남겨 주세요.</small>}{recorded>0&&!done&&<small>오늘 {recorded}회분 기록했어요. 나머지를 드셨다면 먹었어요를 눌러 주세요.</small>}
     </article>;
    })}</div>

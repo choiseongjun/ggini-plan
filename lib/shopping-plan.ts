@@ -40,27 +40,47 @@ export function basket(ids: string[], products: PlanProduct[], owned: string[], 
  });
 }
 export const basketTotal=(ids:string[], products:PlanProduct[], owned:string[],supply:Record<string,number>={})=>basket(ids,products,owned,supply).reduce((n,p)=>n+p.cost,0);
+function mealFamily(p:PlanProduct){return p.name.match(/볶음밥|솥밥|도시락|파스타|리조또|비빔국수|죽|샌드위치|시리얼|그래놀라/)?.[0]??p.category;}
+function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,schedule:ReturnType<typeof mealSchedule>){
+ const products=new Map(rows.map(r=>[r.product.id,r.product]));
+ const families=new Map<string,number>();
+ for(const r of rows){const family=mealFamily(r.product);families.set(family,(families.get(family)??0)+r.uses);}
+ let repetition=0;
+ for(let i=0;i<ids.length;i++){
+  if(i>0&&ids[i]===ids[i-1])repetition+=300;
+  for(let j=i-1;j>=0&&schedule[j]?.day===schedule[i]?.day;j--)if(ids[j]===ids[i])repetition+=600;
+ }
+ const repeats=rows.reduce((n,r)=>n+r.uses*(r.uses-1)/2,0);
+ const familyRepeats=[...families.values()].reduce((n,count)=>n+count*(count-1)/2,0);
+ const fit=ids.reduce((n,id)=>n+Math.max(-150,Math.min(160,products.get(id)?.personalizationScore??0)),0);
+ return rows.length*300+families.size*150-repeats*350-familyRepeats*40-repetition
+  -rows.reduce((n,r)=>n+r.left,0)*100-rows.reduce((n,r)=>n+r.cost,0)/c.budget*100+fit;
+}
 export function recommendShopping(products: PlanProduct[], c: PlanConditions): string[] | null {
  const pool=candidates(products,c);
+ const schedule=mealSchedule(c),options=schedule.map((_,i)=>slotCandidates(pool,c,i));
  let states: {ids:string[];cost:number;score:number}[]=[{ids:[],cost:0,score:0}];
  for(let i=0;i<c.meals;i++){
   const next=new Map<string,{ids:string[];cost:number;score:number}>();
-  for(const state of states)for(const p of slotCandidates(pool,c,i)){
+  for(const state of states)for(const p of options[i]){
    const ids=[...state.ids,p.id], rows=basket(ids,pool,c.owned,c.supply), cost=rows.reduce((n,r)=>n+r.cost,0);
    if(cost>c.budget)continue;
-   const key=[...ids].sort().join('|');
-   // Prefer variety while charging the full selling pack, including unused portions.
-   const families=new Set(rows.map(r=>r.product.name.match(/볶음밥|솥밥|도시락|파스타|비빔국수|죽|샌드위치|시리얼/)?.[0]??r.product.category));
-   const score=Math.min(new Set(ids).size,Math.ceil(c.meals/2))*300+families.size*150-rows.reduce((n,r)=>n+r.left,0)*100-cost/c.budget*100-(state.ids.at(-1)===p.id?80:0)+rows.reduce((n,r)=>n+(r.product.personalizationScore??0)*r.uses,0);
-   if(!next.has(key))next.set(key,{ids,cost,score});
+   // Preserve the current day's order and the previous meal when merging states.
+   const dayStart=schedule.findIndex(s=>s.day===schedule[i].day);
+   const key=JSON.stringify([[...ids].sort(),ids.slice(Math.max(0,dayStart-1))]);
+   const score=planScore(ids,rows,c,schedule);
+   if(!next.has(key)||score>next.get(key)!.score)next.set(key,{ids,cost,score});
   }
-  states=[...next.values()].sort((a,b)=>b.score-a.score||a.cost-b.cost).slice(0,100);
+  const ranked=[...next.values()].sort((a,b)=>b.score-a.score||a.cost-b.cost);
+  // Keep inexpensive paths as well, so early variety cannot exhaust the budget.
+  states=[...new Set([...ranked.slice(0,80),...[...ranked].sort((a,b)=>a.cost-b.cost||b.score-a.score).slice(0,20)])];
   if(!states.length)return null;
  }
- return states[0]?.ids??null;
+ return states.sort((a,b)=>b.score-a.score||a.cost-b.cost)[0]?.ids??null;
 }
 export function swapMeal(ids:string[], index:number, products:PlanProduct[], c:PlanConditions):string[]|null {
  const options=slotCandidates(products,c,index).filter(p=>p.id!==ids[index]).map(p=>ids.map((id,i)=>i===index?p.id:id)).filter(next=>basketTotal(next,products,c.owned,c.supply)<=c.budget);
- options.sort((a,b)=>(products.find(p=>p.id===b[index])?.personalizationScore??0)-(products.find(p=>p.id===a[index])?.personalizationScore??0)||new Set(b).size-new Set(a).size||basketTotal(a,products,c.owned,c.supply)-basketTotal(b,products,c.owned,c.supply));
+ const schedule=mealSchedule(c);
+ options.sort((a,b)=>planScore(b,basket(b,products,c.owned,c.supply),c,schedule)-planScore(a,basket(a,products,c.owned,c.supply),c,schedule));
  return options[0]??null;
 }
