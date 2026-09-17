@@ -1,4 +1,5 @@
 import recipeData from '../data/cooking-recipes.json';
+import alternatives from '../data/cooking-ingredient-alternatives.json';
 import type {CatalogItem} from './catalog';
 import type {PlanProduct,MealSlot} from './shopping-plan';
 
@@ -12,15 +13,26 @@ function nutrients(p:CatalogItem,packs:number,grams:number){
  // These reviewed formats express either grams per label or total package.
  const basis=p.nutritionBasis??'';
  const match=basis.match(/(\d+(?:\.\d+)?)g/);
- const factor=match&&Number(match[1])>0?grams*packs/Number(match[1]):null;
+ const factor=match&&Number(match[1])>0&&grams>0?grams*packs/Number(match[1]):null;
  return {calories:factor!==null&&p.caloriesKcal!==null?p.caloriesKcal*factor:null,protein:factor!==null&&p.proteinG!==null?p.proteinG*factor:null};
 }
 export function cookingProducts(catalog:CatalogItem[]):PlanProduct[]{
- return recipes.flatMap(r=>{
+ const variants=recipes.flatMap(recipe=>alternatives.groups.reduce<Recipe[]>((choices,group)=>choices.flatMap(r=>{
+  const part=r.parts.find(([id])=>id===group.baseId);if(!part)return [r];
+  return [r,...group.offers.flatMap(offer=>{
+   const p=catalog.find(p=>p.id===offer.id);
+   if(!p||p.name!==offer.name||p.detail!==offer.detail||p.unit!==offer.unit||p.quantity!==offer.quantity||p.productUrl!==offer.sourceUrl||p.market!=='KR'||p.currency!=='KRW'||!p.priceCheckedAt||!Number.isFinite(Date.parse(p.priceCheckedAt)))return [];
+   const ratio=group.baseId==='eggs'?contracts[group.baseId].quantity/offer.quantity:contracts[group.baseId].grams/offer.grams;
+   if(!Number.isFinite(ratio)||ratio<=0)return [];
+   return [{...r,id:`${r.id}--with--${offer.id}`,parts:r.parts.map(([id,packs,label]):[string,number,string]=>id===group.baseId?[offer.id,packs*ratio,label]:[id,packs,label]),steps:[...r.steps,group.note]}];
+  })];
+ }),[recipe]));
+ const offerContracts=Object.fromEntries(alternatives.groups.flatMap(g=>g.offers.map(o=>[o.id,{...o,match:new RegExp(`^${o.detail.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}$`)}])));
+ return variants.flatMap(r=>{
   const parts=r.parts.map(([id,packs,label])=>{
-   const p=catalog.find(p=>p.id===id),contract=contracts[id];
+   const p=catalog.find(p=>p.id===id),contract=contracts[id]??offerContracts[id];
    if(!p||p.unit!==contract.unit||p.quantity!==contract.quantity||!contract.match.test(p.detail)||!p.productUrl||p.price<=0)return null;
-   const product:PlanProduct={...p,servings:1,servingGrams:contract.grams,servingNote:'판매 1묶음',avoidanceText:p.allergyInfo?.status==='unknown'||!p.allergyInfo?null:`${p.name} ${p.allergyInfo.statement}`};
+   const product:PlanProduct={...p,servings:1,servingGrams:contract.grams||undefined,servingNote:'판매 1묶음',avoidanceText:p.allergyInfo?.status==='unknown'||!p.allergyInfo?null:`${p.name} ${p.allergyInfo.statement}`};
    return {product,packs,label,nutrition:nutrients(p,packs,contract.grams)};
   });
   if(parts.some(p=>p===null))return [];

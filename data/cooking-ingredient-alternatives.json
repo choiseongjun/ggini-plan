@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "groups": [
+    {
+      "baseId": "kurly-5036690",
+      "note": "채소 구성과 냉장·냉동 상태가 다른 대체 상품입니다. 포장 안내에 맞춰 익혀 주세요.",
+      "offers": [
+        {
+          "id": "kurly-1000107848",
+          "name": "[바름팜] 친환경 볶음밥용 채소 120g x 3입",
+          "detail": "120g x 3 · 1팩 · 냉장",
+          "unit": "개",
+          "quantity": 1,
+          "grams": 360,
+          "sourceUrl": "https://www.kurly.com/goods/1000107848"
+        },
+        {
+          "id": "kurly-5125772",
+          "name": "뚝딱! 볶음밥용 채소 500g (냉동)",
+          "detail": "500g · 1봉 · 냉동",
+          "unit": "개",
+          "quantity": 1,
+          "grams": 500,
+          "sourceUrl": "https://www.kurly.com/goods/5125772"
+        }
+      ]
+    },
+    {
+      "baseId": "rice",
+      "note": "조리된 현미밥끼리 비교해요. 밥 종류와 개별 포장량이 달라질 수 있어요.",
+      "offers": [
+        {
+          "id": "kurly-5050162",
+          "name": "[햇반] 발아현미밥 210g (8입)",
+          "detail": "1680g · 판매 1묶음",
+          "unit": "g",
+          "quantity": 1680,
+          "grams": 1680,
+          "sourceUrl": "https://www.kurly.com/goods/5050162"
+        },
+        {
+          "id": "kurly-1000832403",
+          "name": "[컬리X햇반] 향긋한 골든퀸현미밥 200g*6입 ",
+          "detail": "1200g · 판매 1묶음",
+          "unit": "g",
+          "quantity": 1200,
+          "grams": 1200,
+          "sourceUrl": "https://www.kurly.com/goods/1000832403"
+        }
+      ]
+    },
+    {
+      "baseId": "tofu",
+      "note": "일반 두부끼리 비교해요. 콩 원산지·유기농 여부와 식감은 상품마다 달라요.",
+      "offers": [
+        {
+          "id": "kurly-5118044",
+          "name": "[Kurly's] 국산콩 두부 500g",
+          "detail": "500g · 판매 1묶음",
+          "unit": "g",
+          "quantity": 500,
+          "grams": 500,
+          "sourceUrl": "https://www.kurly.com/goods/5118044"
+        },
+        {
+          "id": "kurly-1001986025",
+          "name": "[Kurly's] 유기농 두부 300g",
+          "detail": "300g · 판매 1묶음",
+          "unit": "g",
+          "quantity": 300,
+          "grams": 300,
+          "sourceUrl": "https://www.kurly.com/goods/1001986025"
+        }
+      ]
+    },
+    {
+      "baseId": "eggs",
+      "note": "생달걀 개수 기준으로 비교해요. 대란·특란의 크기가 달라 중량과 영양은 같지 않아요.",
+      "offers": [
+        {
+          "id": "kurly-5119904",
+          "name": "[KF365] 무항생제 1+등급란 L(대란) 10구",
+          "detail": "10개 · 판매 1묶음",
+          "unit": "개",
+          "quantity": 10,
+          "grams": 0,
+          "sourceUrl": "https://www.kurly.com/goods/5119904"
+        },
+        {
+          "id": "kurly-5056790",
+          "name": "[KF365] 무항생제 1+등급란 XL(특란) 10구",
+          "detail": "10개 · 판매 1묶음",
+          "unit": "개",
+          "quantity": 10,
+          "grams": 0,
+          "sourceUrl": "https://www.kurly.com/goods/5056790"
+        }
+      ]
+    },
+    {
+      "baseId": "chicken",
+      "note": "가열된 닭가슴살끼리 비교해요. 간과 영양이 다를 수 있으니 상품 안내를 확인해 주세요.",
+      "offers": [
+        {
+          "id": "kurly-5006227",
+          "name": "[Better me] 오리지널 닭가슴살 (냉장)",
+          "detail": "600g · 판매 1묶음",
+          "unit": "g",
+          "quantity": 600,
+          "grams": 600,
+          "sourceUrl": "https://www.kurly.com/goods/5006227"
+        }
+      ]
+    }
+  ]
+}

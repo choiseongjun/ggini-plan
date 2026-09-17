@@ -78,7 +78,7 @@ function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,
   -rows.reduce((n,r)=>n+r.left,0)*100-rows.reduce((n,r)=>n+r.cost,0)/c.budget*100+fit;
 }
 export function recommendShopping(products: PlanProduct[], c: PlanConditions, cheapest=false): string[] | null {
- const pool=candidates(products,c);
+ const pool=candidates(products,c).filter(p=>!p.recipe||!p.id.includes('--with--'));
  const schedule=mealSchedule(c),options=schedule.map((_,i)=>slotCandidates(pool,c,i));
  let states: {ids:string[];cost:number;score:number}[]=[{ids:[],cost:0,score:0}];
  for(let i=0;i<c.meals;i++){

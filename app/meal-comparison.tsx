@@ -3,6 +3,7 @@ import {useState} from 'react';
 import {ProductThumb} from './product-thumb';
 import {RecipeEstimate} from './recipe-estimate';
 import {MealChoiceCards} from './meal-choice-cards';
+import {RecipeOfferPicker} from './recipe-offer-picker';
 import {servingNutrition} from '../lib/food-intake';
 import {matchesCookingAlternative} from '../lib/cooking-recipes';
 import {basketTotal,slotCandidates,type PlanProduct,type PlanConditions,purchaseBasket} from '../lib/shopping-plan';
@@ -35,6 +36,7 @@ export function MealComparison({product,index,ids,products,conditions,onChoose,d
  }).sort((a,b)=>a.total-b.total||a.product.price/a.product.servings-b.product.price/b.product.servings).slice(0,3);
  const current=basketTotal(ids,products,conditions.owned,conditions.supply);
  return <div className="meal-comparison">
+  <RecipeOfferPicker product={product} index={index} ids={ids} products={products} conditions={conditions} onChoose={onChoose} disabled={disabled}/>
   {product.recipe&&<details className="recipe-instructions"><summary>🍳 약 {product.recipe.minutes}분 · 재료와 만드는 법</summary><RecipeIngredients product={product} conditions={conditions}/><ol>{product.recipe.steps.map(s=><li key={s}>{s}</li>)}</ol><small>기본 재료와 물만으로 만드는 구성입니다. 양념을 더하면 비용·영양은 별도예요. 영양은 등록된 재료값의 합산 예상치예요.</small></details>}
   <button type="button" aria-expanded={open} onClick={()=>setOpen(!open)}>{product.recipe?'🛍️ 간편식으로 먹으면?':'🍳 직접 만들면?'}</button>
   {open&&<section className="cook-comparison-panel" aria-label="한 끼 선택지 비교">{options.length>0&&<p><strong>오늘 한 끼, 어떻게 먹을까요?</strong></p>}
