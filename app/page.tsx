@@ -159,6 +159,7 @@ export default function Home() {
       <div className="app-content" ref={contentRef}>
         {tab === "record" && <FoodIntake key={`intake-${authUser?.id??"guest"}-${tab}`} userId={authUser?.id} onLogin={()=>setShowAuth(true)} history={tab==="record"} recordDate={recordDate} onDateChange={setRecordDate}/>}
         {tab === "home" && <ShoppingPlanner key={`shopping-home-${authUser?.id??"guest"}`} dashboard={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/>}
+        {tab==='home'&&<section className="home-guide-entry"><strong>닭가슴살부터 냉동볶음밥까지, 비교하고 골라요</strong><p>실제 판매 구성·가격·영양표를 확인하고 최대 4개 상품을 나란히 비교해 보세요.</p><Link href="/products">식품 가격·영양성분 비교하기 →</Link></section>}
         <ServiceFeedback page={`/${tab==='home'?'':tab}`}/>
         {(tab === "home" || tab === "cart" || tab === "profile") && <section className="home-guide-entry"><strong>{tab === "profile" ? "내가 제보한 한 끼" : "찾는 상품이 없거나 영양정보가 빠졌나요?"}</strong><p>상품 판매 링크와 영양성분표 사진을 제보해 주세요. 검토 후 상품 정보를 보완해요.</p><Link href={tab === "profile" ? "/submissions#mine" : "/submissions"}>{tab === "profile" ? "내 제보와 검토 결과 보기 →" : "상품·영양정보 제보하기 →"}</Link></section>}
         {tab === "home" && <section className="home-guide-entry"><strong>자취 식단과 식비, 함께 계획해요</strong><p>일주일 식비 예산부터 1인 가구 장보기 리스트까지.</p><Link href="/guides">자취 식생활 가이드 읽기 →</Link></section>}

@@ -1,0 +1,505 @@
+{
+  "description": "검색량·순위가 검증된 목록이 아닌 초기 검색 의도 설계. 100개 문구를 관련 실제 페이지로 묶습니다.",
+  "keywords": [
+    {
+      "query": "닭가슴살 가격 비교",
+      "path": "/foods/chicken_breast",
+      "intent": "가격 비교"
+    },
+    {
+      "query": "닭가슴살 영양성분 비교",
+      "path": "/foods/chicken_breast",
+      "intent": "영양성분 비교"
+    },
+    {
+      "query": "닭가슴살 판매 구성 비교",
+      "path": "/foods/chicken_breast",
+      "intent": "판매 구성 비교"
+    },
+    {
+      "query": "닭안심 가격 비교",
+      "path": "/foods/chicken_other",
+      "intent": "가격 비교"
+    },
+    {
+      "query": "닭안심 영양성분 비교",
+      "path": "/foods/chicken_other",
+      "intent": "영양성분 비교"
+    },
+    {
+      "query": "닭안심 판매 구성 비교",
+      "path": "/foods/chicken_other",
+      "intent": "판매 구성 비교"
+    },
+    {
+      "query": "도시락 가격 비교",
+      "path": "/foods/lunch_box",
+      "intent": "가격 비교"
+    },
+    {
+      "query": "도시락 영양성분 비교",
+      "path": "/foods/lunch_box",
+      "intent": "영양성분 비교"
+    },
+    {
+      "query": "도시락 판매 구성 비교",
+      "path": "/foods/lunch_box",
+      "intent": "판매 구성 비교"
+    },
+    {
+      "query": "냉동볶음밥 가격 비교",
+      "path": "/foods/fried_rice",
+      "intent": "가격 비교"
+    },
+    {
+      "query": "냉동볶음밥 영양성분 비교",
+      "path": "/foods/fried_rice",
+      "intent": "영양성분 비교"
+    },
+    {
+      "query": "냉동볶음밥 판매 구성 비교",
+      "path": "/foods/fried_rice",
+      "intent": "판매 구성 비교"
+    },
+    {
+      "query": "즉석밥 가격 비교",
+      "path": "/foods/rice",
+      "intent": "가격 비교"
+    },
+    {
+      "query": "즉석밥 영양성분 비교",
+      "path": "/foods/rice",
+      "intent": "영양성분 비교"
+    },
+    {
+      "query": "즉석밥 판매 구성 비교",
+      "path": "/foods/rice",
+      "intent": "판매 구성 비교"
+    },
+    {
+      "query": "죽 가격 비교",
+      "path": "/foods/porridge",
+      "intent": "가격 비교"
+    },
+    {
+      "query": "죽 영양성분 비교",
+      "path": "/foods/porridge",
+      "intent": "영양성분 비교"
+    },
+    {
+      "query": "죽 판매 구성 비교",
+      "path": "/foods/porridge",
+      "intent": "판매 구성 비교"
+    },
+    {
+      "query": "파스타 가격 비교",
+      "path": "/foods/noodles",
+      "intent": "가격 비교"
+    },
+    {
+      "query": "파스타 영양성분 비교",
+      "path": "/foods/noodles",
+      "intent": "영양성분 비교"
+    },
+    {
+      "query": "파스타 판매 구성 비교",
+      "path": "/foods/noodles",
+      "intent": "판매 구성 비교"
+    },
+    {
+      "query": "국 탕 찌개 가격 비교",
+      "path": "/foods/soup",
+      "intent": "가격 비교"
+    },
+    {
+      "query": "국 탕 찌개 영양성분 비교",
+      "path": "/foods/soup",
+      "intent": "영양성분 비교"
+    },
+    {
+      "query": "국 탕 찌개 판매 구성 비교",
+      "path": "/foods/soup",
+      "intent": "판매 구성 비교"
+    },
+    {
+      "query": "샐러드 가격 비교",
+      "path": "/foods/salad",
+      "intent": "가격 비교"
+    },
+    {
+      "query": "샐러드 영양성분 비교",
+      "path": "/foods/salad",
+      "intent": "영양성분 비교"
+    },
+    {
+      "query": "샐러드 판매 구성 비교",
+      "path": "/foods/salad",
+      "intent": "판매 구성 비교"
+    },
+    {
+      "query": "샌드위치 가격 비교",
+      "path": "/foods/sandwich",
+      "intent": "가격 비교"
+    },
+    {
+      "query": "샌드위치 영양성분 비교",
+      "path": "/foods/sandwich",
+      "intent": "영양성분 비교"
+    },
+    {
+      "query": "샌드위치 판매 구성 비교",
+      "path": "/foods/sandwich",
+      "intent": "판매 구성 비교"
+    },
+    {
+      "query": "통밀빵 가격 비교",
+      "path": "/foods/bread",
+      "intent": "가격 비교"
+    },
+    {
+      "query": "통밀빵 영양성분 비교",
+      "path": "/foods/bread",
+      "intent": "영양성분 비교"
+    },
+    {
+      "query": "통밀빵 판매 구성 비교",
+      "path": "/foods/bread",
+      "intent": "판매 구성 비교"
+    },
+    {
+      "query": "오트밀 가격 비교",
+      "path": "/foods/oats",
+      "intent": "가격 비교"
+    },
+    {
+      "query": "오트밀 영양성분 비교",
+      "path": "/foods/oats",
+      "intent": "영양성분 비교"
+    },
+    {
+      "query": "오트밀 판매 구성 비교",
+      "path": "/foods/oats",
+      "intent": "판매 구성 비교"
+    },
+    {
+      "query": "두유 가격 비교",
+      "path": "/foods/soy_milk",
+      "intent": "가격 비교"
+    },
+    {
+      "query": "두유 영양성분 비교",
+      "path": "/foods/soy_milk",
+      "intent": "영양성분 비교"
+    },
+    {
+      "query": "두유 판매 구성 비교",
+      "path": "/foods/soy_milk",
+      "intent": "판매 구성 비교"
+    },
+    {
+      "query": "그릭요거트 가격 비교",
+      "path": "/foods/yogurt",
+      "intent": "가격 비교"
+    },
+    {
+      "query": "그릭요거트 영양성분 비교",
+      "path": "/foods/yogurt",
+      "intent": "영양성분 비교"
+    },
+    {
+      "query": "그릭요거트 판매 구성 비교",
+      "path": "/foods/yogurt",
+      "intent": "판매 구성 비교"
+    },
+    {
+      "query": "치즈 가격 비교",
+      "path": "/foods/cheese",
+      "intent": "가격 비교"
+    },
+    {
+      "query": "치즈 영양성분 비교",
+      "path": "/foods/cheese",
+      "intent": "영양성분 비교"
+    },
+    {
+      "query": "치즈 판매 구성 비교",
+      "path": "/foods/cheese",
+      "intent": "판매 구성 비교"
+    },
+    {
+      "query": "달걀 가격 비교",
+      "path": "/foods/egg",
+      "intent": "가격 비교"
+    },
+    {
+      "query": "달걀 영양성분 비교",
+      "path": "/foods/egg",
+      "intent": "영양성분 비교"
+    },
+    {
+      "query": "달걀 판매 구성 비교",
+      "path": "/foods/egg",
+      "intent": "판매 구성 비교"
+    },
+    {
+      "query": "두부 가격 비교",
+      "path": "/foods/tofu",
+      "intent": "가격 비교"
+    },
+    {
+      "query": "두부 영양성분 비교",
+      "path": "/foods/tofu",
+      "intent": "영양성분 비교"
+    },
+    {
+      "query": "두부 판매 구성 비교",
+      "path": "/foods/tofu",
+      "intent": "판매 구성 비교"
+    },
+    {
+      "query": "소고기 가격 비교",
+      "path": "/foods/beef",
+      "intent": "가격 비교"
+    },
+    {
+      "query": "소고기 영양성분 비교",
+      "path": "/foods/beef",
+      "intent": "영양성분 비교"
+    },
+    {
+      "query": "소고기 판매 구성 비교",
+      "path": "/foods/beef",
+      "intent": "판매 구성 비교"
+    },
+    {
+      "query": "돼지고기 가격 비교",
+      "path": "/foods/pork",
+      "intent": "가격 비교"
+    },
+    {
+      "query": "돼지고기 영양성분 비교",
+      "path": "/foods/pork",
+      "intent": "영양성분 비교"
+    },
+    {
+      "query": "돼지고기 판매 구성 비교",
+      "path": "/foods/pork",
+      "intent": "판매 구성 비교"
+    },
+    {
+      "query": "생선 해산물 가격 비교",
+      "path": "/foods/fish",
+      "intent": "가격 비교"
+    },
+    {
+      "query": "생선 해산물 영양성분 비교",
+      "path": "/foods/fish",
+      "intent": "영양성분 비교"
+    },
+    {
+      "query": "생선 해산물 판매 구성 비교",
+      "path": "/foods/fish",
+      "intent": "판매 구성 비교"
+    },
+    {
+      "query": "채소 가격 비교",
+      "path": "/foods/vegetables",
+      "intent": "가격 비교"
+    },
+    {
+      "query": "채소 영양성분 비교",
+      "path": "/foods/vegetables",
+      "intent": "영양성분 비교"
+    },
+    {
+      "query": "채소 판매 구성 비교",
+      "path": "/foods/vegetables",
+      "intent": "판매 구성 비교"
+    },
+    {
+      "query": "단백질 음료 가격 비교",
+      "path": "/foods/protein_drink",
+      "intent": "가격 비교"
+    },
+    {
+      "query": "단백질 음료 영양성분 비교",
+      "path": "/foods/protein_drink",
+      "intent": "영양성분 비교"
+    },
+    {
+      "query": "단백질 음료 판매 구성 비교",
+      "path": "/foods/protein_drink",
+      "intent": "판매 구성 비교"
+    },
+    {
+      "query": "냉동만두 가격 비교",
+      "path": "/foods/dumplings",
+      "intent": "가격 비교"
+    },
+    {
+      "query": "냉동만두 영양성분 비교",
+      "path": "/foods/dumplings",
+      "intent": "영양성분 비교"
+    },
+    {
+      "query": "냉동만두 판매 구성 비교",
+      "path": "/foods/dumplings",
+      "intent": "판매 구성 비교"
+    },
+    {
+      "query": "냉동피자 가격 비교",
+      "path": "/foods/pizza",
+      "intent": "가격 비교"
+    },
+    {
+      "query": "냉동피자 영양성분 비교",
+      "path": "/foods/pizza",
+      "intent": "영양성분 비교"
+    },
+    {
+      "query": "냉동피자 판매 구성 비교",
+      "path": "/foods/pizza",
+      "intent": "판매 구성 비교"
+    },
+    {
+      "query": "반찬 가격 비교",
+      "path": "/foods/side_dish",
+      "intent": "가격 비교"
+    },
+    {
+      "query": "반찬 영양성분 비교",
+      "path": "/foods/side_dish",
+      "intent": "영양성분 비교"
+    },
+    {
+      "query": "반찬 판매 구성 비교",
+      "path": "/foods/side_dish",
+      "intent": "판매 구성 비교"
+    },
+    {
+      "query": "식품 가격 비교",
+      "path": "/products",
+      "intent": "식생활 계획"
+    },
+    {
+      "query": "식품 영양성분 비교",
+      "path": "/products",
+      "intent": "식생활 계획"
+    },
+    {
+      "query": "간편식 비교",
+      "path": "/products",
+      "intent": "식생활 계획"
+    },
+    {
+      "query": "자취 식품 비교",
+      "path": "/products",
+      "intent": "식생활 계획"
+    },
+    {
+      "query": "장보기 상품 비교",
+      "path": "/products",
+      "intent": "식생활 계획"
+    },
+    {
+      "query": "자취생 일주일 식비",
+      "path": "/guides/weekly-food-budget",
+      "intent": "식생활 계획"
+    },
+    {
+      "query": "1인 가구 식비 예산",
+      "path": "/guides/weekly-food-budget",
+      "intent": "식생활 계획"
+    },
+    {
+      "query": "일주일 식비 계획",
+      "path": "/guides/weekly-food-budget",
+      "intent": "식생활 계획"
+    },
+    {
+      "query": "한 달 식비 예산 정하기",
+      "path": "/guides/weekly-food-budget",
+      "intent": "식생활 계획"
+    },
+    {
+      "query": "장보기 예산 정하기",
+      "path": "/guides/weekly-food-budget",
+      "intent": "식생활 계획"
+    },
+    {
+      "query": "1인 가구 장보기 리스트",
+      "path": "/guides/grocery-list-for-one",
+      "intent": "식생활 계획"
+    },
+    {
+      "query": "자취생 장보기 리스트",
+      "path": "/guides/grocery-list-for-one",
+      "intent": "식생활 계획"
+    },
+    {
+      "query": "식재료 단위 가격 비교",
+      "path": "/guides/grocery-list-for-one",
+      "intent": "식생활 계획"
+    },
+    {
+      "query": "대용량 소포장 비교",
+      "path": "/guides/grocery-list-for-one",
+      "intent": "식생활 계획"
+    },
+    {
+      "query": "남기지 않는 장보기",
+      "path": "/guides/grocery-list-for-one",
+      "intent": "식생활 계획"
+    },
+    {
+      "query": "자취생 일주일 식단표",
+      "path": "/guides/easy-weekly-meal-plan",
+      "intent": "식생활 계획"
+    },
+    {
+      "query": "하루 두끼 식단 계획",
+      "path": "/guides/easy-weekly-meal-plan",
+      "intent": "식생활 계획"
+    },
+    {
+      "query": "하루 세끼 식단 계획",
+      "path": "/guides/easy-weekly-meal-plan",
+      "intent": "식생활 계획"
+    },
+    {
+      "query": "직장인 일주일 식단 준비",
+      "path": "/guides/easy-weekly-meal-plan",
+      "intent": "식생활 계획"
+    },
+    {
+      "query": "간단한 집밥 식단 계획",
+      "path": "/guides/easy-weekly-meal-plan",
+      "intent": "식생활 계획"
+    },
+    {
+      "query": "1인 식단 추천",
+      "path": "/",
+      "intent": "식생활 계획"
+    },
+    {
+      "query": "예산 맞춤 식단 추천",
+      "path": "/",
+      "intent": "식생활 계획"
+    },
+    {
+      "query": "자취생 식단 추천",
+      "path": "/",
+      "intent": "식생활 계획"
+    },
+    {
+      "query": "식비 예산 식단",
+      "path": "/",
+      "intent": "식생활 계획"
+    },
+    {
+      "query": "일주일 장보기 추천",
+      "path": "/",
+      "intent": "식생활 계획"
+    }
+  ]
+}
