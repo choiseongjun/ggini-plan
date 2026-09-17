@@ -46,7 +46,7 @@ export function TodayMeals({intake,userId,onLogin,ids,products,conditions,startD
   {intake.message&&<p role="status">{intake.message}</p>}
   {purchaseMessage&&<p role="status">{purchaseMessage}</p>}
   {ids.length>0?<>
-   <div className="today-title"><h3>{isToday?'오늘 이렇게 먹어요':`${day}일차 이렇게 먹어요`}</h3><span>{date.slice(5).replace('-','/')}</span></div>
+   <div className="today-title"><h3 tabIndex={-1} data-recommended-menu-heading>{isToday?'오늘 이렇게 먹어요':`${day}일차 이렇게 먹어요`}</h3><span>{date.slice(5).replace('-','/')}</span></div>
    <label className="today-start">식단 시작일<input type="date" value={startDate} onChange={e=>{if(e.target.value){onStartDate(e.target.value);setChosenDay(null);setManaging(null);}}}/></label>
    {!active.active&&<p className="today-note">{today<startDate?'아직 시작 전인 식단이에요.':'이 식단의 일정이 끝났어요.'} 시작일을 바꾸거나 새로 추천받을 수 있어요.</p>}
    <nav className="today-days" aria-label="준비한 식단 날짜">{Array.from({length:days},(_,i)=>i+1).map(n=><button type="button" key={n} aria-pressed={n===day} onClick={()=>{setChosenDay(n);setManaging(null);}}><strong>{planDate(startDate,n)===today?'오늘':planDate(startDate,n)===addDays(today,1)?'내일':`${n}일차`}</strong><small>{planDate(startDate,n).slice(5).replace('-','/')}</small></button>)}</nav>

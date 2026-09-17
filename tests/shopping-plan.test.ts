@@ -31,6 +31,17 @@ test('rejects malformed conditions',()=>{
  assert.equal(parseConditions({...initialConditions,meals:100}),null);
  assert.equal(parseConditions({...initialConditions,owned:[1]}),null);
 });
+test('15 days support all 45 meals and reject longer or mismatched schedules',()=>{
+ const c={...initialConditions,days:15,slots:['breakfast','lunch','dinner'] as ('breakfast'|'lunch'|'dinner')[],meals:45,budget:200000};
+ assert.ok(parseConditions(c));
+ assert.equal(parseConditions({...c,days:16,meals:48}),null);
+ assert.equal(parseConditions({...c,meals:44}),null);
+ const products=[product('porridge',3000,1,{name:'호박죽'})];
+ const ids=recommendShopping(products,c)!;
+ assert.equal(ids.length,45);assert.ok(validMealIds(ids,products,c));
+ assert.deepEqual(mealSchedule(c).at(-1),{day:15,slot:'dinner'});
+ assert.equal(basketTotal(ids,products,[]),135000);
+});
 
 test('a high personalization score cannot fill a two-meal week with pumpkin porridge',()=>{
  const products=[product('pumpkin',4000,1,{name:'호박죽',personalizationScore:160}),...Array.from({length:8},(_,i)=>product(`meal${i}`,5000,1,{name:`다른 죽 ${i}`,personalizationScore:-150}))];

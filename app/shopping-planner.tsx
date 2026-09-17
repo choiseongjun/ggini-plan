@@ -7,19 +7,31 @@ import {TodayMeals} from './today-meals';
 import {SharePlanButton} from './share-plan-button';
 import {emptyDashboard,type DashboardData} from '../lib/dashboard';
 import { Checkbox } from "./components/checkbox";
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import type {personalizeProducts} from '../lib/shopping-personalization';
 import { ProductThumb } from './product-thumb';
 import {MealSourceBadge,RecipeProductPreview} from './meal-source';
-import { basket, purchaseBasket, basketTotal, validMealIds, slotCandidates, mealSchedule, slotLabels, initialConditions, parseConditions, recommendShopping, swapMeal, type MealSlot, type PlanConditions, type PlanProduct } from '../lib/shopping-plan';
+import { MAX_PLAN_DAYS, basket, purchaseBasket, basketTotal, validMealIds, slotCandidates, mealSchedule, slotLabels, initialConditions, parseConditions, recommendShopping, swapMeal, type MealSlot, type PlanConditions, type PlanProduct } from '../lib/shopping-plan';
 import './shopping-planner.css';
 import {shoppingBudgetGuide} from '../lib/shopping-budget';
 import {excludedFoods,excludedFoodGroups,type ExcludedFood} from '../lib/excluded-foods';
 import {resolveShoppingExclusions} from '../lib/shopping-exclusions';
 import {ShoppingProgress,useShoppingProgress} from './shopping-progress';
 
-function useBudgetGuide(products:PlanProduct[],key:string){return useMemo(()=>shoppingBudgetGuide(products,JSON.parse(key)),[products,key]);}
+function useBudgetGuide(products:PlanProduct[],key:string){
+ const [result,setResult]=useState<{products:PlanProduct[];key:string;guide:ReturnType<typeof shoppingBudgetGuide>|null}|null>(null);
+ useEffect(()=>{
+  if(!products.length)return;
+  const worker=new Worker(new URL('./shopping-budget.worker.ts',import.meta.url));
+  worker.onmessage=event=>setResult({products,key,guide:event.data.guide??null});
+  worker.onerror=()=>setResult({products,key,guide:null});
+  worker.postMessage({products,conditions:JSON.parse(key)});
+  return()=>worker.terminate();
+ },[products,key]);
+ const current=result?.products===products&&result.key===key;
+ return {guide:current?result.guide:null,pending:products.length>0&&!current};
+}
 const won=(n:number)=>`${n.toLocaleString('ko-KR')}원`;
 function ingredientAmount(p:PlanProduct,packs:number){
  const count=p.unit==='개'&&p.quantity>1;
@@ -30,6 +42,14 @@ function encodeDraft(conditions:PlanConditions,mealIds:string[]){return JSON.str
 export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:string;onLogin:()=>void;mode?:'plan'|'cart'|'settings';dashboard?:DashboardData|null}){
  const draftKey=`kkiniplan-shopping-draft-v2-${userId??'guest'}`;
  const setupRef=useRef<HTMLDetailsElement>(null);
+ const plannerRef=useRef<HTMLElement>(null);
+ const [resultFocus,setResultFocus]=useState(0);
+ useEffect(()=>{
+  if(!resultFocus)return;
+  const heading=plannerRef.current?.querySelector<HTMLElement>('[data-recommended-menu-heading]');
+  heading?.focus({preventScroll:true});
+  heading?.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+ },[resultFocus]);
  const [personalization,setPersonalization]=useState<ReturnType<typeof personalizeProducts>['personalization']|null>(null);
  const [profileExcluded,setProfileExcluded]=useState<ExcludedFood[]>([]);
  const progress=useShoppingProgress(userId,'products');
@@ -38,7 +58,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
  const conditions:PlanConditions={...baseConditions,supply:Object.fromEntries(Object.values(progress.stock).map(i=>[i.id,i.owned+i.ordered]))};
  const [ids,setIds]=useState<string[]>([]),[loading,setLoading]=useState(true),[busy,setBusy]=useState(false);
  const guideKey=JSON.stringify({...conditions,budget:1000000,startDate:undefined});
- const budgetGuide=useBudgetGuide(products,guideKey);
+ const {guide:budgetGuide,pending:budgetPending}=useBudgetGuide(products,guideKey);
  const [allowSingleMenu,setAllowSingleMenu]=useState(false);
  const [showExclusions,setShowExclusions]=useState(false);
  const [confirmReset,setConfirmReset]=useState(false);
@@ -89,7 +109,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    const next=recommendShopping(fresh,c);
    if(!next)throw new Error('현재 등록 상품으로는 조건에 맞는 식단을 채울 수 없어요. 예산·끼니 수·조리 방식을 조정해 주세요.');
    if(!allowSingleMenu&&c.meals>1&&new Set(next).size===1)throw new Error(`현재 예산에서는 같은 메뉴만 반복돼요.${guide.varietyMinimum!==null?` 반복을 줄인 구성은 약 ${won(guide.varietyMinimum)}부터 가능해요.`:' 조리 방식과 제외 재료를 확인해 주세요.'}`);
-   setConditions(c);setIds(next);remember(c,next);setMessage(new Set(next).size===1&&next.length>1?`반복 허용에 따라 ${next.length}끼를 한 가지 메뉴로 구성했어요.`:`${next.length}끼를 ${new Set(next).size}종 메뉴로 구성했어요. 예산과 제외 재료를 지키면서 같은 메뉴가 덜 반복되도록 골랐어요.`);
+   setConditions(c);setIds(next);remember(c,next);setMessage(new Set(next).size===1&&next.length>1?`반복 허용에 따라 ${next.length}끼를 한 가지 메뉴로 구성했어요.`:`${next.length}끼를 ${new Set(next).size}종 메뉴로 구성했어요. 예산과 제외 재료를 지키면서 같은 메뉴가 덜 반복되도록 골랐어요.`);setResultFocus(n=>n+1);
   }catch(e){setError(e instanceof Error?e.message:'추천을 불러오지 못했어요.');}finally{setBusy(false);}
  }
  function chooseMeal(index:number,id:string){
@@ -138,7 +158,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
  const hasRecipes=mealRows.some(r=>r.product.recipe);
  const rows=purchases.map(r=>({...r,uses:mealRows.find(m=>m.product.id===r.product.id)?.uses??0})),total=rows.reduce((n,r)=>n+r.cost,0);
 
- return <section id={mode==='settings'?'shopping-settings':undefined} className="shopping-planner" aria-labelledby="planner-title">
+ return <section ref={plannerRef} id={mode==='settings'?'shopping-settings':undefined} className="shopping-planner" aria-labelledby="planner-title">
   {mode==='cart'&&<section className="cart-reset" aria-label="장바구니 초기화">
    <button type="button" disabled={loading||busy||progress.busy||!progress.ready||(!ids.length&&!Object.values(progress.stock).some(i=>i.owned||i.ordered))} onClick={()=>setConfirmReset(true)}>모두 초기화</button>
    {confirmReset&&<div role="group" aria-label="장바구니 초기화 확인"><strong>추천 메뉴와 주문·보유 목록을 모두 비울까요?</strong><p>홈의 현재 추천 식단도 함께 비워요. 먹은 기록·식비 기록·예산과 취향·공유 링크는 유지돼요. 판매처의 실제 주문은 취소되지 않아요. 이 추천 밖에서 따로 관리하는 재료 목록과 함께 담은 장바구니는 별도예요.</p><button type="button" disabled={progress.busy} onClick={()=>setConfirmReset(false)}>취소</button><button type="button" disabled={progress.busy||!progress.ready} onClick={()=>void resetCart()}>{progress.busy?'초기화 중…':'확인, 모두 초기화'}</button></div>}
@@ -149,15 +169,24 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   {mode!=='settings'&&ids.length>0&&<details className="home-secondary"><summary>이 식단 공유하기</summary><SharePlanButton key={JSON.stringify([ids,conditions.days,conditions.slots])} userId={userId} onLogin={onLogin} conditions={conditions} mealIds={ids}/></details>}
   {mode==='plan'&&ids.length>0&&<button type="button" className="primary-button planner-restart" disabled={busy||progress.busy} onClick={returnToSetup}>추천 다시 받기</button>}
   {(mode!=='plan'||!ids.length)&&<details ref={setupRef} tabIndex={-1} className="planner-controls" open={mode==='settings'||mode==='plan'}><summary>{ids.length?'예산·취향 바꿔서 새로 추천받기':'내 예산으로 식단 준비하기'}</summary>
-  <div className="planner-heading"><span>이번 주, 뭐 사서 먹지?</span><h2 id="planner-title">{mode==='settings'?'내 장보기 설정':mode==='cart'?'이번 주 살 것':'내 예산으로 챙기는 일주일'}</h2><p>{mode==='settings'?'자주 쓰는 예산과 식사 취향을 저장해 두세요. 다음 추천부터 다시 입력할 필요 없어요.':'간편식과 직접 만드는 한 끼를 비교하고, 겹치는 재료는 합쳐 예산 안에서 준비해요. 저장된 신체 정보와 식단 취향도 함께 반영해요.'}</p></div>
+  <div className="planner-heading"><span>며칠 동안, 뭐 사서 먹지?</span><h2 id="planner-title">{mode==='settings'?'내 장보기 설정':mode==='cart'?'이번에 살 것':'내 예산으로 챙기는 끼니'}</h2><p>{mode==='settings'?'자주 쓰는 예산과 식사 취향을 저장해 두세요. 다음 추천부터 다시 입력할 필요 없어요.':'간편식과 직접 만드는 한 끼를 비교하고, 겹치는 재료는 합쳐 예산 안에서 준비해요. 저장된 신체 정보와 식단 취향도 함께 반영해요.'}</p></div>
   {personalization&&<details className="planner-profile-summary"><summary>내 정보 반영 내용</summary><div className="meal-notice">{personalization.blocked?<p>현재 신체 정보에서는 자동 맞춤 추천을 제공하지 않아요.</p>:personalization.hasProfile?<><strong>내 정보 기준 · 하루 유지 필요량 약 {personalization.dailyCalories?.toLocaleString()} kcal</strong><p>하루 {personalization.meals}끼 기준 한 끼 약 {personalization.perMealCalories} kcal와 가까운 상품을 우선해요. 선택한 끼니만 추천하며 하루 전체 영양을 충족하는 식단은 아니에요.</p><small>{personalization.nutritionMatched?`영양 표시를 비교할 수 있는 상품 ${personalization.nutritionMatched}개`:'현재 상품은 영양 정보가 부족해 열량 기준의 비교가 어려워요. 확인되지 않은 값은 추정하지 않아요.'}</small></>:<p><Link href="/profile#profile-settings">신체 정보를 입력하면 내 필요 열량을 기준으로 추천받을 수 있어요 →</Link></p>}{personalization.style&&<p>식단 취향: {personalization.style} · 제외 재료: {(conditions.excluded??[]).map(key=>excludedFoods[key]).join(', ')||'없음'}</p>}</div></details>}
   {progress.error&&!ids.length&&mode!=='cart'&&<p role="alert">{progress.error} <button type="button" onClick={progress.reload}>구매 상태 다시 불러오기</button></p>}
   {mode!=='cart'&&<form className="planner-form" onSubmit={e=>{e.preventDefault();if(mode==='settings')void savePreferences();else void generate();}}>
-   <label>며칠을 준비할까요?<select value={conditions.days??5} onChange={e=>update({days:Number(e.target.value),slots:conditions.slots??['dinner']})}>{[1,2,3,4,5,6,7].map(days=><option key={days} value={days}>{days}일</option>)}</select></label>
+   <label>며칠을 준비할까요?<select value={conditions.days??5} onChange={e=>update({days:Number(e.target.value),slots:conditions.slots??['dinner']})}>{Array.from({length:MAX_PLAN_DAYS},(_,i)=>i+1).map(days=><option key={days} value={days}>{days}일</option>)}</select></label>
    <fieldset className="planner-slots"><legend>앱이 챙겨줄 끼니</legend>{(Object.keys(slotLabels) as MealSlot[]).map(slot=><label key={slot}><Checkbox checked={(conditions.slots??['dinner']).includes(slot)} onChange={e=>{const current=conditions.slots??['dinner'];update({days:conditions.days??5,slots:e.target.checked?[...current,slot].sort((a,b)=>Object.keys(slotLabels).indexOf(a)-Object.keys(slotLabels).indexOf(b)):current.filter(s=>s!==slot)});}}/>{slotLabels[slot]}</label>)}</fieldset>
    <small>밖에서 먹는 끼니는 선택하지 마세요. 아침은 아침용 상품이 등록된 경우에만 추천해요.</small>
    <label>이번 장보기 예산 (배송비 제외)<input type="number" min={1000} max={1000000} step={1} required value={conditions.budget||''} onChange={e=>update({budget:Number(e.target.value)})}/></label>
-   {!loading&&progress.ready&&<details className="planner-budget-guide" open={budgetGuide.minimum===null||conditions.budget<budgetGuide.minimum}><summary>내 예산으로 얼마나 준비할 수 있나요?</summary>
+   {!loading&&progress.ready&&<div className="planner-budget-hint" aria-live="polite">
+    <strong>💰 {conditions.days??schedule.at(-1)?.day}일 · {conditions.meals}끼를 준비해요</strong>
+    <p>지금 예산은 한 끼당 약 {won(Math.round(conditions.budget/Math.max(1,conditions.meals)))}이에요.</p>
+    {!budgetGuide?<p>{budgetPending?'선택한 기간에 맞는 예산을 계산하고 있어요.':'예산 가이드를 계산하지 못했어요. 조건을 바꿔 다시 확인해 주세요.'}</p>:budgetGuide.minimum===null?<p>선택한 끼니에 맞는 상품이 부족해 예산을 계산하기 어려워요.</p>:<>
+     <p>현재 상품으로 {budgetGuide.approximate?'찾은 절약 구성':'가장 저렴한 구성'}은 약 <b>{won(budgetGuide.minimum)}</b>{budgetGuide.varietyMinimum!==null&&budgetGuide.count>1?<> · 반복을 줄이면 약 <b>{won(budgetGuide.varietyMinimum)}</b>부터예요.</>:'부터예요. 같은 메뉴가 반복될 수 있어요.'}</p>
+     <div className="planner-presets">{[...new Set([budgetGuide.minimum,budgetGuide.varietyUpper].filter((n):n is number=>n!==null).map(n=>Math.max(1000,Math.ceil(n/1000)*1000)))].filter(n=>n<=1000000).map(n=><button type="button" key={n} aria-pressed={conditions.budget===n} onClick={()=>update({budget:n})}>{won(n)}으로 맞추기</button>)}</div>
+    </>}
+    <small>등록 상품 가격·주문/보유 수량 반영 · 배송비 별도</small>
+   </div>}
+   {!loading&&progress.ready&&budgetGuide&&<details className="planner-budget-guide" open={budgetGuide.minimum===null||conditions.budget<budgetGuide.minimum}><summary>내 예산으로 얼마나 준비할 수 있나요?</summary>
     <strong>{conditions.days??schedule.at(-1)?.day}일 · {conditions.meals}끼 예산 가이드</strong>
     <p>현재 추천 후보 {budgetGuide.count}종 · {budgetGuide.options.map(o=>`${slotLabels[o.slot]} ${o.count}종`).join(' / ')}</p>
     {budgetGuide.minimum===null?<p>선택한 끼니를 채울 상품이 부족해요. 조리 방식·끼니·제외 재료를 확인해 주세요.</p>:<>
@@ -186,7 +215,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    <small>등록된 상품명·원문 알레르기 표시에서 찾아 제외해요. 알레르기가 있다면 구매 전 전체 원재료와 제조시설 표시를 확인해 주세요.</small>
    </fieldset>}
    </div>
-   <button className="primary-button" disabled={loading||busy||!progress.ready||(mode!=='settings'&&!products.length)}>{loading?'설정 불러오는 중…':busy?(mode==='settings'?'저장 중…':'추천 준비 중…'):mode==='settings'?'저장하고 내 정보로 추천받기':'이번 주 살 것 추천받기 →'}</button>
+   <button className="primary-button" disabled={loading||busy||!progress.ready||(mode!=='settings'&&!products.length)}>{loading?'설정 불러오는 중…':busy?(mode==='settings'?'저장 중…':'추천 준비 중…'):mode==='settings'?'저장하고 내 정보로 추천받기':'이번에 살 것 추천받기 →'}</button>
   </form>}
   </details>}
   {mode!=='settings'&&!loading&&!products.length&&<p>현재 추천할 수 있는 상품이 없어요. 판매 구성과 출처가 확인된 상품을 준비하고 있어요.</p>}
@@ -215,9 +244,9 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    <button type="button" className="primary-button" disabled={busy||total>conditions.budget} onClick={save}>{busy?'저장 중…':userId?'이 식단 저장하기':'로그인하고 이 식단 저장하기'}</button>
   </details>}
   {mode==='cart'&&!ids.length&&<ShoppingProgress guest={!userId} progress={progress} items={[]}/>}
-  {mode!=='cart'&&!!ids.length&&<Link href="/cart">이번 주 구매 목록 보러 가기 →</Link>}
-  {mode==='cart'&&!ids.length&&<p><Link href="/">홈에서 이번 주 살 것 추천받기 →</Link></p>}
-  {mode==='settings'&&<div className="profile-shopping-links"><Link href="/">내 설정으로 추천받기 →</Link><Link href="/cart">이번 주 구매 목록 →</Link>{!userId&&<small>로그인하면 설정을 계정에 저장할 수 있어요.</small>}</div>}
+  {mode!=='cart'&&!!ids.length&&<Link href="/cart">이번 장보기 목록 보러 가기 →</Link>}
+  {mode==='cart'&&!ids.length&&<p><Link href="/">홈에서 이번에 살 것 추천받기 →</Link></p>}
+  {mode==='settings'&&<div className="profile-shopping-links"><Link href="/">내 설정으로 추천받기 →</Link><Link href="/cart">이번 장보기 목록 →</Link>{!userId&&<small>로그인하면 설정을 계정에 저장할 수 있어요.</small>}</div>}
   {message&&<p role="status" className="body-note">{message}</p>}
  </section>;
 }

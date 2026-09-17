@@ -1,9 +1,9 @@
-import {basketTotal,mealSchedule,recommendShopping,slotCandidates,type PlanConditions,type PlanProduct} from './shopping-plan';
+import {basketTotal,mealSchedule,recommendShopping,slotCandidates,MAX_PLAN_MEALS,type PlanConditions,type PlanProduct} from './shopping-plan';
 
 // Exact minimum purchase cost: allocate breakfast/main portions across products,
 // charging complete selling packs once per product (including available stock).
 export function minimumShoppingCost(products:PlanProduct[],c:PlanConditions,reduceRepeats=false):number|null{
- if(c.meals<1||c.meals>21||c.slots?.length===0)return null;
+ if(c.meals<1||c.meals>MAX_PLAN_MEALS||c.slots?.length===0)return null;
  const schedule=mealSchedule(c),breakfast=schedule.filter(s=>s.slot==='breakfast').length,main=c.meals-breakfast;
  const breakfastIds=new Set(breakfast?slotCandidates(products,c,schedule.findIndex(s=>s.slot==='breakfast')).map(p=>p.id):[]);
  const mainIds=new Set(main?slotCandidates(products,c,schedule.findIndex(s=>s.slot!=='breakfast')).map(p=>p.id):[]);
@@ -30,6 +30,7 @@ export function minimumShoppingCost(products:PlanProduct[],c:PlanConditions,redu
  return Number.isFinite(dp[size-1])?dp[size-1]:null;
 }
 export function shoppingBudgetGuide(products:PlanProduct[],c:PlanConditions){
+ products=products.filter(p=>!p.recipe||!p.id.includes('--with--'));
  const schedule=mealSchedule(c);
  const slots=[...new Set(schedule.map(s=>s.slot))];
  const options=slots.map(slot=>({slot,products:slotCandidates(products,c,schedule.findIndex(s=>s.slot===slot))}));

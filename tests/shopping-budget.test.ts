@@ -3,6 +3,13 @@ import {test} from 'node:test';
 import {minimumShoppingCost,shoppingBudgetGuide} from '../lib/shopping-budget';
 import {basketTotal,initialConditions,slotCandidates,type PlanProduct,type PlanConditions} from '../lib/shopping-plan';
 const product=(id:string,price:number,servings:number,name=id):PlanProduct=>({id,name,price,servings,category:'ready_meal',productUrl:'https://example.com/item',avoidanceText:'확인된 표시'} as PlanProduct);
+test('15-day budget follows selected meal count and existing stock',()=>{
+ const products=[product('porridge',3000,1,'호박죽')];
+ const c:PlanConditions={...initialConditions,days:15,slots:['breakfast','lunch','dinner'],meals:45,budget:200000};
+ assert.equal(shoppingBudgetGuide(products,c).minimum,135000);
+ assert.equal(minimumShoppingCost(products,{...c,supply:{porridge:5}}),120000);
+ assert.equal(shoppingBudgetGuide(products,{...c,slots:['dinner'],meals:15}).minimum,45000);
+});
 test('single eligible pumpkin menu explains the 14-meal minimum without promising variety',()=>{
  const c:PlanConditions={...initialConditions,days:7,slots:['lunch','dinner'],meals:14,budget:100000};
  const guide=shoppingBudgetGuide([product('pumpkin',4500,1,'호박죽')],c);
