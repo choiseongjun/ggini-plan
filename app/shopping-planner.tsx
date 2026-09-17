@@ -82,7 +82,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan'}:{userId?:string;onL
   {personalization&&<div className="meal-notice">{personalization.blocked?<p>현재 신체 정보에서는 자동 맞춤 추천을 제공하지 않아요.</p>:personalization.hasProfile?<><strong>내 정보 기준 · 하루 유지 필요량 약 {personalization.dailyCalories?.toLocaleString()} kcal</strong><p>하루 {personalization.meals}끼 기준 한 끼 약 {personalization.perMealCalories} kcal와 가까운 상품을 우선해요. 선택한 끼니만 추천하며 하루 전체 영양을 충족하는 식단은 아니에요.</p><small>{personalization.nutritionMatched?`영양 표시를 비교할 수 있는 상품 ${personalization.nutritionMatched}개`:'현재 상품은 영양 정보가 부족해 열량 기준의 비교가 어려워요. 확인되지 않은 값은 추정하지 않아요.'}</small></>:<p><Link href="/profile#profile-settings">신체 정보를 입력하면 내 필요 열량을 기준으로 추천받을 수 있어요 →</Link></p>}{personalization.style&&<p>식단 취향: {personalization.style} · 제외 재료: {personalization.excluded.join(', ')||'없음'}</p>}</div>}
   {progress.error&&!ids.length&&mode!=='cart'&&<p role="alert">{progress.error} <button type="button" onClick={progress.reload}>구매 상태 다시 불러오기</button></p>}
   {mode!=='cart'&&<form className="planner-form" onSubmit={e=>{e.preventDefault();if(mode==='settings')void savePreferences();else void generate();}}>
-   <label>며칠을 준비할까요?<select value={conditions.days??5} onChange={e=>update({days:Number(e.target.value),slots:conditions.slots??['dinner']})}><option value={5}>평일 5일</option><option value={7}>일주일 7일</option></select></label>
+   <label>며칠을 준비할까요?<select value={conditions.days??5} onChange={e=>update({days:Number(e.target.value),slots:conditions.slots??['dinner']})}>{[1,2,3,4,5,6,7].map(days=><option key={days} value={days}>{days}일</option>)}</select></label>
    <fieldset className="planner-slots"><legend>앱이 챙겨줄 끼니</legend>{(Object.keys(slotLabels) as MealSlot[]).map(slot=><label key={slot}><Checkbox checked={(conditions.slots??['dinner']).includes(slot)} onChange={e=>{const current=conditions.slots??['dinner'];update({days:conditions.days??5,slots:e.target.checked?[...current,slot].sort((a,b)=>Object.keys(slotLabels).indexOf(a)-Object.keys(slotLabels).indexOf(b)):current.filter(s=>s!==slot)});}}/>{slotLabels[slot]}</label>)}</fieldset>
    <small>밖에서 먹는 끼니는 선택하지 마세요. 아침은 아침용 상품이 등록된 경우에만 추천해요.</small>
    <label>이번 장보기 예산 (배송비 제외)<input type="number" min={1000} max={1000000} step={1} required value={conditions.budget||''} onChange={e=>update({budget:Number(e.target.value)})}/></label>
@@ -97,10 +97,22 @@ export function ShoppingPlanner({userId,onLogin,mode='plan'}:{userId?:string;onL
   {mode!=='settings'&&!loading&&!products.length&&<button type="button" onClick={()=>{setLoading(true);setRetry(n=>n+1);}}>상품 다시 불러오기</button>}
   {mode!=='settings'&&userId&&<button type="button" className="text-link" disabled={loading||busy||!progress.ready} onClick={restore}>저장한 식단 불러오기 →</button>}
   {!!ids.length&&<div className="planner-result">
-   <div className="planner-total"><span>{ids.length}끼 추가 구매 예상금액</span><strong>{won(total)}</strong><small>{total<=conditions.budget?`예산에서 ${won(conditions.budget-total)} 남아요`:`예산을 ${won(total-conditions.budget)} 초과했어요`} · 배송비 별도</small></div>
-   <details open={mode!=='cart'}><summary>일주일 먹는 순서 · 개별 교체</summary><h3>이렇게 먹어요</h3><p className="body-note">밥·면 중심의 메뉴 구성 제안이에요. 조리 기기·시간은 상품 페이지를 확인하고, 식사량에 따라 양을 조절해 주세요. 1회분 가격은 등록된 판매가를 회분 수로 나눈 금액이에요. 실제 구매는 판매 묶음 단위이며 배송비는 별도예요.</p>
-   <ol className="planner-meals">{ids.map((id,i)=>{const p=products.find(p=>p.id===id)!;return <li key={`${i}-${id}`}><ProductThumb item={p}/><div><small>{schedule[i].day}일차 · {slotLabels[schedule[i].slot]}</small><strong>{p.name}</strong><small>{p.servingNote} · 1회분 사용</small><b className="planner-meal-price">1회분 {p.servings>1?'약 ':''}{won(Math.round(p.price/p.servings))}</b><small>판매 1묶음 {won(p.price)} · {p.servings}회분</small><small>{p.servingCalories!=null?`표시 영양 기준 약 ${p.servingCalories} kcal/회분${personalization?.perMealCalories?` · 내 한 끼 참고량 ${personalization.perMealCalories} kcal`:''}`:'열량 미확인 · 예산과 확인된 식단 조건으로 추천'}</small></div><button type="button" onClick={()=>swap(i)} aria-label={`${i+1}번째 끼니 다른 메뉴`}>교체</button></li>;})}</ol></details>
-   <ShoppingProgress guest={!userId} progress={progress} items={rows.map(r=>({id:r.product.id,name:r.product.name,unit:'묶음',required:r.have?0:r.uses/r.product.servings,packSize:1,url:r.product.productUrl,price:r.product.price,detail:`${r.product.detail} · 식단에 ${r.uses}회분 필요`}))}/>
+   <ShoppingProgress guest={!userId} progress={progress} recommended
+    summary={<div className="planner-total"><span>{ids.length}끼 추가 구매 예상금액</span><strong>{won(total)}</strong><small>{total<=conditions.budget?`예산에서 ${won(conditions.budget-total)} 남아요`:`예산을 ${won(total-conditions.budget)} 초과했어요`} · 배송비 별도</small></div>}
+    heading={<><h3>이렇게 먹어요</h3><p className="body-note">추천 메뉴에서 살 것을 바로 선택하세요. 같은 메뉴라도 먹는 날은 따로 표시해요. 구매할 수량은 카드 아래에 한 번에 모았어요. 1회분 가격은 등록 판매가를 나눈 금액이며 실제 구매는 판매 묶음 단위예요.</p></>}
+    items={rows.map(r=>({id:r.product.id,name:r.product.name,unit:'묶음',required:r.have?0:r.uses/r.product.servings,packSize:1,url:r.product.productUrl,price:r.product.price,detail:`${r.product.detail} · 식단에 ${r.uses}회분 필요`,
+     thumbnail:<ProductThumb item={r.product}/>,
+     recommendation:<div className="planner-recommendation">
+      <div className="planner-price-line"><b className="planner-meal-price">한 끼 {r.product.servings>1?'약 ':''}{won(Math.round(r.product.price/r.product.servings))}</b><span>판매 1묶음 {won(r.product.price)} · {r.product.servings}회분</span></div>
+      <small className="planner-nutrition-note">{r.product.servingCalories!=null?`표시 영양 기준 약 ${r.product.servingCalories} kcal/회분${personalization?.perMealCalories?` · 내 한 끼 참고량 ${personalization.perMealCalories} kcal`:''}`:'열량 미확인'}</small>
+      <div className="planner-schedule-heading"><strong><span aria-hidden="true">🍽️</span> {r.uses>1?`이 메뉴는 ${r.uses}번 먹어요`:'이날 먹을 한 끼'}</strong><small>{r.uses>1?'날짜마다 1회분씩, 따로 먹는 식사예요.':'먹는 날과 양을 확인해 주세요.'}</small></div>
+      <div className="planner-card-schedule" aria-label={`${r.product.name} 먹는 일정`}>{ids.flatMap((id,i)=>id===r.product.id?[<div key={i} className={`planner-day-card day-tone-${(schedule[i].day-1)%4}`}>
+       <div className="planner-day-badge"><b>{schedule[i].day}</b><span>일차</span></div>
+       <div className="planner-day-meal"><strong><span aria-hidden="true">{schedule[i].slot==='breakfast'?'☀️':schedule[i].slot==='lunch'?'🌤️':'🌙'}</span> {slotLabels[schedule[i].slot]}</strong><span>이날 먹을 양 <b>1회분</b></span></div>
+       <button type="button" disabled={busy||progress.busy} onClick={()=>swap(i)} aria-label={`${schedule[i].day}일차 ${slotLabels[schedule[i].slot]} 메뉴 바꾸기`}>이 끼니 바꾸기 <span aria-hidden="true">↻</span></button>
+      </div>]:[])}</div>
+     </div>
+    }))}/>
    {!!conditions.owned.length&&<details><summary>이전에 체크한 보유 상품</summary>{rows.filter(r=>r.have).map(r=><label key={r.product.id}><Checkbox checked onChange={()=>own(r.product.id)}/>{r.product.name} · 이미 있어요</label>)}</details>}
    <button type="button" className="primary-button" disabled={busy||total>conditions.budget} onClick={save}>{busy?'저장 중…':userId?'이 식단 저장하기':'로그인하고 이 식단 저장하기'}</button>
   </div>}

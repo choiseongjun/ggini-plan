@@ -5,3 +5,41 @@
 .profile-shopping-links{display:grid;gap:14px;margin-top:20px}.profile-shopping-links a{color:#426747;font-size:14px;font-weight:700}.profile-shopping-links small{color:#647164}.profile-extra{border-top:1px solid #e3e7dc;padding:18px 0}.profile-extra>summary{cursor:pointer;font-size:14px;font-weight:700;color:#465a48}
 
 .planner-meals .planner-meal-price{font-size:14px;line-height:1.5;color:#426747;font-weight:800}
+
+/* Separate each meal date while keeping one purchase card per product. */
+.purchase-recommended .purchase-items{gap:18px}
+.purchase-recommended .purchase-items article{border:1px solid #e4e6d9;border-radius:24px;padding:18px;background:#fffefa;box-shadow:0 4px 0 #eceee330}
+.purchase-recommended .purchase-items .purchase-item-heading{padding:10px;border:0;border-radius:18px;background:#f7f8f0;gap:12px}
+.purchase-item-heading .food-thumb{flex:0 0 58px;width:58px;height:58px;overflow:hidden;border-radius:19px;background:#f3ecd9}
+.purchase-item-heading .food-thumb img{width:100%;height:100%;object-fit:cover}
+.purchase-item-heading strong{flex:1;min-width:0;line-height:1.6}
+.planner-recommendation{display:grid;gap:9px}
+.planner-price-line{display:flex;align-items:center;flex-wrap:wrap;gap:7px 12px}
+.planner-price-line .planner-meal-price{font-size:15px;line-height:1.5;color:#416844;background:#edf3e5;border-radius:12px;padding:6px 10px}
+.planner-price-line>span{font-size:11px;color:#707569;line-height:1.6}
+.planner-nutrition-note{line-height:1.7}
+.planner-schedule-heading{display:grid;gap:4px;margin:10px 0 2px}
+.planner-schedule-heading strong{font-size:13px;color:#516348}
+.planner-schedule-heading small{font-size:11px;color:#727969}
+.planner-card-schedule{display:grid;gap:9px}
+.planner-card-schedule .planner-day-card{--day-bg:#fff2d9;--day-ink:#866021;display:flex;align-items:center;gap:12px;padding:12px;border:1px solid #00000005;border-radius:18px;background:var(--day-bg)}
+.planner-card-schedule .day-tone-1{--day-bg:#edf4e4;--day-ink:#53743c}
+.planner-card-schedule .day-tone-2{--day-bg:#fcece5;--day-ink:#a36148}
+.planner-card-schedule .day-tone-3{--day-bg:#efedf9;--day-ink:#776496}
+.planner-day-badge{display:grid;place-items:center;gap:0;flex:0 0 48px;min-height:53px;padding:5px;background:#ffffffcf;border-radius:15px;color:var(--day-ink);box-shadow:0 2px 0 #00000004}
+.planner-day-badge b{font-size:23px;line-height:1.1}
+.planner-day-badge span{font-size:10px;font-weight:700}
+.planner-day-meal{display:grid;gap:5px;flex:1;min-width:0}
+.planner-day-meal>strong{font-size:13px;color:#48513c}
+.planner-day-meal>span{font-size:11px;color:#6f725f;line-height:1.5}
+.purchase-recommended .planner-day-card button{border:1px solid #ffffff;background:#ffffffb8;border-radius:14px;color:var(--day-ink);font-size:11px;font-weight:700;line-height:1.5;padding:8px 10px;flex-shrink:0}
+.purchase-recommended .planner-day-card button:hover{background:white}
+.purchase-stock-summary{display:grid;gap:7px}
+.purchase-recommended .purchase-stock-summary{padding:13px 14px;border-radius:17px;background:#f4f5ec;border:1px dashed #d9dfca;margin-top:6px}
+.purchase-stock-title{font-size:11px;font-weight:700;color:#6d795c;display:flex;align-items:center;gap:5px}
+.purchase-item-status{font-weight:800;color:#426747;line-height:1.6}
+.purchase-recommended .purchase-tabs{padding:5px;background:#eef1e5;border-radius:18px;gap:4px}
+.purchase-recommended .purchase-tabs button{border:0;background:transparent;border-radius:13px;font-size:12px}
+.purchase-recommended .purchase-tabs button[aria-pressed=true]{background:#5a7950;color:white;box-shadow:0 2px 5px #43583d19}
+.purchase-recommended .purchase-select-all{font-size:13px;border-radius:15px}
+@media(max-width:420px){.purchase-recommended .purchase-items article{padding:13px}.planner-card-schedule .planner-day-card{gap:8px;padding:10px}.planner-day-badge{flex-basis:40px}.purchase-recommended .planner-day-card button{max-width:82px;padding:7px 8px}.planner-day-meal>span{font-size:10px}}
