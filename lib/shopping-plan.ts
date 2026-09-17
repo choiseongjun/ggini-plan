@@ -1,4 +1,5 @@
 import {validPlanDate} from './daily-plan';
+import {isShoppingGoal,productsForGoal,type ShoppingGoal} from './shopping-goals';
 import type { CatalogItem } from './catalog';
 import {excludedFoods,type ExcludedFood} from './excluded-foods';
 import {allowsExcludedFoods} from './shopping-exclusions';
@@ -8,7 +9,7 @@ export type MealSlot = 'breakfast'|'lunch'|'dinner';
 export const slotLabels={breakfast:'아침',lunch:'점심',dinner:'저녁'};
 export const MAX_PLAN_DAYS=15;
 export const MAX_PLAN_MEALS=MAX_PLAN_DAYS*3;
-export type PlanConditions = { mealMode?:'ready'|'cook'|'mixed'; excluded?:ExcludedFood[]; startDate?:string; budget: number; meals: number; cooking: 'quick' | 'kit' | 'all'; avoid: string; owned: string[]; supply?:Record<string,number>; days?:number; slots?:MealSlot[] };
+export type PlanConditions = { goal?:ShoppingGoal; mealMode?:'ready'|'cook'|'mixed'; excluded?:ExcludedFood[]; startDate?:string; budget: number; meals: number; cooking: 'quick' | 'kit' | 'all'; avoid: string; owned: string[]; supply?:Record<string,number>; days?:number; slots?:MealSlot[] };
 export const initialConditions: PlanConditions = {mealMode:'mixed',budget:50000,meals:7,cooking:'all',avoid:'',owned:[],days:7,slots:['dinner']};
 export function mealSchedule(c:PlanConditions){
  const slots=c.slots??(c.meals>=10?['lunch','dinner'] as MealSlot[]:['dinner'] as MealSlot[]);
@@ -17,6 +18,7 @@ export function mealSchedule(c:PlanConditions){
 export function parseConditions(value: unknown): PlanConditions | null {
  if(!value || typeof value!=='object')return null;
  const p=value as PlanConditions;
+ if(p.goal!==undefined&&!isShoppingGoal(p.goal))return null;
  if(p.mealMode!==undefined&&!['ready','cook','mixed'].includes(p.mealMode))return null;
  if(p.excluded!==undefined&&(!Array.isArray(p.excluded)||p.excluded.length>Object.keys(excludedFoods).length||p.excluded.some(key=>typeof key!=='string'||!Object.hasOwn(excludedFoods,key))))return null;
  if(p.startDate!==undefined&&!validPlanDate(p.startDate))return null;
@@ -80,7 +82,7 @@ function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,
   -rows.reduce((n,r)=>n+r.left,0)*100-rows.reduce((n,r)=>n+r.cost,0)/c.budget*100+fit;
 }
 export function recommendShopping(products: PlanProduct[], c: PlanConditions, cheapest=false): string[] | null {
- const pool=candidates(products,c).filter(p=>!p.recipe||!p.id.includes('--with--'));
+ const pool=productsForGoal(candidates(products,c).filter(p=>!p.recipe||!p.id.includes('--with--')),c.goal);
  const schedule=mealSchedule(c),options=schedule.map((_,i)=>slotCandidates(pool,c,i));
  let states: {ids:string[];cost:number;score:number}[]=[{ids:[],cost:0,score:0}];
  for(let i=0;i<c.meals;i++){
@@ -102,6 +104,7 @@ export function recommendShopping(products: PlanProduct[], c: PlanConditions, ch
  return states.sort((a,b)=>b.score-a.score||a.cost-b.cost)[0]?.ids??null;
 }
 export function swapMeal(ids:string[], index:number, products:PlanProduct[], c:PlanConditions):string[]|null {
+ products=productsForGoal(products,c.goal);
  const options=slotCandidates(products,c,index).filter(p=>p.id!==ids[index]).map(p=>ids.map((id,i)=>i===index?p.id:id)).filter(next=>basketTotal(next,products,c.owned,c.supply)<=c.budget);
  const schedule=mealSchedule(c);
  options.sort((a,b)=>planScore(b,basket(b,products,c.owned,c.supply),c,schedule)-planScore(a,basket(a,products,c.owned,c.supply),c,schedule));
