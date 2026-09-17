@@ -10,7 +10,8 @@ test('nutrition compares explicit g and mL independently, including zero but not
  assert.deepEqual(comparableNutrition(item),{unit:'g',calories:160,protein:12,carbs:10,fat:4,sodium:null});
  assert.equal(comparableNutrition({...item,nutritionBasis:'1팩 200mL당'}).unit,'mL');
  assert.equal(comparableNutrition({...item,proteinG:0}).protein,0);
- for(const nutritionBasis of [null,'1팩','총 200g, 100g당','0g당','가식부 100g당','200g당 (조리 후)','100g당 (일반 식품 참고값)'])assert.equal(comparableNutrition({...item,nutritionBasis}).protein,null,nutritionBasis??'null');
+ assert.equal(comparableNutrition({...item,nutritionBasis:'총 내용량 1,215g당',proteinG:121.5}).protein,10);
+ for(const nutritionBasis of [null,'1팩','총 200g, 100g당','0g당','-100g당','1,21g당','가식부 100g당','200g당 (조리 후)','100g당 (일반 식품 참고값)'])assert.equal(comparableNutrition({...item,nutritionBasis}).protein,null,nutritionBasis??'null');
  assert.equal(comparableNutrition({...item,nutritionSourceUrl:null}).protein,null);
 });
 test('whole package prices and quantity units are kept distinct',()=>{

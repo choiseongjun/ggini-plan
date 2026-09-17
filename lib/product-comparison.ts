@@ -4,12 +4,13 @@ export type ComparisonSort=keyof typeof comparisonSorts;
 export function comparableNutrition(p:CatalogItem){
  const basis=p.nutritionBasis?.trim()??'';
  // Generic food reference values are not measured product labels. Multiple bases are ambiguous.
- const amounts=[...basis.matchAll(/(\d+(?:\.\d+)?)\s*(g|ml|mL)(?![a-z])/gi)];
+ const amounts=[...basis.matchAll(/(?<![\d.,-])(\d+(?:,\d{3})*(?:\.\d+)?)\s*(g|ml)(?![a-z])/gi)];
  const match=amounts.length===1?amounts[0]:null;
+ const basisAmount=match?Number(match[1].replaceAll(',','')):0;
  const sourced=Boolean(p.nutritionSourceUrl||p.nutritionPhotoUrl);
- const valid=sourced&&match&&Number(match[1])>0&&!/참고값|실측 아님|조리 후|조리 전|가식부|일반 식품/.test(basis);
+ const valid=sourced&&match&&basisAmount>0&&!/참고값|실측 아님|조리 후|조리 전|가식부|일반 식품/.test(basis);
  const unit=valid?(match[2].toLowerCase()==='g'?'g':'mL'):null;
- const normalize=(n:number|null)=>valid&&n!==null&&Number.isFinite(n)&&n>=0?n*100/Number(match[1]):null;
+ const normalize=(n:number|null)=>valid&&n!==null&&Number.isFinite(n)&&n>=0?n*100/basisAmount:null;
  return {unit,calories:normalize(p.caloriesKcal),protein:normalize(p.proteinG),carbs:normalize(p.carbohydratesG),fat:normalize(p.fatG),sodium:normalize(p.sodiumMg)};
 }
 export function comparablePrice(p:CatalogItem){
