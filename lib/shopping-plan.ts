@@ -14,7 +14,7 @@ export function parseConditions(value: unknown): PlanConditions | null {
  const p=value as PlanConditions;
  if(!Number.isSafeInteger(p.budget)||p.budget<1000||p.budget>1000000||!Number.isInteger(p.meals)||p.meals<1||p.meals>21||!['quick','kit','all'].includes(p.cooking)||typeof p.avoid!=='string'||p.avoid.length>200||!Array.isArray(p.owned)||p.owned.length>100||p.owned.some(x=>typeof x!=='string'||x.length>100))return null;
  if(p.days!==undefined||p.slots!==undefined){if(![5,7].includes(p.days!)||!Array.isArray(p.slots)||!p.slots.length||p.slots.some(s=>!Object.hasOwn(slotLabels,s))||new Set(p.slots).size!==p.slots.length||p.meals!==p.days!*p.slots.length)return null;}
- if(p.supply!==undefined&&(!p.supply||typeof p.supply!=='object'||Array.isArray(p.supply)||Object.keys(p.supply).length>300||Object.entries(p.supply).some(([id,n])=>!/^[a-zA-Z0-9_-]{1,100}$/.test(id)||!Number.isSafeInteger(n)||n<0||n>20000000)))return null;
+ if(p.supply!==undefined&&(!p.supply||typeof p.supply!=='object'||Array.isArray(p.supply)||Object.keys(p.supply).length>300||Object.entries(p.supply).some(([id,n])=>!/^[a-zA-Z0-9_-]{1,100}$/.test(id)||!Number.isFinite(n)||n<0||n>20000000)))return null;
  return {...p,owned:[...new Set(p.owned)]};
 }
 export function slotCandidates(products:PlanProduct[],c:PlanConditions,index:number){
@@ -34,7 +34,7 @@ export function basket(ids: string[], products: PlanProduct[], owned: string[], 
   const product=products.find(p=>p.id===id);
   if(!product)throw new Error('상품 정보가 변경됐어요. 식단을 다시 추천받아 주세요.');
   const packs=Math.ceil(uses/product.servings), have=owned.includes(id);
-  return {product,uses,packs,have,left: packs*product.servings-uses,cost:have?0:Math.max(0,packs-(supply[id]??0))*product.price};
+  return {product,uses,packs,have,left: packs*product.servings-uses,cost:have?0:Math.ceil(Math.max(0,uses/product.servings-(supply[id]??0)-0.000001))*product.price};
  });
 }
 export const basketTotal=(ids:string[], products:PlanProduct[], owned:string[],supply:Record<string,number>={})=>basket(ids,products,owned,supply).reduce((n,p)=>n+p.cost,0);

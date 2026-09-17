@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { MonthlyPlanner } from "./monthly-planner";
 import { Dashboard } from "./dashboard";
+import { FoodIntake } from "./food-intake";
 import { ShoppingPlanner } from "./shopping-planner";
 import type { DashboardData } from "../lib/dashboard";
 import { AuthScreen } from "./auth-screen";
@@ -173,6 +174,7 @@ export default function Home() {
       {showAuth ? <AuthScreen initialError={authError} onExplore={() => { setShowAuth(false); setAuthError(""); }} onSuccess={(user) => { setDashboard(null); setAuthUser(user); setAuthError(""); setShowAuth(false); setTab("home"); }}/> : <>
       <header className="app-header"><Brand/><div className="app-header-actions">{authUser ? <button className="logout-link" type="button" onClick={signOut}>로그아웃</button> : <button className="logout-link" type="button" onClick={() => { setAuthError(""); setShowAuth(true); }}>로그인</button>}<button className="avatar" type="button" onClick={() => setTab("profile")} aria-label="내 정보 보기">{displayName.slice(0, 1)}</button></div></header>
       <div className="app-content" ref={contentRef}>
+        {(tab === "home" || tab === "record") && <FoodIntake key={`intake-${authUser?.id??"guest"}-${tab}`} userId={authUser?.id} onLogin={()=>setShowAuth(true)} history={tab==="record"}/>}
         {tab === "home" && <ShoppingPlanner key={`shopping-home-${authUser?.id??"guest"}`} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/>}
         {(tab === "home" || tab === "cart" || tab === "profile") && <section className="home-guide-entry"><strong>{tab === "profile" ? "내가 제보한 한 끼" : "괜찮은 한 끼를 찾았나요?"}</strong><p>메뉴·상품을 제보하면 검토 후 함께 나눌 수 있어요.</p><Link href={tab === "profile" ? "/submissions#mine" : "/submissions"}>{tab === "profile" ? "내 제보와 검토 결과 보기 →" : "메뉴·상품 제보하기 →"}</Link></section>}
         {tab === "home" && <section className="home-guide-entry"><strong>자취 식단과 식비, 함께 계획해요</strong><p>일주일 식비 예산부터 1인 가구 장보기 리스트까지.</p><Link href="/guides">자취 식생활 가이드 읽기 →</Link></section>}

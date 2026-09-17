@@ -1,3 +1,4 @@
+import {servingNutrition} from './food-intake';
 import {calorieEstimate, parseBodyProfile} from './body-profile';
 import {parseDiet, dietStyles} from './meal-plan';
 import {excludedFoodAliases, excludedFoods, type ExcludedFood} from './excluded-foods';
@@ -14,12 +15,7 @@ export function personalizeProducts(products:PlanProduct[],raw:unknown,rawDiet:u
   return true;
  });
  const result=filtered.map(p=>{
-  const basis=p.nutritionBasis?.replaceAll(' ','').match(/^(?:가식부)?(\d+(?:\.\d+)?)g(?:당|기준)?$/);
-  const grams=p.servingGrams??(p.unit==='g'?p.quantity/p.servings:null);
-  const factor=basis&&Number(basis[1])>0&&grams!==null?grams/Number(basis[1]):null;
-  const sourced=Boolean(p.nutritionSourceUrl||p.nutritionPhotoUrl);
-  const kcal=sourced&&factor!==null&&p.caloriesKcal!=null?p.caloriesKcal*factor:null;
-  const protein=sourced&&factor!==null&&p.proteinG!=null?p.proteinG*factor:null;
+  const {calories:kcal,protein}=servingNutrition(p);
   const fit=energy&&kcal!==null?Math.max(-150,100-200*Math.abs(kcal-energy.perMeal)/energy.perMeal):0;
   const preference=diet?.style==='protein'&&protein!==null?Math.min(60,protein*2):diet?.style==='quick'&&p.category!=='meal_kit'?40:0;
   return {...p,personalizationScore:profile?.pregnancy?0:fit+preference,servingCalories:kcal===null?null:Math.round(kcal)};

@@ -3,3 +3,5 @@
 .planner-slots{border:0;padding:0;margin:0;display:flex;gap:18px}.planner-slots legend{font-size:13px;font-weight:700;margin-bottom:10px}.planner-slots label{display:flex;align-items:center;gap:6px}.planner-slots input{width:18px;min-height:18px;height:18px;accent-color:#426747}.planner-result summary{cursor:pointer;font-weight:700;padding:14px 0}
 
 .profile-shopping-links{display:grid;gap:14px;margin-top:20px}.profile-shopping-links a{color:#426747;font-size:14px;font-weight:700}.profile-shopping-links small{color:#647164}.profile-extra{border-top:1px solid #e3e7dc;padding:18px 0}.profile-extra>summary{cursor:pointer;font-size:14px;font-weight:700;color:#465a48}
+
+.planner-meals .planner-meal-price{font-size:14px;line-height:1.5;color:#426747;font-weight:800}
