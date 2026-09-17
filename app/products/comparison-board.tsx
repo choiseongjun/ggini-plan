@@ -1,4 +1,5 @@
 'use client';
+import {trackComparison} from '../../lib/track-comparison';
 import {useState} from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -9,7 +10,7 @@ import {comparableNutrition,comparablePrice,comparisonWon,nutritionDisplay,produ
 export function ComparisonBoard({items}:{items:CatalogItem[]}){
  const [ids,setIds]=useState<string[]>([]);
  const selected=items.filter(p=>ids.includes(p.id));
- function toggle(id:string){setIds(prev=>prev.includes(id)?prev.filter(x=>x!==id):prev.length<4?[...prev,id]:prev);}
+ function toggle(id:string){if(!ids.includes(id)&&ids.length<4)trackComparison(id);setIds(prev=>prev.includes(id)?prev.filter(x=>x!==id):prev.length<4?[...prev,id]:prev);}
  return <>
   <div className="comparison-status" role="status">이 페이지에서 최대 4개 선택 · {ids.length}/4 {ids.length>0&&<><a href="#selected-products">선택 상품 비교하기 ↓</a><button type="button" onClick={()=>setIds([])}>선택 해제</button></>}</div>
   <div className="products-grid">{items.map(p=>{const n=comparableNutrition(p),price=comparablePrice(p);return <article className="product-card" key={p.id}>

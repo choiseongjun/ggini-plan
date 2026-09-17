@@ -1,5 +1,7 @@
 "use client";
 
+import {ComparisonTrends} from './comparison-trends';
+import {trackComparison} from '../lib/track-comparison';
 import {LanguageSwitcher} from './language-switcher';
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -66,7 +68,7 @@ export default function Home() {
   const compareProduct = products.find((product) => product.id === compareProductId);
   const compareOffers = [...(comparison?.offers ?? [])].sort((a, b) => sortBy === "unit" ? (a.unitPrice ?? Number.POSITIVE_INFINITY) - (b.unitPrice ?? Number.POSITIVE_INFINITY) || a.price - b.price : a.price - b.price);
   const compareLinks = shoppingSearchLinks(compareProduct?.searchQuery ?? "");
-  const openCompare = (itemId: string) => { setComparison(null); setCompareLoading(true); setSortBy("unit"); router.push(`/compare/${encodeURIComponent(itemId)}`); };
+  const openCompare = (itemId: string) => { trackComparison(itemId); setComparison(null); setCompareLoading(true); setSortBy("unit"); router.push(`/compare/${encodeURIComponent(itemId)}`); };
   async function refreshDashboard(){const r=await fetch("/api/dashboard",{cache:"no-store"});const d=await r.json();if(!r.ok)throw new Error(d.error);setDashboard(d);}
   const editBudget=()=>{if(!authUser){setShowAuth(true);return;}setDraftBudget(dashboard?.budget?.toString()??"");setShowSetup(true);};
   async function saveSetup(event:React.FormEvent){event.preventDefault();setSavingBudget(true);setDataError("");try{const r=await fetch("/api/dashboard",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"budget",amount:Number(draftBudget)})});const d=await r.json();if(!r.ok)throw new Error(d.error);await refreshDashboard();setShowSetup(false);}catch(e){setDataError(e instanceof Error?e.message:"저장하지 못했어요.");}finally{setSavingBudget(false);}}
@@ -159,6 +161,7 @@ export default function Home() {
       <div className="app-content" ref={contentRef}>
         {tab === "record" && <FoodIntake key={`intake-${authUser?.id??"guest"}-${tab}`} userId={authUser?.id} onLogin={()=>setShowAuth(true)} history={tab==="record"} recordDate={recordDate} onDateChange={setRecordDate}/>}
         {tab === "home" && <ShoppingPlanner key={`shopping-home-${authUser?.id??"guest"}`} dashboard={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/>}
+        {tab === "home" && <ComparisonTrends/>}
         {tab==='home'&&<section className="home-guide-entry"><strong>닭가슴살부터 냉동볶음밥까지, 비교하고 골라요</strong><p>실제 판매 구성·가격·영양표를 확인하고 최대 4개 상품을 나란히 비교해 보세요.</p><Link href="/products">식품 가격·영양성분 비교하기 →</Link></section>}
         <ServiceFeedback page={`/${tab==='home'?'':tab}`}/>
         {(tab === "home" || tab === "cart" || tab === "profile") && <section className="home-guide-entry"><strong>{tab === "profile" ? "내가 제보한 한 끼" : "찾는 상품이 없거나 영양정보가 빠졌나요?"}</strong><p>상품 판매 링크와 영양성분표 사진을 제보해 주세요. 검토 후 상품 정보를 보완해요.</p><Link href={tab === "profile" ? "/submissions#mine" : "/submissions"}>{tab === "profile" ? "내 제보와 검토 결과 보기 →" : "상품·영양정보 제보하기 →"}</Link></section>}
