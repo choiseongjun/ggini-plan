@@ -4,7 +4,10 @@ import pg from 'pg';
 
 // Dry run by default. Only reviewed manifest values may be written.
 const apply=process.argv.includes('--apply');
-const manifest=JSON.parse(await fs.readFile('data/catalog-nutrition-backfill-2026-09-17.json','utf8'));
+const manifestArg=process.argv.indexOf('--manifest');
+if(manifestArg!==-1)assert(process.argv[manifestArg+1]&&!process.argv[manifestArg+1].startsWith('--'),'--manifest requires a file path');
+const manifestPath=manifestArg===-1?'data/catalog-nutrition-backfill-2026-09-17.json':process.argv[manifestArg+1];
+const manifest=JSON.parse(await fs.readFile(manifestPath,'utf8'));
 const fields=['calories_kcal','protein_g','carbohydrates_g','fat_g','sodium_mg'];
 const ids=new Set();
 for(const item of manifest.items){

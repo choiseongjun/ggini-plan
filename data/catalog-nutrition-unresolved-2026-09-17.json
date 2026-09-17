@@ -1,10 +1,10 @@
 {
-  "checkedAt": "2026-09-17T01:10:14.342Z",
+  "checkedAt": "2026-09-17T02:02:35.482Z",
   "counts": {
     "total": 500,
     "complete": 421,
-    "partial": 17,
-    "empty": 62
+    "partial": 20,
+    "empty": 59
   },
   "policy": "유사 상품 값, 일반 식품 평균값, 미확인 0값으로 대체하지 않음",
   "items": [
@@ -855,19 +855,19 @@
     {
       "id": "kurly-1002049353",
       "name": "[청정원] 미니돈카츠 340g",
-      "status": "empty",
+      "status": "partial",
       "missingFields": [
-        "calories_kcal",
         "protein_g",
         "carbohydrates_g",
         "fat_g",
         "sodium_mg"
       ],
-      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
-      "basis": null,
+      "reason": "포장 전면의 총 열량 확인. 단백질·탄수화물·지방·나트륨 표 미공개",
+      "basis": "총 내용량 340g당 (포장 전면 열량 확인)",
       "productUrl": "https://www.kurly.com/goods/1002049353",
-      "sourceUrl": null,
+      "sourceUrl": "https://www.kurly.com/goods/1002049353",
       "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/da88d9a2-a22c-4a71-aa69-3d491850edf6.png",
         "https://product-image.kurly.com/product/image/9a8aeff7-4419-48cb-b2fd-c6b8c58d01c4.png"
       ],
       "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
@@ -972,19 +972,19 @@
     {
       "id": "kurly-1002327715",
       "name": "[베키아에누보] 트러플 감자 스프 180g",
-      "status": "empty",
+      "status": "partial",
       "missingFields": [
-        "calories_kcal",
         "protein_g",
         "carbohydrates_g",
         "fat_g",
         "sodium_mg"
       ],
-      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
-      "basis": null,
+      "reason": "포장 전면의 총 열량 확인. 단백질·탄수화물·지방·나트륨 표 미공개",
+      "basis": "총 내용량 180g당 (포장 전면 열량 확인)",
       "productUrl": "https://www.kurly.com/goods/1002327715",
-      "sourceUrl": null,
+      "sourceUrl": "https://www.kurly.com/goods/1002327715",
       "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/3a81e1a6-789e-48a9-a194-06b6e300165c.jpg",
         "https://product-image.kurly.com/product/image/232abfcd-fc3e-4763-8235-f1290107bf7f.jpg"
       ],
       "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"
@@ -1380,19 +1380,19 @@
     {
       "id": "kurly-5074327",
       "name": "[사자표] 거장 짜장소스 250g",
-      "status": "empty",
+      "status": "partial",
       "missingFields": [
-        "calories_kcal",
         "protein_g",
         "carbohydrates_g",
         "fat_g",
         "sodium_mg"
       ],
-      "reason": "확인한 판매처 표시정보에서 해당 상품의 영양수치 확인 불가",
-      "basis": null,
+      "reason": "포장 전면의 총 열량 확인. 단백질·탄수화물·지방·나트륨 표 미공개",
+      "basis": "총 내용량 250g당 (포장 전면 열량 확인)",
       "productUrl": "https://www.kurly.com/goods/5074327",
-      "sourceUrl": null,
+      "sourceUrl": "https://www.kurly.com/goods/5074327",
       "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20210610/gv00000191994_1.jpg",
         "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20210610/gv00000191994_1.jpg"
       ],
       "nextAction": "동일 상품의 제조사 영양성분표 또는 포장 사진 확인 필요"

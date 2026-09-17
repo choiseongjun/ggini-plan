@@ -32,6 +32,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
  const guideKey=JSON.stringify({...conditions,budget:1000000,startDate:undefined});
  const budgetGuide=useBudgetGuide(products,guideKey);
  const [allowSingleMenu,setAllowSingleMenu]=useState(false);
+ const [showExclusions,setShowExclusions]=useState(false);
  const [confirmReset,setConfirmReset]=useState(false);
  const [error,setError]=useState(''),[message,setMessage]=useState(''),[retry,setRetry]=useState(0);
  useEffect(()=>{
@@ -142,11 +143,13 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
      <div className="planner-presets">{[...new Set([budgetGuide.minimum,budgetGuide.varietyMinimum,budgetGuide.varietyUpper].filter((n):n is number=>n!==null).map(n=>Math.max(1000,Math.ceil(n/1000)*1000)))].filter(n=>n<=1000000).map(n=><button type="button" key={n} aria-pressed={conditions.budget===n} onClick={()=>update({budget:n})}>{won(n)}으로 설정</button>)}</div>
     </>}
     <small>현재 판매 묶음 가격과 주문·보유 수량 기준 · 배송비 별도. 최소 금액은 영양 목표를 충족하는 금액이 아니에요.</small>
-    <a href="#planner-exclusions">아래에서 피할 재료 체크 확인 ↓</a>
+    <a href="#planner-exclusions" onClick={()=>setShowExclusions(true)}>피할 재료 상세 확인 ↓</a>
     {conditions.meals>1&&(budgetGuide.count===1||(budgetGuide.varietyMinimum!==null&&conditions.budget<budgetGuide.varietyMinimum))&&<label><Checkbox checked={allowSingleMenu} onChange={e=>setAllowSingleMenu(e.target.checked)}/> 한 가지 메뉴로만 구성되어도 괜찮아요</label>}
    </section>}
    <label>조리 방식<select value={conditions.cooking} onChange={e=>update({cooking:e.target.value as PlanConditions['cooking']})}><option value="all">간편식과 밀키트 골고루</option><option value="quick">데우거나 볶는 간편식 위주</option><option value="kit">밀키트 조리 가능</option></select></label>
-   <fieldset id="planner-exclusions" className="planner-exclusions" disabled={loading||busy}>
+   <div id="planner-exclusions">
+   {mode==='plan'&&<div className="planner-exclusions-toggle"><span>피할 재료 · {(conditions.excluded??[]).length}개 선택{conditions.avoid.trim()?' · 직접 입력 있음':''}</span><button type="button" aria-expanded={showExclusions} aria-controls="planner-exclusions-fields" onClick={()=>setShowExclusions(value=>!value)}>{showExclusions?'접기':'상세'}</button></div>}
+   {(mode!=='plan'||showExclusions)&&<fieldset id="planner-exclusions-fields" className="planner-exclusions" disabled={loading||busy}>
     <legend>피할 재료 · {(conditions.excluded??[]).length}개 선택</legend>
     <p>체크한 재료는 이번 식단에서 제외해요. 처음에는 마이에 저장된 선택을 가져와요.</p>
     <strong className="planner-exclusion-summary">{conditions.excluded?.length?conditions.excluded.map(key=>excludedFoods[key]).join(' · '):'체크한 제외 재료 없음'}</strong>
@@ -154,8 +157,9 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
     {excludedFoodGroups.map(group=><div className="planner-exclusion-group" key={group.label}><span>{group.label}</span><div>{group.keys.map(key=><label key={key} className={(conditions.excluded??[]).includes(key)?'is-checked':''}><Checkbox checked={(conditions.excluded??[]).includes(key)} onChange={e=>update({excluded:e.target.checked?[...(conditions.excluded??[]),key]:(conditions.excluded??[]).filter(k=>k!==key)})}/>{excludedFoods[key]}</label>)}</div></div>)}
     <label>목록에 없는 재료 추가 (선택)<input value={conditions.avoid} maxLength={200} placeholder="예: 고수, 가지 — 쉼표로 구분" onChange={e=>update({avoid:e.target.value})}/></label>
     <small>여기서 바꾼 선택은 이번 추천과 저장하는 식단에 적용돼요. 마이의 기본 제외 재료는 그대로 유지돼요.</small>
-   </fieldset>
    <small>등록된 상품명·원문 알레르기 표시에서 찾아 제외해요. 알레르기가 있다면 구매 전 전체 원재료와 제조시설 표시를 확인해 주세요.</small>
+   </fieldset>}
+   </div>
    <button className="primary-button" disabled={loading||busy||!progress.ready||(mode!=='settings'&&!products.length)}>{loading?'설정 불러오는 중…':busy?'저장 중…':mode==='settings'?'저장하고 내 정보로 추천받기':'이번 주 살 것 추천받기 →'}</button>
   </form>}
   </details>}

@@ -10,13 +10,13 @@ type Command={action:'eat'|'undo';id:string;version:number;productId?:string;por
 const number=(n:number)=>n.toLocaleString('ko-KR',{maximumFractionDigits:1});
 const nutrition=(n:number|null,unit:string)=>n===null?'미확인':`${number(n)}${unit}`;
 
-export function useFoodIntake(userId?:string,history=false){
+export function useFoodIntake(userId?:string,history=false,externalDate?:string){
  const [today,setToday]=useState(()=>emptyDashboard().today),[date,setDate]=useState(()=>emptyDashboard().today);
  const [data,setData]=useState<IntakeData|null>(null),[revision,setRevision]=useState(0),[busy,setBusy]=useState(false),[loading,setLoading]=useState(Boolean(userId));
  const [error,setError]=useState(''),[message,setMessage]=useState(''),[pending,setPending]=useState<Command|null>(null),[amounts,setAmounts]=useState<Record<string,number>>({});
  const [editing,setEditing]=useState<string|null>(null),[showAll,setShowAll]=useState(false);
  const locked=useRef(false),pendingRef=useRef<Command|null>(null);
- const selectedDate=history?date:today;
+ const selectedDate=history?(externalDate??date):today;
  useEffect(()=>{
   if(!userId)return;
   const controller=new AbortController();
@@ -58,12 +58,12 @@ export function useFoodIntake(userId?:string,history=false){
  return {today,date,setDate,current,totals,products,visible,disabled,loading,error,message,pending,busy,reload,send,eat,editing,setEditing,amounts,setAmounts,showAll,setShowAll,setLoading,setError,selectedDate,pendingRef};
 }
 
-export function FoodIntake({userId,onLogin,history=false}:{userId?:string;onLogin:()=>void;history?:boolean}){
- const {today,date,setDate,current,totals,products,visible,disabled,loading,error,message,pending,busy,reload,send,eat,editing,setEditing,amounts,setAmounts,showAll,setShowAll,setLoading,setError,selectedDate,pendingRef}=useFoodIntake(userId,history);
+export function FoodIntake({userId,onLogin,history=false,recordDate,onDateChange}:{userId?:string;onLogin:()=>void;history?:boolean;recordDate?:string;onDateChange?:(date:string)=>void}){
+ const {today,setDate,current,totals,products,visible,disabled,loading,error,message,pending,busy,reload,send,eat,editing,setEditing,amounts,setAmounts,showAll,setShowAll,setLoading,setError,selectedDate,pendingRef}=useFoodIntake(userId,history,recordDate);
  return <section className="food-intake" aria-label={history?'먹은 음식 기록':'오늘 먹은 음식'}>
   <header><span className="section-kicker">한 번 누르면 기록 끝</span><h2>{history?'실제로 먹은 기록':'오늘, 얼마나 챙겨 먹었나요?'}</h2><p>먹었어요를 누르면 칼로리·단백질과 남은 음식이 함께 반영돼요.</p></header>
   {!userId?<div className="intake-empty"><p>구매한 음식의 영양정보를 불러와요. 음식 이름과 영양 수치를 다시 입력하지 않아도 돼요.</p><button type="button" onClick={onLogin}>로그인하고 먹은 기록 시작하기</button></div>:<>
-   {history&&<label className="intake-date">기록 날짜<input type="date" value={date} max={today} disabled={busy||Boolean(pending)} onChange={e=>{if(e.target.value){setDate(e.target.value);setLoading(true);setError('');}}}/></label>}
+   {history&&<label className="intake-date">기록 날짜<input type="date" value={selectedDate} max={today} disabled={busy||Boolean(pending)} onChange={e=>{if(e.target.value){setDate(e.target.value);onDateChange?.(e.target.value);setLoading(true);setError('');}}}/></label>}
    {loading&&<p role="status">먹은 기록을 불러오는 중…</p>}
    {error&&<div role="alert" className="intake-error"><p>{error}</p>{pending?<button type="button" disabled={busy} onClick={()=>void send(pending)}>저장 결과 다시 확인</button>:<button type="button" disabled={busy} onClick={reload}>다시 불러오기</button>}</div>}
    {message&&<p role="status" className="intake-message">{message}</p>}

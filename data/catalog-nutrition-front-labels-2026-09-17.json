@@ -1,0 +1,99 @@
+{
+  "reviewedAt": "2026-09-17T02:02:13.697Z",
+  "policy": "누락 상품 79개 재검토. 포장 전면의 전체 용량과 열량만 직접 판독. 미공개 영양값은 null 유지.",
+  "items": [
+    {
+      "id": "kurly-1002049353",
+      "name": "[청정원] 미니돈카츠 340g",
+      "detail": "340g · 1팩 · 냉동",
+      "productUrl": "https://www.kurly.com/goods/1002049353",
+      "basis": "총 내용량 340g당 (포장 전면 열량 확인)",
+      "calories_kcal": 952,
+      "protein_g": null,
+      "carbohydrates_g": null,
+      "fat_g": null,
+      "sodium_mg": null,
+      "sourceName": "컬리 판매처 상품 포장 전면 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1002049353",
+      "photoUrl": "https://product-image.kurly.com/product/image/da88d9a2-a22c-4a71-aa69-3d491850edf6.png",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/da88d9a2-a22c-4a71-aa69-3d491850edf6.png",
+        "https://product-image.kurly.com/product/image/9a8aeff7-4419-48cb-b2fd-c6b8c58d01c4.png"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-1002327715",
+      "name": "[베키아에누보] 트러플 감자 스프 180g",
+      "detail": "180g · 1개 · 냉동",
+      "productUrl": "https://www.kurly.com/goods/1002327715",
+      "basis": "총 내용량 180g당 (포장 전면 열량 확인)",
+      "calories_kcal": 236,
+      "protein_g": null,
+      "carbohydrates_g": null,
+      "fat_g": null,
+      "sodium_mg": null,
+      "sourceName": "컬리 판매처 상품 포장 전면 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/1002327715",
+      "photoUrl": "https://product-image.kurly.com/product/image/3a81e1a6-789e-48a9-a194-06b6e300165c.jpg",
+      "evidenceUrls": [
+        "https://product-image.kurly.com/product/image/3a81e1a6-789e-48a9-a194-06b6e300165c.jpg",
+        "https://product-image.kurly.com/product/image/232abfcd-fc3e-4763-8235-f1290107bf7f.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    },
+    {
+      "id": "kurly-5074327",
+      "name": "[사자표] 거장 짜장소스 250g",
+      "detail": "250g · 1개 · 냉장",
+      "productUrl": "https://www.kurly.com/goods/5074327",
+      "basis": "총 내용량 250g당 (포장 전면 열량 확인)",
+      "calories_kcal": 355,
+      "protein_g": null,
+      "carbohydrates_g": null,
+      "fat_g": null,
+      "sodium_mg": null,
+      "sourceName": "컬리 판매처 상품 포장 전면 · 2026-09-17 직접 확인",
+      "sourceUrl": "https://www.kurly.com/goods/5074327",
+      "photoUrl": "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20210610/gv00000191994_1.jpg",
+      "evidenceUrls": [
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20210610/gv00000191994_1.jpg",
+        "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20210610/gv00000191994_1.jpg"
+      ],
+      "expectedNutrition": {
+        "calories_kcal": null,
+        "protein_g": null,
+        "carbohydrates_g": null,
+        "fat_g": null,
+        "sodium_mg": null
+      },
+      "expectedSource": {
+        "nutrition_basis": null,
+        "nutrition_source_name": null,
+        "nutrition_source_url": null
+      }
+    }
+  ]
+}

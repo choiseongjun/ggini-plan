@@ -9,13 +9,16 @@ const month="date_trunc('month',NOW() AT TIME ZONE 'Asia/Seoul')::date";
 export async function GET(request:NextRequest){try{
  const user=await sessionUser(request);if(!user)return json(emptyDashboard());const db=getPool();
  const dates=(await db.query(`SELECT to_char((NOW() AT TIME ZONE 'Asia/Seoul')::date,'YYYY-MM-DD') AS today,to_char(${week},'YYYY-MM-DD') AS week`)).rows[0];
- const [budget,expenses,plans,monthlyBudget,monthlySpent]=await Promise.all([
+ const [budget,expenses,plans,monthlyBudget,monthlySpent,purchases]=await Promise.all([
  db.query(`SELECT amount FROM weekly_budgets WHERE user_id=$1 AND week_start=${week}`,[user.id]),
  db.query(`SELECT to_char(spent_on,'YYYY-MM-DD') AS date,category,amount FROM daily_expenses WHERE user_id=$1 ORDER BY spent_on DESC LIMIT 2000`,[user.id]),
  db.query(`SELECT DISTINCT ON ((created_at AT TIME ZONE 'Asia/Seoul')::date) id::text,to_char(created_at AT TIME ZONE 'Asia/Seoul','YYYY-MM-DD') AS date,recommendation FROM meal_plans WHERE user_id=$1 ORDER BY (created_at AT TIME ZONE 'Asia/Seoul')::date DESC,created_at DESC,id DESC LIMIT 366`,[user.id]),
  db.query(`SELECT amount FROM monthly_budgets WHERE user_id=$1 AND month_start=${month}`,[user.id]),
- db.query(`SELECT COALESCE(SUM(amount),0)::float8 AS amount FROM daily_expenses WHERE user_id=$1 AND category='food' AND spent_on>=${month} AND spent_on<${month}+INTERVAL '1 month'`,[user.id])]);
- return json({...dates,budget:budget.rows[0]?.amount??null,monthlyBudget:monthlyBudget.rows[0]?.amount??null,monthlyFoodSpent:monthlySpent.rows[0].amount,expenses:expenses.rows,plans:plans.rows});
+ db.query(`SELECT COALESCE(SUM(amount),0)::float8 AS amount FROM daily_expenses WHERE user_id=$1 AND category='food' AND spent_on>=${month} AND spent_on<${month}+INTERVAL '1 month'`,[user.id]),
+ db.query(`SELECT id::text,payload->'expense'->>'date' AS date,(payload->'expense'->>'amount')::int AS amount,payload->'expense'->>'action' AS action,
+ ARRAY(SELECT COALESCE(payload->'stock'->item_id->>'name','상품') FROM jsonb_array_elements_text(payload->'expense'->'itemIds') AS items(item_id)) AS names
+ FROM shopping_expenses WHERE user_id=$1 ORDER BY created_at DESC LIMIT 2000`,[user.id])]);
+ return json({...dates,budget:budget.rows[0]?.amount??null,monthlyBudget:monthlyBudget.rows[0]?.amount??null,monthlyFoodSpent:monthlySpent.rows[0].amount,expenses:expenses.rows,plans:plans.rows,purchases:purchases.rows});
  }catch(error){console.error("Dashboard lookup failed",error);return authFailure("내 기록을 불러오지 못했어요.",503);}}
 export async function PUT(request:NextRequest){if(!sameOrigin(request))return authFailure("요청을 확인해 주세요.",403);try{
  const user=await sessionUser(request);if(!user)return authFailure("로그인이 필요해요.",401);

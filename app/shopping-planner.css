@@ -58,3 +58,5 @@
 .planner-form .planner-exclusion-group label.is-checked{background:#eaf1df;border-color:#9ab781;color:#3e6131}
 .planner-restart{width:100%;margin:18px 0}
 .planner-controls{scroll-margin-top:90px}
+.planner-exclusions-toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 15px;border:1px solid #dce2ca;border-radius:15px;background:#fafbf5;font-size:13px;color:#455a3d}
+.planner-exclusions-toggle button{min-height:44px;padding:8px 15px;border:1px solid #dce2ca;border-radius:12px;background:white;color:#455a3d;font:inherit;cursor:pointer}
