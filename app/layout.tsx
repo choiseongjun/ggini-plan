@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   applicationName: "끼니플랜",
   robots: { index: indexable, follow: indexable },
   verification: {
-    google: process.env.GOOGLE_SITE_VERIFICATION || undefined,
+    google: process.env.GOOGLE_SITE_VERIFICATION || "odBJGV5ju_G4snodV81Swxv7cLRrZdXJqDkATCFDUIE",
     other: process.env.NAVER_SITE_VERIFICATION ? { "naver-site-verification": process.env.NAVER_SITE_VERIFICATION } : undefined,
   },
 };
