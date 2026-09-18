@@ -6,12 +6,26 @@ import { parseConditions, validMealIds, basketTotal } from '../../../lib/shoppin
 import {parseStock} from '../../../lib/shopping-progress';
 import {personalizeProducts} from '../../../lib/shopping-personalization';
 import {defaultDiet,parseDiet} from '../../../lib/meal-plan';
+import {validMealKinds} from '../../../lib/meal-kinds';
+import {initialConditions} from '../../../lib/shopping-plan';
 async function personalizedCatalog(userId?:string){
  const row=userId?(await getPool().query('SELECT height::float8,weight::float8,age,sex,activity,meals,pregnancy,diet_preferences FROM body_profiles WHERE user_id=$1',[userId])).rows[0]:null;
  const catalog=await planProducts(),diet=parseDiet(row?.diet_preferences)??defaultDiet;
  return {...personalizeProducts(catalog,row,row?.diet_preferences),baseProducts:personalizeProducts(catalog,row,{...diet,excluded:[]}).products,excluded:diet.excluded};
 }
 export const runtime='nodejs';
+export async function PATCH(request:NextRequest){
+ if(!sameOrigin(request))return authFailure('요청을 확인해 주세요.',403);
+ try{
+  const user=await sessionUser(request);if(!user)return authFailure('로그인이 필요해요.',401);
+  const raw=await request.text();if(raw.length>200)return authFailure('음식 종류를 확인해 주세요.',400);
+  let input;try{input=JSON.parse(raw);}catch{return authFailure('음식 종류를 확인해 주세요.',400);}
+  if(!validMealKinds(input?.mealKinds))return authFailure('음식 종류를 확인해 주세요.',400);
+  await getPool().query(`INSERT INTO shopping_preferences(user_id,conditions) VALUES($1,$2::jsonb)
+   ON CONFLICT(user_id) DO UPDATE SET conditions=shopping_preferences.conditions::jsonb || jsonb_build_object('mealKinds',$3::jsonb),updated_at=now()`,[user.id,JSON.stringify({...initialConditions,mealKinds:input.mealKinds}),JSON.stringify(input.mealKinds)]);
+  return Response.json({saved:true},{headers:{'Cache-Control':'no-store'}});
+ }catch{return authFailure('음식 종류를 저장하지 못했어요.',503);}
+}
 const json=(data:unknown,status=200)=>NextResponse.json(data,{status,headers:{'Cache-Control':'no-store'}});
 export async function GET(request:NextRequest){
  try{

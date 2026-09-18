@@ -1,0 +1,4 @@
+import {mealKinds,type MealKind} from '../lib/meal-kinds';
+export function MealKindPicker({value=[],onChange,disabled}:{value?:MealKind[];onChange:(value:MealKind[])=>void;disabled:boolean}){
+ return <fieldset className="meal-kind-picker" disabled={disabled}><legend>어떤 종류로 먹고 싶어요?</legend><p>여러 개 골라도 좋아요. 선택한 종류 안에서 예산과 식사 조건을 맞춰요.</p><div><button type="button" aria-pressed={!value.length} onClick={()=>onChange([])}>🍽️ 골고루<span>종류 제한 없이 추천</span></button>{(Object.entries(mealKinds) as [MealKind,typeof mealKinds[MealKind]][]).map(([key,item])=><button type="button" key={key} aria-pressed={value.includes(key)} onClick={()=>onChange(value.includes(key)?value.filter(k=>k!==key):[...value,key])}>{item.emoji} {item.label}<span>{item.description}</span></button>)}</div><small>마지막 선택을 해제하면 ‘골고루’로 돌아가요. 가벼운 식사는 음식 종류이며 저열량을 보장하지 않아요.</small></fieldset>;
+}

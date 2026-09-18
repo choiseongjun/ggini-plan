@@ -1,3 +1,4 @@
+import {allowsMealKind,validMealKinds,type MealKind} from './meal-kinds';
 import {validPlanDate} from './daily-plan';
 import {isShoppingGoal,productsForGoal,type ShoppingGoal} from './shopping-goals';
 import type { CatalogItem } from './catalog';
@@ -9,7 +10,7 @@ export type MealSlot = 'breakfast'|'lunch'|'dinner';
 export const slotLabels={breakfast:'아침',lunch:'점심',dinner:'저녁'};
 export const MAX_PLAN_DAYS=15;
 export const MAX_PLAN_MEALS=MAX_PLAN_DAYS*3;
-export type PlanConditions = { goal?:ShoppingGoal; mealMode?:'ready'|'cook'|'mixed'; excluded?:ExcludedFood[]; startDate?:string; budget: number; meals: number; cooking: 'quick' | 'kit' | 'all'; avoid: string; owned: string[]; supply?:Record<string,number>; days?:number; slots?:MealSlot[] };
+export type PlanConditions = { mealKinds?:MealKind[]; goal?:ShoppingGoal; mealMode?:'ready'|'cook'|'mixed'; excluded?:ExcludedFood[]; startDate?:string; budget: number; meals: number; cooking: 'quick' | 'kit' | 'all'; avoid: string; owned: string[]; supply?:Record<string,number>; days?:number; slots?:MealSlot[] };
 export const initialConditions: PlanConditions = {mealMode:'mixed',budget:50000,meals:7,cooking:'all',avoid:'',owned:[],days:7,slots:['dinner']};
 export function mealSchedule(c:PlanConditions){
  const slots=c.slots??(c.meals>=10?['lunch','dinner'] as MealSlot[]:['dinner'] as MealSlot[]);
@@ -18,6 +19,7 @@ export function mealSchedule(c:PlanConditions){
 export function parseConditions(value: unknown): PlanConditions | null {
  if(!value || typeof value!=='object')return null;
  const p=value as PlanConditions;
+ if(p.mealKinds!==undefined&&!validMealKinds(p.mealKinds))return null;
  if(p.goal!==undefined&&!isShoppingGoal(p.goal))return null;
  if(p.mealMode!==undefined&&!['ready','cook','mixed'].includes(p.mealMode))return null;
  if(p.excluded!==undefined&&(!Array.isArray(p.excluded)||p.excluded.length>Object.keys(excludedFoods).length||p.excluded.some(key=>typeof key!=='string'||!Object.hasOwn(excludedFoods,key))))return null;
@@ -35,7 +37,7 @@ export function validMealIds(ids:string[],products:PlanProduct[],c:PlanCondition
 const aliases: Record<string,string[]> = {우유:['우유','유제품','치즈','크림'],달걀:['달걀','계란','알류'],계란:['달걀','계란','알류'],소고기:['소고기','쇠고기','한우','비프'],돼지고기:['돼지고기','돈육','베이컨','삼겹'],닭고기:['닭','치킨'],콩:['콩','대두','두부'],밀:['밀','소맥'],새우:['새우','쉬림프']};
 export function candidates(products: PlanProduct[], c: PlanConditions) {
  const avoid=c.avoid.split(/[,，\n]/).map(x=>x.trim().toLowerCase()).filter(Boolean);
- return products.filter(p=>allowsExcludedFoods(p,c.excluded??[])&&(p.productUrl||p.recipe) && p.price>0 && ((c.mealMode??'ready')==='mixed'||((c.mealMode??'ready')==='cook'?!!p.recipe&&!p.recipe.assembly:!p.recipe||!!p.recipe.assembly)) && (!!p.recipe&&!p.recipe.assembly||c.cooking==='all'||(c.cooking==='kit'?p.category==='meal_kit':p.category!=='meal_kit')) && (!avoid.length || (p.avoidanceText!==null && !avoid.some(word=>(aliases[word]??[word]).some(a=>`${p.name} ${p.avoidanceText}`.toLowerCase().includes(a))))));
+ return products.filter(p=>allowsMealKind(p,c.mealKinds)&&allowsExcludedFoods(p,c.excluded??[])&&(p.productUrl||p.recipe) && p.price>0 && ((c.mealMode??'ready')==='mixed'||((c.mealMode??'ready')==='cook'?!!p.recipe&&!p.recipe.assembly:!p.recipe||!!p.recipe.assembly)) && (!!p.recipe&&!p.recipe.assembly||c.cooking==='all'||(c.cooking==='kit'?p.category==='meal_kit':p.category!=='meal_kit')) && (!avoid.length || (p.avoidanceText!==null && !avoid.some(word=>(aliases[word]??[word]).some(a=>`${p.name} ${p.avoidanceText}`.toLowerCase().includes(a))))));
 }
 export function basket(ids: string[], products: PlanProduct[], owned: string[], supply:Record<string,number>={}) {
  const counts=new Map<string,number>();
