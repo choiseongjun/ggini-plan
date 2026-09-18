@@ -227,7 +227,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
      <p>현재 상품으로 {budgetGuide.approximate?'찾은 절약 구성':'가장 저렴한 구성'}은 약 <b>{won(budgetGuide.minimum)}</b>{budgetGuide.varietyMinimum!==null&&budgetGuide.count>1?<> · 다른 메뉴로 구성하면 약 <b>{won(budgetGuide.varietyMinimum)}</b>부터예요.</>:'부터예요. 같은 메뉴는 중복하지 않아요.'}</p>
      <div className="planner-presets">{[...new Set([budgetGuide.minimum,budgetGuide.varietyUpper].filter((n):n is number=>n!==null).map(n=>Math.max(1000,Math.ceil(n/1000)*1000)))].filter(n=>n<=1000000).map(n=><button type="button" key={n} aria-pressed={conditions.budget===n} onClick={()=>update({budget:n})}>{won(n)}으로 맞추기</button>)}</div>
     </>}
-    <small>등록 상품 가격·주문/보유 수량 반영 · 배송비 별도</small>
+    <small>확인 시점의 상품 가격으로 계산한 예상 금액이에요. 가격·할인·옵션에 따라 달라질 수 있으며 배송비는 별도예요.</small>
    </div>}
    {!loading&&progress.ready&&budgetGuide&&<details className="planner-budget-guide" open={budgetGuide.minimum===null||conditions.budget<budgetGuide.minimum}><summary>내 예산으로 얼마나 준비할 수 있나요?</summary>
     <strong>{conditions.days??schedule.at(-1)?.day}일 · {conditions.meals}끼 예산 가이드</strong>
@@ -238,7 +238,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
      {conditions.budget<budgetGuide.minimum&&<p role="status">{budgetGuide.approximate?'이 절약 구성은 현재 예산보다':'현재 예산에서'} {won(budgetGuide.minimum-conditions.budget)} {budgetGuide.approximate?'더 들어요':'더 필요해요' }.</p>}
      <div className="planner-presets">{[...new Set([budgetGuide.minimum,budgetGuide.varietyMinimum,budgetGuide.varietyUpper].filter((n):n is number=>n!==null).map(n=>Math.max(1000,Math.ceil(n/1000)*1000)))].filter(n=>n<=1000000).map(n=><button type="button" key={n} aria-pressed={conditions.budget===n} onClick={()=>update({budget:n})}>{won(n)}으로 설정</button>)}</div>
     </>}
-    <small>현재 판매 묶음 가격과 주문·보유 수량 기준 · 배송비 별도. 최소 금액은 영양 목표를 충족하는 금액이 아니에요.</small>
+    <small>확인 시점의 판매 묶음 가격과 주문·보유 수량 기준 · 가격 변동 가능 · 배송비 별도. 최소 금액은 영양 목표를 충족하는 금액이 아니에요.</small>
     <a href="#planner-exclusions" onClick={()=>{setMoreOptions(true);setShowExclusions(true);}}>피할 재료 상세 확인 ↓</a>
    </details>}
    {!locale.isTaiwan&&<details className="planner-more-options"><summary>먹는 방식·조리 설정</summary><label>어떻게 먹을까요?<select value={conditions.mealMode??'ready'} onChange={e=>update({mealMode:e.target.value as PlanConditions['mealMode']})}><option value="mixed">둘 다 · 간편식과 직접 요리 비교</option><option value="ready">간편식 위주</option><option value="cook">직접 요리</option></select></label>
