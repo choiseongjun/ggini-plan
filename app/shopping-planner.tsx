@@ -66,6 +66,10 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   const heading=plannerRef.current?.querySelector<HTMLElement>('[data-recommended-menu-heading]');
   heading?.focus({preventScroll:true});
   heading?.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const animations=Array.from(plannerRef.current?.querySelectorAll<HTMLElement>('.today-menu')??[])
+   .map(card=>card.animate([{opacity:0.4,transform:'translateY(6px)'},{opacity:1,transform:'translateY(0)'}],{duration:220,easing:'ease-out'}));
+  return()=>animations.forEach(animation=>animation.cancel());
  },[resultFocus]);
  const [personalization,setPersonalization]=useState<ReturnType<typeof personalizeProducts>['personalization']|null>(null);
  const [profileExcluded,setProfileExcluded]=useState<ExcludedFood[]>([]);
@@ -200,7 +204,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    {confirmReset&&<div role="group" aria-label="장바구니 초기화 확인"><strong>추천 메뉴와 주문·보유 목록을 모두 비울까요?</strong><p>홈의 현재 추천 식단도 함께 비워요. 먹은 기록·식비 기록·예산과 취향·공유 링크는 유지돼요. 판매처의 실제 주문은 취소되지 않아요. 이 추천 밖에서 따로 관리하는 재료 목록과 함께 담은 장바구니는 별도예요.</p><button type="button" disabled={progress.busy} onClick={()=>setConfirmReset(false)}>취소</button><button type="button" disabled={progress.busy||!progress.ready} onClick={()=>void resetCart()}>{progress.busy?'초기화 중…':'확인, 모두 초기화'}</button></div>}
   </section>}
   {mode==='plan'&&<div className="home-steps"><span>💰 예산 정하기</span><span>→</span><strong>🍚 메뉴 고르기</strong><span>→</span><span>✓ 먹었어요</span></div>}
-  {mode==='plan'&&<TodayMeals shoppingTotal={purchases.reduce((sum,row)=>sum+row.cost,0)} intake={intake} userId={userId} onLogin={onLogin} ids={ids} products={products} conditions={conditions} startDate={conditions.startDate??locale.today()} onStartDate={date=>{const c=parseConditions({...conditions,startDate:date});if(c){setConditions(c);remember(c,ids);}}} onSwap={swap} onChoose={chooseMeal} progress={progress} perMealCalories={personalization?.perMealCalories??null} dailyCalories={personalization?.blocked?null:personalization?.dailyCalories??null} dashboard={dashboard}/>}
+  {mode==='plan'&&<TodayMeals nutritionReference={personalization?.nutritionReference??null} shoppingTotal={purchases.reduce((sum,row)=>sum+row.cost,0)} intake={intake} userId={userId} onLogin={onLogin} ids={ids} products={products} conditions={conditions} startDate={conditions.startDate??locale.today()} onStartDate={date=>{const c=parseConditions({...conditions,startDate:date});if(c){setConditions(c);remember(c,ids);}}} onSwap={swap} onChoose={chooseMeal} progress={progress} perMealCalories={personalization?.perMealCalories??null} dailyCalories={personalization?.blocked?null:personalization?.dailyCalories??null} dashboard={dashboard}/>}
   {mode!=='settings'&&ids.length>1&&new Set(ids).size===1&&<p className="body-note" role="status">현재 조건에서는 한 가지 메뉴로만 구성됐어요. 예산·조리 방식·제외 재료 설정을 확인해 주세요. 다른 메뉴를 원하면 조건을 조정하고 다시 추천받아 주세요.</p>}
   {!locale.isTaiwan&&mode!=='settings'&&ids.length>0&&<details className="home-secondary"><summary>이 식단 공유하기</summary><SharePlanButton key={JSON.stringify([ids,conditions.days,conditions.slots])} userId={userId} onLogin={onLogin} conditions={conditions} mealIds={ids}/></details>}
   {!locale.isTaiwan&&mode!=='settings'&&ids.length>0&&<p className="body-note">음식 종류 · {conditions.mealKinds?.length?conditions.mealKinds.map(k=>mealKinds[k].label).join('·'):'골고루'} / 식사 목표 · {shoppingGoals[conditions.goal??'maintain'].label}</p>}

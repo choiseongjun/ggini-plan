@@ -5,6 +5,7 @@ import {excludedFoods, type ExcludedFood} from './excluded-foods';
 import {allowsExcludedFoods} from './shopping-exclusions';
 import type {PlanProduct} from './shopping-plan';
 import {nutritionIsEstimated} from './serving-nutrients';
+import {dailyNutritionReference} from './daily-nutrition-reference';
 
 export function personalizeProducts(products:PlanProduct[],raw:unknown,rawDiet:unknown){
  const profile=parseBodyProfile(raw),diet=parseDiet(rawDiet);
@@ -22,5 +23,5 @@ export function personalizeProducts(products:PlanProduct[],raw:unknown,rawDiet:u
   const preference=diet?.style==='protein'&&protein!==null?Math.min(60,protein*2):diet?.style==='quick'&&p.category!=='meal_kit'?40:0;
   return {...p,personalizationScore:profile?.pregnancy?0:(Math.min(0,fit)+Math.max(0,fit)*(nutritionIsEstimated(p)?0.55:1)+preference*(nutritionIsEstimated(p)?0.55:1)),servingCalories:kcal===null?null:Math.round(kcal)};
  });
- return {products:result,personalization:{hasProfile:Boolean(profile),blocked:Boolean(profile?.pregnancy),dailyCalories:energy?.daily??null,perMealCalories:energy?.perMeal??null,meals:profile?.meals??null,style:diet?dietStyles[diet.style]:null,excluded:exclusions.map(key=>excludedFoods[key as ExcludedFood]),nutritionMatched:energy?result.filter(p=>p.servingCalories!==null).length:0}};
+ return {products:result,personalization:{nutritionReference:dailyNutritionReference(profile),hasProfile:Boolean(profile),blocked:Boolean(profile?.pregnancy),dailyCalories:energy?.daily??null,perMealCalories:energy?.perMeal??null,meals:profile?.meals??null,style:diet?dietStyles[diet.style]:null,excluded:exclusions.map(key=>excludedFoods[key as ExcludedFood]),nutritionMatched:energy?result.filter(p=>p.servingCalories!==null).length:0}};
 }

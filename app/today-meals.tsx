@@ -1,4 +1,5 @@
 'use client';
+import type {DailyNutritionReference} from '../lib/daily-nutrition-reference';
 import {usePlannerLocale} from './planner-locale';
 import {MealPlanOverview} from './meal-plan-overview';
 import {MealComparison} from './meal-comparison';
@@ -7,7 +8,8 @@ import Link from 'next/link';
 import type {useFoodIntake} from './food-intake';
 import {ProductThumb} from './product-thumb';
 import {MealSourceBadge,RecipeProductPreview} from './meal-source';
-import {availablePortions,servingNutrition} from '../lib/food-intake';
+import {availablePortions} from '../lib/food-intake';
+import {ProductNutrition,DailyRecommendationNutrition} from './recommendation-nutrition';
 import {purchaseBasket,slotLabels,type PlanProduct,type PlanConditions,mealSchedule} from '../lib/shopping-plan';
 import {planDay,planDate,recordedForSlot} from '../lib/daily-plan';
 import {addDays,type DashboardData} from '../lib/dashboard';
@@ -16,7 +18,7 @@ import './today-meals.css';
 import {recommendationReasons} from '../lib/plan-explanation';
 
 const amount=(n:number)=>n.toLocaleString('ko-KR',{maximumFractionDigits:1});
-export function TodayMeals({shoppingTotal,intake,userId,onLogin,ids,products,conditions,startDate,onStartDate,onSwap,onChoose,progress,dailyCalories,dashboard,perMealCalories}:{shoppingTotal:number;intake:ReturnType<typeof useFoodIntake>;userId?:string;onLogin:()=>void;ids:string[];products:PlanProduct[];conditions:PlanConditions;startDate:string;onStartDate:(date:string)=>void;onSwap:(index:number)=>void;onChoose:(index:number,id:string)=>void;progress:ReturnType<typeof useShoppingProgress>;dailyCalories:number|null;perMealCalories?:number|null;dashboard?:DashboardData|null}){
+export function TodayMeals({nutritionReference,shoppingTotal,intake,userId,onLogin,ids,products,conditions,startDate,onStartDate,onSwap,onChoose,progress,dailyCalories,dashboard,perMealCalories}:{nutritionReference?:DailyNutritionReference;shoppingTotal:number;intake:ReturnType<typeof useFoodIntake>;userId?:string;onLogin:()=>void;ids:string[];products:PlanProduct[];conditions:PlanConditions;startDate:string;onStartDate:(date:string)=>void;onSwap:(index:number)=>void;onChoose:(index:number,id:string)=>void;progress:ReturnType<typeof useShoppingProgress>;dailyCalories:number|null;perMealCalories?:number|null;dashboard?:DashboardData|null}){
  const locale=usePlannerLocale();
  const won=locale.money;
  const {today,current,totals}=intake;
@@ -55,17 +57,19 @@ export function TodayMeals({shoppingTotal,intake,userId,onLogin,ids,products,con
    <label className="today-start">식단 시작일<input type="date" value={startDate} onChange={e=>{if(e.target.value){onStartDate(e.target.value);setChosenDay(null);setManaging(null);}}}/></label>
    {!active.active&&<p className="today-note">{today<startDate?'아직 시작 전인 식단이에요.':'이 식단의 일정이 끝났어요.'} 시작일을 바꾸거나 새로 추천받을 수 있어요.</p>}
    <nav className="today-days" aria-label="준비한 식단 날짜">{Array.from({length:days},(_,i)=>i+1).map(n=><button type="button" key={n} aria-pressed={n===day} onClick={()=>{setChosenDay(n);setManaging(null);}}><strong>{planDate(startDate,n)===today?'오늘':planDate(startDate,n)===addDays(today,1)?'내일':`${n}일차`}</strong><small>{planDate(startDate,n).slice(5).replace('-','/')}</small></button>)}</nav>
+   <DailyRecommendationNutrition products={entries.map(e=>e.product)} reference={nutritionReference??null}/>
    <div className="today-menu-list">{entries.map(({product:p,index,slot},entryIndex)=>{
     const owned=intake.products.find(i=>i.id===p.id);
     const parts=purchaseBasket([p.id],products,[],{});
     const orderedParts=parts.map(r=>progress.stock[r.product.id]).filter(s=>s&&s.ordered>0);
-    const nutrition=servingNutrition(p),portions=isToday?(current?.logs.filter(l=>l.productId===p.id).reduce((sum,l)=>sum+l.portions,0)??0):0;
+    const portions=isToday?(current?.logs.filter(l=>l.productId===p.id).reduce((sum,l)=>sum+l.portions,0)??0):0;
     const recorded=recordedForSlot(entries.map(e=>e.product.id),entryIndex,portions);
     const done=recorded>=1,canEat=owned&&owned.available>=0.25;
     return <article key={index} className={done?'today-menu done':'today-menu'}>
      <div className="today-menu-label"><span>{slot==='breakfast'?'☀️':slot==='lunch'?'🌤️':'🌙'} {slotLabels[slot]} · 1회분</span><b>{done?'먹었어요 ✓':availablePortions(progress.stock,p)>=1?'집에 있어요':orderedParts.length?'배송 기다리는 중':'구매 전'}</b></div>
-     <div className="today-product">{!p.recipe&&<ProductThumb item={p}/>}<div><MealSourceBadge product={p}/><h4>{p.name}</h4><strong>한 끼 {p.recipe?'재료비 ':''}약 {won(p.price/p.servings)}</strong><p>{nutrition.calories===null?'칼로리 미확인':`${amount(nutrition.calories)} kcal`} · 단백질 {nutrition.protein===null?'미확인':`${amount(nutrition.protein)} g`}</p>{p.recipe&&<small>{p.recipe.assembly?'상품별 포장 조리법 기준 · 영양 합산 예상':<>재료 영양 합산 예상 · 약 {p.recipe.minutes}분</>}</small>}</div></div>
+     <div className="today-product">{!p.recipe&&<ProductThumb item={p}/>}<div><MealSourceBadge product={p}/><h4>{p.name}</h4><strong>한 끼 {p.recipe?'재료비 ':''}약 {won(p.price/p.servings)}</strong>{p.recipe&&<small>{p.recipe.assembly?'상품별 포장 조리법 기준 · 영양 합산 예상':<>재료 영양 합산 예상 · 약 {p.recipe.minutes}분</>}</small>}</div></div>
      {!locale.isTaiwan&&<p className="recommendation-reasons">{recommendationReasons(p,conditions,perMealCalories??null).join(' · ')}</p>}
+     <ProductNutrition product={p}/>
      <RecipeProductPreview product={p}/>
      {!p.recipe&&<div className="today-product-links">
       {p.productUrl&&<a href={p.productUrl} target="_blank" rel="noopener noreferrer" aria-label={`${p.name} 판매 상품 보기 (새 창)`}>🛍️ 판매 상품 보기 ↗</a>}

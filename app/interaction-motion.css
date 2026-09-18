@@ -1,0 +1,48 @@
+/* Only animate when the device permits motion; content is visible by default. */
+@media (prefers-reduced-motion: no-preference) {
+  .shopping-planner button,
+  .shopping-planner fieldset label:has(input[type="radio"]),
+  .shopping-planner .planner-exclusion-group label,
+  .community-actions button {
+    transition: background-color 180ms ease, border-color 180ms ease,
+      color 180ms ease, box-shadow 180ms ease, transform 150ms ease;
+  }
+
+  .shopping-planner button:enabled:active,
+  .community-actions button:enabled:active {
+    transform: scale(.97);
+  }
+
+  .shopping-planner .purchase-items > article {
+    transition: border-color 180ms ease, box-shadow 180ms ease;
+  }
+
+  .shopping-planner .today-menu,
+  .shopping-planner .purchase-items > article,
+  .shopping-planner .planner-result,
+  .shopping-planner .today-purchase-panel,
+  .shopping-planner .planner-exclusions {
+    animation: kkini-appear 220ms ease-out;
+  }
+
+  .shopping-planner [role="status"],
+  .community-message,
+  .body-success {
+    animation: kkini-confirm 240ms ease-out;
+  }
+}
+
+.shopping-planner .purchase-items > article:has(.purchase-item-heading input:checked) {
+  border-color: #72967b;
+  box-shadow: 0 0 0 1px #72967b;
+}
+
+@keyframes kkini-appear {
+  from { opacity: .4; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes kkini-confirm {
+  from { opacity: .5; transform: translateY(3px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,14 @@
+.recommendation-nutrition{margin:12px 0;color:#435447}
+.recommendation-nutrition>small{font-size:11px}
+.recommendation-nutrition dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(85px,1fr));gap:8px;margin:8px 0}
+.recommendation-nutrition dl>div{background:#f3f6ed;border-radius:10px;padding:9px}
+.recommendation-nutrition dt{font-size:11px;color:#657363}
+.recommendation-nutrition dd{margin:5px 0 0;font-size:13px;font-weight:700;overflow-wrap:anywhere}
+.daily-recommendation-nutrition{padding:16px;border:1px solid #e0e7d8;border-radius:18px;margin:16px 0;background:#fffef9;min-width:0}
+.daily-recommendation-nutrition h4{margin:0 0 8px;font-size:15px}
+.daily-recommendation-nutrition p,.daily-recommendation-nutrition details{font-size:12px;line-height:1.7;color:#62705d}
+.daily-recommendation-nutrition table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:12px;margin:12px 0}
+.daily-recommendation-nutrition th,.daily-recommendation-nutrition td{text-align:left;padding:10px 4px;border-bottom:1px solid #e7ecdf;overflow-wrap:anywhere}
+.daily-recommendation-nutrition th:first-child{width:23%}
+.daily-recommendation-nutrition td small{display:block;font-size:10px;color:#816545;margin-top:4px}
+.daily-recommendation-nutrition summary{cursor:pointer}

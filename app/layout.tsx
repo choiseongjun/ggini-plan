@@ -5,6 +5,7 @@ import "./globals.css";
 import "./playful.css";
 import { AppLoadingProvider } from './app-loading';
 import './launch-polish.css';
+import './interaction-motion.css';
 
 export const viewport:Viewport={width:'device-width',initialScale:1,viewportFit:'cover',interactiveWidget:'resizes-content',themeColor:'#fffdf7'};
 
