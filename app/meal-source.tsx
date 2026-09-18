@@ -3,6 +3,7 @@ import {usePlannerLocale} from './planner-locale';
 import type {PlanProduct} from '../lib/shopping-plan';
 import {ProductThumb} from './product-thumb';
 import './meal-source.css';
+import {RecipeVideos} from './recipe-videos';
 
 export function MealSourceBadge({product}:{product:PlanProduct}){
  const locale=usePlannerLocale();
@@ -16,5 +17,6 @@ export function RecipeProductPreview({product}:{product:PlanProduct}){
   <ul>{product.recipe.ingredients.map(({product:p,label})=><li key={p.id}>
    {p.productUrl?<a href={p.productUrl} target="_blank" rel="noopener noreferrer" aria-label={`${label} · ${p.name} 상품 보기 (새 창)`}><ProductThumb item={p}/><span>{label}</span></a>:<span><ProductThumb item={p}/><span>{label}</span></span>}
   </li>)}</ul>
+  {!product.recipe.assembly&&<RecipeVideos key={product.id} dishId={product.id}/>}
  </div>;
 }

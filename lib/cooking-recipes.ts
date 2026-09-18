@@ -21,6 +21,11 @@ const extraRecipes:Recipe[]=[
  {id:'cook-chicken-potato',name:'닭가슴살 감자찜과 밥',emoji:'🥔',family:'chicken-steam',minutes:30,slots:['lunch','dinner'],parts:[['rice',.5,'밥'],['slot-chicken',1,'생닭가슴살'],['slot-potato',1,'감자'],['kurly-5152797',.25,'양파']],steps:['감자를 씻고 껍질을 벗겨 작게 썰어요. 생닭은 채소와 도마·도구를 분리해 준비해요.','냄비에 감자·양파·닭과 물을 넣고 감자가 부드러워지고 닭 속까지 완전히 익도록 끓여요.','데운 밥을 곁들여요. 간은 기호에 따라 별도로 해요.']},
  {id:'cook-zucchini-egg',name:'애호박 달걀 덮밥',emoji:'🍳',family:'zucchini-egg',minutes:15,slots:['lunch','dinner'],parts:[['rice',1,'밥'],['slot-zucchini',1,'애호박'],['eggs',.1,'달걀']],steps:['씻은 애호박을 얇게 썰어 팬에 물을 조금 넣고 익혀요.','달걀을 풀어 넣고 저으며 완전히 익혀요.','데운 밥 위에 올려요. 소금 등 양념은 선택 사항이에요.']},
 ];
+export function cookingVideoMenu(id:string){
+ const base=id.split('--auto--')[0].split('--with--')[0];
+ const recipe=[...recipes,...extraRecipes].find(r=>r.id===base);
+ return recipe?{id:base,name:recipe.name,query:`${recipe.name.replace(/와 (?:작은 )?(?:현미)?밥|과 (?:작은 )?(?:현미)?밥| 한 상| 밥상/g,'')} 만들기 레시피`}:null;
+}
 function nutrients(p:CatalogItem,packs:number,grams:number){
  if(grams<=0)return {calories:null,protein:null};
  const n=servingNutrients({...p,servings:1,servingGrams:grams*packs,servingNote:'요리 사용량',avoidanceText:null});
