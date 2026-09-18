@@ -2,6 +2,7 @@ import { join } from 'node:path';
 import sharp from 'sharp';
 import { createWorker, PSM } from 'tesseract.js';
 import { emptyNutrition, extractNutrition, hasMultipleNutritionTables, type ExtractedNutrition } from './nutrition-ocr';
+import {nutritionAIConfig, readNutritionWithAI} from './nutrition-ai';
 
 export function nutritionProductUrl(value: string) {
   const url = new URL(value);
@@ -53,6 +54,12 @@ export function completeNutrition(n: ExtractedNutrition) {
 export async function collectNutrition(productUrl: string, imageIndex?: number) {
   nutritionProductUrl(productUrl);
   const {text: sourceText, images} = nutritionSources((await download(productUrl, 5_000_000)).toString('utf8'), productUrl);
+  if (nutritionAIConfig().configured) {
+    const imageUrl = images[imageIndex ?? 0] ?? null;
+    if (imageIndex !== undefined && !imageUrl) throw new Error('선택한 영양표가 없습니다. 다시 수집해 주세요.');
+    const result = await readNutritionWithAI({image:imageUrl?await download(imageUrl,8_000_000):undefined,text:sourceText});
+    return {...result,images,imageUrl,sourceUrl:productUrl};
+  }
   let text = sourceText, extracted = extractNutrition(text), warning: string | null = null, imageUrl: string | null = null;
   if (imageIndex !== undefined || !completeNutrition(extracted)) {
     imageUrl = images[imageIndex ?? 0] ?? null;

@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { AuthScreen } from "../auth-screen";
 import { AppLoading } from "../app-loading";
 import { NutritionPhotoReader } from "./nutrition-photo-reader";
+import { NutritionAIStatus } from './nutrition-ai-status';
 import { ProductThumb } from "../product-thumb";
 import { CatalogFilter } from "../catalog-filter";
 import { catalogCategories, type CatalogItem, type CatalogCategory } from "../../lib/catalog";
@@ -117,14 +118,14 @@ export default function AdminPage() {
       const data = await response.json() as { error?: string; warning?: string; text?: string; extracted?: Record<string, number | string | null> };
       if (!response.ok) throw new Error(data.error ?? "사진을 읽지 못했습니다.");
       setOcrText(data.text ?? "");
-      if (data.warning) throw new Error(data.warning);
+      if (data.warning && !data.extracted?.nutritionBasis) throw new Error(data.warning);
       if (!data.text || !data.extracted || !Object.values(data.extracted).some((value) => value !== null)) throw new Error("영양 수치를 찾지 못했습니다. 영양표 부분을 크게 찍어 다시 첨부하거나 직접 입력해 주세요.");
       setDraft((current) => current ? {
         ...current,
         ...data.extracted,
         nutritionSourceName: "상품 포장지 영양표 사진",
       } : null);
-      setNotice("사진에서 읽은 값을 입력칸에 채웠습니다. 기준량과 숫자를 확인한 뒤 저장하세요.");
+      setNotice(data.warning ?? "사진에서 읽은 값을 입력칸에 채웠습니다. 기준량과 숫자를 확인한 뒤 저장하세요.");
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "사진을 읽지 못했습니다.");
     } finally { setRecognizing(false); }
@@ -215,7 +216,7 @@ export default function AdminPage() {
           {!!draft.allergyInfo?.evidenceUrls.length && <details><summary>확인한 제품 표시사항 사진</summary>{draft.allergyInfo.evidenceUrls.map((url, index) => <a className="admin-source-link" key={url} href={url} target="_blank" rel="noopener noreferrer">표시사항 {index + 1} ↗ </a>)}</details>}
         </section>
         <section><h3>영양 성분</h3><p>상품 포장지 또는 제조사 영양표의 기준량을 그대로 적으세요. 일반 식품 정보는 <a href="https://various.foodsafetykorea.go.kr/nutrient/general/food/firstList.do" target="_blank" rel="noopener noreferrer">식약처 K-FIND ↗</a>에서 조회할 수 있습니다.</p>
-          <div className="admin-ocr"><div><strong>영양표 사진 첨부</strong><span>JPG, PNG, WEBP · 최대 8MB · 영양표가 크게 보이도록 촬영</span></div><input aria-label="영양표 사진 선택" type="file" accept="image/jpeg,image/png,image/webp" disabled={recognizing} onChange={(event) => { const file = event.target.files?.[0]; if (file) attachPhoto(file); event.target.value = ""; }}/>{recognizing && <small role="status">사진의 글자를 읽는 중입니다…</small>}{photoPreview && <NutritionPhotoReader key={photoPreview} src={photoPreview} disabled={recognizing} onRead={readPhoto}/>}{draft.nutritionPhotoUrl && !photoPreview && <a href={draft.nutritionPhotoUrl} target="_blank" rel="noopener noreferrer">저장된 영양표 사진 보기 ↗</a>}{ocrText && <details><summary>인식한 원문 확인</summary><pre>{ocrText}</pre></details>}</div>
+          <NutritionAIStatus/><div className="admin-ocr"><div><strong>영양표 사진 첨부</strong><span>JPG, PNG, WEBP · 최대 8MB · 영양표가 크게 보이도록 촬영</span></div><input aria-label="영양표 사진 선택" type="file" accept="image/jpeg,image/png,image/webp" disabled={recognizing} onChange={(event) => { const file = event.target.files?.[0]; if (file) attachPhoto(file); event.target.value = ""; }}/>{recognizing && <small role="status">사진의 글자를 읽는 중입니다…</small>}{photoPreview && <NutritionPhotoReader key={photoPreview} src={photoPreview} disabled={recognizing} onRead={readPhoto}/>}{draft.nutritionPhotoUrl && !photoPreview && <a href={draft.nutritionPhotoUrl} target="_blank" rel="noopener noreferrer">저장된 영양표 사진 보기 ↗</a>}{ocrText && <details><summary>인식한 원문 확인</summary><pre>{ocrText}</pre></details>}</div>
           <div className="admin-fields">
           <label>영양표 기준량<input maxLength={80} placeholder="예: 100g당 / 1팩(100g)당" value={draft.nutritionBasis ?? ""} onChange={(e) => change("nutritionBasis", e.target.value || null)}/></label>
           <label>출처 이름<input maxLength={120} placeholder="예: 제조사 공식몰" value={draft.nutritionSourceName ?? ""} onChange={(e) => change("nutritionSourceName", e.target.value || null)}/></label>

@@ -3,6 +3,7 @@ import {adminUser} from '../../../../../lib/admin';
 import {sameOrigin} from '../../../../../lib/auth';
 import {getPool} from '../../../../../lib/db';
 import {collectNutrition, completeNutrition} from '../../../../../lib/nutrition-collector';
+import {NutritionAIError} from '../../../../../lib/nutrition-ai';
 export const runtime = 'nodejs';
 export const maxDuration = 60;
 
@@ -24,6 +25,7 @@ async function handle(request: NextRequest, save: boolean) {
     if (!result.rowCount) return Response.json({error: '상품 정보가 변경됐습니다. 다시 읽은 후 저장해 주세요.'}, {status: 409});
     return Response.json({saved: true}, {headers: {'Cache-Control': 'no-store'}});
   } catch (error) {
+    if (error instanceof NutritionAIError) return Response.json({error:error.message},{status:502});
     console.error('Nutrition collection failed', error);
     return Response.json({error: error instanceof Error && /판매처|원문|영양표|인식 시간|상품 또는|선택한|현재 컬리/.test(error.message) ? error.message : '영양정보를 가져오지 못했습니다. 상품 원문을 확인해 주세요.'}, {status: 400});
   }
