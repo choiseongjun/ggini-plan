@@ -36,6 +36,7 @@ export type CatalogItem = Product & {
   nutritionSourceUrl: string | null;
   nutritionPhotoUrl: string | null;
   nutritionBasis: string | null;
+  nutritionEstimate?: {fields:string[];note:string;model:string;estimatedAt:string} | null;
   caloriesKcal: number | null;
   proteinG: number | null;
   carbohydratesG: number | null;

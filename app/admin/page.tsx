@@ -26,10 +26,11 @@ const numericFields = [
   ["carbohydratesG", "탄수화물 (g)"], ["fatG", "지방 (g)"], ["sodiumMg", "나트륨 (mg)"],
 ] as const;
 const nutritionStatus = (item: CatalogItem) => {
+  if(item.nutritionEstimate)return "estimated";
   const count = numericFields.filter(([key]) => item[key] !== null).length;
   return count === numericFields.length && item.nutritionBasis?.trim() && (item.nutritionSourceUrl || item.nutritionPhotoUrl) ? "complete" : count > 0 ? "partial" : "empty";
 };
-const nutritionLabels = {complete:"영양 수치 등록 완료",partial:"영양 수치 일부 등록",empty:"영양 수치 미입력"} as const;
+const nutritionLabels = {estimated:"추정 영양정보",complete:"영양 수치 등록 완료",partial:"영양 수치 일부 등록",empty:"영양 수치 미입력"} as const;
 
 export default function AdminPage() {
   const router = useRouter();
@@ -216,7 +217,7 @@ export default function AdminPage() {
           {!!draft.allergyInfo?.evidenceUrls.length && <details><summary>확인한 제품 표시사항 사진</summary>{draft.allergyInfo.evidenceUrls.map((url, index) => <a className="admin-source-link" key={url} href={url} target="_blank" rel="noopener noreferrer">표시사항 {index + 1} ↗ </a>)}</details>}
         </section>
         <section><h3>영양 성분</h3><p>상품 포장지 또는 제조사 영양표의 기준량을 그대로 적으세요. 일반 식품 정보는 <a href="https://various.foodsafetykorea.go.kr/nutrient/general/food/firstList.do" target="_blank" rel="noopener noreferrer">식약처 K-FIND ↗</a>에서 조회할 수 있습니다.</p>
-          <NutritionAIStatus/><div className="admin-ocr"><div><strong>영양표 사진 첨부</strong><span>JPG, PNG, WEBP · 최대 8MB · 영양표가 크게 보이도록 촬영</span></div><input aria-label="영양표 사진 선택" type="file" accept="image/jpeg,image/png,image/webp" disabled={recognizing} onChange={(event) => { const file = event.target.files?.[0]; if (file) attachPhoto(file); event.target.value = ""; }}/>{recognizing && <small role="status">사진의 글자를 읽는 중입니다…</small>}{photoPreview && <NutritionPhotoReader key={photoPreview} src={photoPreview} disabled={recognizing} onRead={readPhoto}/>}{draft.nutritionPhotoUrl && !photoPreview && <a href={draft.nutritionPhotoUrl} target="_blank" rel="noopener noreferrer">저장된 영양표 사진 보기 ↗</a>}{ocrText && <details><summary>인식한 원문 확인</summary><pre>{ocrText}</pre></details>}</div>
+          <NutritionAIStatus/>{draft.nutritionEstimate&&<p className="admin-ai-status"><strong>추정 영양정보 포함</strong>{draft.nutritionEstimate.note}</p>}<div className="admin-ocr"><div><strong>영양표 사진 첨부</strong><span>JPG, PNG, WEBP · 최대 8MB · 영양표가 크게 보이도록 촬영</span></div><input aria-label="영양표 사진 선택" type="file" accept="image/jpeg,image/png,image/webp" disabled={recognizing} onChange={(event) => { const file = event.target.files?.[0]; if (file) attachPhoto(file); event.target.value = ""; }}/>{recognizing && <small role="status">사진의 글자를 읽는 중입니다…</small>}{photoPreview && <NutritionPhotoReader key={photoPreview} src={photoPreview} disabled={recognizing} onRead={readPhoto}/>}{draft.nutritionPhotoUrl && !photoPreview && <a href={draft.nutritionPhotoUrl} target="_blank" rel="noopener noreferrer">저장된 영양표 사진 보기 ↗</a>}{ocrText && <details><summary>인식한 원문 확인</summary><pre>{ocrText}</pre></details>}</div>
           <div className="admin-fields">
           <label>영양표 기준량<input maxLength={80} placeholder="예: 100g당 / 1팩(100g)당" value={draft.nutritionBasis ?? ""} onChange={(e) => change("nutritionBasis", e.target.value || null)}/></label>
           <label>출처 이름<input maxLength={120} placeholder="예: 제조사 공식몰" value={draft.nutritionSourceName ?? ""} onChange={(e) => change("nutritionSourceName", e.target.value || null)}/></label>
