@@ -15,3 +15,7 @@
 .admin-pagination button:disabled { opacity:.4; cursor:default; }
 .admin-pagination span { text-align:center; font-size:13px; }
 .admin-pagination small { display:block; margin-top:3px; color:#73816a; font-size:11px; }
+
+.oasis-collection{display:grid;gap:14px;padding:22px;margin:18px 0;border:1px solid #dce5d4;border-radius:20px;background:#f4f8ed}.oasis-collection h2{margin:0;font-size:19px}.oasis-collection p{margin:8px 0}.oasis-collection small{display:block;line-height:1.7;color:#67735f}.oasis-collection>button{justify-self:start;border:0;border-radius:12px;padding:13px 18px;background:#45623a;color:white;font-weight:700;cursor:pointer}.oasis-collection>button:disabled{opacity:.6;cursor:wait}.oasis-collection li{margin:8px 0;font-size:13px}
+
+.catalog-collection-controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.catalog-collection-controls label{display:grid;gap:7px;font-size:13px;font-weight:700}.catalog-collection-controls input,.catalog-collection-controls select{width:100%;min-width:0;padding:11px;border:1px solid #d5dfcc;border-radius:12px;background:white;font:inherit}.oasis-collection ul{max-height:280px;overflow:auto}@media(max-width:600px){.catalog-collection-controls{grid-template-columns:1fr}}

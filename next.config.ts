@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   transpilePackages: ["firebase-admin"],
   outputFileTracingIncludes: {
     "/api/admin/ocr": ["./assets/ocr/**/*"],
+    "/api/admin/catalog/nutrition": ["./assets/ocr/**/*"],
     "/*": ["./certs/supabase-ca.crt"],
   },
 };
