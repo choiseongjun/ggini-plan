@@ -26,10 +26,9 @@ export function cookingVideoMenu(id:string){
  const recipe=[...recipes,...extraRecipes].find(r=>r.id===base);
  return recipe?{id:base,name:recipe.name,query:`${recipe.name.replace(/와 (?:작은 )?(?:현미)?밥|과 (?:작은 )?(?:현미)?밥| 한 상| 밥상/g,'')} 만들기 레시피`}:null;
 }
-function nutrients(p:CatalogItem,packs:number,grams:number){
- if(grams<=0)return {calories:null,protein:null};
- const n=servingNutrients({...p,servings:1,servingGrams:grams*packs,servingNote:'요리 사용량',avoidanceText:null});
- return {calories:n.calories,protein:n.protein};
+function nutrients(p:PlanProduct,packs:number){
+ const n=servingNutrients(p);
+ return {calories:n.calories===null?null:n.calories*packs,protein:n.protein===null?null:n.protein*packs};
 }
 export function cookingProducts(catalog:CatalogItem[]):PlanProduct[]{
  const pool=cookingIngredientPool(catalog);
@@ -67,7 +66,7 @@ export function cookingProducts(catalog:CatalogItem[]):PlanProduct[]{
    const p=catalog.find(p=>p.id===id),contract=r.id.includes('--auto--')?dynamicContracts[id]:contracts[id]??offerContracts[id];
    if(!p||p.unit!==contract.unit||p.quantity!==contract.quantity||!contract.match.test(p.detail)||!p.productUrl||p.price<=0)return null;
    const product:PlanProduct={...p,servings:1,servingGrams:contract.grams||undefined,servingNote:'판매 1묶음',avoidanceText:p.allergyInfo?.status==='unknown'||!p.allergyInfo?null:`${p.name} ${p.allergyInfo.statement}`};
-   return {product,packs,label,nutrition:nutrients(p,packs,contract.grams)};
+   return {product,packs,label,nutrition:nutrients(product,packs)};
   });
   if(parts.some(p=>p===null))return [];
   const ingredients=parts.filter(p=>p!==null);

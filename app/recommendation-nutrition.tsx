@@ -9,7 +9,7 @@ const format=(n:number)=>n.toLocaleString('ko-KR',{maximumFractionDigits:1});
 
 export function ProductNutrition({product}:{product:PlanProduct}){
  const n=servingNutrients(product);
- return <div className="recommendation-nutrition"><small>1회분 영양정보{nutritionIsEstimated(product)?' · 추정 포함':product.recipe?' · 재료 합산 예상':''}</small><dl>{fields.map(([key,label,unit])=><div key={key}><dt>{label}</dt><dd>{n[key]===null?'미확인':`${format(n[key])} ${unit}`}</dd></div>)}</dl></div>;
+ return <div className="recommendation-nutrition"><small>1회분 영양정보{nutritionIsEstimated(product)?' · AI 추정 포함':product.recipe?' · 재료 합산 예상':''}</small><dl>{fields.map(([key,label,unit])=><div key={key}><dt>{label}</dt><dd>{n[key]===null?'미확인':`${format(n[key])} ${unit}`}</dd></div>)}</dl></div>;
 }
 
 export function DailyRecommendationNutrition({products,reference}:{products:PlanProduct[];reference:DailyNutritionReference}){
@@ -19,7 +19,7 @@ export function DailyRecommendationNutrition({products,reference}:{products:Plan
  return <section className="daily-recommendation-nutrition" aria-label="선택한 날짜의 영양 합계와 하루 참고량">
   <h4>이날 식단과 하루 참고량</h4>
   {reference&&<p><strong>{reference.label}</strong></p>}
-  <p>선택한 {products.length}끼의 예상 합계예요. 실제 먹은 양이나 다른 식사·간식은 포함하지 않아요.{products.some(nutritionIsEstimated)&&' 추정 영양값이 포함돼요.'}</p>
+  <p>선택한 {products.length}끼의 예상 합계예요. 실제 먹은 양이나 다른 식사·간식은 포함하지 않아요.{products.some(nutritionIsEstimated)&&' AI 추정 영양값이 포함돼요. 추가 양념·기름은 포함하지 않아요.'}</p>
   <table><thead><tr><th scope="col">영양소</th><th scope="col">식단 합계</th><th scope="col">하루 참고량</th></tr></thead><tbody>{fields.map(([key,label,unit])=>{
    const known=values.flatMap(n=>n[key]===null?[]:[n[key]]);
    const missing=values.length-known.length;
