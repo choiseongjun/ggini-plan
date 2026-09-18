@@ -96,7 +96,11 @@ function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,
   f.reason==='price'?(p.price/p.servings>=f.price?180:0):
   (p.recipe?.minutes??(p.category==='meal_kit'?20:5))>=f.minutes?250:0),0);},0);
  const fit=ids.reduce((n,id)=>n+Math.max(-150,Math.min(160,products.get(id)?.personalizationScore??0)),0);
- return rows.length*300-feedback-ids.filter(id=>previous.has(id)).length*900-ids.filter(id=>previousFamilies.has(mealFamily(products.get(id)!))).length*200+families.size*150-repeats*350-familyRepeats*40-repetition
+ const ingredients=new Map<string,number>();
+ for(const id of ids){const recipe=products.get(id)?.recipe;if(recipe&&!recipe.assembly)for(const part of recipe.ingredients)ingredients.set(part.product.id,(ingredients.get(part.product.id)??0)+1);}
+ // Prefer reusing a few ingredients across distinct dishes, within existing nutrition and budget constraints.
+ const reuse=[...ingredients.values()].reduce((sum,count)=>sum+Math.min(3,count-1)*45,0)-ingredients.size*15;
+ return reuse+rows.length*300-feedback-ids.filter(id=>previous.has(id)).length*900-ids.filter(id=>previousFamilies.has(mealFamily(products.get(id)!))).length*200+families.size*150-repeats*350-familyRepeats*40-repetition
   -rows.reduce((n,r)=>n+r.left,0)*100-rows.reduce((n,r)=>n+r.cost,0)/c.budget*(c.budgetMode==='save'?2000:c.budgetMode==='full'?-100:100)+fit;
 }
 function diverseOptions(products:PlanProduct[],previous:string[],conditions:PlanConditions){

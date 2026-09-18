@@ -59,13 +59,18 @@ test('two recipes share selling packs and preserve fractional leftovers',()=>{
  assert.equal(purchaseBasket(ids,products,[],{}, {[tofu.id]:0,[egg.id]:0}).length,0);
 });
 test('recipe mode, exclusions, breakfast and budget are respected',()=>{
- assert.equal(products.length,4);
+ assert.equal(products.length,7);
  assert.equal(candidates(products,{...initialConditions,mealMode:'ready'}).length,0);
  assert.equal(parseConditions({...initialConditions,mealMode:'invalid'}),null);
  assert.equal(candidates(products,{...initialConditions,excluded:['egg']}).some(p=>p.recipe?.ingredients.some(i=>i.product.id==='eggs')),false);
- const c={...initialConditions,mealMode:'cook' as const,days:2,meals:2,budget:14000};
+ const c={...initialConditions,mealMode:'cook' as const,days:2,meals:2,budget:20000};
  const ids=recommendShopping(products,c)!;assert.equal(ids.length,2);assert.ok(basketTotal(ids,products,[])<=c.budget);
  assert.equal(recommendShopping(products,{...c,budget:1000}),null);
+ const week={...c,days:7,meals:7,budget:50000};
+ const weekly=recommendShopping(products,week)!;
+ assert.equal(new Set(weekly).size,7);
+ assert.ok(basketTotal(weekly,products,[])<=week.budget);
+ assert.equal(purchaseBasket(weekly,products,[]).length,5,'seven dishes reuse five ingredients');
 });
 test('changed selling units or incomplete ingredient catalog never invent a recipe',()=>{
  assert.equal(cookingProducts([]).length,0);
