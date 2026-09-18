@@ -1,5 +1,12 @@
 import {basketTotal,mealSchedule,recommendShopping,slotCandidates,MAX_PLAN_MEALS,type PlanConditions,type PlanProduct} from './shopping-plan';
 
+export function suggestedShoppingBudget(guide:{minimum:number|null;varietyUpper:number|null}|null){
+ if(!guide)return null;
+ const amount=guide.varietyUpper??guide.minimum;
+ if(amount===null||!Number.isFinite(amount)||amount<0||amount>1000000)return null;
+ return Math.max(1000,Math.ceil(amount/1000)*1000);
+}
+
 // Exact minimum purchase cost: allocate breakfast/main portions across products,
 // charging complete selling packs once per product (including available stock).
 export function minimumShoppingCost(products:PlanProduct[],c:PlanConditions,reduceRepeats=false):number|null{
