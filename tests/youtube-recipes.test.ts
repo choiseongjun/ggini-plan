@@ -18,3 +18,16 @@ test('chicken porridge does not show pork or chicken soup results',()=>{
  const videos=['닭죽 만들기','우삼겹 야채찜','닭백숙 만들기'].map((title,i)=>({id:String(i),title,channel:'요리',url:'',thumbnail:''}));
  assert.deepEqual(relevantRecipeVideos(videos,'닭고기 채소죽').map(v=>v.title),['닭죽 만들기']);
 });
+
+test('tofu mushroom steam requires both mushrooms and steaming, not just tofu',()=>{
+ const titles=['두부조림 만들기','두부 버섯조림','두부 계란찜','두부 버섯찜 만들기','버섯 두부를 쪄서 먹어요'];
+ const videos=titles.map((title,i)=>({id:String(i),title,channel:'요리',url:'',thumbnail:''}));
+ assert.deepEqual(relevantRecipeVideos(videos,'두부 버섯찜과 현미밥').map(v=>v.title),titles.slice(3));
+ assert.deepEqual(relevantRecipeVideos(videos.slice(0,3),'두부 버섯찜과 현미밥'),[]);
+});
+
+test('other cooking methods and named ingredients must also match',()=>{
+ const videos=['돼지고기 양배추찜','돼지고기 양배추볶음','돼지고기 볶음','두부 달걀찜','두부 달걀부침'].map((title,i)=>({id:String(i),title,channel:'요리',url:'',thumbnail:''}));
+ assert.deepEqual(relevantRecipeVideos(videos,'돼지고기 양배추볶음과 밥').map(v=>v.title),['돼지고기 양배추볶음']);
+ assert.deepEqual(relevantRecipeVideos(videos,'두부 달걀부침과 현미밥').map(v=>v.title),['두부 달걀부침']);
+});
