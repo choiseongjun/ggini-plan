@@ -1,4 +1,5 @@
 import {cookingProducts} from './cooking-recipes';
+import {expandedMeals,riceCombinations} from './catalog-meals';
 import manifest from '../data/catalog-import-2026-09-16.json';
 import reviewed from '../data/shopping-verified-2026-09-17.json';
 import { catalogItems } from './catalog-db';
@@ -23,5 +24,7 @@ export async function planProducts():Promise<PlanProduct[]> {
   if(servings<1||servings>10)return [];
   return [{...p,servings,servingNote:explicit?`판매 구성 ${servings}인분/개입 기준`:'판매 1팩을 한 끼로 배정',avoidanceText:source.allergyText?.trim()||null}];
  });
- return [...ready,...cookingProducts(products)];
+ const expanded=expandedMeals(products);
+ const known=new Set(ready.map(p=>p.id));
+ return [...ready,...expanded.mains.filter(p=>!known.has(p.id)),...riceCombinations(expanded.sides,products),...cookingProducts(products)];
 }

@@ -30,6 +30,7 @@ function RecipeIngredients({product,conditions}:{product:PlanProduct;conditions:
 }
 export function MealComparison({product,index,ids,products,conditions,onChoose,disabled}:{product:PlanProduct;index:number;ids:string[];products:PlanProduct[];conditions:PlanConditions;onChoose:(index:number,id:string)=>void;disabled:boolean}){
  const [open,setOpen]=useState(false);
+ if(product.recipe?.assembly)return <details className="recipe-instructions"><summary>🍱 함께 먹는 상품 · 준비 방법</summary><RecipeIngredients product={product} conditions={conditions}/><ol>{product.recipe.steps.map(s=><li key={s}>{s}</li>)}</ol><small>구매는 판매 묶음 기준이며, 확인되지 않은 영양정보는 미확인으로 표시해요.</small></details>;
  const options=slotCandidates(products,{...conditions,cooking:'all',mealMode:'mixed'},index).filter(p=>!!p.recipe!==!!product.recipe&&matchesCookingAlternative(product,p)).map(p=>{
   const next=ids.map((id,i)=>i===index?p.id:id);
   return {product:p,total:basketTotal(next,products,conditions.owned,conditions.supply),one:basketTotal([p.id],products,conditions.owned,conditions.supply)};

@@ -62,7 +62,7 @@ export function TodayMeals({intake,userId,onLogin,ids,products,conditions,startD
     const done=recorded>=1,canEat=owned&&owned.available>=0.25;
     return <article key={index} className={done?'today-menu done':'today-menu'}>
      <div className="today-menu-label"><span>{slot==='breakfast'?'☀️':slot==='lunch'?'🌤️':'🌙'} {slotLabels[slot]} · 1회분</span><b>{done?'먹었어요 ✓':availablePortions(progress.stock,p)>=1?'집에 있어요':orderedParts.length?'배송 기다리는 중':'구매 전'}</b></div>
-     <div className="today-product">{!p.recipe&&<ProductThumb item={p}/>}<div><MealSourceBadge product={p}/><h4>{p.name}</h4><strong>한 끼 {p.recipe?'재료비 ':''}약 {won(p.price/p.servings)}</strong><p>{nutrition.calories===null?'칼로리 미확인':`${amount(nutrition.calories)} kcal`} · 단백질 {nutrition.protein===null?'미확인':`${amount(nutrition.protein)} g`}</p>{p.recipe&&<small>재료 영양 합산 예상 · 약 {p.recipe.minutes}분</small>}</div></div>
+     <div className="today-product">{!p.recipe&&<ProductThumb item={p}/>}<div><MealSourceBadge product={p}/><h4>{p.name}</h4><strong>한 끼 {p.recipe?'재료비 ':''}약 {won(p.price/p.servings)}</strong><p>{nutrition.calories===null?'칼로리 미확인':`${amount(nutrition.calories)} kcal`} · 단백질 {nutrition.protein===null?'미확인':`${amount(nutrition.protein)} g`}</p>{p.recipe&&<small>{p.recipe.assembly?'상품별 포장 조리법 기준 · 영양 합산 예상':<>재료 영양 합산 예상 · 약 {p.recipe.minutes}분</>}</small>}</div></div>
      {!locale.isTaiwan&&<p className="recommendation-reasons">{recommendationReasons(p,conditions,perMealCalories??null).join(' · ')}</p>}
      <RecipeProductPreview product={p}/>
      {!p.recipe&&<div className="today-product-links">

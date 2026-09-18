@@ -19,7 +19,7 @@ import Link from 'next/link';
 import type {personalizeProducts} from '../lib/shopping-personalization';
 import { ProductThumb } from './product-thumb';
 import {MealSourceBadge,RecipeProductPreview} from './meal-source';
-import { MAX_PLAN_DAYS, basket, purchaseBasket, basketTotal, validMealIds, slotCandidates, mealSchedule, slotLabels, initialConditions, parseConditions, recommendShopping, swapMeal, type MealSlot, type PlanConditions, type PlanProduct } from '../lib/shopping-plan';
+import { MAX_PLAN_DAYS, basket, purchaseBasket, basketTotal, validMealIds, slotCandidates, mealSchedule, slotLabels, initialConditions, parseConditions, swapMeal, type MealSlot, type PlanConditions, type PlanProduct } from '../lib/shopping-plan';
 import './shopping-planner.css';
 import {shoppingBudgetGuide} from '../lib/shopping-budget';
 import {excludedFoods,excludedFoodGroups,type ExcludedFood} from '../lib/excluded-foods';
@@ -69,6 +69,10 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
  const [products,setProducts]=useState<PlanProduct[]>([]),[baseConditions,setConditions]=useState<PlanConditions>(defaultConditions);
  const conditions:PlanConditions={...baseConditions,supply:Object.fromEntries(Object.values(progress.stock).map(i=>[i.id,i.owned+i.ordered]))};
  const [ids,setIds]=useState<string[]>([]),[loading,setLoading]=useState(true),[busy,setBusy]=useState(false);
+ const previousRecommendation=useRef<string[]>([]);
+ const recommendationWorker=useRef<Worker|null>(null);
+ useEffect(()=>()=>recommendationWorker.current?.terminate(),[]);
+ useEffect(()=>{if(ids.length)previousRecommendation.current=ids;},[ids]);
  const guideKey=JSON.stringify({...conditions,budget:1000000,startDate:undefined});
  const {guide:budgetGuide,pending:budgetPending}=useBudgetGuide(products,guideKey);
  const [allowSingleMenu,setAllowSingleMenu]=useState(false);
@@ -116,10 +120,16 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    if(mode==='settings'&&!data.personalization?.hasProfile)throw new Error('먼저 위의 신체 정보를 저장해 주세요. 저장한 정보를 기준으로 추천할게요.');
    const missing=mealSchedule(c).find((_,i)=>!slotCandidates(fresh,c,i).length);
    if(missing)throw new Error(`${slotLabels[missing.slot]}에 맞는 등록 상품이 부족해요. 해당 끼니를 빼거나 조리 방식·제외 재료를 조정해 주세요.`);
-   const guide=shoppingBudgetGuide(fresh,c);
+   const {guide,next}=await new Promise<{guide:ReturnType<typeof shoppingBudgetGuide>;next:string[]|null}>((resolve,reject)=>{
+    const worker=new Worker(new URL('./shopping-recommend.worker.ts',import.meta.url));
+    recommendationWorker.current=worker;
+    const finish=()=>{worker.terminate();if(recommendationWorker.current===worker)recommendationWorker.current=null;};
+    worker.onmessage=event=>{finish();if(event.data.error)reject(new Error(event.data.error));else resolve(event.data);};
+    worker.onerror=()=>{finish();reject(new Error('추천을 계산하지 못했어요. 다시 시도해 주세요.'));};
+    worker.postMessage({products:fresh,conditions:c,previous:previousRecommendation.current});
+   });
    if(!allowSingleMenu&&c.meals>1&&guide.count===1)throw new Error('현재 조건을 통과한 메뉴가 1개뿐이에요. 예산을 올려도 다양해지지 않아요. 아래 피할 재료의 체크와 조리 방식을 확인해 주세요.');
    if(!guide.approximate&&guide.minimum!==null&&c.budget<guide.minimum)throw new Error(`선택한 ${c.meals}끼를 준비하려면 최소 ${won(guide.minimum)}이 필요해요. 배송비는 별도이며 최저 구성은 같은 메뉴가 반복될 수 있어요.`);
-   const next=recommendShopping(fresh,c);
    if(!next)throw new Error('현재 등록 상품으로는 조건에 맞는 식단을 채울 수 없어요. 예산·끼니 수·조리 방식을 조정해 주세요.');
    if(!allowSingleMenu&&c.meals>1&&new Set(next).size===1)throw new Error(`현재 예산에서는 같은 메뉴만 반복돼요.${guide.varietyMinimum!==null?` 반복을 줄인 구성은 약 ${won(guide.varietyMinimum)}부터 가능해요.`:' 조리 방식과 제외 재료를 확인해 주세요.'}`);
    if(!locale.isTaiwan&&mode!=='settings')trackPlanner('generated');setConditions(c);setIds(next);remember(c,next);setMessage(new Set(next).size===1&&next.length>1?`반복 허용에 따라 ${next.length}끼를 한 가지 메뉴로 구성했어요.`:`${next.length}끼를 ${new Set(next).size}종 메뉴로 구성했어요. 예산과 제외 재료를 지키면서 같은 메뉴가 덜 반복되도록 골랐어요.`);setResultFocus(n=>n+1);
@@ -242,7 +252,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   {!locale.isTaiwan&&mode!=='settings'&&userId&&<button type="button" className="text-link" disabled={loading||busy||!progress.ready} onClick={restore}>저장한 식단 불러오기 →</button>}
   {!locale.isTaiwan&&ids.length>0&&<PlanPurchaseSummary rows={purchases} budget={conditions.budget} money={won}/>}
   {!!ids.length&&<details className="planner-result" open={mode!=='plan'}><summary>준비한 식단 전체 · 구매 목록 ({ids.length}끼)</summary>
-   {hasRecipes&&<section className="recipe-plan-list" aria-label="직접 요리하는 끼니"><h3>🍳 직접 만들어 먹어요</h3><RecipePurchaseNote ids={ids} products={products} conditions={conditions}/>{ids.map((id,i)=>{const p=products.find(p=>p.id===id)!;return p.recipe?<article key={i}><small>{schedule[i].day}일차 · {slotLabels[schedule[i].slot]}</small><div><MealSourceBadge product={p}/></div><h4>{p.name}</h4><strong>한 끼 재료비 약 {won(p.price)}</strong><RecipeProductPreview product={p}/><MealComparison key={p.id.split('--with--')[0]} product={p} index={i} ids={ids} products={products} conditions={conditions} onChoose={chooseMeal} disabled={busy||progress.busy}/></article>:null;})}</section>}
+   {hasRecipes&&<section className="recipe-plan-list" aria-label="함께 준비하는 상품"><h3>🍳 이렇게 준비해요</h3><RecipePurchaseNote ids={ids} products={products} conditions={conditions}/>{ids.map((id,i)=>{const p=products.find(p=>p.id===id)!;return p.recipe?<article key={i}><small>{schedule[i].day}일차 · {slotLabels[schedule[i].slot]}</small><div><MealSourceBadge product={p}/></div><h4>{p.name}</h4><strong>한 끼 재료비 약 {won(p.price)}</strong><RecipeProductPreview product={p}/><MealComparison key={p.id.split('--with--')[0]} product={p} index={i} ids={ids} products={products} conditions={conditions} onChoose={chooseMeal} disabled={busy||progress.busy}/></article>:null;})}</section>}
    <ShoppingProgress guest={locale.isTaiwan||!userId} progress={progress} recommended
     summary={<div className="planner-total"><span>남은 식단 추가 구매 예상금액</span><strong>{won(total)}</strong><small>{total<=conditions.budget?`예산에서 ${won(conditions.budget-total)} 남아요`:`예산을 ${won(total-conditions.budget)} 초과했어요`} · 배송비 별도</small></div>}
     heading={<><h3>{hasRecipes?'함께 준비할 상품·재료':'이렇게 먹어요'}</h3><p className="body-note">추천 메뉴에서 살 것을 바로 선택하세요. 같은 메뉴라도 먹는 날은 따로 표시해요. 구매할 수량은 카드 아래에 한 번에 모았어요. 1회분 가격은 등록 판매가를 나눈 금액이며 실제 구매는 판매 묶음 단위예요.</p></>}

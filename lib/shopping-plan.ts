@@ -4,7 +4,7 @@ import type { CatalogItem } from './catalog';
 import {excludedFoods,type ExcludedFood} from './excluded-foods';
 import {allowsExcludedFoods} from './shopping-exclusions';
 
-export type PlanProduct = CatalogItem & { mealSlots?:MealSlot[]; servings: number; servingGrams?:number; servingNote: string; avoidanceText: string | null; personalizationScore?:number; servingCalories?:number|null; recipe?: {minutes:number;slots:MealSlot[];family:string;steps:string[];ingredients:{product:PlanProduct;packs:number;label:string}[];nutrition:{calories:number|null;protein:number|null}} };
+export type PlanProduct = CatalogItem & { mealSlots?:MealSlot[]; servings: number; servingGrams?:number; servingNote: string; avoidanceText: string | null; personalizationScore?:number; servingCalories?:number|null; recipe?: {assembly?:boolean;minutes:number;slots:MealSlot[];family:string;steps:string[];ingredients:{product:PlanProduct;packs:number;label:string}[];nutrition:{calories:number|null;protein:number|null}} };
 export type MealSlot = 'breakfast'|'lunch'|'dinner';
 export const slotLabels={breakfast:'아침',lunch:'점심',dinner:'저녁'};
 export const MAX_PLAN_DAYS=15;
@@ -35,7 +35,7 @@ export function validMealIds(ids:string[],products:PlanProduct[],c:PlanCondition
 const aliases: Record<string,string[]> = {우유:['우유','유제품','치즈','크림'],달걀:['달걀','계란','알류'],계란:['달걀','계란','알류'],소고기:['소고기','쇠고기','한우','비프'],돼지고기:['돼지고기','돈육','베이컨','삼겹'],닭고기:['닭','치킨'],콩:['콩','대두','두부'],밀:['밀','소맥'],새우:['새우','쉬림프']};
 export function candidates(products: PlanProduct[], c: PlanConditions) {
  const avoid=c.avoid.split(/[,，\n]/).map(x=>x.trim().toLowerCase()).filter(Boolean);
- return products.filter(p=>allowsExcludedFoods(p,c.excluded??[])&&(p.productUrl||p.recipe) && p.price>0 && ((c.mealMode??'ready')==='mixed'||((c.mealMode??'ready')==='cook'?!!p.recipe:!p.recipe)) && (!!p.recipe||c.cooking==='all'||(c.cooking==='kit'?p.category==='meal_kit':p.category!=='meal_kit')) && (!avoid.length || (p.avoidanceText!==null && !avoid.some(word=>(aliases[word]??[word]).some(a=>`${p.name} ${p.avoidanceText}`.toLowerCase().includes(a))))));
+ return products.filter(p=>allowsExcludedFoods(p,c.excluded??[])&&(p.productUrl||p.recipe) && p.price>0 && ((c.mealMode??'ready')==='mixed'||((c.mealMode??'ready')==='cook'?!!p.recipe&&!p.recipe.assembly:!p.recipe||!!p.recipe.assembly)) && (!!p.recipe&&!p.recipe.assembly||c.cooking==='all'||(c.cooking==='kit'?p.category==='meal_kit':p.category!=='meal_kit')) && (!avoid.length || (p.avoidanceText!==null && !avoid.some(word=>(aliases[word]??[word]).some(a=>`${p.name} ${p.avoidanceText}`.toLowerCase().includes(a))))));
 }
 export function basket(ids: string[], products: PlanProduct[], owned: string[], supply:Record<string,number>={}) {
  const counts=new Map<string,number>();
@@ -65,8 +65,8 @@ export function purchaseBasket(ids:string[],products:PlanProduct[],owned:string[
  });
 }
 export const basketTotal=(ids:string[], products:PlanProduct[], owned:string[],supply:Record<string,number>={})=>basket(ids,products,owned,supply).reduce((n,p)=>n+p.cost,0);
-function mealFamily(p:PlanProduct){return p.name.match(/炒飯|燉飯|義大利麵|볶음밥|솥밥|도시락|파스타|리조또|비빔국수|죽|샌드위치|시리얼|그래놀라/)?.[0]??p.category;}
-function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,schedule:ReturnType<typeof mealSchedule>){
+export function mealFamily(p:PlanProduct){return p.recipe?.family??p.name.match(/炒飯|燉飯|義大利麵|볶음밥|덮밥|비빔밥|솥밥|도시락|파스타|라자냐|리조또|비빔국수|쌀국수|칼국수|우동|냉면|김밥|주먹밥|죽|샌드위치|잠봉뵈르|시리얼|그래놀라/)?.[0]??p.foodType??p.name.replace(/\[[^\]]+\]/g,'').trim();}
+function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,schedule:ReturnType<typeof mealSchedule>,previous:ReadonlySet<string>=new Set(),previousFamilies:ReadonlySet<string>=new Set()){
  const products=new Map(rows.map(r=>[r.product.id,r.product]));
  const families=new Map<string,number>();
  for(const r of rows){const family=mealFamily(r.product);families.set(family,(families.get(family)??0)+r.uses);}
@@ -78,12 +78,31 @@ function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,
  const repeats=rows.reduce((n,r)=>n+r.uses*(r.uses-1)/2,0);
  const familyRepeats=[...families.values()].reduce((n,count)=>n+count*(count-1)/2,0);
  const fit=ids.reduce((n,id)=>n+Math.max(-150,Math.min(160,products.get(id)?.personalizationScore??0)),0);
- return rows.length*300+families.size*150-repeats*350-familyRepeats*40-repetition
+ return rows.length*300-ids.filter(id=>previous.has(id)).length*900-ids.filter(id=>previousFamilies.has(mealFamily(products.get(id)!))).length*200+families.size*150-repeats*350-familyRepeats*40-repetition
   -rows.reduce((n,r)=>n+r.left,0)*100-rows.reduce((n,r)=>n+r.cost,0)/c.budget*100+fit;
 }
-export function recommendShopping(products: PlanProduct[], c: PlanConditions, cheapest=false): string[] | null {
+function diverseOptions(products:PlanProduct[],previous:string[],conditions:PlanConditions){
+ if(products.length<=80)return products;
+ const old=new Set(previous);
+ const costs=new Map(products.map(p=>[p.id,purchaseBasket([p.id],[p],conditions.owned,conditions.supply).reduce((sum,r)=>sum+r.cost,0)]));
+ const byCost=[...products].sort((a,b)=>costs.get(a.id)!-costs.get(b.id)!||a.price/a.servings-b.price/b.servings);
+ const groups=new Map<string,PlanProduct[]>();
+ for(const p of [...byCost].sort((a,b)=>Number(old.has(a.id))-Number(old.has(b.id)))){
+  const key=mealFamily(p);groups.set(key,[...(groups.get(key)??[]),p]);
+ }
+ const selected=new Map(byCost.slice(0,12).map(p=>[p.id,p]));
+ for(let i=0;selected.size<80;i++){
+  let added=false;
+  for(const group of groups.values()){if(group[i]){selected.set(group[i].id,group[i]);added=true;}if(selected.size>=80)break;}
+  if(!added)break;
+ }
+ return [...selected.values()];
+}
+export function recommendShopping(products: PlanProduct[], c: PlanConditions, cheapest=false,previousIds:string[]=[]): string[] | null {
  const pool=productsForGoal(candidates(products,c).filter(p=>!p.recipe||!p.id.includes('--with--')),c.goal);
- const schedule=mealSchedule(c),options=schedule.map((_,i)=>slotCandidates(pool,c,i));
+ const schedule=mealSchedule(c),options=schedule.map((_,i)=>diverseOptions(slotCandidates(pool,c,i),previousIds,c));
+ const previous=new Set(previousIds);
+ const previousFamilies=new Set(pool.filter(p=>previous.has(p.id)).map(mealFamily));
  let states: {ids:string[];cost:number;score:number}[]=[{ids:[],cost:0,score:0}];
  for(let i=0;i<c.meals;i++){
   const next=new Map<string,{ids:string[];cost:number;score:number}>();
@@ -93,7 +112,7 @@ export function recommendShopping(products: PlanProduct[], c: PlanConditions, ch
    // Preserve the current day's order and the previous meal when merging states.
    const dayStart=schedule.findIndex(s=>s.day===schedule[i].day);
    const key=JSON.stringify([[...ids].sort(),ids.slice(Math.max(0,dayStart-1))]);
-   const score=cheapest?-cost:planScore(ids,rows,c,schedule);
+   const score=cheapest?-cost:planScore(ids,rows,c,schedule,previous,previousFamilies);
    if(!next.has(key)||score>next.get(key)!.score)next.set(key,{ids,cost,score});
   }
   const ranked=[...next.values()].sort((a,b)=>b.score-a.score||a.cost-b.cost);
