@@ -94,6 +94,8 @@ function diverseOptions(products:PlanProduct[],previous:string[],conditions:Plan
   const key=mealFamily(p);groups.set(key,[...(groups.get(key)??[]),p]);
  }
  const selected=new Map(byCost.slice(0,12).map(p=>[p.id,p]));
+ // Retain nutritional fits before the cost/family shortlist is capped at 80.
+ for(const p of [...products].sort((a,b)=>(b.personalizationScore??0)-(a.personalizationScore??0)).slice(0,20))selected.set(p.id,p);
  for(let i=0;selected.size<80;i++){
   let added=false;
   for(const group of groups.values()){if(group[i]){selected.set(group[i].id,group[i]);added=true;}if(selected.size>=80)break;}

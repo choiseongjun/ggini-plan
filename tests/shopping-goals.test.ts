@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
 import {goalBonus,productsForGoal} from '../lib/shopping-goals';
+import {servingNutrients,nutritionIsEstimated} from '../lib/serving-nutrients';
 import {initialConditions,parseConditions,recommendShopping,swapMeal,basketTotal,type PlanProduct,type PlanConditions} from '../lib/shopping-plan';
 
 const meal=(id:string,calories:number|null,protein:number|null,extra:Partial<PlanProduct>={}):PlanProduct=>({
@@ -10,6 +11,33 @@ const meal=(id:string,calories:number|null,protein:number|null,extra:Partial<Pla
 } as PlanProduct);
 const c:PlanConditions={...initialConditions,days:1,meals:1,budget:10000};
 
+test('estimated labels normalize per serving but receive less ranking weight',()=>{
+ const known=meal('known',200,12,{nutritionBasis:'100g당',carbohydratesG:25,fatG:6,sodiumMg:200});
+ const estimated={...known,nutritionBasis:'100g당 · 추정 포함'};
+ assert.deepEqual(servingNutrients(estimated),{calories:600,protein:36,carbs:75,fat:18,sodium:600});
+ assert.equal(nutritionIsEstimated(estimated),true);
+ for(const goal of ['maintain','lose','muscle','lowfat'] as const){
+  assert.ok(goalBonus(estimated,goal)>0);
+  assert.ok(goalBonus(estimated,goal)<goalBonus(known,goal));
+ }
+});
+
+test('ambiguous serving bases and missing nutrients stay unknown',()=>{
+ for(const nutritionBasis of ['100ml당','면 100g, 소스 20g','1팩당']){
+  assert.equal(servingNutrients(meal('unknown',200,12,{nutritionBasis})).calories,null);
+ }
+ const n=servingNutrients(meal('partial',400,20,{fatG:0,sodiumMg:null}));
+ assert.equal(n.fat,0);assert.equal(n.sodium,null);assert.equal(n.carbs,null);
+ assert.equal(servingNutrients(meal('unknown-weight',400,20,{servingGrams:undefined})).calories,null);
+});
+
+test('balanced meals compare macro composition and sodium without bypassing budget',()=>{
+ const balanced=meal('balanced',500,25,{carbohydratesG:60,fatG:18,sodiumMg:400});
+ const salty={...balanced,id:'salty',sodiumMg:1600};
+ assert.ok(goalBonus(balanced)>goalBonus(salty));
+ assert.deepEqual(recommendShopping([salty,balanced],c),['balanced']);
+});
+
 test('goals survive saved condition round trips; legacy conditions remain valid and invalid goals fail',()=>{
  for(const goal of ['maintain','lose','muscle'] as const)assert.equal(parseConditions(JSON.parse(JSON.stringify({...c,goal})))?.goal,goal);
  assert.ok(parseConditions(c));
@@ -17,7 +45,7 @@ test('goals survive saved condition round trips; legacy conditions remain valid 
 });
 test('actual recommendations and replacements use the selected goal',()=>{
  const rich=meal('rich',650,35),lean=meal('lean',450,25),old=meal('old',800,10);
- assert.deepEqual(recommendShopping([rich,lean],c),['rich']);
+ assert.deepEqual(recommendShopping([rich,lean],c),['lean']);
  assert.deepEqual(recommendShopping([rich,lean],{...c,goal:'lose'}),['lean']);
  assert.deepEqual(recommendShopping([lean,rich],{...c,goal:'muscle'}),['rich']);
  assert.deepEqual(swapMeal(['old'],0,[old,rich,lean],{...c,goal:'lose'}),['lean']);
@@ -28,7 +56,7 @@ test('missing, unsourced and zero-energy values do not receive a nutrition bonus
  for(const p of products)for(const goal of ['lose','muscle'] as const)assert.equal(goalBonus(p,goal),0);
  const known=meal('known',400,30,{personalizationScore:50});const ranked=productsForGoal([known],'muscle');
  assert.equal(known.personalizationScore,50);assert.ok(ranked[0].personalizationScore!>50);
- assert.deepEqual(productsForGoal([known],'maintain'),[known]);
+ assert.ok(productsForGoal([known],'maintain')[0].personalizationScore!>50);
 });
 test('goal preferences cannot bypass budgets, exclusions or breakfast eligibility',()=>{
  const rows=[meal('affordable',500,15),meal('expensive',450,60,{price:20000}),meal('shrimp',400,70,{avoidanceText:'새우 함유'})];

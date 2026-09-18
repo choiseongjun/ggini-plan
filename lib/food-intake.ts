@@ -1,14 +1,9 @@
 import type {PlanProduct} from './shopping-plan';
 import type {ShoppingStock,StockItem} from './shopping-progress';
+import {servingNutrients} from './serving-nutrients';
 
 export function servingNutrition(p:PlanProduct){
- if(p.recipe)return p.recipe.nutrition;
- const basis=p.nutritionBasis?.replaceAll(' ','').match(/^(?:가식부)?(\d+(?:\.\d+)?)g(?:당|기준)?$/);
- const grams=p.servingGrams??(p.unit==='g'&&p.servings>0?p.quantity/p.servings:null);
- const factor=basis&&Number(basis[1])>0&&grams!==null&&grams>0?grams/Number(basis[1]):null;
- const sourced=Boolean(p.nutritionSourceUrl||p.nutritionPhotoUrl);
- const value=(n:number|null)=>sourced&&factor!==null&&n!==null&&Number.isFinite(n)&&n>=0?Math.round(n*factor*1000)/1000:null;
- return {calories:value(p.caloriesKcal),protein:value(p.proteinG)};
+ const {calories,protein}=servingNutrients(p);return {calories,protein};
 }
 export const stockPrecision=(n:number)=>Math.abs(n)<0.0000011?0:Math.round(n*1000000)/1000000;
 export function validStockQuantity(n:unknown):n is number{return typeof n==='number'&&Number.isFinite(n)&&n>=0&&n<=10000000&&Math.abs(n*1000000-Math.round(n*1000000))<0.01;}
