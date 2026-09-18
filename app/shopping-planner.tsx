@@ -1,5 +1,6 @@
 'use client';
 import {RiceBuddy} from './rice-buddy';
+import {shoppingAvailabilityMessage} from '../lib/shopping-availability';
 import {cookingDishId} from '../lib/shopping-plan';
 import {CookingShoppingGuide} from './cooking-shopping-guide';
 import {MealKindPicker} from './meal-kind-picker';
@@ -141,6 +142,8 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    const fresh=(data.baseProducts??data.products) as PlanProduct[];setProducts(fresh);setProfileExcluded(data.excluded??[]);setPersonalization(data.personalization);
    if(data.personalization?.blocked)throw new Error('현재 신체 정보에서는 자동 맞춤 추천을 제공하지 않아요. 마이페이지 안내를 확인해 주세요.');
    if(mode==='settings'&&!data.personalization?.hasProfile)throw new Error('먼저 위의 신체 정보를 저장해 주세요. 저장한 정보를 기준으로 추천할게요.');
+   const availabilityMessage=shoppingAvailabilityMessage(fresh,c);
+   if(availabilityMessage)throw new Error(availabilityMessage);
    const missing=mealSchedule(c).find((_,i)=>!slotCandidates(fresh,c,i).length);
    if(missing)throw new Error(`${slotLabels[missing.slot]}에 맞는 등록 상품이 부족해요. 해당 끼니를 빼거나 음식 종류·식단 목표·조리 방식·제외 재료를 조정해 주세요.`);
    const {guide,next}=await new Promise<{guide:ReturnType<typeof shoppingBudgetGuide>;next:string[]|null}>((resolve,reject)=>{
