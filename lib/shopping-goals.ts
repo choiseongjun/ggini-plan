@@ -5,7 +5,7 @@ import {nutritionIsEstimated,servingNutrients} from './serving-nutrients';
 export const shoppingGoals = {
  maintain: {label:'균형 잡힌 식사',description:'필요 열량과 탄수화물·단백질·지방 구성을 함께 비교해요.'},
  lose: {label:'다이어트',description:'등록된 1회분 영양정보로 열량 대비 단백질이 많은 메뉴를 우선해요.'},
- muscle: {label:'고단백',description:'등록된 1회분 단백질이 많은 메뉴를 우선해요.'},
+ muscle: {label:'헬스·고단백',description:'등록된 1회분 단백질이 많은 메뉴를 우선해요.'},
  lowfat: {label:'저지방',description:'등록된 영양정보로 열량 대비 지방이 적은 메뉴를 우선해요.'},
 } as const;
 export type ShoppingGoal = keyof typeof shoppingGoals;

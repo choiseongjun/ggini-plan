@@ -2,6 +2,18 @@ import expansion from '../data/catalog-kr-2000.json';
 import type {CatalogItem} from './catalog';
 import type {PlanProduct} from './shopping-plan';
 import {servingNutrition} from './food-intake';
+import {servingNutrients} from './serving-nutrients';
+
+export function yogurtCombinations(catalog:CatalogItem[]):PlanProduct[]{
+ // Use only explicit single-pack gram weights; ambiguous multipacks stay out.
+ const eligible=catalog.filter(p=>p.market==='KR'&&p.currency==='KRW'&&p.productUrl&&p.price>0&&p.priceCheckedAt&&p.unit==='g'&&p.quantity>0&&new RegExp(`^${p.quantity}\\s*g(?:\\s*[×xX]\\s*1개)?$`).test(p.detail.trim()));
+ const cereals=eligible.filter(p=>p.foodType==='cereal'||/시리얼|그래놀라/.test(p.name)).slice(0,3);
+ return eligible.filter(p=>p.foodType==='yogurt'&&!/드링크|음료/.test(p.name)&&p.quantity>=150).flatMap(yogurt=>cereals.filter(c=>c.quantity>=40).map(cereal=>{
+  const ingredients=[{item:yogurt,grams:150},{item:cereal,grams:40}].map(({item,grams})=>({product:{...item,servings:1,servingGrams:item.quantity,servingNote:'판매 1팩',avoidanceText:item.allergyInfo&&item.allergyInfo.status!=='unknown'?item.allergyInfo.statement:null} as PlanProduct,packs:grams/item.quantity,label:`${item.name} ${grams}g`}));
+  const sum=(key:'calories'|'protein')=>{const values=ingredients.map(i=>{const n=servingNutrients(i.product)[key];return n===null?null:n*i.packs;});return values.some(v=>v===null)?null:values.reduce<number>((a,v)=>a+v!,0);};
+  return {...yogurt,id:`meal-${yogurt.id}-${cereal.id}`,name:`${yogurt.name} + ${cereal.name} 요거트볼`,productUrl:null,price:Math.round(ingredients.reduce((s,i)=>s+i.product.price*i.packs,0)),servings:1,servingGrams:190,servingNote:'요거트 150g + 시리얼 40g',avoidanceText:ingredients.every(i=>i.product.avoidanceText!==null)?ingredients.map(i=>i.product.avoidanceText).join(' '):null,allergens:[...new Set(ingredients.flatMap(i=>i.product.allergens??[]))],recipe:{assembly:true,minutes:2,slots:['breakfast'],family:'yogurt',steps:['요거트 150g에 시리얼 40g을 곁들여요.','남은 제품은 포장에 표시된 보관법을 따라 보관해요.'],ingredients,nutrition:{calories:sum('calories'),protein:sum('protein')}}} as PlanProduct;
+ }));
+}
 
 type Source={id:string;name:string;detail:string;productUrl:string;sourceVolume:string;sourceSalesUnit:string|null;sourceCategories?:string[];unit?:string;quantity?:number};
 const sources=new Map<string,Source>(expansion.rows.map(row=>[row.id,row]));
