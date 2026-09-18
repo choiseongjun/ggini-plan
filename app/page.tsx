@@ -1,5 +1,7 @@
 "use client";
 
+import './home-readability.css';
+import {MobileBuddy} from './mobile-buddy';
 import {ComparisonTrends} from './comparison-trends';
 import {trackComparison} from '../lib/track-comparison';
 import {LanguageSwitcher} from './language-switcher';
@@ -159,15 +161,13 @@ export default function Home() {
       {showAuth ? <AuthScreen initialError={authError} onExplore={() => { setShowAuth(false); setAuthError(""); }} onSuccess={(user) => { setDashboard(null); setAuthUser(user); setAuthError(""); setShowAuth(false); setTab("home"); }}/> : <>
       <header className="app-header"><Brand/><div className="app-header-actions"><LanguageSwitcher market="KR"/>{authUser ? <button className="logout-link" type="button" onClick={signOut}>로그아웃</button> : <button className="logout-link" type="button" onClick={() => { setAuthError(""); setShowAuth(true); }}>로그인</button>}<button className="avatar" type="button" onClick={() => setTab("profile")} aria-label="내 정보 보기">{displayName.slice(0, 1)}</button></div></header>
       <div className="app-content" ref={contentRef}>
+        {tab==='home'&&<MobileBuddy/>}
         {tab === "record" && <FoodIntake key={`intake-${authUser?.id??"guest"}-${tab}`} userId={authUser?.id} onLogin={()=>setShowAuth(true)} history={tab==="record"} recordDate={recordDate} onDateChange={setRecordDate}/>}
         {tab === "home" && <ShoppingPlanner key={`shopping-home-${authUser?.id??"guest"}`} dashboard={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/>}
-        {tab === "home" && <ComparisonTrends/>}
-        {tab==='home'&&<section className="home-guide-entry"><strong>식품 핫딜, 조건까지 확인하고 골라요</strong><p>원문 출처·판매 구성·쿠폰 조건을 함께 모았어요.</p><Link href="/deals">식품 핫딜 모음 보기 →</Link></section>}
-        {tab==='home'&&<section className="home-guide-entry"><strong>닭가슴살부터 냉동볶음밥까지, 비교하고 골라요</strong><p>실제 판매 구성·가격·영양표를 확인하고 최대 4개 상품을 나란히 비교해 보세요.</p><Link href="/products">식품 가격·영양성분 비교하기 →</Link></section>}
+        {tab==='home'&&<details className="home-explore"><summary>상품 비교·이용 안내 더보기</summary><ComparisonTrends/><nav aria-label="더 알아보기"><Link href="/products">상품 가격·영양 비교 <span>→</span></Link><Link href="/guides">식단·식비 가이드 <span>→</span></Link><Link href="/submissions">상품·영양정보 제보 <span>→</span></Link><a href="mailto:choisj2702@gmail.com">문의·협업 <span>↗</span></a></nav></details>}
         <ServiceFeedback page={`/${tab==='home'?'':tab}`}/>
-        {(tab === "home" || tab === "cart" || tab === "profile") && <section className="home-guide-entry"><strong>{tab === "profile" ? "내가 제보한 한 끼" : "찾는 상품이 없거나 영양정보가 빠졌나요?"}</strong><p>상품 판매 링크와 영양성분표 사진을 제보해 주세요. 검토 후 상품 정보를 보완해요.</p><Link href={tab === "profile" ? "/submissions#mine" : "/submissions"}>{tab === "profile" ? "내 제보와 검토 결과 보기 →" : "상품·영양정보 제보하기 →"}</Link></section>}
-        {tab === "home" && <section className="home-guide-entry"><strong>자취 식단과 식비, 함께 계획해요</strong><p>일주일 식비 예산부터 1인 가구 장보기 리스트까지.</p><Link href="/guides">자취 식생활 가이드 읽기 →</Link></section>}
-        {(tab === "home" || tab === "profile") && <section className="home-guide-entry contact-entry" aria-label="문의 및 협업 연락처"><strong>💌 문의·협업 제안</strong><p>불편한 점이나 함께하고 싶은 아이디어를 보내주세요.</p><a href={`mailto:choisj2702@gmail.com?subject=${encodeURIComponent('[끼니플랜] 문의 및 협업 제안')}`}>메일 보내기 ↗</a><span>choisj2702@gmail.com</span></section>}
+        {(tab==='cart'||tab==='profile')&&<section className="home-guide-entry"><strong>상품·영양정보 제보</strong><Link href={tab==='profile'?'/submissions#mine':'/submissions'}>{tab==='profile'?'내 제보와 검토 결과 보기 →':'상품 정보 보완하기 →'}</Link></section>}
+        {tab==='profile'&&<section className="home-guide-entry contact-entry"><strong>문의·협업</strong><a href="mailto:choisj2702@gmail.com">choisj2702@gmail.com ↗</a></section>}
         {authError && <p className="auth-inline-error" role="alert">{authError}</p>}
         {dataError&&<p className="auth-error" role="alert">{dataError}</p>}
 
@@ -206,7 +206,7 @@ export default function Home() {
         {tab === "community" && <CommunityPanel key={authUser?.id ?? "guest"} userId={authUser?.id} products={products} budget={budget} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")}/>}
         {tab === "profile" && <><div className="page-intro"><div className="week-label">MY SHOPPING</div><h2>{displayName}님의 <span>장보기 취향</span></h2><p>내 생활에 맞는 끼니만, 예산 안에서 간편하게.</p></div><BodyProfilePanel onSaved={()=>setProfileRevision(n=>n+1)} key={authUser?.id ?? "guest"} userId={authUser?.id} name={displayName} onLogin={() => setShowAuth(true)}/><ShoppingPlanner key={`preferences-${authUser?.id??"guest"}-${profileRevision}`} mode="settings" userId={authUser?.id} onLogin={()=>setShowAuth(true)}/><details className="profile-extra"><summary>월 식비 예산·지출 관리</summary><BudgetSettings monthlyOnly key={`budget-${authUser?.id ?? "guest"}`} data={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)} onRefresh={refreshDashboard}/></details><ResetData key={`reset-${authUser?.id??"guest"}`} userId={authUser?.id}/></> }
       </div>
-      <nav className="bottom-nav" aria-label="앱 메뉴">{([ ["home","홈","home"], ["cart","장바구니","bag"], ["record","기록","chart"], ["community","함께","spark"], ["profile","마이","user"] ] as [Tab,string,IconName][]).map(([key,label,icon]) => <button key={key} type="button" className={tab === key ? "active" : ""} onClick={() => setTab(key)} aria-current={tab === key ? "page" : undefined}><Icon name={icon} size={21}/><span>{label}</span></button>)}{<Link href="/deals" className="hotdeal-nav"><Icon name="fire" size={21}/><span>식품 핫딜</span></Link>}</nav>
+      <nav className="bottom-nav launch-nav" aria-label="앱 메뉴">{([ ["home","홈","home"], ["profile","마이","user"] ] as [Tab,string,IconName][]).map(([key,label,icon]) => <button key={key} type="button" className={tab === key ? "active" : ""} onClick={() => setTab(key)} aria-current={tab === key ? "page" : undefined}><Icon name={icon} size={21}/><span>{label}</span></button>)}</nav>
       </>}
 
     {showSetup && <div className="modal-backdrop" role="presentation" onMouseDown={() => setShowSetup(false)}><div className="setup-modal" role="dialog" aria-modal="true" aria-labelledby="setup-title" onMouseDown={(e) => e.stopPropagation()}>{dataError&&<p className="auth-error" role="alert">{dataError}</p>}<div className="modal-header"><div><span className="section-kicker">MY PLAN</span><h2 id="setup-title">내 목표 수정하기</h2></div><button type="button" onClick={() => setShowSetup(false)} aria-label="닫기"><Icon name="close" size={21}/></button></div><form onSubmit={saveSetup}><label htmlFor="budget">이번 주 식비 한도</label><div className="input-wrap"><input id="budget" type="number" min="1" max="10000000" required inputMode="numeric" value={draftBudget} onChange={(e) => setDraftBudget(e.target.value)}/><span>원</span></div><button className="primary-button" type="submit" disabled={savingBudget}>저장하고 계속하기 <Icon name="arrow" size={17}/></button></form></div></div>}

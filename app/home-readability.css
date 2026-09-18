@@ -1,0 +1,67 @@
+/* A quiet first screen: one heading, three inputs, one primary action. */
+.site-shell .home-planner{color:#243b30;padding:0;border:0;background:transparent;margin:0 0 20px}
+.site-shell .home-planner .planner-controls{background:#fff;border:1px solid #e2e8df;border-radius:22px;padding:24px;box-shadow:0 4px 18px #24403106}
+.site-shell .home-planner.planner-empty .planner-controls>summary{display:none}
+.site-shell .home-planner .planner-heading>span{font-size:12px;letter-spacing:.03em;color:#497257;font-weight:700}
+.site-shell .home-planner .planner-heading h2{font-family:inherit;font-size:27px;line-height:1.35;letter-spacing:-1px;margin:9px 0 10px;font-weight:800}
+.site-shell .home-planner .planner-heading p{font-size:14px;line-height:1.65;color:#5c695f;margin:0 0 22px}
+.site-shell .home-planner .planner-form{gap:12px;margin:16px 0 0}
+.site-shell .home-planner .planner-mode{margin:0 0 8px;background:#f1f4ef;padding:4px}
+.site-shell .home-planner .planner-mode button{font-size:14px;min-height:44px}
+.site-shell .home-planner .planner-simple{margin:0 0 4px}
+.site-shell .home-planner .planner-simple legend{font-size:16px;margin-bottom:12px}
+.site-shell .home-planner .planner-simple>div button{min-height:52px;font-size:16px;font-weight:700}
+.site-shell .home-planner .planner-simple small{font-size:12px;line-height:1.6;color:#59675b;margin:10px 0 16px}
+.site-shell .home-planner .planner-form label{font-size:15px;line-height:1.6;color:#2e4334;gap:9px}
+.site-shell .home-planner .planner-form select,.site-shell .home-planner .planner-form input[type=number]{font-size:16px;min-height:48px;border:1px solid #ccd7c8;background:#fff;border-radius:12px;padding:12px;color:#253e30;width:100%}
+.site-shell .home-planner .planner-budget-input{margin:0}
+.site-shell .home-planner .planner-budget-input>small{font-size:12px;color:#64705f;font-weight:400}
+.site-shell .home-planner .planner-exclusions-toggle{border-top:1px solid #e7ebe4;padding:16px 0;margin:0;font-size:13px;gap:8px;align-items:center}
+.site-shell .home-planner .planner-exclusions-toggle button{min-height:44px;min-width:52px;font-size:13px}
+.site-shell .home-planner .planner-form>.primary-button{min-height:54px;border-radius:14px;font-size:16px;font-weight:700;margin:6px 0 0;background:#315f43;color:white;box-shadow:none}
+.site-shell .home-planner .planner-form>.primary-button:disabled{background:#e4e9e0;color:#63705e}
+.site-shell .home-explore{margin:22px 0 14px;border:1px solid #e0e6dc;border-radius:16px;background:#fff;padding:16px}
+.site-shell .home-explore>summary{cursor:pointer;font-size:14px;font-weight:600;color:#4c614c;min-height:24px}
+.site-shell .home-explore nav{display:grid;margin-top:14px}
+.site-shell .home-explore nav a{display:flex;justify-content:space-between;gap:12px;padding:14px 0;color:#365c41;text-decoration:none;font-size:14px;border-top:1px solid #edf0e8}
+.site-shell .bottom-nav.launch-nav{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:480px){.site-shell .home-planner .planner-controls{padding:20px 16px;border-radius:18px}.site-shell .home-planner .planner-heading h2{font-size:25px}.site-shell .home-planner .planner-exclusions-toggle>span{line-height:1.6}}
+
+/* Bring back Kkini's warm stationery and rice-buddy identity. */
+.site-shell .home-planner .planner-controls{background:#fffdf7;border:1px solid #e9e3d3;border-radius:28px;box-shadow:0 6px 0 #ece9dc66;padding:24px}
+.site-shell .home-planner .planner-heading{position:relative;min-height:112px;padding:4px 112px 10px 0;border-bottom:1px dashed #dedecb}
+.site-shell .home-planner .planner-heading>span{display:inline-block;background:#f8e8cb;color:#785932;padding:5px 10px;border-radius:8px;font-size:11px;letter-spacing:0}
+.site-shell .home-planner .planner-heading h2{font-family:KkiniRound,sans-serif;font-weight:400;font-size:29px;letter-spacing:-.7px;color:#375540;margin:12px 0 8px}
+.site-shell .home-planner .planner-heading p{font-size:14px;color:#676d58;line-height:1.65;margin:0 0 10px}
+.planner-buddy{position:absolute;right:-4px;top:4px;width:104px;text-align:center}
+.planner-buddy .rice-buddy{display:block;width:104px;height:104px;transform:rotate(5deg)}
+.planner-buddy>span{display:inline-block;font-family:KkiniRound,sans-serif;font-size:12px;color:#6c7549;background:#edf1d7;padding:5px 9px;border-radius:10px;transform:rotate(-4deg);margin-top:-9px}
+.site-shell .home-planner .planner-mode{background:#edeedf;border:1px solid #e4e5d4;border-radius:16px;padding:5px;margin:0 0 8px}
+.site-shell .home-planner .planner-mode button{border-radius:12px;color:#73775f;font-size:14px}
+.site-shell .home-planner .planner-mode button[aria-pressed=true]{background:#fffef9;color:#44613e;box-shadow:0 2px 4px #53644215}
+.planner-step{display:inline-grid;place-items:center;width:25px;height:25px;border-radius:9px;background:#e9eed8;color:#547047;font-family:KkiniRound,sans-serif;font-size:15px;margin-right:5px;font-weight:400;vertical-align:middle}
+.site-shell .home-planner .planner-simple>div{gap:10px}
+.site-shell .home-planner .planner-simple>div button{display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid #e8ddc4;background:#fff8e9;border-radius:17px;min-height:65px;color:#655839;box-shadow:0 3px 0 #eee4cf;font-size:17px}
+.site-shell .home-planner .planner-simple>div button:nth-child(2){background:#f8eee8;border-color:#e9d8ca;box-shadow:0 3px 0 #ebdcd0}
+.site-shell .home-planner .planner-simple>div button:nth-child(3){background:#eef3e5;border-color:#dce5cf;box-shadow:0 3px 0 #e1e7d7}
+.site-shell .home-planner .planner-simple>div button[aria-pressed=true]{background:#e0ebd3;border:2px solid #66855a;color:#34512e;box-shadow:0 3px 0 #aebf99}
+.meal-preset-emoji{font-size:25px;line-height:1}
+.site-shell .home-planner .planner-simple>div button strong{font-family:KkiniRound,sans-serif;font-weight:400;font-size:21px}
+.site-shell .home-planner .planner-form select,.site-shell .home-planner .planner-form input[type=number]{border:1px solid #dfdfcf;border-radius:15px;background:#fffffb;color:#40533b}
+.site-shell .home-planner .planner-budget-input>small{margin-top:-5px;font-size:12px}
+.site-shell .home-planner .planner-exclusions-toggle{border-top:1px dashed #dedfce}
+.site-shell .home-planner .planner-form>.primary-button{background:#577b4d;border:1px solid #4d6f44;border-radius:18px;box-shadow:0 4px 0 #385737;font-family:KkiniRound,sans-serif;font-weight:400;font-size:20px;min-height:55px;margin-bottom:5px}
+.site-shell .home-explore{background:#f5f3e7;border-color:#e6e2cd;border-radius:18px}
+@media(max-width:480px){.site-shell .home-planner .planner-controls{padding:20px 16px;border-radius:24px}.site-shell .home-planner .planner-heading{padding-right:92px}.site-shell .home-planner .planner-heading h2{font-size:26px}.planner-buddy{width:85px;right:-3px;top:12px}.planner-buddy .rice-buddy{width:85px;height:85px}.planner-buddy>span{font-size:11px;padding:4px 6px}.site-shell .home-planner .planner-simple>div{gap:8px}.site-shell .home-planner .planner-simple>div button{gap:5px;padding:10px 6px}.meal-preset-emoji{font-size:22px}}
+@media(max-width:360px){.site-shell .home-planner .planner-heading h2{font-size:24px}.site-shell .home-planner .planner-heading p{font-size:13px}}
+@media(max-width:910px){.app-content:has(>.mobile-buddy) .planner-buddy{display:none}.site-shell .app-content:has(>.mobile-buddy) .home-planner .planner-heading{padding-right:0;min-height:0}}
+.site-shell .home-planner .planner-simple>.simple-meal-times{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.site-shell .home-planner .simple-meal-times>span{width:100%;font-size:14px;font-weight:700;margin-bottom:2px}
+.site-shell .home-planner .planner-simple>.simple-meal-times button{flex:1;min-height:44px;padding:10px 8px;border:1px solid #dedfce;box-shadow:none;background:#fffffb;font-size:14px;border-radius:13px;white-space:nowrap}
+.site-shell .home-planner .planner-simple>.simple-meal-times button[aria-pressed=true]{background:#e7eedb;border-color:#6e8a5d;color:#35532e;box-shadow:inset 0 0 0 1px #6e8a5d}
+.site-shell .home-planner .planner-exclusions-toggle{display:flex;align-items:center;justify-content:space-between;gap:14px;border:1px solid #e6e1d1;background:#f6f4e9;padding:16px;border-radius:17px;margin:8px 0}
+.site-shell .home-planner .planner-exclusions-toggle>div{flex:1;min-width:0}
+.site-shell .home-planner .planner-exclusions-toggle strong{display:block;font-size:14px;line-height:1.5;color:#43543b}
+.site-shell .home-planner .planner-exclusions-toggle small{display:block;font-size:12px;line-height:1.6;margin-top:5px;color:#6d725e}
+.site-shell .home-planner .planner-exclusions-toggle button{flex:none;min-height:44px;min-width:58px;padding:10px 13px;border:1px solid #dcdcca;border-radius:12px;background:#fffef9;color:#46613c;font-weight:700}
+.site-shell .home-planner .planner-exclusions{padding:16px;border:1px solid #e5e5d4;border-radius:17px;margin-top:12px;background:#fffef9}

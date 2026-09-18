@@ -1,9 +1,21 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
 import {mealRole} from '../lib/meal-role';
-import {candidates,initialConditions,parseConditions,recommendShopping,swapMeal,type PlanProduct,type SwapPreference} from '../lib/shopping-plan';
+import {candidates,initialConditions,parseConditions,mealSchedule,recommendShopping,swapMeal,type PlanProduct,type SwapPreference} from '../lib/shopping-plan';
 const p=(id:string,name:string,extra:Partial<PlanProduct>={}):PlanProduct=>({id,name,price:5000,servings:1,category:'ready_meal',productUrl:'https://example.com/'+id,avoidanceText:'쌀',...extra} as PlanProduct);
 const c={...initialConditions,days:1,meals:1,budget:10000};
+test('simple total meal counts preserve odd totals across selected slots',()=>{
+ for(const meals of [3,5,7]){
+  const parsed=parseConditions({...c,mealCountMode:true,meals,days:Math.ceil(meals/2),slots:['lunch','dinner']});
+  assert.ok(parsed);
+  const schedule=mealSchedule(parsed);
+  assert.equal(schedule.length,meals);
+  assert.deepEqual(schedule[0],{day:1,slot:'lunch'});
+  assert.deepEqual(schedule.at(-1),{day:Math.ceil(meals/2),slot:'lunch'});
+ }
+ assert.equal(parseConditions({...c,mealCountMode:true,meals:3,days:3,slots:['lunch','dinner']}),null);
+ assert.equal(parseConditions({...c,meals:3,days:2,slots:['lunch','dinner']}),null);
+});
 test('ingredients and accompaniments never fill a meal slot on their own',()=>{
  const rows=[p('oil','올리브유'),p('tofu','두부'),p('cereal','시리얼'),p('milk','우유'),p('rice','햇반'),p('soup','미역국'),p('meal','닭가슴살 볶음밥')];
  assert.deepEqual(rows.map(mealRole),['ingredient','side','pairing','pairing','pairing','side','meal']);

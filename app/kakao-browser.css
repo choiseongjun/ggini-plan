@@ -1,0 +1,7 @@
+.kakao-browser-notice{position:fixed;z-index:1000;bottom:max(16px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:min(420px,calc(100% - 24px));padding:20px;border:1px solid #d7e1d2;border-radius:18px;background:#fff;box-shadow:0 6px 32px #18332233;color:#243b2b;font-family:Arial,"Malgun Gothic",sans-serif}
+.kakao-browser-notice strong{font-size:16px;line-height:1.5}
+.kakao-browser-notice p{font-size:13px;line-height:1.6;color:#566452;margin:8px 0 14px}
+.kakao-browser-notice>div{display:flex;gap:8px}
+.kakao-browser-notice button{min-height:44px;padding:10px 12px;border-radius:10px;border:1px solid #dce4d8;background:#f5f7f1;color:#36583f;font-size:14px;cursor:pointer}
+.kakao-browser-notice>div>button:first-child{flex:1;background:#315f43;color:#fff;border-color:#315f43}
+.kakao-browser-notice .kakao-browser-stay{width:100%;margin-top:8px;border:0;background:transparent;color:#596653}
