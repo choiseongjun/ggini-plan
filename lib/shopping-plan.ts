@@ -4,13 +4,20 @@ import {isShoppingGoal,isBudgetMode,hasGoalNutrition,productsForGoal,type Budget
 import type { CatalogItem } from './catalog';
 import {excludedFoods,type ExcludedFood} from './excluded-foods';
 import {allowsExcludedFoods} from './shopping-exclusions';
+import {mealRole} from './meal-role';
+export const swapReasons={taste:'취향 아님',effort:'조리 귀찮음',price:'너무 비쌈',repeat:'비슷한 걸 먹었음'} as const;
+export type SwapReason=keyof typeof swapReasons;
+export type SwapPreference={id:string;family:string;reason:SwapReason;price:number;minutes:number};
+export function validSwapPreferences(value:unknown):value is SwapPreference[]{
+ return Array.isArray(value)&&value.length<=50&&value.every(p=>p&&typeof p==='object'&&typeof p.id==='string'&&p.id.length>0&&p.id.length<=200&&typeof p.family==='string'&&p.family.length<=200&&typeof p.reason==='string'&&Object.hasOwn(swapReasons,p.reason)&&Number.isFinite(p.price)&&p.price>=0&&p.price<=10000000&&Number.isFinite(p.minutes)&&p.minutes>=0&&p.minutes<=1440);
+}
 
 export type PlanProduct = CatalogItem & { mealSlots?:MealSlot[]; servings: number; servingGrams?:number; servingNote: string; avoidanceText: string | null; personalizationScore?:number; servingCalories?:number|null; recipe?: {assembly?:boolean;minutes:number;slots:MealSlot[];family:string;steps:string[];ingredients:{product:PlanProduct;packs:number;label:string}[];nutrition:{calories:number|null;protein:number|null}} };
 export type MealSlot = 'breakfast'|'lunch'|'dinner';
 export const slotLabels={breakfast:'아침',lunch:'점심',dinner:'저녁'};
 export const MAX_PLAN_DAYS=15;
 export const MAX_PLAN_MEALS=MAX_PLAN_DAYS*3;
-export type PlanConditions = { budgetMode?:BudgetMode; mealKinds?:MealKind[]; goal?:ShoppingGoal; mealMode?:'ready'|'cook'|'mixed'; excluded?:ExcludedFood[]; startDate?:string; budget: number; meals: number; cooking: 'quick' | 'kit' | 'all'; avoid: string; owned: string[]; supply?:Record<string,number>; days?:number; slots?:MealSlot[] };
+export type PlanConditions = { swapPreferences?:SwapPreference[]; budgetMode?:BudgetMode; mealKinds?:MealKind[]; goal?:ShoppingGoal; mealMode?:'ready'|'cook'|'mixed'; excluded?:ExcludedFood[]; startDate?:string; budget: number; meals: number; cooking: 'quick' | 'kit' | 'all'; avoid: string; owned: string[]; supply?:Record<string,number>; days?:number; slots?:MealSlot[] };
 export const initialConditions: PlanConditions = {mealMode:'mixed',budget:50000,meals:7,cooking:'all',avoid:'',owned:[],days:7,slots:['dinner']};
 export function mealSchedule(c:PlanConditions){
  const slots=c.slots??(c.meals>=10?['lunch','dinner'] as MealSlot[]:['dinner'] as MealSlot[]);
@@ -19,6 +26,7 @@ export function mealSchedule(c:PlanConditions){
 export function parseConditions(value: unknown): PlanConditions | null {
  if(!value || typeof value!=='object')return null;
  const p=value as PlanConditions;
+ if(p.swapPreferences!==undefined&&!validSwapPreferences(p.swapPreferences))return null;
  if(p.mealKinds!==undefined&&!validMealKinds(p.mealKinds))return null;
  if(p.budgetMode!==undefined&&!isBudgetMode(p.budgetMode))return null;
  if(p.goal!==undefined&&!isShoppingGoal(p.goal))return null;
@@ -38,7 +46,7 @@ export function validMealIds(ids:string[],products:PlanProduct[],c:PlanCondition
 const aliases: Record<string,string[]> = {우유:['우유','유제품','치즈','크림'],달걀:['달걀','계란','알류'],계란:['달걀','계란','알류'],소고기:['소고기','쇠고기','한우','비프'],돼지고기:['돼지고기','돈육','베이컨','삼겹'],닭고기:['닭','치킨'],콩:['콩','대두','두부'],밀:['밀','소맥'],새우:['새우','쉬림프']};
 export function candidates(products: PlanProduct[], c: PlanConditions) {
  const avoid=c.avoid.split(/[,，\n]/).map(x=>x.trim().toLowerCase()).filter(Boolean);
- return products.filter(p=>hasGoalNutrition(p,c.goal)&&allowsMealKind(p,c.mealKinds)&&allowsExcludedFoods(p,c.excluded??[])&&(p.productUrl||p.recipe) && p.price>0 && ((c.mealMode??'ready')==='mixed'||((c.mealMode??'ready')==='cook'?!!p.recipe&&!p.recipe.assembly:!p.recipe||!!p.recipe.assembly)) && (!!p.recipe&&!p.recipe.assembly||c.cooking==='all'||(c.cooking==='kit'?p.category==='meal_kit':p.category!=='meal_kit')) && (!avoid.length || (p.avoidanceText!==null && !avoid.some(word=>(aliases[word]??[word]).some(a=>`${p.name} ${p.avoidanceText}`.toLowerCase().includes(a))))));
+ return products.filter(p=>mealRole(p)==='meal'&&hasGoalNutrition(p,c.goal)&&allowsMealKind(p,c.mealKinds)&&allowsExcludedFoods(p,c.excluded??[])&&(p.productUrl||p.recipe) && p.price>0 && ((c.mealMode??'ready')==='mixed'||((c.mealMode??'ready')==='cook'?!!p.recipe&&!p.recipe.assembly:!p.recipe||!!p.recipe.assembly)) && (!!p.recipe&&!p.recipe.assembly||c.cooking==='all'||(c.cooking==='kit'?p.category==='meal_kit':p.category!=='meal_kit')) && (!avoid.length || (p.avoidanceText!==null && !avoid.some(word=>(aliases[word]??[word]).some(a=>`${p.name} ${p.avoidanceText}`.toLowerCase().includes(a))))));
 }
 export function basket(ids: string[], products: PlanProduct[], owned: string[], supply:Record<string,number>={}) {
  const counts=new Map<string,number>();
@@ -80,8 +88,13 @@ function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,
  }
  const repeats=rows.reduce((n,r)=>n+r.uses*(r.uses-1)/2,0);
  const familyRepeats=[...families.values()].reduce((n,count)=>n+count*(count-1)/2,0);
+ const feedback=ids.reduce((sum,id)=>{const p=products.get(id)!;return sum+(c.swapPreferences??[]).reduce((n,f)=>n+(
+  f.reason==='taste'?(p.id===f.id?1400:mealFamily(p)===f.family?250:0):
+  f.reason==='repeat'?(mealFamily(p)===f.family?450:0):
+  f.reason==='price'?(p.price/p.servings>=f.price?180:0):
+  (p.recipe?.minutes??(p.category==='meal_kit'?20:5))>=f.minutes?250:0),0);},0);
  const fit=ids.reduce((n,id)=>n+Math.max(-150,Math.min(160,products.get(id)?.personalizationScore??0)),0);
- return rows.length*300-ids.filter(id=>previous.has(id)).length*900-ids.filter(id=>previousFamilies.has(mealFamily(products.get(id)!))).length*200+families.size*150-repeats*350-familyRepeats*40-repetition
+ return rows.length*300-feedback-ids.filter(id=>previous.has(id)).length*900-ids.filter(id=>previousFamilies.has(mealFamily(products.get(id)!))).length*200+families.size*150-repeats*350-familyRepeats*40-repetition
   -rows.reduce((n,r)=>n+r.left,0)*100-rows.reduce((n,r)=>n+r.cost,0)/c.budget*(c.budgetMode==='save'?2000:c.budgetMode==='full'?-100:100)+fit;
 }
 function diverseOptions(products:PlanProduct[],previous:string[],conditions:PlanConditions){
@@ -129,9 +142,14 @@ export function recommendShopping(products: PlanProduct[], c: PlanConditions, ch
  }
  return states.sort((a,b)=>b.score-a.score||a.cost-b.cost)[0]?.ids??null;
 }
-export function swapMeal(ids:string[], index:number, products:PlanProduct[], c:PlanConditions):string[]|null {
+export function swapMeal(ids:string[], index:number, products:PlanProduct[], c:PlanConditions,reason?:SwapReason):string[]|null {
+ const old=products.find(p=>p.id===ids[index]);
  products=productsForGoal(products,c.goal);
- const options=slotCandidates(products,c,index).filter(p=>!ids.includes(p.id)).map(p=>ids.map((id,i)=>i===index?p.id:id)).filter(next=>basketTotal(next,products,c.owned,c.supply)<=c.budget);
+ const options=slotCandidates(products,c,index).filter(p=>!ids.includes(p.id)).filter(p=>!old||!reason||(
+  reason==='price'?basketTotal(ids.map((id,i)=>i===index?p.id:id),products,c.owned,c.supply)<basketTotal(ids,products,c.owned,c.supply):
+  reason==='effort'?(p.recipe?.minutes??(p.category==='meal_kit'?20:5))<(old.recipe?.minutes??(old.category==='meal_kit'?20:5)):
+  reason==='repeat'?mealFamily(p)!==mealFamily(old):true
+ )).map(p=>ids.map((id,i)=>i===index?p.id:id)).filter(next=>basketTotal(next,products,c.owned,c.supply)<=c.budget);
  const schedule=mealSchedule(c);
  options.sort((a,b)=>planScore(b,basket(b,products,c.owned,c.supply),c,schedule)-planScore(a,basket(a,products,c.owned,c.supply),c,schedule));
  return options[0]??null;

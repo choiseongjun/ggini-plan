@@ -1,0 +1,13 @@
+.planner-mode,.planner-simple>div,.swap-reasons>div{display:flex;flex-wrap:wrap;gap:8px}
+.planner-mode{padding:5px;background:#eff3e8;border-radius:14px;margin:10px 0 18px}
+.planner-mode button{flex:1;border:0;border-radius:10px;padding:12px;background:transparent;color:#576a50;font-weight:700}
+.planner-mode button[aria-pressed=true]{background:white;color:#2f6546;box-shadow:0 2px 6px #233c2012}
+.planner-simple{border:0;padding:0;min-width:0;margin:12px 0}
+.planner-simple legend{font-size:15px;font-weight:700;margin-bottom:10px}
+.planner-simple>div button,.swap-reasons button{border:1px solid #d9e3ce;border-radius:12px;background:white;color:#425c39;padding:12px 15px}
+.planner-simple>div button{flex:1}
+.planner-simple button[aria-pressed=true]{background:#e7efdc;border-color:#749766}
+.planner-simple small{display:block;font-size:12px;line-height:1.7;color:#6c7766;margin:10px 0}
+.swap-reasons{margin:12px 0;padding:12px;background:#f7f8f2;border-radius:12px;font-size:12px}
+.swap-reasons summary{cursor:pointer;font-weight:700;color:#536a45}
+.swap-reasons p{line-height:1.6;color:#707a68}

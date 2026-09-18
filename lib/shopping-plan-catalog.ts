@@ -4,6 +4,7 @@ import manifest from '../data/catalog-import-2026-09-16.json';
 import reviewed from '../data/shopping-verified-2026-09-17.json';
 import { catalogItems } from './catalog-db';
 import type { PlanProduct } from './shopping-plan';
+import {mealRole} from './meal-role';
 
 export async function planProducts():Promise<PlanProduct[]> {
  const products=await catalogItems();
@@ -26,5 +27,6 @@ export async function planProducts():Promise<PlanProduct[]> {
  });
  const expanded=expandedMeals(products);
  const known=new Set(ready.map(p=>p.id));
- return [...ready,...expanded.mains.filter(p=>!known.has(p.id)),...riceCombinations(expanded.sides,products),...cookingProducts(products)];
+ const sides=[...new Map([...expanded.sides,...ready.filter(p=>mealRole(p)==='side')].map(p=>[p.id,p])).values()];
+ return [...ready.filter(p=>mealRole(p)==='meal'),...expanded.mains.filter(p=>!known.has(p.id)),...riceCombinations(sides,products),...cookingProducts(products)];
 }

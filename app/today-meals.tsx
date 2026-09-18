@@ -10,7 +10,7 @@ import {ProductThumb} from './product-thumb';
 import {MealSourceBadge,RecipeProductPreview} from './meal-source';
 import {availablePortions} from '../lib/food-intake';
 import {ProductNutrition,DailyRecommendationNutrition} from './recommendation-nutrition';
-import {purchaseBasket,slotLabels,type PlanProduct,type PlanConditions,mealSchedule} from '../lib/shopping-plan';
+import {purchaseBasket,swapReasons,type SwapReason,slotLabels,type PlanProduct,type PlanConditions,mealSchedule} from '../lib/shopping-plan';
 import {planDay,planDate,recordedForSlot} from '../lib/daily-plan';
 import {addDays,type DashboardData} from '../lib/dashboard';
 import {ShoppingProgress,type useShoppingProgress} from './shopping-progress';
@@ -18,7 +18,7 @@ import './today-meals.css';
 import {recommendationReasons} from '../lib/plan-explanation';
 
 const amount=(n:number)=>n.toLocaleString('ko-KR',{maximumFractionDigits:1});
-export function TodayMeals({nutritionReference,shoppingTotal,intake,userId,onLogin,ids,products,conditions,startDate,onStartDate,onSwap,onChoose,progress,dailyCalories,dashboard,perMealCalories}:{nutritionReference?:DailyNutritionReference;shoppingTotal:number;intake:ReturnType<typeof useFoodIntake>;userId?:string;onLogin:()=>void;ids:string[];products:PlanProduct[];conditions:PlanConditions;startDate:string;onStartDate:(date:string)=>void;onSwap:(index:number)=>void;onChoose:(index:number,id:string)=>void;progress:ReturnType<typeof useShoppingProgress>;dailyCalories:number|null;perMealCalories?:number|null;dashboard?:DashboardData|null}){
+export function TodayMeals({nutritionReference,shoppingTotal,intake,userId,onLogin,ids,products,conditions,startDate,onStartDate,onSwap,onChoose,progress,dailyCalories,dashboard,perMealCalories}:{nutritionReference?:DailyNutritionReference;shoppingTotal:number;intake:ReturnType<typeof useFoodIntake>;userId?:string;onLogin:()=>void;ids:string[];products:PlanProduct[];conditions:PlanConditions;startDate:string;onStartDate:(date:string)=>void;onSwap:(index:number,reason?:SwapReason)=>void;onChoose:(index:number,id:string)=>void;progress:ReturnType<typeof useShoppingProgress>;dailyCalories:number|null;perMealCalories?:number|null;dashboard?:DashboardData|null}){
  const locale=usePlannerLocale();
  const won=locale.money;
  const {today,current,totals}=intake;
@@ -76,6 +76,7 @@ export function TodayMeals({nutritionReference,shoppingTotal,intake,userId,onLog
       <a href={locale.search(p.name)} target="_blank" rel="noopener noreferrer" aria-label={`${p.name} 네이버쇼핑에서 가격 검색 (새 창)`}>다른 판매처 가격 검색 ↗</a>
      </div>}
      <div className="today-actions">{done?<Link href="/record">기록 확인·취소 →</Link>:!userId?<button type="button" onClick={onLogin}>로그인하고 먹었어요 기록</button>:canEat?<button className="primary-button" type="button" disabled={disabled||!isToday} onClick={()=>{if(owned.available>=1-recorded)intake.eat(owned,1-recorded);else setPartial(index);}}>{owned.available>=1-recorded?'먹었어요':'먹은 양 선택'}</button>:orderedParts.length>0?<button className="primary-button" type="button" disabled={disabled} onClick={()=>void progress.update(orderedParts.map(item=>({item,quantity:item.ordered})),'receive')}>받았어요 ({orderedParts.reduce((n,s)=>n+s.ordered,0)}묶음)</button>:<button type="button" disabled={disabled} aria-expanded={managing===index} onClick={()=>{setManaging(managing===index?null:index);setPurchaseMessage('');}}>구매·보유 상태 등록</button>}<button type="button" disabled={disabled||done} onClick={()=>{setManaging(null);onSwap(index);}}>다른 메뉴로 ↻</button></div>
+     {!done&&<details className="swap-reasons"><summary>이유를 고르고 교체하기</summary><p>다음 추천에도 반영해요. 이유 없이 바꾸려면 ‘다른 메뉴로’를 누르세요.</p><div>{(Object.keys(swapReasons) as SwapReason[]).map(reason=><button type="button" key={reason} disabled={disabled} onClick={()=>{setManaging(null);onSwap(index,reason);}}>{swapReasons[reason]}</button>)}</div></details>}
      {userId&&canEat&&!done&&<><small className="today-left">남은 음식 {amount(owned.available)}회분 · 기본 기록 {amount(1-recorded)}회분</small><button type="button" className="text-link" disabled={disabled||!isToday} onClick={()=>setPartial(partial===index?null:index)} aria-expanded={partial===index}>조금만 먹었어요 · 양 선택</button>{partial===index&&<div className="today-partial"><strong>실제로 먹은 만큼만 기록해요</strong><div>{[0.25,0.5,0.75,1].filter(n=>n<=1-recorded&&n<=owned.available).map(n=><button type="button" key={n} disabled={disabled||!isToday} onClick={()=>{intake.eat(owned,n);setPartial(null);}}>{n===0.5?'절반':n===1?'1회분':n+'회분'} 먹었어요</button>)}</div></div>}</>}
      {managing===index&&<div className="today-purchase-panel">
       <div className="today-purchase-heading"><strong>{p.recipe?'이 끼니의 재료를 등록해요':'이 음식만 등록해요'}</strong><button type="button" disabled={progress.busy} onClick={()=>setManaging(null)}>닫기</button></div>
