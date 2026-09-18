@@ -38,3 +38,19 @@ test('goal preferences cannot bypass budgets, exclusions or breakfast eligibilit
   assert.equal(recommendShopping(rows,{...conditions,slots:['breakfast']}),null);
  }
 });
+
+test('budget modes change price preference and never exceed the cap',()=>{
+ const cheap=meal('cheap',500,25,{price:3000}),expensive=meal('expensive',500,25,{price:8000});
+ assert.deepEqual(recommendShopping([cheap,expensive],{...c,budgetMode:'save'}),['cheap']);
+ assert.deepEqual(recommendShopping([cheap,expensive],{...c,budgetMode:'full'}),['expensive']);
+ assert.deepEqual(recommendShopping([cheap,expensive],{...c,budget:5000,budgetMode:'full'}),['cheap']);
+ for(const budgetMode of ['save','balanced','full'] as const)assert.equal(parseConditions({...c,budgetMode})?.budgetMode,budgetMode);
+ assert.equal(parseConditions({...c,budgetMode:'unlimited'}),null);
+});
+test('low fat compares sourced serving fat; missing nutrition is not substituted',()=>{
+ const low=meal('low',500,20,{fatG:4}),high=meal('high',500,20,{fatG:25}),missing=meal('missing',500,20,{fatG:null});
+ assert.deepEqual(recommendShopping([high,missing,low],{...c,goal:'lowfat'}),['low']);
+ assert.equal(recommendShopping([missing],{...c,goal:'lowfat'}),null);
+ assert.equal(recommendShopping([meal('unknown',null,null)],{...c,goal:'muscle'}),null);
+ assert.ok(parseConditions({...c,goal:'lowfat'}));
+});

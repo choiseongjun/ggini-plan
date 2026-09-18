@@ -7,7 +7,7 @@ export function recommendationReasons(p:PlanProduct,c:PlanConditions,target:numb
  const kind=mealKind(p);if(c.mealKinds?.length&&kind&&c.mealKinds.includes(kind))reasons.push(`선택한 ${mealKinds[kind].label} 메뉴예요`);
  const n=servingNutrition(p);
  if(target&&n.calories!==null&&Math.abs(n.calories-target)/target<=0.2)reasons.push(`한 끼 참고 열량 ${Math.round(target)} kcal에 가까워요`);
- if(goalBonus(p,c.goal)>0)reasons.push(c.goal==='lose'?'열량 대비 단백질을 고려한 구성':'1회분 단백질을 고려한 구성');
+ if(goalBonus(p,c.goal)>0)reasons.push(c.goal==='lose'?'열량 대비 단백질을 고려한 구성':c.goal==='lowfat'?'열량 대비 지방을 비교한 구성':'1회분 단백질을 고려한 구성');
  if(p.recipe)reasons.push(`직접 조리 약 ${p.recipe.minutes}분`);
  else if(c.cooking==='quick'&&p.category!=='meal_kit')reasons.push('선택한 간편 조리 조건에 맞아요');
  else if(c.cooking==='kit'&&p.category==='meal_kit')reasons.push('밀키트 조리 조건에 맞아요');

@@ -6,6 +6,7 @@ import { parseConditions, validMealIds, basketTotal } from '../../../lib/shoppin
 import {parseStock} from '../../../lib/shopping-progress';
 import {personalizeProducts} from '../../../lib/shopping-personalization';
 import {defaultDiet,parseDiet} from '../../../lib/meal-plan';
+import {isShoppingGoal,isBudgetMode} from '../../../lib/shopping-goals';
 import {validMealKinds} from '../../../lib/meal-kinds';
 import {initialConditions} from '../../../lib/shopping-plan';
 async function personalizedCatalog(userId?:string){
@@ -20,9 +21,9 @@ export async function PATCH(request:NextRequest){
   const user=await sessionUser(request);if(!user)return authFailure('로그인이 필요해요.',401);
   const raw=await request.text();if(raw.length>200)return authFailure('음식 종류를 확인해 주세요.',400);
   let input;try{input=JSON.parse(raw);}catch{return authFailure('음식 종류를 확인해 주세요.',400);}
-  if(!validMealKinds(input?.mealKinds))return authFailure('음식 종류를 확인해 주세요.',400);
+  if(!input||typeof input!=='object'||Array.isArray(input)||!Object.keys(input).length||Object.keys(input).some(k=>!['mealKinds','goal','budgetMode'].includes(k))||(input.mealKinds!==undefined&&!validMealKinds(input.mealKinds))||(input.goal!==undefined&&!isShoppingGoal(input.goal))||(input.budgetMode!==undefined&&!isBudgetMode(input.budgetMode)))return authFailure('음식 종류를 확인해 주세요.',400);
   await getPool().query(`INSERT INTO shopping_preferences(user_id,conditions) VALUES($1,$2::jsonb)
-   ON CONFLICT(user_id) DO UPDATE SET conditions=shopping_preferences.conditions::jsonb || jsonb_build_object('mealKinds',$3::jsonb),updated_at=now()`,[user.id,JSON.stringify({...initialConditions,mealKinds:input.mealKinds}),JSON.stringify(input.mealKinds)]);
+   ON CONFLICT(user_id) DO UPDATE SET conditions=shopping_preferences.conditions::jsonb || $3::jsonb,updated_at=now()`,[user.id,JSON.stringify({...initialConditions,...input}),JSON.stringify(input)]);
   return Response.json({saved:true},{headers:{'Cache-Control':'no-store'}});
  }catch{return authFailure('음식 종류를 저장하지 못했어요.',503);}
 }
