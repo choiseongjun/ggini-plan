@@ -101,12 +101,14 @@ function diverseOptions(products:PlanProduct[],previous:string[],conditions:Plan
 export function recommendShopping(products: PlanProduct[], c: PlanConditions, cheapest=false,previousIds:string[]=[]): string[] | null {
  const pool=productsForGoal(candidates(products,c).filter(p=>!p.recipe||!p.id.includes('--with--')),c.goal);
  const schedule=mealSchedule(c),options=schedule.map((_,i)=>diverseOptions(slotCandidates(pool,c,i),previousIds,c));
+ if(pool.length<c.meals)return null;
  const previous=new Set(previousIds);
  const previousFamilies=new Set(pool.filter(p=>previous.has(p.id)).map(mealFamily));
  let states: {ids:string[];cost:number;score:number}[]=[{ids:[],cost:0,score:0}];
  for(let i=0;i<c.meals;i++){
   const next=new Map<string,{ids:string[];cost:number;score:number}>();
   for(const state of states)for(const p of options[i]){
+   if(state.ids.includes(p.id))continue;
    const ids=[...state.ids,p.id], rows=basket(ids,pool,c.owned,c.supply), cost=rows.reduce((n,r)=>n+r.cost,0);
    if(cost>c.budget)continue;
    // Preserve the current day's order and the previous meal when merging states.
@@ -124,7 +126,7 @@ export function recommendShopping(products: PlanProduct[], c: PlanConditions, ch
 }
 export function swapMeal(ids:string[], index:number, products:PlanProduct[], c:PlanConditions):string[]|null {
  products=productsForGoal(products,c.goal);
- const options=slotCandidates(products,c,index).filter(p=>p.id!==ids[index]).map(p=>ids.map((id,i)=>i===index?p.id:id)).filter(next=>basketTotal(next,products,c.owned,c.supply)<=c.budget);
+ const options=slotCandidates(products,c,index).filter(p=>!ids.includes(p.id)).map(p=>ids.map((id,i)=>i===index?p.id:id)).filter(next=>basketTotal(next,products,c.owned,c.supply)<=c.budget);
  const schedule=mealSchedule(c);
  options.sort((a,b)=>planScore(b,basket(b,products,c.owned,c.supply),c,schedule)-planScore(a,basket(a,products,c.owned,c.supply),c,schedule));
  return options[0]??null;

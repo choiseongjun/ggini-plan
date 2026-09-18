@@ -4,16 +4,16 @@ import {minimumShoppingCost,shoppingBudgetGuide} from '../lib/shopping-budget';
 import {basketTotal,initialConditions,slotCandidates,type PlanProduct,type PlanConditions} from '../lib/shopping-plan';
 const product=(id:string,price:number,servings:number,name=id):PlanProduct=>({id,name,price,servings,category:'ready_meal',productUrl:'https://example.com/item',avoidanceText:'확인된 표시'} as PlanProduct);
 test('15-day budget follows selected meal count and existing stock',()=>{
- const products=[product('porridge',3000,1,'호박죽')];
+ const products=Array.from({length:45},(_,i)=>product(`porridge${i}`,3000,1,`죽 ${i}`));
  const c:PlanConditions={...initialConditions,days:15,slots:['breakfast','lunch','dinner'],meals:45,budget:200000};
  assert.equal(shoppingBudgetGuide(products,c).minimum,135000);
- assert.equal(minimumShoppingCost(products,{...c,supply:{porridge:5}}),120000);
+ assert.equal(shoppingBudgetGuide(products,{...c,supply:{porridge0:5}}).minimum,132000);
  assert.equal(shoppingBudgetGuide(products,{...c,slots:['dinner'],meals:15}).minimum,45000);
 });
-test('single eligible pumpkin menu explains the 14-meal minimum without promising variety',()=>{
+test('single eligible menu cannot produce a duplicate-free plan',()=>{
  const c:PlanConditions={...initialConditions,days:7,slots:['lunch','dinner'],meals:14,budget:100000};
  const guide=shoppingBudgetGuide([product('pumpkin',4500,1,'호박죽')],c);
- assert.equal(guide.count,1);assert.equal(guide.minimum,63000);
+ assert.equal(guide.count,1);assert.equal(guide.minimum,null);
  assert.equal(guide.varietyMinimum,null);assert.equal(guide.varietyUpper,null);
  assert.deepEqual(guide.options,[{slot:'lunch',count:1},{slot:'dinner',count:1}]);
 });
@@ -42,8 +42,8 @@ test('exact minimum matches exhaustive valid meal combinations',()=>{
 });
 test('varied budget honors the same exclusions and costs at least the absolute minimum',()=>{
  const products=[product('rice',3000,1),product('porridge',2000,1,'호박죽'),product('shrimp',1000,1,'새우 볶음밥')];
- const c={...initialConditions,days:4,meals:4,avoid:'새우'};
+ const c={...initialConditions,days:2,meals:2,avoid:'새우'};
  const guide=shoppingBudgetGuide(products,c);
- assert.equal(guide.count,2);assert.equal(guide.minimum,8000);assert.equal(guide.varietyMinimum,10000);
+ assert.equal(guide.count,2);assert.equal(guide.minimum,5000);assert.equal(guide.varietyMinimum,5000);
  assert.ok(guide.varietyUpper!>=guide.varietyMinimum!);
 });

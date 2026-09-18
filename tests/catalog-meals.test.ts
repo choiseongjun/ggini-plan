@@ -46,6 +46,6 @@ test('refresh favors unseen meals but never sacrifices budget or exclusions',()=
  const c={...initialConditions,days:2,meals:2,budget:6000,mealMode:'ready' as const};
  const first=recommendShopping(pool,c)!;const second=recommendShopping(pool,c,false,first)!;
  assert.equal(second.filter(id=>first.includes(id)).length,0);assert.ok(basketTotal(second,pool,[])<=c.budget);
- assert.deepEqual(recommendShopping([pool[0]],c,false,[pool[0].id]),[pool[0].id,pool[0].id]);
+ assert.equal(recommendShopping([pool[0]],c,false,[pool[0].id]),null);
  assert.equal(recommendShopping(pool,{...c,budget:1000},false,first),null);
 });

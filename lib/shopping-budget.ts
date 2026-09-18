@@ -42,13 +42,8 @@ export function shoppingBudgetGuide(products:PlanProduct[],c:PlanConditions){
  const slots=[...new Set(schedule.map(s=>s.slot))];
  const options=slots.map(slot=>({slot,products:slotCandidates(products,c,schedule.findIndex(s=>s.slot===slot))}));
  const count=new Set(options.flatMap(o=>o.products.map(p=>p.id))).size;
- if(options.some(o=>o.products.some(p=>p.recipe))){
-  const low=recommendShopping(products,{...c,budget:1000000},true),varied=count>1?recommendShopping(products,{...c,budget:1000000}):null;
-  const minimum=low?basketTotal(low,products,c.owned,c.supply):null,varietyMinimum=varied?basketTotal(varied,products,c.owned,c.supply):null;
-  return {count,minimum,varietyMinimum,varietyUpper:varietyMinimum,approximate:true,options:options.map(o=>({slot:o.slot,count:o.products.length}))};
- }
- const minimum=minimumShoppingCost(products,c),varietyMinimum=minimumShoppingCost(products,c,true);
- const varied=count>1&&varietyMinimum!==null?recommendShopping(products,{...c,budget:1000000}):null;
- const varietyUpper=varied?Math.max(varietyMinimum!,basketTotal(varied,products,c.owned,c.supply)):varietyMinimum;
- return {count,minimum,varietyMinimum,varietyUpper,approximate:false,options:options.map(o=>({slot:o.slot,count:o.products.length}))};
+ const low=recommendShopping(products,{...c,budget:1000000},true),varied=recommendShopping(products,{...c,budget:1000000});
+ const minimum=low?basketTotal(low,products,c.owned,c.supply):null;
+ const varietyMinimum=varied?basketTotal(varied,products,c.owned,c.supply):null;
+ return {count,minimum,varietyMinimum,varietyUpper:varietyMinimum,approximate:true,options:options.map(o=>({slot:o.slot,count:o.products.length}))};
 }

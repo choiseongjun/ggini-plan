@@ -12,8 +12,9 @@ test('budget is a hard constraint, with no invented meals when stock is unavaila
  const p=[product('rice',8000,4),product('pasta',5000,1)];
  const c={...initialConditions,days:5,meals:5,budget:10000};
  const ids=recommendShopping(p,c);assert.equal(ids,null);
- const enough=recommendShopping(p,{...c,budget:13000})!;
- assert.equal(enough.length,5);assert.ok(basketTotal(enough,p,[])<=13000);
+ assert.equal(recommendShopping(p,{...c,budget:13000}),null);
+ const enough=recommendShopping(p,{...c,days:2,meals:2,budget:13000})!;
+ assert.equal(enough.length,2);assert.ok(basketTotal(enough,p,[])<=13000);
  assert.equal(recommendShopping([],c),null);
 });
 test('avoidance excludes unknown source and known ingredient aliases; cooking is respected',()=>{
@@ -36,7 +37,7 @@ test('15 days support all 45 meals and reject longer or mismatched schedules',()
  assert.ok(parseConditions(c));
  assert.equal(parseConditions({...c,days:16,meals:48}),null);
  assert.equal(parseConditions({...c,meals:44}),null);
- const products=[product('porridge',3000,1,{name:'호박죽'})];
+ const products=Array.from({length:45},(_,i)=>product(`porridge${i}`,3000,1,{name:`죽 ${i}`}));
  const ids=recommendShopping(products,c)!;
  assert.equal(ids.length,45);assert.ok(validMealIds(ids,products,c));
  assert.deepEqual(mealSchedule(c).at(-1),{day:15,slot:'dinner'});
@@ -44,19 +45,19 @@ test('15 days support all 45 meals and reject longer or mismatched schedules',()
 });
 
 test('a high personalization score cannot fill a two-meal week with pumpkin porridge',()=>{
- const products=[product('pumpkin',4000,1,{name:'호박죽',personalizationScore:160}),...Array.from({length:8},(_,i)=>product(`meal${i}`,5000,1,{name:`다른 죽 ${i}`,personalizationScore:-150}))];
+ const products=[product('pumpkin',4000,1,{name:'호박죽',personalizationScore:160}),...Array.from({length:14},(_,i)=>product(`meal${i}`,5000,1,{name:`다른 죽 ${i}`,personalizationScore:-150}))];
  const c={...initialConditions,budget:100000,days:7,slots:['lunch','dinner'] as const,meals:14};
  const conditions={...c,slots:[...c.slots]};
  const ids=recommendShopping(products,conditions)!;
  assert.equal(ids.length,14);assert.ok(basketTotal(ids,products,[])<=100000);
- assert.ok(new Set(ids).size>=7);
+ assert.equal(new Set(ids).size,14);
  assert.ok(basket(ids,products,[]).every(r=>r.uses<=2));
  assert.ok(ids.every((id,i)=>i===0||id!==ids[i-1]));
 });
-test('limited candidates remain usable without breaking exclusions or budget',()=>{
+test('limited candidates fail instead of repeating meals',()=>{
  const products=[product('pumpkin',4000,1,{name:'호박죽'}),product('shrimp',5000,1,{name:'새우 볶음밥',avoidanceText:'새우 함유'})];
  const c={...initialConditions,budget:60000,days:7,slots:['lunch','dinner'] as ('lunch'|'dinner')[],meals:14,avoid:'새우'};
- assert.deepEqual(recommendShopping(products,c),Array(14).fill('pumpkin'));
+ assert.equal(recommendShopping(products,c),null);
  assert.equal(recommendShopping(products,{...c,budget:55000}),null);
 });
 
@@ -68,12 +69,19 @@ test('selected meal times persist and breakfast never falls back to fried rice',
  assert.deepEqual(mealSchedule(c).slice(0,3),[{day:1,slot:'breakfast'},{day:1,slot:'dinner'},{day:2,slot:'breakfast'}]);
  const products=[product('rice',2000,1,{name:'냉동 볶음밥'})];
  assert.equal(recommendShopping(products,c),null);
- products.push(product('sandwich',3000,1,{name:'달걀 샌드위치'}));
+ products.push(...Array.from({length:10},(_,i)=>product(`sandwich${i}`,3000,1,{name:`달걀 샌드위치 ${i}`})));
  const ids=recommendShopping(products,c)!;
  assert.ok(validMealIds(ids,products,c));
- assert.ok(ids.every((id,i)=>i%2!==0||id==='sandwich'));
+ assert.ok(ids.every((id,i)=>i%2!==0||id.startsWith('sandwich')));
  assert.equal(validMealIds(Array(10).fill('rice'),products,c),false);
  const {days,slots,...legacy}=initialConditions;
  void days;void slots;
  assert.ok(parseConditions(legacy));
+});
+
+test('swap cannot pick a meal already scheduled elsewhere',()=>{
+ const p=[product('a',1000,1),product('b',1000,1),product('c',1000,1)];
+ const c={...initialConditions,days:2,meals:2,budget:2000};
+ assert.deepEqual(swapMeal(['a','b'],0,p,c),['c','b']);
+ assert.equal(swapMeal(['a','b'],0,p.slice(0,2),c),null);
 });
