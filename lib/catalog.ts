@@ -41,6 +41,7 @@ export type CatalogItem = Product & {
   carbohydratesG: number | null;
   fatG: number | null;
   sodiumMg: number | null;
+  createdAt?: string | null;
   updatedAt: string | null;
 };
 
