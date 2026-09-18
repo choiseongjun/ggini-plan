@@ -32,6 +32,8 @@ test('server uses image bytes and strict schema, does not store response; safe e
       assert.equal(body.input[0].content[1].detail,'high');return response(label);
     };
     assert.equal((await readNutritionWithAI({image},fake)).extracted.caloriesKcal,100);assert.equal(calls,1);
+    const tall=await sharp({create:{width:100,height:1200,channels:3,background:'#cccccc'}}).png().toBuffer();
+    await readNutritionWithAI({image:tall},async(_url,options)=>{const body=JSON.parse(String(options!.body));assert.equal(body.input[0].content.filter((v:{type:string})=>v.type==='input_image').length,3);return response(label);});
     for(const status of [401,403,429,500]) {
       await assert.rejects(()=>readNutritionWithAI({text:'영양표'},async()=>new Response('SECRET UPSTREAM TEXT',{status})),e=>e instanceof Error&&!e.message.includes('SECRET'));
     }
