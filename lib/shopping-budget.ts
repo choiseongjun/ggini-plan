@@ -1,4 +1,4 @@
-import {basketTotal,mealSchedule,recommendShopping,slotCandidates,MAX_PLAN_MEALS,type PlanConditions,type PlanProduct} from './shopping-plan';
+import {basketTotal,mealSchedule,recommendShopping,slotCandidates,cookingDishId,MAX_PLAN_MEALS,type PlanConditions,type PlanProduct} from './shopping-plan';
 
 export function suggestedShoppingBudget(guide:{minimum:number|null;varietyUpper:number|null}|null){
  if(!guide)return null;
@@ -41,9 +41,9 @@ export function shoppingBudgetGuide(products:PlanProduct[],c:PlanConditions){
  const schedule=mealSchedule(c);
  const slots=[...new Set(schedule.map(s=>s.slot))];
  const options=slots.map(slot=>({slot,products:slotCandidates(products,c,schedule.findIndex(s=>s.slot===slot))}));
- const count=new Set(options.flatMap(o=>o.products.map(p=>p.id))).size;
+ const count=new Set(options.flatMap(o=>o.products.map(p=>cookingDishId(p.id)))).size;
  const low=recommendShopping(products,{...c,budget:1000000},true),varied=recommendShopping(products,{...c,budget:1000000});
  const minimum=low?basketTotal(low,products,c.owned,c.supply):null;
  const varietyMinimum=varied?basketTotal(varied,products,c.owned,c.supply):null;
- return {count,minimum,varietyMinimum,varietyUpper:varietyMinimum,approximate:true,options:options.map(o=>({slot:o.slot,count:o.products.length}))};
+ return {count,minimum,varietyMinimum,varietyUpper:varietyMinimum,approximate:true,options:options.map(o=>({slot:o.slot,count:new Set(o.products.map(p=>cookingDishId(p.id))).size}))};
 }

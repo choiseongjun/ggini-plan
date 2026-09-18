@@ -44,7 +44,8 @@ export function slotCandidates(products:PlanProduct[],c:PlanConditions,index:num
  const breakfast=mealSchedule(c)[index]?.slot==='breakfast';
  return candidates(products,c).filter(p=>p.recipe?p.recipe.slots.includes(mealSchedule(c)[index]?.slot):p.mealSlots?p.mealSlots.includes(mealSchedule(c)[index]?.slot):breakfast?/시리얼|그래놀라|샌드위치|오트밀|죽/.test(p.name):!/시리얼|그래놀라/.test(p.name));
 }
-export function validMealIds(ids:string[],products:PlanProduct[],c:PlanConditions){return ids.length===c.meals&&ids.every((id,i)=>slotCandidates(products,c,i).some(p=>p.id===id));}
+export const cookingDishId=(id:string)=>id.split('--auto--')[0].split('--with--')[0];
+export function validMealIds(ids:string[],products:PlanProduct[],c:PlanConditions){return ids.length===c.meals&&new Set(ids.map(cookingDishId)).size===ids.length&&ids.every((id,i)=>slotCandidates(products,c,i).some(p=>p.id===id));}
 const aliases: Record<string,string[]> = {우유:['우유','유제품','치즈','크림'],달걀:['달걀','계란','알류'],계란:['달걀','계란','알류'],소고기:['소고기','쇠고기','한우','비프'],돼지고기:['돼지고기','돈육','베이컨','삼겹'],닭고기:['닭','치킨'],콩:['콩','대두','두부'],밀:['밀','소맥'],새우:['새우','쉬림프']};
 export function candidates(products: PlanProduct[], c: PlanConditions) {
  const avoid=c.avoid.split(/[,，\n]/).map(x=>x.trim().toLowerCase()).filter(Boolean);
@@ -125,14 +126,14 @@ function diverseOptions(products:PlanProduct[],previous:string[],conditions:Plan
 export function recommendShopping(products: PlanProduct[], c: PlanConditions, cheapest=false,previousIds:string[]=[]): string[] | null {
  const pool=productsForGoal(candidates(products,c).filter(p=>!p.recipe||!p.id.includes('--with--')),c.goal);
  const schedule=mealSchedule(c),options=schedule.map((_,i)=>diverseOptions(slotCandidates(pool,c,i),previousIds,c));
- if(pool.length<c.meals)return null;
+ if(new Set(pool.map(p=>cookingDishId(p.id))).size<c.meals)return null;
  const previous=new Set(previousIds);
  const previousFamilies=new Set(pool.filter(p=>previous.has(p.id)).map(mealFamily));
  let states: {ids:string[];cost:number;score:number}[]=[{ids:[],cost:0,score:0}];
  for(let i=0;i<c.meals;i++){
   const next=new Map<string,{ids:string[];cost:number;score:number}>();
   for(const state of states)for(const p of options[i]){
-   if(state.ids.includes(p.id))continue;
+   if(state.ids.some(id=>cookingDishId(id)===cookingDishId(p.id)))continue;
    const ids=[...state.ids,p.id], rows=basket(ids,pool,c.owned,c.supply), cost=rows.reduce((n,r)=>n+r.cost,0);
    if(cost>c.budget)continue;
    // Preserve the current day's order and the previous meal when merging states.
@@ -151,7 +152,7 @@ export function recommendShopping(products: PlanProduct[], c: PlanConditions, ch
 export function swapMeal(ids:string[], index:number, products:PlanProduct[], c:PlanConditions,reason?:SwapReason):string[]|null {
  const old=products.find(p=>p.id===ids[index]);
  products=productsForGoal(products,c.goal);
- const options=slotCandidates(products,c,index).filter(p=>!ids.includes(p.id)).filter(p=>!old||!reason||(
+ const options=slotCandidates(products,c,index).filter(p=>!ids.some(id=>cookingDishId(id)===cookingDishId(p.id))).filter(p=>!old||!reason||(
   reason==='price'?basketTotal(ids.map((id,i)=>i===index?p.id:id),products,c.owned,c.supply)<basketTotal(ids,products,c.owned,c.supply):
   reason==='effort'?(p.recipe?.minutes??(p.category==='meal_kit'?20:5))<(old.recipe?.minutes??(old.category==='meal_kit'?20:5)):
   reason==='repeat'?mealFamily(p)!==mealFamily(old):true
