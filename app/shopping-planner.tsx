@@ -2,7 +2,7 @@
 import {RiceBuddy} from './rice-buddy';
 import adoptionStyles from './plan-adoption.module.css';
 import {shoppingAvailabilityMessage} from '../lib/shopping-availability';
-import {cookingDishId} from '../lib/shopping-plan';
+import {cookingDishId,repeatsDailyMain} from '../lib/shopping-plan';
 import {CookingShoppingGuide} from './cooking-shopping-guide';
 import {MealKindPicker} from './meal-kind-picker';
 import {mealKinds,type MealKind} from '../lib/meal-kinds';
@@ -178,6 +178,8 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   const c={...conditions,mealMode:'mixed' as const,cooking:'all' as const};
   if(!slotCandidates(products,c,index).some(p=>p.id===id))return;
   if(ids.some((existing,i)=>i!==index&&cookingDishId(existing)===cookingDishId(id))){setError('이미 다른 끼니에 있는 메뉴예요. 다른 음식을 골라 주세요.');return;}
+  const choice=products.find(p=>p.id===id);
+  if(choice&&repeatsDailyMain(ids,products,c,index,choice)){setError('같은 날 다른 끼니와 주재료가 겹쳐요. 다른 주재료의 메뉴를 골라 주세요.');return;}
   const next=ids.map((previous,i)=>i===index?id:previous);
   if(basketTotal(next,products,c.owned,c.supply)>c.budget){setError('장보기 예산을 초과해요. 예산을 조정해 주세요.');return;}
   if(next[index]!==ids[index]&&!locale.isTaiwan)trackPlanner('swapped');setConditions(c);setIds(next);remember(c,next);setMessage('이 끼니를 바꾸고 겹치는 재료를 합쳐 구매 목록을 다시 계산했어요.');
