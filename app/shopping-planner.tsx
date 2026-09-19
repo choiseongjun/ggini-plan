@@ -1,5 +1,6 @@
 'use client';
 import {RiceBuddy} from './rice-buddy';
+import adoptionStyles from './plan-adoption.module.css';
 import {shoppingAvailabilityMessage} from '../lib/shopping-availability';
 import {cookingDishId} from '../lib/shopping-plan';
 import {CookingShoppingGuide} from './cooking-shopping-guide';
@@ -99,6 +100,20 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
  const simple=mode==='plan'&&!locale.isTaiwan&&!detailed;
  const [confirmReset,setConfirmReset]=useState(false);
  const [error,setError]=useState(''),[message,setMessage]=useState(''),[retry,setRetry]=useState(0);
+ const adopting=useRef(false);
+ useEffect(()=>{
+  if(!userId||locale.isTaiwan||loading||adopting.current)return;
+  let pending;try{pending=JSON.parse(sessionStorage.getItem('ggini-pending-adoption')??'null');}catch{return;}
+  const c=parseConditions(pending?.conditions);
+  if(!c||!Array.isArray(pending?.mealIds)||!Number.isFinite(pending.savedAt)||Date.now()-pending.savedAt>86400000)return;
+  adopting.current=true;
+  Promise.resolve().then(()=>{setBusy(true);return fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({conditions:c,mealIds:pending.mealIds})});}).then(async r=>{
+   const d=await r.json();if(!r.ok)throw new Error(d.error);
+   sessionStorage.removeItem('ggini-pending-adoption');
+   localStorage.setItem(draftKey,encodeDraft(c,pending.mealIds));setConditions(c);setIds(pending.mealIds);
+   setMessage('골라둔 식단을 계정에 저장했어요. 준비한 뒤 먹었어요를 눌러 식비와 영양 기록을 쌓아 보세요.');
+  }).catch(e=>setError(e instanceof Error?e.message:'선택한 식단을 저장하지 못했어요. 이대로 먹기를 다시 눌러 주세요.')).finally(()=>{setBusy(false);adopting.current=false;});
+ },[userId,locale.isTaiwan,loading,endpoint,draftKey]);
  useEffect(()=>{
   const controller=new AbortController();
   fetch(endpoint,{cache:'no-store',signal:controller.signal}).then(async r=>{const d=await r.json();if(!r.ok)throw new Error(d.error);return d;}).then(d=>{
@@ -195,9 +210,9 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   }catch(e){setError(e instanceof Error?e.message:'설정을 저장하지 못했어요.');}finally{setBusy(false);}
  }
  async function save(){
-  remember(conditions,ids);if(locale.isTaiwan){setMessage('已儲存在這個瀏覽器。');return;}if(!userId){onLogin();return;}
+  remember(conditions,ids);if(locale.isTaiwan){setMessage('已儲存在這個瀏覽器。');return;}if(!userId){try{sessionStorage.setItem('ggini-pending-adoption',encodeDraft(conditions,ids));}catch{setError('선택을 보관하지 못했어요. 로그인 후 이 식단을 다시 저장해 주세요.');}onLogin();return;}
   setBusy(true);setError('');setMessage('');
-  try{const r=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({conditions,mealIds:ids})});const d=await r.json();if(!r.ok)throw new Error(d.error);setMessage('식단을 계정에 저장했어요. 다른 기기에서도 홈에서 이어서 볼 수 있어요.');}
+   try{const r=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({conditions,mealIds:ids})});const d=await r.json();if(!r.ok)throw new Error(d.error);sessionStorage.removeItem('ggini-pending-adoption');setMessage('식단을 계정에 저장했어요. 준비한 뒤 먹었어요를 누르면 식비와 영양 기록이 쌓여요.');}
   catch(e){setError(e instanceof Error?e.message:'저장하지 못했어요.');}finally{setBusy(false);}
  }
  async function restore(){
@@ -221,6 +236,15 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    {confirmReset&&<div role="group" aria-label="장바구니 초기화 확인"><strong>추천 메뉴와 주문·보유 목록을 모두 비울까요?</strong><p>홈의 현재 추천 식단도 함께 비워요. 먹은 기록·식비 기록·예산과 취향·공유 링크는 유지돼요. 판매처의 실제 주문은 취소되지 않아요. 이 추천 밖에서 따로 관리하는 재료 목록과 함께 담은 장바구니는 별도예요.</p><button type="button" disabled={progress.busy} onClick={()=>setConfirmReset(false)}>취소</button><button type="button" disabled={progress.busy||!progress.ready} onClick={()=>void resetCart()}>{progress.busy?'초기화 중…':'확인, 모두 초기화'}</button></div>}
   </section>}
   {mode==='plan'&&ids.length>0&&<div className="home-steps"><span>💰 예산 정하기</span><span>→</span><strong>🍚 메뉴 고르기</strong><span>→</span><span>✓ 먹었어요</span></div>}
+  {mode==='plan'&&!locale.isTaiwan&&ids.length>0&&<section className={adoptionStyles.card} aria-label="선택한 식단으로 기록 시작하기">
+   <span>🌱 {shoppingGoals[conditions.goal??'maintain'].label} · {ids.length}끼</span>
+   <h3>마음에 드는 메뉴로, 이대로 먹어볼까요?</h3>
+   <p>아래에서 메뉴를 바꿔 고른 뒤 저장하세요. {userId?'내 계정에서 식단을 이어 보고 기록할 수 있어요.':'로그인하면 고른 식단을 계정에 저장하고, 매일의 식비와 영양을 모아 볼 수 있어요.'}</p>
+   <div className={adoptionStyles.benefits}><span>🧺 나의 장보기</span><span>💰 월별 식비</span><span>🥚 칼로리·단백질 등 영양 기록</span></div>
+   <button type="button" className="primary-button" disabled={busy||loading||total>conditions.budget} onClick={()=>void save()}>{busy?'저장 중…':userId?'이대로 먹기 · 식단 저장':'이대로 먹기 · 로그인하고 저장'}</button>
+   {userId&&<div><Link href="/cart">장보기 이어가기 →</Link><Link href="/record">내 식비·영양 기록 →</Link></div>}
+   <small>추천·저장만으로 지출이나 먹은 기록이 생기지는 않아요. 구매 상태와 실제 먹은 양을 등록하면 기록에 반영돼요. 영양은 등록·추정 정보 기준이며 미확인 값은 제외해요.</small>
+  </section>}
   {mode==='plan'&&ids.length>0&&<TodayMeals nutritionReference={personalization?.nutritionReference??null} shoppingTotal={purchases.reduce((sum,row)=>sum+row.cost,0)} intake={intake} userId={userId} onLogin={onLogin} ids={ids} products={products} conditions={conditions} startDate={conditions.startDate??locale.today()} onStartDate={date=>{const c=parseConditions({...conditions,startDate:date});if(c){setConditions(c);remember(c,ids);}}} onSwap={swap} onChoose={chooseMeal} progress={progress} perMealCalories={personalization?.perMealCalories??null} dailyCalories={personalization?.blocked?null:personalization?.dailyCalories??null} dashboard={dashboard}/>}
   {mode!=='settings'&&ids.length>1&&new Set(ids).size===1&&<p className="body-note" role="status">현재 조건에서는 한 가지 메뉴로만 구성됐어요. 예산·조리 방식·제외 재료 설정을 확인해 주세요. 다른 메뉴를 원하면 조건을 조정하고 다시 추천받아 주세요.</p>}
   {!locale.isTaiwan&&mode!=='settings'&&ids.length>0&&<details className="home-secondary"><summary>이 식단 공유하기</summary><SharePlanButton key={JSON.stringify([ids,conditions.days,conditions.slots])} userId={userId} onLogin={onLogin} conditions={conditions} mealIds={ids}/></details>}

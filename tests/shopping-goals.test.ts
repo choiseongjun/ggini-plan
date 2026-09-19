@@ -11,6 +11,13 @@ const meal=(id:string,calories:number|null,protein:number|null,extra:Partial<Pla
 } as PlanProduct);
 const c:PlanConditions={...initialConditions,days:1,meals:1,budget:10000};
 
+test('diet distinguishes energy at equal protein density and muscle distinguishes high protein portions',()=>{
+ assert.ok(goalBonus(meal('lighter',400,20),'lose')>goalBonus(meal('larger',800,40),'lose'));
+ const standard=meal('standard',600,35),higher=meal('higher',600,50);
+ assert.ok(goalBonus(higher,'muscle')>goalBonus(standard,'muscle'));
+ assert.deepEqual(recommendShopping([standard,higher],{...c,goal:'muscle'}),['higher']);
+});
+
 test('estimated labels normalize per serving but receive less ranking weight',()=>{
  const known=meal('known',200,12,{nutritionBasis:'100g당',carbohydratesG:25,fatG:6,sodiumMg:200});
  const estimated={...known,nutritionBasis:'100g당 · 추정 포함'};

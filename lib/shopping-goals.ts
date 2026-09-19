@@ -4,8 +4,8 @@ import {nutritionIsEstimated,servingNutrients} from './serving-nutrients';
 
 export const shoppingGoals = {
  maintain: {label:'균형 잡힌 식사',description:'필요 열량과 탄수화물·단백질·지방 구성을 함께 비교해요.'},
- lose: {label:'다이어트',description:'등록된 1회분 영양정보로 열량 대비 단백질이 많은 메뉴를 우선해요.'},
- muscle: {label:'헬스·고단백',description:'등록된 1회분 단백질이 많은 메뉴를 우선해요.'},
+ lose: {label:'🥗 다이어트 식단',description:'한 끼 열량과 열량 대비 단백질을 함께 비교해요.'},
+ muscle: {label:'💪 헬스·고단백 식단',description:'한 끼 단백질 함량을 우선하고 열량 대비 구성도 살펴요.'},
  lowfat: {label:'저지방',description:'등록된 영양정보로 열량 대비 지방이 적은 메뉴를 우선해요.'},
 } as const;
 export type ShoppingGoal = keyof typeof shoppingGoals;
@@ -26,7 +26,11 @@ export function goalBonus(product:PlanProduct,goal:ShoppingGoal='maintain'){
    const balance=energy&&total>0?30*(1-Math.max(...energy)/total):0;
    return (Math.min(60,protein/calories*800)+balance+(energy?10:0)-sodiumPenalty)*weight;
  }
- return ((goal==='lose'?Math.min(100,protein/calories*1000):Math.min(100,protein*3))-sodiumPenalty)*weight;
+ // Smooth scores distinguish portions above 33g protein instead of treating them all as equal.
+ const density=100*(protein*4)/(calories+protein*4);
+ const proteinAmount=100*protein/(protein+20);
+ const moderateEnergy=100*400/(calories+400);
+ return ((goal==='lose'?density*1.4+moderateEnergy*0.6:proteinAmount*1.4+density*0.3)-sodiumPenalty)*weight;
 }
 export function productsForGoal(products:PlanProduct[],goal?:ShoppingGoal):PlanProduct[]{
  return products.map(p=>({...p,personalizationScore:(p.personalizationScore??0)+goalBonus(p,goal)}));
