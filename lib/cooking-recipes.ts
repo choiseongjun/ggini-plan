@@ -32,6 +32,11 @@ function nutrients(p:PlanProduct,packs:number){
 }
 export function cookingProducts(catalog:CatalogItem[]):PlanProduct[]{
  const pool=cookingIngredientPool(catalog);
+ const completeNutrition=new Set<string>();
+ for(const [role,group] of Object.entries(pool))for(const {product,amount} of group){
+  const n=servingNutrients({...product,servings:1,servingGrams:role==='eggs'?undefined:amount,servingNote:'판매 1묶음',avoidanceText:null});
+  if(n.calories!==null&&n.protein!==null&&n.fat!==null)completeNutrition.add(product.id);
+ }
  const roles:Record<string,IngredientRole>={rice:'rice',tofu:'tofu',eggs:'eggs',chicken:'chicken','kurly-5036690':'vegetables','kurly-5104165':'beef','kurly-1000315118':'pork','kurly-1002274835':'belly','kurly-5152797':'onion','kurly-5031392':'mushroom','kurly-1001897355':'cabbage'};
  const dynamicContracts:Record<string,{unit:string;quantity:number;grams:number;match:RegExp}>={};
  const dynamic=[...recipes,...extraRecipes].flatMap(recipe=>{
@@ -39,7 +44,7 @@ export function cookingProducts(catalog:CatalogItem[]):PlanProduct[]{
    const role=extraTargets[id]?.role??roles[id];if(!role)return [];
    const amount=packs*(extraTargets[id]?.amount??(role==='eggs'?contracts[id].quantity:contracts[id].grams));
    // Retain both low checkout prices and low unit prices, so large packs cannot crowd out small baskets.
-   const group=pool[role];const options=[...new Map([...group.slice(0,4),...[...group].sort((a,b)=>a.product.price-b.product.price||a.product.id.localeCompare(b.product.id)).slice(0,4)].map(o=>[o.product.id,o])).values()];
+   const group=pool[role];const options=[...new Map([...group.slice(0,4),...[...group].sort((a,b)=>a.product.price-b.product.price||a.product.id.localeCompare(b.product.id)).slice(0,4),...group.filter(o=>completeNutrition.has(o.product.id)).slice(0,3)].map(o=>[o.product.id,o])).values()];
    return options.map(({product:p,amount:packAmount})=>{
     dynamicContracts[p.id]={unit:p.unit,quantity:p.quantity,grams:role==='eggs'?0:packAmount,match:new RegExp(`^${p.detail.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}$`)};
     return [p.id,amount/packAmount,`${p.name} ${Number(amount.toFixed(1))}${role==='eggs'?'개':'g'}`] as [string,number,string];
@@ -47,8 +52,12 @@ export function cookingProducts(catalog:CatalogItem[]):PlanProduct[]{
   });
   if(choices.some(c=>!c.length))return [];
   // Bound combinations: a cheap shared base plus every shortlisted single-ingredient substitution.
-  const base=choices.map(c=>c[0]);const combinations=[base,...choices.flatMap((options,i)=>options.slice(1).map(option=>base.map((part,j)=>j===i?option:part)))];
-  return combinations.map(parts=>({...recipe,id:`${recipe.id}--auto--${parts.map(p=>p[0]).join('~')}`,parts}));
+  const base=choices.map(c=>c[0]);
+  const nutritious=choices.map(options=>options.filter(part=>completeNutrition.has(part[0])));
+  // Substituting just one ingredient cannot repair a base with several missing labels.
+  const bases=[base,...(nutritious.every(options=>options.length)?[nutritious.map(options=>options[0])]:[])];
+  const combinations=bases.flatMap(base=>[base,...choices.flatMap((options,i)=>options.filter(option=>option[0]!==base[i][0]).map(option=>base.map((part,j)=>j===i?option:part)))]);
+  return [...new Map(combinations.map(parts=>[parts.map(p=>p[0]).join('~'),parts])).entries()].map(([key,parts])=>({...recipe,id:`${recipe.id}--auto--${key}`,parts}));
  });
  const variants=recipes.flatMap(recipe=>alternatives.groups.reduce<Recipe[]>((choices,group)=>choices.flatMap(r=>{
   const part=r.parts.find(([id])=>id===group.baseId);if(!part)return [r];
