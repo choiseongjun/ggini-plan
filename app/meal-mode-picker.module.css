@@ -1,0 +1,10 @@
+.picker{min-width:0;margin:0;border:0;padding:0}
+.picker legend{margin-bottom:12px;padding:0;font-size:15px;font-weight:700;color:#2e4334}
+.picker .options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.picker .options button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-width:0;min-height:72px;padding:12px 8px;border:1px solid #dedfce;border-radius:13px;background:#fffffb;color:#53644d;font:inherit;font-size:14px;font-weight:700;line-height:1.5;cursor:pointer}
+.picker .options button[aria-pressed=true]{border-color:#66855a;background:#e7eedb;color:#34512e;box-shadow:inset 0 0 0 1px #66855a}
+.picker .options .description{font-size:11px;font-weight:400;line-height:1.5;word-break:keep-all}
+.picker .options button:focus-visible{outline:2px solid #426747;outline-offset:3px}
+.picker .options button:disabled{opacity:.55;cursor:wait}
+.picker .detailed{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:360px){.picker .detailed{grid-template-columns:1fr}.picker .detailed button{min-height:60px}}
