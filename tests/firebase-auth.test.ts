@@ -7,6 +7,7 @@ import { POST } from "../app/api/auth/firebase/route";
 import { firebaseAdminAuth, firebaseGoogleIdentity } from "../lib/firebase-server";
 import { getPool } from "../lib/db";
 import { SESSION_COOKIE, sessionUser, deleteSession } from "../lib/auth";
+import { MEMBER_POLICY_VERSION } from '../lib/member-policy';
 
 const email = `firebase-test-${randomBytes(8).toString("hex")}@example.test`;
 const origin = process.env.AUTH_URL ?? "http://localhost:3000";
@@ -18,7 +19,7 @@ const token: DecodedIdToken = {
   firebase: { sign_in_provider: "google.com", identities: { "google.com": [email], email: [email] } },
 };
 const request = (idToken: unknown, requestOrigin = origin) => new NextRequest(`${origin}/api/auth/firebase`, {
-  method: "POST", headers: { origin: requestOrigin, "Content-Type": "application/json" }, body: JSON.stringify({ idToken }),
+  method: "POST", headers: { origin: requestOrigin, "Content-Type": "application/json" }, body: JSON.stringify({ idToken, consent: { terms: true, privacy: true, age14: true, version: MEMBER_POLICY_VERSION } }),
 });
 
 after(async () => {

@@ -1,4 +1,5 @@
 export const googleAuthErrors = {
+  google_consent_required: '처음 가입하려면 회원가입 탭에서 필수 동의 후 Google로 계속하기를 눌러 주세요.',
   google_cancelled: "구글 로그인을 취소했어요. 원할 때 다시 시작해 주세요.",
   google_expired: "로그인 요청이 만료됐어요. 구글 로그인을 다시 시작해 주세요.",
   google_unavailable: "구글 로그인 연결을 준비 중이에요. 이메일 로그인이나 둘러보기를 이용해 주세요.",

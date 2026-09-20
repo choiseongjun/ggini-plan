@@ -3,6 +3,7 @@ import { CodeChallengeMethod, OAuth2Client, type TokenPayload } from "google-aut
 import { getPool } from "./db";
 import type { PublicUser } from "./auth";
 import type { GoogleAuthErrorCode } from "./auth-messages";
+import { validMemberConsent } from './member-policy';
 
 export const GOOGLE_STATE_COOKIE = "kkiniplan_google_state";
 export const GOOGLE_STATE_PATH = "/api/auth/google";
@@ -82,7 +83,7 @@ export function googleIdentity(payload: TokenPayload | undefined, expectedNonce:
   };
 }
 
-export async function googleUser(identity: ReturnType<typeof googleIdentity>): Promise<PublicUser> {
+export async function googleUser(identity: ReturnType<typeof googleIdentity>, consent?: unknown): Promise<PublicUser> {
   const db = await getPool().connect();
   const findAccount = () => db.query<PublicUser>(
     `SELECT u.id::text AS id, u.name, u.email FROM users u
@@ -95,10 +96,12 @@ export async function googleUser(identity: ReturnType<typeof googleIdentity>): P
     await db.query("SELECT pg_advisory_xact_lock(hashtextextended($1, 0))", [`google:${identity.subject}`]);
     const existing = (await findAccount()).rows[0];
     if (existing) { await db.query("COMMIT"); return existing; }
+    if (!validMemberConsent(consent)) throw new GoogleAuthError('google_consent_required');
     const result = await db.query<PublicUser>(
-      `INSERT INTO users (name, email, password_hash) VALUES ($1, $2, NULL)
+      `INSERT INTO users (name, email, password_hash, terms_version, privacy_version, terms_accepted_at, privacy_accepted_at, age14_confirmed_at)
+       VALUES ($1, $2, NULL, $3, $3, NOW(), NOW(), NOW())
        ON CONFLICT (email) DO NOTHING RETURNING id::text AS id, name, email`,
-      [identity.name, identity.email],
+      [identity.name, identity.email, consent.version],
     );
     const user = result.rows[0];
     // Email alone must never attach a Google identity to an existing account.

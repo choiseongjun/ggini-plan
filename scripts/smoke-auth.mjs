@@ -7,6 +7,7 @@ import pg from "pg";
 const baseUrl = process.env.APP_URL ?? "http://localhost:3000";
 const email = `smoke-${randomBytes(6).toString("hex")}@example.test`;
 const password = randomBytes(16).toString("base64url");
+const consent = { terms: true, privacy: true, age14: true, version: '2026-09-20' };
 const envFile = readFileSync(resolve(import.meta.dirname, "../.env.local"), "utf8");
 const databaseUrl = envFile.match(/^DATABASE_URL=(.+)$/m)?.[1]?.trim();
 if (!databaseUrl) throw new Error("DATABASE_URL is missing");
@@ -22,12 +23,12 @@ async function post(path, body, cookie = "") {
 
 try {
   await db.connect();
-  const registration = await post("/api/auth/register", { name: "테스트", email, password });
+  const registration = await post("/api/auth/register", { name: "테스트", email, password, consent });
   assert.equal(registration.status, 200, await registration.text());
   const firstCookie = registration.headers.get("set-cookie")?.split(";")[0];
   assert.ok(firstCookie?.startsWith("kkiniplan_session="));
 
-  const duplicate = await post("/api/auth/register", { name: "테스트", email, password });
+  const duplicate = await post("/api/auth/register", { name: "테스트", email, password, consent });
   assert.equal(duplicate.status, 409);
 
   const wrongPassword = await post("/api/auth/login", { email, password: "wrong-password" });

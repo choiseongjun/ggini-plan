@@ -2,6 +2,7 @@ import { hash } from "bcryptjs";
 import { NextRequest } from "next/server";
 import { authFailure, createSession, type PublicUser, sameOrigin } from "../../../../lib/auth";
 import { getPool } from "../../../../lib/db";
+import { validMemberConsent } from '../../../../lib/member-policy';
 
 export const runtime = "nodejs";
 
@@ -11,7 +12,8 @@ export async function POST(request: NextRequest) {
   try { input = await request.json(); } catch { return authFailure("입력 내용을 확인해 주세요.", 400); }
   if (!input || typeof input !== "object") return authFailure("입력 내용을 확인해 주세요.", 400);
 
-  const { name, email, password } = input as Record<string, unknown>;
+  const { name, email, password, consent } = input as Record<string, unknown>;
+  if (!validMemberConsent(consent)) return authFailure('이용약관·개인정보 수집이용 동의와 만 14세 이상 확인이 필요합니다.', 400);
   const cleanName = typeof name === "string" ? name.trim() : "";
   const cleanEmail = typeof email === "string" ? email.trim().toLowerCase() : "";
   if (cleanName.length < 2 || cleanName.length > 40) return authFailure("이름은 2~40자로 입력해 주세요.", 400);
@@ -21,8 +23,9 @@ export async function POST(request: NextRequest) {
   try {
     const passwordHash = await hash(password, 12);
     const result = await getPool().query<PublicUser>(
-      "INSERT INTO users (name, email, password_hash) VALUES ($1, $2, $3) RETURNING id::text AS id, name, email",
-      [cleanName, cleanEmail, passwordHash],
+      `INSERT INTO users (name, email, password_hash, terms_version, privacy_version, terms_accepted_at, privacy_accepted_at, age14_confirmed_at)
+       VALUES ($1, $2, $3, $4, $4, NOW(), NOW(), NOW()) RETURNING id::text AS id, name, email`,
+      [cleanName, cleanEmail, passwordHash, consent.version],
     );
     return await createSession(result.rows[0]);
   } catch (error) {

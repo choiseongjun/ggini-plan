@@ -9,6 +9,8 @@ import { POST as passwordLogin } from "../app/api/auth/login/route";
 import { getPool } from "../lib/db";
 import { sessionUser, SESSION_COOKIE } from "../lib/auth";
 import { beginGoogleLogin, consumeGoogleAttempt, googleIdentity, googleUser, GOOGLE_STATE_COOKIE } from "../lib/google-auth";
+import { MEMBER_POLICY_VERSION } from '../lib/member-policy';
+const consent = { terms: true, privacy: true, age14: true, version: MEMBER_POLICY_VERSION };
 
 const prefix = `google-test-${randomBytes(8).toString("hex")}`;
 const emails = [`${prefix}@example.test`, `${prefix}-existing@example.test`, `${prefix}-callback@example.test`];
@@ -71,7 +73,7 @@ test("Google OAuth local integration (Google exchange and verification are mocke
 
   await t.test("creates one Google account, handles repeated callbacks, and refuses local-password login", async () => {
     const identity = googleIdentity(claims(emails[0], "nonce"), "nonce");
-    const [first, second] = await Promise.all([googleUser(identity), googleUser(identity)]);
+    const [first, second] = await Promise.all([googleUser(identity, consent), googleUser(identity, consent)]);
     assert.equal(first.id, second.id);
     const account = await getPool().query("SELECT password_hash FROM users WHERE id = $1", [first.id]);
     assert.equal(account.rows[0].password_hash, null);
@@ -87,12 +89,14 @@ test("Google OAuth local integration (Google exchange and verification are mocke
   await t.test("does not take over an existing email account", async () => {
     await getPool().query("INSERT INTO users (name, email, password_hash) VALUES ('기존 계정', $1, 'test-only-hash')", [emails[1]]);
     const identity = googleIdentity(claims(emails[1], "nonce"), "nonce");
-    await assert.rejects(googleUser(identity), { message: "google_account_exists" });
+    await assert.rejects(googleUser(identity, consent), { message: "google_account_exists" });
     const linked = await getPool().query("SELECT 1 FROM oauth_accounts WHERE provider_subject = $1", [identity.subject]);
     assert.equal(linked.rowCount, 0);
   });
 
   await t.test("callback creates a persisted session, clears state, and rejects replay", async () => {
+    // The legacy redirect flow can log in an existing account but cannot bypass signup consent.
+    await googleUser(googleIdentity(claims(emails[2], 'setup'), 'setup'), consent);
     const startResponse = await start(new NextRequest(`${origin}/api/auth/google`, { method: "POST", headers: { origin } }));
     assert.equal(startResponse.status, 200);
     const url = new URL((await startResponse.json()).url);

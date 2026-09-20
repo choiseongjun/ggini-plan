@@ -3,6 +3,7 @@
 import './home-readability.css';
 import {MobileBuddy} from './mobile-buddy';
 import {InstallPrompt} from './install-prompt';
+import {PolicyLinks} from './policy-links';
 import {ComparisonTrends} from './comparison-trends';
 import {trackComparison} from '../lib/track-comparison';
 import {LanguageSwitcher} from './language-switcher';
@@ -168,6 +169,7 @@ export default function Home() {
         {tab === "home" && <ShoppingPlanner key={`shopping-home-${authUser?.id??"guest"}`} dashboard={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/>}
         {tab==='home'&&<details className="home-explore"><summary>상품 비교·이용 안내 더보기</summary><ComparisonTrends/><nav aria-label="더 알아보기"><Link href="/products">상품 가격·영양 비교 <span>→</span></Link><Link href="/guides">식단·식비 가이드 <span>→</span></Link><Link href="/submissions">상품·영양정보 제보 <span>→</span></Link><a href="mailto:choisj2702@gmail.com">문의·협업 <span>↗</span></a></nav></details>}
         <ServiceFeedback page={`/${tab==='home'?'':tab}`}/>
+        {(tab === 'home' || tab === 'profile') && <PolicyLinks/>}
         {(tab==='cart'||tab==='profile')&&<section className="home-guide-entry"><strong>상품·영양정보 제보</strong><Link href={tab==='profile'?'/submissions#mine':'/submissions'}>{tab==='profile'?'내 제보와 검토 결과 보기 →':'상품 정보 보완하기 →'}</Link></section>}
         {tab==='profile'&&<section className="home-guide-entry contact-entry"><strong>문의·협업</strong><a href="mailto:choisj2702@gmail.com">choisj2702@gmail.com ↗</a></section>}
         {authError && <p className="auth-inline-error" role="alert">{authError}</p>}
