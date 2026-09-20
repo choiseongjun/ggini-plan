@@ -2,6 +2,7 @@
 
 import './home-readability.css';
 import {MobileBuddy} from './mobile-buddy';
+import {InstallPrompt} from './install-prompt';
 import {ComparisonTrends} from './comparison-trends';
 import {trackComparison} from '../lib/track-comparison';
 import {LanguageSwitcher} from './language-switcher';
@@ -161,6 +162,7 @@ export default function Home() {
       {showAuth ? <AuthScreen initialError={authError} onExplore={() => { setShowAuth(false); setAuthError(""); }} onSuccess={(user) => { setDashboard(null); setAuthUser(user); setAuthError(""); setShowAuth(false); setTab("home"); }}/> : <>
       <header className="app-header"><Brand/><div className="app-header-actions"><LanguageSwitcher market="KR"/>{authUser ? <button className="logout-link" type="button" onClick={signOut}>로그아웃</button> : <button className="logout-link" type="button" onClick={() => { setAuthError(""); setShowAuth(true); }}>로그인</button>}<button className="avatar" type="button" onClick={() => setTab("profile")} aria-label="내 정보 보기">{displayName.slice(0, 1)}</button></div></header>
       <div className="app-content" ref={contentRef}>
+        <InstallPrompt active={tab === 'home'}/>
         {tab==='home'&&<MobileBuddy/>}
         {tab === "record" && <FoodIntake key={`intake-${authUser?.id??"guest"}-${tab}`} userId={authUser?.id} onLogin={()=>setShowAuth(true)} history={tab==="record"} recordDate={recordDate} onDateChange={setRecordDate}/>}
         {tab === "home" && <ShoppingPlanner key={`shopping-home-${authUser?.id??"guest"}`} dashboard={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/>}

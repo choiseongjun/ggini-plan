@@ -1,0 +1,13 @@
+.install-prompt{position:relative;margin:0 0 18px;padding:18px;border:1px solid #dce5cd;border-radius:20px;background:#f2f6e9;color:#33492f}
+.install-prompt-copy{display:flex;align-items:center;gap:12px;padding-right:23px}
+.install-prompt-icon{display:grid;place-items:center;flex:0 0 42px;height:42px;border-radius:14px;background:#fffdf7;color:#526f4c}
+.install-prompt-copy strong{font-size:15px;line-height:1.5}
+.install-prompt-copy p{margin:4px 0 0;font-size:12px;line-height:1.6;color:#53644d}
+.install-prompt-close{position:absolute;top:9px;right:7px;display:grid;place-items:center;width:36px;height:36px;border:0;background:transparent;color:#53644d;cursor:pointer}
+.install-prompt-actions{display:flex;align-items:center;gap:10px;margin-top:14px}
+.install-prompt-primary{min-height:42px;padding:10px 18px;border:0;border-radius:12px;background:#526f4c;color:white;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.install-prompt-primary:disabled{opacity:.65;cursor:default}
+.install-prompt-later{min-height:42px;padding:8px 12px;border:0;background:transparent;color:#53644d;font:inherit;font-size:13px;cursor:pointer}
+.install-prompt button:focus-visible{outline:2px solid #33492f;outline-offset:3px}
+.install-prompt-help{margin:14px 0 0;font-size:13px;line-height:1.8}
+.install-prompt-help p{margin:0}.install-prompt-help ol{margin:6px 0 0;padding-left:22px}
