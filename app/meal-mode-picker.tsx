@@ -28,7 +28,7 @@ export function MealModePicker({ conditions, simple = false, disabled, onChange 
   }
 
   return <fieldset className={styles.picker} disabled={disabled}>
-    <legend>{simple && <span className="planner-step">2</span>} 어떻게 먹을까요?</legend>
+    <legend>{simple && <span className="planner-step">3</span>} 어떻게 먹을까요?</legend>
     <div className={`${styles.options} ${simple ? '' : styles.detailed}`}>
       {options.filter(option => simple || option.value !== 'quick').map(option => <button
         key={option.value}
