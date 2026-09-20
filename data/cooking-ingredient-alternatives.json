@@ -70,6 +70,15 @@
           "quantity": 300,
           "grams": 300,
           "sourceUrl": "https://www.kurly.com/goods/1001986025"
+        },
+        {
+          "id": "oasis-3560",
+          "name": "좋은콩 부침두부 (300g)",
+          "detail": "300g · 1팩",
+          "unit": "개",
+          "quantity": 1,
+          "grams": 300,
+          "sourceUrl": "https://www.oasis.co.kr/product/detail/3560"
         }
       ]
     },

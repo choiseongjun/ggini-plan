@@ -36,7 +36,7 @@ export function TodayMeals({nutritionReference,shoppingTotal,intake,userId,onLog
  const missingCost=current?.logs.some(log=>log.cost==null);
  const disabled=intake.disabled||progress.busy||!progress.ready;
  return locale.render(<section className="today-meals" aria-label="오늘의 식사와 식비">
-  <header><span className="section-kicker">내 예산으로, 오늘도 한 끼 🍚</span><h2>{userId?'오늘도 가볍게 챙겨요':'골라둔 메뉴, 매일 꺼내 먹어요'}</h2><p>추천받은 식단을 이어 보고, 먹었어요 한 번으로 기록해요.</p></header>
+  <header><span className="section-kicker">내 예산으로, 오늘도 한 끼 🍚</span><h2>{userId?'오늘도 가볍게 챙겨요':'골라둔 메뉴, 매일 꺼내 먹어요'}</h2><p>{conditions.people??1}명 전체 장보기 · 영양정보는 1인분 기준이에요. ‘먹었어요’는 내가 먹은 양만 기록해요.</p></header>
   {userId?<details className="today-record-summary"><summary>오늘의 영양·식비 기록 보기 🌱</summary>
    <div className="today-metrics">
     <article><span>오늘 섭취 칼로리</span><strong>{totals?amount(totals.calories):'—'} <small>kcal</small></strong>{dailyCalories?<small>하루 참고량 {amount(dailyCalories)} kcal</small>:!locale.isTaiwan&&<Link href="/profile#profile-settings">내 필요 열량 설정 →</Link>}{!!totals?.missingCalories&&<small>미확인 {totals.missingCalories}건 별도</small>}</article>

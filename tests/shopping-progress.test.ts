@@ -30,5 +30,6 @@ test('recommendations charge only the missing packs, including when stock cannot
  assert.equal(basket(ids,products,[],{rice:2})[0].packs,3);
  assert.equal(basketTotal(ids,products,[],{rice:2}),5000);
  assert.equal(basketTotal(ids,products,[],{rice:4}),0);
- assert.equal(recommendShopping(products,{...initialConditions,meals:5,days:5,budget:5000,supply:{rice:2}})?.length,5);
+ assert.equal(recommendShopping(products,{...initialConditions,meals:1,days:1,budget:1000,supply:{rice:1}})?.length,1);
+ assert.equal(recommendShopping(products,{...initialConditions,meals:1,days:1,budget:1000,supply:{rice:0}}),null);
 });

@@ -9,11 +9,11 @@ const item=(id:string,name:string,detail:string,price=2000)=>({id,name,detail,pr
 test('complete nutrition combinations survive cheap ingredients with multiple missing labels',()=>{
  const catalog=[['현미밥','210g'],['두부','300g'],['달걀','10구'],['표고버섯','100g'],['양배추','600g'],['양파','200g']].flatMap(([name,detail],role)=>[
   ...Array.from({length:5},(_,i)=>({...item(`cheap-${role}-${i}`,name,detail,100+i),caloriesKcal:null,proteinG:null})),
-  {...item(`known-${role}`,name,detail,2000),nutritionBasis:role===2?'1개당':'100g당',fatG:3},
+  {...item(`known-${role}`,name,detail,2000),nutritionBasis:role===2?'1개당':'100g당',fatG:3,carbohydratesG:10},
  ]);
  const products=cookingProducts(catalog);
  assert.equal(new Set(products.map(p=>p.id)).size,products.length);
- for(const goal of ['lose','muscle','lowfat'] as const){
+ for(const goal of ['lose','muscle','lowfat','lowcarb'] as const){
   const c={...initialConditions,mealMode:'cook' as const,days:5,meals:5,budget:150000,goal};
   const ids=recommendShopping(products,c);
   assert.ok(ids);assert.equal(ids.length,5);assert.ok(validMealIds(ids,products,c));

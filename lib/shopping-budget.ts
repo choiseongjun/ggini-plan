@@ -24,7 +24,7 @@ export function minimumShoppingCost(products:PlanProduct[],c:PlanConditions,redu
   const options:{b:number;m:number;cost:number}[]=[];
   for(let b=0;b<=(breakfastIds.has(p.id)?breakfast:0);b++)for(let m=0;m<=(mainIds.has(p.id)?main:0);m++){
    if(b+m>limit)continue;
-   const cost=c.owned.includes(p.id)?0:Math.ceil(Math.max(0,(b+m)/p.servings-(c.supply?.[p.id]??0)-0.000001))*p.price;
+   const cost=c.owned.includes(p.id)?0:Math.ceil(Math.max(0,(b+m)*(c.people??1)/p.servings-(c.supply?.[p.id]??0)-0.000001))*p.price;
    options.push({b,m,cost});
   }
   const next=Array<number>(size).fill(Infinity);
@@ -43,7 +43,7 @@ export function shoppingBudgetGuide(products:PlanProduct[],c:PlanConditions){
  const options=slots.map(slot=>({slot,products:slotCandidates(products,c,schedule.findIndex(s=>s.slot===slot))}));
  const count=new Set(options.flatMap(o=>o.products.map(p=>cookingDishId(p.id)))).size;
  const low=recommendShopping(products,{...c,budget:1000000},true),varied=recommendShopping(products,{...c,budget:1000000});
- const minimum=low?basketTotal(low,products,c.owned,c.supply):null;
- const varietyMinimum=varied?basketTotal(varied,products,c.owned,c.supply):null;
+ const minimum=low?basketTotal(low,products,c.owned,c.supply,c.people):null;
+ const varietyMinimum=varied?basketTotal(varied,products,c.owned,c.supply,c.people):null;
  return {count,minimum,varietyMinimum,varietyUpper:varietyMinimum,approximate:true,options:options.map(o=>({slot:o.slot,count:new Set(o.products.map(p=>cookingDishId(p.id))).size}))};
 }

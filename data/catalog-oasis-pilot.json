@@ -1,0 +1,56 @@
+{
+  "source": "오아시스 공개 판매 페이지",
+  "rows": [
+    {
+      "id": "oasis-2621",
+      "name": "우리콩 솔잎두부 (찌개용 420g)",
+      "detail": "420g · 1팩",
+      "price": 3260,
+      "quantity": 1,
+      "unit": "개",
+      "grams": 420,
+      "category": "ingredient",
+      "foodType": "tofu",
+      "productUrl": "https://www.oasis.co.kr/product/detail/2621",
+      "productImageUrl": "https://oasisprodproduct.edge.naverncp.com/2621/thumb/300?v=1789710150377",
+      "checkedAt": "2026-09-18T05:42:30.585Z",
+      "priceNote": "오아시스 판매 페이지 할인 판매가 · 쿠폰 적용 전 · 배송비 별도",
+      "market": "KR",
+      "currency": "KRW"
+    },
+    {
+      "id": "oasis-3560",
+      "name": "좋은콩 부침두부 (300g)",
+      "detail": "300g · 1팩",
+      "price": 1700,
+      "quantity": 1,
+      "unit": "개",
+      "grams": 300,
+      "category": "ingredient",
+      "foodType": "tofu",
+      "productUrl": "https://www.oasis.co.kr/product/detail/3560",
+      "productImageUrl": "https://oasisprodproduct.edge.naverncp.com/3560/thumb/300?v=1789710150765",
+      "checkedAt": "2026-09-18T05:42:31.011Z",
+      "priceNote": "오아시스 판매 페이지 할인 판매가 · 쿠폰 적용 전 · 배송비 별도",
+      "market": "KR",
+      "currency": "KRW"
+    },
+    {
+      "id": "oasis-3561",
+      "name": "좋은콩 찌개두부 (300g)",
+      "detail": "300g · 1팩",
+      "price": 1700,
+      "quantity": 1,
+      "unit": "개",
+      "grams": 300,
+      "category": "ingredient",
+      "foodType": "tofu",
+      "productUrl": "https://www.oasis.co.kr/product/detail/3561",
+      "productImageUrl": "https://oasisprodproduct.edge.naverncp.com/3561/thumb/300?v=1789710151164",
+      "checkedAt": "2026-09-18T05:42:31.392Z",
+      "priceNote": "오아시스 판매 페이지 할인 판매가 · 쿠폰 적용 전 · 배송비 별도",
+      "market": "KR",
+      "currency": "KRW"
+    }
+  ]
+}

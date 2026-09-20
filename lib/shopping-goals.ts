@@ -7,6 +7,7 @@ export const shoppingGoals = {
  lose: {label:'🥗 다이어트 식단',description:'한 끼 열량과 열량 대비 단백질을 함께 비교해요.'},
  muscle: {label:'💪 헬스·고단백 식단',description:'한 끼 단백질 함량을 우선하고 열량 대비 구성도 살펴요.'},
  lowfat: {label:'저지방',description:'등록된 영양정보로 열량 대비 지방이 적은 메뉴를 우선해요.'},
+ lowcarb: {label:'🥑 저탄고지',description:'탄수화물 비중이 낮고 지방 비중이 높은 메뉴를 우선 비교해요.'},
 } as const;
 export type ShoppingGoal = keyof typeof shoppingGoals;
 export const isShoppingGoal=(value:unknown):value is ShoppingGoal=>typeof value==='string'&&Object.hasOwn(shoppingGoals,value);
@@ -18,6 +19,12 @@ export function goalBonus(product:PlanProduct,goal:ShoppingGoal='maintain'){
  const weight=nutritionIsEstimated(product)?0.55:1;
  // Soft ranking signals, not medical targets or prescribed nutrient intake.
  const sodiumPenalty=sodium!==null&&calories!==null&&calories>0?Math.min(20,sodium/calories*2):0;
+ if(goal==='lowcarb'){
+  if(calories===null||calories<=0||protein===null||carbs===null||fat===null)return 0;
+  const macroEnergy=carbs*4+protein*4+fat*9;
+  if(macroEnergy<=0)return 0;
+  return (100*(1-carbs*4/macroEnergy)+40*fat*9/macroEnergy-sodiumPenalty)*weight;
+ }
  if(goal==='lowfat')return calories!==null&&calories>0&&fat!==null?(Math.max(0,100-fat*9/calories*100)-sodiumPenalty)*weight:0;
  if(calories===null||protein===null||!Number.isFinite(calories)||!Number.isFinite(protein)||calories<=0||protein<=0)return 0;
  if(goal==='maintain'){
@@ -39,7 +46,7 @@ export function productsForGoal(products:PlanProduct[],goal?:ShoppingGoal):PlanP
 export function servingFat(p:PlanProduct):number|null{
  return servingNutrients(p).fat;
 }
-export function hasGoalNutrition(p:PlanProduct,goal?:ShoppingGoal){if(!goal||goal==='maintain')return true;const n=servingNutrition(p);return n.calories!==null&&n.calories>0&&(goal==='lowfat'?servingFat(p)!==null:n.protein!==null&&n.protein>0);}
+export function hasGoalNutrition(p:PlanProduct,goal?:ShoppingGoal){if(!goal||goal==='maintain')return true;if(goal==='lowcarb'){const n=servingNutrients(p);return n.calories!==null&&n.calories>0&&n.protein!==null&&n.protein>0&&n.carbs!==null&&n.fat!==null&&n.fat>0;}const n=servingNutrition(p);return n.calories!==null&&n.calories>0&&(goal==='lowfat'?servingFat(p)!==null:n.protein!==null&&n.protein>0);}
 export const budgetModes={save:{label:'최대한 아끼기',description:'조건에 맞는 저렴한 구성 우선'},balanced:{label:'적당히 쓰기',description:'가격·영양·다양성을 함께 고려'},full:{label:'예산 충분히 활용하기',description:'한도 안에서 다양성과 선택 폭 우선'}} as const;
 export type BudgetMode=keyof typeof budgetModes;
 export const isBudgetMode=(v:unknown):v is BudgetMode=>typeof v==='string'&&Object.hasOwn(budgetModes,v);

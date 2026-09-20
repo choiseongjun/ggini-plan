@@ -10,7 +10,7 @@ export function RecipeOfferPicker({product,index,ids,products,conditions,onChoos
  {product.recipe.ingredients.map((part,partIndex)=>{
   const choices=options.filter(p=>p.recipe!.ingredients.every((other,i)=>i===partIndex||other.product.id===product.recipe!.ingredients[i].product.id));
   return <fieldset key={partIndex}><legend>{part.label}</legend>{choices.length<2&&<small>확인된 상품 1종 · 대체 상품 준비 중</small>}
-   {choices.map(candidate=>{const entry=candidate.recipe!.ingredients[partIndex],p=entry.product,grams=p.servingGrams,selected=p.id===part.product.id,next=ids.map((id,i)=>i===index?candidate.id:id),total=basketTotal(next,products,conditions.owned,conditions.supply);return <div className="recipe-offer" key={candidate.id}>
+   {choices.map(candidate=>{const entry=candidate.recipe!.ingredients[partIndex],p=entry.product,grams=p.servingGrams,selected=p.id===part.product.id,next=ids.map((id,i)=>i===index?candidate.id:id),total=basketTotal(next,products,conditions.owned,conditions.supply,conditions.people);return <div className="recipe-offer" key={candidate.id}>
     <div><ProductThumb item={p}/><a href={p.productUrl!} target="_blank" rel="noopener noreferrer">{p.name} ↗</a></div>
     <small>{p.detail} · 판매 {won(p.price)}{/달걀/.test(part.label)?` · 1개당 ${won(p.price/p.quantity)}`:grams?` · 100g당 ${won(p.price/grams*100)}`:''}</small>
     <strong>사용분 {won(p.price*entry.packs)}</strong><small>가격 확인 {p.priceCheckedAt?.slice(0,10)??'미확인'}</small>

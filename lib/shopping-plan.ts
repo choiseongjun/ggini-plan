@@ -12,13 +12,13 @@ export function validSwapPreferences(value:unknown):value is SwapPreference[]{
  return Array.isArray(value)&&value.length<=50&&value.every(p=>p&&typeof p==='object'&&typeof p.id==='string'&&p.id.length>0&&p.id.length<=200&&typeof p.family==='string'&&p.family.length<=200&&typeof p.reason==='string'&&Object.hasOwn(swapReasons,p.reason)&&Number.isFinite(p.price)&&p.price>=0&&p.price<=10000000&&Number.isFinite(p.minutes)&&p.minutes>=0&&p.minutes<=1440);
 }
 
-export type PlanProduct = CatalogItem & { mealSlots?:MealSlot[]; servings: number; servingGrams?:number; servingNote: string; avoidanceText: string | null; personalizationScore?:number; servingCalories?:number|null; recipe?: {assembly?:boolean;minutes:number;slots:MealSlot[];family:string;steps:string[];ingredients:{product:PlanProduct;packs:number;label:string}[];nutrition:{calories:number|null;protein:number|null}} };
+export type PlanProduct = CatalogItem & { mealSlots?:MealSlot[]; servings: number; servingGrams?:number; servingNote: string; avoidanceText: string | null; personalizationScore?:number; servingCalories?:number|null; recipe?: {sideCount?:number;sides?:{name:string;steps:string[];minutes:number}[];assembly?:boolean;minutes:number;slots:MealSlot[];family:string;steps:string[];ingredients:{product:PlanProduct;packs:number;label:string}[];nutrition:{calories:number|null;protein:number|null}} };
 export type MealSlot = 'breakfast'|'lunch'|'dinner';
 export const slotLabels={breakfast:'아침',lunch:'점심',dinner:'저녁'};
 export const MAX_PLAN_DAYS=15;
 export const MAX_PLAN_MEALS=MAX_PLAN_DAYS*3;
-export type PlanConditions = { mealCountMode?:boolean; swapPreferences?:SwapPreference[]; budgetMode?:BudgetMode; mealKinds?:MealKind[]; goal?:ShoppingGoal; mealMode?:'ready'|'cook'|'mixed'; excluded?:ExcludedFood[]; startDate?:string; budget: number; meals: number; cooking: 'quick' | 'kit' | 'all'; avoid: string; owned: string[]; supply?:Record<string,number>; days?:number; slots?:MealSlot[] };
-export const initialConditions: PlanConditions = {mealMode:'mixed',budget:50000,meals:7,cooking:'all',avoid:'',owned:[],days:7,slots:['dinner']};
+export type PlanConditions = { people?:number; sideCount?:number; mealCountMode?:boolean; swapPreferences?:SwapPreference[]; budgetMode?:BudgetMode; mealKinds?:MealKind[]; goal?:ShoppingGoal; mealMode?:'ready'|'cook'|'mixed'; excluded?:ExcludedFood[]; startDate?:string; budget: number; meals: number; cooking: 'quick' | 'kit' | 'all'; avoid: string; owned: string[]; supply?:Record<string,number>; days?:number; slots?:MealSlot[] };
+export const initialConditions: PlanConditions = {people:1,sideCount:0,mealMode:'mixed',budget:50000,meals:7,cooking:'all',avoid:'',owned:[],days:7,slots:['dinner']};
 export function mealSchedule(c:PlanConditions){
  const slots=c.slots??(c.meals>=10?['lunch','dinner'] as MealSlot[]:['dinner'] as MealSlot[]);
  return Array.from({length:c.meals},(_,i)=>({day:Math.floor(i/slots.length)+1,slot:slots[i%slots.length]}));
@@ -26,6 +26,8 @@ export function mealSchedule(c:PlanConditions){
 export function parseConditions(value: unknown): PlanConditions | null {
  if(!value || typeof value!=='object')return null;
  const p=value as PlanConditions;
+ if(p.people!==undefined&&(!Number.isInteger(p.people)||p.people<1||p.people>4))return null;
+ if(p.sideCount!==undefined&&(!Number.isInteger(p.sideCount)||p.sideCount<0||p.sideCount>2))return null;
  if(p.mealCountMode!==undefined&&typeof p.mealCountMode!=='boolean')return null;
  if(p.mealCountMode&&(p.days===undefined||p.slots===undefined))return null;
  if(p.swapPreferences!==undefined&&!validSwapPreferences(p.swapPreferences))return null;
@@ -44,7 +46,7 @@ export function slotCandidates(products:PlanProduct[],c:PlanConditions,index:num
  const breakfast=mealSchedule(c)[index]?.slot==='breakfast';
  return candidates(products,c).filter(p=>p.recipe?p.recipe.slots.includes(mealSchedule(c)[index]?.slot):p.mealSlots?p.mealSlots.includes(mealSchedule(c)[index]?.slot):breakfast?/시리얼|그래놀라|샌드위치|오트밀|죽/.test(p.name):!/시리얼|그래놀라/.test(p.name));
 }
-export const cookingDishId=(id:string)=>id.split('--auto--')[0].split('--with--')[0];
+export const cookingDishId=(id:string)=>id.split('--sides-')[0].split('--auto--')[0].split('--with--')[0];
 export function mainIngredients(p:PlanProduct):string[]{
  const name=p.name.replace(/\[[^\]]*\]/g,'');
  const meat: [string,RegExp][]=[['beef',/소불고기|소고기|쇠고기|한우|비프/],['pork',/돼지|돈육|한돈|삼겹|목살|제육|베이컨|햄|잠봉/],['chicken',/닭|치킨/],['duck',/오리/],['fish',/생선|연어|고등어|삼치|참치|명태|대구살/],['shrimp',/새우|쉬림프/]];
@@ -62,26 +64,26 @@ export function validMealIds(ids:string[],products:PlanProduct[],c:PlanCondition
 const aliases: Record<string,string[]> = {우유:['우유','유제품','치즈','크림'],달걀:['달걀','계란','알류'],계란:['달걀','계란','알류'],소고기:['소고기','쇠고기','한우','비프'],돼지고기:['돼지고기','돈육','베이컨','삼겹'],닭고기:['닭','치킨'],콩:['콩','대두','두부'],밀:['밀','소맥'],새우:['새우','쉬림프']};
 export function candidates(products: PlanProduct[], c: PlanConditions) {
  const avoid=c.avoid.split(/[,，\n]/).map(x=>x.trim().toLowerCase()).filter(Boolean);
- return products.filter(p=>mealRole(p)==='meal'&&hasGoalNutrition(p,c.goal)&&allowsMealKind(p,c.mealKinds)&&allowsExcludedFoods(p,c.excluded??[])&&(p.productUrl||p.recipe) && p.price>0 && ((c.mealMode??'ready')==='mixed'||((c.mealMode??'ready')==='cook'?!!p.recipe&&!p.recipe.assembly:!p.recipe||!!p.recipe.assembly)) && (!!p.recipe&&!p.recipe.assembly||c.cooking==='all'||(c.cooking==='kit'?p.category==='meal_kit':p.category!=='meal_kit')) && (!avoid.length || (p.avoidanceText!==null && !avoid.some(word=>(aliases[word]??[word]).some(a=>`${p.name} ${p.avoidanceText}`.toLowerCase().includes(a))))));
+ return products.filter(p=>(!p.recipe||p.recipe.assembly||(p.recipe.sideCount??0)===(c.sideCount??0))&&mealRole(p)==='meal'&&hasGoalNutrition(p,c.goal)&&allowsMealKind(p,c.mealKinds)&&allowsExcludedFoods(p,c.excluded??[])&&(p.productUrl||p.recipe) && p.price>0 && ((c.mealMode??'ready')==='mixed'||((c.mealMode??'ready')==='cook'?!!p.recipe&&!p.recipe.assembly:!p.recipe||!!p.recipe.assembly)) && (!!p.recipe&&!p.recipe.assembly||c.cooking==='all'||(c.cooking==='kit'?p.category==='meal_kit':p.category!=='meal_kit')) && (!avoid.length || (p.avoidanceText!==null && !avoid.some(word=>(aliases[word]??[word]).some(a=>`${p.name} ${p.avoidanceText}`.toLowerCase().includes(a))))));
 }
-export function basket(ids: string[], products: PlanProduct[], owned: string[], supply:Record<string,number>={}) {
+export function basket(ids: string[], products: PlanProduct[], owned: string[], supply:Record<string,number>={},people=1) {
  const counts=new Map<string,number>();
- const unassigned=new Map(purchaseBasket(ids,products,owned,supply).map(r=>[r.product.id,r.cost]));
+ const unassigned=new Map(purchaseBasket(ids,products,owned,supply,undefined,people).map(r=>[r.product.id,r.cost]));
  ids.forEach(id=>counts.set(id,(counts.get(id)??0)+1));
  return [...counts].map(([id,uses])=>{
   const product=products.find(p=>p.id===id);
   if(!product)throw new Error('상품 정보가 변경됐어요. 식단을 다시 추천받아 주세요.');
-  const packs=Math.ceil(uses/product.servings), have=owned.includes(id);
+  const packs=Math.ceil(uses*people/product.servings), have=owned.includes(id);
   let cost=0;for(const part of product.recipe?.ingredients??[{product}]){cost+=unassigned.get(part.product.id)??0;unassigned.delete(part.product.id);}
-  return {product,uses,packs,have,left: packs*product.servings-uses,cost};
+  return {product,uses,packs,have,left: packs*product.servings-uses*people,cost};
  });
 }
-export function purchaseBasket(ids:string[],products:PlanProduct[],owned:string[],supply:Record<string,number>={},portions?:Record<string,number>){
+export function purchaseBasket(ids:string[],products:PlanProduct[],owned:string[],supply:Record<string,number>={},portions?:Record<string,number>,people=1){
  const meals=new Map<string,number>();ids.forEach(id=>meals.set(id,(meals.get(id)??0)+1));
  const rows=new Map<string,{product:PlanProduct;required:number}>();
  for(const [id,count] of meals){
   const p=products.find(p=>p.id===id);if(!p)throw new Error('메뉴 정보가 변경됐어요. 다시 추천받아 주세요.');
-  const uses=portions?(portions[id]??0):count;if(uses<=0)continue;
+  const uses=portions?(portions[id]??0):count*people;if(uses<=0)continue;
   for(const part of p.recipe?.ingredients??[{product:p,packs:1/p.servings}]){
    const row=rows.get(part.product.id)??{product:part.product,required:0};row.required+=uses*part.packs;rows.set(part.product.id,row);
   }
@@ -91,7 +93,7 @@ export function purchaseBasket(ids:string[],products:PlanProduct[],owned:string[
   return {product,required:have?0:required,have,packs,cost:packs*product.price,left:have?0:Math.max(0,available+packs-required)};
  });
 }
-export const basketTotal=(ids:string[], products:PlanProduct[], owned:string[],supply:Record<string,number>={})=>basket(ids,products,owned,supply).reduce((n,p)=>n+p.cost,0);
+export const basketTotal=(ids:string[], products:PlanProduct[], owned:string[],supply:Record<string,number>={},people=1)=>basket(ids,products,owned,supply,people).reduce((n,p)=>n+p.cost,0);
 export function mealFamily(p:PlanProduct){return p.recipe?.family??p.name.match(/炒飯|燉飯|義大利麵|볶음밥|덮밥|비빔밥|솥밥|도시락|파스타|라자냐|리조또|비빔국수|쌀국수|칼국수|우동|냉면|김밥|주먹밥|죽|샌드위치|잠봉뵈르|시리얼|그래놀라/)?.[0]??p.foodType??p.name.replace(/\[[^\]]+\]/g,'').trim();}
 function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,schedule:ReturnType<typeof mealSchedule>,previous:ReadonlySet<string>=new Set(),previousFamilies:ReadonlySet<string>=new Set()){
  const products=new Map(rows.map(r=>[r.product.id,r.product]));
@@ -120,7 +122,7 @@ function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,
 function diverseOptions(products:PlanProduct[],previous:string[],conditions:PlanConditions){
  if(products.length<=80)return products;
  const old=new Set(previous);
- const costs=new Map(products.map(p=>[p.id,purchaseBasket([p.id],[p],conditions.owned,conditions.supply).reduce((sum,r)=>sum+r.cost,0)]));
+ const costs=new Map(products.map(p=>[p.id,purchaseBasket([p.id],[p],conditions.owned,conditions.supply,undefined,conditions.people).reduce((sum,r)=>sum+r.cost,0)]));
  const byCost=[...products].sort((a,b)=>costs.get(a.id)!-costs.get(b.id)!||a.price/a.servings-b.price/b.servings);
  const groups=new Map<string,PlanProduct[]>();
  for(const p of [...byCost].sort((a,b)=>Number(old.has(a.id))-Number(old.has(b.id)))){
@@ -148,7 +150,7 @@ export function recommendShopping(products: PlanProduct[], c: PlanConditions, ch
   for(const state of states)for(const p of options[i]){
    if(state.ids.some(id=>cookingDishId(id)===cookingDishId(p.id)))continue;
    if(repeatsDailyMain(state.ids,pool,c,i,p))continue;
-   const ids=[...state.ids,p.id], rows=basket(ids,pool,c.owned,c.supply), cost=rows.reduce((n,r)=>n+r.cost,0);
+   const ids=[...state.ids,p.id], rows=basket(ids,pool,c.owned,c.supply,c.people), cost=rows.reduce((n,r)=>n+r.cost,0);
    if(cost>c.budget)continue;
    // Preserve the current day's order and the previous meal when merging states.
    const dayStart=schedule.findIndex(s=>s.day===schedule[i].day);
@@ -167,11 +169,11 @@ export function swapMeal(ids:string[], index:number, products:PlanProduct[], c:P
  const old=products.find(p=>p.id===ids[index]);
  products=productsForGoal(products,c.goal);
  const options=slotCandidates(products,c,index).filter(p=>!ids.some(id=>cookingDishId(id)===cookingDishId(p.id))&&!repeatsDailyMain(ids,products,c,index,p)).filter(p=>!old||!reason||(
-  reason==='price'?basketTotal(ids.map((id,i)=>i===index?p.id:id),products,c.owned,c.supply)<basketTotal(ids,products,c.owned,c.supply):
+  reason==='price'?basketTotal(ids.map((id,i)=>i===index?p.id:id),products,c.owned,c.supply,c.people)<basketTotal(ids,products,c.owned,c.supply,c.people):
   reason==='effort'?(p.recipe?.minutes??(p.category==='meal_kit'?20:5))<(old.recipe?.minutes??(old.category==='meal_kit'?20:5)):
   reason==='repeat'?mealFamily(p)!==mealFamily(old):true
- )).map(p=>ids.map((id,i)=>i===index?p.id:id)).filter(next=>basketTotal(next,products,c.owned,c.supply)<=c.budget);
+ )).map(p=>ids.map((id,i)=>i===index?p.id:id)).filter(next=>basketTotal(next,products,c.owned,c.supply,c.people)<=c.budget);
  const schedule=mealSchedule(c);
- options.sort((a,b)=>planScore(b,basket(b,products,c.owned,c.supply),c,schedule)-planScore(a,basket(a,products,c.owned,c.supply),c,schedule));
+ options.sort((a,b)=>planScore(b,basket(b,products,c.owned,c.supply,c.people),c,schedule)-planScore(a,basket(a,products,c.owned,c.supply,c.people),c,schedule));
  return options[0]??null;
 }

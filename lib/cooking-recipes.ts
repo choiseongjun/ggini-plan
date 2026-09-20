@@ -4,6 +4,7 @@ import type {CatalogItem} from './catalog';
 import type {PlanProduct,MealSlot} from './shopping-plan';
 import {cookingIngredientPool,type IngredientRole} from './cooking-ingredient-pool';
 import {servingNutrients} from './serving-nutrients';
+import {withCookingSides} from './cooking-sides';
 
 // Quantities are recipe portions, not extra catalog products or live price quotes.
 // Only these known selling configurations can be used; changed packs fail closed.
@@ -22,7 +23,7 @@ const extraRecipes:Recipe[]=[
  {id:'cook-zucchini-egg',name:'애호박 달걀 덮밥',emoji:'🍳',family:'zucchini-egg',minutes:15,slots:['lunch','dinner'],parts:[['rice',1,'밥'],['slot-zucchini',1,'애호박'],['eggs',.1,'달걀']],steps:['씻은 애호박을 얇게 썰어 팬에 물을 조금 넣고 익혀요.','달걀을 풀어 넣고 저으며 완전히 익혀요.','데운 밥 위에 올려요. 소금 등 양념은 선택 사항이에요.']},
 ];
 export function cookingVideoMenu(id:string){
- const base=id.split('--auto--')[0].split('--with--')[0];
+ const base=id.split('--sides-')[0].split('--auto--')[0].split('--with--')[0];
  const recipe=[...recipes,...extraRecipes].find(r=>r.id===base);
  return recipe?{id:base,name:recipe.name,query:`${recipe.name.replace(/와 (?:작은 )?(?:현미)?밥|과 (?:작은 )?(?:현미)?밥| 한 상| 밥상/g,'')} 만들기 레시피`}:null;
 }
@@ -35,7 +36,7 @@ export function cookingProducts(catalog:CatalogItem[]):PlanProduct[]{
  const completeNutrition=new Set<string>();
  for(const [role,group] of Object.entries(pool))for(const {product,amount} of group){
   const n=servingNutrients({...product,servings:1,servingGrams:role==='eggs'?undefined:amount,servingNote:'판매 1묶음',avoidanceText:null});
-  if(n.calories!==null&&n.protein!==null&&n.fat!==null)completeNutrition.add(product.id);
+  if(n.calories!==null&&n.protein!==null&&n.fat!==null&&n.carbs!==null)completeNutrition.add(product.id);
  }
  const roles:Record<string,IngredientRole>={rice:'rice',tofu:'tofu',eggs:'eggs',chicken:'chicken','kurly-5036690':'vegetables','kurly-5104165':'beef','kurly-1000315118':'pork','kurly-1002274835':'belly','kurly-5152797':'onion','kurly-5031392':'mushroom','kurly-1001897355':'cabbage'};
  const dynamicContracts:Record<string,{unit:string;quantity:number;grams:number;match:RegExp}>={};
@@ -70,7 +71,7 @@ export function cookingProducts(catalog:CatalogItem[]):PlanProduct[]{
   })];
  }),[recipe]));
  const offerContracts=Object.fromEntries(alternatives.groups.flatMap(g=>g.offers.map(o=>[o.id,{...o,match:new RegExp(`^${o.detail.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}$`)}])));
- return [...variants,...dynamic].flatMap(r=>{
+ const meals:PlanProduct[]=[...variants,...dynamic].flatMap(r=>{
   const parts=r.parts.map(([id,packs,label])=>{
    const p=catalog.find(p=>p.id===id),contract=r.id.includes('--auto--')?dynamicContracts[id]:contracts[id]??offerContracts[id];
    if(!p||p.unit!==contract.unit||p.quantity!==contract.quantity||!contract.match.test(p.detail)||!p.productUrl||p.price<=0)return null;
@@ -87,6 +88,7 @@ export function cookingProducts(catalog:CatalogItem[]):PlanProduct[]{
    allergens:[...new Set(ingredients.flatMap(p=>p.product.allergens??[]))],allergyInfo:null,nutritionSourceName:null,nutritionSourceUrl:null,nutritionPhotoUrl:null,nutritionBasis:null,caloriesKcal:null,proteinG:null,carbohydratesG:null,fatG:null,sodiumMg:null,protein:'재료 합산 예상',
    recipe:{minutes:r.minutes,slots:r.slots,family:r.family,steps:r.steps,ingredients:ingredients.map(({product,packs,label})=>({product,packs,label})),nutrition:{calories:sum('calories'),protein:sum('protein')}}}];
  });
+ return withCookingSides(meals,catalog);
 }
 export function comparisonFamily(p:PlanProduct){return p.recipe?.family??(/죽/.test(p.name)?'porridge':/밥|도시락/.test(p.name)?'rice':null);}
 export function matchesCookingAlternative(a:PlanProduct,b:PlanProduct){

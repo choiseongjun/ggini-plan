@@ -67,7 +67,7 @@ export async function POST(request:NextRequest){
   const stock=parseStock((await getPool().query("SELECT stock FROM shopping_progress WHERE user_id=$1 AND scope='products'",[user.id])).rows[0]?.stock??{})??{};
   c.supply=Object.fromEntries(Object.values(stock).map(i=>[i.id,i.owned+i.ordered]));
   const products=c.excluded===undefined?personalized.products:personalized.baseProducts;
-  if(!validMealIds(ids,products,c)||basketTotal(ids,products,c.owned,c.supply)>c.budget)return authFailure('상품 또는 가격이 변경됐어요. 식단을 다시 추천받아 주세요.',409);
+  if(!validMealIds(ids,products,c)||basketTotal(ids,products,c.owned,c.supply,c.people)>c.budget)return authFailure('상품 또는 가격이 변경됐어요. 식단을 다시 추천받아 주세요.',409);
   await getPool().query('INSERT INTO shopping_plans(user_id,conditions,meal_ids) VALUES($1,$2,$3)',[user.id,JSON.stringify(c),JSON.stringify(ids)]);
   return json({saved:true},201);
  }catch{return authFailure('식단을 저장하지 못했어요. 잠시 후 다시 시도해 주세요.',503);}

@@ -21,7 +21,11 @@ export function MealPlanOverview({ids,products,conditions,startDate,shoppingTota
   node?.showModal();document.body.style.overflow='hidden';
   return()=>{node?.close();document.body.style.overflow=previous;};
  },[open]);
- return <><button type="button" className="meal-overview-trigger" onClick={()=>setOpen(true)}>🗓️ 전체 식단 한눈에 보기 <span>{days}일 · {ids.length}끼 →</span></button>
+ return <><button type="button" className="meal-overview-trigger" aria-haspopup="dialog" onClick={()=>setOpen(true)}>
+  <span className="meal-overview-trigger-icon" aria-hidden="true">🗓️<i>✦</i></span>
+  <span className="meal-overview-trigger-copy"><strong>전체 식단 한눈에 보기</strong><small>{days}일 · {ids.length}끼를 한 장에 모았어요</small></span>
+  <span className="meal-overview-trigger-arrow" aria-hidden="true">↗</span>
+ </button>
  <dialog ref={dialog} className="meal-overview" aria-labelledby={titleId} onCancel={()=>setOpen(false)} onClose={()=>setOpen(false)} onClick={e=>{if(e.target===e.currentTarget){const r=e.currentTarget.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)setOpen(false);}}}>
   <header className="meal-overview-header"><div><small>🧺 차곡차곡 준비한 끼니</small><h2 id={titleId}>전체 식단 한눈에 보기</h2></div><button type="button" aria-label="전체 식단 닫기" onClick={()=>setOpen(false)}>✕</button></header>
   <div className="meal-overview-scroll"><div className="meal-overview-summary"><span>{days}일 · {ids.length}끼</span><strong>추가 장보기 약 {locale.money(shoppingTotal)}</strong><small>판매 묶음 기준 · 배송비 별도</small></div>

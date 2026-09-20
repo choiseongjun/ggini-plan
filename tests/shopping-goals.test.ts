@@ -10,6 +10,16 @@ const meal=(id:string,calories:number|null,protein:number|null,extra:Partial<Pla
  caloriesKcal:calories,proteinG:protein,avoidanceText:'쌀, 닭고기',...extra,
 } as PlanProduct);
 const c:PlanConditions={...initialConditions,days:1,meals:1,budget:10000};
+test('low carb goal uses carbohydrate and fat composition, persists, and rejects missing values',()=>{
+ const rice=meal('rice',500,25,{carbohydratesG:70,fatG:10});
+ const lower=meal('lower',500,25,{carbohydratesG:10,fatG:35});
+ assert.ok(goalBonus(lower,'lowcarb')>goalBonus(rice,'lowcarb'));
+ assert.deepEqual(recommendShopping([rice,lower],{...c,goal:'lowcarb'}),['lower']);
+ assert.deepEqual(swapMeal(['rice'],0,[rice,lower],{...c,goal:'lowcarb'}),['lower']);
+ assert.equal(parseConditions({...c,goal:'lowcarb'})?.goal,'lowcarb');
+ for(const missing of [{carbohydratesG:null},{fatG:null},{nutritionSourceUrl:null}])assert.equal(recommendShopping([{...lower,...missing}],{...c,goal:'lowcarb'}),null);
+ assert.equal(recommendShopping([lower],{...c,budget:1000,goal:'lowcarb'}),null);
+});
 
 test('diet distinguishes energy at equal protein density and muscle distinguishes high protein portions',()=>{
  assert.ok(goalBonus(meal('lighter',400,20),'lose')>goalBonus(meal('larger',800,40),'lose'));

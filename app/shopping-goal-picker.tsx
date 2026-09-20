@@ -11,5 +11,6 @@ export function ShoppingGoalPicker({value='maintain',onChange,settings,disabled}
    <span><strong>{shoppingGoals[goal].label}</strong><small>{shoppingGoals[goal].description}</small></span>
   </label>)}</div>
   {value!=='maintain'&&<p className={styles.note}>목표는 메뉴 비교 순서에 반영해요. 하루 섭취 목표 열량을 정하거나 끼니 수·분량을 자동으로 줄이지는 않아요. 비교할 영양정보가 없는 상품은 해당 목표의 추천에서 제외해요.</p>}
+  {value==='lowcarb'&&<p className={styles.note}>등록 메뉴 사이의 상대 비교예요. 엄격한 키토 식단이나 하루 탄수화물 제한을 보장하지 않아요. 밥·소스가 포함될 수 있으니 결과의 탄수화물 g도 확인해 주세요.</p>}
  </fieldset>;
 }

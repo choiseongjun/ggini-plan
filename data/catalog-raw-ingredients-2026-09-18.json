@@ -1,0 +1,4931 @@
+{
+  "target": 120,
+  "checkedAt": "2026-09-18T05:09:35.565Z",
+  "existingCount": 2000,
+  "rows": [
+    {
+      "id": "kurly-5060004",
+      "name": "[한둘] 국산 무농약콩으로 만든 손순두부",
+      "detail": "300g · 1팩 · 냉장",
+      "price": 2900,
+      "portions": "판매 구성 1묶음",
+      "quantity": 300,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[한둘] 국산 무농약콩으로 만든 손순두부",
+      "productUrl": "https://www.kurly.com/goods/5060004",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1603699973446l0.jpg",
+      "checkedAt": "2026-09-18T05:09:20.357Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "두부",
+      "cuisine": "raw",
+      "sourceVolume": "300g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 대두 함유",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5060004",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20231205/gv30000784133_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "300g"
+      },
+      "foodType": "tofu"
+    },
+    {
+      "id": "kurly-5053496",
+      "name": "한통 양배추 900g ",
+      "detail": "900g 이상 · 1통 · 냉장",
+      "price": 3990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "한통 양배추 900g ",
+      "productUrl": "https://www.kurly.com/goods/5053496",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1653038077839l0.jpeg",
+      "checkedAt": "2026-09-18T05:09:20.748Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "양배추",
+      "cuisine": "raw",
+      "sourceVolume": "900g 이상",
+      "sourceSalesUnit": "1통",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5053496",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20210618/gv20000194438_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-1001897355",
+      "name": "[제각각] 작은 양배추 1통 (600g)",
+      "detail": "600g · 봉 · 냉장",
+      "price": 2640,
+      "portions": "판매 구성 1묶음",
+      "quantity": 600,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[제각각] 작은 양배추 1통 (600g)",
+      "productUrl": "https://www.kurly.com/goods/1001897355",
+      "productImageUrl": "https://product-image.kurly.com/product/image/696cfac6-601c-4da0-a083-b09534719b37.jpg",
+      "checkedAt": "2026-09-18T05:09:20.660Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "양배추",
+      "cuisine": "raw",
+      "sourceVolume": "600g",
+      "sourceSalesUnit": "봉",
+      "allergyText": "",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1001897355",
+        "evidenceUrls": [
+          "https://product-image.kurly.com/product/image/58c50fe1-481f-41aa-bbad-fb58726bbebf.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "600g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5053497",
+      "name": "조각 양배추 500g",
+      "detail": "500g · 1입 · 냉장",
+      "price": 2190,
+      "portions": "판매 구성 1묶음",
+      "quantity": 500,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "조각 양배추 500g",
+      "productUrl": "https://www.kurly.com/goods/5053497",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1648209042511l0.jpeg",
+      "checkedAt": "2026-09-18T05:09:20.678Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "양배추",
+      "cuisine": "raw",
+      "sourceVolume": "500g",
+      "sourceSalesUnit": "1입",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5053497",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20210618/gv20000194441_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "500g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-1002405432",
+      "name": "[팜송] 강원 고랭지 대파 700g",
+      "detail": "700g  · 1단 · 냉장",
+      "price": 2990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 700,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[팜송] 강원 고랭지 대파 700g",
+      "productUrl": "https://www.kurly.com/goods/1002405432",
+      "productImageUrl": "https://product-image.kurly.com/product/image/bed8950d-751b-40d6-9c37-2a64f4f3078f.jpg",
+      "checkedAt": "2026-09-18T05:09:21.007Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "대파",
+      "cuisine": "raw",
+      "sourceVolume": "700g ",
+      "sourceSalesUnit": "1단",
+      "allergyText": "",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1002405432",
+        "evidenceUrls": [
+          "https://product-image.kurly.com/product/image/da568350-1289-4068-8ecf-d34edbfaee3d.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "700g "
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5027320",
+      "name": "깐대파 500g",
+      "detail": "500g · 1봉 · 냉장",
+      "price": 3690,
+      "portions": "판매 구성 1묶음",
+      "quantity": 500,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "깐대파 500g",
+      "productUrl": "https://www.kurly.com/goods/5027320",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1653037895339l0.jpeg",
+      "checkedAt": "2026-09-18T05:09:20.979Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "대파",
+      "cuisine": "raw",
+      "sourceVolume": "500g",
+      "sourceSalesUnit": "1봉",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5027320",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20180727/gv00000028126_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "500g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5041020",
+      "name": "한끼 채소 손질 대파 100g",
+      "detail": "100g · 1봉 · 냉장",
+      "price": 2090,
+      "portions": "판매 구성 1묶음",
+      "quantity": 100,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "한끼 채소 손질 대파 100g",
+      "productUrl": "https://www.kurly.com/goods/5041020",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1567581895960l0.jpg",
+      "checkedAt": "2026-09-18T05:09:20.986Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "대파",
+      "cuisine": "raw",
+      "sourceVolume": "100g",
+      "sourceSalesUnit": "1봉",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5041020",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20220701/gv10000333089_1.jpg",
+          "https://product-image.kurly.com/product/image/00081ea7-df75-4ce8-92a8-480b59fe2b5b.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "100g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5049249",
+      "name": "[팜송] 한끼 감자 300g",
+      "detail": "300g · 1봉 · 냉장",
+      "price": 2490,
+      "portions": "판매 구성 1묶음",
+      "quantity": 300,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[팜송] 한끼 감자 300g",
+      "productUrl": "https://www.kurly.com/goods/5049249",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1583288578136l0.jpg",
+      "checkedAt": "2026-09-18T05:09:21.300Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "감자",
+      "cuisine": "raw",
+      "sourceVolume": "300g",
+      "sourceSalesUnit": "1봉",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5049249",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260309/gv00001772359_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "300g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5153165",
+      "name": "골든킹 감자 900g",
+      "detail": "900g · 1봉 · 냉장",
+      "price": 3990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 900,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "골든킹 감자 900g",
+      "productUrl": "https://www.kurly.com/goods/5153165",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1656391963198l0.jpg",
+      "checkedAt": "2026-09-18T05:09:21.298Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "감자",
+      "cuisine": "raw",
+      "sourceVolume": "900g",
+      "sourceSalesUnit": "1봉",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5153165",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230623/gv40000706445_1.jpg",
+          "https://product-image.kurly.com/product/image/dceba8e4-fc38-4c0a-a082-d5e64cf36544.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "900g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5000069",
+      "name": "[바름팜] 친환경 감자 600g",
+      "detail": "600g · 1봉지 · 냉장",
+      "price": 4290,
+      "portions": "판매 구성 1묶음",
+      "quantity": 600,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[바름팜] 친환경 감자 600g",
+      "productUrl": "https://www.kurly.com/goods/5000069",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1653038027985l0.jpeg",
+      "checkedAt": "2026-09-18T05:09:21.419Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "감자",
+      "cuisine": "raw",
+      "sourceVolume": "600g",
+      "sourceSalesUnit": "1봉지",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5000069",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20220614/gv10000326854_1.jpg",
+          "https://product-image.kurly.com/product/image/fbccd5d3-0021-4b29-bff7-151c7ccf995e.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "600g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-1002030400",
+      "name": "[제각각] 애호박 1입",
+      "detail": "1개 · 냉장",
+      "price": 3290,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[제각각] 애호박 1입",
+      "productUrl": "https://www.kurly.com/goods/1002030400",
+      "productImageUrl": "https://product-image.kurly.com/product/image/17f320ca-693f-4fff-a18c-164ebea81b9c.jpg",
+      "checkedAt": "2026-09-18T05:09:21.736Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "애호박",
+      "cuisine": "raw",
+      "sourceVolume": "1개",
+      "sourceSalesUnit": "",
+      "allergyText": "",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1002030400",
+        "evidenceUrls": [
+          "https://product-image.kurly.com/product/image/a2ef5f7e-439e-440f-af94-548d1266e3fa.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5000097",
+      "name": "친환경 애호박 1개",
+      "detail": "계절에 따라서 크기가 상이 할 수 있습니다. · 냉장",
+      "price": 4490,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "친환경 애호박 1개",
+      "productUrl": "https://www.kurly.com/goods/5000097",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1653038277981l0.jpeg",
+      "checkedAt": "2026-09-18T05:09:21.677Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "애호박",
+      "cuisine": "raw",
+      "sourceVolume": "계절에 따라서 크기가 상이 할 수 있습니다.",
+      "sourceSalesUnit": null,
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5000097",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250530/gv00001650862_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-1000178609",
+      "name": "[제각각] 애호박 3입",
+      "detail": "3개입 · 1봉 · 냉장",
+      "price": 8990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[제각각] 애호박 3입",
+      "productUrl": "https://www.kurly.com/goods/1000178609",
+      "productImageUrl": "https://product-image.kurly.com/product/image/4acfe004-0076-4cfc-89b4-12f41925bfb0.jpg",
+      "checkedAt": "2026-09-18T05:09:21.715Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "애호박",
+      "cuisine": "raw",
+      "sourceVolume": "3개입",
+      "sourceSalesUnit": "1봉",
+      "allergyText": "",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1000178609",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230607/gv40000702294_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5054660",
+      "name": "[KF365] 브로콜리 1입 (250g)",
+      "detail": "1송이(250g 이상) · 1봉 · 냉장",
+      "price": 4490,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[KF365] 브로콜리 1입 (250g)",
+      "productUrl": "https://www.kurly.com/goods/5054660",
+      "productImageUrl": "https://product-image.kurly.com/product/image/a0648262-58dc-463c-a8a6-4b1cb6e0744b.jpg",
+      "checkedAt": "2026-09-18T05:09:21.998Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "브로콜리",
+      "cuisine": "raw",
+      "sourceVolume": "1송이(250g 이상)",
+      "sourceSalesUnit": "1봉",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5054660",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260318/gv30001772568_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-1002318659",
+      "name": "[바름팜] 강원 고랭지 브로콜리 2입 (500g)",
+      "detail": "2입(개당 250g 이상) · 봉 · 냉장",
+      "price": 7990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[바름팜] 강원 고랭지 브로콜리 2입 (500g)",
+      "productUrl": "https://www.kurly.com/goods/1002318659",
+      "productImageUrl": "https://product-image.kurly.com/product/image/1d0f3e83-f3f8-46cc-b357-2e8d79837daa.jpg",
+      "checkedAt": "2026-09-18T05:09:21.985Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "브로콜리",
+      "cuisine": "raw",
+      "sourceVolume": "2입(개당 250g 이상)",
+      "sourceSalesUnit": "봉",
+      "allergyText": "",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "해당사항 없음",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1002318659",
+        "evidenceUrls": [
+          "https://product-image.kurly.com/product/image/0873f492-23e7-4073-bd36-fb8fb9bb03be.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5001063",
+      "name": "[바름팜] 친환경 브로콜리 1개 (200g)",
+      "detail": "200g내외 · 1개 · 냉장",
+      "price": 5990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[바름팜] 친환경 브로콜리 1개 (200g)",
+      "productUrl": "https://www.kurly.com/goods/5001063",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1648209108935l0.jpeg",
+      "checkedAt": "2026-09-18T05:09:22.012Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "브로콜리",
+      "cuisine": "raw",
+      "sourceVolume": "200g내외",
+      "sourceSalesUnit": "1개",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5001063",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240321/gv10000808273_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5000718",
+      "name": "친환경 시금치 200g",
+      "detail": "200g · 1봉지 · 냉장",
+      "price": 7490,
+      "portions": "판매 구성 1묶음",
+      "quantity": 200,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "친환경 시금치 200g",
+      "productUrl": "https://www.kurly.com/goods/5000718",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1653038188464l0.jpeg",
+      "checkedAt": "2026-09-18T05:09:22.354Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "시금치",
+      "cuisine": "raw",
+      "sourceVolume": "200g",
+      "sourceSalesUnit": "1봉지",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5000718",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20231013/gv00000770121_1.jpg",
+          "https://product-image.kurly.com/product/image/b5e80802-315a-461f-91be-9bfcfb098d19.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "200g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5049250",
+      "name": "한끼 시금치 120g",
+      "detail": "120g · 1봉 · 냉장",
+      "price": 5490,
+      "portions": "판매 구성 1묶음",
+      "quantity": 120,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "한끼 시금치 120g",
+      "productUrl": "https://www.kurly.com/goods/5049250",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1583220482251l0.jpg",
+      "checkedAt": "2026-09-18T05:09:22.320Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "시금치",
+      "cuisine": "raw",
+      "sourceVolume": "120g",
+      "sourceSalesUnit": "1봉",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5049250",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20200304/gv10000083936_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "120g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5007364",
+      "name": "친환경 베이비 시금치 100g",
+      "detail": "100g · 1팩 · 냉장",
+      "price": 5490,
+      "portions": "판매 구성 1묶음",
+      "quantity": 100,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "친환경 베이비 시금치 100g",
+      "productUrl": "https://www.kurly.com/goods/5007364",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1502076110494l0.jpg",
+      "checkedAt": "2026-09-18T05:09:22.309Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "시금치",
+      "cuisine": "raw",
+      "sourceVolume": "100g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5007364",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20170807/gv00000005896_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "100g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-1000120872",
+      "name": "[KF365] 무농약 국산콩 콩나물 300g",
+      "detail": "300g · 1봉 · 냉장",
+      "price": 1590,
+      "portions": "판매 구성 1묶음",
+      "quantity": 300,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[KF365] 무농약 국산콩 콩나물 300g",
+      "productUrl": "https://www.kurly.com/goods/1000120872",
+      "productImageUrl": "https://product-image.kurly.com/product/image/d746f25f-c5a9-472b-be9f-c2eacaf9399f.jpg",
+      "checkedAt": "2026-09-18T05:09:22.603Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "콩나물",
+      "cuisine": "raw",
+      "sourceVolume": "300g",
+      "sourceSalesUnit": "1봉",
+      "allergyText": "대두 함유",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1000120872",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240503/gv30000854861_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "300g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-1001297615",
+      "name": "[김구원선생] 장수 콩나물 600g",
+      "detail": "600g · 봉 · 냉장",
+      "price": 1590,
+      "portions": "판매 구성 1묶음",
+      "quantity": 600,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[김구원선생] 장수 콩나물 600g",
+      "productUrl": "https://www.kurly.com/goods/1001297615",
+      "productImageUrl": "https://product-image.kurly.com/product/image/973395ca-4f4f-4c9b-9b31-a11c5f4565ca.jpg",
+      "checkedAt": "2026-09-18T05:09:22.590Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "콩나물",
+      "cuisine": "raw",
+      "sourceVolume": "600g",
+      "sourceSalesUnit": "봉",
+      "allergyText": "",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1001297615",
+        "evidenceUrls": [
+          "https://product-image.kurly.com/product/image/63b79c5e-ba74-4756-a3d8-d1ca4c6d694e.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "600g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-1002054324",
+      "name": "[풀무원]국산콩 무농약 콩나물(어린이용) 200g",
+      "detail": "200g · 봉 · 냉장",
+      "price": 1990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 200,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[풀무원]국산콩 무농약 콩나물(어린이용) 200g",
+      "productUrl": "https://www.kurly.com/goods/1002054324",
+      "productImageUrl": "https://product-image.kurly.com/product/image/3e42470e-2e71-4e51-a274-1349d2f51803.jpg",
+      "checkedAt": "2026-09-18T05:09:22.616Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "콩나물",
+      "cuisine": "raw",
+      "sourceVolume": "200g",
+      "sourceSalesUnit": "봉",
+      "allergyText": "",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1002054324",
+        "evidenceUrls": [
+          "https://product-image.kurly.com/product/image/c860c81d-e6c7-44cb-aad7-4e70e989e4f4.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "200g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5071327",
+      "name": "[풀무원] 통통 아삭 숙주 350g",
+      "detail": "350g · 1팩 · 냉장",
+      "price": 1690,
+      "portions": "판매 구성 1묶음",
+      "quantity": 350,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[풀무원] 통통 아삭 숙주 350g",
+      "productUrl": "https://www.kurly.com/goods/5071327",
+      "productImageUrl": "https://product-image.kurly.com/product/image/82ab304e-de5e-4d8b-b573-eefdda448d1f.jpg",
+      "checkedAt": "2026-09-18T05:09:22.825Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "숙주",
+      "cuisine": "raw",
+      "sourceVolume": "350g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5071327",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20241107/gv30001607935_1.jpg",
+          "https://product-image.kurly.com/product/image/622536e1-e640-4c4b-ba7c-7abc6665f10a.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "350g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5068740",
+      "name": "GAP 장수 숙주나물 200g",
+      "detail": "200g · 1봉 · 냉장",
+      "price": 1490,
+      "portions": "판매 구성 1묶음",
+      "quantity": 200,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "GAP 장수 숙주나물 200g",
+      "productUrl": "https://www.kurly.com/goods/5068740",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1615532613946l0.jpg",
+      "checkedAt": "2026-09-18T05:09:22.815Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "숙주",
+      "cuisine": "raw",
+      "sourceVolume": "200g",
+      "sourceSalesUnit": "1봉",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5068740",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250116/gv10001634614_1.jpg",
+          "https://product-image.kurly.com/product/image/4e1f4c24-9e08-4c79-b92f-fda834dada57.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "200g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5038301",
+      "name": "[김구원선생] 무농약 숙주나물 200g",
+      "detail": "200g · 1봉 · 냉장",
+      "price": 2190,
+      "portions": "판매 구성 1묶음",
+      "quantity": 200,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[김구원선생] 무농약 숙주나물 200g",
+      "productUrl": "https://www.kurly.com/goods/5038301",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1566806395975l0.jpg",
+      "checkedAt": "2026-09-18T05:09:22.800Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "숙주",
+      "cuisine": "raw",
+      "sourceVolume": "200g",
+      "sourceSalesUnit": "1봉",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5038301",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230321/gv10000505657_1.jpg",
+          "https://product-image.kurly.com/product/image/d6d67339-ee94-42de-b24a-06564de7fb0e.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "200g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5063699",
+      "name": "청경채 300g",
+      "detail": "300g · 1봉 · 냉장",
+      "price": 4490,
+      "portions": "판매 구성 1묶음",
+      "quantity": 300,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "청경채 300g",
+      "productUrl": "https://www.kurly.com/goods/5063699",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1608614513936l0.jpg",
+      "checkedAt": "2026-09-18T05:09:23.054Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "청경채",
+      "cuisine": "raw",
+      "sourceVolume": "300g",
+      "sourceSalesUnit": "1봉",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5063699",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20201222/gv20000145406_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "300g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-1000867751",
+      "name": "청경채 가득 샤브샤브용 채소 650g",
+      "detail": "650g · 1팩 · 냉장",
+      "price": 9990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 650,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "청경채 가득 샤브샤브용 채소 650g",
+      "productUrl": "https://www.kurly.com/goods/1000867751",
+      "productImageUrl": "https://product-image.kurly.com/product/image/d35a47f2-f25e-42a5-916e-e973d37a917d.jpg",
+      "checkedAt": "2026-09-18T05:09:23.088Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "청경채",
+      "cuisine": "raw",
+      "sourceVolume": "650g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1000867751",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20241018/gv30001601165_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "650g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5000333",
+      "name": "친환경 백다다기오이 2입",
+      "detail": "2개 (계절적 영향으로 크기가 상이 할 수 있습니다.) · 1봉 · 냉장",
+      "price": 4490,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "친환경 백다다기오이 2입",
+      "productUrl": "https://www.kurly.com/goods/5000333",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1648208836561l0.jpeg",
+      "checkedAt": "2026-09-18T05:09:23.460Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "오이",
+      "cuisine": "raw",
+      "sourceVolume": "2개 (계절적 영향으로 크기가 상이 할 수 있습니다.)",
+      "sourceSalesUnit": "1봉",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5000333",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20231013/gv40000769887_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5040875",
+      "name": "미니오이 10입",
+      "detail": "10입 · 1팩 · 냉장",
+      "price": 5990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "미니오이 10입",
+      "productUrl": "https://www.kurly.com/goods/5040875",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1566885904768l0.jpg",
+      "checkedAt": "2026-09-18T05:09:23.488Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "오이",
+      "cuisine": "raw",
+      "sourceVolume": "10입",
+      "sourceSalesUnit": "1팩",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "보관방법 또는 취급방법",
+          "description": "상품별 직접 기재",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5040875",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250421/gv30001648294_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-1000165817",
+      "name": "미니오이 5입",
+      "detail": "5입 · 봉 · 냉장",
+      "price": 3490,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "미니오이 5입",
+      "productUrl": "https://www.kurly.com/goods/1000165817",
+      "productImageUrl": "https://product-image.kurly.com/product/image/74b5445b-7cd4-4420-8d91-14b3c78ef0da.jpg",
+      "checkedAt": "2026-09-18T05:09:23.456Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "오이",
+      "cuisine": "raw",
+      "sourceVolume": "5입",
+      "sourceSalesUnit": "봉",
+      "allergyText": "",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "해당사항 없음",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1000165817",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240419/gv30000817502_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-1002030397",
+      "name": "[제각각] 가지 3입",
+      "detail": "3입봉 · 냉장",
+      "price": 2990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[제각각] 가지 3입",
+      "productUrl": "https://www.kurly.com/goods/1002030397",
+      "productImageUrl": "https://product-image.kurly.com/product/image/f2e22e74-5d61-436b-89e7-216223ed2c91.jpg",
+      "checkedAt": "2026-09-18T05:09:23.771Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "가지",
+      "cuisine": "raw",
+      "sourceVolume": "3입봉",
+      "sourceSalesUnit": "",
+      "allergyText": "",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1002030397",
+        "evidenceUrls": [
+          "https://product-image.kurly.com/product/image/1cbb3870-e197-4b85-8023-3e79e8b5441e.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-1000178607",
+      "name": "[제각각] 가지 5입",
+      "detail": "5개입 · 1봉 · 냉장",
+      "price": 3990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[제각각] 가지 5입",
+      "productUrl": "https://www.kurly.com/goods/1000178607",
+      "productImageUrl": "https://product-image.kurly.com/product/image/129a1d9f-802f-43ac-a4dd-55e14566dcb2.jpg",
+      "checkedAt": "2026-09-18T05:09:23.762Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "가지",
+      "cuisine": "raw",
+      "sourceVolume": "5개입",
+      "sourceSalesUnit": "1봉",
+      "allergyText": "",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1000178607",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230530/gv40000700458_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5030557",
+      "name": "[KF365] 파프리카 2입",
+      "detail": "2입 (총 280g 이상) · 1봉 · 냉장",
+      "price": 7990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[KF365] 파프리카 2입",
+      "productUrl": "https://www.kurly.com/goods/5030557",
+      "productImageUrl": "https://product-image.kurly.com/product/image/29aa7f5d-da54-4956-8355-8072d1ae661e.jpg",
+      "checkedAt": "2026-09-18T05:09:24.173Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "파프리카",
+      "cuisine": "raw",
+      "sourceVolume": "2입 (총 280g 이상)",
+      "sourceSalesUnit": "1봉",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5030557",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260312/gv40001772397_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-1000178619",
+      "name": "[제각각] 파프리카 4-5입",
+      "detail": "400g 이상 · 1봉 · 냉장",
+      "price": 10900,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[제각각] 파프리카 4-5입",
+      "productUrl": "https://www.kurly.com/goods/1000178619",
+      "productImageUrl": "https://product-image.kurly.com/product/image/6c100020-8e84-4210-954c-beda1445d00e.jpg",
+      "checkedAt": "2026-09-18T05:09:24.194Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "파프리카",
+      "cuisine": "raw",
+      "sourceVolume": "400g 이상",
+      "sourceSalesUnit": "1봉",
+      "allergyText": "",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1000178619",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240321/gv30000808073_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5065494",
+      "name": "[팜송] 파프리카 4입",
+      "detail": "4입 (총 500g 이상) · 1봉 · 냉장",
+      "price": 14900,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[팜송] 파프리카 4입",
+      "productUrl": "https://www.kurly.com/goods/5065494",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1609900940181l0.jpg",
+      "checkedAt": "2026-09-18T05:09:24.199Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "파프리카",
+      "cuisine": "raw",
+      "sourceVolume": "4입 (총 500g 이상)",
+      "sourceSalesUnit": "1봉",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "농수산물의 원산지 표시에 관한 법률에 따른 원산지",
+          "description": "국산",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5065494",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260312/gv20001772395_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5063690",
+      "name": "완숙토마토 1kg",
+      "detail": "1kg내외 · 1팩 · 냉장",
+      "price": 13900,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "완숙토마토 1kg",
+      "productUrl": "https://www.kurly.com/goods/5063690",
+      "productImageUrl": "https://product-image.kurly.com/product/image/dd55e8f3-621f-4b3b-b775-460c4b6c2435.jpeg",
+      "checkedAt": "2026-09-18T05:09:24.556Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "토마토",
+      "cuisine": "raw",
+      "sourceVolume": "1kg내외",
+      "sourceSalesUnit": "1팩",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "해당사항 없음",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5063690",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20201230/gv30000147905_1.jpg",
+          "https://product-image.kurly.com/product/image/943ca75c-17a4-40e2-8099-c6f187fafb7a.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5063578",
+      "name": "[KF365] 대추방울토마토 750g",
+      "detail": "750g내외 · 팩 · 냉장",
+      "price": 10900,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[KF365] 대추방울토마토 750g",
+      "productUrl": "https://www.kurly.com/goods/5063578",
+      "productImageUrl": "https://product-image.kurly.com/product/image/4436fdec-039d-4683-b8f3-7ebf677ad190.jpg",
+      "checkedAt": "2026-09-18T05:09:24.553Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "토마토",
+      "cuisine": "raw",
+      "sourceVolume": "750g내외",
+      "sourceSalesUnit": "팩",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "해당사항 없음",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5063578",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260319/gv30001772600_1.jpg",
+          "https://product-image.kurly.com/product/image/e2b6cb92-f54a-44be-8dcf-f69e5673b7cb.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5063866",
+      "name": "찰토마토 1.2kg",
+      "detail": "1.2kg · 1팩 · 냉장",
+      "price": 11900,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1200,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "찰토마토 1.2kg",
+      "productUrl": "https://www.kurly.com/goods/5063866",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1608706105254l0.jpg",
+      "checkedAt": "2026-09-18T05:09:24.536Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "토마토",
+      "cuisine": "raw",
+      "sourceVolume": "1.2kg",
+      "sourceSalesUnit": "1팩",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "해당 없음",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5063866",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240227/gv20000803130_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "1.2kg"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-1001542395",
+      "name": "[제각각] 양파 1.5kg",
+      "detail": "1.5kg · 1망 · 냉장",
+      "price": 3990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1500,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[제각각] 양파 1.5kg",
+      "productUrl": "https://www.kurly.com/goods/1001542395",
+      "productImageUrl": "https://product-image.kurly.com/product/image/0ad34106-6757-4bd1-b194-138b0790357d.jpg",
+      "checkedAt": "2026-09-18T05:09:24.837Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "양파",
+      "cuisine": "raw",
+      "sourceVolume": "1.5kg",
+      "sourceSalesUnit": "1망",
+      "allergyText": "",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1001542395",
+        "evidenceUrls": [
+          "https://product-image.kurly.com/product/image/ff94f6b9-1be1-4475-9c4d-16db1ee5170d.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "1.5kg"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-1001227997",
+      "name": "[바름팜] 창녕 양파 1.5kg",
+      "detail": "1.5kg · 망 · 냉장",
+      "price": 4290,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1500,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[바름팜] 창녕 양파 1.5kg",
+      "productUrl": "https://www.kurly.com/goods/1001227997",
+      "productImageUrl": "https://product-image.kurly.com/product/image/dc5123b1-2375-4ed6-8c1b-6a71e4f41d01.jpg",
+      "checkedAt": "2026-09-18T05:09:24.850Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "양파",
+      "cuisine": "raw",
+      "sourceVolume": "1.5kg",
+      "sourceSalesUnit": "망",
+      "allergyText": "",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1001227997",
+        "evidenceUrls": [],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "1.5kg"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5152797",
+      "name": "친환경 깐 양파 200g",
+      "detail": "200g · 1봉 · 냉장",
+      "price": 3290,
+      "portions": "판매 구성 1묶음",
+      "quantity": 200,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "친환경 깐 양파 200g",
+      "productUrl": "https://www.kurly.com/goods/5152797",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1656998773573l0.jpg",
+      "checkedAt": "2026-09-18T05:09:25.007Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "양파",
+      "cuisine": "raw",
+      "sourceVolume": "200g",
+      "sourceSalesUnit": "1봉",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5152797",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20220705/gv20000333803_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "200g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5049246",
+      "name": "[팜송] 한끼 당근",
+      "detail": "1~2개 · 1봉 · 냉장",
+      "price": 1990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[팜송] 한끼 당근",
+      "productUrl": "https://www.kurly.com/goods/5049246",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1583285919646l0.jpg",
+      "checkedAt": "2026-09-18T05:09:25.184Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "당근",
+      "cuisine": "raw",
+      "sourceVolume": "1~2개",
+      "sourceSalesUnit": "1봉",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5049246",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260309/gv00001772361_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5049925",
+      "name": "흙당근 1kg",
+      "detail": "1kg · 1봉 · 냉장",
+      "price": 4490,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1000,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "흙당근 1kg",
+      "productUrl": "https://www.kurly.com/goods/5049925",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1583480091169l0.jpg",
+      "checkedAt": "2026-09-18T05:09:25.211Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "당근",
+      "cuisine": "raw",
+      "sourceVolume": "1kg",
+      "sourceSalesUnit": "1봉",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5049925",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20210304/gv10000162693_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "1kg"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-1000178629",
+      "name": "[제각각] 당근 2kg",
+      "detail": "2kg · 1봉 · 냉장",
+      "price": 6490,
+      "portions": "판매 구성 1묶음",
+      "quantity": 2000,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[제각각] 당근 2kg",
+      "productUrl": "https://www.kurly.com/goods/1000178629",
+      "productImageUrl": "https://product-image.kurly.com/product/image/11410202-cbbf-4f92-9466-e279dba6bd0f.jpg",
+      "checkedAt": "2026-09-18T05:09:25.311Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "당근",
+      "cuisine": "raw",
+      "sourceVolume": "2kg",
+      "sourceSalesUnit": "1봉",
+      "allergyText": "",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1000178629",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230607/gv20000702291_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "2kg"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5071102",
+      "name": "[KF365] 친환경 표고버섯 300g",
+      "detail": "300g · 1봉 · 냉장",
+      "price": 5590,
+      "portions": "판매 구성 1묶음",
+      "quantity": 300,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[KF365] 친환경 표고버섯 300g",
+      "productUrl": "https://www.kurly.com/goods/5071102",
+      "productImageUrl": "https://product-image.kurly.com/product/image/ff8bb2ab-8524-48ab-89cd-b2e1425092c3.jpg",
+      "checkedAt": "2026-09-18T05:09:25.686Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "표고버섯",
+      "cuisine": "raw",
+      "sourceVolume": "300g",
+      "sourceSalesUnit": "1봉",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5071102",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230518/gv10000698203_1.jpg",
+          "https://product-image.kurly.com/product/image/8f3c855a-8e4b-4b05-bc32-41c94cae1dd5.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "300g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5031392",
+      "name": "표고버섯 100g",
+      "detail": "100g · 1봉 · 냉장",
+      "price": 2990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 100,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "표고버섯 100g",
+      "productUrl": "https://www.kurly.com/goods/5031392",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1637922047806l0.jpg",
+      "checkedAt": "2026-09-18T05:09:25.601Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "표고버섯",
+      "cuisine": "raw",
+      "sourceVolume": "100g",
+      "sourceSalesUnit": "1봉",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5031392",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240201/gv20000798437_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "100g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-1000283861",
+      "name": "[제각각] 표고버섯 500g",
+      "detail": "500g · 1봉 · 냉장",
+      "price": 6590,
+      "portions": "판매 구성 1묶음",
+      "quantity": 500,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[제각각] 표고버섯 500g",
+      "productUrl": "https://www.kurly.com/goods/1000283861",
+      "productImageUrl": "https://product-image.kurly.com/product/image/d2f6a3cc-4d5a-41f9-9d8a-2e9f1e8a3444.jpg",
+      "checkedAt": "2026-09-18T05:09:25.627Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "표고버섯",
+      "cuisine": "raw",
+      "sourceVolume": "500g",
+      "sourceSalesUnit": "1봉",
+      "allergyText": "",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1000283861",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240412/gv30000815295_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "500g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5031391",
+      "name": "[KF365] 팽이버섯 2입",
+      "detail": "2입(300g 내외) · 1봉 · 냉장",
+      "price": 1990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[KF365] 팽이버섯 2입",
+      "productUrl": "https://www.kurly.com/goods/5031391",
+      "productImageUrl": "https://product-image.kurly.com/product/image/6cb8f597-7849-488d-beb4-c7fa9e717f06.jpg",
+      "checkedAt": "2026-09-18T05:09:25.891Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "팽이버섯",
+      "cuisine": "raw",
+      "sourceVolume": "2입(300g 내외)",
+      "sourceSalesUnit": "1봉",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5031391",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260312/gv00001772398_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5112335",
+      "name": "팽이버섯 360g X 2입",
+      "detail": "720g(360gX2입) · 1봉 · 냉장",
+      "price": 3090,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "팽이버섯 360g X 2입",
+      "productUrl": "https://www.kurly.com/goods/5112335",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1642143942260l0.jpg",
+      "checkedAt": "2026-09-18T05:09:25.887Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "팽이버섯",
+      "cuisine": "raw",
+      "sourceVolume": "720g(360gX2입)",
+      "sourceSalesUnit": "1봉",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5112335",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20220114/gv10000267860_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5069382",
+      "name": "친환경 황금 팽이버섯 180g",
+      "detail": "180g · 1팩 · 냉장",
+      "price": 2490,
+      "portions": "판매 구성 1묶음",
+      "quantity": 180,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "친환경 황금 팽이버섯 180g",
+      "productUrl": "https://www.kurly.com/goods/5069382",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1617684669507l0.jpg",
+      "checkedAt": "2026-09-18T05:09:25.883Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "팽이버섯",
+      "cuisine": "raw",
+      "sourceVolume": "180g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5069382",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20220919/gv00000426748_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "180g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5049921",
+      "name": "[KF365] 뿌리손질 새송이버섯 400g",
+      "detail": "400g · 1봉 · 냉장",
+      "price": 3490,
+      "portions": "판매 구성 1묶음",
+      "quantity": 400,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[KF365] 뿌리손질 새송이버섯 400g",
+      "productUrl": "https://www.kurly.com/goods/5049921",
+      "productImageUrl": "https://product-image.kurly.com/product/image/9b451c3c-64de-4d26-9e7b-8b938d05ee95.jpg",
+      "checkedAt": "2026-09-18T05:09:26.092Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "새송이버섯",
+      "cuisine": "raw",
+      "sourceVolume": "400g",
+      "sourceSalesUnit": "1봉",
+      "allergyText": "",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5049921",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260318/gv30001772571_1.jpg",
+          "https://product-image.kurly.com/product/image/a981d34b-d4ee-4f44-a6f8-583d740dbba9.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "400g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5121026",
+      "name": "친환경 새송이버섯 3입",
+      "detail": "3입 · 1팩 · 냉장",
+      "price": 2990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "친환경 새송이버섯 3입",
+      "productUrl": "https://www.kurly.com/goods/5121026",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1650416229961l0.jpg",
+      "checkedAt": "2026-09-18T05:09:26.143Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "새송이버섯",
+      "cuisine": "raw",
+      "sourceVolume": "3입",
+      "sourceSalesUnit": "1팩",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5121026",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20220420/gv10000304733_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5031388",
+      "name": "뿌리손질 새송이버섯 2입",
+      "detail": "2개입 · 1봉 · 냉장",
+      "price": 2490,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "뿌리손질 새송이버섯 2입",
+      "productUrl": "https://www.kurly.com/goods/5031388",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1637287842764l0.jpg",
+      "checkedAt": "2026-09-18T05:09:26.110Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "새송이버섯",
+      "cuisine": "raw",
+      "sourceVolume": "2개입",
+      "sourceSalesUnit": "1봉",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5031388",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20211118/gv10000244866_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-1000118036",
+      "name": "마늘 100% 다진마늘 500g",
+      "detail": "500g · 1팩 · 냉장",
+      "price": 9190,
+      "portions": "판매 구성 1묶음",
+      "quantity": 500,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "마늘 100% 다진마늘 500g",
+      "productUrl": "https://www.kurly.com/goods/1000118036",
+      "productImageUrl": "https://product-image.kurly.com/product/image/deb86c0f-d8c6-43c3-828e-307120f27273.jpg",
+      "checkedAt": "2026-09-18T05:09:26.397Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "다진마늘",
+      "cuisine": "raw",
+      "sourceVolume": "500g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1000118036",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230126/gv40000480206_1.jpg",
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250902/gv40001663732_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "500g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-1001212828",
+      "name": "[땅끝농협] 국산 다진마늘 260g",
+      "detail": "260g(지퍼팩) · 냉장",
+      "price": 5990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[땅끝농협] 국산 다진마늘 260g",
+      "productUrl": "https://www.kurly.com/goods/1001212828",
+      "productImageUrl": "https://product-image.kurly.com/product/image/3d9cafeb-cb9b-4af2-9a4c-2926a066c63e.jpg",
+      "checkedAt": "2026-09-18T05:09:26.510Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "다진마늘",
+      "cuisine": "raw",
+      "sourceVolume": "260g(지퍼팩)",
+      "sourceSalesUnit": "",
+      "allergyText": "",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1001212828",
+        "evidenceUrls": [
+          "https://product-image.kurly.com/product/image/a526013d-1b74-4fb7-a09f-e02d18914c44.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-1002033642",
+      "name": "[풀무원] 국산 다진마늘 550g",
+      "detail": "550g · 1통 · 냉장",
+      "price": 12900,
+      "portions": "판매 구성 1묶음",
+      "quantity": 550,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[풀무원] 국산 다진마늘 550g",
+      "productUrl": "https://www.kurly.com/goods/1002033642",
+      "productImageUrl": "https://product-image.kurly.com/product/image/bc11991f-e9cd-412f-a2d6-64819b6abd71.jpg",
+      "checkedAt": "2026-09-18T05:09:26.483Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "다진마늘",
+      "cuisine": "raw",
+      "sourceVolume": "550g",
+      "sourceSalesUnit": "1통",
+      "allergyText": "",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "해당사항 없음",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1002033642",
+        "evidenceUrls": [
+          "https://product-image.kurly.com/product/image/43b6f5d3-df75-4a41-b62a-10df755f167c.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "550g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5027766",
+      "name": "[팜송] 청양고추 80g",
+      "detail": "80g · 봉 · 냉장",
+      "price": 1990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 80,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[팜송] 청양고추 80g",
+      "productUrl": "https://www.kurly.com/goods/5027766",
+      "productImageUrl": "https://product-image.kurly.com/product/image/27d8de6f-052d-4385-93c7-0463249d88e4.jpg",
+      "checkedAt": "2026-09-18T05:09:26.735Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "청양고추",
+      "cuisine": "raw",
+      "sourceVolume": "80g",
+      "sourceSalesUnit": "봉",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5027766",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20220927/gv20000430470_1.jpg",
+          "https://product-image.kurly.com/product/image/79cce233-2c3a-4dbf-9060-551749c19885.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "80g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5061352",
+      "name": "[KF365] 청양고추 200g",
+      "detail": "200g · 1봉 · 냉장",
+      "price": 2990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 200,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[KF365] 청양고추 200g",
+      "productUrl": "https://www.kurly.com/goods/5061352",
+      "productImageUrl": "https://product-image.kurly.com/product/image/7f21ee8d-5ac6-489f-9c0c-9cf7c46aac10.jpg",
+      "checkedAt": "2026-09-18T05:09:26.780Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "청양고추",
+      "cuisine": "raw",
+      "sourceVolume": "200g",
+      "sourceSalesUnit": "1봉",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5061352",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260309/gv30001772367_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "200g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-1000178611",
+      "name": "[제각각] 청양고추 300g",
+      "detail": "300g · 1봉 · 냉장",
+      "price": 2990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 300,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[제각각] 청양고추 300g",
+      "productUrl": "https://www.kurly.com/goods/1000178611",
+      "productImageUrl": "https://product-image.kurly.com/product/image/f3bab3a9-c9a3-4ea2-aec5-bf7186e33881.jpg",
+      "checkedAt": "2026-09-18T05:09:26.778Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "청양고추",
+      "cuisine": "raw",
+      "sourceVolume": "300g",
+      "sourceSalesUnit": "1봉",
+      "allergyText": "",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1000178611",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230530/gv10000700499_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "300g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5045384",
+      "name": "[KF365] 깻잎 30g",
+      "detail": "30g · 1봉 · 냉장",
+      "price": 2190,
+      "portions": "판매 구성 1묶음",
+      "quantity": 30,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[KF365] 깻잎 30g",
+      "productUrl": "https://www.kurly.com/goods/5045384",
+      "productImageUrl": "https://product-image.kurly.com/product/image/8c711be1-4670-43a3-943c-63f7186803e5.jpg",
+      "checkedAt": "2026-09-18T05:09:27.106Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "깻잎",
+      "cuisine": "raw",
+      "sourceVolume": "30g",
+      "sourceSalesUnit": "1봉",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5045384",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240704/gv20000936684_1.jpg",
+          "https://product-image.kurly.com/product/image/18507267-f208-4358-ba9a-36fecb63060a.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "30g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5131999",
+      "name": "친환경 깻잎 100g",
+      "detail": "100g · 1팩 · 냉장",
+      "price": 5490,
+      "portions": "판매 구성 1묶음",
+      "quantity": 100,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "친환경 깻잎 100g",
+      "productUrl": "https://www.kurly.com/goods/5131999",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1650431868664l0.jpg",
+      "checkedAt": "2026-09-18T05:09:27.134Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "깻잎",
+      "cuisine": "raw",
+      "sourceVolume": "100g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5131999",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20220420/gv40000304883_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "100g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5001074",
+      "name": "친환경 잎채소 깻잎 30g",
+      "detail": "30g · 1봉 · 냉장",
+      "price": 2190,
+      "portions": "판매 구성 1묶음",
+      "quantity": 30,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "친환경 잎채소 깻잎 30g",
+      "productUrl": "https://www.kurly.com/goods/5001074",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1498026311590l0.jpg",
+      "checkedAt": "2026-09-18T05:09:27.045Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "깻잎",
+      "cuisine": "raw",
+      "sourceVolume": "30g",
+      "sourceSalesUnit": "1봉",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5001074",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20231013/gv20000770116_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "30g"
+      },
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5027319",
+      "name": "알배기 배추 1봉(커팅)",
+      "detail": "1/2통*2입(400g내외) · 1봉 · 냉장",
+      "price": 5990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "알배기 배추 1봉(커팅)",
+      "productUrl": "https://www.kurly.com/goods/5027319",
+      "productImageUrl": "https://product-image.kurly.com/product/image/88301daf-d60c-4676-9242-30ab1e027906.jpg",
+      "checkedAt": "2026-09-18T05:09:27.355Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "배추",
+      "cuisine": "raw",
+      "sourceVolume": "1/2통*2입(400g내외)",
+      "sourceSalesUnit": "1봉",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5027319",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20210203/gv00000156585_1.jpg",
+          "https://product-image.kurly.com/product/image/57ba4edd-fd9e-48d2-a635-fc3fa7daa8aa.png",
+          "https://product-image.kurly.com/product/image/c155f106-1b65-4e50-b7c2-afa2e350a30c.jpg",
+          "https://product-image.kurly.com/product/image/278e10d9-3a35-4304-a0fa-5e415ed7ef8b.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-1000178631",
+      "name": "[제각각] 알배기 배추 2통",
+      "detail": "2통 · 1봉 · 냉장",
+      "price": 10930,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[제각각] 알배기 배추 2통",
+      "productUrl": "https://www.kurly.com/goods/1000178631",
+      "productImageUrl": "https://product-image.kurly.com/product/image/e5e8f113-c75e-4104-b4fb-5206c8b1d9b8.jpg",
+      "checkedAt": "2026-09-18T05:09:27.357Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "배추",
+      "cuisine": "raw",
+      "sourceVolume": "2통",
+      "sourceSalesUnit": "1봉",
+      "allergyText": "",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1000178631",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230607/gv10000702290_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5060212",
+      "name": "손질 쌈배추 200g",
+      "detail": "200g 내외 · 1봉 · 냉장",
+      "price": 4990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "손질 쌈배추 200g",
+      "productUrl": "https://www.kurly.com/goods/5060212",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1648209200514l0.jpeg",
+      "checkedAt": "2026-09-18T05:09:27.340Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "배추",
+      "cuisine": "raw",
+      "sourceVolume": "200g 내외",
+      "sourceSalesUnit": "1봉",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5060212",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20201012/gv20000126476_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5031395",
+      "name": "[KF365] 무 1입(1kg)",
+      "detail": "1kg 이상  · 1입 · 냉장",
+      "price": 2490,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[KF365] 무 1입(1kg)",
+      "productUrl": "https://www.kurly.com/goods/5031395",
+      "productImageUrl": "https://product-image.kurly.com/product/image/8275f912-e4b0-4ca8-a774-eefbc940a999.jpg",
+      "checkedAt": "2026-09-18T05:09:27.720Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "무",
+      "cuisine": "raw",
+      "sourceVolume": "1kg 이상 ",
+      "sourceSalesUnit": "1입",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5031395",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260318/gv20001772570_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-1001057043",
+      "name": "[바름팜] 작은 무 1입",
+      "detail": "400g 이상 · 1입 · 냉장",
+      "price": 1990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[바름팜] 작은 무 1입",
+      "productUrl": "https://www.kurly.com/goods/1001057043",
+      "productImageUrl": "https://product-image.kurly.com/product/image/b9eb320b-c71b-4668-bf13-a046d39802bf.jpg",
+      "checkedAt": "2026-09-18T05:09:27.698Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "무",
+      "cuisine": "raw",
+      "sourceVolume": "400g 이상",
+      "sourceSalesUnit": "1입",
+      "allergyText": "",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1001057043",
+        "evidenceUrls": [
+          "https://product-image.kurly.com/product/image/19b078bc-b5a6-4f03-8bcf-143911258e80.png"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5000098",
+      "name": "[바름팜] 친환경 조각 무 1조각(400g)",
+      "detail": "400g 이상 · 1조각 · 냉장",
+      "price": 2990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[바름팜] 친환경 조각 무 1조각(400g)",
+      "productUrl": "https://www.kurly.com/goods/5000098",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1579511291449l0.jpg",
+      "checkedAt": "2026-09-18T05:09:27.675Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "무",
+      "cuisine": "raw",
+      "sourceVolume": "400g 이상",
+      "sourceSalesUnit": "1조각",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5000098",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20210624/gv30000196759_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "vegetables"
+    },
+    {
+      "id": "kurly-5059788",
+      "name": "[도드람한돈] 앞다리 불고기용 500g (냉장)",
+      "detail": "500g · 1팩 · 냉장",
+      "price": 10900,
+      "portions": "판매 구성 1묶음",
+      "quantity": 500,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[도드람한돈] 앞다리 불고기용 500g (냉장)",
+      "productUrl": "https://www.kurly.com/goods/5059788",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1602564082277l0.jpg",
+      "checkedAt": "2026-09-18T05:09:28.588Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "앞다리",
+      "cuisine": "raw",
+      "sourceVolume": "500g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 돼지고기 함유\n- 이 제품은 알레르기 유발 성분 쇠고기를 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5059788",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20231229/gv10000789771_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "500g"
+      },
+      "foodType": "pork"
+    },
+    {
+      "id": "kurly-1000045130",
+      "name": "[선진포크한돈] 앞다리 불고기 400g",
+      "detail": "400g · 1팩 · 냉장",
+      "price": 8620,
+      "portions": "판매 구성 1묶음",
+      "quantity": 400,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[선진포크한돈] 앞다리 불고기 400g",
+      "productUrl": "https://www.kurly.com/goods/1000045130",
+      "productImageUrl": "https://product-image.kurly.com/product/image/094a1ce4-747b-42e1-9e4a-9715332d0fa2.jpg",
+      "checkedAt": "2026-09-18T05:09:28.375Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "앞다리",
+      "cuisine": "raw",
+      "sourceVolume": "400g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 돼지고기 함유\n- 본 제품은 쇠고기를 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1000045130",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250131/gv30001637204_1.jpg",
+          "https://product-image.kurly.com/product/image/6033f469-609b-4929-8ef7-64aa514246c9.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "400g"
+      },
+      "foodType": "pork"
+    },
+    {
+      "id": "kurly-5062932",
+      "name": "[도드람한돈] 대패 앞다리살 300g (냉동)",
+      "detail": "300g · 1팩 · 냉동",
+      "price": 6000,
+      "portions": "판매 구성 1묶음",
+      "quantity": 300,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[도드람한돈] 대패 앞다리살 300g (냉동)",
+      "productUrl": "https://www.kurly.com/goods/5062932",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1608092290791l0.jpg",
+      "checkedAt": "2026-09-18T05:09:28.679Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "앞다리",
+      "cuisine": "raw",
+      "sourceVolume": "300g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 돼지고기 함유\r\n- 본 제품은 소고기를 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5062932",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20231229/gv20000789757_1.jpg",
+          "https://product-image.kurly.com/product/image/60257f98-8a7c-49d4-88a2-5cf3550466ee.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "300g"
+      },
+      "foodType": "pork"
+    },
+    {
+      "id": "kurly-1000463031",
+      "name": "[KF365] 1+ 한우 다짐육 300g(냉장)",
+      "detail": "300g · 1팩 · 냉장",
+      "price": 15540,
+      "portions": "판매 구성 1묶음",
+      "quantity": 300,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[KF365] 1+ 한우 다짐육 300g(냉장)",
+      "productUrl": "https://www.kurly.com/goods/1000463031",
+      "productImageUrl": "https://product-image.kurly.com/product/image/8062da4a-8955-4723-acf9-372617f7b3ea.jpg",
+      "checkedAt": "2026-09-18T05:09:28.890Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "다짐육",
+      "cuisine": "raw",
+      "sourceVolume": "300g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 소고기 함유\n- 본 제품은 돼지고기를 사용한 제품과 같은 시설에서 제조하고 있습니다.\n",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1000463031",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250915/gv20001664447_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "300g"
+      },
+      "foodType": "beef"
+    },
+    {
+      "id": "kurly-5069066",
+      "name": "[KF365] 한돈 다짐육 600g (냉장)",
+      "detail": "600g · 1팩 · 냉장",
+      "price": 7790,
+      "portions": "판매 구성 1묶음",
+      "quantity": 600,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[KF365] 한돈 다짐육 600g (냉장)",
+      "productUrl": "https://www.kurly.com/goods/5069066",
+      "productImageUrl": "https://product-image.kurly.com/product/image/625a8869-0e9f-4a27-8910-4f0973df3844.jpg",
+      "checkedAt": "2026-09-18T05:09:28.988Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "다짐육",
+      "cuisine": "raw",
+      "sourceVolume": "600g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 돼지고기 함유\n- 본제품은 소고기를 사용한 제품과 같은 제조시설에서 생산하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5069066",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260626/gv10001789387_1.jpg",
+          "https://product-image.kurly.com/product/image/c059d436-552b-4f07-9692-18bfe9955122.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "600g"
+      },
+      "foodType": "pork"
+    },
+    {
+      "id": "kurly-1001159118",
+      "name": "[KF365] 무항생제 1등급 한우 다짐육 200g (냉장)",
+      "detail": "200g · 1팩 · 냉장",
+      "price": 9360,
+      "portions": "판매 구성 1묶음",
+      "quantity": 200,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[KF365] 무항생제 1등급 한우 다짐육 200g (냉장)",
+      "productUrl": "https://www.kurly.com/goods/1001159118",
+      "productImageUrl": "https://product-image.kurly.com/product/image/8b0cafb2-5993-4e2d-b7f5-c06d14178b8b.jpg",
+      "checkedAt": "2026-09-18T05:09:28.986Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "다짐육",
+      "cuisine": "raw",
+      "sourceVolume": "200g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 소고기 함유\n- 본 제품은 돼지고기를 사용한 제품과 같은 시설에서 제조하고 있습니다.\n",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1001159118",
+        "evidenceUrls": [
+          "https://product-image.kurly.com/product/image/987ed758-8b3c-4408-93bc-d6087659aff9.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "200g"
+      },
+      "foodType": "beef"
+    },
+    {
+      "id": "kurly-1000669579",
+      "name": "[KF365] IQF 닭다리살 (냉동) 1kg",
+      "detail": "1kg · 1팩 · 냉동",
+      "price": 15990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1000,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[KF365] IQF 닭다리살 (냉동) 1kg",
+      "productUrl": "https://www.kurly.com/goods/1000669579",
+      "productImageUrl": "https://product-image.kurly.com/product/image/d3fe9814-8f50-484e-92a6-b3dcc6c0f0b2.jpg",
+      "checkedAt": "2026-09-18T05:09:29.172Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "닭다리살",
+      "cuisine": "raw",
+      "sourceVolume": "1kg",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 닭고기 함유",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1000669579",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240725/gv30000947155_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "1kg"
+      },
+      "foodType": "chicken_other"
+    },
+    {
+      "id": "kurly-5086758",
+      "name": "[Hallo!] 국산 고등어 370g (3입) (냉동)",
+      "detail": "370g · 1팩 · 냉동",
+      "price": 6000,
+      "portions": "판매 구성 1묶음",
+      "quantity": 370,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[Hallo!] 국산 고등어 370g (3입) (냉동)",
+      "productUrl": "https://www.kurly.com/goods/5086758",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1637921309446l0.jpeg",
+      "checkedAt": "2026-09-18T05:09:30.262Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "고등어",
+      "cuisine": "raw",
+      "sourceVolume": "370g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 고등어 함유\r\n- 본 제품은 난류,밀,새우,오징어,조개류(굴,홍합,바지락)등을 함유한 제품과 같은 제조시설에서 제조",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5086758",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250218/gv00001641308_1.jpg",
+          "https://product-image.kurly.com/product/image/871ceccc-24ba-44a4-852d-06af0f0c0315.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "370g"
+      },
+      "foodType": "fish"
+    },
+    {
+      "id": "kurly-5132948",
+      "name": "[아라찬] 안동간고등어 250g (냉동)",
+      "detail": "250g · 냉동",
+      "price": 6000,
+      "portions": "판매 구성 1묶음",
+      "quantity": 250,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[아라찬] 안동간고등어 250g (냉동)",
+      "productUrl": "https://www.kurly.com/goods/5132948",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1651125746102l0.jpg",
+      "checkedAt": "2026-09-18T05:09:30.372Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "고등어",
+      "cuisine": "raw",
+      "sourceVolume": "250g",
+      "sourceSalesUnit": null,
+      "allergyText": " - 고등어 함유",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5132948",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20220502/gv20000309426_1.jpg",
+          "https://product-image.kurly.com/product/image/b3097e5b-d4c5-4689-ae28-19ca62223a00.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "250g"
+      },
+      "foodType": "fish"
+    },
+    {
+      "id": "kurly-1002032368",
+      "name": "[가시제거연구소] 고등어밥상 핑크라벨 500g (냉동)",
+      "detail": "500g (3개입) · 1팩 · 냉동",
+      "price": 19500,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[가시제거연구소] 고등어밥상 핑크라벨 500g (냉동)",
+      "productUrl": "https://www.kurly.com/goods/1002032368",
+      "productImageUrl": "https://product-image.kurly.com/product/image/2485f0bf-bff9-4b99-acd2-531f2424854f.jpg",
+      "checkedAt": "2026-09-18T05:09:30.485Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "고등어",
+      "cuisine": "raw",
+      "sourceVolume": "500g (3개입)",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1002032368",
+        "evidenceUrls": [
+          "https://product-image.kurly.com/product/image/55d66a46-d86e-4b8b-a4b4-9d80f59490d0.png"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "fish"
+    },
+    {
+      "id": "kurly-1000176676",
+      "name": "[KF365] 국산 손질오징어 300g (냉장)",
+      "detail": "2미/300g 내외 · 1팩 · 냉장",
+      "price": 14900,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[KF365] 국산 손질오징어 300g (냉장)",
+      "productUrl": "https://www.kurly.com/goods/1000176676",
+      "productImageUrl": "https://product-image.kurly.com/product/image/a0b3861a-d6ad-48fc-b55f-c539779d1105.jpg",
+      "checkedAt": "2026-09-18T05:09:31.425Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "오징어",
+      "cuisine": "raw",
+      "sourceVolume": "2미/300g 내외",
+      "sourceSalesUnit": "1팩",
+      "allergyText": " - 오징어 함유\n - 이 제품은 대두, 밀, 쇠고기, 아황산류, 난류, 메밀, 땅콩, 고등어, 게, 새우, 돼지고기, 복숭아, 호두, 닭고기, 조개류(굴,전복,홍합 포함), 잣을 사용한 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1000176676",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250214/gv40001640643_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "fish"
+    },
+    {
+      "id": "kurly-1001325121",
+      "name": "[KF365] 간편한 손질 오징어채 300g (냉동)",
+      "detail": "300g · 1팩 · 냉동",
+      "price": 7400,
+      "portions": "판매 구성 1묶음",
+      "quantity": 300,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[KF365] 간편한 손질 오징어채 300g (냉동)",
+      "productUrl": "https://www.kurly.com/goods/1001325121",
+      "productImageUrl": "https://product-image.kurly.com/product/image/5a551525-3320-4093-a936-3c84028c31a2.jpg",
+      "checkedAt": "2026-09-18T05:09:31.604Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "오징어",
+      "cuisine": "raw",
+      "sourceVolume": "300g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "이 제품은 고등어, 새우, 게, 조개류(굴,전복,홍합 등)를 이용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1001325121",
+        "evidenceUrls": [
+          "https://product-image.kurly.com/product/image/52c1586e-a14a-437b-995e-67e140fe3fd7.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "300g"
+      },
+      "foodType": "fish"
+    },
+    {
+      "id": "kurly-1000068572",
+      "name": "[삼삼물산] 남해에서 온 바지락살 120g (생물)",
+      "detail": "120g · 1팩 · 냉장",
+      "price": 6590,
+      "portions": "판매 구성 1묶음",
+      "quantity": 120,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[삼삼물산] 남해에서 온 바지락살 120g (생물)",
+      "productUrl": "https://www.kurly.com/goods/1000068572",
+      "productImageUrl": "https://product-image.kurly.com/product/image/844360b1-5f06-491d-8a8e-fbb03b9ab79d.jpg",
+      "checkedAt": "2026-09-18T05:09:31.856Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "바지락",
+      "cuisine": "raw",
+      "sourceVolume": "120g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "이 제품은 오징어, 새우, 고등어, 조개류(홍합,전복,굴 포함)를 사용한 제품과 같은 시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1000068572",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20251229/gv20001743079_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "120g"
+      },
+      "foodType": "fish"
+    },
+    {
+      "id": "kurly-1000066025",
+      "name": "[만선] 남해안 왕바지락 500g (생물)",
+      "detail": "500g · 1팩 · 냉장",
+      "price": 11400,
+      "portions": "판매 구성 1묶음",
+      "quantity": 500,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[만선] 남해안 왕바지락 500g (생물)",
+      "productUrl": "https://www.kurly.com/goods/1000066025",
+      "productImageUrl": "https://product-image.kurly.com/product/image/335179ab-db23-4a12-bead-1107b3b79bd5.jpg",
+      "checkedAt": "2026-09-18T05:09:32.053Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "바지락",
+      "cuisine": "raw",
+      "sourceVolume": "500g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "고등어, 새우, 오징어, 게, 조개류(굴, 전복, 홍합)를 사용한 제품과 같은 시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1000066025",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250623/gv30001651771_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "500g"
+      },
+      "foodType": "fish"
+    },
+    {
+      "id": "kurly-1000066027",
+      "name": "[만선] 남해안 바지락 500g (생물)",
+      "detail": "500g · 1팩 · 냉장",
+      "price": 9690,
+      "portions": "판매 구성 1묶음",
+      "quantity": 500,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[만선] 남해안 바지락 500g (생물)",
+      "productUrl": "https://www.kurly.com/goods/1000066027",
+      "productImageUrl": "https://product-image.kurly.com/product/image/24ae823f-72c9-4492-be8b-690ee64bf0bc.jpg",
+      "checkedAt": "2026-09-18T05:09:32.089Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "바지락",
+      "cuisine": "raw",
+      "sourceVolume": "500g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "고등어, 새우, 오징어, 게, 조개류(굴, 전복, 홍합)를 사용한 제품과 같은 시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1000066027",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250623/gv10001651772_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "500g"
+      },
+      "foodType": "fish"
+    },
+    {
+      "id": "kurly-5059082",
+      "name": "[우주] 손질 생새우살 200g (냉동) (31/50 사이즈)",
+      "detail": "200g · 1팩 · 냉동",
+      "price": 5490,
+      "portions": "판매 구성 1묶음",
+      "quantity": 200,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[우주] 손질 생새우살 200g (냉동) (31/50 사이즈)",
+      "productUrl": "https://www.kurly.com/goods/5059082",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1601354216394l0.jpg",
+      "checkedAt": "2026-09-18T05:09:32.434Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "새우살",
+      "cuisine": "raw",
+      "sourceVolume": "200g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 새우 함유\r\n- 본 제품은 난류(계란), 우유, 대두, 밀, 고등어, 닭고기, 쇠고기, 오징어, 조개류(굴, 전복, 홍합 포함)를 사용한 제품과 같은 제조시설에서 제조",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5059082",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250102/gv30001629903_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "200g"
+      },
+      "foodType": "fish"
+    },
+    {
+      "id": "kurly-5066175",
+      "name": "[우주] 프리미엄 점보 생새우살 200g(16/20) (냉동)",
+      "detail": "200g · 1팩 · 냉동",
+      "price": 8990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 200,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[우주] 프리미엄 점보 생새우살 200g(16/20) (냉동)",
+      "productUrl": "https://www.kurly.com/goods/5066175",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1617236541714l0.jpg",
+      "checkedAt": "2026-09-18T05:09:32.476Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "새우살",
+      "cuisine": "raw",
+      "sourceVolume": "200g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 새우 함유",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5066175",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250301/gv00001643080_1.jpg",
+          "https://product-image.kurly.com/product/image/2c13697d-728e-480b-82d7-70e85b1c6860.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "200g"
+      },
+      "foodType": "fish"
+    },
+    {
+      "id": "kurly-5083111",
+      "name": "[윤슬] 손질 생새우살 180g(100/200) (냉장)",
+      "detail": "180g · 1팩 · 냉장",
+      "price": 6790,
+      "portions": "판매 구성 1묶음",
+      "quantity": 180,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[윤슬] 손질 생새우살 180g(100/200) (냉장)",
+      "productUrl": "https://www.kurly.com/goods/5083111",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1630300229808l0.jpg",
+      "checkedAt": "2026-09-18T05:09:32.671Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "새우살",
+      "cuisine": "raw",
+      "sourceVolume": "180g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 이 제품은 새우, 오징어, 꽃게, 조개류(굴, 전복, 홍합 포함)를 사용한 제품과 같은 제조시설에서 제조",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5083111",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20251229/gv20001743050_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "180g"
+      },
+      "foodType": "fish"
+    },
+    {
+      "id": "kurly-1000020737",
+      "name": "[KF365] 기장 미역 80g",
+      "detail": "80g · 1봉 · 상온",
+      "price": 5300,
+      "portions": "판매 구성 1묶음",
+      "quantity": 80,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[KF365] 기장 미역 80g",
+      "productUrl": "https://www.kurly.com/goods/1000020737",
+      "productImageUrl": "https://product-image.kurly.com/product/image/742d0f7e-b324-4654-9d00-f15f83c65e94.jpg",
+      "checkedAt": "2026-09-18T05:09:32.980Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "미역",
+      "cuisine": "raw",
+      "sourceVolume": "80g",
+      "sourceSalesUnit": "1봉",
+      "allergyText": "",
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1000020737",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20231023/gv00000772231_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "80g"
+      },
+      "foodType": "fish"
+    },
+    {
+      "id": "kurly-5044113",
+      "name": "[기장물산] 해녀가 인정한 기장미역",
+      "detail": "130g · 1봉 · 상온",
+      "price": 9990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 130,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[기장물산] 해녀가 인정한 기장미역",
+      "productUrl": "https://www.kurly.com/goods/5044113",
+      "productImageUrl": "https://product-image.kurly.com/product/image/191d765c-9e6c-4bd1-ada0-2d455cbf4dd8.jpeg?v=0531",
+      "checkedAt": "2026-09-18T05:09:33.004Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "미역",
+      "cuisine": "raw",
+      "sourceVolume": "130g",
+      "sourceSalesUnit": "1봉",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5044113",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20230824/gv00000719888_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "130g"
+      },
+      "foodType": "fish"
+    },
+    {
+      "id": "kurly-5054616",
+      "name": "[씨드] 조각 미역 30g (10인분 내외)",
+      "detail": "30g · 1팩 · 상온",
+      "price": 1650,
+      "portions": "판매 구성 1묶음",
+      "quantity": 30,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[씨드] 조각 미역 30g (10인분 내외)",
+      "productUrl": "https://www.kurly.com/goods/5054616",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1594795230204l0.jpg",
+      "checkedAt": "2026-09-18T05:09:33.187Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "미역",
+      "cuisine": "raw",
+      "sourceVolume": "30g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": null,
+      "nutritionNotice": [
+        {
+          "title": "세부 표시 사항 (축산물 등급표시/이력번호표시)",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5054616",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250218/gv10001641137_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "30g"
+      },
+      "foodType": "fish"
+    },
+    {
+      "id": "kurly-1001458343",
+      "name": "[오뚜기] 옛날사리당면 100g (국산전분100)",
+      "detail": "100g · 1팩 · 상온",
+      "price": 2300,
+      "portions": "판매 구성 1묶음",
+      "quantity": 100,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[오뚜기] 옛날사리당면 100g (국산전분100)",
+      "productUrl": "https://www.kurly.com/goods/1001458343",
+      "productImageUrl": "https://product-image.kurly.com/product/image/f56fdd02-83fd-4fa6-be08-7bcc2c11bff5.jpg",
+      "checkedAt": "2026-09-18T05:09:33.502Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "당면",
+      "cuisine": "raw",
+      "sourceVolume": "100g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1001458343",
+        "evidenceUrls": [],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "100g"
+      },
+      "foodType": "noodles"
+    },
+    {
+      "id": "kurly-5071416",
+      "name": "[백설] 대왕 납작 당면",
+      "detail": "300g · 1팩 · 상온",
+      "price": 2980,
+      "portions": "판매 구성 1묶음",
+      "quantity": 300,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[백설] 대왕 납작 당면",
+      "productUrl": "https://www.kurly.com/goods/5071416",
+      "productImageUrl": "https://product-image.kurly.com/product/image/0487f243-0202-47a1-9c73-849fe1468dfa.jpg",
+      "checkedAt": "2026-09-18T05:09:33.622Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "당면",
+      "cuisine": "raw",
+      "sourceVolume": "300g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 이 제품은 알류, 우유, 대두, 밀, 쇠고기, 메밀, 땅콩, 고등어, 게, 새우, 돼지고기, 복숭아, 토마토, 호두, 닭고기, 오징어, 조개류(굴,전복,홍합 포함), 잣, 아황산류를 사용한 제품과 같은 시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5071416",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240722/gv10000945274_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "300g"
+      },
+      "foodType": "noodles"
+    },
+    {
+      "id": "kurly-1001537395",
+      "name": "[청정원] 유기농 수라당면 400g",
+      "detail": "400g · 1팩 · 상온",
+      "price": 6780,
+      "portions": "판매 구성 1묶음",
+      "quantity": 400,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[청정원] 유기농 수라당면 400g",
+      "productUrl": "https://www.kurly.com/goods/1001537395",
+      "productImageUrl": "https://product-image.kurly.com/product/image/e4f5fc8b-a857-449e-99b0-b761fc110e4c.jpg",
+      "checkedAt": "2026-09-18T05:09:33.810Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "당면",
+      "cuisine": "raw",
+      "sourceVolume": "400g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1001537395",
+        "evidenceUrls": [
+          "https://product-image.kurly.com/product/image/c50db873-5ea8-440a-8cd8-48de936a65d5.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "400g"
+      },
+      "foodType": "noodles"
+    },
+    {
+      "id": "kurly-1000778312",
+      "name": "[구포국수] 진공소면 900g",
+      "detail": "900g · 1팩 · 상온",
+      "price": 2900,
+      "portions": "판매 구성 1묶음",
+      "quantity": 900,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[구포국수] 진공소면 900g",
+      "productUrl": "https://www.kurly.com/goods/1000778312",
+      "productImageUrl": "https://product-image.kurly.com/product/image/ca72e5d0-bba8-4668-9cb3-ea6b29930005.jpg",
+      "checkedAt": "2026-09-18T05:09:34.098Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "소면",
+      "cuisine": "raw",
+      "sourceVolume": "900g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "밀 함유",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1000778312",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250207/gv40001639016_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "900g"
+      },
+      "foodType": "noodles"
+    },
+    {
+      "id": "kurly-1001469685",
+      "name": "[샘표] 소면 500g",
+      "detail": "500g · 1팩 · 상온",
+      "price": 1980,
+      "portions": "판매 구성 1묶음",
+      "quantity": 500,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[샘표] 소면 500g",
+      "productUrl": "https://www.kurly.com/goods/1001469685",
+      "productImageUrl": "https://product-image.kurly.com/product/image/3a00b896-336a-4d2f-a43f-4002f92b9c81.jpg",
+      "checkedAt": "2026-09-18T05:09:34.095Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "소면",
+      "cuisine": "raw",
+      "sourceVolume": "500g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "- 밀 함유 ",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1001469685",
+        "evidenceUrls": [],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "500g"
+      },
+      "foodType": "noodles"
+    },
+    {
+      "id": "kurly-5026738",
+      "name": "[이보노이토] 일본 수제 소면",
+      "detail": "300g · PK · 상온",
+      "price": 7700,
+      "portions": "판매 구성 1묶음",
+      "quantity": 300,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[이보노이토] 일본 수제 소면",
+      "productUrl": "https://www.kurly.com/goods/5026738",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/153017770639l0.jpg",
+      "checkedAt": "2026-09-18T05:09:34.232Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "소면",
+      "cuisine": "raw",
+      "sourceVolume": "300g",
+      "sourceSalesUnit": "PK",
+      "allergyText": "- 밀 함유",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5026738",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250221/gv00001641887_1.jpg",
+          "https://product-image.kurly.com/product/image/54f0cdf8-444c-4f40-8083-3a2bab8a351b.png"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "300g"
+      },
+      "foodType": "noodles"
+    },
+    {
+      "id": "kurly-5004894",
+      "name": "[테라오카] 계란에 뿌려먹는 간장",
+      "detail": "150ml · 1병 · 상온",
+      "price": 5980,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[테라오카] 계란에 뿌려먹는 간장",
+      "productUrl": "https://www.kurly.com/goods/5004894",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1479893759103l0.jpg",
+      "checkedAt": "2026-09-18T05:09:34.579Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "간장",
+      "cuisine": "raw",
+      "sourceVolume": "150ml",
+      "sourceSalesUnit": "1병",
+      "allergyText": "- 대두, 밀, 조개류(굴) 함유\r\n- 계란, 우유, 고등어, 새우, 돼지고기와 같은 시설에서 생산",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5004894",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20250110/gv20001632825_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "sauce_oil"
+    },
+    {
+      "id": "kurly-5037473",
+      "name": "[미자언니네] 프리미엄 맛간장",
+      "detail": "480ml · 1병 · 상온",
+      "price": 12500,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[미자언니네] 프리미엄 맛간장",
+      "productUrl": "https://www.kurly.com/goods/5037473",
+      "productImageUrl": "https://product-image.kurly.com/product/image/f6c2c89d-34ed-4660-b4f1-ed4dfc0a474f.jpeg?v=0531",
+      "checkedAt": "2026-09-18T05:09:34.589Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "간장",
+      "cuisine": "raw",
+      "sourceVolume": "480ml",
+      "sourceSalesUnit": "1병",
+      "allergyText": "- 대두, 밀, 새우 함유\r\n- 토마토, 게, 오징어, 조개류(홍합), 쇠고기를 사용한 제품과 같은 시설에서 제조",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5037473",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20260210/gv00001762203_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "sauce_oil"
+    },
+    {
+      "id": "kurly-1000650920",
+      "name": "[죽장연] 간장 250ml",
+      "detail": "250ml · 냉장",
+      "price": 13900,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1,
+      "unit": "개",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[죽장연] 간장 250ml",
+      "productUrl": "https://www.kurly.com/goods/1000650920",
+      "productImageUrl": "https://product-image.kurly.com/product/image/41e75f5b-891a-4ba4-a5b1-b64b2a88453b.jpg",
+      "checkedAt": "2026-09-18T05:09:34.708Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도 · 1개는 판매 묶음 단위, 내용량은 상세 참조",
+      "sourceKeyword": "간장",
+      "cuisine": "raw",
+      "sourceVolume": "250ml",
+      "sourceSalesUnit": "",
+      "allergyText": "대두 함유\n특정 성분 알레르기가 있으신 분은 반드시 섭취가능 여부를 확인 후 드시기 바랍니다.(유발성분: 대두)",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1000650920",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240715/gv30000941714_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "foodType": "sauce_oil"
+    },
+    {
+      "id": "kurly-5156568",
+      "name": "[해찬들] 맛있는 재래식 된장 500g",
+      "detail": "500g · 1개 · 상온",
+      "price": 2690,
+      "portions": "판매 구성 1묶음",
+      "quantity": 500,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[해찬들] 맛있는 재래식 된장 500g",
+      "productUrl": "https://www.kurly.com/goods/5156568",
+      "productImageUrl": "https://product-image.kurly.com/product/image/11f29ffe-a348-4e41-b19b-86af64726b4d.jpg",
+      "checkedAt": "2026-09-18T05:09:35.048Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "된장",
+      "cuisine": "raw",
+      "sourceVolume": "500g",
+      "sourceSalesUnit": "1개",
+      "allergyText": "-대두,밀 함유\n-이 제품은 게, 조개류,쇠고기를 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5156568",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240617/gv30000928172_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "500g"
+      },
+      "foodType": "sauce_oil"
+    },
+    {
+      "id": "kurly-1002206625",
+      "name": "[해찬들] 100% 국산 된장 900G",
+      "detail": "900g · 1개 · 상온",
+      "price": 8700,
+      "portions": "판매 구성 1묶음",
+      "quantity": 900,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[해찬들] 100% 국산 된장 900G",
+      "productUrl": "https://www.kurly.com/goods/1002206625",
+      "productImageUrl": "https://product-image.kurly.com/product/image/07fbfa64-5eb6-4600-8c5a-42b102e05e2f.jpg",
+      "checkedAt": "2026-09-18T05:09:35.040Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "된장",
+      "cuisine": "raw",
+      "sourceVolume": "900g",
+      "sourceSalesUnit": "1개",
+      "allergyText": "알류,밀,메밀,따콩,복숭아,호두,고등어,게,토마토,닭고기,우유,새우,쇠고기,조개류,아황산류,오징어,잣 혼입가능",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1002206625",
+        "evidenceUrls": [
+          "https://product-image.kurly.com/product/image/0626e0d0-1200-4696-8b91-bfe5d5e282a0.png"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "900g"
+      },
+      "foodType": "sauce_oil"
+    },
+    {
+      "id": "kurly-5068386",
+      "name": "[청정원] 순창 조개멸치 된장 450g",
+      "detail": "450g · 1팩 · 상온",
+      "price": 5480,
+      "portions": "판매 구성 1묶음",
+      "quantity": 450,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[청정원] 순창 조개멸치 된장 450g",
+      "productUrl": "https://www.kurly.com/goods/5068386",
+      "productImageUrl": "https://img-cf.kurly.com/shop/data/goods/1653037239729l0.jpg",
+      "checkedAt": "2026-09-18T05:09:35.214Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "된장",
+      "cuisine": "raw",
+      "sourceVolume": "450g",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "-대두, 밀, 게, 새우, 우유, 조개류(바지락, 홍합) 함유",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5068386",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20210317/gv30000165537_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "450g"
+      },
+      "foodType": "sauce_oil"
+    },
+    {
+      "id": "kurly-5156563",
+      "name": "[해찬들] 100% 태양초 우리쌀 고추장 500g",
+      "detail": "500g · 1개 · 상온",
+      "price": 7150,
+      "portions": "판매 구성 1묶음",
+      "quantity": 500,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[해찬들] 100% 태양초 우리쌀 고추장 500g",
+      "productUrl": "https://www.kurly.com/goods/5156563",
+      "productImageUrl": "https://product-image.kurly.com/product/image/ccac8a9f-40fa-4ce8-89fe-bb607e4d3b4f.jpg",
+      "checkedAt": "2026-09-18T05:09:35.511Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "고추장",
+      "cuisine": "raw",
+      "sourceVolume": "500g",
+      "sourceSalesUnit": "1개",
+      "allergyText": "-대두함유\n-이 제품은 밀을 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5156563",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240617/gv00000928359_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "500g"
+      },
+      "foodType": "sauce_oil"
+    },
+    {
+      "id": "kurly-5156564",
+      "name": "[해찬들] 100% 태양초 우리쌀 고추장 1kg ",
+      "detail": "1kg · 1팩 · 상온",
+      "price": 10990,
+      "portions": "판매 구성 1묶음",
+      "quantity": 1000,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[해찬들] 100% 태양초 우리쌀 고추장 1kg ",
+      "productUrl": "https://www.kurly.com/goods/5156564",
+      "productImageUrl": "https://product-image.kurly.com/product/image/e324cbef-5f04-4084-9a17-cd879c689c29.jpg",
+      "checkedAt": "2026-09-18T05:09:35.500Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "고추장",
+      "cuisine": "raw",
+      "sourceVolume": "1kg",
+      "sourceSalesUnit": "1팩",
+      "allergyText": "-대두 함유\r\n* 이 제품은 밀을 사용한 제품과 같은 제조시설에서 제조하고 있습니다.",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/5156564",
+        "evidenceUrls": [
+          "https://img-cf.kurly.com/hdims/resize/%3E1010x/quality/90/src/shop/data/goodsview/20240617/gv40000928357_1.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "1kg"
+      },
+      "foodType": "sauce_oil"
+    },
+    {
+      "id": "kurly-1002206199",
+      "name": "[해찬들] 100% 태양초 우리쌀 고추장 200G",
+      "detail": "200g · 1개 · 상온",
+      "price": 2840,
+      "portions": "판매 구성 1묶음",
+      "quantity": 200,
+      "unit": "g",
+      "category": "ingredient",
+      "emoji": "🧺",
+      "color": "mint",
+      "searchQuery": "[해찬들] 100% 태양초 우리쌀 고추장 200G",
+      "productUrl": "https://www.kurly.com/goods/1002206199",
+      "productImageUrl": "https://product-image.kurly.com/product/image/e1e4a420-1b49-4aed-91d1-478088828157.jpg",
+      "checkedAt": "2026-09-18T05:09:35.546Z",
+      "priceNote": "판매 구성 1개 기준 · 쿠폰 적용 전 표시가 · 배송비 별도",
+      "sourceKeyword": "고추장",
+      "cuisine": "raw",
+      "sourceVolume": "200g",
+      "sourceSalesUnit": "1개",
+      "allergyText": "알류,우유,메밀,땅콩,밀,고등어,게,새우,복숭아,토마토,아황산류,호두,닭고기,쇠고기,오징어,조개류,잣 혼입가능",
+      "nutritionNotice": [
+        {
+          "title": "영양성분표시",
+          "description": "상품설명 및 상품이미지 참조",
+          "type": "PN06"
+        }
+      ],
+      "allergens": [],
+      "allergyInfo": {
+        "status": "unknown",
+        "statement": "",
+        "note": "신규 수집 상품: 원문 라벨 검수 전. 미등록은 알레르기 없음이 아닙니다.",
+        "sourceUrl": "https://www.kurly.com/goods/1002206199",
+        "evidenceUrls": [
+          "https://product-image.kurly.com/product/image/5fce37d3-7098-4c45-a2e4-40b63fdbcbb7.jpg"
+        ],
+        "crossContactNote": "제조시설·혼입 가능성은 원문 표시사항 확인 필요"
+      },
+      "market": "KR",
+      "currency": "KRW",
+      "locale": "ko-KR",
+      "amountEvidence": {
+        "field": "volume",
+        "value": "200g"
+      },
+      "foodType": "sauce_oil"
+    }
+  ],
+  "skipped": [],
+  "excluded": [
+    {
+      "id": "kurly-5034023",
+      "name": "[진가네반찬] 두부야채전",
+      "reason": "완성식품 또는 반려동물 식품으로 원재료 대상 제외"
+    },
+    {
+      "id": "kurly-5071323",
+      "name": "[풀무원] 식물성 지구식단 두부텐더 오리지널 400g",
+      "reason": "완성식품 또는 반려동물 식품으로 원재료 대상 제외"
+    },
+    {
+      "id": "kurly-5010344",
+      "name": "[미자언니네] 가지강정",
+      "reason": "완성식품 또는 반려동물 식품으로 원재료 대상 제외"
+    },
+    {
+      "id": "kurly-1000179414",
+      "name": "[하림] 한입쏙 닭다리살 오리지널 500g",
+      "reason": "완성식품 또는 반려동물 식품으로 원재료 대상 제외"
+    },
+    {
+      "id": "kurly-5118481",
+      "name": "[미식당] 닭다리살 꼬치 360g",
+      "reason": "완성식품 또는 반려동물 식품으로 원재료 대상 제외"
+    },
+    {
+      "id": "kurly-1001190888",
+      "name": "[스위피] 어글어글 연어 마들렌 4개입 (단품)",
+      "reason": "완성식품 또는 반려동물 식품으로 원재료 대상 제외"
+    },
+    {
+      "id": "kurly-1001086601",
+      "name": "[하림펫푸드] DOG 더리얼 동결건조 오븐베이크드 연어 1.6kg",
+      "reason": "완성식품 또는 반려동물 식품으로 원재료 대상 제외"
+    },
+    {
+      "id": "kurly-1001766936",
+      "name": "[슈퍼포우] 동결건조 트릿 연어 90g",
+      "reason": "완성식품 또는 반려동물 식품으로 원재료 대상 제외"
+    },
+    {
+      "id": "kurly-1000339008",
+      "name": "[주전부리마켓] 내맘속에 구운 오징어",
+      "reason": "완성식품 또는 반려동물 식품으로 원재료 대상 제외"
+    }
+  ],
+  "reviewedAt": "2026-09-18T05:10:13.950Z",
+  "reviewNote": "상품명·판매 구성·포장량 검수. 완성 반찬과 반려동물 식품 제외. 영양·알레르기 미확인 값은 추정하지 않음."
+}
