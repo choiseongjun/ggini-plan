@@ -1,9 +1,8 @@
 import {NextRequest,NextResponse} from 'next/server';
-import {randomUUID,createHash} from 'node:crypto';
 import {sessionUser,sameOrigin,authFailure} from '../../../lib/auth';
 import {getPool} from '../../../lib/db';
 import {planProducts} from '../../../lib/shopping-plan-catalog';
-import {sharedPlanSnapshot,validShareId,type SharedPlan} from '../../../lib/shared-plan';
+import {createSharedPlan,validShareId,type SharedPlan} from '../../../lib/shared-plan';
 import {initialConditions,parseConditions,validMealIds,basketTotal,recommendShopping} from '../../../lib/shopping-plan';
 import {personalizeProducts} from '../../../lib/shopping-personalization';
 import {parseStock} from '../../../lib/shopping-progress';
@@ -49,10 +48,8 @@ export async function POST(request:NextRequest){
    return json({userId:user.id,conditions,mealIds,adjusted:!same});
   }
   if(input?.action!=='share')return authFailure('요청을 확인해 주세요.',400);
-  const snapshot=sharedPlanSnapshot(input.conditions,input.mealIds,await planProducts());
-  if(!snapshot)return authFailure('상품 정보가 변경됐어요. 추천 식단을 다시 확인해 주세요.',400);
-  const encoded=JSON.stringify(snapshot),fingerprint=createHash('sha256').update(encoded).digest('hex');
-  const result=await getPool().query('INSERT INTO shared_shopping_plans(id,user_id,fingerprint,snapshot) VALUES($1,$2,$3,$4) ON CONFLICT(user_id,fingerprint) DO UPDATE SET fingerprint=EXCLUDED.fingerprint RETURNING id',[randomUUID(),user.id,fingerprint,encoded]);
-  return json({path:`/share/${result.rows[0].id}`},201);
+  const created=await createSharedPlan(user.id,input.conditions,input.mealIds,await planProducts());
+  if(!created)return authFailure('상품 정보가 변경됐어요. 추천 식단을 다시 확인해 주세요.',400);
+  return json({path:`/share/${created.id}`},201);
  }catch{return authFailure('식단을 저장하지 못했어요. 잠시 후 다시 시도해 주세요.',503);}
 }

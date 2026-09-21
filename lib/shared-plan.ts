@@ -1,5 +1,7 @@
+import {createHash,randomUUID} from 'node:crypto';
 import {basket,purchaseBasket,mealSchedule,parseConditions,type PlanProduct,type MealSlot} from './shopping-plan';
 import {servingNutrition} from './food-intake';
+import {getPool} from './db';
 
 export type SharedPlan={people?:number;sideCount?:number;days:number;slots:MealSlot[];meals:{productId:string;day:number;slot:MealSlot}[];products:{id:string;name:string;image:string|null;url:string|null;price:number;servings:number;calories:number|null;protein:number|null;packs:number}[];purchases?:{id:string;name:string;price:number;packs:number}[];total:number};
 export function sharedPlanSnapshot(raw:unknown,mealIds:unknown,products:PlanProduct[]):SharedPlan|null{
@@ -14,3 +16,11 @@ export function sharedPlanSnapshot(raw:unknown,mealIds:unknown,products:PlanProd
   total:rows.reduce((sum,r)=>sum+r.cost,0)};
 }
 export const validShareId=(id:unknown):id is string=>typeof id==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id);
+// Shared by /api/shared-plans and /api/community so both dedupe against the same fingerprint.
+export async function createSharedPlan(userId:string,raw:unknown,mealIds:unknown,products:PlanProduct[]):Promise<{id:string,snapshot:SharedPlan}|null>{
+ const snapshot=sharedPlanSnapshot(raw,mealIds,products);
+ if(!snapshot)return null;
+ const encoded=JSON.stringify(snapshot),fingerprint=createHash('sha256').update(encoded).digest('hex');
+ const result=await getPool().query('INSERT INTO shared_shopping_plans(id,user_id,fingerprint,snapshot) VALUES($1,$2,$3,$4) ON CONFLICT(user_id,fingerprint) DO UPDATE SET fingerprint=EXCLUDED.fingerprint RETURNING id',[randomUUID(),userId,fingerprint,encoded]);
+ return {id:result.rows[0].id,snapshot};
+}

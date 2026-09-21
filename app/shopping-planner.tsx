@@ -21,6 +21,8 @@ import {MealComparison,RecipePurchaseNote} from './meal-comparison';
 import {useFoodIntake} from './food-intake';
 import {remainingPlanPortions,planDate} from '../lib/daily-plan';
 import {TodayMeals} from './today-meals';
+import {PlanBuilder} from './plan-builder';
+import {CommunityCompose} from './community-compose';
 import {SharePlanButton} from './share-plan-button';
 import {type DashboardData} from '../lib/dashboard';
 import { Checkbox } from "./components/checkbox";
@@ -106,6 +108,8 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
  const [confirmReset,setConfirmReset]=useState(false);
  const [customMeals,setCustomMeals]=useState(false);
  const [error,setError]=useState(''),[message,setMessage]=useState(''),[retry,setRetry]=useState(0);
+ const [building,setBuilding]=useState(false);
+ const [composing,setComposing]=useState(false),[posting,setPosting]=useState(false),[communityAlias,setCommunityAlias]=useState('');
  const adopting=useRef(false);
  useEffect(()=>{
   if(!userId||locale.isTaiwan||loading||adopting.current)return;
@@ -182,6 +186,21 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    if(!locale.isTaiwan&&mode!=='settings')trackPlanner('generated');setConditions(c);setIds(next);remember(c,next);setMessage(`${next.length}끼를 서로 다른 ${next.length}종 메뉴로 구성했어요. 같은 음식은 중복으로 넣지 않았어요.`);setResultFocus(n=>n+1);
   }catch(e){setError(e instanceof Error?e.message:'추천을 불러오지 못했어요.');}finally{setBusy(false);finishLoading();}
  }
+ function startBuilding(){
+  const c=parseConditions({...conditions,startDate:locale.today(),supply:conditions.supply});
+  if(!c){setError('챙길 끼니를 하나 이상 고르고 예산을 1,000~1,000,000원으로 입력해 주세요.');return;}
+  setMessage('');setError('');setConditions(c);setIds(Array(c.meals).fill(''));setBuilding(true);remember(c,[]);
+ }
+ async function postToCommunity(payload:Record<string,unknown>|FormData){
+  setPosting(true);setError('');
+  try{
+   const r=payload instanceof FormData
+    ?await fetch('/api/community',{method:'POST',body:payload})
+    :await fetch('/api/community',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+   const d=await r.json();if(!r.ok)throw new Error(d.error);return true;
+  }catch(e){setError(e instanceof Error?e.message:'커뮤니티에 올리지 못했어요.');return false;}
+  finally{setPosting(false);}
+ }
  function chooseMeal(index:number,id:string){
   const c={...conditions,mealMode:'mixed' as const,cooking:'all' as const};
   if(!slotCandidates(products,c,index).some(p=>p.id===id))return;
@@ -235,8 +254,9 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
  }
  const schedule=mealSchedule(conditions);
  const remaining=remainingPlanPortions(ids.map((id,i)=>({id,date:planDate(conditions.startDate??intake.today,schedule[i].day)})),intake.today,intake.current?.logs??[],conditions.people);
- const mealRows=basket(ids,products,conditions.owned,conditions.supply,conditions.people);
- const purchases=purchaseBasket(ids,products,conditions.owned,conditions.supply,remaining);
+ const idsComplete=ids.every(Boolean);
+ const mealRows=idsComplete?basket(ids,products,conditions.owned,conditions.supply,conditions.people):[];
+ const purchases=idsComplete?purchaseBasket(ids,products,conditions.owned,conditions.supply,remaining):[];
  const hasRecipes=mealRows.some(r=>r.product.recipe);
  const rows=purchases.map(r=>({...r,uses:mealRows.find(m=>m.product.id===r.product.id)?.uses??0})),total=rows.reduce((n,r)=>n+r.cost,0);
 
@@ -246,7 +266,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    {confirmReset&&<div role="group" aria-label="장바구니 초기화 확인"><strong>추천 메뉴와 주문·보유 목록을 모두 비울까요?</strong><p>홈의 현재 추천 식단도 함께 비워요. 먹은 기록·식비 기록·예산과 취향·공유 링크는 유지돼요. 판매처의 실제 주문은 취소되지 않아요. 이 추천 밖에서 따로 관리하는 재료 목록과 함께 담은 장바구니는 별도예요.</p><button type="button" disabled={progress.busy} onClick={()=>setConfirmReset(false)}>취소</button><button type="button" disabled={progress.busy||!progress.ready} onClick={()=>void resetCart()}>{progress.busy?'초기화 중…':'확인, 모두 초기화'}</button></div>}
   </section>}
   {mode==='plan'&&ids.length>0&&<div className="home-steps"><span>💰 예산 정하기</span><span>→</span><strong>🍚 메뉴 고르기</strong><span>→</span><span>✓ 먹었어요</span></div>}
-  {mode==='plan'&&!locale.isTaiwan&&ids.length>0&&<section className={adoptionStyles.card} aria-label="선택한 식단으로 기록 시작하기">
+  {mode==='plan'&&!locale.isTaiwan&&ids.length>0&&idsComplete&&<section className={adoptionStyles.card} aria-label="선택한 식단으로 기록 시작하기">
    <span>🌱 {shoppingGoals[conditions.goal??'maintain'].label} · {ids.length}끼</span>
    <h3>마음에 드는 메뉴로, 이대로 먹어볼까요?</h3>
    <p>아래에서 메뉴를 바꿔 고른 뒤 저장하세요. {userId?'내 계정에서 식단을 이어 보고 기록할 수 있어요.':'로그인하면 고른 식단을 계정에 저장하고, 매일의 식비와 영양을 모아 볼 수 있어요.'}</p>
@@ -255,11 +275,13 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    {userId&&<div><Link href="/cart">장보기 이어가기 →</Link><Link href="/record">내 식비·영양 기록 →</Link></div>}
    <small>추천·저장만으로 지출이나 먹은 기록이 생기지는 않아요. 구매 상태와 실제 먹은 양을 등록하면 기록에 반영돼요. 영양은 등록·추정 정보 기준이며 미확인 값은 제외해요.</small>
   </section>}
-  {mode==='plan'&&ids.length>0&&<TodayMeals nutritionReference={personalization?.nutritionReference??null} shoppingTotal={purchases.reduce((sum,row)=>sum+row.cost,0)} intake={intake} userId={userId} onLogin={onLogin} ids={ids} products={products} conditions={conditions} startDate={conditions.startDate??locale.today()} onStartDate={date=>{const c=parseConditions({...conditions,startDate:date});if(c){setConditions(c);remember(c,ids);}}} onSwap={swap} onChoose={chooseMeal} progress={progress} perMealCalories={personalization?.perMealCalories??null} dailyCalories={personalization?.blocked?null:personalization?.dailyCalories??null} dashboard={dashboard}/>}
-  {mode!=='settings'&&ids.length>1&&new Set(ids).size===1&&<p className="body-note" role="status">현재 조건에서는 한 가지 메뉴로만 구성됐어요. 예산·조리 방식·제외 재료 설정을 확인해 주세요. 다른 메뉴를 원하면 조건을 조정하고 다시 추천받아 주세요.</p>}
-  {!locale.isTaiwan&&mode!=='settings'&&ids.length>0&&<details className="home-secondary"><summary>이 식단 공유하기</summary><SharePlanButton key={JSON.stringify([ids,conditions.days,conditions.slots])} userId={userId} onLogin={onLogin} conditions={conditions} mealIds={ids}/></details>}
-  {!locale.isTaiwan&&mode!=='settings'&&ids.length>0&&<p className="body-note">음식 종류 · {conditions.mealKinds?.length?conditions.mealKinds.map(k=>mealKinds[k].label).join('·'):'골고루'} / 식사 목표 · {shoppingGoals[conditions.goal??'maintain'].label}</p>}
-  {mode==='plan'&&ids.length>0&&<div className="planner-reroll-actions">
+  {mode==='plan'&&ids.length>0&&building&&!ids.every(Boolean)&&<PlanBuilder ids={ids} products={products} conditions={conditions} onChoose={chooseMeal} disabled={busy||progress.busy}/>}
+  {mode==='plan'&&ids.length>0&&(!building||ids.every(Boolean))&&<TodayMeals nutritionReference={personalization?.nutritionReference??null} shoppingTotal={purchases.reduce((sum,row)=>sum+row.cost,0)} intake={intake} userId={userId} onLogin={onLogin} ids={ids} products={products} conditions={conditions} startDate={conditions.startDate??locale.today()} onStartDate={date=>{const c=parseConditions({...conditions,startDate:date});if(c){setConditions(c);remember(c,ids);}}} onSwap={swap} onChoose={chooseMeal} progress={progress} perMealCalories={personalization?.perMealCalories??null} dailyCalories={personalization?.blocked?null:personalization?.dailyCalories??null} dashboard={dashboard}/>}
+  {mode!=='settings'&&idsComplete&&ids.length>1&&new Set(ids).size===1&&<p className="body-note" role="status">현재 조건에서는 한 가지 메뉴로만 구성됐어요. 예산·조리 방식·제외 재료 설정을 확인해 주세요. 다른 메뉴를 원하면 조건을 조정하고 다시 추천받아 주세요.</p>}
+  {!locale.isTaiwan&&mode!=='settings'&&ids.length>0&&idsComplete&&<details className="home-secondary"><summary>이 식단 공유하기</summary><SharePlanButton key={JSON.stringify([ids,conditions.days,conditions.slots])} userId={userId} onLogin={onLogin} conditions={conditions} mealIds={ids}/></details>}
+  {!locale.isTaiwan&&mode!=='settings'&&ids.length>0&&idsComplete&&<details className="home-secondary"><summary>커뮤니티에 올리기</summary>{composing?<CommunityCompose products={[]} alias={communityAlias} onAlias={setCommunityAlias} busy={posting} onClose={()=>setComposing(false)} plan={{conditions,mealIds:ids,days:conditions.days??Math.ceil(conditions.meals/(conditions.slots?.length??1)),meals:ids.length,total}} onShare={async payload=>{const ok=await postToCommunity(payload);if(ok){setComposing(false);setMessage('내가 만든 식단을 커뮤니티에 올렸어요.');}return ok;}}/>:<button type="button" onClick={()=>{if(!userId){onLogin();return;}setComposing(true);}}>🍚 내가 만든 식단 커뮤니티에 올리기</button>}</details>}
+  {!locale.isTaiwan&&mode!=='settings'&&ids.length>0&&idsComplete&&<p className="body-note">음식 종류 · {conditions.mealKinds?.length?conditions.mealKinds.map(k=>mealKinds[k].label).join('·'):'골고루'} / 식사 목표 · {shoppingGoals[conditions.goal??'maintain'].label}</p>}
+  {mode==='plan'&&ids.length>0&&idsComplete&&<div className="planner-reroll-actions">
    <button type="button" className="primary-button" disabled={busy||loading||progress.busy||!progress.ready} onClick={()=>void generate(conditions)}>🔀 다른 조합으로 다시 추천</button>
    <button type="button" className="planner-restart" disabled={busy||progress.busy} onClick={returnToSetup}><span aria-hidden="true">⚙️</span> 조건 바꿔서 다시 추천받기</button>
   </div>}
@@ -342,15 +364,16 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    </div>
    {!!conditions.swapPreferences?.length&&<p className="body-note">교체 의견 {conditions.swapPreferences.length}개 반영 중 <button type="button" disabled={busy} onClick={()=>updatePreferences({swapPreferences:[]})}>의견 초기화</button></p>}
    <button className="primary-button" disabled={loading||busy||waitingForBudget||!progress.ready||(mode!=='settings'&&!products.length)}>{loading?'설정 불러오는 중…':waitingForBudget?'예산 계산 중…':busy?(mode==='settings'?'저장 중…':'추천 준비 중…'):mode==='settings'?'저장하고 내 정보로 추천받기':'내 예산으로 추천받기 →'}</button>
+   {mode==='plan'&&!locale.isTaiwan&&<button type="button" className="planner-restart" disabled={loading||busy||waitingForBudget||!progress.ready||!products.length} onClick={startBuilding}>🛠 직접 만들어서 담기</button>}
   </form>}
   </details>}
   {mode!=='settings'&&!loading&&!products.length&&<p>현재 추천할 수 있는 상품이 없어요. 판매 구성과 출처가 확인된 상품을 준비하고 있어요.</p>}
   {error&&<p className="auth-error" role="alert">{error}</p>}
   {mode!=='settings'&&!loading&&!products.length&&<button type="button" onClick={()=>{setLoading(true);setRetry(n=>n+1);}}>상품 다시 불러오기</button>}
   {!locale.isTaiwan&&mode!=='settings'&&userId&&<button type="button" className="text-link" disabled={loading||busy||!progress.ready} onClick={restore}>저장한 식단 불러오기 →</button>}
-  {!locale.isTaiwan&&ids.length>0&&<PlanPurchaseSummary rows={purchases} budget={conditions.budget} money={won}/>}
-  {!locale.isTaiwan&&mode!=='settings'&&!!ids.length&&<CookingShoppingGuide ids={ids} products={products} conditions={conditions} onOwn={own} disabled={busy||progress.busy}/>}
-  {!!ids.length&&<details className="planner-result" open={mode!=='plan'}><summary>준비한 식단 전체 · 구매 목록 ({ids.length}끼)</summary>
+  {!locale.isTaiwan&&ids.length>0&&idsComplete&&<PlanPurchaseSummary rows={purchases} budget={conditions.budget} money={won}/>}
+  {!locale.isTaiwan&&mode!=='settings'&&!!ids.length&&idsComplete&&<CookingShoppingGuide ids={ids} products={products} conditions={conditions} onOwn={own} disabled={busy||progress.busy}/>}
+  {!!ids.length&&idsComplete&&<details className="planner-result" open={mode!=='plan'}><summary>준비한 식단 전체 · 구매 목록 ({ids.length}끼)</summary>
    {hasRecipes&&<section className="recipe-plan-list" aria-label="함께 준비하는 상품"><h3>🍳 이렇게 준비해요</h3><RecipePurchaseNote ids={ids} products={products} conditions={conditions}/>{ids.map((id,i)=>{const p=products.find(p=>p.id===id)!;return p.recipe?<article key={i}><small>{schedule[i].day}일차 · {slotLabels[schedule[i].slot]}</small><div><MealSourceBadge product={p}/></div><h4>{p.name}</h4><strong>한 끼 재료비 약 {won(p.price)}</strong><RecipeProductPreview product={p}/><MealComparison key={p.id.split('--with--')[0]} product={p} index={i} ids={ids} products={products} conditions={conditions} onChoose={chooseMeal} disabled={busy||progress.busy}/></article>:null;})}</section>}
    <ShoppingProgress guest={locale.isTaiwan||!userId} progress={progress} recommended
     summary={<div className="planner-total"><span>남은 식단 추가 구매 예상금액</span><strong>{won(total)}</strong><small>{total<=conditions.budget?`예산에서 ${won(conditions.budget-total)} 남아요`:`예산을 ${won(total-conditions.budget)} 초과했어요`} · 배송비 별도</small></div>}
@@ -373,7 +396,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    <button type="button" className="primary-button" disabled={busy||total>conditions.budget} onClick={save}>{busy?'저장 중…':userId?'이 식단 저장하기':'로그인하고 이 식단 저장하기'}</button>
   </details>}
   {mode==='cart'&&!ids.length&&<ShoppingProgress guest={locale.isTaiwan||!userId} progress={progress} items={[]}/>}
-  {!locale.isTaiwan&&mode!=='settings'&&!!ids.length&&<RecommendationFeedback key={JSON.stringify([ids,conditions.budget,conditions.meals])} conditions={conditions} mealNames={ids.map(id=>products.find(p=>p.id===id)?.name??'확인되지 않은 메뉴')} page={mode==='cart'?'/cart':'/'}/>}
+  {!locale.isTaiwan&&mode!=='settings'&&!!ids.length&&idsComplete&&<RecommendationFeedback key={JSON.stringify([ids,conditions.budget,conditions.meals])} conditions={conditions} mealNames={ids.map(id=>products.find(p=>p.id===id)?.name??'확인되지 않은 메뉴')} page={mode==='cart'?'/cart':'/'}/>}
   {mode!=='cart'&&!!ids.length&&<Link href="/cart">이번 장보기 목록 보러 가기 →</Link>}
   {mode==='cart'&&!ids.length&&<p><Link href="/">홈에서 이번에 살 것 추천받기 →</Link></p>}
   {mode==='settings'&&<div className="profile-shopping-links"><Link href="/">내 설정으로 추천받기 →</Link><Link href="/cart">이번 장보기 목록 →</Link>{!userId&&<small>로그인하면 설정을 계정에 저장할 수 있어요.</small>}</div>}

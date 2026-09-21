@@ -113,6 +113,7 @@ CREATE TABLE IF NOT EXISTS community_posts (
  items JSONB NOT NULL, style VARCHAR(20) NOT NULL, created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 CREATE INDEX IF NOT EXISTS community_posts_created_idx ON community_posts(created_at DESC);
+ALTER TABLE community_posts ADD COLUMN IF NOT EXISTS photo_path TEXT;
 CREATE TABLE IF NOT EXISTS community_likes (
  post_id BIGINT REFERENCES community_posts(id) ON DELETE CASCADE,
  user_id BIGINT REFERENCES users(id) ON DELETE CASCADE, PRIMARY KEY(post_id,user_id)
@@ -281,6 +282,7 @@ CREATE TABLE IF NOT EXISTS shared_shopping_plans (
  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
  UNIQUE(user_id,fingerprint)
 );
+ALTER TABLE community_posts ADD COLUMN IF NOT EXISTS plan_id UUID REFERENCES shared_shopping_plans(id) ON DELETE SET NULL;
 
 
 CREATE TABLE IF NOT EXISTS shopping_expenses (

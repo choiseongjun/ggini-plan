@@ -3,7 +3,7 @@ import Link from 'next/link';
 import type {ReactNode} from 'react';
 import {RiceBuddy} from './rice-buddy';
 import {usePlannerLocale} from './planner-locale';
-export type IconName = "home" | "bag" | "chart" | "user" | "chevron" | "arrow" | "check" | "spark" | "calendar" | "wallet" | "fire" | "close" | "edit" | "left";
+export type IconName = "home" | "bag" | "chart" | "user" | "users" | "chevron" | "arrow" | "check" | "spark" | "calendar" | "wallet" | "fire" | "close" | "edit" | "left";
 
 
 export function Icon({ name, size = 20, strokeWidth = 1.8 }: { name: IconName; size?: number; strokeWidth?: number }) {
@@ -12,6 +12,7 @@ export function Icon({ name, size = 20, strokeWidth = 1.8 }: { name: IconName; s
     bag: <><path d="M4 8h16l-1.3 12H5.3L4 8Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></>,
     chart: <><path d="M4 20V10m6 10V4m6 16v-7m4 7H2"/></>,
     user: <><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></>,
+    users: <><circle cx="9" cy="8" r="3"/><path d="M4 20a5 5 0 0 1 10 0"/><circle cx="17" cy="9" r="2.5"/><path d="M14.5 20a4.5 4.5 0 0 1 8 0"/></>,
     chevron: <path d="m9 18 6-6-6-6"/>,
     left: <path d="m15 18-6-6 6-6"/>,
     arrow: <path d="M5 12h14m-6-6 6 6-6 6"/>,

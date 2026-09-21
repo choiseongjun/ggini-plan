@@ -6,6 +6,8 @@ import { GET, POST } from "../app/api/community/route";
 import { PUT } from "../app/api/profile/route";
 import { getPool } from "../lib/db";
 import { createSession,SESSION_COOKIE,type PublicUser } from "../lib/auth";
+import { planProducts } from "../lib/shopping-plan-catalog";
+import { initialConditions, recommendShopping } from "../lib/shopping-plan";
 const req=(cookie="",body?:unknown,origin="http://localhost:3000")=>new NextRequest("http://localhost:3000/api/community",{method:body===undefined?"GET":"POST",headers:{origin,Cookie:cookie,"Content-Type":"application/json"},...(body===undefined?{}:{body:JSON.stringify(body)})});
 test("community sharing, privacy, ownership, reactions, adoption and weekly check-ins",async()=>{
  const pool=getPool(),ids:string[]=[];const cookies:string[]=[];
@@ -45,5 +47,27 @@ test("community sharing, privacy, ownership, reactions, adoption and weekly chec
   assert.equal((await post(0,{action:"delete-post",postId})).status,200);
   assert.equal((await pool.query("SELECT count(*)::int AS n FROM community_tips WHERE post_id=$1",[postId])).rows[0].n,0);
   assert.equal((await (await GET(req(cookies[1]))).json()).basket.items.length,1);
+ }finally{await pool.query("DELETE FROM users WHERE id=ANY($1::bigint[])",[ids]);}
+});
+test("sharing a manually built plan attaches a plan snapshot; flat-item sharing stays unchanged",async()=>{
+ const pool=getPool(),ids:string[]=[];const cookies:string[]=[];
+ try{
+  const user=(await pool.query<PublicUser>("INSERT INTO users(name,email) VALUES('플랜 테스트',$1) RETURNING id::text,name,email",[`community-plan-${randomBytes(8).toString("hex")}@example.test`])).rows[0];
+  ids.push(user.id);cookies.push(`${SESSION_COOKIE}=${(await createSession(user)).cookies.get(SESSION_COOKIE)!.value}`);
+  const post=async(p:unknown)=>POST(req(cookies[0],p));
+  const products=await planProducts(),conditions={...initialConditions,days:2,meals:2},mealIds=recommendShopping(products,conditions)!;
+  const created=await post({action:"share",alias:"플랜별명",title:"내 식단",body:"직접 만들었어요",style:"balanced",conditions,mealIds});
+  assert.equal(created.status,201);
+  const {id:postId}=await created.json();
+  const feed=await (await GET(req())).json();
+  const published=feed.posts.find((p:{id:string})=>p.id===postId);
+  assert.ok(published.plan);
+  assert.equal(published.plan.days,2);assert.equal(published.plan.meals.length,2);
+  assert.deepEqual(published.items.map((i:{id:string})=>i.id).sort(),[...new Set(mealIds)].sort());
+  const flat=await post({action:"share",alias:"플랜별명",title:"장바구니",body:"상품만 골랐어요",style:"balanced",items:[mealIds[0]]});
+  assert.equal(flat.status,201);
+  const {id:flatId}=await flat.json();
+  const flatPost=(await (await GET(req())).json()).posts.find((p:{id:string})=>p.id===flatId);
+  assert.equal(flatPost.plan,null);
  }finally{await pool.query("DELETE FROM users WHERE id=ANY($1::bigint[])",[ids]);await pool.end();}
 });
