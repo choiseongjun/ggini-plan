@@ -2,6 +2,7 @@ import type { CatalogItem } from "./catalog";
 import { excludedFoods, excludedFoodAliases, type ExcludedFood } from './excluded-foods';
 export { excludedFoods, excludedFoodGroups } from './excluded-foods';
 import { calorieEstimate, type BodyProfile } from "./body-profile";
+import type { NutritionTarget } from "./nutrition-target";
 
 export const dietStyles = { balanced: "골고루 집밥", protein: "단백질 중심", plant: "식물성 식단", quick: "간편하게" } as const;
 export type DietPreferences = { style: keyof typeof dietStyles; fasting: "none" | "14:10" | "16:8"; start: number; excluded: (keyof typeof excludedFoods)[] };
@@ -71,7 +72,7 @@ function recipeFamily(recipe:Recipe) {
   if(/찜|오믈렛|스크램블/.test(recipe.name))return 'egg-tofu';
   return 'rice-plate';
 }
-export function recommendMeals(profile: BodyProfile, diet: DietPreferences, variant = 0, catalog: CatalogItem[] = [], history:MealHistory = []) {
+export function recommendMeals(profile: BodyProfile, diet: DietPreferences, variant = 0, catalog: CatalogItem[] = [], history:MealHistory = [], target: NutritionTarget | null = null) {
   const ingredientIds: Record<string,string> = {cereal:"cornflakes",milk:"milk",rice:"rice",chicken:"chicken",tofu:"tofu",egg:"eggs",yogurt:"yogurt",banana:"banana",oats:"oats",veg:"vegetable-mix",oil:"olive-oil",salmon:"salmon",beans:"chickpeas",pasta:"whole-wheat-pasta"};
   const productFor = (food:Food) => catalog.find(p=>p.id===ingredientIds[food]);
   const nutrient = (food:Food,index:1|2|3|4) => {
@@ -81,7 +82,7 @@ export function recommendMeals(profile: BodyProfile, diet: DietPreferences, vari
     const value=values[index-1];
     return basis && Number(basis[1])>0 && value!==null && value!==undefined && (item?.nutritionSourceUrl||item?.nutritionPhotoUrl) ? value*100/Number(basis[1]) : foods[food][index];
   };
-  const energy = calorieEstimate(profile);
+  const energy = target ? {daily: target.calories} : calorieEstimate(profile);
   if (!energy) return null;
   const foodExclusions:Record<Food,ExcludedFood[]> = {
     cereal:['corn','wheat'],milk:['milk'],rice:['rice'],chicken:['chicken'],tofu:['soy'],egg:['egg'],salmon:['fish'],

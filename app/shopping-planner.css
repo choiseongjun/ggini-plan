@@ -56,7 +56,9 @@
 .planner-exclusion-group>div{display:flex;flex-wrap:wrap;gap:8px}
 .planner-form .planner-exclusion-group label{display:flex;align-items:center;gap:7px;min-height:44px;margin:0;padding:8px 11px;border:1px solid #e0e4d7;border-radius:14px;background:white;font-size:13px;cursor:pointer}
 .planner-form .planner-exclusion-group label.is-checked{background:#eaf1df;border-color:#9ab781;color:#3e6131}
-.planner-restart{width:100%;margin:18px 0}
+.planner-reroll-actions{display:grid;gap:10px;margin:18px 0}
+.planner-reroll-actions .primary-button{width:100%}
+.planner-restart{width:100%;margin:0;background:transparent;border:1px solid #ccd9bb;color:#455a3d}
 .planner-controls{scroll-margin-top:90px}
 .planner-exclusions-toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 15px;border:1px solid #dce2ca;border-radius:15px;background:#fafbf5;font-size:13px;color:#455a3d}
 .planner-exclusions-toggle button{min-height:44px;padding:8px 15px;border:1px solid #dce2ca;border-radius:12px;background:white;color:#455a3d;font:inherit;cursor:pointer}

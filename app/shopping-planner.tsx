@@ -252,7 +252,10 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   {mode!=='settings'&&ids.length>1&&new Set(ids).size===1&&<p className="body-note" role="status">현재 조건에서는 한 가지 메뉴로만 구성됐어요. 예산·조리 방식·제외 재료 설정을 확인해 주세요. 다른 메뉴를 원하면 조건을 조정하고 다시 추천받아 주세요.</p>}
   {!locale.isTaiwan&&mode!=='settings'&&ids.length>0&&<details className="home-secondary"><summary>이 식단 공유하기</summary><SharePlanButton key={JSON.stringify([ids,conditions.days,conditions.slots])} userId={userId} onLogin={onLogin} conditions={conditions} mealIds={ids}/></details>}
   {!locale.isTaiwan&&mode!=='settings'&&ids.length>0&&<p className="body-note">음식 종류 · {conditions.mealKinds?.length?conditions.mealKinds.map(k=>mealKinds[k].label).join('·'):'골고루'} / 식사 목표 · {shoppingGoals[conditions.goal??'maintain'].label}</p>}
-  {mode==='plan'&&ids.length>0&&<button type="button" className="primary-button planner-restart" disabled={busy||progress.busy} onClick={returnToSetup}>추천 다시 받기</button>}
+  {mode==='plan'&&ids.length>0&&<div className="planner-reroll-actions">
+   <button type="button" className="primary-button" disabled={busy||loading||progress.busy||!progress.ready} onClick={()=>void generate(conditions)}>🔀 다른 조합으로 다시 추천</button>
+   <button type="button" className="planner-restart" disabled={busy||progress.busy} onClick={returnToSetup}>조건 바꿔서 다시 추천받기</button>
+  </div>}
   {(mode!=='plan'||!ids.length)&&<details ref={setupRef} tabIndex={-1} className="planner-controls" open={mode==='settings'||mode==='plan'}><summary>{ids.length?'예산·취향 바꿔서 새로 추천받기':'내 예산으로 식단 준비하기'}</summary>
   <div className="planner-heading">{mode==='plan'&&<div className="planner-buddy" aria-hidden="true"><RiceBuddy/><span>잘 챙겨 먹자!</span></div>}<span>예산에 맞는 장보기</span><h2 id="planner-title">{mode==='settings'?'내 장보기 설정':mode==='cart'?'이번에 살 것':'이번 주, 뭐 먹을까요?'}</h2><p>{mode==='settings'?'자주 쓰는 예산과 식사 취향을 저장해 두세요. 다음 추천부터 다시 입력할 필요 없어요.':'예산을 먼저 정하고 인원과 끼니를 고르면, 살 만한 메뉴를 추천해요.'}</p></div>
   {progress.error&&!ids.length&&mode!=='cart'&&<p role="alert">{progress.error} <button type="button" onClick={progress.reload}>구매 상태 다시 불러오기</button></p>}

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { activities, calorieEstimate, parseBodyProfile, type BodyProfile } from "../lib/body-profile";
 import { defaultDiet, dietStyles, excludedFoods, excludedFoodGroups, parseDiet, type recommendMeals, type DietPreferences } from "../lib/meal-plan";
+import { parseNutritionTarget, type NutritionTarget } from "../lib/nutrition-target";
 import { RiceBuddy } from "./rice-buddy";
 import { AppLoading } from "./app-loading";
 
@@ -19,15 +20,23 @@ export function BodyProfilePanel({ userId, name, onLogin, onSaved }: { userId?: 
   const [meals, setMeals] = useState("3");
   const [diet, setDiet] = useState<DietPreferences>(defaultDiet);
   const [variant, setVariant] = useState(0);
-  const [storedPlan, setStoredPlan] = useState<{ profile: BodyProfile; diet: DietPreferences; recommendation: NonNullable<ReturnType<typeof recommendMeals>>; variant: number; createdAt: string | null } | null>(null);
+  const [storedPlan, setStoredPlan] = useState<{ profile: BodyProfile; diet: DietPreferences; nutritionTarget?: NutritionTarget | null; recommendation: NonNullable<ReturnType<typeof recommendMeals>>; variant: number; createdAt: string | null } | null>(null);
   const [pregnancy, setPregnancy] = useState(false);
+  const [targetMode, setTargetMode] = useState<"auto" | "manual">("auto");
+  const [targetCalories, setTargetCalories] = useState("");
+  const [carbRatio, setCarbRatio] = useState("50");
+  const [proteinRatio, setProteinRatio] = useState("30");
+  const [fatRatio, setFatRatio] = useState("20");
   const [loading, setLoading] = useState(Boolean(userId));
   const [loadError, setLoadError] = useState(false);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const profile = parseBodyProfile({ height: Number(height), weight: Number(weight), age: Number(age), sex, activity, meals: Number(meals), pregnancy });
-  const planMatches = storedPlan && JSON.stringify(storedPlan.profile) === JSON.stringify(profile) && JSON.stringify(storedPlan.diet) === JSON.stringify(diet);
+  const ratioSum = Number(carbRatio) + Number(proteinRatio) + Number(fatRatio);
+  const nutritionTarget = targetMode === "manual" ? parseNutritionTarget({ calories: Number(targetCalories), carbRatio: Number(carbRatio), proteinRatio: Number(proteinRatio), fatRatio: Number(fatRatio) }) : null;
+  const targetError = targetMode === "manual" && !nutritionTarget;
+  const planMatches = storedPlan && JSON.stringify(storedPlan.profile) === JSON.stringify(profile) && JSON.stringify(storedPlan.diet) === JSON.stringify(diet) && JSON.stringify(storedPlan.nutritionTarget ?? null) === JSON.stringify(nutritionTarget);
   const recommendation = planMatches ? storedPlan.recommendation : null;
   const showPlan = Boolean(recommendation);
   const missingFields = [[height,"키"],[weight,"체중"],[age,"만 나이"],[sex,"성별"],[activity,"활동량"]].filter(([value])=>!value.trim()).map(([,label])=>label);
@@ -45,14 +54,14 @@ export function BodyProfilePanel({ userId, name, onLogin, onSaved }: { userId?: 
       fetch("/api/profile", { cache: "no-store", signal: controller.signal }),
       fetch("/api/meal-plans", { cache: "no-store", signal: controller.signal }),
     ]).then(async ([response, plansResponse]) => {
-      const data = await response.json() as { profile?: BodyProfile; diet?: DietPreferences; error?: string };
+      const data = await response.json() as { profile?: BodyProfile; diet?: DietPreferences; nutritionTarget?: NutritionTarget | null; error?: string };
       const history = await plansResponse.json();
       if (!response.ok) throw new Error(data.error);
       if (!plansResponse.ok) throw new Error(history.error);
       if (controller.signal.aborted) return;
       if (history.plans[0]) {
         const latest = history.plans[0];
-        setStoredPlan({...latest,profile:parseBodyProfile(latest.profile),diet:parseDiet(latest.diet)});
+        setStoredPlan({...latest,profile:parseBodyProfile(latest.profile),diet:parseDiet(latest.diet),nutritionTarget:parseNutritionTarget(latest.nutritionTarget)});
         setVariant(latest.variant);
       }
       if (data.profile) {
@@ -60,6 +69,10 @@ export function BodyProfilePanel({ userId, name, onLogin, onSaved }: { userId?: 
         setHeight(String(p.height)); setWeight(String(p.weight)); setAge(String(p.age)); setSex(p.sex);
         setDiet(parseDiet(data.diet) ?? defaultDiet);
         setActivity(p.activity); setMeals(String(p.meals)); setPregnancy(p.pregnancy);
+      }
+      if (data.nutritionTarget) {
+        setTargetMode("manual"); setTargetCalories(String(data.nutritionTarget.calories));
+        setCarbRatio(String(data.nutritionTarget.carbRatio)); setProteinRatio(String(data.nutritionTarget.proteinRatio)); setFatRatio(String(data.nutritionTarget.fatRatio));
       }
     }).catch(error => {
       if (controller.signal.aborted) return;
@@ -72,9 +85,10 @@ export function BodyProfilePanel({ userId, name, onLogin, onSaved }: { userId?: 
     if (saving) return;
     setMessage(""); setError("");
     if (!profile) { setError("모든 항목을 입력해 주세요. 만 19~78세의 성인 계산을 지원해요."); return; }
+    if (targetError) { setError("칼로리·탄단지 목표를 확인해 주세요. 칼로리는 800~6000kcal, 비율 합은 100%여야 해요."); return; }
     setSaving(true);
     try {
-      const response = await fetch("/api/meal-plans", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ profile, diet, variant: nextVariant }) });
+      const response = await fetch("/api/meal-plans", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ profile, diet, variant: nextVariant, nutritionTarget }) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error ?? "식단을 생성하지 못했어요.");
       setStoredPlan(data.plan); setVariant(nextVariant);if(data.saved)onSaved?.();
@@ -85,10 +99,11 @@ export function BodyProfilePanel({ userId, name, onLogin, onSaved }: { userId?: 
   async function save(event: FormEvent) {
     event.preventDefault();
     if(!profile){setError('신체 정보의 필수 항목을 입력해 주세요.');return;}
+    if(targetError){setError('칼로리·탄단지 목표를 확인해 주세요. 칼로리는 800~6000kcal, 비율 합은 100%여야 해요.');return;}
     if(!userId){onLogin();return;}
     setSaving(true);setError('');setMessage('');
     try{
-      const response=await fetch('/api/profile',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({...profile,diet})});
+      const response=await fetch('/api/profile',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({...profile,diet,nutritionTarget})});
       const data=await response.json();if(!response.ok)throw new Error(data.error);
       setStoredPlan(null);onSaved?.();
       setMessage(profile.pregnancy?'정보를 저장했어요. 현재는 자동 맞춤 추천을 제공하지 않아요.':'내 정보를 저장했어요. 아래에서 예산과 챙길 끼니를 고르고 ‘저장하고 내 정보로 추천받기’를 눌러 주세요.');
@@ -117,6 +132,25 @@ export function BodyProfilePanel({ userId, name, onLogin, onSaved }: { userId?: 
         </div>
         <label>평소 활동량<select required value={activity} onChange={e => setActivity(e.target.value)}><option value="">생활 패턴을 선택해 주세요</option>{Object.entries(activities).map(([key, value]) => <option value={key} key={key}>{value.label}</option>)}</select></label>
         <label>하루 식사 횟수<select value={meals} onChange={e => setMeals(e.target.value)}>{[1,2,3,4,5,6].map(n => <option key={n} value={n}>{n}끼</option>)}</select></label>
+        <div className="diet-settings">
+          <h3>칼로리·탄단지 목표를 직접 정할까요?</h3>
+          <div className="diet-choices">
+            <button type="button" aria-pressed={targetMode==="auto"} onClick={()=>setTargetMode("auto")}>자동 계산 사용</button>
+            <button type="button" aria-pressed={targetMode==="manual"} onClick={()=>setTargetMode("manual")}>직접 입력</button>
+          </div>
+          {targetMode==="manual" && <>
+            <label>하루 목표 칼로리 <span>kcal</span><input type="number" min="800" max="6000" step="10" inputMode="numeric" placeholder="예: 1800" value={targetCalories} onChange={e=>setTargetCalories(e.target.value)}/></label>
+            <p className="body-note">한 끼 비율 프리셋으로 빠르게 맞추거나 아래에서 직접 입력하세요.</p>
+            <div className="diet-choices">{([["균형 50·30·20",50,30,20],["저탄수 30·35·35",30,35,35],["고단백 40·35·25",40,35,25]] as [string,number,number,number][]).map(([label,c,p,f])=><button type="button" key={label} onClick={()=>{setCarbRatio(String(c));setProteinRatio(String(p));setFatRatio(String(f));}}>{label}</button>)}</div>
+            <div className="body-input-grid">
+              <label>탄수화물 <span>%</span><input type="number" min="0" max="100" step="5" inputMode="numeric" value={carbRatio} onChange={e=>setCarbRatio(e.target.value)}/></label>
+              <label>단백질 <span>%</span><input type="number" min="0" max="100" step="5" inputMode="numeric" value={proteinRatio} onChange={e=>setProteinRatio(e.target.value)}/></label>
+              <label>지방 <span>%</span><input type="number" min="0" max="100" step="5" inputMode="numeric" value={fatRatio} onChange={e=>setFatRatio(e.target.value)}/></label>
+            </div>
+            <p className="body-note">비율 합 {ratioSum}%{Math.abs(ratioSum-100)>1?' · 100%로 맞춰 주세요':''}{nutritionTarget?` · 하루 탄수화물 약 ${Math.round(nutritionTarget.calories*nutritionTarget.carbRatio/100/4)}g · 단백질 약 ${Math.round(nutritionTarget.calories*nutritionTarget.proteinRatio/100/4)}g · 지방 약 ${Math.round(nutritionTarget.calories*nutritionTarget.fatRatio/100/9)}g`:''}</p>
+            <p className="body-note">직접 입력한 목표는 자동 계산 대신 홈 장보기 추천과 아래 하루 식단 추천에 반영돼요.</p>
+          </>}
+        </div>
         <div className="diet-settings">
           <h3>어떤 식단을 좋아하세요?</h3>
           <div className="diet-choices">{Object.entries(dietStyles).map(([key,label]) => <button type="button" key={key} aria-pressed={diet.style === key} onClick={() => setDiet({...diet,style:key as DietPreferences["style"]})}>{label}</button>)}</div>

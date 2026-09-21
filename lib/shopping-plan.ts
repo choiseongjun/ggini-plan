@@ -177,3 +177,13 @@ export function swapMeal(ids:string[], index:number, products:PlanProduct[], c:P
  options.sort((a,b)=>planScore(b,basket(b,products,c.owned,c.supply,c.people),c,schedule)-planScore(a,basket(a,products,c.owned,c.supply,c.people),c,schedule));
  return options[0]??null;
 }
+// Browsable candidates for one slot, so the UI can let people pick instead of only accepting a single auto-swap.
+export function alternativesFor(products:PlanProduct[], ids:string[], c:PlanConditions, index:number, limit=6):PlanProduct[] {
+ const current=ids[index]?cookingDishId(ids[index]):null;
+ return productsForGoal(slotCandidates(products,c,index),c.goal)
+  .filter(p=>cookingDishId(p.id)!==current)
+  .filter(p=>!ids.some((id,i)=>i!==index&&cookingDishId(id)===cookingDishId(p.id)))
+  .filter(p=>!repeatsDailyMain(ids,products,c,index,p))
+  .sort((a,b)=>(b.personalizationScore??0)-(a.personalizationScore??0)||a.price/a.servings-b.price/b.servings)
+  .slice(0,limit);
+}

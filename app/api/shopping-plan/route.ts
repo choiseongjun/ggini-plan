@@ -10,9 +10,9 @@ import {isShoppingGoal,isBudgetMode} from '../../../lib/shopping-goals';
 import {validMealKinds} from '../../../lib/meal-kinds';
 import {initialConditions} from '../../../lib/shopping-plan';
 async function personalizedCatalog(userId?:string){
- const row=userId?(await getPool().query('SELECT height::float8,weight::float8,age,sex,activity,meals,pregnancy,diet_preferences FROM body_profiles WHERE user_id=$1',[userId])).rows[0]:null;
+ const row=userId?(await getPool().query('SELECT height::float8,weight::float8,age,sex,activity,meals,pregnancy,diet_preferences,nutrition_target FROM body_profiles WHERE user_id=$1',[userId])).rows[0]:null;
  const catalog=await planProducts(),diet=parseDiet(row?.diet_preferences)??defaultDiet;
- return {...personalizeProducts(catalog,row,row?.diet_preferences),baseProducts:personalizeProducts(catalog,row,{...diet,excluded:[]}).products,excluded:diet.excluded};
+ return {...personalizeProducts(catalog,row,row?.diet_preferences,row?.nutrition_target),baseProducts:personalizeProducts(catalog,row,{...diet,excluded:[]},row?.nutrition_target).products,excluded:diet.excluded};
 }
 export const runtime='nodejs';
 export async function PATCH(request:NextRequest){

@@ -92,6 +92,7 @@ VALUES ('banana', '바나나', '약 1.5kg · 1송이', 8400, '약 10회', 1500, 
 ON CONFLICT (id) DO NOTHING;
 
 ALTER TABLE body_profiles ADD COLUMN IF NOT EXISTS diet_preferences JSONB NOT NULL DEFAULT '{}'::jsonb;
+ALTER TABLE body_profiles ADD COLUMN IF NOT EXISTS nutrition_target JSONB NOT NULL DEFAULT '{}'::jsonb;
 
 CREATE TABLE IF NOT EXISTS meal_plans (
   id BIGSERIAL PRIMARY KEY,
@@ -104,6 +105,7 @@ CREATE TABLE IF NOT EXISTS meal_plans (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 CREATE INDEX IF NOT EXISTS meal_plans_user_created_idx ON meal_plans(user_id, created_at DESC, id DESC);
+ALTER TABLE meal_plans ADD COLUMN IF NOT EXISTS nutrition_target_snapshot JSONB;
 
 CREATE TABLE IF NOT EXISTS community_posts (
  id BIGSERIAL PRIMARY KEY, user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
