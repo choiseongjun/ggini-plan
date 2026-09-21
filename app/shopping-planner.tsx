@@ -122,6 +122,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
  },[userId,locale.isTaiwan,loading,endpoint,draftKey]);
  useEffect(()=>{
   const controller=new AbortController();
+  const finishLoading=startLoading('나에게 맞는 장보기를 준비하고 있어요');
   fetch(endpoint,{cache:'no-store',signal:controller.signal}).then(async r=>{const d=await r.json();if(!r.ok)throw new Error(d.error);return d;}).then(d=>{
    const catalog=d.baseProducts??d.products,defaults=d.excluded??[];
    setProducts(catalog);setProfileExcluded(defaults);setPersonalization(d.personalization);setError('');setIds([]);
@@ -139,9 +140,9 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
     const draft=JSON.parse(localStorage.getItem(draftKey)??sessionStorage.getItem(draftKey)??'null')??d.plan;const c=parseConditions(draft?.conditions);
     if(c){setAutomaticBudget(false);const resolved=resolveShoppingExclusions({...c,swapPreferences:saved?.swapPreferences??c.swapPreferences,mealKinds:saved?.mealKinds??c.mealKinds,budgetMode:saved?.budgetMode??c.budgetMode,goal:saved?.goal??c.goal??'maintain'},defaults);resolved.startDate??=locale.today();setConditions(resolved);if(Array.isArray(draft.mealIds)&&validMealIds(draft.mealIds,catalog,resolved)){setIds(draft.mealIds);localStorage.setItem(draftKey,JSON.stringify({conditions:resolved,mealIds:draft.mealIds,savedAt:Date.now()}));}}
    }catch{/* An expired draft should not stop browsing. */}
-  }).catch(e=>{if(!controller.signal.aborted)setError(e.message);}).finally(()=>{if(!controller.signal.aborted)setLoading(false);});
-  return()=>controller.abort();
- },[retry,draftKey,locale,endpoint,defaultConditions]);
+  }).catch(e=>{if(!controller.signal.aborted)setError(e.message);}).finally(()=>{if(!controller.signal.aborted)setLoading(false);finishLoading();});
+  return()=>{controller.abort();finishLoading();};
+ },[retry,draftKey,locale,endpoint,defaultConditions,startLoading]);
  function remember(c:PlanConditions,mealIds:string[]){try{localStorage.setItem(draftKey,encodeDraft(c,mealIds));}catch{/* Saving to an account remains available. */}}
  function updateMealKinds(mealKinds:MealKind[]){updatePreferences({mealKinds});}
  function updatePreferences(patch:Partial<Pick<PlanConditions,'mealKinds'|'goal'|'budgetMode'|'swapPreferences'>>){
@@ -260,7 +261,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   {!locale.isTaiwan&&mode!=='settings'&&ids.length>0&&<p className="body-note">음식 종류 · {conditions.mealKinds?.length?conditions.mealKinds.map(k=>mealKinds[k].label).join('·'):'골고루'} / 식사 목표 · {shoppingGoals[conditions.goal??'maintain'].label}</p>}
   {mode==='plan'&&ids.length>0&&<div className="planner-reroll-actions">
    <button type="button" className="primary-button" disabled={busy||loading||progress.busy||!progress.ready} onClick={()=>void generate(conditions)}>🔀 다른 조합으로 다시 추천</button>
-   <button type="button" className="planner-restart" disabled={busy||progress.busy} onClick={returnToSetup}>조건 바꿔서 다시 추천받기</button>
+   <button type="button" className="planner-restart" disabled={busy||progress.busy} onClick={returnToSetup}><span aria-hidden="true">⚙️</span> 조건 바꿔서 다시 추천받기</button>
   </div>}
   {(mode!=='plan'||!ids.length)&&<details ref={setupRef} tabIndex={-1} className="planner-controls" open={mode==='settings'||mode==='plan'}><summary>{ids.length?'예산·취향 바꿔서 새로 추천받기':'내 예산으로 식단 준비하기'}</summary>
   <div className="planner-heading">{mode==='plan'&&<div className="planner-buddy" aria-hidden="true"><RiceBuddy/><span>잘 챙겨 먹자!</span></div>}<span>예산에 맞는 장보기</span><h2 id="planner-title">{mode==='settings'?'내 장보기 설정':mode==='cart'?'이번에 살 것':'이번 주, 뭐 먹을까요?'}</h2><p>{mode==='settings'?'자주 쓰는 예산과 식사 취향을 저장해 두세요. 다음 추천부터 다시 입력할 필요 없어요.':ultra?'예산만 고르면 바로 살 만한 메뉴를 추천해 드려요.':'예산을 먼저 정하고 인원과 끼니를 고르면, 살 만한 메뉴를 추천해요.'}</p></div>
@@ -268,6 +269,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   {mode!=='cart'&&<form className="planner-form" onSubmit={e=>{e.preventDefault();if(waitingForBudget)return;if(mode==='settings')void savePreferences();else void generate();}}>
    <label className="planner-budget-input"><span>{simple&&<span className="planner-step">1</span>} {locale.isTaiwan?'장보기 예산':`${conditions.people??1}명 전체 장보기 예산`}</span> <small>배송비 제외</small><input type="number" min={locale.isTaiwan?10:1000} max={locale.isTaiwan?10000:1000000} step={1} required value={conditions.budget/(locale.isTaiwan?100:1)||''} onChange={e=>update({budget:Math.round(Number(e.target.value)*(locale.isTaiwan?100:1))})}/></label>
    {mode==='plan'&&!locale.isTaiwan&&<div className="planner-mode" role="group" aria-label="추천 설정 모드"><button type="button" aria-pressed={formMode==='ultra'} onClick={()=>setFormMode('ultra')}>초간단</button><button type="button" aria-pressed={formMode==='simple'} onClick={()=>setFormMode('simple')}>간단 모드</button><button type="button" aria-pressed={formMode==='detailed'} onClick={()=>setFormMode('detailed')}>상세 모드</button></div>}
+   {ultra&&<ShoppingGoalPicker value={conditions.goal} onChange={goal=>updatePreferences({goal})} settings={false} disabled={loading||busy}/>}
    {ultra&&<fieldset className="planner-ultra-presets" disabled={loading||busy||!progress.ready}>
     <legend>👇 예산만 골라도 바로 추천해요</legend>
     <div>{([['알뜰',0.7],['보통',1],['넉넉',1.3]] as [string,number][]).map(([label,ratio])=>{

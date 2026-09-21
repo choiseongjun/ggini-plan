@@ -95,19 +95,22 @@ export default function Home() {
 
   useEffect(() => {
     let controller:AbortController|undefined;
-    const reload=()=>{
+    const reload=(showLoading:boolean)=>{
       controller?.abort();
       const request=new AbortController();controller=request;
       // Refresh records after an expense change without restarting the catalog or toast.
+      const finish=showLoading?startLoading("이번 주 식단·예산을 불러오고 있어요"):undefined;
       void fetch("/api/dashboard",{cache:"no-store",signal:request.signal}).then(async response=>{
         const dash=await response.json();
         if(!response.ok)throw new Error(dash.error??"식단을 불러오지 못했어요.");
         if(!request.signal.aborted){setDashboard(dash);setDataError("");}
-      }).catch(e=>{if(!request.signal.aborted)setDataError(e.message);});
+      }).catch(e=>{if(!request.signal.aborted)setDataError(e.message);}).finally(finish);
     };
-    reload();window.addEventListener("expenses-changed",reload);
-    return()=>{controller?.abort();window.removeEventListener("expenses-changed",reload);};
-  },[authUser?.id]);
+    reload(true);
+    const onExpensesChanged=()=>reload(false);
+    window.addEventListener("expenses-changed",onExpensesChanged);
+    return()=>{controller?.abort();window.removeEventListener("expenses-changed",onExpensesChanged);};
+  },[authUser?.id,startLoading]);
 
   useEffect(() => {
     const controller = new AbortController();
