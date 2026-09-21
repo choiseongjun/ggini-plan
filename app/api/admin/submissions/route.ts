@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { revalidateTag } from "next/cache";
+import { invalidateCatalogCache } from "../../../../lib/catalog-db";
 import { adminUser } from "../../../../lib/admin";
 import { sameOrigin } from "../../../../lib/auth";
 import { getPool } from "../../../../lib/db";
@@ -39,7 +39,7 @@ export async function PUT(request: NextRequest) {
       }
       await client.query("UPDATE submissions SET payload=$1,status=$2,review_note=$3,catalog_id=$4,reviewed_by=$5,reviewed_at=NOW(),version=version+1,updated_at=NOW() WHERE id=$6", [JSON.stringify(payload), input.status, note, catalogId, admin.id, row.id]);
       await client.query("COMMIT");
-      if (catalogId) revalidateTag("catalog", { expire: 0 });
+      if (catalogId) invalidateCatalogCache();
       return json({ ok: true, catalogId });
     } catch (e) { await client.query("ROLLBACK"); throw e; } finally { client.release(); }
   } catch { return json({ error: "검토 결과를 저장하지 못했습니다." }, 503); }

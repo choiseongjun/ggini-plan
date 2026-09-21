@@ -1,4 +1,3 @@
-import { unstable_cache } from "next/cache";
 import { type CatalogCategory, type CatalogItem } from "./catalog";
 import { getPool } from "./db";
 import {korea,type MarketContext} from './regional';
@@ -21,12 +20,27 @@ type CatalogRow = {
 };
 
 // Cached so every home-page load and the comparison-trends widget don't each
-// re-run the full catalog query against Supabase; admin writes bust this via revalidateTag('catalog').
-export const catalogItems = unstable_cache(
-  async (context: MarketContext = korea): Promise<CatalogItem[]> => loadCatalogItems(context),
-  ["catalog-items"],
-  { revalidate: 300, tags: ["catalog"] },
-);
+// re-run the full catalog query against Supabase; admin writes bust this via invalidateCatalogCache().
+// The catalog serializes to several MB, past Next's unstable_cache 2MB per-entry limit
+// (writes fail there silently), so this uses a plain warm-instance cache instead, same
+// pattern as the pg Pool singleton in lib/db.ts.
+const TTL_MS = 5 * 60 * 1000;
+type CacheEntry = { data: CatalogItem[]; expires: number };
+const globalForCatalog = globalThis as typeof globalThis & { kkiniplanCatalogCache?: Map<string, CacheEntry> };
+const cache = globalForCatalog.kkiniplanCatalogCache ??= new Map();
+
+export async function catalogItems(context: MarketContext = korea): Promise<CatalogItem[]> {
+  const key = `${context.market}:${context.currency}:${context.locale}`;
+  const cached = cache.get(key);
+  if (cached && cached.expires > Date.now()) return cached.data;
+  const data = await loadCatalogItems(context);
+  cache.set(key, { data, expires: Date.now() + TTL_MS });
+  return data;
+}
+
+export function invalidateCatalogCache() {
+  cache.clear();
+}
 
 async function loadCatalogItems(context:MarketContext=korea): Promise<CatalogItem[]> {
   const result = await getPool().query<CatalogRow>(`SELECT c.nutrition_estimate,c.id,c.market_code,c.currency_code,c.source_locale,c.food_type,c.category,c.in_weekly_cart,c.product_image_url,c.unit,c.emoji,c.color,c.price_checked_at,c.price_note,c.allergens,c.price,c.quantity,c.product_url,c.allergy_info,c.nutrition_source_name,c.nutrition_source_url,c.nutrition_basis,c.calories_kcal,c.protein_g,c.carbohydrates_g,c.fat_g,c.sodium_mg,c.created_at,c.updated_at,c.nutrition_photo_url,c.nutrition_photo IS NOT NULL AS has_photo,

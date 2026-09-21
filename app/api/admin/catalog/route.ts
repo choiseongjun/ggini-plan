@@ -1,6 +1,6 @@
 import { importProductImage, storeImage, ImageStorageError } from "../../../../lib/catalog-storage";
 import { NextRequest } from "next/server";
-import { revalidateTag } from "next/cache";
+import { invalidateCatalogCache } from "../../../../lib/catalog-db";
 import { randomUUID } from "node:crypto";
 import { adminUser } from "../../../../lib/admin";
 import { sameOrigin } from "../../../../lib/auth";
@@ -95,7 +95,7 @@ async function saveItem(request: NextRequest, create: boolean) {
        ON CONFLICT (id) DO UPDATE SET name=$2, detail=$3, price=$4, portions=$5, quantity=$6, search_query=$7, product_url=$8, nutrition_source_name=$9, nutrition_source_url=$10, nutrition_basis=$11, calories_kcal=$12, protein_g=$13, carbohydrates_g=$14, fat_g=$15, sodium_mg=$16, updated_by=$17, nutrition_photo_url=COALESCE($18,catalog_items.nutrition_photo_url), nutrition_photo=CASE WHEN $18::text IS NOT NULL THEN NULL ELSE catalog_items.nutrition_photo END, nutrition_photo_mime=COALESCE($19,catalog_items.nutrition_photo_mime), food_type=CASE WHEN $32 THEN $31 ELSE catalog_items.food_type END, category=$20, in_weekly_cart=$21, unit=$22, emoji=$23, color=$24, product_image_url=$25, price_checked_at=CASE WHEN $8::text IS NOT NULL THEN NOW() ELSE NULL END, allergens=COALESCE($26::text[],catalog_items.allergens), allergy_info=COALESCE($27::jsonb,catalog_items.allergy_info), updated_at=NOW()`,
       [id, name, detail, price, portions, quantity, searchQuery, productUrl, sourceName, sourceUrl, basis, ...nutrients, user.id, photoUrl, photo?.mime ?? null, category, inWeeklyCart, unit, emoji, color, productImageUrl, allergens, allergyInfo ? JSON.stringify(allergyInfo) : null, region.market, region.currency, region.locale, foodType, Object.hasOwn(input,"foodType")],
     );
-    revalidateTag("catalog", { expire: 0 });
+    invalidateCatalogCache();
     return Response.json({ id, ...await adminCatalog() }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     if (error instanceof RegionError) return Response.json({error:'지원하는 국가를 선택해 주세요.'},{status:400});
