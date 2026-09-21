@@ -1,4 +1,5 @@
 import {NextRequest} from 'next/server';
+import {revalidateTag} from 'next/cache';
 import {adminUser} from '../../../../../lib/admin';
 import {sameOrigin} from '../../../../../lib/auth';
 import {getPool} from '../../../../../lib/db';
@@ -32,6 +33,7 @@ async function handle(request: NextRequest, save: boolean) {
     const metadata=estimate?{fields:estimate.fields,note:estimate.note,model:estimate.model,estimatedAt:new Date().toISOString()}:null;
     const result = await getPool().query(`UPDATE catalog_items SET nutrition_basis=$2,calories_kcal=$3,protein_g=$4,carbohydrates_g=$5,fat_g=$6,sodium_mg=$7,nutrition_estimate=COALESCE($11::jsonb,nutrition_estimate),nutrition_source_name=CASE WHEN $11::jsonb IS NOT NULL OR nutrition_estimate IS NOT NULL THEN 'AI 추정 영양정보 · 실제 값과 차이 가능' ELSE '판매처 영양정보 · 관리자 확인' END,nutrition_source_url=$8,updated_by=$9,updated_at=NOW() WHERE id=$1 AND updated_at=$10::timestamptz`, [item.id,n.nutritionBasis,n.caloriesKcal,n.proteinG,n.carbohydratesG,n.fatG,n.sodiumMg,item.product_url,user.id,input.version,metadata?JSON.stringify(metadata):null]);
     if (!result.rowCount) return Response.json({error: '상품 정보가 변경됐습니다. 다시 읽은 후 저장해 주세요.'}, {status: 409});
+    revalidateTag('catalog',{expire:0});
     return Response.json({saved: true}, {headers: {'Cache-Control': 'no-store'}});
   } catch (error) {
     if (error instanceof NutritionAIError) return Response.json({error:error.message},{status:502});

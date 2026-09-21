@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import { revalidateTag } from "next/cache";
 import { adminUser } from "../../../../lib/admin";
 import { sameOrigin } from "../../../../lib/auth";
 import { getPool } from "../../../../lib/db";
@@ -37,7 +38,9 @@ export async function PUT(request: NextRequest) {
         await client.query(`INSERT INTO catalog_items(id,name,detail,price,portions,quantity,search_query,product_url,product_image_url,unit,category,in_weekly_cart,updated_by,price_checked_at,price_note) VALUES($1,$2,$3,$4,$5,$6,$2,$7,$8,$9,$10,TRUE,$11,NOW(),'사용자 제보 · 관리자 확인 가격 · 배송비 별도')`, [catalogId, payload.name, `${payload.quantity}${payload.unit} · ${payload.portions}`, payload.price, payload.portions, payload.quantity, payload.productUrl, imageUrl, payload.unit, payload.category, admin.id]);
       }
       await client.query("UPDATE submissions SET payload=$1,status=$2,review_note=$3,catalog_id=$4,reviewed_by=$5,reviewed_at=NOW(),version=version+1,updated_at=NOW() WHERE id=$6", [JSON.stringify(payload), input.status, note, catalogId, admin.id, row.id]);
-      await client.query("COMMIT"); return json({ ok: true, catalogId });
+      await client.query("COMMIT");
+      if (catalogId) revalidateTag("catalog", { expire: 0 });
+      return json({ ok: true, catalogId });
     } catch (e) { await client.query("ROLLBACK"); throw e; } finally { client.release(); }
   } catch { return json({ error: "검토 결과를 저장하지 못했습니다." }, 503); }
 }

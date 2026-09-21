@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import { type CatalogCategory, type CatalogItem } from "./catalog";
 import { getPool } from "./db";
 import {korea,type MarketContext} from './regional';
@@ -19,7 +20,15 @@ type CatalogRow = {
   sodium_mg: string | null; created_at: Date | null; updated_at: Date;
 };
 
-export async function catalogItems(context:MarketContext=korea): Promise<CatalogItem[]> {
+// Cached so every home-page load and the comparison-trends widget don't each
+// re-run the full catalog query against Supabase; admin writes bust this via revalidateTag('catalog').
+export const catalogItems = unstable_cache(
+  async (context: MarketContext = korea): Promise<CatalogItem[]> => loadCatalogItems(context),
+  ["catalog-items"],
+  { revalidate: 300, tags: ["catalog"] },
+);
+
+async function loadCatalogItems(context:MarketContext=korea): Promise<CatalogItem[]> {
   const result = await getPool().query<CatalogRow>(`SELECT c.nutrition_estimate,c.id,c.market_code,c.currency_code,c.source_locale,c.food_type,c.category,c.in_weekly_cart,c.product_image_url,c.unit,c.emoji,c.color,c.price_checked_at,c.price_note,c.allergens,c.price,c.quantity,c.product_url,c.allergy_info,c.nutrition_source_name,c.nutrition_source_url,c.nutrition_basis,c.calories_kcal,c.protein_g,c.carbohydrates_g,c.fat_g,c.sodium_mg,c.created_at,c.updated_at,c.nutrition_photo_url,c.nutrition_photo IS NOT NULL AS has_photo,
     COALESCE(t.name,c.name) AS name,COALESCE(t.detail,c.detail) AS detail,COALESCE(t.portions,c.portions) AS portions,COALESCE(t.search_query,c.search_query) AS search_query,t.locale_code AS translated_locale
     FROM catalog_items c LEFT JOIN catalog_translations t ON t.product_id=c.id AND t.locale_code=$3
