@@ -68,7 +68,9 @@ export default function Home() {
   const [sortBy, setSortBy] = useState<"unit" | "total">("unit");
   const [catalogQuery, setCatalogQuery] = useState("");
   const [catalogCategory, setCatalogCategory] = useState("all");
+  const [catalogShown, setCatalogShown] = useState(24);
   const filteredProducts = products.filter((product) => (catalogCategory === "all" || product.category === catalogCategory) && `${product.name} ${product.detail}`.toLocaleLowerCase().includes(catalogQuery.trim().toLocaleLowerCase()));
+  const visibleProducts = filteredProducts.slice(0, catalogShown);
   const compareProduct = products.find((product) => product.id === compareProductId);
   const compareOffers = [...(comparison?.offers ?? [])].sort((a, b) => sortBy === "unit" ? (a.unitPrice ?? Number.POSITIVE_INFINITY) - (b.unitPrice ?? Number.POSITIVE_INFINITY) || a.price - b.price : a.price - b.price);
   const compareLinks = shoppingSearchLinks(compareProduct?.searchQuery ?? "");
@@ -78,7 +80,9 @@ export default function Home() {
   async function saveSetup(event:React.FormEvent){event.preventDefault();setSavingBudget(true);setDataError("");try{const r=await fetch("/api/dashboard",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"budget",amount:Number(draftBudget)})});const d=await r.json();if(!r.ok)throw new Error(d.error);await refreshDashboard();setShowSetup(false);}catch(e){setDataError(e instanceof Error?e.message:"저장하지 못했어요.");}finally{setSavingBudget(false);}}
   const displayName = authUser?.name ?? "나";
 
+  const needsCatalog = tab === "home" || tab === "cart" || tab === "compare" || tab === "community";
   useEffect(() => {
+    if(!needsCatalog||catalogLoaded)return;
     const controller=new AbortController();
     const finish = startLoading("식단과 장바구니를 준비하고 있어요");
     void fetch("/api/catalog",{cache:"no-store",signal:controller.signal}).then(async response=>{
@@ -87,7 +91,7 @@ export default function Home() {
         if(!controller.signal.aborted){setProducts(catalog.items ?? []);setCatalogError("");setCatalogLoaded(true);}
       }).catch(()=>{if(!controller.signal.aborted){setCatalogLoaded(true);setCatalogError("상품을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.");}}).finally(finish);
     return()=>{controller.abort();finish();};
-  },[startLoading]);
+  },[needsCatalog,catalogLoaded,startLoading]);
 
   useEffect(() => {
     let controller:AbortController|undefined;
@@ -186,10 +190,11 @@ export default function Home() {
           <SharedBasket key={authUser?.id ?? "guest"} userId={authUser?.id} onCompare={openCompare}/>
           <div className="page-intro"><div className="week-label"><Icon name="bag" size={15}/> 판매 상품 카탈로그</div><h2>식탁을 채울 <span>장바구니</span></h2><p>식재료와 밀키트, 냉동식품을 눌러 가격과 영양 정보를 확인해 보세요.</p></div>
           <div className="list-heading"><h3>전체 상품 <span>{products.length}</span></h3><small>눌러서 판매처 비교</small></div>
-          <CatalogFilter query={catalogQuery} category={catalogCategory} onQuery={setCatalogQuery} onCategory={setCatalogCategory}/>
+          <CatalogFilter query={catalogQuery} category={catalogCategory} onQuery={(value) => { setCatalogQuery(value); setCatalogShown(24); }} onCategory={(value) => { setCatalogCategory(value); setCatalogShown(24); }}/>
           {catalogLoaded && !catalogError && products.length > 0 && filteredProducts.length === 0 && <p className="body-note">검색 결과가 없습니다.</p>}
           {(catalogQuery.trim() || catalogCategory !== "all") && catalogLoaded && !catalogError && <p className="body-note" role="status">전체 {products.length}개 중 {filteredProducts.length}개</p>}
-          {filteredProducts.length > 0 && <div className="food-list">{filteredProducts.map((food) => <button key={food.id} type="button" className="food-row comparison-entry" onClick={() => openCompare(food.id)}><ProductThumb item={food}/><span className="food-meta"><strong>{food.name}</strong><small>{catalogCategories[food.category]} · {food.detail}</small><em>{(food.nutritionSourceUrl || food.nutritionPhotoUrl) && food.proteinG !== null ? `단백질 ${food.proteinG}g / ${food.nutritionBasis}` : "영양 정보 확인 중"}</em></span><span className="food-price"><strong>{formatWon(food.price)}{food.priceNote?.includes("시작가") ? "~" : ""}</strong><small>가격 변동 가능 · {food.priceCheckedAt ? new Date(food.priceCheckedAt).toLocaleDateString("ko-KR",{timeZone:"Asia/Seoul"})+" 확인" : "확인일 미기록"}</small><small>{food.unit === "g" ? "100g당" : "1개당"} {formatWon(unitPrice(food.price, food.quantity, food.unit))}</small></span><Icon name="chevron" size={17}/></button>)}</div>}
+          {visibleProducts.length > 0 && <div className="food-list">{visibleProducts.map((food) => <button key={food.id} type="button" className="food-row comparison-entry" onClick={() => openCompare(food.id)}><ProductThumb item={food}/><span className="food-meta"><strong>{food.name}</strong><small>{catalogCategories[food.category]} · {food.detail}</small><em>{(food.nutritionSourceUrl || food.nutritionPhotoUrl) && food.proteinG !== null ? `단백질 ${food.proteinG}g / ${food.nutritionBasis}` : "영양 정보 확인 중"}</em></span><span className="food-price"><strong>{formatWon(food.price)}{food.priceNote?.includes("시작가") ? "~" : ""}</strong><small>가격 변동 가능 · {food.priceCheckedAt ? new Date(food.priceCheckedAt).toLocaleDateString("ko-KR",{timeZone:"Asia/Seoul"})+" 확인" : "확인일 미기록"}</small><small>{food.unit === "g" ? "100g당" : "1개당"} {formatWon(unitPrice(food.price, food.quantity, food.unit))}</small></span><Icon name="chevron" size={17}/></button>)}</div>}
+          {filteredProducts.length > catalogShown && <button type="button" className="text-link" onClick={() => setCatalogShown((n) => n + 24)}>상품 더 보기 · {filteredProducts.length - catalogShown}개 남음</button>}
           <div className="cart-note"><Icon name="spark" size={17}/><p>표시 가격은 확인 시점 기준으로 변동될 수 있어요. 할인·쿠폰·옵션·배송비에 따라 최종 결제금액이 달라지니 구매 전 판매처에서 확인해 주세요.</p></div>
         </>}
 
