@@ -23,7 +23,7 @@ export function MealAlternatives({index,ids,products,conditions,onChoose,disable
     const cheaper=total<current,pricier=total>current;
     return <article key={p.id} className="meal-alternative-card">
      {i===0&&<span className="meal-alternative-best">🌟 가장 잘 맞아요</span>}
-     <div className="meal-alternative-head">{!p.recipe&&<ProductThumb item={p}/>}<div><MealSourceBadge product={p}/><strong>{p.name}</strong><span>한 끼 {p.recipe?'재료비 ':''}약 {won(p.price/p.servings)}</span></div></div>
+     <div className="meal-alternative-head"><ProductThumb item={p} zoomable/><div><MealSourceBadge product={p}/><strong>{p.name}</strong><span>한 끼 {p.recipe?'재료비 ':''}약 {won(p.price/p.servings)}</span></div></div>
      <p className={`meal-alternative-diff${cheaper?' is-cheaper':pricier?' is-pricier':''}`}>{total===current?'💬 전체 구매 금액이 같아요':cheaper?`💚 전체 구매에서 ${won(current-total)} 줄어요`:`🧡 전체 구매에 ${won(total-current)} 더 필요해요`}</p>
      <div className="meal-alternative-actions">
       {p.recipe?<button type="button" aria-expanded={open} onClick={()=>setOpenId(open?null:p.id)}>{open?'레시피·영상 접기':'🎬 레시피·영상 보기'}</button>

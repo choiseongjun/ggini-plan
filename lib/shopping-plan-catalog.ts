@@ -1,32 +1,12 @@
-import {cookingProducts} from './cooking-recipes';
-import {expandedMeals,riceCombinations,yogurtCombinations} from './catalog-meals';
-import manifest from '../data/catalog-import-2026-09-16.json';
-import reviewed from '../data/shopping-verified-2026-09-17.json';
-import { catalogItems } from './catalog-db';
 import type { PlanProduct } from './shopping-plan';
-import {mealRole} from './meal-role';
+import {governmentOptimizedRecipeProducts} from './recipe-optimizer-plan';
 
+// Retailer-catalog candidates (Kurly/Oasis/Coupang real products, hand-authored recipes, combo
+// meals) are intentionally removed here per explicit instruction: the home recommendation now
+// draws only from government-DB-targeted synthesized recipes (lib/recipe-optimizer-plan.ts).
+// Coverage is currently small (as many dishes as have an approved template + saved result in
+// recipe_optimizer_results — see /admin/recipe-optimizer), so most meal slots/budgets will have
+// few or no candidates until more templates and saved recipes are added.
 export async function planProducts():Promise<PlanProduct[]> {
- const products=await catalogItems();
- const ready=products.flatMap(p=>{
-  const verified=reviewed.rows.find(row=>row.id===p.id&&row.name===p.name&&row.detail===p.detail&&row.productUrl===p.productUrl);
-  if(verified){
-   if(!verified.available||!verified.servings||!verified.servingNote)return [];
-   return [{...p,servings:verified.servings,servingGrams:verified.servingGrams??undefined,servingNote:verified.servingNote,avoidanceText:verified.allergyText}];
-  }
-  const source=manifest.rows.find(row=>row.id===p.id);
-  if(!source || source.name!==p.name || source.detail!==p.detail || !p.productUrl)return [];
-  // Start with rice/noodle meals. Soups, sauces and side dishes need additional ingredients.
-  if(!/볶음밥|솥밥|도시락|파스타|비빔국수/.test(p.name))return [];
-  const text=`${p.name} ${p.detail}`;
-  const explicit=text.match(/(\d+)\s*인분/)??text.match(/(\d+)\s*개입/)??text.match(/\((\d+)봉\)/);
-  const grams=p.detail.replaceAll(',','').match(/^(\d+)g/i);
-  const servings=explicit?Number(explicit[1]):(/도시락|파스타/.test(p.name)&&grams&&Number(grams[1])<=450?1:0);
-  if(servings<1||servings>10)return [];
-  return [{...p,servings,servingNote:explicit?`판매 구성 ${servings}인분/개입 기준`:'판매 1팩을 한 끼로 배정',avoidanceText:source.allergyText?.trim()||null}];
- });
- const expanded=expandedMeals(products);
- const known=new Set(ready.map(p=>p.id));
- const sides=[...new Map([...expanded.sides,...ready.filter(p=>mealRole(p)==='side')].map(p=>[p.id,p])).values()];
- return [...ready.filter(p=>mealRole(p)==='meal'),...expanded.mains.filter(p=>!known.has(p.id)),...riceCombinations(sides,products),...yogurtCombinations(products),...cookingProducts(products)];
+ return governmentOptimizedRecipeProducts();
 }

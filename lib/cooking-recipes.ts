@@ -2,9 +2,10 @@ import recipeData from '../data/cooking-recipes.json';
 import alternatives from '../data/cooking-ingredient-alternatives.json';
 import type {CatalogItem} from './catalog';
 import type {PlanProduct,MealSlot} from './shopping-plan';
-import {cookingIngredientPool,type IngredientRole} from './cooking-ingredient-pool';
+import {cookingIngredientPool,ingredientRoles,type IngredientRole} from './cooking-ingredient-pool';
 import {servingNutrients} from './serving-nutrients';
 import {withCookingSides} from './cooking-sides';
+import {inferFoodType} from './catalog-food-types';
 
 // Quantities are recipe portions, not extra catalog products or live price quotes.
 // Only these known selling configurations can be used; changed packs fail closed.
@@ -31,7 +32,11 @@ function nutrients(p:PlanProduct,packs:number){
  const n=servingNutrients(p);
  return {calories:n.calories===null?null:n.calories*packs,protein:n.protein===null?null:n.protein*packs};
 }
-export function cookingProducts(catalog:CatalogItem[]):PlanProduct[]{
+// Government-DB-derived dish names have no ingredient list of their own; an admin-approved AI
+// draft (lib/foodsafety-recipe-synthesis.ts) supplies a role+grams list instead, which plugs into
+// the exact same slot-role machinery extraRecipes already uses — never a Kurly-specific id.
+export type GovdbRecipeTemplate={id:string;name:string;roles:{role:IngredientRole;grams:number}[]};
+export function cookingProducts(catalog:CatalogItem[],govdbTemplates:GovdbRecipeTemplate[]=[]):PlanProduct[]{
  const pool=cookingIngredientPool(catalog);
  const completeNutrition=new Set<string>();
  for(const [role,group] of Object.entries(pool))for(const {product,amount} of group){
@@ -39,11 +44,22 @@ export function cookingProducts(catalog:CatalogItem[]):PlanProduct[]{
   if(n.calories!==null&&n.protein!==null&&n.fat!==null&&n.carbs!==null)completeNutrition.add(product.id);
  }
  const roles:Record<string,IngredientRole>={rice:'rice',tofu:'tofu',eggs:'eggs',chicken:'chicken','kurly-5036690':'vegetables','kurly-5104165':'beef','kurly-1000315118':'pork','kurly-1002274835':'belly','kurly-5152797':'onion','kurly-5031392':'mushroom','kurly-1001897355':'cabbage'};
+ const govdbExtraTargets:Record<string,{role:IngredientRole;amount:number}>={};
+ const govdbRecipes:Recipe[]=govdbTemplates.filter(t=>t.roles.length).map(t=>{
+  const parts:[string,number,string][]=t.roles.map((ing,i)=>{
+   const slot=`slot-${t.id}-${i}`;
+   govdbExtraTargets[slot]={role:ing.role,amount:ing.grams};
+   return [slot,1,ingredientRoles[ing.role]];
+  });
+  return {id:t.id,name:t.name,emoji:'🏛️',family:t.id,minutes:20,slots:['lunch','dinner'],parts,
+   steps:['정부 식품영양성분DB 기반으로 AI가 구성한 재료 조합이에요. 실제 이 음식의 정식 레시피가 아니라, 영양 목표에 맞춘 근사치예요.','각 재료를 평소 조리법대로 준비해 함께 드세요.']};
+ });
+ const allExtraTargets={...extraTargets,...govdbExtraTargets};
  const dynamicContracts:Record<string,{unit:string;quantity:number;grams:number;match:RegExp}>={};
- const dynamic=[...recipes,...extraRecipes].flatMap(recipe=>{
+ const dynamic=[...recipes,...extraRecipes,...govdbRecipes].flatMap(recipe=>{
   const choices=recipe.parts.map(([id,packs])=>{
-   const role=extraTargets[id]?.role??roles[id];if(!role)return [];
-   const amount=packs*(extraTargets[id]?.amount??(role==='eggs'?contracts[id].quantity:contracts[id].grams));
+   const role=allExtraTargets[id]?.role??roles[id];if(!role)return [];
+   const amount=packs*(allExtraTargets[id]?.amount??(role==='eggs'?contracts[id].quantity:contracts[id].grams));
    // Retain both low checkout prices and low unit prices, so large packs cannot crowd out small baskets.
    const group=pool[role];const options=[...new Map([...group.slice(0,4),...[...group].sort((a,b)=>a.product.price-b.product.price||a.product.id.localeCompare(b.product.id)).slice(0,4),...group.filter(o=>completeNutrition.has(o.product.id)).slice(0,3)].map(o=>[o.product.id,o])).values()];
    return options.map(({product:p,amount:packAmount})=>{
@@ -82,7 +98,7 @@ export function cookingProducts(catalog:CatalogItem[]):PlanProduct[]{
   const ingredients=parts.filter(p=>p!==null);
   const sum=(key:'calories'|'protein')=>ingredients.some(i=>i.nutrition[key]===null)?null:Math.round(ingredients.reduce((s,i)=>s+i.nutrition[key]!,0)*10)/10;
   const base=ingredients[0].product;
-  return [{...base,id:r.id,name:r.name,emoji:r.emoji,category:'other' as const,productUrl:null,productImageUrl:null,
+  return [{...base,id:r.id,name:r.name,emoji:r.emoji,category:'other' as const,foodType:inferFoodType(r.name)??null,productUrl:null,productImageUrl:null,
    detail:'재료를 직접 준비하는 1인분 · 양념 추가 시 비용·영양 별도',price:Math.round(ingredients.reduce((sum,p)=>sum+p.product.price*p.packs,0)),quantity:1,unit:'개' as const,servings:1,servingGrams:undefined,
    servingNote:'레시피 1인분 · 재료별 등록 영양 합산 예상',avoidanceText:ingredients.some(i=>i.product.avoidanceText===null)?null:ingredients.map(p=>`${p.label} ${p.product.avoidanceText} ${(p.product.allergens??[]).join(' ')}`).join(' '),
    allergens:[...new Set(ingredients.flatMap(p=>p.product.allergens??[]))],allergyInfo:null,nutritionSourceName:null,nutritionSourceUrl:null,nutritionPhotoUrl:null,nutritionBasis:null,caloriesKcal:null,proteinG:null,carbohydratesG:null,fatG:null,sodiumMg:null,protein:'재료 합산 예상',

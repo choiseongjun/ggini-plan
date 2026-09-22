@@ -159,7 +159,11 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
  }
  function update(patch:Partial<PlanConditions>){if(patch.budget!==undefined)setAutomaticBudget(false);const c={...conditions,...patch};if(c.slots&&c.days){if(c.mealCountMode)c.days=Math.ceil(c.meals/c.slots.length);else c.meals=c.slots.length*c.days;}setConditions(c);setIds([]);setMessage('');setError('');if(mode!=='settings')remember(c,[]);}
  async function generate(input=conditions){
-  setMessage('');setError('');if(!progress.ready){setError('구매 상태를 먼저 불러와 주세요.');return;}const c=parseConditions({...input,startDate:locale.today(),supply:conditions.supply});
+  setMessage('');setError('');if(!progress.ready){setError('구매 상태를 먼저 불러와 주세요.');return;}
+  // 초간단/간단 모드는 예산 활용 방식을 고를 수 있는 화면 자체가 없으니(상세 모드 전용 BudgetModePicker),
+  // "예산에 맞게 추천받기"라는 기대에 맞춰 항상 그 예산을 최대한 활용하도록 강제한다. 상세 모드는
+  // 사용자가 직접 고른 값을 그대로 존중한다.
+  const c=parseConditions({...input,budgetMode:detailedView?input.budgetMode:'full',startDate:locale.today(),supply:conditions.supply});
   if(!c){setError('챙길 끼니를 하나 이상 고르고 예산을 1,000~1,000,000원으로 입력해 주세요.');return;}
   setBusy(true);setIds([]);remember(c,[]);
   const finishLoading=startLoading('입맛에 맞는 메뉴를 찾고 있어요');

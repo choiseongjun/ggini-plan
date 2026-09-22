@@ -4,7 +4,9 @@ import Link from 'next/link';
 import {useRouter} from 'next/navigation';
 import {AuthScreen} from '../../auth-screen';
 import {OasisCollectionPanel} from '../oasis-collection-panel';
+import {CoupangCollectionPanel} from '../coupang-collection-panel';
 import {NutritionAIStatus} from '../nutrition-ai-status';
+import {FoodSafetyNutritionPanel} from '../foodsafety-nutrition-panel';
 import type {CatalogItem} from '../../../lib/catalog';
 import type {ExtractedNutrition} from '../../../lib/nutrition-ocr';
 import {readNutritionPhotos,nutritionFieldCount} from '../../../lib/nutrition-photo-selection';
@@ -88,9 +90,11 @@ export default function CollectionPage() {
   }
   if(login)return <main className="admin-login-shell"><AuthScreen admin initialError={error} onExplore={()=>router.push('/')} onSuccess={()=>{setError('');setAttempt(v=>v+1);}}/></main>;
   return <main className="admin-shell"><header className="admin-header"><div><span className="admin-kicker">KKINIPLAN · CONTENT MANAGER</span><h1>상품 수집</h1><p>판매 상품을 등록하고, 원문 영양정보를 읽어 확인 후 저장해요.</p></div><Link href="/">앱으로 돌아가기 ↗</Link></header>
-    <nav className="admin-collection-tabs" aria-label="상품 관리 메뉴"><Link href="/admin">상품·영양 관리</Link><Link href="/admin/collect" aria-current="page">상품 수집</Link><Link href="/admin/deals">핫딜 수집·관리</Link></nav>
+    <nav className="admin-collection-tabs" aria-label="상품 관리 메뉴"><Link href="/admin">상품·영양 관리</Link><Link href="/admin/collect" aria-current="page">상품 수집</Link><Link href="/admin/deals">핫딜 수집·관리</Link><Link href="/admin/foodsafety">영양DB 조회</Link><Link href="/admin/recipe-optimizer">유사 레시피 생성기</Link></nav>
     {error&&<p role="alert">{error}</p>}{!loaded?<p>관리자 권한과 상품을 확인하고 있어요. {error&&<button onClick={()=>setAttempt(v=>v+1)}>다시 시도</button>}</p>:<>
     <OasisCollectionPanel onCollected={()=>setAttempt(v=>v+1)}/>
+    <CoupangCollectionPanel onCollected={()=>setAttempt(v=>v+1)}/>
+    <FoodSafetyNutritionPanel items={items} onApplied={()=>setAttempt(v=>v+1)}/>
     <NutritionAIStatus/><label><input type="checkbox" checked={estimateMissing} disabled={busy} onChange={e=>setEstimateMissing(e.target.checked)}/> 영양표에 없는 값은 AI 추정으로 채우기 (추정 표시 후 저장)</label>
     <section className="oasis-collection"><h2>영양성분 수집</h2><small>등록된 한국 상품 중 영양 수치가 비어 있는 상품을 확인합니다. 컬리·오아시스의 영양정보 원문과 표시사항 사진을 읽어요. 첫 사진에서 수치를 찾지 못하면 다음 사진도 자동으로 읽어 입력칸을 채웁니다. 화면을 유지해 주세요. 표가 없거나 인식이 어려운 상품은 직접 입력이 필요합니다.</small>
       <div className="catalog-collection-controls"><label>영양정보 판매처<select disabled={busy} value={seller} onChange={e=>setSeller(e.target.value)}><option value="all">지원 판매처 전체</option><option value="kurly.com">컬리</option><option value="oasis.co.kr">오아시스</option></select></label><label>읽을 상품 수<input type="number" min="1" max="100" disabled={busy} value={count} onChange={e=>setCount(e.target.value)}/></label><p>미입력·일부 입력 {candidates.length}개</p></div>

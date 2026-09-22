@@ -5,7 +5,7 @@ export function socialImage(market: "ko" | "tw" = "ko") {
   return {
     url: `${siteUrl}/og/meal-plan-${market}-v1.png`,
     width: 1200, height: 630, type: "image/png",
-    alt: market === "tw" ? "GginiPlan 台灣 — 照顧每餐，也照顧你的預算。" : "끼니플랜 — 내 예산에 맞게, 오늘도 잘 먹어요.",
+    alt: market === "tw" ? "GginiPlan 台灣 — 照顧每餐，也照顧你的預算。" : "끼니플랜 — 내 식사에서 건강을 찾다.",
   };
 }
 // Production defaults to searchable after launch. Keep preview and local builds out.

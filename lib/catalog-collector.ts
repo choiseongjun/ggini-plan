@@ -2,9 +2,9 @@ import {getPool} from './db';
 import {inferFoodType} from './catalog-food-types';
 import {robotsAllows} from './food-deal-parser';
 import {type CollectionCategory,type CollectionSeller,collectionInput} from './catalog-sellers';
-const categoryIds={tofu:242,vegetables:142,meat:3,ready:53};
-const matches:Record<CollectionCategory,RegExp>={tofu:/두부|콩비지/,vegetables:/채소|버섯|양배추|대파|양파|당근|감자|브로콜리|시금치|콩나물|숙주|청경채|오이|가지|파프리카|애호박|깻잎|배추|토마토/,meat:/돼지|한돈|한우|소고기|닭|달걀|계란|유정란|삼겹|목살|앞다리|안심|등심/,ready:/도시락|볶음밥|덮밥|파스타|죽|우동|밀키트|샌드위치|김밥|국밥|스프|수프|냉면|만두/};
-export function matchesCollection(name:string,category:CollectionCategory){return matches[category].test(name)&&!/반려|강아지|고양이|용기|장난감|세제|이유식/.test(name)&&(category==='ready'||!/볶음밥|도시락|샌드위치|스낵|과자|칩|주스|튀김|밀키트/.test(name));}
+const categoryIds={tofu:242,vegetables:142,fruit:122,grain:9,meat:3,seafood:4,dairy:1184,kimchi:241,ready:53};
+const matches:Record<CollectionCategory,RegExp>={tofu:/두부|콩비지/,vegetables:/채소|버섯|양배추|대파|양파|당근|감자|브로콜리|시금치|콩나물|숙주|청경채|오이|가지|파프리카|애호박|깻잎|배추|토마토/,fruit:/사과|배|감귤|밀감|귤|포도|샤인머스캣|바나나|딸기|참외|수박|멜론|자두|복숭아|키위|파인애플|망고|체리|블루베리|레몬|오렌지|자몽|황금향|한라봉|천혜향|무화과|석류|토마토/,grain:/쌀|현미|잡곡|보리|귀리|오트밀|퀴노아|흑미|찹쌀|율무|수수|기장|렌틸|파로|곡물/,meat:/돼지|한돈|한우|소고기|닭|달걀|계란|유정란|삼겹|목살|앞다리|안심|등심/,seafood:/고등어|연어|전복|장어|게장|동태|명태|갈치|삼치|굴비|조기|오징어|주꾸미|새우|멸치|참치|꽁치|아귀|낙지|문어|바지락|홍합|미역|다시마/,dairy:/우유|치즈|요거트|요구르트|버터|생크림|연유/,kimchi:/김치|깍두기|장아찌|절임|갓김치/,ready:/도시락|볶음밥|덮밥|파스타|죽|우동|밀키트|샌드위치|김밥|국밥|스프|수프|냉면|만두/};
+export function matchesCollection(name:string,category:CollectionCategory){return matches[category].test(name)&&!/반려|강아지|고양이|용기|장난감|세제|이유식/.test(name)&&(category==='ready'||!/볶음밥|도시락|샌드위치|스낵|과자|칩|주스|튀김|밀키트|식빵|크림빵/.test(name));}
 async function read(url:string){
  const response=await fetch(url,{cache:'no-store',redirect:'error',signal:AbortSignal.timeout(7000)});
  if(!response.ok)throw new Error(`판매처 HTTP ${response.status}`);

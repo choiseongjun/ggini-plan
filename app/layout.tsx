@@ -12,7 +12,7 @@ import './interaction-motion.css';
 export const viewport:Viewport={width:'device-width',initialScale:1,viewportFit:'cover',interactiveWidget:'resizes-content',themeColor:'#fffdf7'};
 
 export const metadata: Metadata = {
-  ...pageMetadata("자취 식단·일주일 식비·장보기 리스트 | 끼니플랜", "혼자 사는 일주일, 예산 안에서 잘 먹어요. 자취생을 위한 맞춤 식단 추천, 식재료 가격 비교, 장보기 리스트와 식비 기록을 끼니플랜에서 함께 관리하세요.", "/"),
+  ...pageMetadata("내 식사에서 건강을 찾다 | 끼니플랜", "먹은 것과 먹을 것을 분석해, 내게 필요한 영양과 음식을 찾아주는 서비스. 부족한 영양을 채우는 한 끼 추천부터 식재료 가격 비교, 장보기 리스트까지 끼니플랜에서 함께 관리하세요.", "/"),
   metadataBase: new URL(siteUrl),
   applicationName: "끼니플랜",
   appleWebApp: { capable: true, title: '끼니플랜', statusBarStyle: 'default' },

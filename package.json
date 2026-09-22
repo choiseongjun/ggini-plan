@@ -7,6 +7,12 @@
     "catalog:apply": "node --env-file=.env.local scripts/expand-diverse-catalog.mjs --apply",
     "catalog:expand": "node scripts/run-catalog-expansion.mjs",
     "catalog:status": "node --env-file=.env.local scripts/expand-diverse-catalog.mjs --status",
+    "foodsafety:import": "node --env-file=.env.local scripts/import-foodsafety-processed.mjs",
+    "foodsafety:import-dishes": "node --env-file=.env.local scripts/import-foodsafety-dishes.mjs",
+    "foodsafety:import-raw": "node --env-file=.env.local scripts/import-foodsafety-raw.mjs",
+    "foodsafety:import-bulk-api": "node --env-file=.env.local scripts/import-foodsafety-bulk-api.mjs",
+    "recipes:generate-similar": "node --env-file=.env.local --import tsx scripts/generate-similar-recipes.mjs",
+    "recipes:import-images": "node --env-file=.env.local --import tsx scripts/import-recipe-images.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -49,6 +55,7 @@
     "eslint-config-next": "16.3.5",
     "tailwindcss": "^4",
     "tsx": "^4.23.13",
-    "typescript": "^5"
+    "typescript": "^5",
+    "xlsx": "^0.18.5"
   }
 }

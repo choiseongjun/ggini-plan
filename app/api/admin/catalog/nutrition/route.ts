@@ -26,12 +26,15 @@ async function handle(request: NextRequest, save: boolean) {
       return Response.json({...await estimateNutrition(item.name,item.detail,known),sourceUrl:item.product_url,version:item.version},{headers:{'Cache-Control':'no-store'}});
     }
     if (!save) return Response.json({...await collectNutrition(item.product_url, input.imageIndex), version: item.version}, {headers: {'Cache-Control': 'no-store'}});
+    const govSource = Boolean(input.govSource);
     const n = input.extracted;
-    if (!n || typeof n.nutritionBasis !== 'string' || n.nutritionBasis.length > 80 || !completeNutrition(n) || input.sourceUrl !== item.product_url || typeof input.version !== 'string' || !Number.isFinite(Date.parse(input.version))) return Response.json({error: '기준량·영양 수치·출처를 확인해 주세요.'}, {status: 400});
-    const estimate=input.estimate??null;
+    const sourceUrlOk = govSource ? typeof input.sourceUrl === 'string' && input.sourceUrl.length <= 2048 && /^https:\/\//.test(input.sourceUrl) : input.sourceUrl === item.product_url;
+    if (!n || typeof n.nutritionBasis !== 'string' || n.nutritionBasis.length > 80 || !completeNutrition(n) || !sourceUrlOk || typeof input.version !== 'string' || !Number.isFinite(Date.parse(input.version))) return Response.json({error: '기준량·영양 수치·출처를 확인해 주세요.'}, {status: 400});
+    const estimate=govSource?null:(input.estimate??null);
     if(estimate && (!Array.isArray(estimate.fields)||!estimate.fields.length||estimate.fields.some((key:unknown)=>!nutrientKeys.includes(key as typeof nutrientKeys[number]))||typeof estimate.note!=='string'||estimate.note.length>2000||typeof estimate.model!=='string'||estimate.model.length>100))return Response.json({error:'추정 정보 형식을 확인해 주세요.'},{status:400});
     const metadata=estimate?{fields:estimate.fields,note:estimate.note,model:estimate.model,estimatedAt:new Date().toISOString()}:null;
-    const result = await getPool().query(`UPDATE catalog_items SET nutrition_basis=$2,calories_kcal=$3,protein_g=$4,carbohydrates_g=$5,fat_g=$6,sodium_mg=$7,nutrition_estimate=COALESCE($11::jsonb,nutrition_estimate),nutrition_source_name=CASE WHEN $11::jsonb IS NOT NULL OR nutrition_estimate IS NOT NULL THEN 'AI 추정 영양정보 · 실제 값과 차이 가능' ELSE '판매처 영양정보 · 관리자 확인' END,nutrition_source_url=$8,updated_by=$9,updated_at=NOW() WHERE id=$1 AND updated_at=$10::timestamptz`, [item.id,n.nutritionBasis,n.caloriesKcal,n.proteinG,n.carbohydratesG,n.fatG,n.sodiumMg,item.product_url,user.id,input.version,metadata?JSON.stringify(metadata):null]);
+    const govLabel = typeof input.govSourceName === 'string' && input.govSourceName.trim() ? input.govSourceName.trim().slice(0,120) : '식약처 식품영양성분DB 참고 · 실제 상품과 다를 수 있음';
+    const result = await getPool().query(`UPDATE catalog_items SET nutrition_basis=$2,calories_kcal=$3,protein_g=$4,carbohydrates_g=$5,fat_g=$6,sodium_mg=$7,nutrition_estimate=CASE WHEN $12 THEN NULL ELSE COALESCE($11::jsonb,nutrition_estimate) END,nutrition_source_name=CASE WHEN $12 THEN $13 WHEN $11::jsonb IS NOT NULL OR nutrition_estimate IS NOT NULL THEN 'AI 추정 영양정보 · 실제 값과 차이 가능' ELSE '판매처 영양정보 · 관리자 확인' END,nutrition_source_url=$8,updated_by=$9,updated_at=NOW() WHERE id=$1 AND updated_at=$10::timestamptz`, [item.id,n.nutritionBasis,n.caloriesKcal,n.proteinG,n.carbohydratesG,n.fatG,n.sodiumMg,govSource?input.sourceUrl:item.product_url,user.id,input.version,metadata?JSON.stringify(metadata):null,govSource,govLabel]);
     if (!result.rowCount) return Response.json({error: '상품 정보가 변경됐습니다. 다시 읽은 후 저장해 주세요.'}, {status: 409});
     invalidateCatalogCache();
     return Response.json({saved: true}, {headers: {'Cache-Control': 'no-store'}});

@@ -46,7 +46,14 @@ export function productsForGoal(products:PlanProduct[],goal?:ShoppingGoal):PlanP
 export function servingFat(p:PlanProduct):number|null{
  return servingNutrients(p).fat;
 }
-export function hasGoalNutrition(p:PlanProduct,goal?:ShoppingGoal){if(!goal||goal==='maintain')return true;if(goal==='lowcarb'){const n=servingNutrients(p);return n.calories!==null&&n.calories>0&&n.protein!==null&&n.protein>0&&n.carbs!==null&&n.fat!==null&&n.fat>0;}const n=servingNutrition(p);return n.calories!==null&&n.calories>0&&(goal==='lowfat'?servingFat(p)!==null:n.protein!==null&&n.protein>0);}
+// A bare "protein>0" floor let the soft goalBonus ranking carry all the weight for 'muscle' — fine when
+// candidates vary widely in quality, but the govDB recipe pool clusters tightly enough (per-meal fit
+// differences of ~50 points, dwarfed by unrelated variety/repetition terms) that a plain rice porridge
+// or scorched-rice snack with a few grams of protein could still surface as a "고단백" pick (누룽지 4g,
+// 흰죽 3g, 잔치국수 5.7g). 10g/serving is a low bar for a genuine protein source, not a prescribed
+// target — just enough to rule those out without cutting into legitimately protein-bearing dishes.
+const MUSCLE_MIN_PROTEIN_G = 10;
+export function hasGoalNutrition(p:PlanProduct,goal?:ShoppingGoal){if(!goal||goal==='maintain')return true;if(goal==='lowcarb'){const n=servingNutrients(p);return n.calories!==null&&n.calories>0&&n.protein!==null&&n.protein>0&&n.carbs!==null&&n.fat!==null&&n.fat>0;}const n=servingNutrition(p);return n.calories!==null&&n.calories>0&&(goal==='lowfat'?servingFat(p)!==null:goal==='muscle'?n.protein!==null&&n.protein>=MUSCLE_MIN_PROTEIN_G:n.protein!==null&&n.protein>0);}
 export const budgetModes={save:{label:'최대한 아끼기',description:'조건에 맞는 저렴한 구성 우선'},balanced:{label:'적당히 쓰기',description:'가격·영양·다양성을 함께 고려'},full:{label:'예산 충분히 활용하기',description:'한도 안에서 다양성과 선택 폭 우선'}} as const;
 export type BudgetMode=keyof typeof budgetModes;
 export const isBudgetMode=(v:unknown):v is BudgetMode=>typeof v==='string'&&Object.hasOwn(budgetModes,v);

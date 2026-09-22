@@ -1,9 +1,18 @@
 import {cookingVideoMenu} from '../../../lib/cooking-recipes';
+import {getRecipeOptimizerTargetName} from '../../../lib/recipe-optimizer-store';
 import {parseRecipeVideos,relevantRecipeVideos} from '../../../lib/youtube-recipes';
 export const runtime='nodejs';
+// govDB recipes (app/dish-nutrition-insight etc.) use this id shape; cookingVideoMenu only knows the
+// small hand-authored recipe set, so these resolve their query from the real DB row instead of trusting
+// a client-supplied name — keeps the YouTube search-quota use bounded to actual dishes, not free text.
+async function govdbVideoMenu(id:string){
+ const foodCode=id.startsWith('recipe-opt-')?id.slice('recipe-opt-'.length):null;
+ const name=foodCode?await getRecipeOptimizerTargetName(foodCode):null;
+ return name?{id,name,query:`${name.replace(/_/g,' ').replace(/\(.*?\)/g,'').trim()} 만들기 레시피`}:null;
+}
 export async function GET(request:Request){
  const id=new URL(request.url).searchParams.get('dish');
- const menu=id&&id.length<=2000?cookingVideoMenu(id):null;
+ const menu=id&&id.length<=2000?(cookingVideoMenu(id)??await govdbVideoMenu(id)):null;
  if(!menu)return Response.json({error:'등록된 요리를 선택해 주세요.'},{status:400});
  const fallback=`https://www.youtube.com/results?search_query=${encodeURIComponent(menu.query)}`;
  const key=process.env.YOUTUBE_API_KEY;

@@ -17,6 +17,7 @@ import {addDays,type DashboardData} from '../lib/dashboard';
 import {ShoppingProgress,type useShoppingProgress} from './shopping-progress';
 import './today-meals.css';
 import {recommendationReasons} from '../lib/plan-explanation';
+import {DishNutritionInsight} from './dish-nutrition-insight';
 
 const amount=(n:number)=>n.toLocaleString('ko-KR',{maximumFractionDigits:1});
 export function TodayMeals({nutritionReference,shoppingTotal,intake,userId,onLogin,ids,products,conditions,startDate,onStartDate,onSwap,onChoose,progress,dailyCalories,dashboard,perMealCalories}:{nutritionReference?:DailyNutritionReference;shoppingTotal:number;intake:ReturnType<typeof useFoodIntake>;userId?:string;onLogin:()=>void;ids:string[];products:PlanProduct[];conditions:PlanConditions;startDate:string;onStartDate:(date:string)=>void;onSwap:(index:number,reason?:SwapReason)=>void;onChoose:(index:number,id:string)=>void;progress:ReturnType<typeof useShoppingProgress>;dailyCalories:number|null;perMealCalories?:number|null;dashboard?:DashboardData|null}){
@@ -38,7 +39,7 @@ export function TodayMeals({nutritionReference,shoppingTotal,intake,userId,onLog
  const missingCost=current?.logs.some(log=>log.cost==null);
  const disabled=intake.disabled||progress.busy||!progress.ready;
  return locale.render(<section className="today-meals" aria-label="오늘의 식사와 식비">
-  <header><span className="section-kicker">내 예산으로, 오늘도 한 끼 🍚</span><h2>{userId?'오늘도 가볍게 챙겨요':'골라둔 메뉴, 매일 꺼내 먹어요'}</h2><p>{conditions.people??1}명 전체 장보기 · 영양정보는 1인분 기준이에요. ‘먹었어요’는 내가 먹은 양만 기록해요.</p></header>
+  <header><span className="section-kicker">내 식사에서 건강을 찾다 🍚</span><h2>{userId?'오늘 필요한 영양, 가볍게 챙겨요':'내게 맞는 한 끼, 매일 꺼내 먹어요'}</h2><p>{conditions.people??1}명 전체 장보기 · 영양정보는 1인분 기준이에요. ‘먹었어요’는 내가 먹은 양만 기록해요.</p></header>
   {userId?<details className="today-record-summary"><summary>오늘의 영양·식비 기록 보기 🌱</summary>
    <div className="today-metrics">
     <article><span>오늘 섭취 칼로리</span><strong>{totals?amount(totals.calories):'—'} <small>kcal</small></strong>{dailyCalories?<small>하루 참고량 {amount(dailyCalories)} kcal</small>:!locale.isTaiwan&&<Link href="/profile#profile-settings">내 필요 열량 설정 →</Link>}{!!totals?.missingCalories&&<small>미확인 {totals.missingCalories}건 별도</small>}</article>
@@ -69,7 +70,7 @@ export function TodayMeals({nutritionReference,shoppingTotal,intake,userId,onLog
     const done=recorded>=1,canEat=owned&&owned.available>=0.25;
     return <article key={index} className={done?'today-menu done':'today-menu'}>
      <div className="today-menu-label"><span>{slot==='breakfast'?'☀️':slot==='lunch'?'🌤️':'🌙'} {slotLabels[slot]} · 1회분</span><b>{done?'먹었어요 ✓':availablePortions(progress.stock,p)>=1?'집에 있어요':orderedParts.length?'배송 기다리는 중':'구매 전'}</b></div>
-     <div className="today-product">{!p.recipe&&<ProductThumb item={p}/>}<div><MealSourceBadge product={p}/><h4>{p.name}</h4><strong>한 끼 {p.recipe?'재료비 ':''}약 {won(p.price/p.servings)}</strong>{p.recipe&&<small>{p.recipe.assembly?'상품별 포장 조리법 기준 · 영양 합산 예상':<>재료 영양 합산 예상 · 약 {p.recipe.minutes}분</>}</small>}</div></div>
+     <div className="today-product"><ProductThumb item={p} zoomable/><div><MealSourceBadge product={p}/><h4>{p.name}</h4><strong>한 끼 {p.recipe?'재료비 ':''}약 {won(p.price/p.servings)}</strong>{p.recipe&&<small>{p.recipe.assembly?'상품별 포장 조리법 기준 · 영양 합산 예상':<>재료 영양 합산 예상 · 약 {p.recipe.minutes}분</>}</small>}</div></div>
      {!locale.isTaiwan&&<p className="recommendation-reasons">{recommendationReasons(p,conditions,perMealCalories??null).join(' · ')}</p>}
      <ProductNutrition product={p}/>
      <RecipeProductPreview product={p}/>
@@ -86,6 +87,7 @@ export function TodayMeals({nutritionReference,shoppingTotal,intake,userId,onLog
       <ShoppingProgress key={p.id} single={!p.recipe} restrictToItems guest={locale.isTaiwan||!userId} progress={{...progress,update:async(changes,action,expense)=>{const ok=await progress.update(changes,action,expense);if(ok){setManaging(null);setPurchaseMessage(expense?'구매 상태와 식비를 함께 기록했어요.':'이 음식의 구매·보유 상태를 반영했어요.');}return ok;}}} items={parts.map(r=>({id:r.product.id,name:r.product.name,unit:'묶음',required:r.required*(1-recorded),packSize:1,url:r.product.productUrl,price:r.product.price,detail:r.product.detail}))} summary={<p className="today-note">지금 고른 음식의 수량만 반영해요. 실제 구매한 묶음 수로 조절해 주세요.</p>}/>
      </div>}
      {!locale.isTaiwan&&<MealComparison key={p.id.split('--with--')[0]} product={p} index={index} ids={ids} products={products} conditions={conditions} onChoose={onChoose} disabled={disabled||done}/>}
+     {!locale.isTaiwan&&<DishNutritionInsight key={`insight-${p.id}`} productId={p.id} productName={p.name}/>}
      {!isToday&&<small>먹은 기록은 오늘 날짜의 메뉴에서 남겨 주세요.</small>}{recorded>0&&!done&&<small>오늘 {recorded}회분 기록했어요. 나머지를 드셨다면 먹었어요를 눌러 주세요.</small>}
     </article>;
    })}</div>

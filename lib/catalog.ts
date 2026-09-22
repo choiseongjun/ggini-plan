@@ -27,6 +27,7 @@ export type CatalogItem = Product & {
   foodType?: import("./catalog-food-types").FoodType | null;
   inWeeklyCart: boolean;
   productImageUrl: string | null;
+  productImageUrls?: string[] | null;
   priceCheckedAt?: string | null;
   priceNote?: string | null;
   allergens?: string[];

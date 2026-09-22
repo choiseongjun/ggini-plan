@@ -92,7 +92,7 @@ export function AuthScreen({ onSuccess, onExplore, initialError = "", admin = fa
     {(pending||googlePending)&&<AppLoading message={googlePending?"구글 로그인을 기다리고 있어요":mode==="register"?"나만의 식탁을 만들고 있어요":"로그인하고 있어요"}/>}
     <div className="auth-header"><span className="brand"><span className="brand-mark"><span/><span/><span/><span/></span><span>끼니플랜<span className="brand-dot">.</span></span></span><button className="auth-explore-header" type="button" onClick={onExplore}>둘러보기</button></div>
     <div className="auth-content">
-      <div className="auth-intro"><span>{admin ? "끼니플랜 관리자" : "나를 위한 한 주의 식탁"}</span><h2>{admin ? <>관리자<br/><em>로그인</em></> : mode === "login" ? <>다시 만나서<br/><em>반가워요.</em></> : <>우리의 첫 주를<br/><em>시작해 볼까요?</em></>}</h2><p>{admin ? "관리자로 등록된 계정으로 로그인해 주세요." : mode === "login" ? "내 계정으로 끼니플랜을 시작해요." : "계정을 만들고 나에게 맞는 한 주를 준비해요."}</p></div>
+      <div className="auth-intro"><span>{admin ? "끼니플랜 관리자" : "내 식사에서 건강을 찾다"}</span><h2>{admin ? <>관리자<br/><em>로그인</em></> : mode === "login" ? <>다시 만나서<br/><em>반가워요.</em></> : <>우리의 첫 주를<br/><em>시작해 볼까요?</em></>}</h2><p>{admin ? "관리자로 등록된 계정으로 로그인해 주세요." : mode === "login" ? "내 계정으로 끼니플랜을 시작해요." : "계정을 만들고 내게 필요한 영양과 한 끼를 찾아봐요."}</p></div>
       <div className="auth-card">
         {!admin && mode === 'register' && <MemberConsentFields value={consent} onChange={setConsent} disabled={pending || googlePending}/>}
         {!admin && <><button className="google-signin" type="button" onClick={signInWithGoogle} disabled={pending || googlePending}>
