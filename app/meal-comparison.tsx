@@ -46,11 +46,11 @@ export function MealComparison({product,index,ids,products,conditions,onChoose,d
  const current=basketTotal(ids,products,conditions.owned,conditions.supply,conditions.people);
  return <div className="meal-comparison">
   <RecipeOfferPicker product={product} index={index} ids={ids} products={products} conditions={conditions} onChoose={onChoose} disabled={disabled}/>
-  {product.recipe&&<details className="recipe-instructions"><summary>🍳 약 {product.recipe.minutes}분 · 재료와 만드는 법</summary><RecipeIngredients product={product} conditions={conditions}/><ol>{product.recipe.steps.map(s=><li key={s}>{s}</li>)}</ol><small>참고용 조합입니다. 실제 조리법은 재료별로 통상적인 방식을 따르세요.</small></details>}
+  {product.recipe&&<details className="recipe-instructions"><summary>🍳 재료와 만드는 법</summary><RecipeIngredients product={product} conditions={conditions}/><ol>{product.recipe.steps.map(s=><li key={s}>{s}</li>)}</ol><small>참고용 조합입니다. 실제 조리법은 재료별로 통상적인 방식을 따르세요.</small></details>}
   <button type="button" aria-expanded={open} onClick={()=>setOpen(!open)}>{product.recipe?'🛍️ 간편식으로 먹으면?':'🍳 직접 만들면?'}</button>
   {open&&<section className="cook-comparison-panel" aria-label="한 끼 선택지 비교">{options.length>0&&<p><strong>오늘 한 끼, 어떻게 먹을까요?</strong></p>}
    {!options.length?(product.recipe?<p>이 요리의 주재료에 맞는 간편식이 아직 연결되지 않았어요.</p>:<RecipeEstimate key={product.id} product={product} conditions={conditions}/>):options.map(({product:p,total,one})=>{const n=servingNutrition(p);return <article key={p.id}>
-    <MealChoiceCards ready={p.recipe?product:p} recipeName={p.recipe?p.name:product.name} recipeCost={p.recipe?p.price/p.servings:product.price/product.servings} minutes={String((p.recipe??product.recipe)!.minutes)}/>
+    <MealChoiceCards ready={p.recipe?product:p} recipeName={p.recipe?p.name:product.name} recipeCost={p.recipe?p.price/p.servings:product.price/product.servings}/>
     <details className="cook-shopping-details"><summary>바꾸면 필요한 장보기</summary><div className="cook-shopping-body">
     <dl><div><dt>이 끼니만 추가 구매</dt><dd>{won(one)}</dd></div><div><dt>교체 후 전체 장보기</dt><dd>{won(total)}</dd></div></dl>
     {p.recipe&&<><small>레시피 영양 예상 · {n.calories===null?'칼로리 미확인':`${Math.round(n.calories)} kcal`} · 단백질 {n.protein===null?'미확인':`${Math.round(n.protein)}g`}</small><RecipeIngredients product={p} conditions={conditions}/></>}

@@ -6,6 +6,8 @@ import {excludedFoods,type ExcludedFood} from './excluded-foods';
 import {allowsExcludedFoods} from './shopping-exclusions';
 import {mealRole} from './meal-role';
 export const swapReasons={taste:'취향 아님',effort:'조리 귀찮음',price:'너무 비쌈',repeat:'비슷한 걸 먹었음'} as const;
+// 조리 시간은 모든 레시피가 같은 고정값이라 '조리 귀찮음'으로는 가려낼 수 없다. 저장 형식은 호환을 위해 두고 화면에서만 뺀다.
+export const visibleSwapReasons=(['taste','price','repeat'] as const);
 export type SwapReason=keyof typeof swapReasons;
 export type SwapPreference={id:string;family:string;reason:SwapReason;price:number;minutes:number};
 export function validSwapPreferences(value:unknown):value is SwapPreference[]{
@@ -65,7 +67,7 @@ const aliases: Record<string,string[]> = {우유:['우유','유제품','치즈',
 // 250kcal도 안 되는 흰죽·누룽지 같은 메뉴는 한 끼 후보에서 뺀다 (영양값이 확인된 경우에만).
 export function candidates(products: PlanProduct[], c: PlanConditions) {
  const avoid=c.avoid.split(/[,，\n]/).map(x=>x.trim().toLowerCase()).filter(Boolean);
- return products.filter(p=>(!p.recipe||p.recipe.assembly||(p.recipe.sideCount??0)===(c.sideCount??0))&&mealRole(p)==='meal'&&hasGoalNutrition(p,c.goal)&&allowsMealKind(p,c.mealKinds)&&allowsExcludedFoods(p,c.excluded??[])&&(p.productUrl||p.recipe) && p.price>0 && !(typeof p.servingCalories==='number'&&p.servingCalories<250) && !(p.recipe&&/(소스|양념장|드레싱)$/.test(p.name.split('_')[0])) && ((c.mealMode??'ready')==='mixed'||((c.mealMode??'ready')==='cook'?!!p.recipe&&!p.recipe.assembly:!p.recipe||!!p.recipe.assembly)) && (!!p.recipe&&!p.recipe.assembly||c.cooking==='all'||(c.cooking==='kit'?p.category==='meal_kit':p.category!=='meal_kit')) && (!avoid.length || (p.avoidanceText!==null && !avoid.some(word=>(aliases[word]??[word]).some(a=>`${p.name} ${p.avoidanceText}`.toLowerCase().includes(a))))));
+ return products.filter(p=>(!p.recipe||p.recipe.assembly||(p.recipe.sideCount??0)===(c.sideCount??0))&&mealRole(p)==='meal'&&hasGoalNutrition(p,c.goal)&&allowsMealKind(p,c.mealKinds)&&allowsExcludedFoods(p,c.excluded??[])&&(p.productUrl||p.recipe) && p.price>0 && !(typeof p.servingCalories==='number'&&p.servingCalories<(p.recipe?.slots.every(s=>s==='breakfast')?120:250)) && !(p.recipe&&/(소스|양념장|드레싱)$/.test(p.name.split('_')[0])) && ((c.mealMode??'ready')==='mixed'||((c.mealMode??'ready')==='cook'?!!p.recipe&&!p.recipe.assembly:!p.recipe||!!p.recipe.assembly)) && (!!p.recipe&&!p.recipe.assembly||c.cooking==='all'||(c.cooking==='kit'?p.category==='meal_kit':p.category!=='meal_kit')) && (!avoid.length || (p.avoidanceText!==null && !avoid.some(word=>(aliases[word]??[word]).some(a=>`${p.name} ${p.avoidanceText}`.toLowerCase().includes(a))))));
 }
 // id → 메뉴 색인. 추천 탐색이 장보기 금액을 수십만 번 계산하는데, 매번 1,000개가 넘는 메뉴를
 // 처음부터 훑던 find()가 추천 시간(약 9초)의 대부분이었다. 같은 배열이면 색인을 재사용한다.
@@ -121,6 +123,7 @@ export function dishBase(p:PlanProduct){
  return /라면|용기면|컵라면/.test(name)?'라면':name;
 }
 const SEAFOOD=/가자미|고등어|갈치|조기|삼치|꽁치|연어|참치|명태|동태|코다리|황태|북어|임연수|넙치|광어|우럭|도미|민어|병어|장어|오징어|낙지|주꾸미|새우|굴|홍합|바지락|전복|꽃게|멸치|대구|아귀/;
+const MEAT_OR_EGG=/고기|돼지|소고기|쇠고기|닭|오리|햄|소시지|베이컨|육|갈비|삼겹|목살|달걀|계란|두부|해물|어묵|맛살|참치|돈까스|돈가스|까스/;
 function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,schedule:ReturnType<typeof mealSchedule>,previous:ReadonlySet<string>=new Set(),previousFamilies:ReadonlySet<string>=new Set()){
  const products=new Map(rows.map(r=>[r.product.id,r.product]));
  const families=new Map<string,number>();
@@ -137,15 +140,24 @@ function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,
  // 인스턴트 라면은 싸고 재료(면)를 서로 재사용해 점수가 부풀었다 — 균형 잡힌 식단에선 드물게만.
  const instant=bases.get('라면')??0;
  // 죽·국수 한 그릇처럼 400kcal도 안 되는 끼니는 한 끼로 부족하다 — 드물게만.
- const light=ids.filter(id=>{const kcal=products.get(id)?.servingCalories;return typeof kcal==='number'&&kcal<400;}).length;
+ // 아침은 가볍게 먹으니 400kcal 미만·단백질 적은 메뉴(죽 등)도 감점하지 않는다.
+ const isBreakfast=(i:number)=>schedule[i]?.slot==='breakfast';
+ const light=ids.filter((id,i)=>{const kcal=products.get(id)?.servingCalories;return !isBreakfast(i)&&typeof kcal==='number'&&kcal<400;}).length;
  // 다 쓰지 못하고 남는 재료값(원). 예산이 남아도 재료를 여러 요리에 나눠 쓰는 식단을 우선하게 한다.
  const waste=rows.waste;
  // 메인 재료가 거의 없는 반찬성 메뉴(무조림·양파볶음·냉국…)는 밥과 곁들여도 한 끼로 허전하다.
- const sideLike=ids.filter(id=>{const g=products.get(id)?.recipe?.nutrition.protein;return typeof g==='number'&&g<15;}).length;
- // 같은 생선·해산물(가자미찜/가자미구이…)이 한 식단에 두 번 나오지 않게.
+ const sideLike=ids.filter((id,i)=>{const g=products.get(id)?.recipe?.nutrition.protein;return !isBreakfast(i)&&typeof g==='number'&&g<15;}).length;
+ // 같은 생선·해산물(가자미찜/가자미구이…)이나 달걀 요리(달걀찜/달걀조림…)가 한 식단에 몰리지 않게.
  const seafood=new Map<string,number>();
- for(const id of ids){const m=products.get(id)?.name.match(SEAFOOD);if(m)seafood.set(m[0],(seafood.get(m[0])??0)+1);}
+ for(const id of ids){const name=products.get(id)?.name??'';const key=name.match(SEAFOOD)?.[0]??(/달걀|계란/.test(name)?'달걀':null);if(key)seafood.set(key,(seafood.get(key)??0)+1);}
  const seafoodRepeats=[...seafood.values()].reduce((n,count)=>n+count*(count-1)/2,0);
+ // 닭·돼지·소고기처럼 같은 주재료가 한 식단에 몰리지 않게: 7끼마다 같은 고기 2번까지는 괜찮고, 넘으면 크게 감점.
+ const meats=new Map<string,number>();
+ for(const id of ids){const p=products.get(id);if(p)for(const key of mainIngredients(p))meats.set(key,(meats.get(key)??0)+1);}
+ const meatAllowance=Math.max(2,Math.ceil(ids.length*2/7));
+ const meatOverflow=[...meats.values()].reduce((n,count)=>n+Math.max(0,count-meatAllowance),0);
+ // 쑥튀김·옥수수부침처럼 고기·생선·달걀 없이 반죽·기름이 대부분인 튀김·전은 '오늘 메뉴'로 와닿지 않는다.
+ const batterOnly=ids.filter(id=>{const p=products.get(id);return !!p?.recipe&&/govdb-(twigim|jeon)$/.test(p.recipe.family)&&!SEAFOOD.test(p.name)&&!MEAT_OR_EGG.test(p.name);}).length;
  const familyRepeats=[...families.values()].reduce((n,count)=>n+count*(count-1)/2,0);
  const feedback=ids.reduce((sum,id)=>{const p=products.get(id)!;return sum+(c.swapPreferences??[]).reduce((n,f)=>n+(
   f.reason==='taste'?(p.id===f.id?1400:mealFamily(p)===f.family?250:0):
@@ -166,7 +178,7 @@ function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,
  // when the two are otherwise close on fit/variety/budget — nudges plans toward recipes rather
  // than defaulting to whichever pre-made item happens to be in the catalog.
  const cooked=ids.filter(id=>products.get(id)?.recipe).length*120;
- return cooked+reuse+rows.length*300-feedback-ids.filter(id=>previous.has(id)).length*900-ids.filter(id=>previousFamilies.has(mealFamily(products.get(id)!))).length*200+families.size*150-repeats*350-familyRepeats*40-baseRepeats*900-instant*400-light*300-sideLike*450-seafoodRepeats*500-repetition
+ return cooked+reuse+rows.length*300-feedback-ids.filter(id=>previous.has(id)).length*900-ids.filter(id=>previousFamilies.has(mealFamily(products.get(id)!))).length*200+families.size*150-repeats*350-familyRepeats*40-baseRepeats*900-instant*400-light*300-sideLike*450-seafoodRepeats*500-batterOnly*500-meatOverflow*600-repetition
   -rows.reduce((n,r)=>n+r.left,0)*100-waste/300-rows.reduce((n,r)=>n+r.cost,0)/c.budget*(c.budgetMode==='save'?2000:c.budgetMode==='full'?-100:100)+fit;
 }
 function diverseOptions(products:PlanProduct[],previous:string[],conditions:PlanConditions){

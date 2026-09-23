@@ -16,7 +16,7 @@ export function CookingShoppingGuide({ids,products,conditions,onOwn,disabled}:{i
   <p>{conditions.people??1}명 전체 조리 분량이에요. 영양정보와 ‘먹었어요’는 내 1인분 기준으로 기록해요.</p>
   <div className="cooking-menu-grid">{meals.map((p,i)=>{
    const ungrouped=p.recipe?.ingredients.filter(part=>!part.group)??[];
-   return <article key={i}><div className="cooking-day-badge">{schedule[i].day}일차 · {slotLabels[schedule[i].slot]} <span>{p.recipe?`약 ${p.recipe.minutes}분 · `:''}{conditions.people??1}인분</span></div><h4>{p.name}</h4>{p.recipe?<>
+   return <article key={i}><div className="cooking-day-badge">{schedule[i].day}일차 · {slotLabels[schedule[i].slot]} <span>{conditions.people??1}인분</span></div><h4>{p.name}</h4>{p.recipe?<>
     <h5>🧺 준비할 재료 · 전체 분량</h5><ul className="cooking-ingredient-chips">{ungrouped.map((part,j)=><li key={`${part.product.id}-${j}`}><span>{part.product.name}</span><strong>{amount(part.product,part.packs*(conditions.people??1))}</strong></li>)}</ul>
     <h5>🍳 만드는 순서</h5><ol>{p.recipe.steps.map((step,j)=><li key={j}><span aria-hidden="true">{j+1}</span><p>{step}</p></li>)}</ol>
     {!p.recipe.assembly&&<details className="cooking-video-details"><summary>조리 영상 참고하기</summary><RecipeVideos key={p.id} dishId={p.id}/></details>}

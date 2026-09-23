@@ -114,7 +114,7 @@ export function MenuPickerModal({index,ids,products,conditions,onChoose,onClose,
        <span className="mp-item-body">
         <span className="mp-item-tags">{recommended.has(cookingDishId(p.id))&&<em className="mp-best">추천</em>}<MealSourceBadge product={p}/>{blocked&&<em className="mp-blocked">{blocked}</em>}</span>
         <strong>{p.name}</strong>
-        <span className="mp-item-meta"><b>{won(perMeal)}</b>{n.calories!==null&&<span>{Math.round(n.calories)}kcal</span>}{n.protein!==null&&<span>단백질 {Math.round(n.protein)}g</span>}{p.recipe&&<span>약 {p.recipe.minutes}분</span>}</span>
+        <span className="mp-item-meta"><b>{won(perMeal)}</b>{n.calories!==null&&<span>한 끼 {Math.round(n.calories)}kcal</span>}{n.protein!==null&&<span>단백질 {Math.round(n.protein)}g</span>}</span>
        </span>
        <span className="mp-check" aria-hidden="true"/>
       </button>

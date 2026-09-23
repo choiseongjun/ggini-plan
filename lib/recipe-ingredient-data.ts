@@ -44,6 +44,18 @@ export const ingredientNutritionTable: IngredientNutrition[] = [
 ];
 
 export const recipeTemplates: RecipeTemplate[] = [
+ // 서양식 아침(샌드위치·토스트·베이글·계란요리·요거트·시리얼). 밥 없이 그 자체로 한 끼이고 아침에만 추천한다.
+ // 기본 재료표에 빵·유제품이 없어 밀가루·달걀·고기로 근사하지만, 실제 재료는 GPT 재료 목록이 대신한다.
+ {
+  id: 'western-breakfast', name: '서양식 아침', matches: /샌드위치|토스트|베이글|스크램블|오믈렛|시리얼_우유|그릭요거트|플레인요거트|그래놀라 요거트|에그바게/, totalGrams: 100,
+  groups: [
+   {id: 'bread', label: '빵·곡물', ingredientIds: ['flour'], minPercent: 20, maxPercent: 60},
+   {id: 'protein', label: '달걀·고기', ingredientIds: ['egg', 'pork', 'chicken-breast'], minPercent: 10, maxPercent: 45},
+   {id: 'vegetable', label: '채소', ingredientIds: ['onion', 'cabbage'], minPercent: 0, maxPercent: 25},
+   {id: 'fat', label: '버터·기름', ingredientIds: ['cooking-oil'], minPercent: 1, maxPercent: 12},
+   {id: 'sugar', label: '잼·설탕', ingredientIds: ['sugar'], minPercent: 0, maxPercent: 10},
+  ],
+ },
  {
   id: 'jjajang', name: '짜장류', matches: /짜장/, totalGrams: 100,
   groups: [

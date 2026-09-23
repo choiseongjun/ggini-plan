@@ -11,11 +11,12 @@ import {useState} from 'react';
 import Link from 'next/link';
 import type {useFoodIntake} from './food-intake';
 import {ProductThumb} from './product-thumb';
-import {MealSourceBadge,RecipeProductPreview} from './meal-source';
+import {mealCalorieParts} from '../lib/serving-nutrients';
+import {RecipeProductPreview} from './meal-source';
 import {RecipeVideos} from './recipe-videos';
 import {availablePortions,servingNutrition} from '../lib/food-intake';
 import {ProductNutrition,DailyRecommendationNutrition} from './recommendation-nutrition';
-import {purchaseBasket,swapReasons,type SwapReason,slotLabels,type PlanProduct,type PlanConditions,mealSchedule} from '../lib/shopping-plan';
+import {purchaseBasket,swapReasons,visibleSwapReasons,type SwapReason,slotLabels,type PlanProduct,type PlanConditions,mealSchedule} from '../lib/shopping-plan';
 import {planDay,planDate,recordedForSlot} from '../lib/daily-plan';
 import {addDays,type DashboardData} from '../lib/dashboard';
 import {ShoppingProgress,type useShoppingProgress} from './shopping-progress';
@@ -91,10 +92,11 @@ export function TodayMeals({overviewOpen,onOverviewOpen,nutritionReference,shopp
     const recorded=recordedForSlot(entries.map(e=>e.product.id),entryIndex,portions);
     // Any logged portion counts: the 먹었어요 panel records the actual amount (반·1.5인분 …) in one entry.
     const done=recorded>0,canEat=owned&&owned.available>=0.25;
-    const kcal=servingNutrition(p).calories;
+    const kcal=servingNutrition(p).calories,kcalParts=mealCalorieParts(p);
     return <article key={index} id={`today-meal-${index}`} tabIndex={-1} className={done?'today-menu done':'today-menu'}>
-     <div className="today-menu-label"><span>{slot==='breakfast'?'☀️':slot==='lunch'?'🌤️':'🌙'} {slotLabels[slot]} · 1회분</span><b>{done?'먹었어요 ✓':availablePortions(progress.stock,p)>=1?'집에 있어요':orderedParts.length?'배송 기다리는 중':'구매 전'}</b></div>
-     <div className="today-product"><ProductThumb item={p} zoomable/><div className="today-menu-toggle-text"><MealSourceBadge product={p}/><span className="today-menu-name">{p.name}</span><strong>한 끼 {p.recipe?'재료비 ':''}약 {won(p.price/p.servings)}</strong>{p.recipe&&<small>{p.recipe.assembly?'상품별 포장 조리법 기준 · 영양 합산 예상':<>재료 영양 합산 예상 · 약 {p.recipe.minutes}분</>}</small>}{kcal!==null&&<em className="today-menu-kcal">약 {Math.round(kcal)}kcal</em>}</div></div>
+     <div className="today-menu-label"><span className="meal-slot">{slot==='breakfast'?'☀️':slot==='lunch'?'🌤️':'🌙'} {slotLabels[slot]}</span><b className={`meal-status${done?' is-done':''}`}>{done?'먹었어요 ✓':availablePortions(progress.stock,p)>=1?'집에 있어요':orderedParts.length?'배송 기다리는 중':'구매 전'}</b></div>
+     <div className="today-product"><ProductThumb item={p} zoomable/><div className="today-menu-toggle-text"><span className="today-menu-name">{p.name.split('_').join(' · ')}</span><span className="today-menu-price">{p.recipe?'재료비':'한 끼'} 약 <b>{won(p.price/p.servings)}</b></span></div></div>
+     {kcal!==null&&<div className="meal-kcal"><div className="meal-kcal-total"><b>{Math.round(kcal).toLocaleString('ko-KR')}</b><span>kcal</span><small>한 끼</small></div>{kcalParts.rice&&<p className="meal-kcal-line"><span>{p.name.split('_')[0]} 1인분{kcalParts.dish.grams!==null?` (약 ${kcalParts.dish.grams}g)`:''}</span> <b>{Math.round(kcalParts.dish.kcal??0)}</b> + <span>밥 한 공기</span> <b>{Math.round(kcalParts.rice.kcal)}</b></p>}</div>}
      <div className="meal-sections">
       {p.recipe?<MealSection title="재료" meta={`${p.recipe.ingredients.filter(i=>!i.group).length}가지`} open={isSection(index,'ing')} onToggle={()=>toggleSection(index,'ing')}><RecipeProductPreview product={p} videos={false}/></MealSection>
        :<MealSection title="상품 정보" open={isSection(index,'ing')} onToggle={()=>toggleSection(index,'ing')}><div className="today-product-links">
@@ -104,10 +106,10 @@ export function TodayMeals({overviewOpen,onOverviewOpen,nutritionReference,shopp
       {p.recipe&&!p.recipe.assembly&&<MealSection title="만드는 방법 영상" meta="YouTube" open={isSection(index,'video')} onToggle={()=>toggleSection(index,'video')}><RecipeVideos dishId={p.id}/></MealSection>}
       {!done&&<MealSection title="메뉴 바꾸기" open={isSection(index,'swap')} onToggle={()=>toggleSection(index,'swap')}>
      {!done&&<div className="today-edit" role="group" aria-label={`${slotLabels[slot]} 메뉴 수정`}><button type="button" disabled={disabled} aria-haspopup="dialog" onClick={()=>setBrowsing(index)}>🔎 메뉴 직접 고르기</button><button type="button" disabled={disabled} onClick={()=>{setManaging(null);setBrowsing(null);onSwap(index);}}>🔀 바로 바꾸기</button></div>}
-     {!done&&<details className="swap-reasons"><summary>이유를 고르고 교체하기</summary><p>다음 추천에도 반영해요. 이유 없이 바꾸려면 ‘바로 바꾸기’를 누르세요.</p><div>{(Object.keys(swapReasons) as SwapReason[]).map(reason=><button type="button" key={reason} disabled={disabled} onClick={()=>{setManaging(null);onSwap(index,reason);}}>{swapReasons[reason]}</button>)}</div></details>}
+     {!done&&<details className="swap-reasons"><summary>이유를 고르고 교체하기</summary><p>다음 추천에도 반영해요. 이유 없이 바꾸려면 ‘바로 바꾸기’를 누르세요.</p><div>{visibleSwapReasons.map(reason=><button type="button" key={reason} disabled={disabled} onClick={()=>{setManaging(null);onSwap(index,reason);}}>{swapReasons[reason]}</button>)}</div></details>}
      {!locale.isTaiwan&&<MealComparison key={p.id.split('--with--')[0]} product={p} index={index} ids={ids} products={products} conditions={conditions} onChoose={onChoose} disabled={disabled||done}/>}
       </MealSection>}
-      <MealSection title="영양정보 · 추천 이유" meta={kcal!==null?`약 ${Math.round(kcal)}kcal`:undefined} open={isSection(index,'nutri')} onToggle={()=>toggleSection(index,'nutri')}>
+      <MealSection title="영양정보 · 추천 이유" meta={kcal!==null?`한 끼 약 ${Math.round(kcal)}kcal`:undefined} open={isSection(index,'nutri')} onToggle={()=>toggleSection(index,'nutri')}>
      {!locale.isTaiwan&&<p className="recommendation-reasons">{recommendationReasons(p,conditions,perMealCalories??null).join(' · ')}</p>}
        <ProductNutrition product={p}/>
       </MealSection>

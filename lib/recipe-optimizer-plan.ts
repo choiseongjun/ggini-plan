@@ -6,6 +6,17 @@ import {excludedFoodAliases, type ExcludedFood} from './excluded-foods';
 import {inferFoodType} from './catalog-food-types';
 import {pickDishVisual} from './recipe-dish-visuals';
 import {canonicalIngredient,isWater,PANTRY} from './ingredient-canonical';
+import dishRoles from '../data/dish-roles.json';
+import breakfastDishes from '../data/breakfast-dishes.json';
+// 아침으로 흔히 먹는 메뉴(죽·국+밥·계란 요리·김밥…, scripts/classify-breakfast.mjs로 1회 분류).
+const breakfast = new Set<string>(breakfastDishes);
+
+// 메뉴가 한국 가정식에서 메인·밑반찬·국찌개·한 그릇 중 무엇인지(scripts/classify-dish-roles.mjs, GPT 1회 분류).
+// 콩자반·멸치볶음처럼 단백질이 높아도 밑반찬인 음식은 규칙으로 가려내기 어려워 분류 결과를 쓴다.
+type DishRole = 'main' | 'side' | 'soup' | 'one-bowl' | 'other';
+const roles = dishRoles as Record<string, DishRole>;
+// 분류가 반찬·기타로 잡았지만 보통 메인으로 먹는 요리 (직접 확인해 바로잡은 것).
+const MAIN_OVERRIDE = /^(갈비찜|주꾸미볶음|낙지볶음|오징어볶음|순대볶음|해물볶음|소고기볶음|닭튀김|닭볶음탕)/;
 
 // 같은 재료(정규화된 이름)는 식단 전체에서 한 상품·한 포장 규격으로 계산한다. 포장 규격과 g당 가격은
 // 레시피마다 AI가 추정한 값의 중앙값. 기본 양념은 집에 있다고 보고 구매 금액에서 뺀다.
@@ -47,7 +58,7 @@ const SERVING_SCALE = 3;
 
 // Templates whose target dish is already a complete one-bowl meal the way Koreans actually eat it
 // (rice/noodles already part of the dish itself) — these get no extra rice or side dishes.
-const STANDALONE_TEMPLATES = new Set(['jjajang', 'stirfry-meat-rice', 'juk', 'myeon', 'bap-etc']);
+const STANDALONE_TEMPLATES = new Set(['jjajang', 'stirfry-meat-rice', 'juk', 'myeon', 'bap-etc', 'western-breakfast']);
 // 'stirfry-meat-rice'·'jjajang' also match plain 반찬 볶음(호박볶음·제육볶음·짜장소스…). Only when the name itself
 // carries the staple (볶음밥·덮밥·우동…) is it a one-bowl meal; otherwise it gets rice + 밑반찬 like any other dish —
 // serving a bare 116kcal 호박볶음 as "한 끼" is what made plans feel thin.
@@ -133,18 +144,7 @@ function aiUsageEntries(ingredients: AiIngredient[], now: string, packs: Map<str
  });
 }
 
-function stableIndex(seed: string, mod: number): number {
- let h = 0;
- for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
- return mod > 0 ? h % mod : 0;
-}
 
-function pickSide(pool: StoredRecipeResult[], excludeFoodCode: string, seed: string): StoredRecipeResult | null {
- if (!pool.length) return null;
- const candidates = pool.filter((r) => r.foodCode !== excludeFoodCode);
- const usable = candidates.length ? candidates : pool;
- return usable[stableIndex(seed, usable.length)];
-}
 
 // Builds one recipe's ingredient-usage entries (grams already scaled to a real portion) into the
 // {product, packs, label} shape purchaseBasket()/basket() expect, using the shared global ingredient
@@ -169,14 +169,22 @@ export async function governmentOptimizedRecipeProducts(): Promise<PlanProduct[]
  const results = await listRecipeOptimizerResults();
  const packs = canonicalPacks(results);
  const now = new Date().toISOString();
- const kimchiPool = results.filter((r) => r.templateId === 'kimchi');
- const namulPool = results.filter((r) => r.templateId === 'namul');
  // 김치/나물 자체는 반찬이지 "한 끼"가 아니다 — 위 두 풀로 다른 요리의 밑반찬 재료로는 계속 쓰지만,
  // 단독으로는 추천 후보(끼니)에 올리지 않는다. 그렇지 않으면 예산이 넉넉할 때 다양성 점수를 노리고
  // "물김치"나 "배추김치" 한 그릇이 그 자체로 저녁 메뉴로 뽑히는 일이 생긴다.
  // Recipes still on the deterministic generic-ingredient mix (no GPT-composed list yet) stay out of
  // recommendations until scripts/synthesize-ai-ingredients.mjs has run for them.
- return results.filter((result) => !SIDE_DISH_TEMPLATES.has(result.templateId) && result.aiIngredients?.ingredients.length).map((result) => {
+ // 한 끼 = 메인 요리 + 밥 한 공기. 밥만 곁들여 먹기엔 허전한 반찬·맑은 국(요리 자체 단백질 10g 미만:
+ // 호박볶음·고구마조림·콩나물국…)은 메인으로 추천하지 않는다. 밥·면이 이미 든 한 그릇 요리는 예외.
+ const mainProteinOf = (r: StoredRecipeResult) => (r.aiIngredients?.ingredients ?? []).reduce((sum, i) => sum + i.proteinG * i.grams / 100, 0);
+ const isMeal = (r: StoredRecipeResult) => {
+  if (MAIN_OVERRIDE.test(r.targetName) || r.templateId === 'western-breakfast') return true;
+  const role = roles[r.foodCode];
+  // 아직 분류되지 않은 새 메뉴는 이전 규칙(한 그릇이거나 요리 자체 단백질 10g 이상)으로.
+  if (!role) return isOneBowl(r.templateId, r.targetName) || mainProteinOf(r) >= 10;
+  return role === 'main' || role === 'one-bowl' || (role === 'soup' && mainProteinOf(r) >= 10);
+ };
+ return results.filter((result) => !SIDE_DISH_TEMPLATES.has(result.templateId) && result.aiIngredients?.ingredients.length && isMeal(result)).map((result) => {
   // A GPT-composed realistic ingredient list (scripts/synthesize-ai-ingredients.mjs), when present,
   // replaces the deterministic 26-generic-ingredient mix for the main dish — it isn't a closer numeric
   // fit to the target, but it's an ingredient list that actually resembles the named dish. Rice/side
@@ -190,9 +198,8 @@ export async function governmentOptimizedRecipeProducts(): Promise<PlanProduct[]
   const needsPairing = !isOneBowl(result.templateId, result.targetName);
   const ricePairing = needsPairing ? usageEntries([{ingredientId: 'rice-raw', grams: RICE_PAIRING_RAW_GRAMS}], 1, now, '함께 먹는 밥') : [];
 
-  const kimchiSide = needsPairing && result.templateId !== 'kimchi' ? pickSide(kimchiPool, result.foodCode, `${result.foodCode}-kimchi`) : null;
-  const namulSide = needsPairing && result.templateId !== 'namul' ? pickSide(namulPool, result.foodCode, `${result.foodCode}-namul`) : null;
-  const sides = [kimchiSide, namulSide].filter((s): s is StoredRecipeResult => s !== null);
+  // 밑반찬(김치·나물)은 자동으로 붙이지 않는다 — 한 끼는 메인 요리와 밥 한 공기.
+  const sides: StoredRecipeResult[] = [];
   const sideIngredients = sides.flatMap((side) => usageEntries(side.ingredients, SIDE_SERVING_SCALE, now, `${side.targetName} 밑반찬`, side.targetName));
   const sideGrams = sides.reduce((sum, side) => sum + Math.round(side.totalGrams * SIDE_SERVING_SCALE), 0);
   const sideCalories = sides.reduce((sum, side) => sum + (side.predicted.kcal ?? 0) * SIDE_SERVING_SCALE, 0);
@@ -205,7 +212,7 @@ export async function governmentOptimizedRecipeProducts(): Promise<PlanProduct[]
   // price × packs (the fraction of the pack this recipe uses), not the full pack price.
   const totalPrice = Math.round(ingredients.reduce((sum, i) => sum + i.product.price * i.packs, 0));
   const totalGrams = mainGrams + (needsPairing ? RICE_PAIRING_COOKED_GRAMS : 0) + sideGrams;
-  const slots: MealSlot[] = ['lunch', 'dinner'];
+  const slots: MealSlot[] = result.templateId === 'western-breakfast' ? ['breakfast'] : breakfast.has(result.foodCode) ? ['breakfast', 'lunch', 'dinner'] : ['lunch', 'dinner'];
   const visual = pickDishVisual(result.targetName);
   const avoidanceText = ingredients.map((i) => i.label).join(' ') || null;
   const allergens = [...new Set([

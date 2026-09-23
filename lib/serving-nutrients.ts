@@ -19,3 +19,25 @@ export function servingNutrients(p:PlanProduct):{calories:number|null;protein:nu
   const value=(n:number|null|undefined)=>sourced&&factor!==null&&typeof n==='number'&&Number.isFinite(n)&&n>=0?Math.round(n*factor*1000)/1000:null;
   return {calories:value(p.caloriesKcal),protein:value(p.proteinG),carbs:value(p.carbohydratesG),fat:value(p.fatG),sodium:value(p.sodiumMg)};
 }
+
+// 한 끼 칼로리를 요리 · 밥 한 공기 · 밑반찬으로 나눈다. 합계만 보여주면 '배추전 823kcal'처럼 요리 하나가
+// 그만큼인 것으로 읽히고, '밥·반찬 380kcal'도 무엇이 얼마인지 알 수 없었다. 요리는 1인분 무게(g)를 같이 준다.
+const RICE_COOKED_GRAMS=210;
+export function mealCalorieParts(p:PlanProduct){
+  const total=servingNutrients(p).calories;
+  const kcalOf=(part:{product:PlanProduct;packs:number})=>(servingNutrients(part.product).calories??0)*part.packs*part.product.servings;
+  const gramsOf=(part:{product:PlanProduct;packs:number})=>part.product.unit==='g'?part.packs*part.product.quantity*part.product.servings:0;
+  if(!p.recipe||total===null)return {total,dish:{kcal:total,grams:null as number|null},rice:null,sides:null};
+  let rice=0,hasRice=false,sideKcal=0,dishGrams=0;const sideNames:string[]=[];
+  for(const part of p.recipe.ingredients){
+    if(part.label.startsWith('함께 먹는 밥')){rice+=kcalOf(part);hasRice=true;continue;}
+    if(part.group){sideKcal+=kcalOf(part);if(!sideNames.includes(part.group))sideNames.push(part.group);continue;}
+    dishGrams+=gramsOf(part);
+  }
+  return {
+    total,
+    dish:{kcal:Math.max(0,total-rice-sideKcal),grams:dishGrams>0?Math.round(dishGrams/10)*10:null},
+    rice:hasRice?{kcal:rice,grams:RICE_COOKED_GRAMS}:null,
+    sides:sideNames.length?{kcal:sideKcal,names:sideNames.map(n=>n.split('_')[0])}:null,
+  };
+}

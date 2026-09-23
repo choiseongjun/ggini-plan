@@ -35,3 +35,53 @@
 .meal-section-body>.today-edit{margin-top:0}
 .meal-section-body .recommendation-reasons{margin-top:0}
 @media(prefers-reduced-motion:reduce){.meal-section-body{animation:none}.meal-section-head i::after{transition:none}}
+.today-menu-kcal small{font-size:11px;color:#98a28c}
+.meal-kcal{display:grid;gap:5px;margin-top:6px;max-width:260px}
+.meal-kcal-total{display:flex;align-items:baseline;gap:3px;font-size:12px;color:#5c6e55}
+.meal-kcal-total b{font-size:18px;letter-spacing:-.02em;color:#26321f}
+.meal-kcal-total small{margin-left:4px;padding:1px 7px;border-radius:999px;background:#f1f4ea;font-size:10px;color:#7a8570}
+.meal-kcal-bar{display:flex;gap:2px;height:6px;border-radius:6px;overflow:hidden;background:#eef1e6}
+.meal-kcal-bar i{display:block;flex-basis:0;min-width:4px}
+.meal-kcal-bar i:first-child{background:#e98a63}.meal-kcal-bar i:last-child{background:#cdd8bd}
+.meal-kcal-legend{display:flex;flex-wrap:wrap;gap:2px 10px;font-size:11px;color:#6d7a63}
+.meal-kcal-legend>span{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.meal-kcal-legend i{width:7px;height:7px;border-radius:50%}
+.meal-kcal-legend i.is-dish{background:#e98a63}.meal-kcal-legend i.is-side{background:#cdd8bd}
+/* 식단 카드 머리: 가독성 정리 */
+.today-menu-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.today-menu-label .meal-slot{font-size:13px;font-weight:700;color:#5c6e55}
+.today-menu-label .meal-status{padding:4px 10px;border-radius:999px;background:#f1f4ea;font-size:11px;font-weight:700;color:#6d7a63}
+.today-menu-label .meal-status.is-done{background:#e6f1df;color:#3f6a33}
+.today-product{gap:14px}
+.today-menu-toggle-text{gap:4px}
+.today-menu-toggle-text .today-menu-name{margin:0;font-size:17px;font-weight:800;line-height:1.4;letter-spacing:-.02em;color:#26321f}
+.today-menu-price{font-size:13px;color:#6d7a63}
+.today-menu-price b{font-size:15px;font-weight:800;color:#46603c}
+.meal-kcal{display:grid;gap:8px;max-width:none;margin:14px 0 0;padding:12px 14px;border-radius:16px;background:#f8faf3}
+.meal-kcal-total{display:flex;align-items:baseline;gap:4px}
+.meal-kcal-total b{font-size:22px;font-weight:800;letter-spacing:-.03em;color:#26321f}
+.meal-kcal-total span{font-size:13px;font-weight:600;color:#5c6e55}
+.meal-kcal-total small{margin-left:6px;padding:2px 8px;border-radius:999px;background:#fff;font-size:11px;font-weight:700;color:#7a8570}
+.meal-kcal-bar{height:8px;border-radius:8px;background:#e9eee0}
+.meal-kcal-legend{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;margin:0;padding:0;list-style:none}
+.meal-kcal-legend li{display:flex;align-items:center;gap:6px;min-width:0;font-size:12.5px;line-height:1.4;color:#4f5d46}
+.meal-kcal-legend li span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.meal-kcal-legend li b{margin-left:auto;flex-shrink:0;font-size:12.5px;font-weight:800;color:#26321f}
+.meal-kcal-legend i{flex:0 0 8px;width:8px;height:8px;border-radius:50%}
+/* 항목 줄 */
+.today-meals .meal-section-head{font-size:15px;min-height:54px}
+.meal-section-head small{font-size:12.5px;color:#7a8570}
+@media(max-width:360px){.meal-kcal-legend{grid-template-columns:1fr}}
+/* 칼로리 구성: 요리 · 밥 · 반찬 한 줄씩, 무엇이 얼마인지 보이게 */
+.meal-kcal-legend{grid-template-columns:1fr;gap:8px}
+.meal-kcal-legend li{align-items:flex-start;gap:8px;font-size:13px}
+.meal-kcal-legend li>i{margin-top:5px}
+.meal-kcal-legend li span{display:grid;gap:1px;white-space:normal;overflow:visible}
+.meal-kcal-legend li span strong{font-size:13px;font-weight:700;color:#33402c}
+.meal-kcal-legend li span small{font-size:11.5px;line-height:1.4;color:#7a8570}
+.meal-kcal-legend li b{font-size:13px}
+.meal-kcal-bar i{display:block;flex-basis:0;min-width:4px}
+.meal-kcal-bar i.is-dish,.meal-kcal-legend i.is-dish{background:#e98a63}
+.meal-kcal-bar i.is-rice,.meal-kcal-legend i.is-rice{background:#e8c16a}
+.meal-kcal-bar i.is-side,.meal-kcal-legend i.is-side{background:#9cc28a}
+.meal-kcal{gap:4px}.meal-kcal-line{margin:0;font-size:12.5px;line-height:1.6;color:#6d7a63}.meal-kcal-line b{font-weight:800;color:#33402c}

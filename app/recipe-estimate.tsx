@@ -25,7 +25,7 @@ export function RecipeEstimate({product,conditions}:{product:PlanProduct;conditi
   {!recipes.length&&<p>현재 피할 재료 조건을 통과한 기본 레시피가 없어요.</p>}
   {!recipe&&recipes.length>0&&<p>이 상품과 같은 레시피는 아직 없어요. 비교해 보고 싶은 기본 요리를 선택해 주세요.</p>}
   {recipe&&estimate&&<>
-   <MealChoiceCards ready={product} recipeName={recipe.name} recipeCost={estimate.usedTotal} minutes={recipe.minutes}/>
+   <MealChoiceCards ready={product} recipeName={recipe.name} recipeCost={estimate.usedTotal}/>
    <p className="cook-simple-ingredients"><strong>이런 재료로 만들어요</strong>{estimate.rows.map(r=>r.name).join(' · ')}</p>
    <details className="cook-method"><summary><span>만드는 법</span><span aria-hidden="true">＋</span></summary><small>1인분 기준 · 상품과 분량·맛·영양은 다를 수 있어요.</small><ol>{recipe.steps.map(step=><li key={step}>{step}</li>)}</ol></details>
    <details className="cook-shopping-details"><summary><span>한 끼 재료비 보기</span><span aria-hidden="true">＋</span></summary><div className="cook-shopping-body">
