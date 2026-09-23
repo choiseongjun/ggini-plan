@@ -17,7 +17,6 @@ import {addDays,type DashboardData} from '../lib/dashboard';
 import {ShoppingProgress,type useShoppingProgress} from './shopping-progress';
 import './today-meals.css';
 import {recommendationReasons} from '../lib/plan-explanation';
-import {DishNutritionInsight} from './dish-nutrition-insight';
 
 const amount=(n:number)=>n.toLocaleString('ko-KR',{maximumFractionDigits:1});
 export function TodayMeals({nutritionReference,shoppingTotal,intake,userId,onLogin,ids,products,conditions,startDate,onStartDate,onSwap,onChoose,progress,dailyCalories,dashboard,perMealCalories}:{nutritionReference?:DailyNutritionReference;shoppingTotal:number;intake:ReturnType<typeof useFoodIntake>;userId?:string;onLogin:()=>void;ids:string[];products:PlanProduct[];conditions:PlanConditions;startDate:string;onStartDate:(date:string)=>void;onSwap:(index:number,reason?:SwapReason)=>void;onChoose:(index:number,id:string)=>void;progress:ReturnType<typeof useShoppingProgress>;dailyCalories:number|null;perMealCalories?:number|null;dashboard?:DashboardData|null}){
@@ -91,7 +90,6 @@ export function TodayMeals({nutritionReference,shoppingTotal,intake,userId,onLog
       <ShoppingProgress key={p.id} single={!p.recipe} restrictToItems guest={locale.isTaiwan||!userId} progress={{...progress,update:async(changes,action,expense)=>{const ok=await progress.update(changes,action,expense);if(ok){setManaging(null);setPurchaseMessage(expense?'구매 상태와 식비를 함께 기록했어요.':'이 음식의 구매·보유 상태를 반영했어요.');}return ok;}}} items={parts.map(r=>({id:r.product.id,name:r.product.name,unit:'묶음',required:r.required*(1-recorded),packSize:1,url:r.product.productUrl,price:r.product.price,detail:r.product.detail}))} summary={<p className="today-note">지금 고른 음식의 수량만 반영해요. 실제 구매한 묶음 수로 조절해 주세요.</p>}/>
      </div>}
      {!locale.isTaiwan&&<MealComparison key={p.id.split('--with--')[0]} product={p} index={index} ids={ids} products={products} conditions={conditions} onChoose={onChoose} disabled={disabled||done}/>}
-     {!locale.isTaiwan&&<DishNutritionInsight key={`insight-${p.id}`} productId={p.id} productName={p.name}/>}
      {!isToday&&<small>먹은 기록은 오늘 날짜의 메뉴에서 남겨 주세요.</small>}{recorded>0&&!done&&<small>오늘 {recorded}회분 기록했어요. 나머지를 드셨다면 먹었어요를 눌러 주세요.</small>}
     </article>;
    })}</div>
