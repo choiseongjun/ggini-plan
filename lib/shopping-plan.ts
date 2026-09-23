@@ -95,6 +95,12 @@ export function purchaseBasket(ids:string[],products:PlanProduct[],owned:string[
 }
 export const basketTotal=(ids:string[], products:PlanProduct[], owned:string[],supply:Record<string,number>={},people=1)=>basket(ids,products,owned,supply,people).reduce((n,p)=>n+p.cost,0);
 export function mealFamily(p:PlanProduct){return p.recipe?.family??p.name.match(/炒飯|燉飯|義大利麵|볶음밥|덮밥|비빔밥|솥밥|도시락|파스타|라자냐|리조또|비빔국수|쌀국수|칼국수|우동|냉면|김밥|주먹밥|죽|샌드위치|잠봉뵈르|시리얼|그래놀라/)?.[0]??p.foodType??p.name.replace(/\[[^\]]+\]/g,'').trim();}
+// 이름 뒤의 변형만 다른 요리(라면_김치·라면_치즈, 된장찌개_두부…)는 같은 음식이다. 각각 다른 id라서
+// 중복 금지를 피해 한 식단에 여러 번 뽑히던 문제를 막는 기준. 인스턴트 면류는 하나의 '라면'으로 묶는다.
+export function dishBase(p:PlanProduct){
+ const name=(p.recipe?p.name:cookingDishId(p.id)).split('_')[0].replace(/\s+/g,'');
+ return /라면|용기면|컵라면/.test(name)?'라면':name;
+}
 function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,schedule:ReturnType<typeof mealSchedule>,previous:ReadonlySet<string>=new Set(),previousFamilies:ReadonlySet<string>=new Set()){
  const products=new Map(rows.map(r=>[r.product.id,r.product]));
  const families=new Map<string,number>();
@@ -105,6 +111,11 @@ function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,
   for(let j=i-1;j>=0&&schedule[j]?.day===schedule[i]?.day;j--)if(ids[j]===ids[i])repetition+=600;
  }
  const repeats=rows.reduce((n,r)=>n+r.uses*(r.uses-1)/2,0);
+ const bases=new Map<string,number>();
+ for(const id of ids){const p=products.get(id);if(p){const b=dishBase(p);bases.set(b,(bases.get(b)??0)+1);}}
+ const baseRepeats=[...bases.values()].reduce((n,count)=>n+count*(count-1)/2,0);
+ // 인스턴트 라면은 싸고 재료(면)를 서로 재사용해 점수가 부풀었다 — 균형 잡힌 식단에선 드물게만.
+ const instant=bases.get('라면')??0;
  const familyRepeats=[...families.values()].reduce((n,count)=>n+count*(count-1)/2,0);
  const feedback=ids.reduce((sum,id)=>{const p=products.get(id)!;return sum+(c.swapPreferences??[]).reduce((n,f)=>n+(
   f.reason==='taste'?(p.id===f.id?1400:mealFamily(p)===f.family?250:0):
@@ -125,7 +136,7 @@ function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,
  // when the two are otherwise close on fit/variety/budget — nudges plans toward recipes rather
  // than defaulting to whichever pre-made item happens to be in the catalog.
  const cooked=ids.filter(id=>products.get(id)?.recipe).length*120;
- return cooked+reuse+rows.length*300-feedback-ids.filter(id=>previous.has(id)).length*900-ids.filter(id=>previousFamilies.has(mealFamily(products.get(id)!))).length*200+families.size*150-repeats*350-familyRepeats*40-repetition
+ return cooked+reuse+rows.length*300-feedback-ids.filter(id=>previous.has(id)).length*900-ids.filter(id=>previousFamilies.has(mealFamily(products.get(id)!))).length*200+families.size*150-repeats*350-familyRepeats*40-baseRepeats*900-instant*400-repetition
   -rows.reduce((n,r)=>n+r.left,0)*100-rows.reduce((n,r)=>n+r.cost,0)/c.budget*(c.budgetMode==='save'?2000:c.budgetMode==='full'?-100:100)+fit;
 }
 function diverseOptions(products:PlanProduct[],previous:string[],conditions:PlanConditions){
@@ -153,11 +164,14 @@ export function recommendShopping(products: PlanProduct[], c: PlanConditions, ch
  if(new Set(pool.map(p=>cookingDishId(p.id))).size<c.meals)return null;
  const previous=new Set(previousIds);
  const previousFamilies=new Set(pool.filter(p=>previous.has(p.id)).map(mealFamily));
+ const baseOf=new Map(pool.map(p=>[p.id,dishBase(p)]));
  let states: {ids:string[];cost:number;score:number}[]=[{ids:[],cost:0,score:0}];
  for(let i=0;i<c.meals;i++){
   const next=new Map<string,{ids:string[];cost:number;score:number}>();
   for(const state of states)for(const p of options[i]){
    if(state.ids.some(id=>cookingDishId(id)===cookingDishId(p.id)))continue;
+   // 같은 음식의 변형(라면_김치·라면_떡…)은 한 식단에 한 번만.
+   if(state.ids.some(id=>baseOf.get(id)===baseOf.get(p.id)))continue;
    if(repeatsDailyMain(state.ids,pool,c,i,p))continue;
    const ids=[...state.ids,p.id], rows=basket(ids,pool,c.owned,c.supply,c.people), cost=rows.reduce((n,r)=>n+r.cost,0);
    if(cost>c.budget)continue;
@@ -177,7 +191,8 @@ export function recommendShopping(products: PlanProduct[], c: PlanConditions, ch
 export function swapMeal(ids:string[], index:number, products:PlanProduct[], c:PlanConditions,reason?:SwapReason):string[]|null {
  const old=products.find(p=>p.id===ids[index]);
  products=productsForGoal(products,c.goal);
- const options=slotCandidates(products,c,index).filter(p=>!ids.some(id=>cookingDishId(id)===cookingDishId(p.id))&&!repeatsDailyMain(ids,products,c,index,p)).filter(p=>!old||!reason||(
+ const bases=new Set(ids.flatMap((id,i)=>{const q=i===index?null:products.find(x=>x.id===id);return q?[dishBase(q)]:[];}));
+ const options=slotCandidates(products,c,index).filter(p=>!ids.some(id=>cookingDishId(id)===cookingDishId(p.id))&&!bases.has(dishBase(p))&&!repeatsDailyMain(ids,products,c,index,p)).filter(p=>!old||!reason||(
   reason==='price'?basketTotal(ids.map((id,i)=>i===index?p.id:id),products,c.owned,c.supply,c.people)<basketTotal(ids,products,c.owned,c.supply,c.people):
   reason==='effort'?(p.recipe?.minutes??(p.category==='meal_kit'?20:5))<(old.recipe?.minutes??(old.category==='meal_kit'?20:5)):
   reason==='repeat'?mealFamily(p)!==mealFamily(old):true

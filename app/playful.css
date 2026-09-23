@@ -72,3 +72,11 @@
   .site-shell .calendar-grid { gap: 4px; }
   .site-shell .calendar-cell { padding-inline: 2px; }
 }
+/* 하단 탭: 선택 표시는 아이콘 뒤 배경 덩어리 대신 위쪽 짧은 선 + 진한 아이콘·글씨로 */
+.site-shell .bottom-nav.launch-nav button{position:relative;color:#9aa38f;transition:color .2s ease}
+.site-shell .bottom-nav.launch-nav button.active{color:#26321f;font-weight:800}
+.site-shell .bottom-nav.launch-nav button.active:before{content:none}
+.site-shell .bottom-nav.launch-nav button::after{content:"";position:absolute;top:0;left:50%;width:28px;height:3px;border-radius:0 0 3px 3px;background:#46603c;transform:translateX(-50%) scaleX(0);transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+.site-shell .bottom-nav.launch-nav button.active::after{transform:translateX(-50%) scaleX(1)}
+.site-shell .bottom-nav.launch-nav button.active svg{fill:none;stroke-width:2.3}
+@media(prefers-reduced-motion:reduce){.site-shell .bottom-nav.launch-nav button::after{transition:none}}
