@@ -12,3 +12,12 @@
 .daily-recommendation-nutrition th:first-child{width:23%}
 .daily-recommendation-nutrition td small{display:block;font-size:10px;color:#816545;margin-top:4px}
 .daily-recommendation-nutrition summary{cursor:pointer}
+.daily-recommendation-nutrition>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;list-style:none;cursor:pointer}
+.daily-recommendation-nutrition>summary::-webkit-details-marker{display:none}
+.daily-recommendation-nutrition>summary>span{display:grid;gap:2px;min-width:0}
+.daily-recommendation-nutrition>summary strong{font-size:14px;color:#33402c}
+.daily-recommendation-nutrition>summary small{font-size:12px;color:#6d7a63}
+.daily-recommendation-nutrition>summary i{flex:0 0 28px;height:28px;border-radius:50%;background:#eef3e3;position:relative}
+.daily-recommendation-nutrition>summary i::after{content:"";position:absolute;left:50%;top:50%;width:7px;height:7px;border-right:2px solid #46603c;border-bottom:2px solid #46603c;transform:translate(-50%,-70%) rotate(45deg);transition:transform .25s ease}
+.daily-recommendation-nutrition[open]>summary{margin-bottom:10px}
+.daily-recommendation-nutrition[open]>summary i::after{transform:translate(-50%,-30%) rotate(-135deg)}

@@ -3,7 +3,7 @@ import type {DailyNutritionReference} from '../lib/daily-nutrition-reference';
 import {usePlannerLocale} from './planner-locale';
 import {MealPlanOverview} from './meal-plan-overview';
 import {MealComparison} from './meal-comparison';
-import {MealAlternatives} from './meal-alternatives';
+import {MenuPickerModal} from './menu-picker-modal';
 import {useState} from 'react';
 import Link from 'next/link';
 import type {useFoodIntake} from './food-intake';
@@ -73,12 +73,11 @@ export function TodayMeals({overviewOpen,onOverviewOpen,nutritionReference,shopp
     return <article key={index} id={`today-meal-${index}`} tabIndex={-1} className={done?'today-menu done':'today-menu'}>
      <div className="today-menu-label"><span>{slot==='breakfast'?'☀️':slot==='lunch'?'🌤️':'🌙'} {slotLabels[slot]} · 1회분</span><b>{done?'먹었어요 ✓':availablePortions(progress.stock,p)>=1?'집에 있어요':orderedParts.length?'배송 기다리는 중':'구매 전'}</b></div>
      <div className="today-product"><ProductThumb item={p} zoomable/><div><MealSourceBadge product={p}/><h4>{p.name}</h4><strong>한 끼 {p.recipe?'재료비 ':''}약 {won(p.price/p.servings)}</strong>{p.recipe&&<small>{p.recipe.assembly?'상품별 포장 조리법 기준 · 영양 합산 예상':<>재료 영양 합산 예상 · 약 {p.recipe.minutes}분</>}</small>}</div></div>
-     {!done&&<div className="today-edit" role="group" aria-label={`${slotLabels[slot]} 메뉴 수정`}><button type="button" disabled={disabled} aria-expanded={browsing===index} onClick={()=>setBrowsing(browsing===index?null:index)}>🔎 다른 메뉴 고르기</button><button type="button" disabled={disabled} onClick={()=>{setManaging(null);setBrowsing(null);onSwap(index);}}>🔀 바로 바꾸기</button></div>}
-     {browsing===index&&!done&&<MealAlternatives index={index} ids={ids} products={products} conditions={conditions} onChoose={(i,id)=>{onChoose(i,id);setBrowsing(null);}} disabled={disabled}/>}
+     <RecipeProductPreview product={p}/>
+     {!done&&<div className="today-edit" role="group" aria-label={`${slotLabels[slot]} 메뉴 수정`}><button type="button" disabled={disabled} aria-haspopup="dialog" onClick={()=>setBrowsing(index)}>🔎 메뉴 직접 고르기</button><button type="button" disabled={disabled} onClick={()=>{setManaging(null);setBrowsing(null);onSwap(index);}}>🔀 바로 바꾸기</button></div>}
      {!done&&<details className="swap-reasons"><summary>이유를 고르고 교체하기</summary><p>다음 추천에도 반영해요. 이유 없이 바꾸려면 ‘바로 바꾸기’를 누르세요.</p><div>{(Object.keys(swapReasons) as SwapReason[]).map(reason=><button type="button" key={reason} disabled={disabled} onClick={()=>{setManaging(null);onSwap(index,reason);}}>{swapReasons[reason]}</button>)}</div></details>}
      {!locale.isTaiwan&&<p className="recommendation-reasons">{recommendationReasons(p,conditions,perMealCalories??null).join(' · ')}</p>}
-     <ProductNutrition product={p}/>
-     <RecipeProductPreview product={p}/>
+     <details className="today-nutrition-toggle"><summary>1회분 영양정보 보기</summary><ProductNutrition product={p}/></details>
      {!p.recipe&&<div className="today-product-links">
       {p.productUrl&&<a href={p.productUrl} target="_blank" rel="noopener noreferrer" aria-label={`${p.name} 판매 상품 보기 (새 창)`}>🛍️ 판매 상품 보기 ↗</a>}
       <a href={locale.search(p.name)} target="_blank" rel="noopener noreferrer" aria-label={`${p.name} 네이버쇼핑에서 가격 검색 (새 창)`}>다른 판매처 가격 검색 ↗</a>
@@ -93,6 +92,7 @@ export function TodayMeals({overviewOpen,onOverviewOpen,nutritionReference,shopp
      {!isToday&&<small>먹은 기록은 오늘 날짜의 메뉴에서 남겨 주세요.</small>}{recorded>0&&!done&&<small>오늘 {recorded}회분 기록했어요. 나머지를 드셨다면 먹었어요를 눌러 주세요.</small>}
     </article>;
    })}</div>
+   <MenuPickerModal index={browsing} ids={ids} products={products} conditions={conditions} onChoose={onChoose} onClose={()=>setBrowsing(null)} disabled={disabled}/>
    <p className="today-note">한 끼 비용은 간편식의 회분 가격 또는 직접 요리에 쓰는 재료비예요. 실제 결제·배송비와 다를 수 있어요.</p>
   </>:<div className="today-empty">아래에서 예산과 챙길 끼니를 고르면, 오늘 먹을 메뉴부터 준비해 드려요.</div>}
  </section>);

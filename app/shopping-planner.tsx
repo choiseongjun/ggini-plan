@@ -372,7 +372,8 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   {error&&<p className="auth-error" role="alert">{error}</p>}
   {mode!=='settings'&&!loading&&!products.length&&<button type="button" onClick={()=>{setLoading(true);setRetry(n=>n+1);}}>상품 다시 불러오기</button>}
   {!locale.isTaiwan&&mode!=='settings'&&userId&&<button type="button" className="text-link" disabled={loading||busy||!progress.ready} onClick={restore}>저장한 식단 불러오기 →</button>}
-  {!!ids.length&&idsComplete&&<details className="planner-result" open={mode!=='plan'}><summary>준비한 식단 전체 · 구매 목록 ({ids.length}끼)</summary>
+  {/* 홈에서는 숨김: 식단 카드·장보기 가이드와 겹쳐 스크롤만 길어져요. 장보기 탭에서는 그대로 보여요. */}
+  {mode!=='plan'&&!!ids.length&&idsComplete&&<details className="planner-result" open><summary>준비한 식단 전체 · 구매 목록 ({ids.length}끼)</summary>
    {hasRecipes&&<section className="recipe-plan-list" aria-label="함께 준비하는 상품"><h3>🍳 이렇게 준비해요</h3><RecipePurchaseNote ids={ids} products={products} conditions={conditions}/>{ids.map((id,i)=>{const p=products.find(p=>p.id===id)!;return p.recipe?<article key={i}><small>{schedule[i].day}일차 · {slotLabels[schedule[i].slot]}</small><div><MealSourceBadge product={p}/></div><h4>{p.name}</h4><strong>한 끼 재료비 약 {won(p.price)}</strong><RecipeProductPreview product={p}/><MealComparison key={p.id.split('--with--')[0]} product={p} index={i} ids={ids} products={products} conditions={conditions} onChoose={chooseMeal} disabled={busy||progress.busy}/></article>:null;})}</section>}
    <ShoppingProgress guest={locale.isTaiwan||!userId} progress={progress} recommended
     summary={<div className="planner-total"><span>남은 식단 추가 구매 예상금액</span><strong>{won(total)}</strong><small>{total<=conditions.budget?`예산에서 ${won(conditions.budget-total)} 남아요`:`예산을 ${won(total-conditions.budget)} 초과했어요`} · 배송비 별도</small></div>}
