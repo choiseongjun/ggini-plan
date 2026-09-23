@@ -7,8 +7,10 @@ import {ProductThumb} from './product-thumb';
 import {usePlannerLocale} from './planner-locale';
 import './meal-plan-overview.css';
 
-export function MealPlanOverview({ids,products,conditions,startDate,shoppingTotal,onMeal,onSwap,locked,disabled}:{ids:string[];products:PlanProduct[];conditions:PlanConditions;startDate:string;shoppingTotal:number;onMeal:(day:number,index:number)=>void;onSwap:(index:number)=>void;locked:Set<number>;disabled:boolean}){
- const [open,setOpen]=useState(false);
+export function MealPlanOverview({ids,products,conditions,startDate,shoppingTotal,onMeal,onSwap,locked,disabled,open:controlled,onOpenChange}:{ids:string[];products:PlanProduct[];conditions:PlanConditions;startDate:string;shoppingTotal:number;onMeal:(day:number,index:number)=>void;onSwap:(index:number)=>void;locked:Set<number>;disabled:boolean;open?:boolean;onOpenChange?:(open:boolean)=>void}){
+ const [uncontrolled,setUncontrolled]=useState(false);
+ const open=controlled??uncontrolled;
+ const setOpen=(value:boolean)=>{if(onOpenChange)onOpenChange(value);else setUncontrolled(value);};
  const dialog=useRef<HTMLDialogElement>(null);
  const titleId=useId();
  const locale=usePlannerLocale();
