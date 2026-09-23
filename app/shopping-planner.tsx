@@ -332,7 +332,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
      {conditions.budget<budgetGuide.minimum&&<p role="status">{budgetGuide.approximate?'이 절약 구성은 현재 예산보다':'현재 예산에서'} {won(budgetGuide.minimum-conditions.budget)} {budgetGuide.approximate?'더 들어요':'더 필요해요' }.</p>}
      <div className="planner-presets">{[...new Set([budgetGuide.minimum,budgetGuide.varietyMinimum,budgetGuide.varietyUpper].filter((n):n is number=>n!==null).map(n=>Math.max(1000,Math.ceil(n/1000)*1000)))].filter(n=>n<=1000000).map(n=><button type="button" key={n} aria-pressed={conditions.budget===n} onClick={()=>update({budget:n})}>{won(n)}으로 설정</button>)}</div>
     </>}
-    <small>확인 시점의 판매 묶음 가격과 주문·보유 수량 기준 · 가격 변동 가능 · 배송비 별도. 최소 금액은 영양 목표를 충족하는 금액이 아니에요.</small>
+    <small>재료를 쓰는 양만큼의 예상 소매가 기준(기본 양념 제외) · 가격 변동 가능 · 배송비 별도. 최소 금액은 영양 목표를 충족하는 금액이 아니에요.</small>
     <a href="#planner-exclusions" onClick={()=>{setMoreOptions(true);setShowExclusions(true);}}>피할 재료 상세 확인 ↓</a>
    </details>}
    </details>}

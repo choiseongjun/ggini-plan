@@ -19,8 +19,8 @@ test('selected ingredient offer updates pack costs, consumption and restoration'
  const veg=changed.recipe!.ingredients.find(i=>i.product.id===offer.id)!;
  assert.equal(veg.packs,120/500);
  assert.equal(changed.price,Math.round(2000+1100+6990*120/500));
- assert.equal(basketTotal([changed.id],all,[]),2000+2200+6990);
- assert.equal(basketTotal([changed.id],all,[],{[offer.id]:.24}),4200);
+ assert.equal(basketTotal([changed.id],all,[]),changed.price,'meal cost counts only the amount used');
+ assert.equal(basketTotal([changed.id],all,[],{[offer.id]:.24}),2000+1100);
  const stock=Object.fromEntries(changed.recipe!.ingredients.map(({product:p})=>[p.id,{id:p.id,name:p.name,unit:'묶음',url:p.productUrl,ordered:0,owned:1}]));
  const consumed=consumeFood(stock,changed,1);
  assert.equal(consumed.stock[offer.id].owned,.76);
@@ -43,7 +43,7 @@ test('multiple ingredient selections persist together; eggs use counts rather th
  assert.equal(parts.find(i=>i.product.id===tofuOffer.id)!.packs,150/500);
  assert.equal(combined.recipe!.nutrition.calories,null,'shell weight is not edible weight');
  assert.equal(purchaseBasket([combined.id],all,[]).length,3);
- assert.equal(basketTotal([combined.id],all,[]),9000);
+ assert.ok(Math.abs(basketTotal([combined.id],all,[])-combined.price)<=2,'usage-based cost matches the recipe price');
  const restored=cookingProducts([...catalog,...fixtures]).find(p=>p.id===combined.id);
  assert.deepEqual(restored,combined);
  const alternateRice=alternatives.groups.find(g=>g.baseId==='rice')!.offers[1];
@@ -54,7 +54,7 @@ test('two recipes share selling packs and preserve fractional leftovers',()=>{
  assert.equal(rows.find(r=>r.product.id==='rice')?.packs,2);
  assert.equal(rows.find(r=>r.product.id==='kurly-5036690')?.packs,1);
  assert.equal(rows.find(r=>r.product.id==='kurly-5036690')?.left,0.6);
- assert.equal(basketTotal(ids,products,[]),4000+2200+7700+6890);
+ assert.equal(basketTotal(ids,products,[]),rows.reduce((sum,r)=>sum+Math.round(r.required*r.product.price),0));
  assert.equal(basketTotal(ids,products,[],{'rice':2,'tofu':0.5,'eggs':0.1,'kurly-5036690':0.4}),0);
  assert.equal(purchaseBasket(ids,products,[],{}, {[tofu.id]:0,[egg.id]:0}).length,0);
 });
@@ -92,7 +92,7 @@ test('shared plan retains meals but lists actual ingredients once',()=>{
  const snapshot=sharedPlanSnapshot({...initialConditions,days:2,meals:2},[tofu.id,egg.id],products)!;
  assert.equal(snapshot.products.length,2);assert.equal(snapshot.meals[0].productId,tofu.id);
  assert.equal(snapshot.purchases!.filter(p=>p.id==='kurly-5036690').length,1);
- assert.equal(snapshot.total,snapshot.purchases!.reduce((sum,p)=>sum+p.price*p.packs,0));
+ assert.equal(snapshot.total,basketTotal([tofu.id,egg.id],products,[]));
 });
 
 test('comparison matches the main ingredient instead of merely sharing rice or porridge',()=>{

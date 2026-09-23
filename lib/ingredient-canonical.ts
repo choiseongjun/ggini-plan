@@ -26,4 +26,5 @@ export function canonicalIngredient(name: string) {
   n = n.replace(/^(다진|손질한|손질|데친|삶은|볶은|말린|냉동|슬라이스|채썬|깐)(?=.{2,})/, "");
   return SYNONYMS[n] ?? n;
 }
-export const isWater = (canonical: string) => /^(물|정수|생수|찬물|뜨거운물)$/.test(canonical);
+// 물·우린 물·쌀뜨물은 장보기 재료가 아니다 (다시마 우린 물 130g이 재료값으로 잡히던 문제).
+export const isWater = (canonical: string) => /^(물|정수|생수|찬물|뜨거운물|얼음물)$/.test(canonical) || /(우린|끓인|쌀뜨)물$/.test(canonical);

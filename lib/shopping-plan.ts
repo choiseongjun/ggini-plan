@@ -103,7 +103,10 @@ export function purchaseBasket(ids:string[],products:PlanProduct[],owned:string[
  }
  return [...rows.values()].map(({product,required})=>{const have=owned.includes(product.id),available=supply[product.id]??0;
   const packs=have?0:Math.ceil(Math.max(0,required-available-0.000001));
-  return {product,required:have?0:required,have,packs,cost:packs*product.price,left:have?0:Math.max(0,available+packs-required)};
+  // 요리 재료는 통째로 산 포장값이 아니라 실제로 쓰는 양(g)만큼만 비용으로 잡는다. 몇 개를 사야 하는지(packs)는
+  // 장보기 목록용으로 그대로 두고, 식단 비용·예산은 사용량 기준. 완제품(간편식 등)은 여전히 포장 단위.
+  const cost=have?0:product.category==='ingredient'?Math.round(Math.max(0,required-available)*product.price):packs*product.price;
+  return {product,required:have?0:required,have,packs,cost,left:have?0:Math.max(0,available+packs-required)};
  });
 }
 export const basketTotal=(ids:string[], products:PlanProduct[], owned:string[],supply:Record<string,number>={},people=1)=>basket(ids,products,owned,supply,people).reduce((n,p)=>n+p.cost,0);

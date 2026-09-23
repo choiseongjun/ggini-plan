@@ -9,7 +9,7 @@ export function CookingShoppingGuide({ids,products,conditions,onOwn,disabled}:{i
  const money=(n:number)=>`${n.toLocaleString('ko-KR')}원`;
  const amount=(p:PlanProduct,n:number)=>`${Number((n*(p.servingGrams??(p.unit==='개'?p.quantity:1))).toFixed(1))}${p.servingGrams?'g':p.unit==='개'?'개':'묶음'}`;
  return <details className="cooking-shopping-guide">
-  <summary><div className="cooking-guide-head"><span>🧺 한 번 장보고, 여러 끼</span><h3>이 재료로 이렇게 먹어요</h3><p>판매 묶음 기준 예상 {money(rows.reduce((s,r)=>s+r.cost,0))} · 배송비 별도 · 재료 {rows.length}가지 · {meals.length}끼 조리법</p></div><span className="cooking-guide-toggle" aria-hidden="true"><i/></span></summary>
+  <summary><div className="cooking-guide-head"><span>🧺 한 번 장보고, 여러 끼</span><h3>이 재료로 이렇게 먹어요</h3><p>재료 쓰는 양 기준 예상 {money(rows.reduce((s,r)=>s+r.cost,0))} · 배송비 별도 · 재료 {rows.length}가지 · {meals.length}끼 조리법</p></div><span className="cooking-guide-toggle" aria-hidden="true"><i/></span></summary>
   <h4>1. 장볼 재료 확인</h4><p>집에 충분히 있는 재료는 체크하면 구매 금액에서 빠져요. 일부만 있다면 아래 구매 목록에서 보유 수량을 입력해 주세요.</p>
   <ul>{rows.map(r=>{const uses=meals.filter(p=>p.recipe?.ingredients.some(i=>i.product.id===r.product.id));return <li key={r.product.id}><div><strong>{r.product.name}</strong><small>{r.product.detail} · {r.packs?`${r.packs}묶음 구매 · ${money(r.cost)}`:'추가 구매 없음'}</small><small>{uses.length?`${uses.map(p=>p.name).join(' → ')}에 사용`:'함께 먹을 상품'}{r.left>0?` · 준비 후 ${amount(r.product,r.left)} 남음`:''}</small>{r.product.productUrl&&<a href={r.product.productUrl} target="_blank" rel="noopener noreferrer">판매처 보기 ↗</a>}</div><label><input type="checkbox" checked={conditions.owned.includes(r.product.id)} disabled={disabled} onChange={()=>onOwn(r.product.id)}/>충분히 있어요</label></li>;})}</ul>
   <h4>2. 이 순서로 만들어 먹기</h4>
