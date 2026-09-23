@@ -1,4 +1,5 @@
 'use client';
+import {invalidateJson} from '../lib/client-cache';
 import {useRef,useState} from 'react';
 import {withGuestStockLock} from '../lib/guest-shopping-progress';
 import './reset-data.css';
@@ -11,7 +12,7 @@ export function ResetData({userId}:{userId?:string}){
   lock.current=true;setBusy(true);setError('');
   try{
    await withGuestStockLock(async()=>{
-    if(userId){const r=await fetch('/api/reset-data',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId,confirmation})});const data=await r.json();if(!r.ok)throw new Error(data.error);}
+    invalidateJson();if(userId){const r=await fetch('/api/reset-data',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId,confirmation})});const data=await r.json();if(!r.ok)throw new Error(data.error);}
     for(const storage of [localStorage,sessionStorage])for(const owner of new Set([userId??'guest','guest'])){
      storage.removeItem(`kkiniplan-shopping-draft-v2-${owner}`);
      for(const scope of ['products','ingredients'])storage.removeItem(`kkiniplan-progress-${scope}-${owner}`);

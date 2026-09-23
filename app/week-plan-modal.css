@@ -1,0 +1,46 @@
+dialog.week-plan-modal{width:min(560px,calc(100% - 24px));max-height:90dvh;margin:auto;padding:0;border:0;border-radius:28px;background:#fbfcf6;color:#33402c;box-shadow:0 24px 60px #1d2a1a40;overflow:hidden}
+dialog.week-plan-modal[open]{animation:wpm-in .42s cubic-bezier(.22,.9,.3,1) both}
+dialog.week-plan-modal::backdrop{background:#1d2a1a66;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);animation:wpm-fade .3s ease both}
+@keyframes wpm-in{from{opacity:0;transform:translateY(40px) scale(.98)}}
+@keyframes wpm-fade{from{opacity:0}}
+.wpm-sheet{display:flex;flex-direction:column;max-height:90dvh}
+.wpm-head{padding:20px 20px 12px;background:linear-gradient(180deg,#fff,#fbfcf6);border-bottom:1px solid #eceee4}
+.wpm-head-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.wpm-kicker{font-size:12px;font-weight:700;color:#6a8a5a}
+.wpm-head h2{margin:4px 0 0;font-size:20px;letter-spacing:-.02em}
+.wpm-close{flex-shrink:0;width:36px;height:36px;border:0;border-radius:50%;background:#eef2e4;color:#5c6e55;font:inherit;font-size:14px;cursor:pointer}
+.wpm-days{display:flex;gap:6px;margin-top:14px;overflow-x:auto;scrollbar-width:none}
+.wpm-days::-webkit-scrollbar{display:none}
+.wpm-days button{flex:0 0 44px;display:grid;justify-items:center;gap:2px;padding:7px 0;border:1.5px solid #e6eadb;border-radius:14px;background:#fff;color:#33402c;font:inherit;cursor:pointer;transition:transform .2s cubic-bezier(.34,1.56,.64,1),background .2s ease}
+.wpm-days button:active{transform:scale(.92);background:#eef4e6}
+.wpm-days small{font-size:10px;color:#7a8a6e}.wpm-days b{font-size:15px}
+.wpm-scroll{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:14px 16px 8px;scroll-padding-top:8px}
+.wpm-day{margin-bottom:16px;animation:wpm-day-in .45s cubic-bezier(.22,.9,.3,1) both;animation-delay:calc(var(--i) * 50ms)}
+@keyframes wpm-day-in{from{opacity:0;transform:translateY(12px)}}
+.wpm-day-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 4px 8px}
+.wpm-day-head>div{display:flex;align-items:center;gap:8px}
+.wpm-day-head strong{font-size:14px}
+.wpm-day-badge{padding:3px 9px;border-radius:999px;background:#526c47;color:#fff;font-size:11px;font-weight:800}
+.wpm-day-kcal{padding:3px 10px;border-radius:999px;font-size:12px;font-weight:800}
+.wpm-day-kcal.is-ok{background:#e6f1df;color:#3f6a33}.wpm-day-kcal.is-over{background:#fde7dc;color:#a34f2d}.wpm-day-kcal.is-under{background:#e1eefa;color:#35668f}
+.wpm-meal{--slot:#f3b58f;display:flex;gap:12px;margin-bottom:8px;padding:12px;border-radius:20px;background:#fff;box-shadow:0 3px 12px #3a4a2a0f;border-left:4px solid var(--slot)}
+.wpm-meal.is-morning{--slot:#f2c95c}.wpm-meal.is-noon{--slot:#8fc27a}.wpm-meal.is-evening{--slot:#8c9bd8}
+.wpm-meal>.food-thumb{flex:0 0 68px;width:68px;height:68px;border-radius:16px;overflow:hidden}
+.wpm-meal>.food-thumb img{width:100%;height:100%;object-fit:cover}
+.wpm-meal-body{min-width:0;flex:1}
+.wpm-slot{font-size:11px;font-weight:800;color:#6d7a63}
+.wpm-meal h3{margin:2px 0 4px;font-size:14px;line-height:1.45;overflow-wrap:anywhere}
+.wpm-meal-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#526c47}
+.wpm-nutri{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0 0;padding:0;list-style:none}
+.wpm-nutri li{padding:3px 8px;border-radius:999px;background:#f3f5ec;font-size:11px;color:#5c6e55}
+.wpm-nutri li b{margin-right:1px;color:#26321f}
+.wpm-nutri li.p{background:#e8f2e3}.wpm-nutri li.c{background:#fcf1d6}.wpm-nutri li.f{background:#fbe6dc}
+.wpm-assumed{margin:0 4px;font-size:11px;color:#8a947e}
+.wpm-foot{padding:12px 16px max(14px,env(safe-area-inset-bottom));border-top:1px solid #eceee4;background:#fff}
+.wpm-foot a{display:block;padding:14px;border-radius:15px;background:#526c47;color:#fff;text-align:center;font-weight:700;text-decoration:none}
+.week-plan-modal button:focus-visible,.week-plan-modal a:focus-visible{outline:3px solid #a9c48a;outline-offset:2px}
+@media(max-width:540px){dialog.week-plan-modal{width:100%;max-width:100%;max-height:94dvh;margin:auto 0 0;border-radius:28px 28px 0 0}dialog.week-plan-modal[open]{animation-name:wpm-up}@keyframes wpm-up{from{transform:translateY(100%)}}.wpm-sheet{max-height:94dvh}}
+@media(prefers-reduced-motion:reduce){dialog.week-plan-modal,dialog.week-plan-modal::backdrop,.week-plan-modal *{animation:none!important;transition:none!important}}
+.week-analysis header{display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
+.week-open-plan{flex-shrink:0;margin-bottom:14px;padding:8px 13px;border:0;border-radius:999px;background:#526c47;color:#fff;font:inherit;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px #46603c33;transition:transform .2s cubic-bezier(.34,1.56,.64,1)}
+.week-open-plan:active{transform:scale(.94)}

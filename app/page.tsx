@@ -4,6 +4,7 @@ import './home-readability.css';
 import {MobileBuddy} from './mobile-buddy';
 import {InstallPrompt} from './install-prompt';
 import {PolicyLinks} from './policy-links';
+import {PlanCalendar} from './plan-calendar';
 import {ComparisonTrends} from './comparison-trends';
 import {trackComparison} from '../lib/track-comparison';
 import {LanguageSwitcher} from './language-switcher';
@@ -28,12 +29,14 @@ import { catalogCategories, shoppingSearchLinks, unitPrice, type CatalogItem, ty
 import { ProductThumb } from "./product-thumb";
 import { CatalogFilter } from "./catalog-filter";
 import { AppLoading, useLoadingTask } from "./app-loading";
+import { cachedJson, hasFreshJson, invalidateJson, primeJson } from "../lib/client-cache";
+
+const catalogTtl=10*60_000,dashboardTtl=60_000;
 import {ServiceFeedback} from './service-feedback';
 
 type Tab = "community" | "home" | "calendar" | "cart" | "compare" | "record" | "profile";
 const formatWon=(value:number)=>new Intl.NumberFormat('ko-KR').format(value)+'원';
 export default function Home() {
-  const [profileRevision,setProfileRevision]=useState(0);
   const [recordDate,setRecordDate]=useState(()=>emptyDashboard().today);
   const pathname = usePathname();
   const router = useRouter();
@@ -75,7 +78,7 @@ export default function Home() {
   const compareOffers = [...(comparison?.offers ?? [])].sort((a, b) => sortBy === "unit" ? (a.unitPrice ?? Number.POSITIVE_INFINITY) - (b.unitPrice ?? Number.POSITIVE_INFINITY) || a.price - b.price : a.price - b.price);
   const compareLinks = shoppingSearchLinks(compareProduct?.searchQuery ?? "");
   const openCompare = (itemId: string) => { trackComparison(itemId); setComparison(null); setCompareLoading(true); setSortBy("unit"); router.push(`/compare/${encodeURIComponent(itemId)}`); };
-  async function refreshDashboard(){const r=await fetch("/api/dashboard",{cache:"no-store"});const d=await r.json();if(!r.ok)throw new Error(d.error);setDashboard(d);}
+  async function refreshDashboard(){invalidateJson("/api/dashboard");const r=await fetch("/api/dashboard",{cache:"no-store"});const d=await r.json();if(!r.ok)throw new Error(d.error);primeJson(`/api/dashboard|${authUser?.id??"guest"}`,d);setDashboard(d);}
   const editBudget=()=>{if(!authUser){setShowAuth(true);return;}setDraftBudget(dashboard?.budget?.toString()??"");setShowSetup(true);};
   async function saveSetup(event:React.FormEvent){event.preventDefault();setSavingBudget(true);setDataError("");try{const r=await fetch("/api/dashboard",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"budget",amount:Number(draftBudget)})});const d=await r.json();if(!r.ok)throw new Error(d.error);await refreshDashboard();setShowSetup(false);}catch(e){setDataError(e instanceof Error?e.message:"저장하지 못했어요.");}finally{setSavingBudget(false);}}
   const displayName = authUser?.name ?? "나";
@@ -84,10 +87,8 @@ export default function Home() {
   useEffect(() => {
     if(!needsCatalog||catalogLoaded)return;
     const controller=new AbortController();
-    const finish = startLoading("식단과 장바구니를 준비하고 있어요");
-    void fetch("/api/catalog",{cache:"no-store",signal:controller.signal}).then(async response=>{
-        const catalog=await response.json();
-        if(!response.ok)throw new Error("상품 연결 실패");
+    const finish = hasFreshJson("/api/catalog",catalogTtl)?()=>{}:startLoading("식단과 장바구니를 준비하고 있어요");
+    void cachedJson("/api/catalog",{ttl:catalogTtl}).then(catalog=>{
         if(!controller.signal.aborted){setProducts(catalog.items ?? []);setCatalogError("");setCatalogLoaded(true);}
       }).catch(()=>{if(!controller.signal.aborted){setCatalogLoaded(true);setCatalogError("상품을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.");}}).finally(finish);
     return()=>{controller.abort();finish();};
@@ -99,10 +100,10 @@ export default function Home() {
       controller?.abort();
       const request=new AbortController();controller=request;
       // Refresh records after an expense change without restarting the catalog or toast.
-      const finish=showLoading?startLoading("이번 주 식단·예산을 불러오고 있어요"):undefined;
-      void fetch("/api/dashboard",{cache:"no-store",signal:request.signal}).then(async response=>{
-        const dash=await response.json();
-        if(!response.ok)throw new Error(dash.error??"식단을 불러오지 못했어요.");
+      const key=`/api/dashboard|${authUser?.id??"guest"}`;
+      if(!showLoading)invalidateJson(key);
+      const finish=showLoading&&!hasFreshJson(key,dashboardTtl)?startLoading("이번 주 식단·예산을 불러오고 있어요"):undefined;
+      void cachedJson("/api/dashboard",{key,ttl:dashboardTtl}).then(dash=>{
         if(!request.signal.aborted){setDashboard(dash);setDataError("");}
       }).catch(e=>{if(!request.signal.aborted)setDataError(e.message);}).finally(finish);
     };
@@ -175,10 +176,6 @@ export default function Home() {
         {tab === "record" && <FoodIntake key={`intake-${authUser?.id??"guest"}-${tab}`} userId={authUser?.id} onLogin={()=>setShowAuth(true)} history={tab==="record"} recordDate={recordDate} onDateChange={setRecordDate}/>}
         {tab === "home" && <ShoppingPlanner key={`shopping-home-${authUser?.id??"guest"}`} dashboard={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/>}
         {tab==='home'&&<details className="home-explore"><summary>상품 비교·이용 안내 더보기</summary><ComparisonTrends/><nav aria-label="더 알아보기"><Link href="/products">상품 가격·영양 비교 <span>→</span></Link><Link href="/guides">식단·식비 가이드 <span>→</span></Link><Link href="/submissions">상품·영양정보 제보 <span>→</span></Link><a href="mailto:choisj2702@gmail.com">문의·협업 <span>↗</span></a></nav></details>}
-        <ServiceFeedback page={`/${tab==='home'?'':tab}`}/>
-        {(tab === 'home' || tab === 'profile') && <PolicyLinks/>}
-        {(tab==='cart'||tab==='profile')&&<section className="home-guide-entry"><strong>상품·영양정보 제보</strong><Link href={tab==='profile'?'/submissions#mine':'/submissions'}>{tab==='profile'?'내 제보와 검토 결과 보기 →':'상품 정보 보완하기 →'}</Link></section>}
-        {tab==='profile'&&<section className="home-guide-entry contact-entry"><strong>문의·협업</strong><a href="mailto:choisj2702@gmail.com">choisj2702@gmail.com ↗</a></section>}
         {authError && <p className="auth-inline-error" role="alert">{authError}</p>}
         {dataError&&<p className="auth-error" role="alert">{dataError}</p>}
 
@@ -187,7 +184,7 @@ export default function Home() {
         {tab==="compare" && catalogLoaded && !catalogError && !compareProduct && <p className="body-note">상품을 찾을 수 없습니다.</p>}
         {tab === "record" && <section className="home-guide-entry"><strong>지난 식단과 지출 돌아보기</strong><p>달력은 기록이 쌓인 뒤 필요할 때 열어 보세요.</p><Link href="/calendar">식단·지출 달력 열기 →</Link></section>}
         {tab === "record" && dashboard && <Dashboard key={`${authUser?.id??"guest"}-${tab}-${recordDate}`} mode={tab} recordDate={recordDate} data={dashboard} userId={authUser?.id} products={products} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")} onCalendar={()=>setTab("calendar")} onBudget={editBudget} onRefresh={refreshDashboard} onCompare={openCompare}/>}
-        {tab === "calendar" && <><MonthlyPlanner key={`month-${authUser?.id??"guest"}`} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/>{dashboard&&<details><summary>지출 기록·기존 하루 식단 보기</summary><Dashboard key={`${authUser?.id??"guest"}-calendar`} mode="calendar" data={dashboard} userId={authUser?.id} products={products} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")} onCalendar={()=>setTab("calendar")} onBudget={editBudget} onRefresh={refreshDashboard} onCompare={openCompare}/></details>}</>}
+        {tab === "calendar" && <><PlanCalendar key={`plan-calendar-${authUser?.id??"guest"}`} userId={authUser?.id}/>{dashboard&&<details><summary>지출 기록·기존 하루 식단 보기</summary><Dashboard key={`${authUser?.id??"guest"}-calendar`} mode="calendar" data={dashboard} userId={authUser?.id} products={products} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")} onCalendar={()=>setTab("calendar")} onBudget={editBudget} onRefresh={refreshDashboard} onCompare={openCompare}/></details>}</>}
         {tab === "cart" && <>
           <ShoppingPlanner key={`shopping-${authUser?.id??"guest"}`} mode="cart" userId={authUser?.id} onLogin={()=>setShowAuth(true)}/><details><summary>직접 요리할 식단의 재료 보기</summary><MonthlyPlanner key={`ingredients-${authUser?.id??"guest"}`} mode="cart" userId={authUser?.id} onLogin={()=>setShowAuth(true)}/></details>
           <SharedBasket key={authUser?.id ?? "guest"} userId={authUser?.id} onCompare={openCompare}/>
@@ -216,7 +213,11 @@ export default function Home() {
           <p className="compare-disclaimer">비교 결과의 상품 용량, 배송비, 할인 조건은 판매처마다 달라질 수 있습니다. 결제 전 상품 상세 정보를 확인하세요.</p>
         </>}
         {tab === "community" && <CommunityPanel key={authUser?.id ?? "guest"} userId={authUser?.id} products={products} budget={budget} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")}/>}
-        {tab === "profile" && <><div className="page-intro"><div className="week-label">MY SHOPPING</div><h2>{displayName}님의 <span>장보기 취향</span></h2><p>내 생활에 맞는 끼니만, 예산 안에서 간편하게.</p></div><BodyProfilePanel onSaved={()=>setProfileRevision(n=>n+1)} key={authUser?.id ?? "guest"} userId={authUser?.id} name={displayName} onLogin={() => setShowAuth(true)}/><ShoppingPlanner key={`preferences-${authUser?.id??"guest"}-${profileRevision}`} mode="settings" userId={authUser?.id} onLogin={()=>setShowAuth(true)}/><details className="profile-extra"><summary>월 식비 예산·지출 관리</summary><BudgetSettings monthlyOnly key={`budget-${authUser?.id ?? "guest"}`} data={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)} onRefresh={refreshDashboard}/></details><ResetData key={`reset-${authUser?.id??"guest"}`} userId={authUser?.id}/></> }
+        {tab === "profile" && <><div className="page-intro"><div className="week-label">MY PAGE</div><h2>{displayName}님의 <span>하루 에너지</span></h2><p>내 몸과 생활에 맞춘 칼로리·영양, 그리고 먹는 취향이에요.</p></div><BodyProfilePanel key={authUser?.id ?? "guest"} userId={authUser?.id} name={displayName} onLogin={() => setShowAuth(true)}/><details className="profile-extra"><summary>월 식비 예산·지출 관리</summary><BudgetSettings monthlyOnly key={`budget-${authUser?.id ?? "guest"}`} data={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)} onRefresh={refreshDashboard}/></details><ResetData key={`reset-${authUser?.id??"guest"}`} userId={authUser?.id}/></> }
+        {(tab==='cart'||tab==='profile')&&<section className="home-guide-entry"><strong>상품·영양정보 제보</strong><Link href={tab==='profile'?'/submissions#mine':'/submissions'}>{tab==='profile'?'내 제보와 검토 결과 보기 →':'상품 정보 보완하기 →'}</Link></section>}
+        {tab==='profile'&&<section className="home-guide-entry contact-entry"><strong>문의·협업</strong><a href="mailto:choisj2702@gmail.com">choisj2702@gmail.com ↗</a></section>}
+        <ServiceFeedback page={`/${tab==='home'?'':tab}`}/>
+        {(tab === 'home' || tab === 'profile') && <PolicyLinks/>}
       </div>
       {/* 식단공유(커뮤니티) 탭은 준비 중이라 메뉴에서 숨김 — /community 라우트 자체는 그대로 동작해요. */}
       <nav className="bottom-nav launch-nav" aria-label="앱 메뉴">{([ ["home","홈","home"], ["profile","마이","user"] ] as [Tab,string,IconName][]).map(([key,label,icon]) => <button key={key} type="button" className={tab === key ? "active" : ""} onClick={() => setTab(key)} aria-current={tab === key ? "page" : undefined}><Icon name={icon} size={21}/><span>{label}</span></button>)}</nav>

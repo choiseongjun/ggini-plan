@@ -1,15 +1,14 @@
 'use client';
+import {cachedJson,hasFreshJson,invalidateJson,primeJson} from '../lib/client-cache';
 import {RiceBuddy} from './rice-buddy';
 import adoptionStyles from './plan-adoption.module.css';
 import {shoppingAvailabilityMessage} from '../lib/shopping-availability';
 import {cookingDishId,repeatsDailyMain} from '../lib/shopping-plan';
-import {CookingShoppingGuide} from './cooking-shopping-guide';
 import {MealKindPicker} from './meal-kind-picker';
 import {MealModePicker} from './meal-mode-picker';
 import {mealKinds,type MealKind} from '../lib/meal-kinds';
 import {trackPlanner} from '../lib/track-planner';
 import {recommendationReasons} from '../lib/plan-explanation';
-import {PlanPurchaseSummary} from './plan-purchase-summary';
 import {usePlannerLocale} from './planner-locale';
 import {BudgetModePicker} from './budget-mode-picker';
 import {servingNutrients,nutritionIsEstimated} from '../lib/serving-nutrients';
@@ -60,6 +59,7 @@ function ingredientAmount(p:PlanProduct,packs:number){
  const unit=count?'개':p.servingGrams?'g':'묶음';
  return `${Number((packs*(count?p.quantity:p.servingGrams??1)).toFixed(1))}${unit}`;
 }
+const planTtl=10*60_000;
 function encodeDraft(conditions:PlanConditions,mealIds:string[]){return JSON.stringify({conditions,mealIds,savedAt:Date.now()});}
 export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:string;onLogin:()=>void;mode?:'plan'|'cart'|'settings';dashboard?:DashboardData|null}){
  const locale=usePlannerLocale();
@@ -67,6 +67,9 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
  const won=locale.money;
  useEffect(()=>{if(!locale.isTaiwan&&mode!=='settings')trackPlanner('visit');},[locale.isTaiwan,mode]);
  const endpoint=locale.isTaiwan?'/api/taiwan/catalog':'/api/shopping-plan';
+ const planKey=`${endpoint}|${userId??'guest'}`;
+ // Writes invalidate the cached GET so the next mount sees them.
+ const mutate=(init:RequestInit)=>{invalidateJson(endpoint);return fetch(endpoint,init);};
  const defaultConditions=locale.isTaiwan?taiwanConditions:initialConditions;
  const draftKey=`kkiniplan-shopping-draft-v2-${locale.isTaiwan?'guest':userId??'guest'}${locale.storageSuffix}`;
  const preferenceQueue=useRef(Promise.resolve());
@@ -119,7 +122,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   const c=parseConditions(pending?.conditions);
   if(!c||!Array.isArray(pending?.mealIds)||!Number.isFinite(pending.savedAt)||Date.now()-pending.savedAt>86400000)return;
   adopting.current=true;
-  Promise.resolve().then(()=>{setBusy(true);return fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({conditions:c,mealIds:pending.mealIds})});}).then(async r=>{
+  Promise.resolve().then(()=>{setBusy(true);invalidateJson(endpoint);return fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({conditions:c,mealIds:pending.mealIds})});}).then(async r=>{
    const d=await r.json();if(!r.ok)throw new Error(d.error);
    sessionStorage.removeItem('ggini-pending-adoption');
    localStorage.setItem(draftKey,encodeDraft(c,pending.mealIds));setConditions(c);setIds(pending.mealIds);
@@ -128,8 +131,10 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
  },[userId,locale.isTaiwan,loading,endpoint,draftKey]);
  useEffect(()=>{
   const controller=new AbortController();
-  const finishLoading=startLoading('나에게 맞는 장보기를 준비하고 있어요');
-  fetch(endpoint,{cache:'no-store',signal:controller.signal}).then(async r=>{const d=await r.json();if(!r.ok)throw new Error(d.error);return d;}).then(d=>{
+  // Revisiting 홈 reuses this session's copy instead of re-downloading the catalog behind a loader.
+  const finishLoading=hasFreshJson(planKey,planTtl)?()=>{}:startLoading('나에게 맞는 장보기를 준비하고 있어요');
+  cachedJson(endpoint,{key:planKey,ttl:planTtl}).then(d=>{
+   if(controller.signal.aborted)return;
    const catalog=d.baseProducts??d.products,defaults=d.excluded??[];
    setProducts(catalog);setProfileExcluded(defaults);setPersonalization(d.personalization);setError('');setIds([]);
    const saved=parseConditions(d.preferences);setAutomaticBudget(!saved);setConditions(resolveShoppingExclusions({... (saved??defaultConditions),goal:saved?.goal??'maintain'},defaults));
@@ -148,12 +153,12 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    }catch{/* An expired draft should not stop browsing. */}
   }).catch(e=>{if(!controller.signal.aborted)setError(e.message);}).finally(()=>{if(!controller.signal.aborted)setLoading(false);finishLoading();});
   return()=>{controller.abort();finishLoading();};
- },[retry,draftKey,locale,endpoint,defaultConditions,startLoading]);
+ },[retry,draftKey,locale,endpoint,planKey,defaultConditions,startLoading]);
  function remember(c:PlanConditions,mealIds:string[]){try{localStorage.setItem(draftKey,encodeDraft(c,mealIds));}catch{/* Saving to an account remains available. */}}
  function updateMealKinds(mealKinds:MealKind[]){updatePreferences({mealKinds});}
  function updatePreferences(patch:Partial<Pick<PlanConditions,'mealKinds'|'goal'|'budgetMode'|'swapPreferences'>>){
   update(patch);remember({...conditions,...patch},[]);
-  if(userId&&!locale.isTaiwan){preferenceQueue.current=preferenceQueue.current.catch(()=>{}).then(async()=>{try{const r=await fetch(endpoint,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(patch)});if(!r.ok)throw new Error();}catch{setError('선택은 이 기기에 저장했지만 계정 저장에 실패했어요. 마이페이지에서 다시 저장해 주세요.');}});}
+  if(userId&&!locale.isTaiwan){preferenceQueue.current=preferenceQueue.current.catch(()=>{}).then(async()=>{try{const r=await mutate({method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(patch)});if(!r.ok)throw new Error();}catch{setError('선택은 이 기기에 저장했지만 계정 저장에 실패했어요. 마이페이지에서 다시 저장해 주세요.');}});}
  }
  function returnToSetup(){
   setIds([]);setError('');setMessage('');remember(conditions,[]);
@@ -172,6 +177,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   try{
    const response=await fetch(endpoint,{cache:'no-store'});
    const data=await response.json();if(!response.ok)throw new Error(data.error);
+   primeJson(planKey,data);
    const fresh=(data.baseProducts??data.products) as PlanProduct[];setProducts(fresh);setProfileExcluded(data.excluded??[]);setPersonalization(data.personalization);
    if(data.personalization?.blocked)throw new Error('현재 신체 정보에서는 자동 맞춤 추천을 제공하지 않아요. 마이페이지 안내를 확인해 주세요.');
    if(mode==='settings'&&!data.personalization?.hasProfile)throw new Error('먼저 위의 신체 정보를 저장해 주세요. 저장한 정보를 기준으로 추천할게요.');
@@ -239,7 +245,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   try{
    await preferenceQueue.current;
    const clean={...c,owned:[],supply:conditions.supply};
-   if(userId&&!locale.isTaiwan){const r=await fetch(endpoint,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({conditions:clean})});const d=await r.json();if(!r.ok)throw new Error(d.error);}
+   if(userId&&!locale.isTaiwan){const r=await mutate({method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({conditions:clean})});const d=await r.json();if(!r.ok)throw new Error(d.error);}
    localStorage.setItem(draftKey,encodeDraft(clean,[]));
    setIds([]);await generate(clean);
   }catch(e){setError(e instanceof Error?e.message:'설정을 저장하지 못했어요.');}finally{setBusy(false);}
@@ -247,7 +253,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
  async function save(){
   remember(conditions,ids);if(locale.isTaiwan){setMessage('已儲存在這個瀏覽器。');return;}if(!userId){try{sessionStorage.setItem('ggini-pending-adoption',encodeDraft(conditions,ids));}catch{setError('선택을 보관하지 못했어요. 로그인 후 이 식단을 다시 저장해 주세요.');}onLogin();return;}
   setBusy(true);setError('');setMessage('');
-   try{const r=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({conditions,mealIds:ids})});const d=await r.json();if(!r.ok)throw new Error(d.error);sessionStorage.removeItem('ggini-pending-adoption');setMessage('식단을 계정에 저장했어요. 준비한 뒤 먹었어요를 누르면 식비와 영양 기록이 쌓여요.');}
+   try{const r=await mutate({method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({conditions,mealIds:ids})});const d=await r.json();if(!r.ok)throw new Error(d.error);sessionStorage.removeItem('ggini-pending-adoption');setMessage('식단을 계정에 저장했어요. 준비한 뒤 먹었어요를 누르면 식비와 영양 기록이 쌓여요.');}
   catch(e){setError(e instanceof Error?e.message:'저장하지 못했어요.');}finally{setBusy(false);}
  }
  async function restore(){
@@ -366,8 +372,6 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   {error&&<p className="auth-error" role="alert">{error}</p>}
   {mode!=='settings'&&!loading&&!products.length&&<button type="button" onClick={()=>{setLoading(true);setRetry(n=>n+1);}}>상품 다시 불러오기</button>}
   {!locale.isTaiwan&&mode!=='settings'&&userId&&<button type="button" className="text-link" disabled={loading||busy||!progress.ready} onClick={restore}>저장한 식단 불러오기 →</button>}
-  {!locale.isTaiwan&&ids.length>0&&idsComplete&&<PlanPurchaseSummary rows={purchases} budget={conditions.budget} money={won}/>}
-  {!locale.isTaiwan&&mode!=='settings'&&!!ids.length&&idsComplete&&<CookingShoppingGuide ids={ids} products={products} conditions={conditions} onOwn={own} disabled={busy||progress.busy}/>}
   {!!ids.length&&idsComplete&&<details className="planner-result" open={mode!=='plan'}><summary>준비한 식단 전체 · 구매 목록 ({ids.length}끼)</summary>
    {hasRecipes&&<section className="recipe-plan-list" aria-label="함께 준비하는 상품"><h3>🍳 이렇게 준비해요</h3><RecipePurchaseNote ids={ids} products={products} conditions={conditions}/>{ids.map((id,i)=>{const p=products.find(p=>p.id===id)!;return p.recipe?<article key={i}><small>{schedule[i].day}일차 · {slotLabels[schedule[i].slot]}</small><div><MealSourceBadge product={p}/></div><h4>{p.name}</h4><strong>한 끼 재료비 약 {won(p.price)}</strong><RecipeProductPreview product={p}/><MealComparison key={p.id.split('--with--')[0]} product={p} index={i} ids={ids} products={products} conditions={conditions} onChoose={chooseMeal} disabled={busy||progress.busy}/></article>:null;})}</section>}
    <ShoppingProgress guest={locale.isTaiwan||!userId} progress={progress} recommended

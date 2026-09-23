@@ -9,8 +9,14 @@ import { defaultDiet, dietStyles, excludedFoods, excludedFoodGroups, parseDiet, 
 import { parseNutritionTarget, type NutritionTarget } from "../lib/nutrition-target";
 import { RiceBuddy } from "./rice-buddy";
 import { AppLoading } from "./app-loading";
+import { invalidateJson } from "../lib/client-cache";
+import { WeekAnalysis } from "./week-analysis";
+import { mealLabels, ProfileProgress, ProfileWizardModal, readFields, sectionStatus, splitCalories, type CustomTarget, type ProfileFields, type WizardResult } from "./profile-wizard";
+import { bodyGoals, nutritionPlan, type BodyGoal } from "../lib/nutrition-plan";
 
-export function BodyProfilePanel({ userId, name, onLogin, onSaved }: { userId?: string; name: string; onLogin: () => void; onSaved?:()=>void }) {
+const draftKey = "profile-wizard-draft";
+
+export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string; name: string; onLogin: () => void; onSaved?:()=>void }) {
   const formRef = useRef<HTMLFormElement>(null);
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
@@ -32,6 +38,45 @@ export function BodyProfilePanel({ userId, name, onLogin, onSaved }: { userId?: 
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [savedProfile, setSavedProfile] = useState(false);
+  const [goal, setGoal] = useState<BodyGoal | "">("");
+  const [custom, setCustom] = useState<CustomTarget | null>(null);
+  const [wizardStep, setWizardStep] = useState<number | null>(null);
+  const [direction, setDirection] = useState<1 | -1>(1);
+  const [reviewed, setReviewed] = useState<Set<number>>(() => new Set());
+  const [dirty, setDirty] = useState(false);
+  const fields: ProfileFields = { sex, age, height, weight, activity, meals, pregnancy, diet, goal, custom };
+  function changeFields(patch: Partial<ProfileFields>) {
+    if (patch.sex !== undefined) setSex(patch.sex);
+    if (patch.age !== undefined) setAge(patch.age);
+    if (patch.height !== undefined) setHeight(patch.height);
+    if (patch.weight !== undefined) setWeight(patch.weight);
+    if (patch.activity !== undefined) setActivity(patch.activity);
+    if (patch.meals !== undefined) setMeals(patch.meals);
+    if (patch.pregnancy !== undefined) setPregnancy(patch.pregnancy);
+    if (patch.diet !== undefined) setDiet(patch.diet);
+    if (patch.goal !== undefined) setGoal(patch.goal);
+    if (patch.custom !== undefined) setCustom(patch.custom);
+    // Changing the meal count keeps the daily total and re-spreads it over the new number of meals.
+    const nextCustom = patch.custom !== undefined ? patch.custom : custom;
+    if (patch.meals !== undefined && nextCustom && nextCustom.mealCalories.length !== Number(patch.meals)) {
+      setCustom({ ...nextCustom, mealCalories: splitCalories(nextCustom.mealCalories.reduce((a, b) => a + b, 0), Number(patch.meals)) });
+    }
+    setDirty(true); setMessage("");
+  }
+  function openWizard(step: number) { setDirection(1); setError(""); setWizardStep(step); }
+  function stepWizard(step: number) { setDirection(step > (wizardStep ?? 0) ? 1 : -1); setWizardStep(step); }
+  // Saves the modal's answers; the goal (if any) recomputes the calorie/macro target from the latest body values.
+  function wizardResult(): WizardResult | null {
+    const { profile: p, plan } = readFields(fields);
+    if (!p) return null;
+    return { profile: p, diet, goal, target: p.pregnancy ? null : readFields(fields).target ?? plan?.target ?? nutritionTarget };
+  }
+  async function closeWizard() {
+    const result = wizardResult();
+    if (dirty && userId && result) { if (await completeWizard(result)) setWizardStep(null); }
+    else setWizardStep(null);
+  }
   const profile = parseBodyProfile({ height: Number(height), weight: Number(weight), age: Number(age), sex, activity, meals: Number(meals), pregnancy });
   const ratioSum = Number(carbRatio) + Number(proteinRatio) + Number(fatRatio);
   const nutritionTarget = targetMode === "manual" ? parseNutritionTarget({ calories: Number(targetCalories), carbRatio: Number(carbRatio), proteinRatio: Number(proteinRatio), fatRatio: Number(fatRatio) }) : null;
@@ -39,13 +84,14 @@ export function BodyProfilePanel({ userId, name, onLogin, onSaved }: { userId?: 
   const planMatches = storedPlan && JSON.stringify(storedPlan.profile) === JSON.stringify(profile) && JSON.stringify(storedPlan.diet) === JSON.stringify(diet) && JSON.stringify(storedPlan.nutritionTarget ?? null) === JSON.stringify(nutritionTarget);
   const recommendation = planMatches ? storedPlan.recommendation : null;
   const showPlan = Boolean(recommendation);
-  const missingFields = [[height,"키"],[weight,"체중"],[age,"만 나이"],[sex,"성별"],[activity,"활동량"]].filter(([value])=>!value.trim()).map(([,label])=>label);
   function focusProfile() {
-    const field = formRef.current?.querySelector<HTMLElement>('input:invalid, select:invalid');
-    (field ?? formRef.current)?.scrollIntoView({behavior:"smooth",block:"center"});
-    field?.focus({preventScroll:true});
+    const missing = sectionStatus(fields, reviewed, savedProfile).done.findIndex(d => !d);
+    openWizard(missing === -1 ? 0 : missing);
   }
   const calories = profile ? calorieEstimate(profile) : null;
+  const { body: bodyInfo, target: activeTarget } = readFields({ sex, age, height, weight, activity, meals, pregnancy, diet, goal, custom });
+  const shownTarget = activeTarget ?? nutritionTarget;
+  const shownMeals = shownTarget ? shownTarget.mealCalories ?? splitCalories(shownTarget.calories, Number(meals)) : [];
   const number = (value: number | undefined) => value === undefined ? "—" : value.toLocaleString("ko-KR");
   useEffect(() => {
     if (!userId) return;
@@ -64,7 +110,14 @@ export function BodyProfilePanel({ userId, name, onLogin, onSaved }: { userId?: 
         setStoredPlan({...latest,profile:parseBodyProfile(latest.profile),diet:parseDiet(latest.diet),nutritionTarget:parseNutritionTarget(latest.nutritionTarget)});
         setVariant(latest.variant);
       }
+      if (!data.profile) {
+        let draft: WizardResult | null = null;
+        try { draft = JSON.parse(sessionStorage.getItem(draftKey) ?? "null"); sessionStorage.removeItem(draftKey); } catch {}
+        if (draft && parseBodyProfile(draft.profile)) void completeWizard(draft);
+        else setWizardStep(0);
+      }
       if (data.profile) {
+        setSavedProfile(true);
         const p = data.profile;
         setHeight(String(p.height)); setWeight(String(p.weight)); setAge(String(p.age)); setSex(p.sex);
         setDiet(parseDiet(data.diet) ?? defaultDiet);
@@ -73,13 +126,17 @@ export function BodyProfilePanel({ userId, name, onLogin, onSaved }: { userId?: 
       if (data.nutritionTarget) {
         setTargetMode("manual"); setTargetCalories(String(data.nutritionTarget.calories));
         setCarbRatio(String(data.nutritionTarget.carbRatio)); setProteinRatio(String(data.nutritionTarget.proteinRatio)); setFatRatio(String(data.nutritionTarget.fatRatio));
+        const saved = data.profile && parseBodyProfile(data.profile), target = JSON.stringify(data.nutritionTarget);
+        const match = saved && (Object.keys(bodyGoals) as BodyGoal[]).find(g => JSON.stringify(nutritionPlan(saved, g)?.target) === target);
+        if (match) setGoal(match);
+        else if (saved) setCustom({ mealCalories: data.nutritionTarget.mealCalories ?? splitCalories(data.nutritionTarget.calories, saved.meals), proteinRatio: data.nutritionTarget.proteinRatio, fatRatio: data.nutritionTarget.fatRatio });
       }
     }).catch(error => {
       if (controller.signal.aborted) return;
       setError(error instanceof Error ? error.message : "정보를 불러오지 못했어요."); setLoadError(true);
     }).finally(() => { if (!controller.signal.aborted) setLoading(false); });
     return () => controller.abort();
-  }, [userId]);
+  }, [userId]); // eslint-disable-line react-hooks/exhaustive-deps -- completeWizard only replays a guest draft once per login
 
   async function generate(nextVariant: number) {
     if (saving) return;
@@ -96,30 +153,60 @@ export function BodyProfilePanel({ userId, name, onLogin, onSaved }: { userId?: 
     } catch (error) { setError(error instanceof Error ? error.message : "식단을 생성하지 못했어요."); }
     finally { setSaving(false); }
   }
+  async function persist(p: BodyProfile, d: DietPreferences, target: NutritionTarget | null) {
+    setSaving(true);setError('');setMessage('');
+    try{
+      invalidateJson('/api/shopping-plan');
+      const response=await fetch('/api/profile',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({...p,diet:d,nutritionTarget:target})});
+      const data=await response.json();if(!response.ok)throw new Error(data.error);
+      setStoredPlan(null);setSavedProfile(true);onSaved?.();
+      setMessage(p.pregnancy?'정보를 저장했어요. 현재는 자동 맞춤 추천을 제공하지 않아요.':'내 정보를 저장했어요. 홈에서 추천받으면 바로 반영돼요.');
+      return true;
+    }catch(error){setError(error instanceof Error?error.message:'정보를 저장하지 못했어요.');return false;}
+    finally{setSaving(false);}
+  }
   async function save(event: FormEvent) {
     event.preventDefault();
     if(!profile){setError('신체 정보의 필수 항목을 입력해 주세요.');return;}
     if(targetError){setError('칼로리·탄단지 목표를 확인해 주세요. 칼로리는 800~6000kcal, 비율 합은 100%여야 해요.');return;}
     if(!userId){onLogin();return;}
-    setSaving(true);setError('');setMessage('');
-    try{
-      const response=await fetch('/api/profile',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({...profile,diet,nutritionTarget})});
-      const data=await response.json();if(!response.ok)throw new Error(data.error);
-      setStoredPlan(null);onSaved?.();
-      setMessage(profile.pregnancy?'정보를 저장했어요. 현재는 자동 맞춤 추천을 제공하지 않아요.':'내 정보를 저장했어요. 아래에서 예산과 챙길 끼니를 고르고 ‘저장하고 내 정보로 추천받기’를 눌러 주세요.');
-      document.getElementById('shopping-settings')?.scrollIntoView({behavior:'smooth',block:'start'});
-    }catch(error){setError(error instanceof Error?error.message:'정보를 저장하지 못했어요.');}
-    finally{setSaving(false);}
+    await persist(profile,diet,nutritionTarget);
+  }
+  async function completeWizard(result: WizardResult) {
+    const {profile:p,diet:d,target,goal:g}=result;
+    setHeight(String(p.height));setWeight(String(p.weight));setAge(String(p.age));setSex(p.sex);setActivity(p.activity);setMeals(String(p.meals));setPregnancy(p.pregnancy);setDiet(d);
+    setGoal(g);
+    if(target){setTargetMode('manual');setTargetCalories(String(target.calories));setCarbRatio(String(target.carbRatio));setProteinRatio(String(target.proteinRatio));setFatRatio(String(target.fatRatio));}
+    if(!userId){
+      try{sessionStorage.setItem(draftKey,JSON.stringify(result));}catch{}
+      setWizardStep(null);onLogin();return false;
+    }
+    // Home recommendations rank by this goal; failure here shouldn't block the profile save.
+    if(g)void fetch('/api/shopping-plan',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({goal:g})}).catch(()=>{});
+    const ok=await persist(p,d,target);
+    if(ok)setDirty(false);
+    return ok;
   }
 
   return <>
-    <div className="home-guide-entry"><strong>한 달 식단과 이번 주 장보기</strong><p>키·체중·활동량과 식단 취향을 저장하면 홈 장보기 추천에도 반영해요. 직접 요리할 식단은 달력에서 볼 수 있어요.</p><Link href="/calendar">월간 식단 달력으로 →</Link></div>
-    <div className="page-intro"><div className="week-label">나를 조금 더 알아가는 시간</div><h2>{userId ? `${name}님의` : "나의"} <span>하루 에너지</span></h2><p>지금의 몸과 생활에 맞는 칼로리를 알아봐요.</p></div>
-    {!showPlan && <section className="personal-meal-card" aria-label="맞춤 추천 안내" aria-live="polite">
-      <h3>{loading ? "저장된 신체 정보를 확인하고 있어요" : loadError ? "신체 정보를 불러오지 못했어요" : !profile ? "맞춤 추천을 위해 신체 정보를 입력해 주세요" : pregnancy ? "현재는 자동 맞춤 추천을 제공하지 않아요" : "맞춤 식단을 만들어 주세요"}</h3>
-      <p className="body-note">{loading ? "확인이 끝나면 바로 아래 설정에서 정보를 입력할 수 있어요." : loadError ? "다시 불러오기를 눌러 저장된 정보를 확인해 주세요." : missingFields.length ? `아직 입력하지 않은 항목: ${missingFields.join(" · ")}. 아래 정보를 입력하고 ‘내 정보 저장하고 상품 추천으로’를 눌러 주세요.` : !profile ? "키·체중·나이의 입력 범위를 확인해 주세요. 모든 필수 항목이 입력되어야 맞춤 추천을 만들 수 있어요." : pregnancy ? "임신·수유 중에는 개인별 영양 상담이 필요해요." : storedPlan ? "변경한 설정으로 식단을 다시 만들면 추천이 표시돼요." : "신체 정보가 준비됐어요. 버튼을 누르면 선택한 취향에 맞는 식단을 만들어요."}</p>
-      {loadError ? <button type="button" className="primary-button" onClick={()=>window.location.reload()}>다시 불러오기</button> : !profile ? <button type="button" className="primary-button" disabled={loading} onClick={focusProfile}>신체 정보 설정으로 바로 가기 →</button> : !pregnancy && <button type="button" className="primary-button" disabled={saving} onClick={()=>formRef.current?.requestSubmit()}>{saving?"맞춤 식단을 만드는 중…":"내 정보 저장하고 상품 추천으로"}</button>}
-    </section>}
+    {loading ? <AppLoading message="저장된 정보를 불러오는 중이에요"/> : loadError ? <section className="energy-card is-empty"><div><strong>정보를 불러오지 못했어요</strong><p>잠시 후 다시 시도해 주세요.</p><button type="button" className="wizard-next" onClick={()=>window.location.reload()}>다시 불러오기</button></div></section>
+    : calories ? <section className="energy-card" aria-label="하루 에너지">
+      <div className="energy-top"><span>하루 목표 칼로리 · {custom ? "직접 설정" : goal ? bodyGoals[goal].label : "체중 유지 기준"}</span><button type="button" onClick={()=>openWizard(5)}>칼로리·탄단지 설정</button></div>
+      <strong className="energy-kcal">{number(shownTarget?.calories ?? calories.daily)}<small>kcal</small></strong>
+      {shownTarget ? <ul className="energy-meals">{shownMeals.map((value,i)=><li key={i}><span>{mealLabels(Number(meals))[i]}</span><b>{number(value)}</b></li>)}</ul> : <p>한 끼 평균 약 {number(Math.round(calories.daily/Number(meals)))} kcal · 하루 {meals}끼</p>}
+      {shownTarget && <><div className="energy-macro-bar" aria-hidden="true"><i className="carb" style={{flexBasis:`${shownTarget.carbRatio}%`}}/><i className="protein" style={{flexBasis:`${shownTarget.proteinRatio}%`}}/><i className="fat" style={{flexBasis:`${shownTarget.fatRatio}%`}}/></div>
+        <ul className="energy-macros"><li className="carb">탄수화물 <b>{Math.round(shownTarget.calories*shownTarget.carbRatio/400)}g</b></li><li className="protein">단백질 <b>{Math.round(shownTarget.calories*shownTarget.proteinRatio/400)}g</b></li><li className="fat">지방 <b>{Math.round(shownTarget.calories*shownTarget.fatRatio/900)}g</b></li></ul></>}
+      <dl className="energy-stats"><div><dt>기초대사량</dt><dd>{number(calories.resting)}<small>kcal</small></dd></div><div><dt>유지 칼로리</dt><dd>{number(calories.daily)}<small>kcal</small></dd></div>{bodyInfo && <div><dt>BMI</dt><dd>{bodyInfo.value}<small>{bodyInfo.label}</small></dd></div>}</dl>
+    </section>
+    : <section className="energy-card is-empty" aria-label="하루 에너지"><div className="energy-buddy" aria-hidden="true"><RiceBuddy/></div><div><strong>{pregnancy ? "임신·수유 중에는 자동 계산을 쉬어요" : "내 하루 칼로리를 알아볼까요?"}</strong><p>{pregnancy ? "개인별 영양 상담을 권해요. 취향은 메뉴 추천에 반영돼요." : "키·체중·활동량을 알려주면 칼로리와 탄단지를 바로 계산해요."}</p>{!pregnancy && <button type="button" className="wizard-next" onClick={focusProfile}>1분 만에 입력하기</button>}</div></section>}
+    {!loading && !loadError && <WeekAnalysis userId={userId} profile={profile} target={shownTarget} onOpenInfo={focusProfile}/>}
+    {!loading && !loadError && <ProfileProgress fields={fields} reviewed={reviewed} saved={savedProfile} onOpen={openWizard}/>}
+    <ProfileWizardModal step={wizardStep} direction={direction} fields={fields} userId={userId} saving={saving} error={wizardStep === null ? "" : error}
+      onStep={stepWizard} onChange={changeFields} onReviewed={step => setReviewed(r => new Set(r).add(step))} onClose={() => void closeWizard()}
+      onSave={() => { const result = wizardResult(); if (!result) return; void completeWizard(result).then(ok => { if (ok) setWizardStep(null); }); }}/>
+    {message && wizardStep === null && <p className="body-success" role="status">{message}</p>}
+    {/* Hidden for now: the step modal replaces it. Kept for the fasting/first-meal/manual-target inputs the modal doesn't cover. */}
+    <details className="profile-full-form" hidden><summary>전체 항목 한 번에 수정</summary>
     <form ref={formRef} id="profile-settings" className="body-form" onSubmit={save} onChange={() => setMessage("")}>
       <div className="section-heading"><div><span className="section-kicker">ABOUT ME</span><h3>신체 정보 설정</h3></div><span className="body-auto">입력하면 자동 계산</span></div>
       {(loading||saving) && <AppLoading message={saving?"나에게 맞는 식단을 준비하고 있어요":"저장된 식단과 정보를 불러오는 중이에요"}/>}
@@ -173,9 +260,7 @@ export function BodyProfilePanel({ userId, name, onLogin, onSaved }: { userId?: 
       {!userId && <p className="body-note">입력한 정보로 필요 열량을 확인할 수 있어요. 상품 맞춤 추천에는 로그인 후 저장한 정보를 사용해요.</p>}
       {!userId && <button type="button" className="text-link" onClick={onLogin}>로그인하기 →</button>}
     </form>
-    <div className="body-buddy-banner"><RiceBuddy/><div><strong>나에게 딱 맞게, 무리하지 않게.</strong><span>하루에 필요한 에너지를 같이 살펴볼게요.</span></div></div>
-    <section className="calorie-hero" aria-label="하루 유지 칼로리">{!profile && !loading && !loadError && <div role="status" style={{display:"block",marginBottom:20}}><h3>맞춤 추천을 위해 신체 정보를 입력해 주세요</h3><p>{missingFields.length ? `입력할 항목: ${missingFields.join(" · ")}` : "키·체중·나이와 선택 항목을 확인해 주세요."}</p><button type="button" className="primary-button" onClick={focusProfile}>신체 정보 설정으로 바로 가기 →</button></div>}<span>평균 하루 필요량 · 체중 유지 기준</span><strong>{number(calories?.daily)} <small>kcal</small></strong><p>{calories ? "일상생활과 운동에 쓰는 에너지의 추정치예요." : pregnancy ? "임신·수유 중에는 개인별 영양 상담이 필요해요." : "아래 신체 정보를 입력하면 바로 계산해 드려요."}</p><div><span>한 끼 평균 · 하루 {meals}끼 기준</span><b>{number(calories?.perMeal)} kcal</b></div></section>
-    <div className="calorie-detail-grid"><article><span>기초대사량 참고값</span><strong>{number(calories?.resting)} <small>kcal</small></strong><p>휴식 상태의 에너지 소비량 추정</p></article><article><span>최소 섭취 칼로리</span><strong className="calorie-text">개인별 확인</strong><p>키와 체중만으로 안전한 최저 섭취량을 정할 수 없어요.</p></article></div>
+    </details>
 
     {storedPlan && !planMatches && <p className="body-note">설정이 바뀌었어요. 위 버튼을 눌러 식단을 다시 만들어 주세요.</p>}
     {showPlan && <section className="personal-meals" aria-label="맞춤 식단 추천" aria-live="polite">
@@ -194,6 +279,7 @@ export function BodyProfilePanel({ userId, name, onLogin, onSaved }: { userId?: 
         {diet.fasting !== "none" && <p className="body-note">혈당을 낮추는 약을 복용 중이라면 단식 전에 의료진과 상의해 주세요. <a href="https://www.niddk.nih.gov/health-information/professionals/diabetes-discoveries-practice/fasting-safely-with-diabetes" target="_blank" rel="noopener noreferrer">안내 보기 ↗</a></p>}
       </> : <p className="meal-notice">{pregnancy ? "임신·수유 중에는 자동 식단 추천 대신 개인별 영양 상담을 권해요." : "신체 정보를 확인해 주세요. 선택한 조건에 맞는 식단이 있어야 추천할 수 있어요."}</p>}
     </section>}
+    <nav className="profile-links" aria-label="바로가기"><Link href="/calendar"><b>식단 달력</b><span>홈에서 고른 식단을 날짜별로</span></Link><Link href="/"><b>이번 주 장보기 추천</b><span>내 칼로리·취향이 반영돼요</span></Link></nav>
     <details className="calorie-method"><summary>칼로리는 어떻게 계산하나요?</summary><p>Mifflin–St Jeor 식으로 휴식 에너지 소비량을 추정하고, 선택한 활동계수(1.2~1.725)를 곱해 하루 유지 필요량을 계산해요. 실제 섭취 기록의 평균이나 측정된 대사량은 아니에요.</p><p>기초대사량은 최소 섭취 칼로리가 아니에요. 만 19~78세 성인용 참고값이며 임신·수유 중에는 계산하지 않아요. 한 끼 평균은 간식을 포함한 하루 총량을 식사 횟수로 나눈 값이에요.</p><a href="https://pubmed.ncbi.nlm.nih.gov/2305711/" target="_blank" rel="noopener noreferrer">계산식 연구 보기 ↗</a></details>
   </>;
 }
