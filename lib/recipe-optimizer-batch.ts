@@ -15,7 +15,7 @@ const NON_MEAL_NAME = /(국물|육수|즙|_?만)$|^미음|^액상/;
 // Shared by scripts/generate-similar-recipes.mjs (CLI) and the admin "일괄 생성" button
 // (app/api/admin/recipe-optimizer/route.ts PUT) so both stay in sync with one implementation.
 export async function generateAllEligibleRecipes(): Promise<{total: number; eligible: number; saved: number; failed: number; removed: number}> {
- const dishes = await fetchCookedDishes();
+ const dishes = await fetchCookedDishes({includeVolumeBasis: true});
  const eligible = dishes.filter((d) =>
   templateForDishName(d.itemName) &&
   d.caloriesKcal !== null && d.proteinG !== null && d.fatG !== null && d.carbohydratesG !== null && d.sugarG !== null && d.sodiumMg !== null &&

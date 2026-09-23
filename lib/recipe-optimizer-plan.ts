@@ -149,7 +149,9 @@ export async function governmentOptimizedRecipeProducts(): Promise<PlanProduct[]
  // 김치/나물 자체는 반찬이지 "한 끼"가 아니다 — 위 두 풀로 다른 요리의 밑반찬 재료로는 계속 쓰지만,
  // 단독으로는 추천 후보(끼니)에 올리지 않는다. 그렇지 않으면 예산이 넉넉할 때 다양성 점수를 노리고
  // "물김치"나 "배추김치" 한 그릇이 그 자체로 저녁 메뉴로 뽑히는 일이 생긴다.
- return results.filter((result) => !SIDE_DISH_TEMPLATES.has(result.templateId)).map((result) => {
+ // Recipes still on the deterministic generic-ingredient mix (no GPT-composed list yet) stay out of
+ // recommendations until scripts/synthesize-ai-ingredients.mjs has run for them.
+ return results.filter((result) => !SIDE_DISH_TEMPLATES.has(result.templateId) && result.aiIngredients?.ingredients.length).map((result) => {
   // A GPT-composed realistic ingredient list (scripts/synthesize-ai-ingredients.mjs), when present,
   // replaces the deterministic 26-generic-ingredient mix for the main dish — it isn't a closer numeric
   // fit to the target, but it's an ingredient list that actually resembles the named dish. Rice/side
@@ -193,7 +195,7 @@ export async function governmentOptimizedRecipeProducts(): Promise<PlanProduct[]
    : `실제 1인분(${totalGrams}g)으로 환산한`;
   return {
    id: `recipe-opt-${result.foodCode}`, emoji: visual.emoji, name: result.targetName,
-   detail: `정부DB 목표 영양(${result.targetBasisAmount} 기준)을 ${pairingNote} 유사 레시피 · 실제 이 음식의 정식 레시피가 아니며 표준 소매가로 추정한 가격이에요`,
+   detail: `정부DB 목표 영양(${result.targetBasisAmount === '100mL' ? '100mL 기준 · 100g으로 환산' : `${result.targetBasisAmount} 기준`})을 ${pairingNote} 유사 레시피 · 실제 이 음식의 정식 레시피가 아니며 표준 소매가로 추정한 가격이에요`,
    price: totalPrice, portions: '1인분', protein: '재료 합산 추정', color: visual.color, searchQuery: result.targetName, unit: '개', quantity: 1,
    category: 'other', inWeeklyCart: true, productImageUrl: result.imageUrl, productImageUrls: result.imageUrls, productUrl: null,
    nutritionSourceName: null, nutritionSourceUrl: null, nutritionPhotoUrl: null, nutritionBasis: null,

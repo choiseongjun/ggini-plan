@@ -53,14 +53,20 @@ export async function getCookedDish(foodCode: string): Promise<GovDish | null> {
  };
 }
 
-export async function fetchCookedDishes(): Promise<GovDish[]> {
- // g-basis only: ml-basis rows measure a different physical quantity (volume, not mass) and this
- // codebase already refuses to convert between them elsewhere (see lib/serving-nutrients.ts).
+export async function fetchCookedDishes({includeVolumeBasis = false}: {includeVolumeBasis?: boolean} = {}): Promise<GovDish[]> {
+ // g-basis by default: ml-basis rows measure a different physical quantity (volume, not mass) and this
+ // codebase refuses to convert between them for products (see lib/serving-nutrients.ts).
+ // The recipe generator opts into 100mL rows as an approximation (cooked dishes ≈ 1 g/mL): about half of
+ // the government 음식 DB — including plain solid dishes like 가자미구이 — is only published per 100mL.
+ // A dish that also has a 100g row always uses that one.
  const {rows} = await getPool().query(
   `SELECT food_code,item_name,representative_name,dataset_label,basis_amount,calories_kcal,protein_g,fat_g,carbohydrates_g,sugar_g,sodium_mg
-   FROM foodsafety_nutrition_canonical WHERE dataset_label='음식' AND basis_amount='100g'`,
+   FROM foodsafety_nutrition_canonical WHERE dataset_label='음식' AND basis_amount = ANY($1)
+   ORDER BY item_name, (basis_amount='100g') DESC`,
+  [includeVolumeBasis ? ['100g', '100mL'] : ['100g']],
  );
- return rows.map((r) => ({
+ const seen = new Set<string>();
+ return rows.filter((r) => !seen.has(r.item_name) && seen.add(r.item_name)).map((r) => ({
   foodCode: r.food_code, itemName: r.item_name, representativeName: r.representative_name, datasetLabel: r.dataset_label, basisAmount: r.basis_amount,
   caloriesKcal: r.calories_kcal === null ? null : Number(r.calories_kcal),
   proteinG: r.protein_g === null ? null : Number(r.protein_g),
