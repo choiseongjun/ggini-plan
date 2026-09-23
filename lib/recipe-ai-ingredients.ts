@@ -51,13 +51,20 @@ export async function synthesizeRealisticIngredients(
  const prompt = `요리명: ${dish.name}
 1인분(약 ${dish.servingGrams}g) 목표 영양: 열량 ${Math.round(t.kcal)}kcal, 단백질 ${t.protein.toFixed(1)}g, 지방 ${t.fat.toFixed(1)}g, 탄수화물 ${t.carbohydrate.toFixed(1)}g, 당류 ${t.sugar.toFixed(1)}g, 나트륨 ${Math.round(t.sodium)}mg`;
  let response: Response;
- try {
-  response = await fetcher('https://api.openai.com/v1/responses', {
-   method: 'POST', headers: {Authorization: `Bearer ${process.env.OPENAI_API_KEY!.trim()}`, 'Content-Type': 'application/json'},
-   signal: AbortSignal.timeout(30000),
-   body: JSON.stringify({model, store: false, instructions, input: [{role: 'user', content: prompt}], max_output_tokens: 1500, text: {format: {type: 'json_schema', name: 'realistic_ingredients', strict: true, schema}}}),
-  });
- } catch { throw new NutritionAIError('GPT 연결 또는 응답 시간이 초과됐습니다. 잠시 후 다시 시도해 주세요.'); }
+ // A batch of 600+ back-to-back calls can trip OpenAI's per-minute rate limit well before any spend
+ // cap — retrying a 429 with a short backoff clears most of these without needing a whole separate
+ // re-run pass (289/623 failed this way on the first unthrottled attempt).
+ for (let attempt = 1; ; attempt++) {
+  try {
+   response = await fetcher('https://api.openai.com/v1/responses', {
+    method: 'POST', headers: {Authorization: `Bearer ${process.env.OPENAI_API_KEY!.trim()}`, 'Content-Type': 'application/json'},
+    signal: AbortSignal.timeout(30000),
+    body: JSON.stringify({model, store: false, instructions, input: [{role: 'user', content: prompt}], max_output_tokens: 1500, text: {format: {type: 'json_schema', name: 'realistic_ingredients', strict: true, schema}}}),
+   });
+  } catch { throw new NutritionAIError('GPT 연결 또는 응답 시간이 초과됐습니다. 잠시 후 다시 시도해 주세요.'); }
+  if (response.status === 429 && attempt < 5) { await new Promise((r) => setTimeout(r, attempt * 3000)); continue; }
+  break;
+ }
  if (!response.ok) {
   if (response.status === 401 || response.status === 403) throw new NutritionAIError('OpenAI API 키 또는 모델 접근 권한을 확인해 주세요.');
   if (response.status === 429) throw new NutritionAIError('OpenAI 사용 한도 또는 요청 제한에 도달했습니다.');

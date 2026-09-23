@@ -28,6 +28,9 @@ for (const [i, dish] of batch.entries()) {
   failed++;
   console.log(`[${i + 1}/${batch.length}] 실패: ${dish.targetName} (${e instanceof Error ? e.message : e})`);
  }
+ // A small gap between requests keeps this under OpenAI's per-minute rate limit even with the
+ // in-request 429 retry (lib/recipe-ai-ingredients.ts) as a second line of defense.
+ await new Promise((r) => setTimeout(r, 300));
 }
 console.log(`완료: 저장 ${saved}건, 실패 ${failed}건. 남은 미처리 ${missing.length - batch.length}건.`);
 process.exit(0);

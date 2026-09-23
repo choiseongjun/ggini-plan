@@ -17,9 +17,9 @@ export function CookingShoppingGuide({ids,products,conditions,onOwn,disabled}:{i
   <div className="cooking-menu-grid">{meals.map((p,i)=>{
    const ungrouped=p.recipe?.ingredients.filter(part=>!part.group)??[];
    return <article key={i}><div className="cooking-day-badge">{schedule[i].day}일차 · {slotLabels[schedule[i].slot]} <span>{p.recipe?`약 ${p.recipe.minutes}분 · `:''}{conditions.people??1}인분</span></div><h4>{p.name}</h4>{p.recipe?<>
-    {p.recipe.assembly&&<><h5>🧺 준비할 재료 · 전체 분량</h5><ul className="cooking-ingredient-chips">{ungrouped.map((part,j)=><li key={`${part.product.id}-${j}`}><span>{part.product.name}</span><strong>{amount(part.product,part.packs*(conditions.people??1))}</strong></li>)}</ul></>}
+    <h5>🧺 준비할 재료 · 전체 분량</h5><ul className="cooking-ingredient-chips">{ungrouped.map((part,j)=><li key={`${part.product.id}-${j}`}><span>{part.product.name}</span><strong>{amount(part.product,part.packs*(conditions.people??1))}</strong></li>)}</ul>
     <h5>🍳 만드는 순서</h5><ol>{p.recipe.steps.map((step,j)=><li key={j}><span aria-hidden="true">{j+1}</span><p>{step}</p></li>)}</ol>
-    {!p.recipe.assembly&&<><small>정부 식품영양성분DB 목표 영양에 맞춘 참고용 조합이라 재료 그램수는 위 장볼 목록에서 확인하세요.</small><details className="cooking-video-details"><summary>조리 영상 참고하기</summary><RecipeVideos key={p.id} dishId={p.id}/></details></>}
+    {!p.recipe.assembly&&<details className="cooking-video-details"><summary>조리 영상 참고하기</summary><RecipeVideos key={p.id} dishId={p.id}/></details>}
    </>:<p>상품 포장에 표시된 조리법을 따라 준비해 주세요.</p>}</article>;
   })}</div>
   <details><summary>남은 재료·보관 메모</summary><p>위 남는 양은 이 식단 전체를 준비한 뒤의 계산값이에요. 개봉한 두부·채소 등은 포장에 적힌 개봉 후 보관·소비 안내를 확인하고, 소비기한이 가까운 재료를 쓰는 메뉴부터 준비하세요. 표시된 일정은 보관 가능 기간을 보장하지 않아요.</p><p>추가 양념은 선택 사항이며 구매 금액·영양 계산에 포함되지 않아요.</p></details>

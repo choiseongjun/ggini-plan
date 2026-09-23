@@ -2,7 +2,7 @@ import {getPool} from './db';
 import type {CatalogItem} from './catalog';
 import type {PlanProduct} from './shopping-plan';
 
-export async function similarCatalogProducts(dishNames: string[], excludeId: string | null, limit = 6): Promise<{id: string; name: string; price: number; productUrl: string | null}[]> {
+export async function similarCatalogProducts(dishNames: string[], excludeId: string | null, limit = 6): Promise<{id: string; name: string; price: number; productUrl: string | null; productImageUrl: string | null}[]> {
  const cleaned = [...new Set(dishNames.map(cleanDishName).filter(Boolean))];
  if (!cleaned.length) return [];
  const conditions = cleaned.map((_, i) => `name ILIKE '%'||$${i + 1}||'%'`).join(' OR ');
@@ -11,10 +11,10 @@ export async function similarCatalogProducts(dishNames: string[], excludeId: str
  if (excludeId) { params.push(excludeId); excludeClause = `AND id<>$${params.length}`; }
  params.push(limit);
  const {rows} = await getPool().query(
-  `SELECT id,name,price,product_url FROM catalog_items WHERE (${conditions}) AND price>0 AND product_url IS NOT NULL ${excludeClause} ORDER BY price ASC LIMIT $${params.length}`,
+  `SELECT id,name,price,product_url,product_image_url FROM catalog_items WHERE (${conditions}) AND price>0 AND product_url IS NOT NULL ${excludeClause} ORDER BY price ASC LIMIT $${params.length}`,
   params,
  );
- return rows.map((r) => ({id: r.id, name: r.name, price: Number(r.price), productUrl: r.product_url}));
+ return rows.map((r) => ({id: r.id, name: r.name, price: Number(r.price), productUrl: r.product_url, productImageUrl: r.product_image_url}));
 }
 
 // A cooked-dish row from the government nutrition snapshot (foodsafety_nutrition_canonical),
