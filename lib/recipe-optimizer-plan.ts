@@ -5,6 +5,20 @@ import type {AiIngredient} from './recipe-ai-ingredients';
 import {excludedFoodAliases, type ExcludedFood} from './excluded-foods';
 import {inferFoodType} from './catalog-food-types';
 import {pickDishVisual} from './recipe-dish-visuals';
+import {canonicalIngredient,isWater,PANTRY} from './ingredient-canonical';
+
+// 같은 재료(정규화된 이름)는 식단 전체에서 한 상품·한 포장 규격으로 계산한다. 포장 규격과 g당 가격은
+// 레시피마다 AI가 추정한 값의 중앙값. 기본 양념은 집에 있다고 보고 구매 금액에서 뺀다.
+type CanonicalPack={packGrams:number;price:number;pantry:boolean};
+const median=(values:number[])=>{const v=[...values].sort((a,b)=>a-b);return v[Math.floor(v.length/2)];};
+function canonicalPacks(results:StoredRecipeResult[]){
+ const groups=new Map<string,{grams:number[];perGram:number[]}>();
+ for(const r of results)for(const i of r.aiIngredients?.ingredients??[]){
+  const key=canonicalIngredient(i.name);if(isWater(key))continue;
+  const g=groups.get(key)??{grams:[],perGram:[]};g.grams.push(i.packGrams);g.perGram.push(i.packPriceWon/i.packGrams);groups.set(key,g);
+ }
+ return new Map([...groups].map(([key,g])=>{const packGrams=Math.round(median(g.grams));const pantry=PANTRY.has(key);return [key,{packGrams,price:pantry?0:Math.round(median(g.perGram)*packGrams),pantry}];}));
+}
 
 function allergensFromName(name: string): ExcludedFood[] {
  return (Object.keys(excludedFoodAliases) as ExcludedFood[]).filter((key) => excludedFoodAliases[key].some((alias) => name.includes(alias)));
@@ -70,11 +84,12 @@ function ingredientProduct(id: string, now: string): PlanProduct {
  const source = ingredientById.get(id);
  const packGrams = source?.packGrams ?? 100;
  const per100g = source?.per100g ?? {kcal: 0, carbohydrate: 0, protein: 0, fat: 0, sugar: 0, sodium: 0};
- const price = Math.round((source?.pricePer100gWon ?? 0) * packGrams / 100);
+ const pantry = PANTRY.has(canonicalIngredient(source?.name ?? id));
+ const price = pantry ? 0 : Math.round((source?.pricePer100gWon ?? 0) * packGrams / 100);
  const scale = (n: number) => Math.round(n * packGrams / 100 * 1000) / 1000;
  return {
   id: `recipe-opt-ingredient-${id}`, emoji: '🧂', name: source?.name ?? id,
-  detail: `${packGrams}g(실제 판매 단위 1개) · 표준 소매가 추정치 (실제 구매 링크 없음)`, price, portions: '1포장',
+  detail: pantry ? '기본 양념 · 집에 있다고 보고 장보기 금액에서 뺐어요' : `${packGrams}g(실제 판매 단위 1개) · 표준 소매가 추정치 (실제 구매 링크 없음)`, price, portions: '1포장',
   protein: '', color: 'sand', searchQuery: source?.name ?? id, unit: 'g', quantity: packGrams,
   category: 'ingredient', inWeeklyCart: false, productImageUrl: null, productUrl: null,
   nutritionSourceName: '유사 레시피 원재료 참고값', nutritionSourceUrl: null, nutritionPhotoUrl: null,
@@ -90,28 +105,31 @@ function ingredientProduct(id: string, now: string): PlanProduct {
 // from that instead of an ingredientNutritionTable lookup. Still a single global product per distinct
 // name so purchaseBasket() pools it the same way across a plan (e.g. two different dishes both calling
 // for "양파" this week share one purchase) — 정규화 the name for a stable, collision-resistant id.
-function aiIngredientProduct(ingredient: AiIngredient, now: string): PlanProduct {
- const slug = ingredient.name.trim().toLowerCase().replace(/[^a-z0-9가-힣]+/g, '-').replace(/^-+|-+$/g, '') || 'ingredient';
- const price = Math.round(ingredient.packPriceWon);
- const scale = (n: number) => Math.round(n * ingredient.packGrams / 100 * 1000) / 1000;
+function aiIngredientProduct(ingredient: AiIngredient, now: string, key: string, pack: CanonicalPack): PlanProduct {
+ const slug = key.toLowerCase().replace(/[^a-z0-9가-힣]+/g, '-').replace(/^-+|-+$/g, '') || 'ingredient';
+ const price = pack.price;
+ const scale = (n: number) => Math.round(n * pack.packGrams / 100 * 1000) / 1000;
  return {
-  id: `recipe-opt-ingredient-ai-${slug}`, emoji: '🧂', name: ingredient.name,
-  detail: `${ingredient.packGrams}g(실제 판매 단위 1개) · AI 추정 소매가 (실제 구매 링크 없음)`, price, portions: '1포장',
-  protein: '', color: 'sand', searchQuery: ingredient.name, unit: 'g', quantity: ingredient.packGrams,
+  id: `recipe-opt-ingredient-ai-${slug}`, emoji: '🧂', name: key,
+  detail: pack.pantry ? '기본 양념 · 집에 있다고 보고 장보기 금액에서 뺐어요' : `${pack.packGrams}g(판매 단위 1개) · AI 추정 소매가 (실제 구매 링크 없음)`, price, portions: '1포장',
+  protein: '', color: 'sand', searchQuery: key, unit: 'g', quantity: pack.packGrams,
   category: 'ingredient', inWeeklyCart: false, productImageUrl: null, productUrl: null,
   nutritionSourceName: 'AI 추정 재료 참고값', nutritionSourceUrl: null, nutritionPhotoUrl: null,
-  nutritionBasis: `${ingredient.packGrams}g당`,
+  nutritionBasis: `${pack.packGrams}g당`,
   nutritionEstimate: {fields: ['caloriesKcal', 'proteinG', 'carbohydratesG', 'fatG', 'sodiumMg'], note: 'GPT가 요리명에 맞춰 구성·추정한 재료', model: 'gpt-recipe-ingredients', estimatedAt: now},
   caloriesKcal: scale(ingredient.caloriesKcal), proteinG: scale(ingredient.proteinG), carbohydratesG: scale(ingredient.carbohydratesG), fatG: scale(ingredient.fatG), sodiumMg: scale(ingredient.sodiumMg),
-  updatedAt: now, servings: 1, servingGrams: ingredient.packGrams, servingNote: '실제 판매 단위(1포장) 기준', avoidanceText: null,
+  updatedAt: now, servings: 1, servingGrams: pack.packGrams, servingNote: '실제 판매 단위(1포장) 기준', avoidanceText: null,
   allergens: allergensFromName(ingredient.name),
  };
 }
 
-function aiUsageEntries(ingredients: AiIngredient[], now: string) {
- return ingredients.map((ingredient) => {
-  const product = aiIngredientProduct(ingredient, now);
-  return {product, packs: ingredient.grams / ingredient.packGrams, label: `${product.name} ${ingredient.grams}g`, ingredientId: undefined};
+function aiUsageEntries(ingredients: AiIngredient[], now: string, packs: Map<string, CanonicalPack>) {
+ return ingredients.flatMap((ingredient) => {
+  const key = canonicalIngredient(ingredient.name);
+  const pack = packs.get(key);
+  if (!pack) return [];
+  const product = aiIngredientProduct(ingredient, now, key, pack);
+  return [{product, packs: ingredient.grams / pack.packGrams, label: `${ingredient.name.split(/[(（]/)[0].trim()} ${ingredient.grams}g${pack.pantry ? ' (기본 양념)' : ''}`, ingredientId: undefined}];
  });
 }
 
@@ -149,6 +167,7 @@ function usageEntries(entries: {ingredientId: string; grams: number}[], scale: n
 // such everywhere the value could reach a person, and productUrl is always null (nothing to link to).
 export async function governmentOptimizedRecipeProducts(): Promise<PlanProduct[]> {
  const results = await listRecipeOptimizerResults();
+ const packs = canonicalPacks(results);
  const now = new Date().toISOString();
  const kimchiPool = results.filter((r) => r.templateId === 'kimchi');
  const namulPool = results.filter((r) => r.templateId === 'namul');
@@ -163,7 +182,7 @@ export async function governmentOptimizedRecipeProducts(): Promise<PlanProduct[]
   // fit to the target, but it's an ingredient list that actually resembles the named dish. Rice/side
   // pairing below stays the same either way.
   const ai = result.aiIngredients?.ingredients.length ? result.aiIngredients.ingredients : null;
-  const baseIngredients = ai ? aiUsageEntries(ai, now) : usageEntries(result.ingredients, SERVING_SCALE, now);
+  const baseIngredients = ai ? aiUsageEntries(ai, now, packs) : usageEntries(result.ingredients, SERVING_SCALE, now);
   const mainGrams = ai ? ai.reduce((sum, i) => sum + i.grams, 0) : Math.round(result.totalGrams * SERVING_SCALE);
   const mainCalories = ai ? ai.reduce((sum, i) => sum + i.caloriesKcal * i.grams / 100, 0) : (result.predicted.kcal ?? 0) * SERVING_SCALE;
   const mainProtein = ai ? ai.reduce((sum, i) => sum + i.proteinG * i.grams / 100, 0) : (result.predicted.protein ?? 0) * SERVING_SCALE;

@@ -77,15 +77,19 @@ export function productById(products:PlanProduct[],id:string){
 }
 export function basket(ids: string[], products: PlanProduct[], owned: string[], supply:Record<string,number>={},people=1) {
  const counts=new Map<string,number>();
- const unassigned=new Map(purchaseBasket(ids,products,owned,supply,undefined,people).map(r=>[r.product.id,r.cost]));
+ const purchase=purchaseBasket(ids,products,owned,supply,undefined,people);
+ const unassigned=new Map(purchase.map(r=>[r.product.id,r.cost]));
+ // 다 쓰지 못하고 남는 재료값(원) — 추천 점수에서 재료 돌려쓰기를 평가할 때 쓴다.
+ const waste=purchase.reduce((n,r)=>n+r.left*r.product.price,0);
  ids.forEach(id=>counts.set(id,(counts.get(id)??0)+1));
- return [...counts].map(([id,uses])=>{
+ const rows=[...counts].map(([id,uses])=>{
   const product=productById(products,id);
   if(!product)throw new Error('상품 정보가 변경됐어요. 식단을 다시 추천받아 주세요.');
   const packs=Math.ceil(uses*people/product.servings), have=owned.includes(id);
   let cost=0;for(const part of product.recipe?.ingredients??[{product}]){cost+=unassigned.get(part.product.id)??0;unassigned.delete(part.product.id);}
   return {product,uses,packs,have,left: packs*product.servings-uses*people,cost};
  });
+ return Object.assign(rows,{waste});
 }
 export function purchaseBasket(ids:string[],products:PlanProduct[],owned:string[],supply:Record<string,number>={},portions?:Record<string,number>,people=1){
  const meals=new Map<string,number>();ids.forEach(id=>meals.set(id,(meals.get(id)??0)+1));
@@ -127,6 +131,8 @@ function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,
  const instant=bases.get('라면')??0;
  // 죽·국수 한 그릇처럼 400kcal도 안 되는 끼니는 한 끼로 부족하다 — 드물게만.
  const light=ids.filter(id=>{const kcal=products.get(id)?.servingCalories;return typeof kcal==='number'&&kcal<400;}).length;
+ // 다 쓰지 못하고 남는 재료값(원). 예산이 남아도 재료를 여러 요리에 나눠 쓰는 식단을 우선하게 한다.
+ const waste=rows.waste;
  const familyRepeats=[...families.values()].reduce((n,count)=>n+count*(count-1)/2,0);
  const feedback=ids.reduce((sum,id)=>{const p=products.get(id)!;return sum+(c.swapPreferences??[]).reduce((n,f)=>n+(
   f.reason==='taste'?(p.id===f.id?1400:mealFamily(p)===f.family?250:0):
@@ -148,7 +154,7 @@ function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,
  // than defaulting to whichever pre-made item happens to be in the catalog.
  const cooked=ids.filter(id=>products.get(id)?.recipe).length*120;
  return cooked+reuse+rows.length*300-feedback-ids.filter(id=>previous.has(id)).length*900-ids.filter(id=>previousFamilies.has(mealFamily(products.get(id)!))).length*200+families.size*150-repeats*350-familyRepeats*40-baseRepeats*900-instant*400-light*300-repetition
-  -rows.reduce((n,r)=>n+r.left,0)*100-rows.reduce((n,r)=>n+r.cost,0)/c.budget*(c.budgetMode==='save'?2000:c.budgetMode==='full'?-100:100)+fit;
+  -rows.reduce((n,r)=>n+r.left,0)*100-waste/60-rows.reduce((n,r)=>n+r.cost,0)/c.budget*(c.budgetMode==='save'?2000:c.budgetMode==='full'?-100:100)+fit;
 }
 function diverseOptions(products:PlanProduct[],previous:string[],conditions:PlanConditions){
  if(products.length<=80)return products;
