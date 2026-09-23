@@ -11,6 +11,7 @@ import { RiceBuddy } from "./rice-buddy";
 import { AppLoading } from "./app-loading";
 import { invalidateJson } from "../lib/client-cache";
 import { WeekAnalysis } from "./week-analysis";
+import { RecordCard, WeeklyReportCard, useIntakeStats } from "./record-progress";
 import { mealLabels, ProfileProgress, ProfileWizardModal, readFields, sectionStatus, splitCalories, type CustomTarget, type ProfileFields, type WizardResult } from "./profile-wizard";
 import { bodyGoals, nutritionPlan, type BodyGoal } from "../lib/nutrition-plan";
 
@@ -41,6 +42,7 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
   const [savedProfile, setSavedProfile] = useState(false);
   const [goal, setGoal] = useState<BodyGoal | "">("");
   const [custom, setCustom] = useState<CustomTarget | null>(null);
+  const { stats: intakeStats } = useIntakeStats(userId);
   const [wizardStep, setWizardStep] = useState<number | null>(null);
   const [direction, setDirection] = useState<1 | -1>(1);
   const [reviewed, setReviewed] = useState<Set<number>>(() => new Set());
@@ -199,6 +201,8 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
       <dl className="energy-stats"><div><dt>기초대사량</dt><dd>{number(calories.resting)}<small>kcal</small></dd></div><div><dt>유지 칼로리</dt><dd>{number(calories.daily)}<small>kcal</small></dd></div>{bodyInfo && <div><dt>BMI</dt><dd>{bodyInfo.value}<small>{bodyInfo.label}</small></dd></div>}</dl>
     </section>
     : <section className="energy-card is-empty" aria-label="하루 에너지"><div className="energy-buddy" aria-hidden="true"><RiceBuddy/></div><div><strong>{pregnancy ? "임신·수유 중에는 자동 계산을 쉬어요" : "내 하루 칼로리를 알아볼까요?"}</strong><p>{pregnancy ? "개인별 영양 상담을 권해요. 취향은 메뉴 추천에 반영돼요." : "키·체중·활동량을 알려주면 칼로리와 탄단지를 바로 계산해요."}</p>{!pregnancy && <button type="button" className="wizard-next" onClick={focusProfile}>1분 만에 입력하기</button>}</div></section>}
+    {userId && <RecordCard stats={intakeStats}/>}
+    {userId && <WeeklyReportCard stats={intakeStats}/>}
     {!loading && !loadError && <WeekAnalysis userId={userId} profile={profile} target={shownTarget} onOpenInfo={focusProfile}/>}
     {!loading && !loadError && <ProfileProgress fields={fields} reviewed={reviewed} saved={savedProfile} onOpen={openWizard}/>}
     <ProfileWizardModal step={wizardStep} direction={direction} fields={fields} userId={userId} saving={saving} error={wizardStep === null ? "" : error}

@@ -6,3 +6,32 @@
 .today-title h3{scroll-margin-top:16px}.today-title h3:focus{outline:2px solid #91a764;outline-offset:5px;border-radius:6px}
 .today-edit{display:flex;gap:8px;margin-top:14px}.today-edit>button{flex:1;font-size:12px!important;background:#f4f7ec!important;border-color:#cfd8bf!important;color:#4e683d!important;font-weight:700}.today-menu{scroll-margin-top:16px}.today-menu:focus{outline:none}.today-menu:focus-visible{outline:2px solid #526c47;outline-offset:3px}
 .today-nutrition-toggle{margin-top:12px}.today-nutrition-toggle>summary{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:#f3f6ec;color:#526c47;font-size:12px;font-weight:700;list-style:none;cursor:pointer}.today-nutrition-toggle>summary::-webkit-details-marker{display:none}.today-nutrition-toggle>summary::after{content:"";width:6px;height:6px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .2s ease}.today-nutrition-toggle[open]>summary::after{transform:translateY(1px) rotate(-135deg)}
+.today-title{flex-wrap:wrap;row-gap:8px}.today-title .rp-chip{order:3;flex-basis:auto}
+.today-product{align-items:center}
+.today-meals .today-menu-toggle{display:flex;align-items:center;gap:10px;flex:1;min-width:0;min-height:0;padding:0;border:0;border-radius:0;background:none;text-align:left;color:inherit}
+.today-menu-toggle-text{display:grid;gap:2px;min-width:0;flex:1}
+.today-menu-toggle-text h4{margin:2px 0}
+.today-menu-kcal{font-style:normal;font-size:12px;color:#7a8a6e}
+.today-menu-chevron{flex:0 0 30px;height:30px;border-radius:50%;background:#f1f5e8;position:relative;transition:background .2s ease}
+.today-menu-chevron::after{content:"";position:absolute;left:50%;top:50%;width:7px;height:7px;border-right:2px solid #46603c;border-bottom:2px solid #46603c;transform:translate(-50%,-70%) rotate(45deg);transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+.today-menu-toggle[aria-expanded=true] .today-menu-chevron::after{transform:translate(-50%,-30%) rotate(-135deg)}
+.today-menu-toggle:hover .today-menu-chevron{background:#e6eedb}
+.today-menu-body{margin-top:4px;animation:today-body-in .3s cubic-bezier(.22,.9,.3,1) both}
+@keyframes today-body-in{from{opacity:0;transform:translateY(-6px)}}
+.today-menu-label{margin-bottom:12px}
+.today-menu .photo-log{margin-top:14px}
+@media(prefers-reduced-motion:reduce){.today-menu-body{animation:none}.today-menu-chevron::after{transition:none}}
+.today-menu-name{display:block;margin:2px 0;font-size:15px;font-weight:700;line-height:1.5;overflow-wrap:anywhere}
+.meal-sections{margin-top:14px;border-top:1px solid #eee8d8}
+.meal-section{border-bottom:1px solid #eee8d8}
+.today-meals .meal-section-head{display:flex;align-items:center;gap:8px;width:100%;min-height:52px;padding:0 2px;border:0;border-radius:0;background:none;color:#33402c;font-size:14px;font-weight:700;text-align:left}
+.meal-section-head span{flex:1}
+.meal-section-head small{font-size:12px;font-weight:600;color:#8a947e}
+.meal-section-head i{flex:0 0 26px;height:26px;border-radius:50%;background:#f1f5e8;position:relative}
+.meal-section-head i::after{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;border-right:2px solid #46603c;border-bottom:2px solid #46603c;transform:translate(-50%,-70%) rotate(45deg);transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+.meal-section.is-open .meal-section-head i::after{transform:translate(-50%,-30%) rotate(-135deg)}
+.today-meals .meal-section-head:active{background:#fafbf5}
+.meal-section-body{padding:0 0 16px;animation:today-body-in .28s cubic-bezier(.22,.9,.3,1) both}
+.meal-section-body>.today-edit{margin-top:0}
+.meal-section-body .recommendation-reasons{margin-top:0}
+@media(prefers-reduced-motion:reduce){.meal-section-body{animation:none}.meal-section-head i::after{transition:none}}

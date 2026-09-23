@@ -1,10 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import {useState} from 'react';
+import {useEffect,useState} from 'react';
+import {planDate} from '../lib/daily-plan';
+import {EXTRA_PREFIX} from '../lib/intake-extras';
 import type {BodyProfile} from '../lib/body-profile';
 import type {NutritionTarget} from '../lib/nutrition-target';
-import {analyzeWeek,KCAL_PER_KG,type NutrientKey,type NutrientStatus} from '../lib/week-analysis';
+import {actualByDay,analyzeWeek,KCAL_PER_KG,type ActualLog,type NutrientKey,type NutrientStatus} from '../lib/week-analysis';
 import {useHomePlan} from './use-home-plan';
 import {WeekPlanModal} from './week-plan-modal';
 import './week-analysis.css';
@@ -24,6 +26,16 @@ export function WeekAnalysis({userId,profile,target,onOpenInfo}:{userId?:string;
  const [picked,setPicked]=useState(0);
  const [showPlan,setShowPlan]=useState(false);
  const [today]=useState(()=>new Date(Date.now()+9*3600000).toISOString().slice(0,10));
+ const [logs,setLogs]=useState<ActualLog[]>([]);
+ const start=plan?.conditions.startDate??today;
+ const dayCount=plan?.conditions.days??0;
+ useEffect(()=>{
+  if(!userId||!plan||!dayCount)return;
+  const controller=new AbortController();
+  const to=planDate(start,dayCount);
+  fetch(`/api/food-intake?from=${start}&to=${to<today?to:today}`,{cache:'no-store',signal:controller.signal}).then(r=>r.ok?r.json():null).then(d=>{if(d&&!controller.signal.aborted)setLogs(d.logs);}).catch(()=>{});
+  return()=>controller.abort();
+ },[userId,plan,start,dayCount,today]);
  if(loading)return <section className="week-analysis" aria-busy="true"><div className="week-skeleton"/></section>;
  if(error)return <section className="week-analysis"><p className="auth-error" role="alert">{error} <button type="button" onClick={reload}>다시 불러오기</button></p></section>;
  if(!profile)return <section className="week-analysis is-empty"><strong>식단 분석을 준비하고 있어요</strong><p>내 정보를 입력하면 이번 식단으로 체중이 어떻게 바뀔지, 부족한 영양소는 무엇인지 알려드려요.</p><button type="button" className="wizard-next" onClick={onOpenInfo}>내 정보 입력하기</button></section>;
@@ -32,9 +44,14 @@ export function WeekAnalysis({userId,profile,target,onOpenInfo}:{userId?:string;
  const a=analyzeWeek({...plan,profile,target});
  if(!a)return null;
 
+ const dates=a.days.map(d=>planDate(start,d.day));
+ const actual=actualByDay(a,logs,dates,profile.meals,EXTRA_PREFIX);
+ const loggedDays=actual.filter((x):x is NonNullable<typeof x>=>x!==null);
+ const actualAvg=loggedDays.length?Math.round(loggedDays.reduce((sum,x)=>sum+x.intake,0)/loggedDays.length):null;
+ const actualWeekKg=actualAvg===null?null:(actualAvg-a.maintenance)*7/KCAL_PER_KG;
  const flat=Math.abs(a.weekKg)<0.05;
  const direction=flat?'유지':a.weekKg<0?'감량':'증량';
- const max=Math.max(a.maintenance,...a.days.map(d=>d.intake))*1.12;
+ const max=Math.max(a.maintenance,...a.days.map(d=>d.intake),...loggedDays.map(x=>x.intake))*1.12;
  const day=a.days[Math.min(picked,a.days.length-1)];
  const issues=a.nutrients.filter(x=>x.status&&x.status!=='ok');
  const worst=[...issues].sort((x,y)=>Math.abs((y.percent??100)-100)-Math.abs((x.percent??100)-100))[0];
@@ -50,22 +67,24 @@ export function WeekAnalysis({userId,profile,target,onOpenInfo}:{userId?:string;
     <div><dt>유지 칼로리 대비</dt><dd>{a.avgDelta>0?'+':a.avgDelta<0?'−':''}{n(Math.abs(a.avgDelta))}<small>kcal/일</small></dd></div>
     <div><dt>이대로 4주면</dt><dd>{Math.abs(a.monthKg)<0.05?'±0.0kg':kg(a.monthKg)}</dd></div>
    </dl>
+   {actualAvg!==null&&actualWeekKg!==null&&<p className="week-actual"><b>실제 기록 {loggedDays.length}일</b> 하루 평균 {n(actualAvg)}kcal · 계획보다 {actualAvg-a.avgIntake>=0?`${n(actualAvg-a.avgIntake)} 많게`:`${n(a.avgIntake-actualAvg)} 적게`} · 이 페이스면 1주 {Math.abs(actualWeekKg)<0.05?'±0.0kg':kg(actualWeekKg)}</p>}
   </div>
 
   <div className="week-chart" aria-label="날짜별 예상 섭취 칼로리">
-   <div className="week-chart-legend" aria-hidden="true"><span><i className="is-planned"/>추천 식단</span><span><i className="is-assumed"/>나머지 끼니(목표량 가정)</span><span>아래 숫자는 일차</span></div>
+   <div className="week-chart-legend" aria-hidden="true"><span><i className="is-planned"/>추천 식단</span><span><i className="is-assumed"/>나머지 끼니(목표량 가정)</span>{loggedDays.length>0&&<span><i className="is-actual"/>실제 기록</span>}<span>아래 숫자는 일차</span></div>
    <div className="week-bars" style={{'--cols':a.days.length} as React.CSSProperties}>
     <div className="week-ref" style={{bottom:`${a.maintenance/max*100}%`}}><span>유지 {n(a.maintenance)}</span></div>
     {a.days.map((d,i)=><button type="button" key={d.day} className="week-bar" aria-pressed={d===day} onClick={()=>setPicked(i)}
-     aria-label={`${d.day}일차 ${n(d.intake)}kcal, 추천 식단 ${n(d.planned)}kcal, 나머지 끼니 가정 ${n(d.assumed)}kcal`}>
+     aria-label={`${d.day}일차 계획 ${n(d.intake)}kcal${actual[i]?`, 실제 ${n(actual[i]!.intake)}kcal`:''}`}>
      <span className="week-bar-stack" style={{height:`${d.intake/max*100}%`}}>
       {d.assumed>0&&<i className="is-assumed" style={{flexGrow:d.assumed}}/>}
       <i className="is-planned" style={{flexGrow:d.planned}}/>
      </span>
+     {actual[i]&&<b className="week-actual-mark" style={{bottom:`${actual[i]!.intake/max*100}%`}} aria-hidden="true"/>}
      <small>{d.day}</small>
     </button>)}
    </div>
-   <p className="week-day-note" aria-live="polite"><b>{day.day}일차 {n(day.intake)}kcal</b> · 추천 식단 {n(day.planned)}{day.assumed>0?` + 나머지 끼니 ${n(day.assumed)}`:''} · 유지보다 {day.delta>=0?`${n(day.delta)} 많게`:`${n(-day.delta)} 적게`}{day.unknown>0?` · 칼로리 미확인 ${day.unknown}끼는 목표량으로 계산`:''}</p>
+   <p className="week-day-note" aria-live="polite"><b>{day.day}일차 {n(day.intake)}kcal</b> · 추천 식단 {n(day.planned)}{day.assumed>0?` + 나머지 끼니 ${n(day.assumed)}`:''} · 유지보다 {day.delta>=0?`${n(day.delta)} 많게`:`${n(-day.delta)} 적게`}{day.unknown>0?` · 칼로리 미확인 ${day.unknown}끼는 목표량으로 계산`:''}{actual[day.day-1]?<> · <b>실제 {n(actual[day.day-1]!.intake)}kcal</b>(기록 {n(actual[day.day-1]!.logged)}{actual[day.day-1]!.assumed?` + 기록 안 한 끼니 ${n(actual[day.day-1]!.assumed)}`:''}) · 계획보다 {actual[day.day-1]!.vsPlan>=0?`${n(actual[day.day-1]!.vsPlan)} 많게`:`${n(-actual[day.day-1]!.vsPlan)} 적게`}</>:dates[day.day-1]<=today?' · 아직 먹은 기록이 없어요':''}</p>
   </div>
 
   <div className="week-nutrients">

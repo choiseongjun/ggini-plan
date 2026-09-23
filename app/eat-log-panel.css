@@ -1,0 +1,23 @@
+.eat-log{margin-top:12px;padding:16px;border:1.5px solid #dfe7d3;border-radius:20px;background:#f7faf1;animation:eat-log-in .3s cubic-bezier(.22,.9,.3,1) both}
+@keyframes eat-log-in{from{opacity:0;transform:translateY(-6px)}}
+.eat-log-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.eat-log-head strong{font-size:15px;color:#33402c}
+.today-meals .eat-log-head button{min-height:0;width:30px;height:30px;padding:0;border:0;border-radius:50%;background:#e8eedd;color:#5c6e55;font-size:12px}
+.eat-log-portions{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;padding:4px;border-radius:14px;background:#e9efe0}
+.today-meals .eat-log-portions button{min-height:40px;padding:0;border:0;border-radius:11px;background:transparent;color:#5c6e55;font-size:13px;font-weight:700;transition:background .2s ease,color .2s ease,box-shadow .2s ease}
+.today-meals .eat-log-portions button[aria-checked=true]{background:#fff;color:#26321f;box-shadow:0 2px 8px #3a4a2a1f}
+.eat-log-total{margin:12px 2px;font-size:13px;color:#4f5d46}
+.eat-log-total b{font-size:20px;color:#26321f;letter-spacing:-.02em}
+.eat-log-total small{color:#7a8a6e}
+.eat-log-label{display:block;margin:4px 2px 8px;font-size:12px;font-weight:700;color:#5c6e55}
+.eat-log-extras{display:flex;flex-wrap:wrap;gap:6px}
+.today-meals .eat-log-extras button{display:inline-flex;align-items:baseline;gap:4px;min-height:34px;padding:6px 11px;border:1.5px solid #e1e6d6;border-radius:999px;background:#fff;color:#4f5d46;font-size:12px;font-weight:600;transition:transform .15s ease,background .2s ease,border-color .2s ease}
+.today-meals .eat-log-extras button:active{transform:scale(.94)}
+.eat-log-extras button small{font-size:10px;color:#a0a995}
+.today-meals .eat-log-extras button[aria-pressed=true]{background:#526c47;border-color:#526c47;color:#fff}
+.eat-log-extras button[aria-pressed=true] small{color:#ffffffaa}
+.eat-log-deduct{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:12px;color:#5c6e55}
+.eat-log-deduct input{width:18px;height:18px;accent-color:#526c47}
+.today-meals .eat-log-submit{display:block;width:100%;margin-top:14px;min-height:50px;border:0;border-radius:15px;background:linear-gradient(145deg,#6a8a5a,#46603c);color:#fff;font-size:15px;font-weight:800;box-shadow:0 6px 14px #46603c33}
+.eat-log-note{display:block;margin-top:8px;text-align:center;font-size:11px;color:#98a28c}
+@media(prefers-reduced-motion:reduce){.eat-log{animation:none}}

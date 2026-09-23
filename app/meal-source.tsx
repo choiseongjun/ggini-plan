@@ -13,7 +13,7 @@ export function MealSourceBadge({product}:{product:PlanProduct}){
 
 const won=(n:number)=>`${Math.round(n).toLocaleString('ko-KR')}원`;
 
-export function RecipeProductPreview({product}:{product:PlanProduct}){
+export function RecipeProductPreview({product,videos=true}:{product:PlanProduct;videos?:boolean}){
  if(!product.recipe)return null;
  const ungrouped=product.recipe.ingredients.filter(i=>!i.group);
  // Side-dish ingredients (밑반찬) come from a separately-generated recipe of their own — showing
@@ -28,7 +28,7 @@ export function RecipeProductPreview({product}:{product:PlanProduct}){
   </li>)}
   {[...groups].map(([name,price])=><li key={name}><span><span className="food-thumb sand" aria-hidden="true">🥗</span><span>{name} 밑반찬 · 약 {won(price)}</span></span></li>)}
   </ul>
-  {!product.recipe.assembly&&<RecipeVideos key={product.id} dishId={product.id}/>}
+  {videos&&!product.recipe.assembly&&<RecipeVideos key={product.id} dishId={product.id}/>}
   {!product.recipe.assembly&&<RecipeIngredientProducts key={`ing-products-${product.id}`} ingredientNames={[...new Set(product.recipe.ingredients.map(({product:p})=>p.name))].slice(0,8)}/>}
  </div>;
 }

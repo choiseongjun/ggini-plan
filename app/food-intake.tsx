@@ -8,7 +8,7 @@ import {taiwanIntakeData,updateTaiwanIntake} from '../lib/taiwan-intake';
 import type {PlanProduct} from '../lib/shopping-plan';
 import {ProductThumb} from './product-thumb';
 
-type Command={action:'eat'|'undo';id:string;version:number;productId?:string;portions?:number};
+type Command={action:'eat'|'undo'|'log';id:string;version:number;productId?:string;portions?:number;extras?:string[]};
 const number=(n:number)=>n.toLocaleString('ko-KR',{maximumFractionDigits:1});
 const nutrition=(n:number|null,unit:string)=>n===null?'미확인':`${number(n)}${unit}`;
 
@@ -35,21 +35,32 @@ export function useFoodIntake(userId?:string,history=false,externalDate?:string)
   return()=>{window.removeEventListener('shopping-progress-changed',changed);window.removeEventListener('focus',refresh);window.clearInterval(timer);};
  },[locale]);
  function reload(){setError('');setLoading(true);setRevision(n=>n+1);}
- async function send(command:Command){
-  if(locked.current)return;locked.current=true;pendingRef.current=command;setPending(command);setBusy(true);setError('');setMessage('');
+ async function send(command:Command):Promise<boolean>{
+  if(locked.current)return false;locked.current=true;pendingRef.current=command;setPending(command);setBusy(true);setError('');setMessage('');
   try{
-   const r=locale.isTaiwan?await updateTaiwanIntake(command,regionalProducts.current,locale.today()).then(()=>Response.json({ok:true})).catch(error=>Response.json({error:error instanceof Error?error.message:'無法儲存紀錄。'},{status:409})):await fetch('/api/food-intake',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(command)});
+   const r=locale.isTaiwan?await updateTaiwanIntake(command as Command&{action:'eat'|'undo'},regionalProducts.current,locale.today()).then(()=>Response.json({ok:true})).catch(error=>Response.json({error:error instanceof Error?error.message:'無法儲存紀錄。'},{status:409})):await fetch('/api/food-intake',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(command)});
    const d=await r.json();
    if(!r.ok){
     if(r.status<500){pendingRef.current=null;setPending(null);setLoading(true);setRevision(n=>n+1);}
     throw new Error(d.error??'기록을 저장하지 못했어요.');
    }
    pendingRef.current=null;setPending(null);setEditing(null);
-   setMessage(command.action==='eat'?'먹은 양·영양·예상 음식 비용을 기록하고 보유 수량을 줄였어요.':'기록을 취소하고 보유 수량을 되돌렸어요.');
+   setMessage(command.action==='eat'?'먹은 양·영양·예상 음식 비용을 기록하고 보유 수량을 줄였어요.':command.action==='log'?'먹은 음식을 기록했어요. 칼로리 분석에 바로 반영돼요.':'기록을 취소했어요.');
    setLoading(true);setToday(locale.today());setRevision(n=>n+1);
    window.dispatchEvent(new CustomEvent('shopping-progress-changed',{detail:{scope:'products',source:'intake'}}));
-  }catch(e){setError(e instanceof Error?e.message:'연결이 끊겼어요. 같은 요청으로 다시 확인해 주세요.');}
+   return true;
+  }catch(e){setError(e instanceof Error?e.message:'연결이 끊겼어요. 같은 요청으로 다시 확인해 주세요.');return false;}
   finally{locked.current=false;setBusy(false);}
+ }
+ // Logs what was eaten without needing it in the pantry: the dish at a portion and/or quick extras.
+ async function log(productId:string|null,portions:number,extras:string[],deductFrom?:IntakeProduct){
+  if(!data||pendingRef.current)return false;
+  // Deducting from the pantry goes through the stock-checked 'eat' path; extras are logged alongside.
+  if(deductFrom){
+   const ok=await send({action:'eat',id:crypto.randomUUID(),version:data.version,productId:deductFrom.id,portions});
+   return ok&&(!extras.length||await send({action:'log',id:crypto.randomUUID(),version:data.version,extras}));
+  }
+  return send({action:'log',id:crypto.randomUUID(),version:data.version,...(productId?{productId,portions}:{}),extras});
  }
  function eat(p:IntakeProduct,portions=amounts[p.id]??1){
   if(!data||pendingRef.current)return;
@@ -59,7 +70,7 @@ export function useFoodIntake(userId?:string,history=false,externalDate?:string)
  const totals=current?intakeTotals(current.logs):null;
  const products=current?.products??[],visible=showAll?products:products.slice(0,3);
  const disabled=busy||Boolean(pending)||loading;
- return {today,date,setDate,current,totals,products,visible,disabled,loading,error,message,pending,busy,reload,send,eat,editing,setEditing,amounts,setAmounts,showAll,setShowAll,setLoading,setError,selectedDate,pendingRef};
+ return {today,date,setDate,current,totals,products,visible,disabled,loading,error,message,pending,busy,reload,send,eat,log,editing,setEditing,amounts,setAmounts,showAll,setShowAll,setLoading,setError,selectedDate,pendingRef};
 }
 
 export function FoodIntake({userId,onLogin,history=false,recordDate,onDateChange}:{userId?:string;onLogin:()=>void;history?:boolean;recordDate?:string;onDateChange?:(date:string)=>void}){

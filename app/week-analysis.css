@@ -62,3 +62,8 @@
 .week-method p{font-size:12px;line-height:1.7;color:#6d7a63}
 @media(max-width:360px){.week-hero-main strong{font-size:34px}.week-hero dd{font-size:13px}}
 @media(prefers-reduced-motion:reduce){.week-analysis *{animation:none!important;transition:none!important}}
+.week-actual{margin:12px 0 0;padding:10px 12px;border-radius:14px;background:#fff;font-size:12px;line-height:1.6;color:#4f5d46}
+.week-actual b{margin-right:4px;color:#26321f}
+.week-analysis .is-actual{background:#26321f;height:3px!important;border-radius:2px}
+.week-actual-mark{position:absolute;left:50%;z-index:2;width:min(100%,34px);height:4px;border-radius:3px;background:#26321f;box-shadow:0 0 0 2px #fff;transform:translate(-50%,50%);pointer-events:none;animation:week-mark .5s .3s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes week-mark{from{opacity:0;transform:translate(-50%,50%) scaleX(.2)}}

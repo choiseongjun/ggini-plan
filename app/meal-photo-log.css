@@ -1,0 +1,36 @@
+.photo-log{margin-top:16px}
+.today-meals .photo-log-button{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:54px;border:0;border-radius:16px;background:linear-gradient(145deg,#6a8a5a,#46603c);color:#fff;font-size:15px;font-weight:800;box-shadow:0 8px 18px #46603c38;transition:transform .15s ease}
+.today-meals .photo-log-button:active:not(:disabled){transform:scale(.97)}
+.today-meals .photo-log-manual{display:block;min-height:0;margin:8px auto 0;padding:4px 8px;border:0;background:none;color:#7a8a6e;font-size:12px;text-decoration:underline;text-underline-offset:3px}
+.photo-log-busy{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:16px;background:#f3f7ec;animation:photo-log-in .3s ease both}
+.photo-log-busy strong{display:block;font-size:14px;color:#33402c}
+.photo-log-busy small{font-size:12px;color:#6d7a63}
+.photo-log-spinner{flex:0 0 28px;height:28px;border:3px solid #d6e2c8;border-top-color:#526c47;border-radius:50%;animation:photo-log-spin .8s linear infinite}
+@keyframes photo-log-spin{to{transform:rotate(360deg)}}
+@keyframes photo-log-in{from{opacity:0;transform:translateY(6px)}}
+.photo-log-mismatch{display:grid;gap:6px;padding:14px 16px;border-radius:16px;background:#fff6e5;animation:photo-log-in .3s ease both}
+.photo-log-mismatch strong{font-size:14px;color:#5b4a26}
+.photo-log-mismatch small{font-size:12px;line-height:1.6;color:#7a6a45}
+.photo-log-mismatch>div{display:flex;gap:8px;margin-top:4px}
+.today-meals .photo-log-mismatch button{flex:1;min-height:42px;font-size:13px;font-weight:700}
+.today-meals .photo-log-mismatch button:last-child{background:#526c47;border-color:#526c47;color:#fff}
+.photo-log-error{margin:8px 0 0;font-size:12px;color:#b0603f}
+.photo-log-done{display:flex;align-items:center;gap:12px;margin-top:14px;padding:14px;border-radius:16px;background:#eef6e6;animation:photo-log-in .35s cubic-bezier(.34,1.3,.64,1) both}
+.photo-log-check{flex:0 0 30px;height:30px;border-radius:50%;background:#526c47 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 12.5 4 4 8-9'/%3E%3C/svg%3E") center/16px no-repeat}
+.photo-log-done>div{flex:1;min-width:0;display:grid;gap:3px}
+.photo-log-done strong{font-size:13px;line-height:1.5;color:#26321f}
+.photo-log-done small{font-size:11px;line-height:1.5;color:#5c6e55}
+.today-meals .photo-log-done button{flex-shrink:0;min-height:36px;padding:6px 10px;font-size:12px}
+@media(prefers-reduced-motion:reduce){.photo-log *{animation:none!important}}
+.photo-log-staged{padding:14px;border:1.5px solid #dfe7d3;border-radius:18px;background:#f7faf1;animation:photo-log-in .3s ease both}
+.photo-log-thumbs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0;padding:0;list-style:none}
+.photo-log-thumbs li{position:relative;aspect-ratio:1;border-radius:14px;overflow:hidden;background:#e9efe0;animation:photo-log-pop .3s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes photo-log-pop{from{opacity:0;transform:scale(.8)}}
+.photo-log-thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+.today-meals .photo-log-thumbs li>button:not(.photo-log-add){position:absolute;top:4px;right:4px;width:22px;min-height:0;height:22px;padding:0;border:0;border-radius:50%;background:#1d2a1acc;color:#fff;font-size:10px;line-height:22px}
+.today-meals .photo-log-add{display:grid;place-content:center;gap:2px;width:100%;height:100%;min-height:0;padding:0;border:1.5px dashed #c9d4b8;border-radius:14px;background:#fff;color:#526c47;font-size:11px;font-weight:700}
+.photo-log-add span{font-size:22px;line-height:1}
+.photo-log-hint{display:block;margin:10px 2px;font-size:11px;line-height:1.6;color:#6d7a63}
+.photo-log-staged-actions{display:flex;gap:8px}
+.today-meals .photo-log-staged-actions button{flex:0 0 72px;min-height:48px;font-size:13px}
+.today-meals .photo-log-staged-actions .photo-log-submit{flex:1;border:0;border-radius:14px;background:linear-gradient(145deg,#6a8a5a,#46603c);color:#fff;font-size:15px;font-weight:800;box-shadow:0 6px 14px #46603c33}

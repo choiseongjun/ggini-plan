@@ -64,3 +64,18 @@ export function analyzeWeek({ ids, products, conditions, profile, target }: { id
   return { days, maintenance: energy.daily, dailyGoal, avgIntake, avgDelta, weekKg, monthKg: weekKg * 4, nutrients, plannedMeals: planned.length, assumedMeals: days.reduce((n, d) => n + Math.max(0, profile.meals - d.meals.length), 0) };
 }
 export type WeekAnalysis = NonNullable<ReturnType<typeof analyzeWeek>>;
+
+export type ActualLog = { productId: string; calories: number | null; date: string };
+
+// Per plan day, what was actually logged. Like the plan, meals not logged that day are assumed at the
+// goal amount so the two lines stay comparable; quick extras (밥 추가, 음료…) add on top.
+export function actualByDay(analysis: WeekAnalysis, logs: ActualLog[], dates: string[], meals: number, extraPrefix: string) {
+  return analysis.days.map((d, i) => {
+    const dayLogs = logs.filter(l => l.date === dates[i]);
+    if (!dayLogs.length) return null;
+    const logged = Math.round(dayLogs.reduce((sum, l) => sum + (l.calories ?? 0), 0));
+    const mainMeals = dayLogs.filter(l => !l.productId.startsWith(extraPrefix)).length;
+    const assumed = Math.round(Math.max(0, meals - mainMeals) * analysis.dailyGoal / meals);
+    return { logged, assumed, intake: logged + assumed, vsPlan: logged + assumed - d.intake };
+  });
+}
