@@ -62,9 +62,17 @@ export class RandomSearchOptimizer implements RecipeOptimizer {
    const groupGrams = (groupPercents[i] / total) * template.totalGrams;
    const valid = group.ingredientIds.filter((id) => ingredients.has(id));
    if (!valid.length) return;
-   const weights = valid.map(() => this.random() + 0.05);
+   // A group like "주재료(고기·해산물·두부)" lists several ALTERNATIVE proteins, not ingredients meant
+   // to be blended together — no one cooks 갈비찜 with pork AND beef AND chicken AND squid AND egg AND
+   // tofu at once. Picking a small subset (1-2, occasionally more if the group happens to be small)
+   // keeps each generated recipe looking like one real dish's ingredient list instead of every
+   // template option mixed in at once.
+   const pickCount = Math.min(valid.length, 1 + Math.floor(this.random() * 2));
+   const shuffled = [...valid].sort(() => this.random() - 0.5);
+   const chosen = shuffled.slice(0, pickCount);
+   const weights = chosen.map(() => this.random() + 0.05);
    const weightTotal = weights.reduce((s, v) => s + v, 0);
-   valid.forEach((id, j) => grams.set(id, (grams.get(id) ?? 0) + groupGrams * weights[j] / weightTotal));
+   chosen.forEach((id, j) => grams.set(id, (grams.get(id) ?? 0) + groupGrams * weights[j] / weightTotal));
   });
   return grams;
  }
@@ -83,13 +91,20 @@ export class RandomSearchOptimizer implements RecipeOptimizer {
    const result = this.evaluate(candidate, ingredients, target.per100g);
    if (result.score < bestResult.score) { best = candidate; bestResult = result; }
   }
-  // Local refinement: nudge one ingredient at a time and keep improvements only.
+  // Local refinement: nudge one ingredient at a time, keep improvements only. Rescaling every
+  // ingredient back to the template's fixed totalGrams after each nudge is what keeps this a
+  // "100g dish" recipe — without it, repeatedly accepting nudges that each shave nutrient error
+  // but never give anything back let the total drift arbitrarily far over hundreds of iterations
+  // (a real generated case reached 151g of ingredients for a template declared at 100g, i.e. 87g
+  // of pork alone in what was supposed to be a 100g dish).
   for (let i = 0; i < this.refinements; i++) {
    const ids = [...best.keys()]; if (!ids.length) break;
    const id = ids[Math.floor(this.random() * ids.length)];
    const delta = (this.random() - 0.5) * template.totalGrams * 0.1;
    const candidate = new Map(best);
    candidate.set(id, Math.max(0, (candidate.get(id) ?? 0) + delta));
+   const total = [...candidate.values()].reduce((s, v) => s + v, 0);
+   if (total > 0) { const scale = template.totalGrams / total; for (const [key, grams] of candidate) candidate.set(key, grams * scale); }
    const result = this.evaluate(candidate, ingredients, target.per100g);
    if (result.score < bestResult.score) { best = candidate; bestResult = result; }
   }

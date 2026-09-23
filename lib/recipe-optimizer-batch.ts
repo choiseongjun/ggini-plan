@@ -1,7 +1,7 @@
 import {fetchCookedDishes} from './foodsafety-resolve';
 import {templateForDishName, ingredientMap} from './recipe-ingredient-data';
 import {RandomSearchOptimizer, type FoodNutrition} from './recipe-optimizer';
-import {saveRecipeOptimizerResult} from './recipe-optimizer-store';
+import {saveRecipeOptimizerResult, deleteRecipeOptimizerResultsNotIn} from './recipe-optimizer-store';
 
 // A real Korean soup/stew is legitimately very low-calorie per 100g (broth is mostly water — e.g.
 // 콩나물국 is 6kcal/100g, 미역국 12kcal/100g — both genuine, common meals), so calorie value alone
@@ -14,7 +14,7 @@ const NON_MEAL_NAME = /(국물|육수|즙|_?만)$|^미음|^액상/;
 
 // Shared by scripts/generate-similar-recipes.mjs (CLI) and the admin "일괄 생성" button
 // (app/api/admin/recipe-optimizer/route.ts PUT) so both stay in sync with one implementation.
-export async function generateAllEligibleRecipes(): Promise<{total: number; eligible: number; saved: number; failed: number}> {
+export async function generateAllEligibleRecipes(): Promise<{total: number; eligible: number; saved: number; failed: number; removed: number}> {
  const dishes = await fetchCookedDishes();
  const eligible = dishes.filter((d) =>
   templateForDishName(d.itemName) &&
@@ -33,5 +33,10 @@ export async function generateAllEligibleRecipes(): Promise<{total: number; elig
    saved++;
   } catch { failed++; }
  }
- return {total: dishes.length, eligible: eligible.length, saved, failed};
+ // A previously-eligible dish can drop out later (a source nutrient goes missing, a template/name
+ // rule tightens) — its old row would otherwise sit untouched forever, still serving whatever
+ // (possibly buggy) recipe was generated under the old rules. Removing anything no longer eligible
+ // keeps this table an honest reflection of the current rules, not an accumulating history of them.
+ const removed = await deleteRecipeOptimizerResultsNotIn(eligible.map((d) => d.foodCode));
+ return {total: dishes.length, eligible: eligible.length, saved, failed, removed};
 }

@@ -21,6 +21,12 @@ ALTER TABLE recipe_optimizer_results ADD COLUMN IF NOT EXISTS target_basis_amoun
 -- A real food photo for the dish, backfilled by scripts/import-recipe-images.mjs via Kakao's Daum
 -- Image Search (there is no real product behind these synthetic recipes to photograph). NULL until backfilled.
 ALTER TABLE recipe_optimizer_results ADD COLUMN IF NOT EXISTS image_url TEXT;
+-- A GPT-composed realistic ingredient list (name/grams/per-100g nutrition/pack size+price, each
+-- self-estimated by the model), backfilled by scripts/synthesize-ai-ingredients.mjs. The deterministic
+-- optimizer above is constrained to ~26 generic raw ingredients and can't represent what a specific
+-- dish actually needs (a meatball needs egg/breadcrumbs as a binder; nothing in that palette does).
+-- When present, lib/recipe-optimizer-plan.ts uses this instead of `ingredients` for the main dish.
+ALTER TABLE recipe_optimizer_results ADD COLUMN IF NOT EXISTS ai_ingredients JSONB;
 -- Several candidate photos for the same dish (index 0 mirrors image_url above) so the UI can show a
 -- gallery instead of trusting a single search hit to be the right one.
 ALTER TABLE recipe_optimizer_results ADD COLUMN IF NOT EXISTS image_urls JSONB;

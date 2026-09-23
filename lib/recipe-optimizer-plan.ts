@@ -1,8 +1,14 @@
 import type {PlanProduct, MealSlot} from './shopping-plan';
 import {listRecipeOptimizerResults, type StoredRecipeResult} from './recipe-optimizer-store';
 import {ingredientNutritionTable} from './recipe-ingredient-data';
+import type {AiIngredient} from './recipe-ai-ingredients';
+import {excludedFoodAliases, type ExcludedFood} from './excluded-foods';
 import {inferFoodType} from './catalog-food-types';
 import {pickDishVisual} from './recipe-dish-visuals';
+
+function allergensFromName(name: string): ExcludedFood[] {
+ return (Object.keys(excludedFoodAliases) as ExcludedFood[]).filter((key) => excludedFoodAliases[key].some((alias) => name.includes(alias)));
+}
 
 const ingredientById = new Map(ingredientNutritionTable.map((i) => [i.id, i]));
 
@@ -73,6 +79,36 @@ function ingredientProduct(id: string, now: string): PlanProduct {
  };
 }
 
+// GPT-composed ingredients (lib/recipe-ai-ingredients.ts) aren't drawn from the fixed 26-item table —
+// each one carries its own self-estimated nutrition/pack size/price, so its product is built directly
+// from that instead of an ingredientNutritionTable lookup. Still a single global product per distinct
+// name so purchaseBasket() pools it the same way across a plan (e.g. two different dishes both calling
+// for "양파" this week share one purchase) — 정규화 the name for a stable, collision-resistant id.
+function aiIngredientProduct(ingredient: AiIngredient, now: string): PlanProduct {
+ const slug = ingredient.name.trim().toLowerCase().replace(/[^a-z0-9가-힣]+/g, '-').replace(/^-+|-+$/g, '') || 'ingredient';
+ const price = Math.round(ingredient.packPriceWon);
+ const scale = (n: number) => Math.round(n * ingredient.packGrams / 100 * 1000) / 1000;
+ return {
+  id: `recipe-opt-ingredient-ai-${slug}`, emoji: '🧂', name: ingredient.name,
+  detail: `${ingredient.packGrams}g(실제 판매 단위 1개) · AI 추정 소매가 (실제 구매 링크 없음)`, price, portions: '1포장',
+  protein: '', color: 'sand', searchQuery: ingredient.name, unit: 'g', quantity: ingredient.packGrams,
+  category: 'ingredient', inWeeklyCart: false, productImageUrl: null, productUrl: null,
+  nutritionSourceName: 'AI 추정 재료 참고값', nutritionSourceUrl: null, nutritionPhotoUrl: null,
+  nutritionBasis: `${ingredient.packGrams}g당`,
+  nutritionEstimate: {fields: ['caloriesKcal', 'proteinG', 'carbohydratesG', 'fatG', 'sodiumMg'], note: 'GPT가 요리명에 맞춰 구성·추정한 재료', model: 'gpt-recipe-ingredients', estimatedAt: now},
+  caloriesKcal: scale(ingredient.caloriesKcal), proteinG: scale(ingredient.proteinG), carbohydratesG: scale(ingredient.carbohydratesG), fatG: scale(ingredient.fatG), sodiumMg: scale(ingredient.sodiumMg),
+  updatedAt: now, servings: 1, servingGrams: ingredient.packGrams, servingNote: '실제 판매 단위(1포장) 기준', avoidanceText: null,
+  allergens: allergensFromName(ingredient.name),
+ };
+}
+
+function aiUsageEntries(ingredients: AiIngredient[], now: string) {
+ return ingredients.map((ingredient) => {
+  const product = aiIngredientProduct(ingredient, now);
+  return {product, packs: ingredient.grams / ingredient.packGrams, label: `${product.name} ${ingredient.grams}g`, ingredientId: undefined};
+ });
+}
+
 function stableIndex(seed: string, mod: number): number {
  let h = 0;
  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0;
@@ -89,7 +125,7 @@ function pickSide(pool: StoredRecipeResult[], excludeFoodCode: string, seed: str
 // Builds one recipe's ingredient-usage entries (grams already scaled to a real portion) into the
 // {product, packs, label} shape purchaseBasket()/basket() expect, using the shared global ingredient
 // products above so usage pools correctly across every recipe in a plan.
-function usageEntries(entries: {ingredientId: string; grams: number}[], scale: number, now: string, labelPrefix?: string) {
+function usageEntries(entries: {ingredientId: string; grams: number}[], scale: number, now: string, labelPrefix?: string, group?: string) {
  return entries.flatMap((entry) => {
   const grams = Math.round(entry.grams * scale);
   if (grams <= 0) return [];
@@ -97,7 +133,7 @@ function usageEntries(entries: {ingredientId: string; grams: number}[], scale: n
   const packGrams = source?.packGrams ?? 100;
   const product = ingredientProduct(entry.ingredientId, now);
   const label = `${labelPrefix ? `${labelPrefix}: ` : ''}${product.name} ${grams}g`;
-  return [{product, packs: grams / packGrams, label, ingredientId: entry.ingredientId}];
+  return [{product, packs: grams / packGrams, label, group, ingredientId: entry.ingredientId}];
  });
 }
 
@@ -114,7 +150,15 @@ export async function governmentOptimizedRecipeProducts(): Promise<PlanProduct[]
  // 단독으로는 추천 후보(끼니)에 올리지 않는다. 그렇지 않으면 예산이 넉넉할 때 다양성 점수를 노리고
  // "물김치"나 "배추김치" 한 그릇이 그 자체로 저녁 메뉴로 뽑히는 일이 생긴다.
  return results.filter((result) => !SIDE_DISH_TEMPLATES.has(result.templateId)).map((result) => {
-  const baseIngredients = usageEntries(result.ingredients, SERVING_SCALE, now);
+  // A GPT-composed realistic ingredient list (scripts/synthesize-ai-ingredients.mjs), when present,
+  // replaces the deterministic 26-generic-ingredient mix for the main dish — it isn't a closer numeric
+  // fit to the target, but it's an ingredient list that actually resembles the named dish. Rice/side
+  // pairing below stays the same either way.
+  const ai = result.aiIngredients?.ingredients.length ? result.aiIngredients.ingredients : null;
+  const baseIngredients = ai ? aiUsageEntries(ai, now) : usageEntries(result.ingredients, SERVING_SCALE, now);
+  const mainGrams = ai ? ai.reduce((sum, i) => sum + i.grams, 0) : Math.round(result.totalGrams * SERVING_SCALE);
+  const mainCalories = ai ? ai.reduce((sum, i) => sum + i.caloriesKcal * i.grams / 100, 0) : (result.predicted.kcal ?? 0) * SERVING_SCALE;
+  const mainProtein = ai ? ai.reduce((sum, i) => sum + i.proteinG * i.grams / 100, 0) : (result.predicted.protein ?? 0) * SERVING_SCALE;
 
   const needsPairing = !STANDALONE_TEMPLATES.has(result.templateId);
   const ricePairing = needsPairing ? usageEntries([{ingredientId: 'rice-raw', grams: RICE_PAIRING_RAW_GRAMS}], 1, now, '함께 먹는 밥') : [];
@@ -122,7 +166,7 @@ export async function governmentOptimizedRecipeProducts(): Promise<PlanProduct[]
   const kimchiSide = needsPairing && result.templateId !== 'kimchi' ? pickSide(kimchiPool, result.foodCode, `${result.foodCode}-kimchi`) : null;
   const namulSide = needsPairing && result.templateId !== 'namul' ? pickSide(namulPool, result.foodCode, `${result.foodCode}-namul`) : null;
   const sides = [kimchiSide, namulSide].filter((s): s is StoredRecipeResult => s !== null);
-  const sideIngredients = sides.flatMap((side) => usageEntries(side.ingredients, SIDE_SERVING_SCALE, now, `${side.targetName} 밑반찬`));
+  const sideIngredients = sides.flatMap((side) => usageEntries(side.ingredients, SIDE_SERVING_SCALE, now, `${side.targetName} 밑반찬`, side.targetName));
   const sideGrams = sides.reduce((sum, side) => sum + Math.round(side.totalGrams * SIDE_SERVING_SCALE), 0);
   const sideCalories = sides.reduce((sum, side) => sum + (side.predicted.kcal ?? 0) * SIDE_SERVING_SCALE, 0);
   const sideProtein = sides.reduce((sum, side) => sum + (side.predicted.protein ?? 0) * SIDE_SERVING_SCALE, 0);
@@ -133,12 +177,12 @@ export async function governmentOptimizedRecipeProducts(): Promise<PlanProduct[]
   // Each ingredient is a whole-pack product now — a recipe's own share of that pack's cost is
   // price × packs (the fraction of the pack this recipe uses), not the full pack price.
   const totalPrice = Math.round(ingredients.reduce((sum, i) => sum + i.product.price * i.packs, 0));
-  const totalGrams = result.totalGrams * SERVING_SCALE + (needsPairing ? RICE_PAIRING_COOKED_GRAMS : 0) + sideGrams;
+  const totalGrams = mainGrams + (needsPairing ? RICE_PAIRING_COOKED_GRAMS : 0) + sideGrams;
   const slots: MealSlot[] = ['lunch', 'dinner'];
   const visual = pickDishVisual(result.targetName);
   const avoidanceText = ingredients.map((i) => i.label).join(' ') || null;
   const allergens = [...new Set([
-   ...result.ingredients.flatMap((i) => ingredientAllergenTags[i.ingredientId] ?? []),
+   ...(ai ? ai.flatMap((i) => allergensFromName(i.name)) : result.ingredients.flatMap((i) => ingredientAllergenTags[i.ingredientId] ?? [])),
    ...sides.flatMap((side) => side.ingredients.flatMap((i) => ingredientAllergenTags[i.ingredientId] ?? [])),
    ...(needsPairing ? ['rice'] : []),
   ])];
@@ -159,11 +203,13 @@ export async function governmentOptimizedRecipeProducts(): Promise<PlanProduct[]
    foodType: inferFoodType(result.targetName) ?? null,
    recipe: {
     minutes: 15, slots, family: `govdb-${result.templateId}`,
-    steps: ['정부 식품영양성분DB의 목표 영양값에 맞춰 자동으로 근사한 재료 조합을 실제 1인분 분량으로 환산했어요.', '실제 이 음식의 정식 레시피가 아니라 영양 구성만 비슷한 참고용 조합입니다. 조리법은 재료별로 통상적인 방식을 따르세요.'],
+    steps: ai
+     ? [result.aiIngredients!.note, 'GPT가 이 요리에 실제로 쓰일 만한 재료로 구성한 참고용 조합입니다. 정식 레시피가 아니며, 조리법은 재료별로 통상적인 방식을 따르세요.']
+     : ['정부 식품영양성분DB의 목표 영양값에 맞춰 자동으로 근사한 재료 조합을 실제 1인분 분량으로 환산했어요.', '실제 이 음식의 정식 레시피가 아니라 영양 구성만 비슷한 참고용 조합입니다. 조리법은 재료별로 통상적인 방식을 따르세요.'],
     ingredients,
     nutrition: {
-     calories: result.predicted.kcal === null ? null : Math.round((result.predicted.kcal * SERVING_SCALE + riceCalories + sideCalories) * 10) / 10,
-     protein: result.predicted.protein === null ? null : Math.round((result.predicted.protein * SERVING_SCALE + riceProtein + sideProtein) * 10) / 10,
+     calories: Math.round((mainCalories + riceCalories + sideCalories) * 10) / 10,
+     protein: Math.round((mainProtein + riceProtein + sideProtein) * 10) / 10,
     },
    },
   } as PlanProduct;

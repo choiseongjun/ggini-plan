@@ -13,6 +13,7 @@
     "foodsafety:import-bulk-api": "node --env-file=.env.local scripts/import-foodsafety-bulk-api.mjs",
     "recipes:generate-similar": "node --env-file=.env.local --import tsx scripts/generate-similar-recipes.mjs",
     "recipes:import-images": "node --env-file=.env.local --import tsx scripts/import-recipe-images.mjs",
+    "recipes:synthesize-ai-ingredients": "node --env-file=.env.local --import tsx scripts/synthesize-ai-ingredients.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

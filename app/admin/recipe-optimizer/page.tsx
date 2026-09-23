@@ -64,7 +64,7 @@ export default function RecipeOptimizerPage() {
    const r = await fetch('/api/admin/recipe-optimizer', {method: 'PUT'});
    const data = await r.json();
    if (!r.ok) throw new Error(data.error);
-   setBatchStatus(`전체 ${data.total}건 중 템플릿에 맞는 ${data.eligible}건 처리 · 저장 ${data.saved}건 · 실패 ${data.failed}건`);
+   setBatchStatus(`전체 ${data.total}건 중 템플릿에 맞는 ${data.eligible}건 처리 · 저장 ${data.saved}건 · 실패 ${data.failed}건 · 더 이상 대상이 아니라 제거 ${data.removed}건`);
    void loadResults();
   } catch (e) { setError(e instanceof Error ? e.message : '일괄 생성 실패'); }
   finally { setBatchBusy(false); }
