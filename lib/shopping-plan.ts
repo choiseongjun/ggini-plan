@@ -155,7 +155,19 @@ function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,
  const meats=new Map<string,number>();
  for(const id of ids){const p=products.get(id);if(p)for(const key of mainIngredients(p))meats.set(key,(meats.get(key)??0)+1);}
  const meatAllowance=Math.max(2,Math.ceil(ids.length*2/7));
- const meatOverflow=[...meats.values()].reduce((n,count)=>n+Math.max(0,count-meatAllowance),0);
+ let meatOverflow=[...meats.values()].reduce((n,count)=>n+Math.max(0,count-meatAllowance),0);
+ // 같은 시간대(점심끼리·저녁끼리)에서도 한 고기가 몰리지 않게.
+ for(const slot of ['breakfast','lunch','dinner'] as MealSlot[]){
+  const inSlot=ids.filter((_,i)=>schedule[i]?.slot===slot);if(inSlot.length<3)continue;
+  const counts=new Map<string,number>();
+  for(const id of inSlot){const p=products.get(id);if(p)for(const key of mainIngredients(p))counts.set(key,(counts.get(key)??0)+1);}
+  const allowance=Math.max(1,Math.ceil(inSlot.length*2/7));
+  meatOverflow+=[...counts.values()].reduce((n,count)=>n+Math.max(0,count-allowance),0);
+ }
+ // 아침은 한식(죽·국·계란)과 서양식(토스트·샌드위치·요거트)이 반반쯤 섞이게.
+ const breakfastIds=ids.filter((_,i)=>isBreakfast(i));
+ const western=breakfastIds.filter(id=>products.get(id)?.recipe?.family==='govdb-western-breakfast').length;
+ const breakfastMix=breakfastIds.length>=2?Math.abs(western-breakfastIds.length/2):0;
  // 쑥튀김·옥수수부침처럼 고기·생선·달걀 없이 반죽·기름이 대부분인 튀김·전은 '오늘 메뉴'로 와닿지 않는다.
  const batterOnly=ids.filter(id=>{const p=products.get(id);return !!p?.recipe&&/govdb-(twigim|jeon)$/.test(p.recipe.family)&&!SEAFOOD.test(p.name)&&!MEAT_OR_EGG.test(p.name);}).length;
  const familyRepeats=[...families.values()].reduce((n,count)=>n+count*(count-1)/2,0);
@@ -178,11 +190,11 @@ function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,
  // when the two are otherwise close on fit/variety/budget — nudges plans toward recipes rather
  // than defaulting to whichever pre-made item happens to be in the catalog.
  const cooked=ids.filter(id=>products.get(id)?.recipe).length*120;
- return cooked+reuse+rows.length*300-feedback-ids.filter(id=>previous.has(id)).length*900-ids.filter(id=>previousFamilies.has(mealFamily(products.get(id)!))).length*200+families.size*150-repeats*350-familyRepeats*40-baseRepeats*900-instant*400-light*300-sideLike*450-seafoodRepeats*500-batterOnly*500-meatOverflow*600-repetition
+ return cooked+reuse+rows.length*300-feedback-ids.filter(id=>previous.has(id)).length*900-ids.filter(id=>previousFamilies.has(mealFamily(products.get(id)!))).length*200+families.size*150-repeats*350-familyRepeats*40-baseRepeats*900-instant*400-light*300-sideLike*450-seafoodRepeats*500-batterOnly*500-meatOverflow*600-breakfastMix*350-repetition
   -rows.reduce((n,r)=>n+r.left,0)*100-waste/300-rows.reduce((n,r)=>n+r.cost,0)/c.budget*(c.budgetMode==='save'?2000:c.budgetMode==='full'?-100:100)+fit;
 }
-function diverseOptions(products:PlanProduct[],previous:string[],conditions:PlanConditions){
- if(products.length<=80)return products;
+function diverseOptions(products:PlanProduct[],previous:string[],conditions:PlanConditions,limit=80){
+ if(products.length<=limit)return products;
  const old=new Set(previous);
  const costs=new Map(products.map(p=>[p.id,purchaseBasket([p.id],[p],conditions.owned,conditions.supply,undefined,conditions.people).reduce((sum,r)=>sum+r.cost,0)]));
  const byCost=[...products].sort((a,b)=>costs.get(a.id)!-costs.get(b.id)!||a.price/a.servings-b.price/b.servings);
@@ -193,9 +205,9 @@ function diverseOptions(products:PlanProduct[],previous:string[],conditions:Plan
  const selected=new Map(byCost.slice(0,12).map(p=>[p.id,p]));
  // Retain nutritional fits before the cost/family shortlist is capped at 80.
  for(const p of [...products].sort((a,b)=>(b.personalizationScore??0)-(a.personalizationScore??0)).slice(0,20))selected.set(p.id,p);
- for(let i=0;selected.size<80;i++){
+ for(let i=0;selected.size<limit;i++){
   let added=false;
-  for(const group of groups.values()){if(group[i]){selected.set(group[i].id,group[i]);added=true;}if(selected.size>=80)break;}
+  for(const group of groups.values()){if(group[i]){selected.set(group[i].id,group[i]);added=true;}if(selected.size>=limit)break;}
   if(!added)break;
  }
  return [...selected.values()];
@@ -207,7 +219,9 @@ function jitterFor(seed:number){return (id:string)=>{let h=(seed>>>0)^2166136261
 export function recommendShopping(products: PlanProduct[], c: PlanConditions, cheapest=false,previousIds:string[]=[],seed?:number): string[] | null {
  const jitter=seed===undefined?null:jitterFor(seed);
  const pool=productsForGoal(candidates(products,c).filter(p=>!p.recipe||!p.id.includes('--with--')),c.goal);
- const schedule=mealSchedule(c),options=schedule.map((_,i)=>diverseOptions(slotCandidates(pool,c,i),previousIds,c));
+ // 끼니가 많으면(한 주 세 끼 등) 탐색 폭을 줄인다: 21끼에서 약 7.6초 걸리던 계산을 줄이기 위해.
+ const wide=c.meals<=12,beam=wide?80:45,cheapBeam=wide?20:10;
+ const schedule=mealSchedule(c),options=schedule.map((_,i)=>diverseOptions(slotCandidates(pool,c,i),previousIds,c,wide?80:55));
  if(new Set(pool.map(p=>cookingDishId(p.id))).size<c.meals)return null;
  const previous=new Set(previousIds);
  const previousFamilies=new Set(pool.filter(p=>previous.has(p.id)).map(mealFamily));
@@ -230,7 +244,7 @@ export function recommendShopping(products: PlanProduct[], c: PlanConditions, ch
   }
   const ranked=[...next.values()].sort((a,b)=>b.score-a.score||a.cost-b.cost);
   // Keep inexpensive paths as well, so early variety cannot exhaust the budget.
-  states=[...new Set([...ranked.slice(0,80),...[...ranked].sort((a,b)=>a.cost-b.cost||b.score-a.score).slice(0,20)])];
+  states=[...new Set([...ranked.slice(0,beam),...[...ranked].sort((a,b)=>a.cost-b.cost||b.score-a.score).slice(0,cheapBeam)])];
   if(!states.length)return null;
  }
  return states.sort((a,b)=>b.score-a.score||a.cost-b.cost)[0]?.ids??null;
