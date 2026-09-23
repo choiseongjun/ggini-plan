@@ -58,20 +58,29 @@ export function repeatsDailyMain(ids:string[],products:PlanProduct[],c:PlanCondi
  const schedule=mealSchedule(c),slot=schedule[index];
  if(!slot||slot.slot==='breakfast')return false;
  const keys=mainIngredients(candidate);if(!keys.length)return false;
- return ids.some((id,i)=>{if(i===index||schedule[i]?.day!==slot.day||schedule[i]?.slot==='breakfast')return false;const other=products.find(p=>p.id===id);return !!other&&mainIngredients(other).some(key=>keys.includes(key));});
+ return ids.some((id,i)=>{if(i===index||schedule[i]?.day!==slot.day||schedule[i]?.slot==='breakfast')return false;const other=productById(products,id);return !!other&&mainIngredients(other).some(key=>keys.includes(key));});
 }
 export function validMealIds(ids:string[],products:PlanProduct[],c:PlanConditions){return ids.length===c.meals&&new Set(ids.map(cookingDishId)).size===ids.length&&ids.every((id,i)=>{const p=slotCandidates(products,c,i).find(p=>p.id===id);return !!p&&!repeatsDailyMain(ids,products,c,i,p);});}
 const aliases: Record<string,string[]> = {우유:['우유','유제품','치즈','크림'],달걀:['달걀','계란','알류'],계란:['달걀','계란','알류'],소고기:['소고기','쇠고기','한우','비프'],돼지고기:['돼지고기','돈육','베이컨','삼겹'],닭고기:['닭','치킨'],콩:['콩','대두','두부'],밀:['밀','소맥'],새우:['새우','쉬림프']};
+// 250kcal도 안 되는 흰죽·누룽지 같은 메뉴는 한 끼 후보에서 뺀다 (영양값이 확인된 경우에만).
 export function candidates(products: PlanProduct[], c: PlanConditions) {
  const avoid=c.avoid.split(/[,，\n]/).map(x=>x.trim().toLowerCase()).filter(Boolean);
- return products.filter(p=>(!p.recipe||p.recipe.assembly||(p.recipe.sideCount??0)===(c.sideCount??0))&&mealRole(p)==='meal'&&hasGoalNutrition(p,c.goal)&&allowsMealKind(p,c.mealKinds)&&allowsExcludedFoods(p,c.excluded??[])&&(p.productUrl||p.recipe) && p.price>0 && ((c.mealMode??'ready')==='mixed'||((c.mealMode??'ready')==='cook'?!!p.recipe&&!p.recipe.assembly:!p.recipe||!!p.recipe.assembly)) && (!!p.recipe&&!p.recipe.assembly||c.cooking==='all'||(c.cooking==='kit'?p.category==='meal_kit':p.category!=='meal_kit')) && (!avoid.length || (p.avoidanceText!==null && !avoid.some(word=>(aliases[word]??[word]).some(a=>`${p.name} ${p.avoidanceText}`.toLowerCase().includes(a))))));
+ return products.filter(p=>(!p.recipe||p.recipe.assembly||(p.recipe.sideCount??0)===(c.sideCount??0))&&mealRole(p)==='meal'&&hasGoalNutrition(p,c.goal)&&allowsMealKind(p,c.mealKinds)&&allowsExcludedFoods(p,c.excluded??[])&&(p.productUrl||p.recipe) && p.price>0 && !(typeof p.servingCalories==='number'&&p.servingCalories<250) && ((c.mealMode??'ready')==='mixed'||((c.mealMode??'ready')==='cook'?!!p.recipe&&!p.recipe.assembly:!p.recipe||!!p.recipe.assembly)) && (!!p.recipe&&!p.recipe.assembly||c.cooking==='all'||(c.cooking==='kit'?p.category==='meal_kit':p.category!=='meal_kit')) && (!avoid.length || (p.avoidanceText!==null && !avoid.some(word=>(aliases[word]??[word]).some(a=>`${p.name} ${p.avoidanceText}`.toLowerCase().includes(a))))));
+}
+// id → 메뉴 색인. 추천 탐색이 장보기 금액을 수십만 번 계산하는데, 매번 1,000개가 넘는 메뉴를
+// 처음부터 훑던 find()가 추천 시간(약 9초)의 대부분이었다. 같은 배열이면 색인을 재사용한다.
+const productIndexes=new WeakMap<PlanProduct[],Map<string,PlanProduct>>();
+export function productById(products:PlanProduct[],id:string){
+ let index=productIndexes.get(products);
+ if(!index||index.size!==products.length){index=new Map(products.map(p=>[p.id,p]));productIndexes.set(products,index);}
+ return index.get(id);
 }
 export function basket(ids: string[], products: PlanProduct[], owned: string[], supply:Record<string,number>={},people=1) {
  const counts=new Map<string,number>();
  const unassigned=new Map(purchaseBasket(ids,products,owned,supply,undefined,people).map(r=>[r.product.id,r.cost]));
  ids.forEach(id=>counts.set(id,(counts.get(id)??0)+1));
  return [...counts].map(([id,uses])=>{
-  const product=products.find(p=>p.id===id);
+  const product=productById(products,id);
   if(!product)throw new Error('상품 정보가 변경됐어요. 식단을 다시 추천받아 주세요.');
   const packs=Math.ceil(uses*people/product.servings), have=owned.includes(id);
   let cost=0;for(const part of product.recipe?.ingredients??[{product}]){cost+=unassigned.get(part.product.id)??0;unassigned.delete(part.product.id);}
@@ -82,7 +91,7 @@ export function purchaseBasket(ids:string[],products:PlanProduct[],owned:string[
  const meals=new Map<string,number>();ids.forEach(id=>meals.set(id,(meals.get(id)??0)+1));
  const rows=new Map<string,{product:PlanProduct;required:number}>();
  for(const [id,count] of meals){
-  const p=products.find(p=>p.id===id);if(!p)throw new Error('메뉴 정보가 변경됐어요. 다시 추천받아 주세요.');
+  const p=productById(products,id);if(!p)throw new Error('메뉴 정보가 변경됐어요. 다시 추천받아 주세요.');
   const uses=portions?(portions[id]??0):count*people;if(uses<=0)continue;
   for(const part of p.recipe?.ingredients??[{product:p,packs:1/p.servings}]){
    const row=rows.get(part.product.id)??{product:part.product,required:0};row.required+=uses*part.packs;rows.set(part.product.id,row);
@@ -116,6 +125,8 @@ function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,
  const baseRepeats=[...bases.values()].reduce((n,count)=>n+count*(count-1)/2,0);
  // 인스턴트 라면은 싸고 재료(면)를 서로 재사용해 점수가 부풀었다 — 균형 잡힌 식단에선 드물게만.
  const instant=bases.get('라면')??0;
+ // 죽·국수 한 그릇처럼 400kcal도 안 되는 끼니는 한 끼로 부족하다 — 드물게만.
+ const light=ids.filter(id=>{const kcal=products.get(id)?.servingCalories;return typeof kcal==='number'&&kcal<400;}).length;
  const familyRepeats=[...families.values()].reduce((n,count)=>n+count*(count-1)/2,0);
  const feedback=ids.reduce((sum,id)=>{const p=products.get(id)!;return sum+(c.swapPreferences??[]).reduce((n,f)=>n+(
   f.reason==='taste'?(p.id===f.id?1400:mealFamily(p)===f.family?250:0):
@@ -136,7 +147,7 @@ function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,
  // when the two are otherwise close on fit/variety/budget — nudges plans toward recipes rather
  // than defaulting to whichever pre-made item happens to be in the catalog.
  const cooked=ids.filter(id=>products.get(id)?.recipe).length*120;
- return cooked+reuse+rows.length*300-feedback-ids.filter(id=>previous.has(id)).length*900-ids.filter(id=>previousFamilies.has(mealFamily(products.get(id)!))).length*200+families.size*150-repeats*350-familyRepeats*40-baseRepeats*900-instant*400-repetition
+ return cooked+reuse+rows.length*300-feedback-ids.filter(id=>previous.has(id)).length*900-ids.filter(id=>previousFamilies.has(mealFamily(products.get(id)!))).length*200+families.size*150-repeats*350-familyRepeats*40-baseRepeats*900-instant*400-light*300-repetition
   -rows.reduce((n,r)=>n+r.left,0)*100-rows.reduce((n,r)=>n+r.cost,0)/c.budget*(c.budgetMode==='save'?2000:c.budgetMode==='full'?-100:100)+fit;
 }
 function diverseOptions(products:PlanProduct[],previous:string[],conditions:PlanConditions){

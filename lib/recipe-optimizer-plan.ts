@@ -34,6 +34,12 @@ const SERVING_SCALE = 3;
 // Templates whose target dish is already a complete one-bowl meal the way Koreans actually eat it
 // (rice/noodles already part of the dish itself) — these get no extra rice or side dishes.
 const STANDALONE_TEMPLATES = new Set(['jjajang', 'stirfry-meat-rice', 'juk', 'myeon', 'bap-etc']);
+// 'stirfry-meat-rice'·'jjajang' also match plain 반찬 볶음(호박볶음·제육볶음·짜장소스…). Only when the name itself
+// carries the staple (볶음밥·덮밥·우동…) is it a one-bowl meal; otherwise it gets rice + 밑반찬 like any other dish —
+// serving a bare 116kcal 호박볶음 as "한 끼" is what made plans feel thin.
+const STAPLE_IN_NAME = /밥|죽|면|국수|라면|라멘|우동|수제비|떡볶이|리조또|리소토|파스타|스파게티|누룽지/;
+const isOneBowl = (templateId: string, name: string) =>
+  STANDALONE_TEMPLATES.has(templateId) && (!['stirfry-meat-rice', 'jjajang'].includes(templateId) || STAPLE_IN_NAME.test(name.split('_')[0]));
 
 // Everything else (찌개/국/구이/나물/조림/튀김/전/찜/김치) is a single dish, not a full meal on its own —
 // a real Korean 한 끼 pairs it with rice and a couple of small side dishes (밑반찬). Presenting the bare
@@ -162,7 +168,7 @@ export async function governmentOptimizedRecipeProducts(): Promise<PlanProduct[]
   const mainCalories = ai ? ai.reduce((sum, i) => sum + i.caloriesKcal * i.grams / 100, 0) : (result.predicted.kcal ?? 0) * SERVING_SCALE;
   const mainProtein = ai ? ai.reduce((sum, i) => sum + i.proteinG * i.grams / 100, 0) : (result.predicted.protein ?? 0) * SERVING_SCALE;
 
-  const needsPairing = !STANDALONE_TEMPLATES.has(result.templateId);
+  const needsPairing = !isOneBowl(result.templateId, result.targetName);
   const ricePairing = needsPairing ? usageEntries([{ingredientId: 'rice-raw', grams: RICE_PAIRING_RAW_GRAMS}], 1, now, '함께 먹는 밥') : [];
 
   const kimchiSide = needsPairing && result.templateId !== 'kimchi' ? pickSide(kimchiPool, result.foodCode, `${result.foodCode}-kimchi`) : null;
