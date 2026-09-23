@@ -194,9 +194,9 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
     const finish=()=>{worker.terminate();if(recommendationWorker.current===worker)recommendationWorker.current=null;};
     worker.onmessage=event=>{finish();if(event.data.error)reject(new Error(event.data.error));else resolve(event.data);};
     worker.onerror=()=>{finish();reject(new Error('추천을 계산하지 못했어요. 다시 시도해 주세요.'));};
-    worker.postMessage({products:fresh,conditions:c,previous:previousRecommendation.current});
+    worker.postMessage({products:fresh,conditions:c,previous:previousRecommendation.current,seed:Math.floor(Math.random()*2**31)});
    });
-   if(!guide.approximate&&guide.minimum!==null&&c.budget<guide.minimum)throw new Error(`선택한 ${c.meals}끼를 준비하려면 최소 ${won(guide.minimum)}이 필요해요. 배송비는 별도예요.`);
+   if(guide&&!guide.approximate&&guide.minimum!==null&&c.budget<guide.minimum)throw new Error(`선택한 ${c.meals}끼를 준비하려면 최소 ${won(guide.minimum)}이 필요해요. 배송비는 별도예요.`);
    if(!next)throw new Error('현재 조건과 예산으로는 중복 없는 식단을 채울 수 없어요. 기간·끼니 수를 줄이거나 음식 종류·예산·조리 방식을 조정해 주세요.');
    if(!locale.isTaiwan&&mode!=='settings')trackPlanner('generated');setConditions(c);setIds(next);remember(c,next);setMessage(`${next.length}끼를 서로 다른 ${next.length}종 메뉴로 구성했어요. 같은 음식은 중복으로 넣지 않았어요.`);setResultFocus(n=>n+1);
   }catch(e){setError(e instanceof Error?e.message:'추천을 불러오지 못했어요.');}finally{setBusy(false);finishLoading();}

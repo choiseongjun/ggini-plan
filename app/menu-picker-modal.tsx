@@ -2,7 +2,7 @@
 
 import {useDeferredValue,useEffect,useId,useMemo,useRef,useState} from 'react';
 import {servingNutrients} from '../lib/serving-nutrients';
-import {alternativesFor,basketTotal,cookingDishId,dishBase,mealSchedule,repeatsDailyMain,slotCandidates,slotLabels,type PlanConditions,type PlanProduct} from '../lib/shopping-plan';
+import {alternativesFor,basketTotal,cookingDishId,dishBase,dishWords,mealSchedule,repeatsDailyMain,slotCandidates,slotLabels,type PlanConditions,type PlanProduct} from '../lib/shopping-plan';
 import {ProductThumb} from './product-thumb';
 import {MealSourceBadge} from './meal-source';
 import {usePlannerLocale} from './planner-locale';
@@ -89,7 +89,7 @@ export function MenuPickerModal({index,ids,products,conditions,onChoose,onClose,
   .sort((a,b)=>sort==='price'?a.perMeal-b.perMeal:sort==='kcal'?(a.n.calories??1e9)-(b.n.calories??1e9):sort==='protein'?(b.n.protein??-1)-(a.n.protein??-1)
    :Number(recommended.has(cookingDishId(b.p.id)))-Number(recommended.has(cookingDishId(a.p.id)))||(b.p.personalizationScore??0)-(a.p.personalizationScore??0));
  const current=basketTotal(ids,products,conditions.owned,conditions.supply,conditions.people);
- const blockReason=(p:PlanProduct)=>cookingDishId(p.id)===cookingDishId(currentId??'')?'지금 메뉴':ids.some((id,i)=>i!==index&&cookingDishId(id)===cookingDishId(p.id))?'다른 끼니에 있어요':ids.some((id,i)=>{if(i===index)return false;const q=products.find(x=>x.id===id);return q?dishBase(q)===dishBase(p):false;})?'같은 음식이 이미 있어요':repeatsDailyMain(ids,products,c,index,p)?'같은 날 주재료 겹침':null;
+ const blockReason=(p:PlanProduct)=>cookingDishId(p.id)===cookingDishId(currentId??'')?'지금 메뉴':ids.some((id,i)=>i!==index&&cookingDishId(id)===cookingDishId(p.id))?'다른 끼니에 있어요':ids.some((id,i)=>{if(i===index)return false;const q=products.find(x=>x.id===id);return q?dishBase(q)===dishBase(p)||dishWords(q)===dishWords(p):false;})?'같은 음식이 이미 있어요':repeatsDailyMain(ids,products,c,index,p)?'같은 날 주재료 겹침':null;
  const pickedItem=picked?all.find(x=>x.p.id===picked):null;
  const pickedTotal=pickedItem?basketTotal(ids.map((id,i)=>i===index?pickedItem.p.id:id),products,conditions.owned,conditions.supply,conditions.people):null;
  const overBudget=pickedTotal!==null&&pickedTotal>conditions.budget;
