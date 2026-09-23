@@ -71,13 +71,10 @@ export function sectionStatus(f: ProfileFields, reviewed: Set<number>, saved: bo
 }
 
 export function ProfileProgress({ fields, reviewed, saved, onOpen }: { fields: ProfileFields; reviewed: Set<number>; saved: boolean; onOpen: (step: number) => void }) {
-  const { done, summary, percent } = sectionStatus(fields, reviewed, saved);
+  const { done, summary } = sectionStatus(fields, reviewed, saved);
   const missing = done.filter(d => !d).length;
   return <section className="profile-progress" aria-label="내 정보 완성도">
-    <div className="progress-head">
-      <div className="progress-ring" style={{ "--p": percent } as React.CSSProperties} role="img" aria-label={`완성도 ${percent}%`}><span>{percent}<small>%</small></span></div>
-      <div><span className="wizard-kicker">내 정보 · 완성도 {percent}%</span><h3>{percent === 100 ? "맞춤 추천 준비 완료!" : `${missing}개만 더 알려주세요`}</h3><p>{percent === 100 ? "카드를 눌러 언제든 바꿀 수 있어요" : "입력할수록 칼로리·탄단지 추천이 정확해져요"}</p></div>
-    </div>
+    <div className="progress-head"><div><span className="wizard-kicker">내 정보</span><h3>{missing ? `${missing}개만 더 알려주세요` : "카드를 눌러 언제든 바꿀 수 있어요"}</h3></div></div>
     <ul className="progress-sections">{steps.slice(0, sectionCount).map((s, i) => <li key={s.title}>
       <button type="button" className={`tone-${s.tone}${done[i] ? " is-done" : ""}`} onClick={() => onOpen(i)} aria-label={`${s.title} · ${done[i] ? `${summary[i]} · 수정하기` : "입력하기"}`}>
         <span className="section-icon"><ProfileIcon name={s.icon} />{done[i] && <i className="section-check"><svg viewBox="0 0 12 12" width="9" height="9" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m2.8 6.2 2.1 2.1 4.3-4.6" /></svg></i>}</span>
@@ -85,12 +82,15 @@ export function ProfileProgress({ fields, reviewed, saved, onOpen }: { fields: P
         {done[i] ? <span className="section-chevron" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="m9.5 6 6 6-6 6" /></svg></span> : <span className="section-state" aria-hidden="true">입력하기</span>}
       </button>
     </li>)}</ul>
-    <button type="button" className="wizard-next progress-cta" onClick={() => onOpen(missing ? done.findIndex(d => !d) : sectionCount)}>{missing ? `남은 ${missing}개 항목 입력하기` : "칼로리·탄단지 결과 보기"}</button>
+    {missing > 0 && <button type="button" className="wizard-next progress-cta" onClick={() => onOpen(done.findIndex(d => !d))}>남은 {missing}개 입력하기</button>}
   </section>;
 }
 
-export function ProfileWizardModal({ step, direction, fields, userId, saving, error, onStep, onChange, onReviewed, onClose, onSave }: {
-  step: number | null; direction: 1 | -1; fields: ProfileFields; userId?: string; saving: boolean; error: string;
+// 처음 입력할 땐 필수 4단계(기본 정보·키·체중·활동량·목표)만 거쳐 바로 결과로 — 식사·칼로리·못 먹는 재료는 나중에.
+const QUICK_SKIP = new Set([4, 5, 6]);
+
+export function ProfileWizardModal({ step, direction, fields, userId, saving, error, quick = false, onStep, onChange, onReviewed, onClose, onSave }: {
+  step: number | null; direction: 1 | -1; fields: ProfileFields; userId?: string; saving: boolean; error: string; quick?: boolean;
   onStep: (step: number) => void; onChange: (patch: Partial<ProfileFields>) => void; onReviewed: (step: number) => void; onClose: () => void; onSave: () => void;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
@@ -126,14 +126,16 @@ export function ProfileWizardModal({ step, direction, fields, userId, saving, er
   const shown = target ?? plan?.target ?? null;
   const shownMeals = shown?.mealCalories ?? (shown ? splitCalories(shown.calories, mealCount) : []);
   const { diet } = fields;
-  const next = () => { onReviewed(current); onStep(current + 1); };
+  const move = (from: number, delta: 1 | -1) => { let n = from + delta; while (quick && QUICK_SKIP.has(n)) n += delta; return n; };
+  const next = () => { onReviewed(current); onStep(move(current, 1)); };
+  const visibleSteps = steps.map((_, i) => i).filter(i => !quick || !QUICK_SKIP.has(i));
 
   return <dialog ref={dialog} className="profile-wizard" aria-labelledby={titleId} onCancel={e => { e.preventDefault(); onClose(); }} onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
     {open && <div className="wizard-sheet">
       <header className="wizard-head">
-        <div className="wizard-head-row"><span className="wizard-kicker">{current + 1} / {steps.length} · {steps[current].title}</span><button type="button" className="wizard-close" aria-label="닫기" onClick={onClose}>✕</button></div>
+        <div className="wizard-head-row"><span className="wizard-kicker">{visibleSteps.indexOf(current) + 1} / {visibleSteps.length} · {steps[current].title}</span><button type="button" className="wizard-close" aria-label="닫기" onClick={onClose}>✕</button></div>
         <h3 id={titleId}>{steps[current].question}</h3>
-        <div className="wizard-dots" aria-hidden="true">{steps.map((s, i) => <button type="button" tabIndex={-1} key={s.title} className={i === current ? "is-current" : i < current ? "is-past" : undefined} onClick={() => onStep(i)} />)}</div>
+        <div className="wizard-dots" aria-hidden="true">{visibleSteps.map(i => <button type="button" tabIndex={-1} key={steps[i].title} className={i === current ? "is-current" : i < current ? "is-past" : undefined} onClick={() => onStep(i)} />)}</div>
       </header>
 
       <div key={current} className={`wizard-step ${direction === 1 ? "from-right" : "from-left"}`}>
@@ -217,7 +219,7 @@ export function ProfileWizardModal({ step, direction, fields, userId, saving, er
 
       {error && <p className="auth-error" role="alert">{error}</p>}
       <footer className="wizard-actions">
-        {current > 0 && <button type="button" className="wizard-back" onClick={() => onStep(current - 1)}>이전</button>}
+        {current > 0 && <button type="button" className="wizard-back" onClick={() => onStep(move(current, -1))}>이전</button>}
         {current < steps.length - 1
           ? <button type="button" className="wizard-next" disabled={!ready} onClick={next}>{current === 6 && !diet.excluded.length ? "없어요, 다음" : "다음"}</button>
           : <button type="button" className="wizard-next" disabled={!ready || saving} onClick={onSave}>{saving ? "저장하는 중…" : userId ? "저장하고 완료" : "로그인하고 저장하기"}</button>}

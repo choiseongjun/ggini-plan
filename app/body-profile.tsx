@@ -44,6 +44,7 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
   const [custom, setCustom] = useState<CustomTarget | null>(null);
   const { stats: intakeStats } = useIntakeStats(userId);
   const [wizardStep, setWizardStep] = useState<number | null>(null);
+  const [quickWizard, setQuickWizard] = useState(false);
   const [direction, setDirection] = useState<1 | -1>(1);
   const [reviewed, setReviewed] = useState<Set<number>>(() => new Set());
   const [dirty, setDirty] = useState(false);
@@ -66,7 +67,7 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
     }
     setDirty(true); setMessage("");
   }
-  function openWizard(step: number) { setDirection(1); setError(""); setWizardStep(step); }
+  function openWizard(step: number, quick = false) { setDirection(1); setError(""); setQuickWizard(quick); setWizardStep(step); }
   function stepWizard(step: number) { setDirection(step > (wizardStep ?? 0) ? 1 : -1); setWizardStep(step); }
   // Saves the modal's answers; the goal (if any) recomputes the calorie/macro target from the latest body values.
   function wizardResult(): WizardResult | null {
@@ -88,9 +89,11 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
   const showPlan = Boolean(recommendation);
   function focusProfile() {
     const missing = sectionStatus(fields, reviewed, savedProfile).done.findIndex(d => !d);
-    openWizard(missing === -1 ? 0 : missing);
+    // 아직 정보가 없으면 필수 단계만 빠르게.
+    openWizard(missing === -1 ? 0 : missing, !savedProfile);
   }
   const calories = profile ? calorieEstimate(profile) : null;
+  const hasInfo = savedProfile || Boolean(profile);
   const { body: bodyInfo, target: activeTarget } = readFields({ sex, age, height, weight, activity, meals, pregnancy, diet, goal, custom });
   const shownTarget = activeTarget ?? nutritionTarget;
   const shownMeals = shownTarget ? shownTarget.mealCalories ?? splitCalories(shownTarget.calories, Number(meals)) : [];
@@ -116,7 +119,6 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
         let draft: WizardResult | null = null;
         try { draft = JSON.parse(sessionStorage.getItem(draftKey) ?? "null"); sessionStorage.removeItem(draftKey); } catch {}
         if (draft && parseBodyProfile(draft.profile)) void completeWizard(draft);
-        else setWizardStep(0);
       }
       if (data.profile) {
         setSavedProfile(true);
@@ -201,11 +203,12 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
       <dl className="energy-stats"><div><dt>기초대사량</dt><dd>{number(calories.resting)}<small>kcal</small></dd></div><div><dt>유지 칼로리</dt><dd>{number(calories.daily)}<small>kcal</small></dd></div>{bodyInfo && <div><dt>BMI</dt><dd>{bodyInfo.value}<small>{bodyInfo.label}</small></dd></div>}</dl>
     </section>
     : <section className="energy-card is-empty" aria-label="하루 에너지"><div className="energy-buddy" aria-hidden="true"><RiceBuddy/></div><div><strong>{pregnancy ? "임신·수유 중에는 자동 계산을 쉬어요" : "내 하루 칼로리를 알아볼까요?"}</strong><p>{pregnancy ? "개인별 영양 상담을 권해요. 취향은 메뉴 추천에 반영돼요." : "키·체중·활동량을 알려주면 칼로리와 탄단지를 바로 계산해요."}</p>{!pregnancy && <button type="button" className="wizard-next" onClick={focusProfile}>1분 만에 입력하기</button>}</div></section>}
-    {userId && <RecordCard stats={intakeStats}/>}
-    {userId && <WeeklyReportCard stats={intakeStats}/>}
-    {!loading && !loadError && <WeekAnalysis userId={userId} profile={profile} target={shownTarget} onOpenInfo={focusProfile}/>}
-    {!loading && !loadError && <ProfileProgress fields={fields} reviewed={reviewed} saved={savedProfile} onOpen={openWizard}/>}
-    <ProfileWizardModal step={wizardStep} direction={direction} fields={fields} userId={userId} saving={saving} error={wizardStep === null ? "" : error}
+    {/* 정보가 없을 땐 위의 '1분 만에 입력하기' 카드 하나만 — 선택지를 늘리지 않는다. */}
+    {hasInfo && userId && <RecordCard stats={intakeStats}/>}
+    {hasInfo && userId && <WeeklyReportCard stats={intakeStats}/>}
+    {hasInfo && !loading && !loadError && <WeekAnalysis userId={userId} profile={profile} target={shownTarget} onOpenInfo={focusProfile}/>}
+    {hasInfo && !loading && !loadError && <ProfileProgress fields={fields} reviewed={reviewed} saved={savedProfile} onOpen={openWizard}/>}
+    <ProfileWizardModal step={wizardStep} direction={direction} quick={quickWizard} fields={fields} userId={userId} saving={saving} error={wizardStep === null ? "" : error}
       onStep={stepWizard} onChange={changeFields} onReviewed={step => setReviewed(r => new Set(r).add(step))} onClose={() => void closeWizard()}
       onSave={() => { const result = wizardResult(); if (!result) return; void completeWizard(result).then(ok => { if (ok) setWizardStep(null); }); }}/>
     {message && wizardStep === null && <p className="body-success" role="status">{message}</p>}
@@ -283,7 +286,7 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
         {diet.fasting !== "none" && <p className="body-note">혈당을 낮추는 약을 복용 중이라면 단식 전에 의료진과 상의해 주세요. <a href="https://www.niddk.nih.gov/health-information/professionals/diabetes-discoveries-practice/fasting-safely-with-diabetes" target="_blank" rel="noopener noreferrer">안내 보기 ↗</a></p>}
       </> : <p className="meal-notice">{pregnancy ? "임신·수유 중에는 자동 식단 추천 대신 개인별 영양 상담을 권해요." : "신체 정보를 확인해 주세요. 선택한 조건에 맞는 식단이 있어야 추천할 수 있어요."}</p>}
     </section>}
-    <nav className="profile-links" aria-label="바로가기"><Link href="/calendar"><b>식단 달력</b><span>홈에서 고른 식단을 날짜별로</span></Link><Link href="/"><b>이번 주 장보기 추천</b><span>내 칼로리·취향이 반영돼요</span></Link></nav>
-    <details className="calorie-method"><summary>칼로리는 어떻게 계산하나요?</summary><p>Mifflin–St Jeor 식으로 휴식 에너지 소비량을 추정하고, 선택한 활동계수(1.2~1.725)를 곱해 하루 유지 필요량을 계산해요. 실제 섭취 기록의 평균이나 측정된 대사량은 아니에요.</p><p>기초대사량은 최소 섭취 칼로리가 아니에요. 만 19~78세 성인용 참고값이며 임신·수유 중에는 계산하지 않아요. 한 끼 평균은 간식을 포함한 하루 총량을 식사 횟수로 나눈 값이에요.</p><a href="https://pubmed.ncbi.nlm.nih.gov/2305711/" target="_blank" rel="noopener noreferrer">계산식 연구 보기 ↗</a></details>
+    {hasInfo && <nav className="profile-links" aria-label="바로가기"><Link href="/calendar"><b>식단 달력</b><span>홈에서 고른 식단을 날짜별로</span></Link><Link href="/"><b>이번 주 장보기 추천</b><span>내 칼로리·취향이 반영돼요</span></Link></nav>}
+    {hasInfo && <details className="calorie-method"><summary>칼로리는 어떻게 계산하나요?</summary><p>Mifflin–St Jeor 식으로 휴식 에너지 소비량을 추정하고, 선택한 활동계수(1.2~1.725)를 곱해 하루 유지 필요량을 계산해요. 실제 섭취 기록의 평균이나 측정된 대사량은 아니에요.</p><p>기초대사량은 최소 섭취 칼로리가 아니에요. 만 19~78세 성인용 참고값이며 임신·수유 중에는 계산하지 않아요. 한 끼 평균은 간식을 포함한 하루 총량을 식사 횟수로 나눈 값이에요.</p><a href="https://pubmed.ncbi.nlm.nih.gov/2305711/" target="_blank" rel="noopener noreferrer">계산식 연구 보기 ↗</a></details>}
   </>;
 }
