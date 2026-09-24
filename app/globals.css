@@ -127,3 +127,9 @@ body{background:#fff9f4;color:var(--ink)}
 .food-thumb{overflow:hidden;display:grid;place-items:center;flex:none}.food-thumb img{display:block;width:100%;height:100%;object-fit:cover}
 
 .bottom-nav:has(.hotdeal-nav){grid-template-columns:repeat(6,minmax(0,1fr))}.bottom-nav .hotdeal-nav{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;text-decoration:none;color:#b75029;font-size:10px;font-weight:700;min-width:0}
+
+.beta-banner{position:sticky;top:0;z-index:30;flex:none;display:flex;align-items:flex-start;gap:10px;padding:10px 12px 10px 16px;background:#fff4dc;border-bottom:1px solid #f0dcae;color:#6b4a14}
+.beta-banner p{margin:0;flex:1;font-size:12.5px;line-height:1.55}
+.beta-banner strong{font-weight:800}
+.beta-banner button{flex:none;display:grid;place-items:center;width:28px;height:28px;margin-top:-2px;border:0;border-radius:50%;background:transparent;color:#8a6424}
+.beta-banner button:hover{background:#f6e6c2}

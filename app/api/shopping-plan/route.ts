@@ -17,7 +17,7 @@ async function personalizedCatalog(userId?:string){
  // 프로필 제외 재료로 걸러진 목록을 따로 통째로 보내지 않는다(같은 메뉴 수백 개가 두 번 가서 응답이 13MB였다).
  // 전체 목록 한 번 + 걸러진 메뉴 id만 보내고, 제외 재료는 추천 조건에서 다시 적용된다.
  const visible=new Set(filtered.products.map(p=>p.id));
- return {personalization:filtered.personalization,products:base,filtered:filtered.products,profileHiddenIds:base.filter(p=>!visible.has(p.id)).map(p=>p.id),excluded:diet.excluded};
+ return {personalization:filtered.personalization,products:base,filtered:filtered.products,profileHiddenIds:base.filter(p=>!visible.has(p.id)).map(p=>p.id),excluded:diet.excluded,health:diet.health??[]};
 }
 export const runtime='nodejs';
 export async function PATCH(request:NextRequest){
@@ -46,7 +46,8 @@ export async function GET(request:NextRequest){
   const preferences=user?(await getPool().query('SELECT conditions FROM shopping_preferences WHERE user_id=$1',[user.id])).rows[0]?.conditions:null;
   const plan=user?(await getPool().query('SELECT conditions,meal_ids AS "mealIds" FROM shopping_plans WHERE user_id=$1 ORDER BY id DESC LIMIT 1',[user.id])).rows[0]:null;
   const catalog=await personalizedCatalog(user?.id);
-  return json({personalization:catalog.personalization,products:catalog.products,profileHiddenIds:catalog.profileHiddenIds,excluded:catalog.excluded,preferences:preferences??null,plan:plan??null,resetAt:resetAt??null});
+  // 메뉴 전체(수 MB)는 보내지 않는다 — 추천·후보 계산은 /api/shopping-plan/engine이 서버에서 한다.
+  return json({personalization:catalog.personalization,excluded:catalog.excluded,preferences:preferences??null,plan:plan??null,resetAt:resetAt??null});
  }catch{return authFailure('장보기 식단을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.',503);}
 }
 export async function PUT(request:NextRequest){

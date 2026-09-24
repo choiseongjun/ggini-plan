@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { activities, calorieEstimate, parseBodyProfile, type BodyProfile } from "../lib/body-profile";
 import { defaultDiet, dietStyles, excludedFoods, excludedFoodGroups, parseDiet, type recommendMeals, type DietPreferences } from "../lib/meal-plan";
+import { healthFlags, type HealthFlag } from "../lib/today-context";
 import { parseNutritionTarget, type NutritionTarget } from "../lib/nutrition-target";
 import { RiceBuddy } from "./rice-buddy";
 import { AppLoading } from "./app-loading";
@@ -254,6 +255,9 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
           <div className="diet-choices">{Object.entries(dietStyles).map(([key,label]) => <button type="button" key={key} aria-pressed={diet.style === key} onClick={() => setDiet({...diet,style:key as DietPreferences["style"]})}>{label}</button>)}</div>
           <label>식사 시간 패턴<select value={diet.fasting} onChange={e => setDiet({...diet,fasting:e.target.value as DietPreferences["fasting"]})}><option value="none">일반 식사</option><option value="14:10">간헐적 단식 14:10 · 10시간 내 식사</option><option value="16:8">간헐적 단식 16:8 · 8시간 내 식사</option></select></label>
           <label>첫 끼 시간<select value={diet.start} onChange={e => setDiet({...diet,start:Number(e.target.value)})}>{Array.from({length:24},(_,h)=><option key={h} value={h}>{String(h).padStart(2,"0")}:00</option>)}</select></label>
+          <span className="diet-label">관리 중인 건강 상태 (선택)</span>
+          <div className="diet-choices">{(Object.keys(healthFlags) as HealthFlag[]).map(h => <button type="button" key={h} aria-pressed={(diet.health ?? []).includes(h)} onClick={() => setDiet({ ...diet, health: ((h: HealthFlag) => (diet.health ?? []).includes(h) ? (diet.health ?? []).filter(x => x !== h) : [...(diet.health ?? []), h])(h) })}>{healthFlags[h].label}</button>)}</div>
+          <p className="body-note">고르면 {(diet.health ?? []).length ? (diet.health ?? []).map(h => healthFlags[h].description).join(", ") : "해당하는 메뉴를 덜 추천해요"}. 진단·치료를 대신하지 않아요.</p>
           <span className="diet-label">추천에서 빼고 싶은 재료</span>
           <p className="body-note">여러 개 선택할 수 있어요. 현재 {diet.excluded.length}개 선택</p>
           {diet.excluded.length>0 && <button type="button" className="text-link" onClick={()=>setDiet({...diet,excluded:[]})}>제외 선택 초기화</button>}

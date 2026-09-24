@@ -22,12 +22,14 @@ import {SharePlanButton} from './share-plan-button';
 import {type DashboardData} from '../lib/dashboard';
 import { Checkbox } from "./components/checkbox";
 import { useLoadingTask } from "./app-loading";
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {PlanEngineContext,localEngine,remoteEngine} from './plan-engine';
 import Link from 'next/link';
 import type {personalizeProducts} from '../lib/shopping-personalization';
+import {healthFlags,type TodayContext} from '../lib/today-context';
 import { ProductThumb } from './product-thumb';
 import {MealSourceBadge,RecipeProductPreview} from './meal-source';
-import { MAX_PLAN_DAYS, mealFamily, swapReasons, type SwapReason, basket, purchaseBasket, basketTotal, validMealIds, slotCandidates, mealSchedule, slotLabels, initialConditions, parseConditions, swapMeal, type MealSlot, type PlanConditions, type PlanProduct } from '../lib/shopping-plan';
+import { MAX_PLAN_DAYS, mealFamily, swapReasons, type SwapReason, basket, purchaseBasket, basketTotal, validMealIds, slotCandidates, mealSchedule, slotLabels, initialConditions, parseConditions,  type MealSlot, type PlanConditions, type PlanProduct } from '../lib/shopping-plan';
 import './shopping-planner.css';
 import './planner-onboarding.css';
 import {shoppingBudgetGuide} from '../lib/shopping-budget';
@@ -62,6 +64,17 @@ const planTtl=10*60_000;
 function PersonalizationSummary({personalization}:{personalization:NonNullable<ReturnType<typeof personalizeProducts>['personalization']>}){
  return <p className="planner-profile-summary">{personalization.blocked?'현재 신체 정보에서는 자동 맞춤 추천을 제공하지 않아요.':personalization.hasProfile?<>내 정보가 기본으로 반영돼요 · 하루 약 {personalization.dailyCalories?.toLocaleString()} kcal, 한 끼 약 {personalization.perMealCalories} kcal 기준</>:<Link href="/profile#profile-settings">신체 정보를 입력하면 내 필요 열량에 맞춰 추천해요 →</Link>}</p>;
 }
+// 추천이 '지금의 나'를 어떻게 반영했는지 한 줄로 알려 준다. 이유가 보여야 믿고, 틀렸으면 바로잡을 수 있다.
+function todayReason(today:TodayContext|null){
+ if(!today)return null;
+ const parts:string[]=[];
+ if(today.eaten.meals>0)parts.push(`오늘 먹은 ${today.eaten.kcal.toLocaleString()}kcal·나트륨 ${today.eaten.sodium.toLocaleString()}mg을 빼고 남은 끼니를 골랐어요`);
+ if(today.recent.length)parts.push('최근 3일 동안 먹은 메뉴는 앞쪽 날짜에서 피했어요');
+ if(today.health.length)parts.push(`${today.health.map(h=>healthFlags[h].label).join('·')}에 맞춰 ${today.health.map(h=>h==='glucose'?'탄수화물':'나트륨').join('·')}이 적은 메뉴를 우선했어요`);
+ return parts.length?parts.join(' · ')+'.':null;
+}
+// 추천마다 조합을 조금씩 바꾸는 seed.
+const newSeed=()=>Math.floor(Math.random()*2**31);
 function encodeDraft(conditions:PlanConditions,mealIds:string[]){return JSON.stringify({conditions,mealIds,savedAt:Date.now()});}
 export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:string;onLogin:()=>void;mode?:'plan'|'cart'|'settings';dashboard?:DashboardData|null}){
  const locale=usePlannerLocale();
@@ -95,6 +108,13 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
  const progress=useShoppingProgress(userId,'products');
  const intake=useFoodIntake(mode==='settings'?undefined:userId);
  const [products,setProducts]=useState<PlanProduct[]>([]),[baseConditions,setConditions]=useState<PlanConditions>(defaultConditions);
+ // 한국판: products는 '지금 화면이 알고 있는 메뉴'(식단·후보)뿐이고 추천 계산은 서버 엔진이 한다.
+ // 대만판: 전체 목록을 받아 기기에서 계산한다.
+ const [catalogReady,setCatalogReady]=useState(false);
+ const learn=useCallback((list:PlanProduct[])=>{if(list.length)setProducts(prev=>{const byId=new Map(prev.map(p=>[p.id,p]));for(const p of list)byId.set(p.id,p);return [...byId.values()];});},[]);
+ const remote=useMemo(()=>remoteEngine(learn),[learn]);
+ const local=useMemo(()=>localEngine(products),[products]);
+ const engine=locale.isTaiwan?local:remote;
  const [automaticBudget,setAutomaticBudget]=useState(false);
  const budgetConditions:PlanConditions={...baseConditions,supply:Object.fromEntries(Object.values(progress.stock).map(i=>[i.id,i.owned+i.ordered]))};
  const [ids,setIds]=useState<string[]>([]),[loading,setLoading]=useState(true),[busy,setBusy]=useState(false);
@@ -133,20 +153,21 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   Promise.resolve().then(()=>{setBusy(true);invalidateJson(endpoint);return fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({conditions:c,mealIds:pending.mealIds})});}).then(async r=>{
    const d=await r.json();if(!r.ok)throw new Error(d.error);
    sessionStorage.removeItem('ggini-pending-adoption');
+   await remote.products(pending.mealIds);
    localStorage.setItem(draftKey,encodeDraft(c,pending.mealIds));setConditions(c);setIds(pending.mealIds);
    setMessage('골라둔 식단을 계정에 저장했어요. 준비한 뒤 먹었어요를 눌러 식비와 영양 기록을 쌓아 보세요.');
   }).catch(e=>setError(e instanceof Error?e.message:'선택한 식단을 저장하지 못했어요. 이대로 먹기를 다시 눌러 주세요.')).finally(()=>{setBusy(false);adopting.current=false;});
- },[userId,locale.isTaiwan,loading,endpoint,draftKey]);
+ },[userId,locale.isTaiwan,loading,endpoint,draftKey,remote]);
  useEffect(()=>{
   const controller=new AbortController();
   // Revisiting 홈 reuses this session's copy instead of re-downloading the catalog behind a loader.
   // 저장된 식단이 있을 때만 전체 화면 로딩을 띄운다. 첫 화면(버튼 하나)은 데이터 없이도 보이므로 뒤에서 받는다.
   const hasDraft=(()=>{try{const d=JSON.parse(localStorage.getItem(draftKey)??sessionStorage.getItem(draftKey)??'null');return Array.isArray(d?.mealIds)&&d.mealIds.some(Boolean);}catch{return false;}})();
   const finishLoading=hasFreshJson(planKey,planTtl)||(mode==='plan'&&!hasDraft)?()=>{}:startLoading('나에게 맞는 장보기를 준비하고 있어요');
-  cachedJson(endpoint,{key:planKey,ttl:planTtl}).then(d=>{
+  cachedJson(endpoint,{key:planKey,ttl:planTtl}).then(async d=>{
    if(controller.signal.aborted)return;
-   const catalog=d.baseProducts??d.products,defaults=d.excluded??[];
-   setProducts(catalog);setProfileExcluded(defaults);setPersonalization(d.personalization);setError('');setIds([]);
+   const catalog:PlanProduct[]=d.baseProducts??d.products??[],defaults=d.excluded??[];
+   if(locale.isTaiwan)setProducts(catalog);setCatalogReady(locale.isTaiwan?catalog.length>0:true);setProfileExcluded(defaults);setPersonalization(d.personalization);setError('');setIds([]);
    const saved=parseConditions(d.preferences);setAutomaticBudget(!saved);setConditions(resolveShoppingExclusions({... (saved??defaultConditions),goal:saved?.goal??'maintain'},defaults));
    try{
     const guestKey='kkiniplan-shopping-draft-v2-guest'+locale.storageSuffix;
@@ -159,11 +180,11 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
      if(guest&&parseConditions(JSON.parse(guest)?.conditions)){localStorage.setItem(draftKey,guest);localStorage.removeItem(guestKey);sessionStorage.removeItem(guestKey);}
     }
     const draft=JSON.parse(localStorage.getItem(draftKey)??sessionStorage.getItem(draftKey)??'null')??d.plan;const c=parseConditions(draft?.conditions);
-    if(c){setAutomaticBudget(false);const resolved=resolveShoppingExclusions({...c,swapPreferences:saved?.swapPreferences??c.swapPreferences,mealKinds:saved?.mealKinds??c.mealKinds,budgetMode:saved?.budgetMode??c.budgetMode,goal:saved?.goal??c.goal??'maintain'},defaults);resolved.startDate??=locale.today();setConditions(resolved);if(Array.isArray(draft.mealIds)&&validMealIds(draft.mealIds,catalog,resolved)){setIds(draft.mealIds);localStorage.setItem(draftKey,JSON.stringify({conditions:resolved,mealIds:draft.mealIds,savedAt:Date.now()}));}}
+    if(c){setAutomaticBudget(false);const resolved:PlanConditions=resolveShoppingExclusions({...c,swapPreferences:saved?.swapPreferences??c.swapPreferences,mealKinds:saved?.mealKinds??c.mealKinds,budgetMode:saved?.budgetMode??c.budgetMode,goal:saved?.goal??c.goal??'maintain'},defaults);resolved.startDate??=locale.today();setConditions(resolved);if(Array.isArray(draft.mealIds)&&draft.mealIds.length){const check=locale.isTaiwan?{valid:validMealIds(draft.mealIds,catalog,resolved)}:await remote.products(draft.mealIds,resolved);if(!controller.signal.aborted&&check.valid){setIds(draft.mealIds);localStorage.setItem(draftKey,JSON.stringify({conditions:resolved,mealIds:draft.mealIds,savedAt:Date.now()}));}}}
    }catch{/* An expired draft should not stop browsing. */}
   }).catch(e=>{if(!controller.signal.aborted)setError(e.message);}).finally(()=>{if(!controller.signal.aborted)setLoading(false);finishLoading();});
   return()=>{controller.abort();finishLoading();};
- },[retry,draftKey,locale,endpoint,planKey,defaultConditions,startLoading,mode]);
+ },[retry,draftKey,locale,endpoint,planKey,defaultConditions,startLoading,mode,remote]);
  function remember(c:PlanConditions,mealIds:string[]){try{localStorage.setItem(draftKey,encodeDraft(c,mealIds));}catch{/* Saving to an account remains available. */}}
  function updatePreferences(patch:Partial<Pick<PlanConditions,'mealKinds'|'goal'|'budgetMode'|'swapPreferences'>>){
   update(patch);remember({...conditions,...patch},[]);
@@ -182,6 +203,11 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   setBusy(true);setIds([]);remember(c,[]);
   const finishLoading=startLoading('입맛에 맞는 메뉴를 찾고 있어요');
   try{
+   let next:string[]|null,freshToday:TodayContext|null=null,guide:ReturnType<typeof shoppingBudgetGuide>|null=null;
+   if(!locale.isTaiwan){
+    const result=await remote.recommend(c,previousRecommendation.current,newSeed());
+    next=result.ids;freshToday=result.today;if(result.personalization)setPersonalization(result.personalization);
+   }else{
    const response=await fetch(endpoint,{cache:'no-store'});
    const data=await response.json();if(!response.ok)throw new Error(data.error);
    primeJson(planKey,data);
@@ -192,17 +218,18 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    if(availabilityMessage)throw new Error(availabilityMessage);
    const missing=mealSchedule(c).find((_,i)=>!slotCandidates(fresh,c,i).length);
    if(missing)throw new Error(`${slotLabels[missing.slot]}에 맞는 등록 상품이 부족해요. 해당 끼니를 빼거나 음식 종류·식단 목표·조리 방식·제외 재료를 조정해 주세요.`);
-   const {guide,next}=await new Promise<{guide:ReturnType<typeof shoppingBudgetGuide>;next:string[]|null}>((resolve,reject)=>{
+   ({guide,next}=await new Promise<{guide:ReturnType<typeof shoppingBudgetGuide>;next:string[]|null}>((resolve,reject)=>{
     const worker=new Worker(new URL('./shopping-recommend.worker.ts',import.meta.url));
     recommendationWorker.current=worker;
     const finish=()=>{worker.terminate();if(recommendationWorker.current===worker)recommendationWorker.current=null;};
     worker.onmessage=event=>{finish();if(event.data.error)reject(new Error(event.data.error));else resolve(event.data);};
     worker.onerror=()=>{finish();reject(new Error('추천을 계산하지 못했어요. 다시 시도해 주세요.'));};
-    worker.postMessage({products:fresh,conditions:c,previous:previousRecommendation.current,seed:Math.floor(Math.random()*2**31)});
-   });
+    worker.postMessage({products:fresh,conditions:c,previous:previousRecommendation.current,seed:Math.floor(Math.random()*2**31),today:null});
+   }));
+   }
    if(guide&&!guide.approximate&&guide.minimum!==null&&c.budget<guide.minimum)throw new Error(`선택한 ${c.meals}끼를 준비하려면 최소 ${won(guide.minimum)}이 필요해요. 배송비는 별도예요.`);
    if(!next)throw new Error('현재 조건과 예산으로는 중복 없는 식단을 채울 수 없어요. 기간·끼니 수를 줄이거나 음식 종류·예산·조리 방식을 조정해 주세요.');
-   if(!locale.isTaiwan&&mode!=='settings')trackPlanner('generated');setConditions(c);setIds(next);remember(c,next);setMessage(`${next.length}끼를 서로 다른 ${next.length}종 메뉴로 구성했어요. 같은 음식은 중복으로 넣지 않았어요.`);setResultFocus(n=>n+1);
+   if(!locale.isTaiwan&&mode!=='settings')trackPlanner('generated');setConditions(c);setIds(next);remember(c,next);setMessage(todayReason(freshToday)??`${next.length}끼를 서로 다른 ${next.length}종 메뉴로 구성했어요. 같은 음식은 중복으로 넣지 않았어요.`);setResultFocus(n=>n+1);
   }catch(e){setError(e instanceof Error?e.message:'추천을 불러오지 못했어요.');}finally{setBusy(false);finishLoading();}
  }
  function startBuilding(){
@@ -210,14 +237,18 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   if(!c){setError('챙길 끼니를 하나 이상 고르고 예산을 1,000~1,000,000원으로 입력해 주세요.');return;}
   setMessage('');setError('');setConditions(c);setIds(Array(c.meals).fill(''));setBuilding(true);remember(c,[]);
  }
- function chooseMeal(index:number,id:string){
+ async function chooseMeal(index:number,id:string){
   const c={...conditions,mealMode:'mixed' as const,cooking:'all' as const};
-  if(!slotCandidates(products,c,index).some(p=>p.id===id))return;
+  // 목록에서 고른 메뉴는 요약 정보뿐일 수 있다 — 재료까지 든 전체 정보를 받아 온 뒤 검사한다.
+  let choice=products.find(p=>p.id===id);
+  if(!choice||(choice.recipe&&!choice.recipe.ingredients.length)){try{choice=(await engine.products([id])).products.find(p=>p.id===id);}catch{choice=undefined;}}
+  if(!choice){setError('메뉴 정보를 불러오지 못했어요. 다시 시도해 주세요.');return;}
+  const known=[...products.filter(p=>p.id!==id),choice];
+  if(!slotCandidates([choice],c,index).length)return;
   if(ids.some((existing,i)=>i!==index&&cookingDishId(existing)===cookingDishId(id))){setError('이미 다른 끼니에 있는 메뉴예요. 다른 음식을 골라 주세요.');return;}
-  const choice=products.find(p=>p.id===id);
-  if(choice&&repeatsDailyMain(ids,products,c,index,choice)){setError('같은 날 다른 끼니와 주재료가 겹쳐요. 다른 주재료의 메뉴를 골라 주세요.');return;}
+  if(repeatsDailyMain(ids,known,c,index,choice)){setError('같은 날 다른 끼니와 주재료가 겹쳐요. 다른 주재료의 메뉴를 골라 주세요.');return;}
   const next=ids.map((previous,i)=>i===index?id:previous);
-  if(basketTotal(next,products,c.owned,c.supply,c.people)>c.budget){setError('장보기 예산을 초과해요. 예산을 조정해 주세요.');return;}
+  if(basketTotal(next.filter(Boolean),known,c.owned,c.supply,c.people)>c.budget){setError('장보기 예산을 초과해요. 예산을 조정해 주세요.');return;}
   if(next[index]!==ids[index]&&!locale.isTaiwan)trackPlanner('swapped');setConditions(c);setIds(next);remember(c,next);setMessage('이 끼니를 바꾸고 겹치는 재료를 합쳐 구매 목록을 다시 계산했어요.');
  }
  async function resetCart(){
@@ -225,11 +256,12 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   const ok=await progress.reset(clean);
   if(ok){setIds([]);setConditions(clean);setConfirmReset(false);setError('');setMessage('추천 메뉴와 주문·보유 목록을 모두 초기화했어요. 새 식단을 추천받아 보세요.');}
  }
- function swap(index:number,reason?:SwapReason){
+ async function swap(index:number,reason?:SwapReason){
   const old=products.find(p=>p.id===ids[index]);if(!old)return;
   const swapPreferences=reason?[...(conditions.swapPreferences??[]).filter(f=>!(f.id===old.id&&f.reason===reason)),{id:old.id,family:mealFamily(old),reason,price:old.price/old.servings,minutes:old.recipe?.minutes??(old.category==='meal_kit'?20:5)}].slice(-50):conditions.swapPreferences;
   const c={...conditions,swapPreferences};
-  const next=swapMeal(ids,index,products,c,reason);
+  let next:string[]|null;
+  try{next=(await engine.swap(ids,index,c,reason)).ids;}catch(e){setError(e instanceof Error?e.message:'메뉴를 바꾸지 못했어요.');return;}
   if(reason){updatePreferences({swapPreferences});setIds(next??ids);remember(c,next??ids);}
   if(!next){setMessage(reason?`‘${swapReasons[reason]}’ 의견을 저장했어요. 현재 예산·제외 재료 안에서 이 이유에 맞게 바꿀 메뉴가 없어요.`:'예산과 제외 재료 조건에 맞는 다른 메뉴가 없어요.');return;}
   if(!locale.isTaiwan)trackPlanner('swapped');setIds(next);remember(c,next);setMessage(reason?`‘${swapReasons[reason]}’ 의견을 반영해 바꿨어요. 다음 추천에도 반영해요.`:'메뉴와 구매 수량을 함께 바꿨어요.');
@@ -257,7 +289,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   setBusy(true);setError('');setMessage('');
   try{const r=await fetch(endpoint+'?saved=1',{cache:'no-store'});const d=await r.json();if(!r.ok)throw new Error(d.error);if(!d.plan||!d.plan.mealIds?.length){setMessage('저장한 식단이 없거나 초기화된 상태예요. 새로 추천받아 주세요.');return;}
    const parsed=parseConditions({...d.plan.conditions,startDate:d.plan.conditions.startDate??locale.today(),supply:conditions.supply});if(!parsed)throw new Error('저장된 조건을 읽을 수 없어요.');const c=resolveShoppingExclusions(parsed,profileExcluded);setConditions(c);
-   const valid=Array.isArray(d.plan.mealIds)&&validMealIds(d.plan.mealIds,products,c)&&basketTotal(d.plan.mealIds,products,c.owned,c.supply,c.people)<=c.budget;
+   const valid=Array.isArray(d.plan.mealIds)&&Boolean((await engine.products(d.plan.mealIds,c)).valid);
    const next=valid?d.plan.mealIds:[];setIds(next);remember(c,next);setMessage(valid?'저장한 식단을 불러왔어요. 금액은 현재 등록 가격으로 계산했어요.':'상품 또는 가격이 바뀌었어요. 저장한 조건으로 다시 추천받아 주세요.');
   }catch(e){setError(e instanceof Error?e.message:'불러오지 못했어요.');}finally{setBusy(false);}
  }
@@ -269,7 +301,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
  const hasRecipes=mealRows.some(r=>r.product.recipe);
  const rows=purchases.map(r=>({...r,uses:mealRows.find(m=>m.product.id===r.product.id)?.uses??0})),total=rows.reduce((n,r)=>n+r.cost,0);
 
- return locale.render(<section onClickCapture={e=>{if(locale.isTaiwan)return;const a=(e.target as Element).closest('a');if(a&&products.some(p=>p.productUrl===a.href||p.recipe?.ingredients.some(i=>i.product.productUrl===a.href)))trackPlanner('seller');}} ref={plannerRef} id={mode==='settings'?'shopping-settings':undefined} className={`shopping-planner${mode==='plan'?' home-planner':''}${!ids.length?' planner-empty':''}`} aria-labelledby="planner-title">
+ return locale.render(<PlanEngineContext.Provider value={engine}><section onClickCapture={e=>{if(locale.isTaiwan)return;const a=(e.target as Element).closest('a');if(a&&products.some(p=>p.productUrl===a.href||p.recipe?.ingredients.some(i=>i.product.productUrl===a.href)))trackPlanner('seller');}} ref={plannerRef} id={mode==='settings'?'shopping-settings':undefined} className={`shopping-planner${mode==='plan'?' home-planner':''}${!ids.length?' planner-empty':''}`} aria-labelledby="planner-title">
   {mode==='cart'&&<section className="cart-reset" aria-label="장바구니 초기화">
    <button type="button" disabled={loading||busy||progress.busy||!progress.ready||(!ids.length&&!Object.values(progress.stock).some(i=>i.owned||i.ordered))} onClick={()=>setConfirmReset(true)}>모두 초기화</button>
    {confirmReset&&<div role="group" aria-label="장바구니 초기화 확인"><strong>추천 메뉴와 주문·보유 목록을 모두 비울까요?</strong><p>홈의 현재 추천 식단도 함께 비워요. 먹은 기록·식비 기록·예산과 취향·공유 링크는 유지돼요. 판매처의 실제 주문은 취소되지 않아요. 이 추천 밖에서 따로 관리하는 재료 목록과 함께 담은 장바구니는 별도예요.</p><button type="button" disabled={progress.busy} onClick={()=>setConfirmReset(false)}>취소</button><button type="button" disabled={progress.busy||!progress.ready} onClick={()=>void resetCart()}>{progress.busy?'초기화 중…':'확인, 모두 초기화'}</button></div>}
@@ -302,7 +334,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    <span className="home-start-kicker">내 건강에 맞는 먹거리</span>
    <h2 id="planner-title">이번 주 뭐 먹을지,<br/>한 번에 정해 드릴게요</h2>
    <p>{personalization?.hasProfile?'내 몸 정보와 목표에 맞춰 끼니별 메뉴·재료·영양을 준비해요.':'버튼 한 번이면 끼니별 메뉴와 재료, 영양까지 준비해요.'}</p>
-   <button type="button" className="primary-button home-start-cta" disabled={loading||busy||!progress.ready||!products.length} onClick={()=>void generate()}>{loading?'준비 중…':busy?'식단을 짜고 있어요…':'식단 추천받기'}</button>
+   <button type="button" className="primary-button home-start-cta" disabled={loading||busy||!progress.ready||!catalogReady} onClick={()=>void generate()}>{loading?'준비 중…':busy?'식단을 짜고 있어요…':'식단 추천받기'}</button>
    <button type="button" className="home-start-custom" disabled={loading||busy} onClick={()=>setShowSetup(true)}>조건 직접 정하기</button>
   </section>}
   {(mode!=='plan'||!ids.length)&&(mode!=='plan'||locale.isTaiwan||showSetup)&&<details ref={setupRef} tabIndex={-1} className="planner-controls" open={mode==='settings'||mode==='plan'}><summary>{ids.length?'조건 바꿔서 새로 추천받기':locale.isTaiwan?'내 예산으로 식단 준비하기':'조건 정해서 추천받기'}</summary>
@@ -363,13 +395,13 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    </fieldset>}
    </div>
    {!!conditions.swapPreferences?.length&&<p className="body-note">교체 의견 {conditions.swapPreferences.length}개 반영 중 <button type="button" disabled={busy} onClick={()=>updatePreferences({swapPreferences:[]})}>의견 초기화</button></p>}
-   <button className="primary-button" disabled={loading||busy||waitingForBudget||!progress.ready||(mode!=='settings'&&!products.length)}>{loading?'설정 불러오는 중…':waitingForBudget?'예산 계산 중…':busy?(mode==='settings'?'저장 중…':'추천 준비 중…'):mode==='settings'?'저장하고 내 정보로 추천받기':(locale.isTaiwan?'내 예산으로 추천받기 →':'내 몸에 맞는 식단 추천받기 →')}</button>
-   {mode==='plan'&&!locale.isTaiwan&&<button type="button" className="planner-restart" disabled={loading||busy||waitingForBudget||!progress.ready||!products.length} onClick={startBuilding}>🛠 직접 만들어서 담기</button>}
+   <button className="primary-button" disabled={loading||busy||waitingForBudget||!progress.ready||(mode!=='settings'&&!catalogReady)}>{loading?'설정 불러오는 중…':waitingForBudget?'예산 계산 중…':busy?(mode==='settings'?'저장 중…':'추천 준비 중…'):mode==='settings'?'저장하고 내 정보로 추천받기':(locale.isTaiwan?'내 예산으로 추천받기 →':'내 몸에 맞는 식단 추천받기 →')}</button>
+   {mode==='plan'&&!locale.isTaiwan&&<button type="button" className="planner-restart" disabled={loading||busy||waitingForBudget||!progress.ready||!catalogReady} onClick={startBuilding}>🛠 직접 만들어서 담기</button>}
   </form>}
   </details>}
-  {mode!=='settings'&&!loading&&!products.length&&<p>현재 추천할 수 있는 상품이 없어요. 판매 구성과 출처가 확인된 상품을 준비하고 있어요.</p>}
+  {mode!=='settings'&&!loading&&!catalogReady&&<p>현재 추천할 수 있는 상품이 없어요. 판매 구성과 출처가 확인된 상품을 준비하고 있어요.</p>}
   {error&&<p className="auth-error" role="alert">{error}</p>}
-  {mode!=='settings'&&!loading&&!products.length&&<button type="button" onClick={()=>{setLoading(true);setRetry(n=>n+1);}}>상품 다시 불러오기</button>}
+  {mode!=='settings'&&!loading&&!catalogReady&&<button type="button" onClick={()=>{setLoading(true);setRetry(n=>n+1);}}>상품 다시 불러오기</button>}
   {!locale.isTaiwan&&mode!=='settings'&&userId&&<button type="button" className="text-link" disabled={loading||busy||!progress.ready} onClick={restore}>저장한 식단 불러오기 →</button>}
   {/* 홈에서는 숨김: 식단 카드·장보기 가이드와 겹쳐 스크롤만 길어져요. 장보기 탭에서는 그대로 보여요. */}
   {mode!=='plan'&&!!ids.length&&idsComplete&&<details className="planner-result" open><summary>준비한 식단 전체 · 구매 목록 ({ids.length}끼)</summary>
@@ -405,5 +437,5 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    {key:'setup',icon:fabIcons.setup,label:'조건 바꾸기',disabled:busy||progress.busy,onClick:returnToSetup},
    {key:'save',icon:fabIcons.save,label:busy?'저장 중…':'이 식단 저장',primary:true,disabled:busy||loading||total>conditions.budget,onClick:()=>void save()},
   ]}/>}
- </section>);
+ </section></PlanEngineContext.Provider>);
 }

@@ -1,3 +1,4 @@
+import { isHealthFlag, type HealthFlag } from "./today-context";
 import type { CatalogItem } from "./catalog";
 import { excludedFoods, excludedFoodAliases, type ExcludedFood } from './excluded-foods';
 export { excludedFoods, excludedFoodGroups } from './excluded-foods';
@@ -5,13 +6,14 @@ import { calorieEstimate, type BodyProfile } from "./body-profile";
 import type { NutritionTarget } from "./nutrition-target";
 
 export const dietStyles = { balanced: "골고루 집밥", protein: "단백질 중심", plant: "식물성 식단", quick: "간편하게" } as const;
-export type DietPreferences = { style: keyof typeof dietStyles; fasting: "none" | "14:10" | "16:8"; start: number; excluded: (keyof typeof excludedFoods)[] };
+export type DietPreferences = { style: keyof typeof dietStyles; fasting: "none" | "14:10" | "16:8"; start: number; excluded: (keyof typeof excludedFoods)[]; health?: HealthFlag[] };
 export const defaultDiet: DietPreferences = { style: "balanced", fasting: "none", start: 8, excluded: [] };
 export function parseDiet(value: unknown): DietPreferences | null {
   if (!value || typeof value !== "object") return null;
   const p = value as Record<string, unknown>;
   if (typeof p.style !== "string" || !Object.hasOwn(dietStyles, p.style) || !["none", "14:10", "16:8"].includes(String(p.fasting)) || typeof p.start !== "number" || !Number.isInteger(p.start) || p.start < 0 || p.start > 23 || !Array.isArray(p.excluded) || p.excluded.length > Object.keys(excludedFoods).length || p.excluded.some(x => typeof x !== "string" || !Object.hasOwn(excludedFoods, x))) return null;
-  return { style: p.style as DietPreferences["style"], fasting: p.fasting as DietPreferences["fasting"], start: p.start, excluded: [...new Set(p.excluded)] };
+  const health = Array.isArray(p.health) ? [...new Set(p.health.filter(isHealthFlag))] : [];
+  return { style: p.style as DietPreferences["style"], fasting: p.fasting as DietPreferences["fasting"], start: p.start, excluded: [...new Set(p.excluded)], ...(health.length ? { health } : {}) };
 }
 // Representative values per 100 g (milk per 100 mL); recipes are estimates, not product labels.
 // Cereal: https://prod.danawa.com/info/?pcode=3230385 (30g: 113kcal, P1/C26/F0.5).

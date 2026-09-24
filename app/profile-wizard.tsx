@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef } from "react";
 import { activities, calorieEstimate, parseBodyProfile, type BodyProfile } from "../lib/body-profile";
 import { dietStyles, excludedFoods, excludedFoodGroups, type DietPreferences } from "../lib/meal-plan";
+import { healthFlags, type HealthFlag } from "../lib/today-context";
 import { bmi, bodyGoals, nutritionPlan, type BodyGoal } from "../lib/nutrition-plan";
 import type { NutritionTarget } from "../lib/nutrition-target";
 import { ProfileIcon, type ProfileIconName } from "./profile-icons";
@@ -194,6 +195,7 @@ export function ProfileWizardModal({ step, direction, fields, userId, saving, er
         </>}
 
         {current === 6 && <>
+          <div className="wizard-group" role="group" aria-label="관리 중인 건강 상태"><span className="wizard-label">관리 중인 게 있나요? (선택)</span><div className="wizard-options chips">{(Object.keys(healthFlags) as HealthFlag[]).map(h => <button type="button" key={h} aria-pressed={(diet.health ?? []).includes(h)} onClick={() => onChange({ diet: { ...diet, health: ((h: HealthFlag) => (diet.health ?? []).includes(h) ? (diet.health ?? []).filter(x => x !== h) : [...(diet.health ?? []), h])(h) } })}>{healthFlags[h].label}</button>)}</div></div>
           <p className="wizard-note">알레르기나 싫어하는 재료를 골라 주세요. 없으면 그냥 다음으로 넘어가요.</p>
           {excludedFoodGroups.map(group => <div key={group.label} className="wizard-group" role="group" aria-label={group.label}><span className="wizard-label">{group.label}</span><div className="wizard-options chips">{group.keys.map(key => <button type="button" key={key} aria-pressed={diet.excluded.includes(key)} onClick={() => onChange({ diet: { ...diet, excluded: diet.excluded.includes(key) ? diet.excluded.filter(x => x !== key) : [...diet.excluded, key] } })}>{excludedFoods[key]}</button>)}</div></div>)}
         </>}

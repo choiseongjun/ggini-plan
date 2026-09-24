@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import type {ReactNode} from 'react';
 import {RiceBuddy} from './rice-buddy';
+import {BetaBanner} from './beta-banner';
 import {usePlannerLocale} from './planner-locale';
 export type IconName = "home" | "bag" | "chart" | "user" | "users" | "chevron" | "arrow" | "check" | "spark" | "calendar" | "wallet" | "fire" | "close" | "edit" | "left";
 
@@ -39,4 +40,4 @@ export function AppShell({children,overlay}:{children:ReactNode;overlay?:ReactNo
       <div className="promo-footer"><span>© 끼니플랜</span><span>GOOD FOOD, GOOD HEALTH</span></div>
     </div></aside>
     <section className="app-side" aria-label="끼니플랜 앱"><div className="app-frame">
-{children}</div></section>{overlay}</main>);}
+{!locale.isTaiwan&&<BetaBanner/>}{children}</div></section>{overlay}</main>);}

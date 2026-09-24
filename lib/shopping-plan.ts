@@ -5,6 +5,7 @@ import type { CatalogItem } from './catalog';
 import {excludedFoods,type ExcludedFood} from './excluded-foods';
 import {allowsExcludedFoods} from './shopping-exclusions';
 import {mealRole} from './meal-role';
+import {SODIUM_DAILY,SODIUM_DAILY_PRESSURE,type TodayContext} from './today-context';
 export const swapReasons={taste:'취향 아님',effort:'조리 귀찮음',price:'너무 비쌈',repeat:'비슷한 걸 먹었음'} as const;
 // 조리 시간은 모든 레시피가 같은 고정값이라 '조리 귀찮음'으로는 가려낼 수 없다. 저장 형식은 호환을 위해 두고 화면에서만 뺀다.
 export const visibleSwapReasons=(['taste','price','repeat'] as const);
@@ -14,7 +15,7 @@ export function validSwapPreferences(value:unknown):value is SwapPreference[]{
  return Array.isArray(value)&&value.length<=50&&value.every(p=>p&&typeof p==='object'&&typeof p.id==='string'&&p.id.length>0&&p.id.length<=200&&typeof p.family==='string'&&p.family.length<=200&&typeof p.reason==='string'&&Object.hasOwn(swapReasons,p.reason)&&Number.isFinite(p.price)&&p.price>=0&&p.price<=10000000&&Number.isFinite(p.minutes)&&p.minutes>=0&&p.minutes<=1440);
 }
 
-export type PlanProduct = CatalogItem & { mealSlots?:MealSlot[]; servings: number; servingGrams?:number; servingNote: string; avoidanceText: string | null; personalizationScore?:number; servingCalories?:number|null; recipe?: {sideCount?:number;sides?:{name:string;steps:string[];minutes:number}[];assembly?:boolean;minutes:number;slots:MealSlot[];family:string;steps:string[];ingredients:{product:PlanProduct;packs:number;label:string;group?:string}[];nutrition:{calories:number|null;protein:number|null}} };
+export type PlanProduct = CatalogItem & { mealSlots?:MealSlot[]; servings: number; servingGrams?:number; servingNote: string; avoidanceText: string | null; personalizationScore?:number; servingCalories?:number|null; servingSodium?:number|null; servingCarbs?:number|null; recipe?: {sideCount?:number;sides?:{name:string;steps:string[];minutes:number}[];assembly?:boolean;minutes:number;slots:MealSlot[];family:string;steps:string[];ingredients:{product:PlanProduct;packs:number;label:string;group?:string}[];nutrition:{calories:number|null;protein:number|null}} };
 export type MealSlot = 'breakfast'|'lunch'|'dinner';
 export const slotLabels={breakfast:'아침',lunch:'점심',dinner:'저녁'};
 export const MAX_PLAN_DAYS=15;
@@ -124,7 +125,40 @@ export function dishBase(p:PlanProduct){
 }
 const SEAFOOD=/가자미|고등어|갈치|조기|삼치|꽁치|연어|참치|명태|동태|코다리|황태|북어|임연수|넙치|광어|우럭|도미|민어|병어|장어|오징어|낙지|주꾸미|새우|굴|홍합|바지락|전복|꽃게|멸치|대구|아귀/;
 const MEAT_OR_EGG=/고기|돼지|소고기|쇠고기|닭|오리|햄|소시지|베이컨|육|갈비|삼겹|목살|달걀|계란|두부|해물|어묵|맛살|참치|돈까스|돈가스|까스/;
-function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,schedule:ReturnType<typeof mealSchedule>,previous:ReadonlySet<string>=new Set(),previousFamilies:ReadonlySet<string>=new Set()){
+// '지금의 나'에 맞추는 점수: 오늘 먹은 양을 뺀 남은 열량, 하루 나트륨, 혈당 관리 시 탄수화물, 최근 먹은 메뉴.
+// 식단 시작일이 오늘이면 1일차 남은 끼니가 오늘 먹은 기록의 영향을 받는다.
+type ScoreContext={ctx:TodayContext;startsToday:boolean;recentBases:ReadonlySet<string>;recentMeats:ReadonlySet<string>};
+function prepareContext(ctx:TodayContext|undefined|null,c:PlanConditions,products:PlanProduct[]):ScoreContext|undefined{
+ if(!ctx)return undefined;
+ const recent=ctx.recent.flatMap(id=>{const p=productById(products,id);return p?[p]:[];});
+ return {ctx,startsToday:c.startDate===ctx.day,recentBases:new Set(recent.map(dishBase)),recentMeats:new Set(recent.flatMap(mainIngredients))};
+}
+const kcalFit=(kcal:number,target:number)=>Math.max(-150,100-200*Math.abs(kcal-target)/target);
+function contextScore(ids:string[],products:ReadonlyMap<string,PlanProduct>,schedule:ReturnType<typeof mealSchedule>,s:ScoreContext){
+ const {ctx}=s,pressure=ctx.health.includes('pressure'),glucose=ctx.health.includes('glucose');
+ const limit=pressure?SODIUM_DAILY_PRESSURE:SODIUM_DAILY;
+ let score=0;
+ const days=new Map<number,number[]>();
+ ids.forEach((_,i)=>{const d=schedule[i]?.day;if(d!==undefined)days.set(d,[...(days.get(d)??[]),i]);});
+ for(const [day,indexes] of days){
+  const today=s.startsToday&&day===1,eatenMeals=today?ctx.eaten.meals:0;
+  // 하루 나트륨: 이 날 먹는 끼니 수만큼의 몫을 넘긴 만큼 감점(혈압 관리면 3배).
+  const allowance=limit*Math.min(1,(indexes.length+eatenMeals)/Math.max(1,ctx.mealsPerDay));
+  const sodium=indexes.reduce((n,i)=>n+(products.get(ids[i])?.servingSodium??0),today?ctx.eaten.sodium:0);
+  score-=Math.max(0,sodium-allowance)/100*(pressure?45:15);
+  // 오늘 이미 먹었으면 남은 열량을 남은 끼니에 나눠 목표로 삼는다(기본 한 끼 목표 점수를 대체).
+  if(today&&eatenMeals>0&&ctx.dailyKcal&&ctx.perMealKcal){
+   const target=Math.min(ctx.perMealKcal*1.3,Math.max(ctx.perMealKcal*0.5,(ctx.dailyKcal-ctx.eaten.kcal)/indexes.length));
+   for(const i of indexes){const kcal=products.get(ids[i])?.servingCalories;if(typeof kcal==='number')score+=(kcalFit(kcal,target)-kcalFit(kcal,ctx.perMealKcal))*3;}
+  }
+  // 최근 3일 안에 먹은 메뉴·같은 주재료는 앞쪽 날짜에서 피한다.
+  if(day<=2)for(const i of indexes){const p=products.get(ids[i]);if(!p)continue;if(s.recentBases.has(dishBase(p)))score-=day===1?900:500;if(day===1&&mainIngredients(p).some(k=>s.recentMeats.has(k)))score-=150;}
+ }
+ // 혈당 관리: 한 끼 탄수화물 70g을 넘는 만큼 감점.
+ if(glucose)for(const id of ids)score-=Math.max(0,(products.get(id)?.servingCarbs??0)-70)*8;
+ return score;
+}
+function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,schedule:ReturnType<typeof mealSchedule>,previous:ReadonlySet<string>=new Set(),previousFamilies:ReadonlySet<string>=new Set(),context?:ScoreContext){
  const products=new Map(rows.map(r=>[r.product.id,r.product]));
  const families=new Map<string,number>();
  for(const r of rows){const family=mealFamily(r.product);families.set(family,(families.get(family)??0)+r.uses);}
@@ -191,7 +225,7 @@ function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,
  // than defaulting to whichever pre-made item happens to be in the catalog.
  const cooked=ids.filter(id=>products.get(id)?.recipe).length*120;
  return cooked+reuse+rows.length*300-feedback-ids.filter(id=>previous.has(id)).length*900-ids.filter(id=>previousFamilies.has(mealFamily(products.get(id)!))).length*200+families.size*150-repeats*350-familyRepeats*40-baseRepeats*900-instant*400-light*300-sideLike*450-seafoodRepeats*500-batterOnly*500-meatOverflow*600-breakfastMix*350-repetition
-  -rows.reduce((n,r)=>n+r.left,0)*100-waste/300-rows.reduce((n,r)=>n+r.cost,0)/c.budget*(c.budgetMode==='save'?2000:c.budgetMode==='full'?-100:100)+fit;
+  -rows.reduce((n,r)=>n+r.left,0)*100-waste/300-rows.reduce((n,r)=>n+r.cost,0)/c.budget*(c.budgetMode==='save'?2000:c.budgetMode==='full'?-100:100)+fit+(context?contextScore(ids,products,schedule,context):0);
 }
 function diverseOptions(products:PlanProduct[],previous:string[],conditions:PlanConditions,limit=80){
  if(products.length<=limit)return products;
@@ -216,7 +250,8 @@ function diverseOptions(products:PlanProduct[],previous:string[],conditions:Plan
 // 반찬성 감점(450)·중복 감점보다 작아서 품질 기준은 유지된다. seed가 없으면(테스트·예산 안내) 결정적.
 const JITTER=400;
 function jitterFor(seed:number){return (id:string)=>{let h=(seed>>>0)^2166136261;for(let i=0;i<id.length;i++)h=Math.imul(h^id.charCodeAt(i),16777619)>>>0;return (h%1000)/1000-0.5;};}
-export function recommendShopping(products: PlanProduct[], c: PlanConditions, cheapest=false,previousIds:string[]=[],seed?:number): string[] | null {
+export function recommendShopping(products: PlanProduct[], c: PlanConditions, cheapest=false,previousIds:string[]=[],seed?:number,today?:TodayContext|null): string[] | null {
+ const context=prepareContext(today,c,products);
  const jitter=seed===undefined?null:jitterFor(seed);
  const pool=productsForGoal(candidates(products,c).filter(p=>!p.recipe||!p.id.includes('--with--')),c.goal);
  // 끼니가 많으면(한 주 세 끼 등) 탐색 폭을 줄인다: 21끼에서 약 7.6초 걸리던 계산을 줄이기 위해.
@@ -239,7 +274,7 @@ export function recommendShopping(products: PlanProduct[], c: PlanConditions, ch
    // Preserve the current day's order and the previous meal when merging states.
    const dayStart=schedule.findIndex(s=>s.day===schedule[i].day);
    const key=JSON.stringify([[...ids].sort(),ids.slice(Math.max(0,dayStart-1))]);
-   const score=cheapest?-cost:planScore(ids,rows,c,schedule,previous,previousFamilies)+(jitter?ids.reduce((n,id)=>n+jitter(cookingDishId(id))*JITTER,0):0);
+   const score=cheapest?-cost:planScore(ids,rows,c,schedule,previous,previousFamilies,context)+(jitter?ids.reduce((n,id)=>n+jitter(cookingDishId(id))*JITTER,0):0);
    if(!next.has(key)||score>next.get(key)!.score)next.set(key,{ids,cost,score});
   }
   const ranked=[...next.values()].sort((a,b)=>b.score-a.score||a.cost-b.cost);
@@ -249,7 +284,8 @@ export function recommendShopping(products: PlanProduct[], c: PlanConditions, ch
  }
  return states.sort((a,b)=>b.score-a.score||a.cost-b.cost)[0]?.ids??null;
 }
-export function swapMeal(ids:string[], index:number, products:PlanProduct[], c:PlanConditions,reason?:SwapReason):string[]|null {
+export function swapMeal(ids:string[], index:number, products:PlanProduct[], c:PlanConditions,reason?:SwapReason,today?:TodayContext|null):string[]|null {
+ const context=prepareContext(today,c,products);
  const old=products.find(p=>p.id===ids[index]);
  products=productsForGoal(products,c.goal);
  const others=ids.flatMap((id,i)=>{const q=i===index?null:productById(products,id);return q?[q]:[];});
@@ -259,7 +295,7 @@ export function swapMeal(ids:string[], index:number, products:PlanProduct[], c:P
   reason==='repeat'?mealFamily(p)!==mealFamily(old):true
  )).map(p=>ids.map((id,i)=>i===index?p.id:id)).filter(next=>basketTotal(next,products,c.owned,c.supply,c.people)<=c.budget);
  const schedule=mealSchedule(c);
- options.sort((a,b)=>planScore(b,basket(b,products,c.owned,c.supply,c.people),c,schedule)-planScore(a,basket(a,products,c.owned,c.supply,c.people),c,schedule));
+ options.sort((a,b)=>planScore(b,basket(b,products,c.owned,c.supply,c.people),c,schedule,undefined,undefined,context)-planScore(a,basket(a,products,c.owned,c.supply,c.people),c,schedule,undefined,undefined,context));
  return options[0]??null;
 }
 // Browsable candidates for one slot, so the UI can let people pick instead of only accepting a single auto-swap.
