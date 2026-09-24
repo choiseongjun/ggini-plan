@@ -1,6 +1,7 @@
 'use client';
 import type {DailyNutritionReference} from '../lib/daily-nutrition-reference';
 import {usePlannerLocale} from './planner-locale';
+import {trackPlanner} from '../lib/track-planner';
 import {MealPlanOverview} from './meal-plan-overview';
 import {MealComparison} from './meal-comparison';
 import {MenuPickerModal} from './menu-picker-modal';
@@ -115,7 +116,7 @@ export function TodayMeals({overviewOpen,onOverviewOpen,nutritionReference,shopp
       </MealSection>
      </div>
      {photoResults[index]&&<PhotoLogSummary result={photoResults[index]} streak={stats?.streak.loggedToday?stats.streak.current:null} busy={intake.busy} onUndo={()=>void undoPhoto(index)}/>}
-     {userId&&!done&&<MealPhotoLog productId={p.id} dishName={p.name} disabled={disabled||!isToday} onLogged={r=>{setPhotoResults(all=>({...all,[index]:r}));setLogging(null);intake.reload();window.dispatchEvent(new CustomEvent(INTAKE_LOGGED_EVENT));}} onFallback={()=>void intake.log(p.id,1,[])} onManual={()=>setLogging(logging===index?null:index)}/>}
+     {userId&&!done&&<MealPhotoLog productId={p.id} dishName={p.name} disabled={disabled||!isToday} onLogged={r=>{setPhotoResults(all=>({...all,[index]:r}));setLogging(null);intake.reload();window.dispatchEvent(new CustomEvent(INTAKE_LOGGED_EVENT));trackPlanner('photo_logged');}} onFallback={()=>void intake.log(p.id,1,[])} onManual={()=>setLogging(logging===index?null:index)}/>}
      <div className="today-actions">{done?(!photoResults[index]&&<Link href="/record">기록 확인·취소 →</Link>):!userId?<button type="button" onClick={onLogin}>로그인하고 먹었어요 기록</button>:!canEat&&(orderedParts.length>0?<button type="button" disabled={disabled} onClick={()=>void progress.update(orderedParts.map(item=>({item,quantity:item.ordered})),'receive')}>받았어요 ({orderedParts.reduce((n,s)=>n+s.ordered,0)}묶음)</button>:<button type="button" disabled={disabled} aria-expanded={managing===index} onClick={()=>{setManaging(managing===index?null:index);setPurchaseMessage('');}}>구매·보유 등록</button>)}</div>
      {logging===index&&!done&&<EatLogPanel product={p} stockAvailable={owned?Math.floor(owned.available*4)/4:0} disabled={disabled||!isToday} onClose={()=>setLogging(null)} onSubmit={({portions,extras,deduct})=>{void intake.log(p.id,portions,extras,deduct?owned:undefined).then(ok=>{if(ok)setLogging(null);});}}/>}
      {userId&&canEat&&!done&&<small className="today-left">집에 남은 음식 {amount(owned.available)}회분</small>}

@@ -65,7 +65,9 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
  const locale=usePlannerLocale();
  const startLoading=useLoadingTask();
  const won=locale.money;
- useEffect(()=>{if(!locale.isTaiwan&&mode!=='settings')trackPlanner('visit');},[locale.isTaiwan,mode]);
+ useEffect(()=>{if(!locale.isTaiwan&&mode!=='settings'){trackPlanner('visit');
+  // 식사 알림을 눌러 들어온 방문: 측정 후 주소에서 표시를 지운다.
+  if(new URLSearchParams(window.location.search).get('from')==='push'){trackPlanner('push_opened');window.history.replaceState(null,'',window.location.pathname);}}},[locale.isTaiwan,mode]);
  const endpoint=locale.isTaiwan?'/api/taiwan/catalog':'/api/shopping-plan';
  const planKey=`${endpoint}|${userId??'guest'}`;
  // Writes invalidate the cached GET so the next mount sees them.

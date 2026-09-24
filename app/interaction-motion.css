@@ -46,3 +46,17 @@
   from { opacity: .5; transform: translateY(3px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* 모바일: 안쪽 영역만 스크롤하던 구조(화면 높이 고정 + .app-content 스크롤)를 페이지 전체 스크롤로 바꾼다.
+   스레드·인스타그램 같은 앱 내장 브라우저는 스크롤할 때 툴바가 접혔다 펴지며 화면 높이가 바뀌는데,
+   고정 높이 안쪽 스크롤과 충돌해 위아래 스크롤이 걸리거나 멈췄다. 하단 메뉴는 화면 아래에 붙인다. */
+@media(max-width:910px){
+ .site-shell .app-frame{height:auto;min-height:100dvh}
+ .site-shell .app-content{flex:none;overflow:visible;min-height:0}
+ .site-shell .bottom-nav{position:sticky;bottom:0;z-index:20;padding-bottom:env(safe-area-inset-bottom);box-sizing:content-box}
+}
+@media(max-width:910px){
+ /* 하단 메뉴가 화면 아래에 붙으므로, 떠 있는 빠른 메뉴 버튼은 그 위로 올린다. */
+ .site-shell .planner-fab{bottom:calc(88px + env(safe-area-inset-bottom))}
+ body .kakao-browser-notice{bottom:calc(84px + env(safe-area-inset-bottom))}
+}

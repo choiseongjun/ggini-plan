@@ -11,6 +11,8 @@ import { RiceBuddy } from "./rice-buddy";
 import { AppLoading } from "./app-loading";
 import { invalidateJson } from "../lib/client-cache";
 import { WeekAnalysis } from "./week-analysis";
+import { WeightCard } from "./weight-card";
+import { MealReminderCard } from "./meal-reminder-card";
 import { RecordCard, WeeklyReportCard, useIntakeStats } from "./record-progress";
 import { mealLabels, ProfileProgress, ProfileWizardModal, readFields, sectionStatus, splitCalories, type CustomTarget, type ProfileFields, type WizardResult } from "./profile-wizard";
 import { bodyGoals, nutritionPlan, type BodyGoal } from "../lib/nutrition-plan";
@@ -204,6 +206,8 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
     </section>
     : <section className="energy-card is-empty" aria-label="하루 에너지"><div className="energy-buddy" aria-hidden="true"><RiceBuddy/></div><div><strong>{pregnancy ? "임신·수유 중에는 자동 계산을 쉬어요" : "내 하루 칼로리를 알아볼까요?"}</strong><p>{pregnancy ? "개인별 영양 상담을 권해요. 취향은 메뉴 추천에 반영돼요." : "키·체중·활동량을 알려주면 칼로리와 탄단지를 바로 계산해요."}</p>{!pregnancy && <button type="button" className="wizard-next" onClick={focusProfile}>1분 만에 입력하기</button>}</div></section>}
     {/* 정보가 없을 땐 위의 '1분 만에 입력하기' 카드 하나만 — 선택지를 늘리지 않는다. */}
+    {hasInfo && userId && <MealReminderCard/>}
+    {hasInfo && userId && <WeightCard userId={userId} fallbackWeight={Number(weight)||null} onLogged={kg=>setWeight(String(kg))}/>}
     {hasInfo && userId && <RecordCard stats={intakeStats}/>}
     {hasInfo && userId && <WeeklyReportCard stats={intakeStats}/>}
     {hasInfo && !loading && !loadError && <WeekAnalysis userId={userId} profile={profile} target={shownTarget} onOpenInfo={focusProfile}/>}

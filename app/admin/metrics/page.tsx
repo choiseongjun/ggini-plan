@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import {useEffect,useState} from 'react';
-const labels:Record<string,string>={visit:'방문',generated:'추천 완료',swapped:'메뉴 교체',seller:'판매처 이동',returned:'재방문'};
+const labels:Record<string,string>={visit:'방문',generated:'추천 완료',swapped:'메뉴 교체',seller:'판매처 이동',returned:'재방문',photo_logged:'사진 기록',weight_logged:'체중 기록',push_enabled:'알림 켬',push_opened:'알림으로 들어옴'};
 export default function Metrics(){
  const [rows,setRows]=useState<{day:string;event:string;visitors:number}[]|null>(null),[error,setError]=useState('');
  useEffect(()=>{const c=new AbortController();fetch('/api/admin/planner-metrics',{signal:c.signal,cache:'no-store'}).then(async r=>{const d=await r.json();if(!r.ok)throw new Error(d.error);return d.rows;}).then(setRows).catch(e=>{if(!c.signal.aborted)setError(e.message);});return()=>c.abort();},[]);
