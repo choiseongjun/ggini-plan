@@ -80,7 +80,7 @@ export default function RecipeOptimizerPage() {
 
  return <main className="admin-shell">
   <header className="admin-header"><div><span className="admin-kicker">KKINIPLAN · CONTENT MANAGER</span><h1>유사 레시피 생성기 (실험)</h1><p>정부DB 음식의 목표 영양값에 원재료 조합을 맞춰 탐색해요. 실제 레시피 복원이 아니라 영양 구성이 비슷한 근사 조합이에요.</p></div><Link href="/">앱으로 돌아가기 ↗</Link></header>
-  <nav className="admin-collection-tabs" aria-label="상품 관리 메뉴"><Link href="/admin">상품·영양 관리</Link><Link href="/admin/collect">상품 수집</Link><Link href="/admin/foodsafety">영양DB 조회</Link><Link href="/admin/recipe-optimizer" aria-current="page">유사 레시피 생성기</Link></nav>
+  <nav className="admin-collection-tabs" aria-label="상품 관리 메뉴"><Link href="/admin">상품·영양 관리</Link><Link href="/admin/collect">상품 수집</Link><Link href="/admin/foodsafety">영양DB 조회</Link><Link href="/admin/recipe-optimizer" aria-current="page">유사 레시피 생성기</Link><Link href="/admin/menus">추천 메뉴</Link><Link href="/admin/menu-stats">메뉴 인기</Link></nav>
   <section className="oasis-collection">
    <div className="catalog-collection-controls">
     <label>목표 음식 검색<input type="text" maxLength={60} value={query} onChange={e => setQuery(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') void search(); }}/></label>

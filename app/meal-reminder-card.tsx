@@ -8,6 +8,16 @@ type Slot='breakfast'|'lunch'|'dinner';
 type Times=Partial<Record<Slot,string>>;
 const SLOTS:[Slot,string,string][]=[['breakfast','아침','08:00'],['lunch','점심','12:00'],['dinner','저녁','18:30']];
 
+// 브라우저 푸시 서버 연결 실패("Registration failed - push service error" 등)를 사람이 할 수 있는 조치로 바꾼다.
+function subscribeError(e:unknown){
+ const text=e instanceof Error?e.message:String(e);
+ if(/permission|denied|NotAllowed/i.test(text))return '알림 권한이 막혀 있어요. 주소창 왼쪽 자물쇠 → 알림 → 허용으로 바꿔 주세요.';
+ const brave=Boolean((navigator as Navigator&{brave?:unknown}).brave);
+ if(brave)return 'Brave는 기본 설정에서 푸시 알림이 꺼져 있어요. 설정 → 개인정보 보호 및 보안 → "Google 서비스로 푸시 메시징 사용"을 켠 뒤 다시 시도해 주세요.';
+ if(/push service|Registration failed|AbortError/i.test(text))return '이 브라우저가 푸시 서버에 연결하지 못했어요. 크롬·엣지·사파리(홈 화면에 추가한 앱)에서 켜 주세요. 회사·학교 네트워크라면 다른 네트워크에서 다시 시도해 주세요.';
+ return text||'알림을 켜지 못했어요.';
+}
+
 function keyBytes(base64:string){
  const padded=(base64+'='.repeat((4-base64.length%4)%4)).replace(/-/g,'+').replace(/_/g,'/');
  return Uint8Array.from(atob(padded),c=>c.charCodeAt(0));
@@ -20,6 +30,7 @@ export function MealReminderCard(){
  const [subscribed,setSubscribed]=useState(false);
  const [times,setTimes]=useState<Times>({lunch:'12:00',dinner:'18:30'});
  const [busy,setBusy]=useState(false),[error,setError]=useState(''),[message,setMessage]=useState('');
+ const [testing,setTesting]=useState(false);
  useEffect(()=>{
   let alive=true;
   (async()=>{
@@ -39,12 +50,20 @@ export function MealReminderCard(){
   setBusy(true);setError('');setMessage('');
   try{
    if(!Object.keys(next).length){await turnOff();return;}
-   const registration=await navigator.serviceWorker.register('/sw.js',{scope:'/'});
+   await navigator.serviceWorker.register('/sw.js',{scope:'/'});
+   // 서비스 워커가 활성화된 뒤에 구독해야 한다(막 등록한 직후 구독하면 실패하는 브라우저가 있다).
+   const registration=await navigator.serviceWorker.ready;
    let sub=await registration.pushManager.getSubscription();
    if(!sub){
     if(Notification.permission!=='granted'&&await Notification.requestPermission()!=='granted')throw new Error('알림 권한을 허용해야 받을 수 있어요. 브라우저 설정에서 알림을 허용해 주세요.');
     const key=process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;if(!key)throw new Error('알림 설정이 아직 준비되지 않았어요.');
-    sub=await registration.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:keyBytes(key)});
+    const options={userVisibleOnly:true,applicationServerKey:keyBytes(key)};
+    try{sub=await registration.pushManager.subscribe(options);}
+    catch(first){
+     // 예전 키로 만든 구독이 남아 있으면 지우고 한 번 더 시도한다.
+     const stale=await registration.pushManager.getSubscription();await stale?.unsubscribe().catch(()=>{});
+     try{sub=await registration.pushManager.subscribe(options);}catch{throw new Error(subscribeError(first));}
+    }
    }
    const r=await fetch('/api/push',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({subscription:sub.toJSON(),times:next})});
    const d=await r.json();if(!r.ok)throw new Error(d.error);
@@ -52,6 +71,18 @@ export function MealReminderCard(){
    if(enable){trackPlanner('push_enabled');setMessage('알림을 켰어요. 정한 시간에 오늘 먹을 메뉴를 알려 드릴게요.');}
   }catch(e){setError(e instanceof Error?e.message:'알림을 켜지 못했어요.');}
   finally{setBusy(false);}
+ }
+ async function sendTest(){
+  setTesting(true);setError('');setMessage('');
+  try{
+   const registration=await navigator.serviceWorker.getRegistration('/');
+   const sub=await registration?.pushManager.getSubscription();
+   const target=sub?.endpoint??endpoint;if(!target)throw new Error('이 기기의 알림 구독이 없어요. 알림을 다시 켜 주세요.');
+   const r=await fetch('/api/push/test',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({endpoint:target})});
+   const d=await r.json();if(!r.ok)throw new Error(d.error);
+   setMessage(d.withMenu?'테스트 알림을 보냈어요. 알림의 [먹었어요]를 누르면 실제로 기록돼요.':'테스트 알림을 보냈어요. 저장한 식단이 있으면 오늘 메뉴가 알림에 나와요.');
+  }catch(e){setError(e instanceof Error?e.message:'테스트 알림을 보내지 못했어요.');}
+  finally{setTesting(false);}
  }
  async function turnOff(){
   setBusy(true);setError('');setMessage('');
@@ -78,6 +109,7 @@ export function MealReminderCard(){
   </li>;})}</ul>}
   {message&&<p className="mr-msg" role="status">{message}</p>}
   {error&&<p className="mr-error" role="alert">{error}</p>}
+  {support==='ok'&&subscribed&&<button type="button" className="mr-test" disabled={busy||testing} onClick={()=>void sendTest()}>{testing?'보내는 중…':'테스트 알림 보내기'}</button>}
   {support==='ok'&&<small className="mr-foot">이미 먹었다고 기록한 끼니는 알리지 않아요. 기기마다 따로 켜야 해요.</small>}
  </section>;
 }

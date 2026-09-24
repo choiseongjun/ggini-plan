@@ -8,8 +8,11 @@ import {pickDishVisual} from './recipe-dish-visuals';
 import {canonicalIngredient,isWater,PANTRY} from './ingredient-canonical';
 import dishRoles from '../data/dish-roles.json';
 import breakfastDishes from '../data/breakfast-dishes.json';
+import noRiceDishes from '../data/no-rice.json';
 // 아침으로 흔히 먹는 메뉴(죽·국+밥·계란 요리·김밥…, scripts/classify-breakfast.mjs로 1회 분류).
 const breakfast = new Set<string>(breakfastDishes);
+// 따로 밥 한 공기를 곁들이지 않는 메뉴(파스타·스테이크·샐러드 등, scripts/expand-menu.ts가 GPT로 판정).
+const noRice = new Set<string>(noRiceDishes);
 
 // 메뉴가 한국 가정식에서 메인·밑반찬·국찌개·한 그릇 중 무엇인지(scripts/classify-dish-roles.mjs, GPT 1회 분류).
 // 콩자반·멸치볶음처럼 단백질이 높아도 밑반찬인 음식은 규칙으로 가려내기 어려워 분류 결과를 쓴다.
@@ -181,7 +184,8 @@ export async function governmentOptimizedRecipeProducts(): Promise<PlanProduct[]
   if (MAIN_OVERRIDE.test(r.targetName) || r.templateId === 'western-breakfast') return true;
   const role = roles[r.foodCode];
   // 아직 분류되지 않은 새 메뉴는 이전 규칙(한 그릇이거나 요리 자체 단백질 10g 이상)으로.
-  if (!role) return isOneBowl(r.templateId, r.targetName) || mainProteinOf(r) >= 10;
+  // 확장으로 추가한 메뉴는 분류가 끝난 뒤에만 추천한다.
+  if (!role) return r.source === 'optimizer' && (isOneBowl(r.templateId, r.targetName) || mainProteinOf(r) >= 10);
   return role === 'main' || role === 'one-bowl' || (role === 'soup' && mainProteinOf(r) >= 10);
  };
  return results.filter((result) => !SIDE_DISH_TEMPLATES.has(result.templateId) && result.aiIngredients?.ingredients.length && isMeal(result)).map((result) => {
@@ -195,7 +199,7 @@ export async function governmentOptimizedRecipeProducts(): Promise<PlanProduct[]
   const mainCalories = ai ? ai.reduce((sum, i) => sum + i.caloriesKcal * i.grams / 100, 0) : (result.predicted.kcal ?? 0) * SERVING_SCALE;
   const mainProtein = ai ? ai.reduce((sum, i) => sum + i.proteinG * i.grams / 100, 0) : (result.predicted.protein ?? 0) * SERVING_SCALE;
 
-  const needsPairing = !isOneBowl(result.templateId, result.targetName);
+  const needsPairing = !isOneBowl(result.templateId, result.targetName) && !noRice.has(result.foodCode) && !(result.source !== 'optimizer' && roles[result.foodCode] === 'one-bowl');
   const ricePairing = needsPairing ? usageEntries([{ingredientId: 'rice-raw', grams: RICE_PAIRING_RAW_GRAMS}], 1, now, '함께 먹는 밥') : [];
 
   // 밑반찬(김치·나물)은 자동으로 붙이지 않는다 — 한 끼는 메인 요리와 밥 한 공기.
@@ -227,7 +231,7 @@ export async function governmentOptimizedRecipeProducts(): Promise<PlanProduct[]
    : `실제 1인분(${totalGrams}g)으로 환산한`;
   return {
    id: `recipe-opt-${result.foodCode}`, emoji: visual.emoji, name: result.targetName,
-   detail: `정부DB 목표 영양(${result.targetBasisAmount === '100mL' ? '100mL 기준 · 100g으로 환산' : `${result.targetBasisAmount} 기준`})을 ${pairingNote} 유사 레시피 · 실제 이 음식의 정식 레시피가 아니며 표준 소매가로 추정한 가격이에요`,
+   detail: result.source === 'ai-expansion' ? `AI가 추정한 영양·재료로 ${pairingNote} 레시피 · 정식 레시피가 아니며 표준 소매가로 추정한 가격이에요` : `정부DB 목표 영양(${result.targetBasisAmount === '100mL' ? '100mL 기준 · 100g으로 환산' : `${result.targetBasisAmount} 기준`})을 ${pairingNote} 유사 레시피 · 실제 이 음식의 정식 레시피가 아니며 표준 소매가로 추정한 가격이에요`,
    price: totalPrice, portions: '1인분', protein: '재료 합산 추정', color: visual.color, searchQuery: result.targetName, unit: '개', quantity: 1,
    category: 'other', inWeeklyCart: true, productImageUrl: result.imageUrl, productImageUrls: result.imageUrls, productUrl: null,
    nutritionSourceName: null, nutritionSourceUrl: null, nutritionPhotoUrl: null, nutritionBasis: null,

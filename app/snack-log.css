@@ -1,0 +1,31 @@
+.snack-log-entry{margin:14px 0 4px}
+.snack-log-open{width:100%;min-height:46px;border:1px dashed #c9d4bf;border-radius:14px;background:#fbfcf7;color:#4d6645;font-size:14px;font-weight:700}
+.snack-log-open:hover{background:#f3f7ec}
+.snack-log-done{margin:8px 2px 0;font-size:13px;color:#4f7a3f}
+.snack-log{margin:14px 0 4px;padding:14px;border:1px solid #e1e8d8;border-radius:16px;background:#fff}
+.snack-log header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.snack-log header strong{font-size:15px}
+.snack-log header button{display:grid;place-items:center;width:30px;height:30px;border:0;border-radius:50%;background:#f2f5ee;color:#5b6a55}
+.snack-log input[type=search]{width:100%;min-height:44px;padding:0 12px;border:1px solid #dbe3d2;border-radius:12px;font-size:15px;background:#fbfcf9}
+.snack-log-label{display:block;margin:12px 2px 4px;font-size:12px;font-weight:700;color:#6c7a64}
+.snack-log-note{margin:12px 2px;font-size:13px;color:#6c7a64}
+.snack-log-list{list-style:none;margin:8px 0 0;padding:0;max-height:320px;overflow-y:auto}
+.snack-log-list li+li{border-top:1px solid #f0f3ec}
+.snack-log-list button{width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:10px 4px;border:0;background:none;text-align:left}
+.snack-log-list button:hover{background:#f7faf3}
+.snack-log-list strong{font-size:14px;color:#26321f}
+.snack-log-list small{margin-left:6px;font-size:12px;color:#7a8672}
+.snack-log-meta{font-size:12px;color:#6c7a64}
+.snack-log-pick{margin-top:12px}
+.snack-log-pick>p:first-child{margin:0 0 10px;font-size:14px}
+.snack-log-pick>p:first-child span{display:block;margin-top:2px;font-size:12px;color:#6c7a64}
+.snack-log-portions{display:flex;gap:6px}
+.snack-log-portions button{flex:1;min-height:40px;border:1px solid #dbe3d2;border-radius:10px;background:#fff;font-weight:700;color:#4d5c47}
+.snack-log-portions button[aria-checked=true]{background:#e6efdb;border-color:#6e8a5d;color:#34512e}
+.snack-log-total{margin:10px 2px;font-size:13px;color:#4d5c47}
+.snack-log-actions{display:flex;gap:8px}
+.snack-log-actions button{flex:1;min-height:44px;border:1px solid #dbe3d2;border-radius:12px;background:#fff;font-weight:700}
+.snack-log-actions .snack-log-submit{flex:2;border:0;background:#526c47;color:#fff}
+.snack-log-actions .snack-log-submit:disabled{opacity:.6}
+.snack-log-error{margin:8px 2px 0;font-size:13px;color:#b24a2e}
+.snack-log-foot{display:block;margin-top:10px;font-size:11px;line-height:1.5;color:#8a9583}

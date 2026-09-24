@@ -52,7 +52,7 @@ export async function dispatchMealReminders() {
   const users = [...new Set(due.map((d) => d.row.user_id))];
   const [plans, recent] = await Promise.all([
     getPool().query('SELECT DISTINCT ON (user_id) user_id::text, conditions, meal_ids AS "mealIds" FROM shopping_plans WHERE user_id = ANY($1::bigint[]) ORDER BY user_id, id DESC', [users]),
-    getPool().query(`SELECT DISTINCT user_id::text FROM food_intake_logs WHERE user_id = ANY($1::bigint[]) AND undone_at IS NULL AND created_at > NOW() - INTERVAL '2 hours'`, [users]),
+    getPool().query(`SELECT DISTINCT user_id::text FROM food_intake_logs WHERE user_id = ANY($1::bigint[]) AND undone_at IS NULL AND created_at > NOW() - INTERVAL '2 hours' AND product_id NOT LIKE 'ref:%' AND product_id NOT LIKE 'extra:%'`, [users]),
   ]);
   const planByUser = new Map(plans.rows.map((r) => [r.user_id as string, r]));
   const ateRecently = new Set(recent.rows.map((r) => r.user_id as string));
@@ -63,11 +63,7 @@ export async function dispatchMealReminders() {
     const markSent = () => getPool().query(`UPDATE push_subscriptions SET sent = sent || jsonb_build_object($2::text, $3::text) WHERE endpoint = $1`, [row.endpoint, slot, today]);
     // 방금 먹었다고 기록했으면 굳이 알리지 않는다.
     if (ateRecently.has(row.user_id)) { skipped++; await markSent(); continue; }
-    const menu = todaysMenu(planByUser.get(row.user_id), slot, today, products);
-    const payload = menu
-      ? {title: `${SLOT_EMOJI[slot]} 오늘 ${slotLabels[slot]}은 ${menu.name}`, body: '먹고 나면 [먹었어요]만 눌러 주세요. 사진으로 남기려면 알림을 눌러요.', tag: `meal-${slot}`,
-         url: `/?from=push&meal=${encodeURIComponent(menu.productId)}`, productId: menu.productId, menuName: menu.name, actions: [{action: 'eaten', title: '먹었어요'}, {action: 'open', title: '사진으로 기록'}]}
-      : {title: `${SLOT_EMOJI[slot]} ${slotLabels[slot]} 챙길 시간이에요`, body: '오늘 뭐 먹을지 버튼 한 번이면 정해 드려요.', tag: `meal-${slot}`, url: '/?from=push'};
+    const payload = reminderPayload(todaysMenu(planByUser.get(row.user_id), slot, today, products), slot);
     try {
       await webpush.sendNotification({endpoint: row.endpoint, keys: row.keys}, JSON.stringify(payload), {TTL: 60 * 60});
       sent++; await markSent();
@@ -79,6 +75,32 @@ export async function dispatchMealReminders() {
     }
   }
   return {sent, skipped, removed};
+}
+
+function reminderPayload(menu: {name: string; productId: string} | null, slot: MealSlot) {
+  return menu
+    ? {title: `${SLOT_EMOJI[slot]} 오늘 ${slotLabels[slot]}은 ${menu.name}`, body: '먹고 나면 [먹었어요]만 눌러 주세요. 사진으로 남기려면 알림을 눌러요.', tag: `meal-${slot}`,
+       url: `/?from=push&meal=${encodeURIComponent(menu.productId)}`, productId: menu.productId, menuName: menu.name, actions: [{action: 'eaten', title: '먹었어요'}, {action: 'open', title: '사진으로 기록'}]}
+    : {title: `${SLOT_EMOJI[slot]} ${slotLabels[slot]} 챙길 시간이에요`, body: '오늘 뭐 먹을지 버튼 한 번이면 정해 드려요.', tag: `meal-${slot}`, url: '/?from=push'};
+}
+
+// 테스트 알림: 지금 시간대(아침·점심·저녁)의 실제 알림을 이 기기로 바로 보낸다. 발송 기록(sent)은 건드리지 않는다.
+export async function sendTestReminder(userId: string, endpoint: string) {
+  if (!pushConfigured()) return {ok: false, error: '서버에 알림 키가 설정되지 않았어요.'};
+  const row = (await getPool().query<Row>('SELECT endpoint,user_id::text,keys,times,sent FROM push_subscriptions WHERE endpoint=$1 AND user_id=$2', [endpoint, userId])).rows[0];
+  if (!row) return {ok: false, error: '이 기기의 알림 구독을 찾지 못했어요. 알림을 껐다가 다시 켜 주세요.'};
+  const now = kstNow(), today = now.toISOString().slice(0, 10), hour = now.getUTCHours();
+  const slot: MealSlot = hour < 10 ? 'breakfast' : hour < 15 ? 'lunch' : 'dinner';
+  const plan = (await getPool().query('SELECT conditions, meal_ids AS "mealIds" FROM shopping_plans WHERE user_id=$1 ORDER BY id DESC LIMIT 1', [userId])).rows[0];
+  const payload = reminderPayload(todaysMenu(plan, slot, today, await planProducts()), slot);
+  try {
+    await webpush.sendNotification({endpoint: row.endpoint, keys: row.keys}, JSON.stringify({...payload, title: `[테스트] ${payload.title}`, tag: 'meal-test'}), {TTL: 600});
+    return {ok: true, withMenu: 'productId' in payload};
+  } catch (e) {
+    const status = (e as {statusCode?: number}).statusCode;
+    if (status === 404 || status === 410) { await getPool().query('DELETE FROM push_subscriptions WHERE endpoint=$1', [row.endpoint]); return {ok: false, error: '브라우저의 알림 구독이 만료됐어요. 알림을 다시 켜 주세요.'}; }
+    return {ok: false, error: '푸시 서버로 보내지 못했어요. 잠시 후 다시 시도해 주세요.'};
+  }
 }
 
 function todaysMenu(plan: {conditions: unknown; mealIds: string[]} | undefined, slot: MealSlot, today: string, products: {id: string; name: string}[]) {

@@ -90,7 +90,7 @@ export default function CollectionPage() {
   }
   if(login)return <main className="admin-login-shell"><AuthScreen admin initialError={error} onExplore={()=>router.push('/')} onSuccess={()=>{setError('');setAttempt(v=>v+1);}}/></main>;
   return <main className="admin-shell"><header className="admin-header"><div><span className="admin-kicker">KKINIPLAN · CONTENT MANAGER</span><h1>상품 수집</h1><p>판매 상품을 등록하고, 원문 영양정보를 읽어 확인 후 저장해요.</p></div><Link href="/">앱으로 돌아가기 ↗</Link></header>
-    <nav className="admin-collection-tabs" aria-label="상품 관리 메뉴"><Link href="/admin">상품·영양 관리</Link><Link href="/admin/collect" aria-current="page">상품 수집</Link><Link href="/admin/deals">핫딜 수집·관리</Link><Link href="/admin/foodsafety">영양DB 조회</Link><Link href="/admin/recipe-optimizer">유사 레시피 생성기</Link></nav>
+    <nav className="admin-collection-tabs" aria-label="상품 관리 메뉴"><Link href="/admin">상품·영양 관리</Link><Link href="/admin/collect" aria-current="page">상품 수집</Link><Link href="/admin/deals">핫딜 수집·관리</Link><Link href="/admin/foodsafety">영양DB 조회</Link><Link href="/admin/recipe-optimizer">유사 레시피 생성기</Link><Link href="/admin/menus">추천 메뉴</Link><Link href="/admin/menu-stats">메뉴 인기</Link></nav>
     {error&&<p role="alert">{error}</p>}{!loaded?<p>관리자 권한과 상품을 확인하고 있어요. {error&&<button onClick={()=>setAttempt(v=>v+1)}>다시 시도</button>}</p>:<>
     <OasisCollectionPanel onCollected={()=>setAttempt(v=>v+1)}/>
     <CoupangCollectionPanel onCollected={()=>setAttempt(v=>v+1)}/>

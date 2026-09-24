@@ -6,6 +6,7 @@ import {MealPlanOverview} from './meal-plan-overview';
 import {MealComparison} from './meal-comparison';
 import {MenuPickerModal} from './menu-picker-modal';
 import {EatLogPanel} from './eat-log-panel';
+import {SnackLog} from './snack-log';
 import type {IntakeExtra} from '../lib/intake-extras';
 import {MealPhotoLog,PhotoLogSummary,type PhotoLogResult} from './meal-photo-log';
 import {BadgeToast,INTAKE_LOGGED_EVENT,StreakChip,useIntakeStats} from './record-progress';
@@ -139,6 +140,7 @@ export function TodayMeals({focusMeal=null,overviewOpen,onOverviewOpen,nutrition
      {!isToday&&<small>먹은 기록은 오늘 날짜의 메뉴에서 남겨 주세요.</small>}{recorded>0&&!done&&<small>오늘 {recorded}회분 기록했어요. 나머지를 드셨다면 먹었어요를 눌러 주세요.</small>}
     </article>;
    })}</div>
+   {userId&&isToday&&<SnackLog onLogged={()=>intake.reload()}/>}
    <DailyRecommendationNutrition products={entries.map(e=>e.product)} reference={nutritionReference??null}/>
    <BadgeToast badges={newBadges} onClose={dismissBadges}/>
    <MenuPickerModal index={browsing} ids={ids} products={products} conditions={conditions} onChoose={onChoose} onClose={()=>setBrowsing(null)} disabled={disabled}/>

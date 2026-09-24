@@ -68,7 +68,7 @@ export default function FoodSafetyReferencePage() {
 
  return <main className="admin-shell">
   <header className="admin-header"><div><span className="admin-kicker">KKINIPLAN · CONTENT MANAGER</span><h1>영양성분DB 조회</h1><p>식약처 공공DB 스냅샷(가공식품·음식)을 이름으로 검색해 값을 확인해요. &ldquo;AI 요리법 제안&rdquo;으로 재료 구성을 만들고 승인하면 실제 추천에 반영돼요.</p></div><Link href="/">앱으로 돌아가기 ↗</Link></header>
-  <nav className="admin-collection-tabs" aria-label="상품 관리 메뉴"><Link href="/admin">상품·영양 관리</Link><Link href="/admin/collect">상품 수집</Link><Link href="/admin/deals">핫딜 수집·관리</Link><Link href="/admin/foodsafety" aria-current="page">영양DB 조회</Link><Link href="/admin/recipe-optimizer">유사 레시피 생성기</Link></nav>
+  <nav className="admin-collection-tabs" aria-label="상품 관리 메뉴"><Link href="/admin">상품·영양 관리</Link><Link href="/admin/collect">상품 수집</Link><Link href="/admin/deals">핫딜 수집·관리</Link><Link href="/admin/foodsafety" aria-current="page">영양DB 조회</Link><Link href="/admin/recipe-optimizer">유사 레시피 생성기</Link><Link href="/admin/menus">추천 메뉴</Link><Link href="/admin/menu-stats">메뉴 인기</Link></nav>
   <section className="oasis-collection">
    <div className="catalog-collection-controls">
     <label>검색어<input type="text" maxLength={60} value={query} onChange={e => setQuery(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') void load(0, true); }}/></label>

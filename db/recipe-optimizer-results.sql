@@ -30,3 +30,6 @@ ALTER TABLE recipe_optimizer_results ADD COLUMN IF NOT EXISTS ai_ingredients JSO
 -- Several candidate photos for the same dish (index 0 mirrors image_url above) so the UI can show a
 -- gallery instead of trusting a single search hit to be the right one.
 ALTER TABLE recipe_optimizer_results ADD COLUMN IF NOT EXISTS image_urls JSONB;
+-- 어디서 온 메뉴인지: optimizer(정부DB 템플릿 자동 생성) / gov-expansion(정부DB 남은 식사류, GPT 재료) /
+-- ai-expansion(GPT가 고른 인기 메뉴, 영양도 AI 추정). 관리자 "일괄 생성"의 정리(삭제)는 optimizer 행에만 적용한다.
+ALTER TABLE recipe_optimizer_results ADD COLUMN IF NOT EXISTS source TEXT NOT NULL DEFAULT 'optimizer';

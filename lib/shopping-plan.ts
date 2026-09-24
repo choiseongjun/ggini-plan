@@ -227,10 +227,12 @@ function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,
  return cooked+reuse+rows.length*300-feedback-ids.filter(id=>previous.has(id)).length*900-ids.filter(id=>previousFamilies.has(mealFamily(products.get(id)!))).length*200+families.size*150-repeats*350-familyRepeats*40-baseRepeats*900-instant*400-light*300-sideLike*450-seafoodRepeats*500-batterOnly*500-meatOverflow*600-breakfastMix*350-repetition
   -rows.reduce((n,r)=>n+r.left,0)*100-waste/300-rows.reduce((n,r)=>n+r.cost,0)/c.budget*(c.budgetMode==='save'?2000:c.budgetMode==='full'?-100:100)+fit+(context?contextScore(ids,products,schedule,context):0);
 }
-function diverseOptions(products:PlanProduct[],previous:string[],conditions:PlanConditions,limit=80){
+// costCache: 메뉴 한 개의 장보기 금액은 끼니와 무관하다 — 끼니마다 다시 계산하면 메뉴가 많을 때 느려진다(21끼 8.6초).
+function diverseOptions(products:PlanProduct[],previous:string[],conditions:PlanConditions,limit=80,costCache=new Map<string,number>()){
  if(products.length<=limit)return products;
  const old=new Set(previous);
- const costs=new Map(products.map(p=>[p.id,purchaseBasket([p.id],[p],conditions.owned,conditions.supply,undefined,conditions.people).reduce((sum,r)=>sum+r.cost,0)]));
+ const cost=(p:PlanProduct)=>{let v=costCache.get(p.id);if(v===undefined){v=purchaseBasket([p.id],[p],conditions.owned,conditions.supply,undefined,conditions.people).reduce((sum,r)=>sum+r.cost,0);costCache.set(p.id,v);}return v;};
+ const costs=new Map(products.map(p=>[p.id,cost(p)]));
  const byCost=[...products].sort((a,b)=>costs.get(a.id)!-costs.get(b.id)!||a.price/a.servings-b.price/b.servings);
  const groups=new Map<string,PlanProduct[]>();
  for(const p of [...byCost].sort((a,b)=>Number(old.has(a.id))-Number(old.has(b.id)))){
@@ -256,7 +258,8 @@ export function recommendShopping(products: PlanProduct[], c: PlanConditions, ch
  const pool=productsForGoal(candidates(products,c).filter(p=>!p.recipe||!p.id.includes('--with--')),c.goal);
  // 끼니가 많으면(한 주 세 끼 등) 탐색 폭을 줄인다: 21끼에서 약 7.6초 걸리던 계산을 줄이기 위해.
  const wide=c.meals<=12,beam=wide?80:45,cheapBeam=wide?20:10;
- const schedule=mealSchedule(c),options=schedule.map((_,i)=>diverseOptions(slotCandidates(pool,c,i),previousIds,c,wide?80:55));
+ const costCache=new Map<string,number>();
+ const schedule=mealSchedule(c),options=schedule.map((_,i)=>diverseOptions(slotCandidates(pool,c,i),previousIds,c,wide?80:45,costCache));
  if(new Set(pool.map(p=>cookingDishId(p.id))).size<c.meals)return null;
  const previous=new Set(previousIds);
  const previousFamilies=new Set(pool.filter(p=>previous.has(p.id)).map(mealFamily));

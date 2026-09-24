@@ -18,3 +18,6 @@
 .mr-msg{margin:10px 0 0;font-size:12px;color:#3f6a33}
 .mr-error{margin:10px 0 0;font-size:12px;color:#b0603f}
 .mr-foot{display:block;margin-top:10px;font-size:11px;color:#98a28c}
+
+.mr-test{display:block;width:100%;min-height:42px;margin:10px 0 6px;border:1px solid #d6dfcc;border-radius:12px;background:#fbfcf7;color:#4d6645;font-weight:700}
+.mr-test:disabled{opacity:.6}

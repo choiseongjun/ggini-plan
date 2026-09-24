@@ -5,6 +5,7 @@ import {todayContext} from '../../../../lib/today-context-server';
 import {shoppingBudgetGuide} from '../../../../lib/shopping-budget';
 import {shoppingAvailabilityMessage} from '../../../../lib/shopping-availability';
 import {pickerItems} from '../../../../lib/plan-picker';
+import {logRecommendations} from '../../../../lib/recommendation-log';
 import {alternativesFor, basketTotal, mealSchedule, parseConditions, recommendShopping, slotCandidates, slotLabels, swapMeal, swapReasons, validMealIds, type PlanConditions, type SwapReason} from '../../../../lib/shopping-plan';
 
 // 추천 계산은 서버에서 한다. 휴대폰은 전체 메뉴(수 MB)를 받지 않고, 결과 식단과 지금 보는 후보만 받는다.
@@ -49,6 +50,7 @@ export async function POST(request: NextRequest) {
     const context = await today();
     const ids = recommendShopping(products, c, false, previous, seed, context);
     if (!ids) return authFailure('현재 조건으로는 중복 없는 식단을 채울 수 없어요. 끼니 수를 줄이거나 식단 목표·제외 재료·재료비 상한을 조정해 주세요.', 422);
+    if (user) await logRecommendations(user.id, c, ids, 'recommend');
     return json({ids, products: pickProducts(products, ids), today: context, personalization: catalog.personalization});
    }
    case 'swap': {
@@ -58,6 +60,7 @@ export async function POST(request: NextRequest) {
     if (index === null) return authFailure('바꿀 끼니를 확인해 주세요.', 400);
     const reason = typeof input.reason === 'string' && Object.hasOwn(swapReasons, input.reason) ? input.reason as SwapReason : undefined;
     const next = swapMeal(ids, index, products, c, reason, await today());
+    if (user && next) await logRecommendations(user.id, c, next, 'swap', index);
     return json({ids: next, products: pickProducts(products, next ?? ids)});
    }
    case 'alternatives': {

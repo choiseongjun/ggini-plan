@@ -11,7 +11,7 @@ export type TodayContext = {
   /** KST 날짜(YYYY-MM-DD). 식단 시작일이 이 날이면 1일차가 '오늘'이다. */
   day: string;
   /** 오늘 이미 먹은 양. meals는 메뉴(곁들임 제외) 기록 수. */
-  eaten: {kcal: number; sodium: number; carbs: number; meals: number};
+  eaten: {kcal: number; sodium: number; carbs: number; sugar: number; meals: number};
   dailyKcal: number | null;
   perMealKcal: number | null;
   mealsPerDay: number;

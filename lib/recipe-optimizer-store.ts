@@ -2,7 +2,7 @@ import {getPool} from './db';
 import type {GeneratedRecipe} from './recipe-optimizer';
 import type {AiIngredient} from './recipe-ai-ingredients';
 
-export type StoredRecipeResult = GeneratedRecipe & {foodCode: string; createdAt: string; imageUrl: string | null; imageUrls: string[] | null; aiIngredients: {ingredients: AiIngredient[]; note: string} | null};
+export type StoredRecipeResult = GeneratedRecipe & {foodCode: string; createdAt: string; imageUrl: string | null; imageUrls: string[] | null; aiIngredients: {ingredients: AiIngredient[]; note: string} | null; source: string};
 
 export async function saveRecipeOptimizerResult(foodCode: string, recipe: GeneratedRecipe): Promise<void> {
  await getPool().query(
@@ -20,7 +20,7 @@ export async function listRecipeOptimizerResults(): Promise<StoredRecipeResult[]
  return rows.map((r) => ({
   foodCode: r.food_code, targetName: r.target_name, targetBasisAmount: r.target_basis_amount, templateId: r.template_id, templateName: r.template_name,
   totalGrams: Number(r.total_grams), ingredients: r.ingredients, target: r.target, predicted: r.predicted, error: r.error,
-  score: Number(r.score), createdAt: r.created_at.toISOString(), imageUrl: r.image_url, imageUrls: r.image_urls, aiIngredients: r.ai_ingredients,
+  score: Number(r.score), createdAt: r.created_at.toISOString(), imageUrl: r.image_url, imageUrls: r.image_urls, aiIngredients: r.ai_ingredients, source: r.source ?? 'optimizer',
  }));
 }
 
@@ -53,7 +53,8 @@ export async function listRecipeOptimizerResultsMissingImage(): Promise<{foodCod
 // missing, a naming rule tightens), and its old row would otherwise sit untouched forever, still
 // serving whatever recipe was generated under the rules in effect at the time.
 export async function deleteRecipeOptimizerResultsNotIn(foodCodes: string[]): Promise<number> {
- const {rowCount} = await getPool().query('DELETE FROM recipe_optimizer_results WHERE NOT (food_code = ANY($1::text[]))', [foodCodes]);
+ // 확장으로 추가한 메뉴(source가 optimizer가 아닌 행)는 이 규칙과 무관하므로 지우지 않는다.
+ const {rowCount} = await getPool().query("DELETE FROM recipe_optimizer_results WHERE source = 'optimizer' AND NOT (food_code = ANY($1::text[]))", [foodCodes]);
  return rowCount ?? 0;
 }
 

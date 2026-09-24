@@ -5,7 +5,7 @@ import {planProducts} from '../../../lib/shopping-plan-catalog';
 import {parseStock} from '../../../lib/shopping-progress';
 import {consumeFood,restoreConsumption,availablePortions,servingNutrition,validPortions} from '../../../lib/food-intake';
 import {emptyDashboard} from '../../../lib/dashboard';
-import {logMeal} from '../../../lib/intake-log';
+import {logMeal,logReference} from '../../../lib/intake-log';
 import {plannerVisitor,savePlannerEvent} from '../../../lib/planner-events';
 import {comparisonDay} from '../../../lib/comparison-interest';
 export const runtime='nodejs';
@@ -40,7 +40,7 @@ export async function POST(request:NextRequest){
   if(!input||!['eat','undo','log'].includes(input.action)||typeof input.id!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(input.id)||!Number.isSafeInteger(input.version)||input.version<0)return authFailure('기록을 확인해 주세요.',400);
   if(input.action==='eat'&&(typeof input.productId!=='string'||input.productId.length>100||!validPortions(input.portions)))return authFailure('상품과 먹은 양을 확인해 주세요.',400);
   if(input.action==='log'){
-   const saved=await logMeal(user.id,input);
+   const saved=input.referenceCode!==undefined?await logReference(user.id,input):await logMeal(user.id,input);
    if(saved.ok&&input.source==='push'&&process.env.VERCEL_ENV==='production'){
     const c=await getPool().connect();
     try{await c.query('BEGIN');await savePlannerEvent(c,plannerVisitor(`user:${user.id}`,process.env.DATABASE_URL!),'push_action_logged',comparisonDay());await c.query('COMMIT');}
