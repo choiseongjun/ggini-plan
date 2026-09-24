@@ -6,6 +6,10 @@ import {shoppingBudgetGuide} from '../../../../lib/shopping-budget';
 import {shoppingAvailabilityMessage} from '../../../../lib/shopping-availability';
 import {pickerItems} from '../../../../lib/plan-picker';
 import {logRecommendations} from '../../../../lib/recommendation-log';
+import {sideProducts} from '../../../../lib/shopping-plan-catalog';
+import {pickSides, type DishTraits} from '../../../../lib/side-pairing';
+import {allowsExcludedFoods} from '../../../../lib/shopping-exclusions';
+import dishTraits from '../../../../data/dish-traits.json';
 import {alternativesFor, basketTotal, mealSchedule, parseConditions, recommendShopping, slotCandidates, slotLabels, swapMeal, swapReasons, validMealIds, type PlanConditions, type SwapReason} from '../../../../lib/shopping-plan';
 
 // 추천 계산은 서버에서 한다. 휴대폰은 전체 메뉴(수 MB)를 받지 않고, 결과 식단과 지금 보는 후보만 받는다.
@@ -78,6 +82,15 @@ export async function POST(request: NextRequest) {
     const index = slotIndex(c);
     if (index === null) return authFailure('끼니를 확인해 주세요.', 400);
     return json({items: pickerItems(products, ids, index, c), current: basketTotal(ids.filter(Boolean), products, c.owned, c.supply, c.people)});
+   }
+   case 'sides': {
+    // 메인 하나에 어울리는 밑반찬 3개(AI로 판정해 둔 특징으로 규칙 짝짓기). 제외 재료는 빼고 고른다.
+    const id = typeof input.id === 'string' ? input.id : '';
+    const main = pickProducts(products, [id])[0];
+    if (!main) return authFailure('메뉴를 확인해 주세요.', 400);
+    const excluded = conditions?.excluded ?? catalog.excluded;
+    const sides = pickSides(main, await sideProducts(), dishTraits as Record<string, DishTraits>, 3, (s) => !allowsExcludedFoods(s, excluded));
+    return json({sides: sides.map((s) => ({reason: s.reason, product: s.product}))});
    }
    case 'products': {
     const ids = input.ids;

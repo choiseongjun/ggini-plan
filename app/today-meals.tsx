@@ -7,6 +7,8 @@ import {MealComparison} from './meal-comparison';
 import {MenuPickerModal} from './menu-picker-modal';
 import {EatLogPanel} from './eat-log-panel';
 import {SnackLog} from './snack-log';
+import {SideDishSuggest} from './side-dish-suggest';
+import {sideFit} from '../lib/side-pairing';
 import type {IntakeExtra} from '../lib/intake-extras';
 import {MealPhotoLog,PhotoLogSummary,type PhotoLogResult} from './meal-photo-log';
 import {BadgeToast,INTAKE_LOGGED_EVENT,StreakChip,useIntakeStats} from './record-progress';
@@ -117,6 +119,7 @@ export function TodayMeals({focusMeal=null,overviewOpen,onOverviewOpen,nutrition
       <a href={locale.search(p.name)} target="_blank" rel="noopener noreferrer" aria-label={`${p.name} 네이버쇼핑에서 가격 검색 (새 창)`}>다른 판매처 가격 검색 ↗</a>
      </div></MealSection>}
       {p.recipe&&!p.recipe.assembly&&<MealSection title="만드는 방법 영상" meta="YouTube" open={isSection(index,'video')} onToggle={()=>toggleSection(index,'video')}><RecipeVideos dishId={p.id}/></MealSection>}
+      {!locale.isTaiwan&&sideFit(p)!=='none'&&<MealSection title={sideFit(p)==='kimchi'?'곁들일 김치 추천':'밑반찬 추천'} meta={sideFit(p)==='kimchi'?'한 그릇 요리에 곁들이기 좋은 김치':'이 메뉴에 어울리는 반찬'} open={isSection(index,'sides')} onToggle={()=>toggleSection(index,'sides')}><SideDishSuggest main={p} conditions={conditions}/></MealSection>}
       {!done&&<MealSection title="메뉴 바꾸기" open={isSection(index,'swap')} onToggle={()=>toggleSection(index,'swap')}>
      {!done&&<div className="today-edit" role="group" aria-label={`${slotLabels[slot]} 메뉴 수정`}><button type="button" disabled={disabled} aria-haspopup="dialog" onClick={()=>setBrowsing(index)}>🔎 메뉴 직접 고르기</button><button type="button" disabled={disabled} onClick={()=>{setManaging(null);setBrowsing(null);onSwap(index);}}>🔀 바로 바꾸기</button></div>}
      {!done&&<details className="swap-reasons"><summary>이유를 고르고 교체하기</summary><p>다음 추천에도 반영해요. 이유 없이 바꾸려면 ‘바로 바꾸기’를 누르세요.</p><div>{visibleSwapReasons.map(reason=><button type="button" key={reason} disabled={disabled} onClick={()=>{setManaging(null);onSwap(index,reason);}}>{swapReasons[reason]}</button>)}</div></details>}

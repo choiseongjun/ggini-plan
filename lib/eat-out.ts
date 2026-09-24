@@ -18,7 +18,7 @@ export const EAT_OUT_KINDS = {
 export type EatOutKind = keyof typeof EAT_OUT_KINDS;
 const MEAL_CATEGORIES = ['밥류', '면 및 만두류', '국 및 탕류', '찌개 및 전골류', '볶음류', '구이류', '조림류', '찜류', '튀김류', '전·적 및 부침류', '죽 및 스프류', '빵 및 과자류'];
 
-export type EatOutOption = FoodReference & {verdict: 'good' | 'ok' | 'avoid'; reasons: string[]; score: number; withRice: boolean};
+export type EatOutOption = FoodReference & {verdict: 'good' | 'ok' | 'avoid'; reasons: string[]; score: number; withRice: boolean; image?: string | null};
 // 식당에서 공깃밥과 함께 나오는 요리(찌개·볶음·구이…): 판단·표시에 밥 한 공기를 더한다(영양 사전 값은 요리만).
 const RICE = {kcal: 310, protein: 5.6, carbs: 68, sodium: 2};
 const RICE_SERVED = ['찌개 및 전골류', '국 및 탕류', '볶음류', '구이류', '조림류', '찜류', '전·적 및 부침류'];
@@ -98,6 +98,18 @@ function largestPerName(list: FoodReference[]) {
  return [...best.values()];
 }
 
+// 사진: 음식 영양 사전엔 사진이 없어서, 홈 추천 메뉴(recipe_optimizer_results)에 모아 둔 음식 사진을 같은 코드(없으면 같은 이름)로 붙인다.
+async function withImages(options: EatOutOption[]): Promise<EatOutOption[]> {
+ if (!options.length) return options;
+ const {rows} = await getPool().query<{food_code: string; image_url: string}>(
+  `SELECT DISTINCT ON (f.food_code) f.food_code, r.image_url FROM food_reference f
+    JOIN recipe_optimizer_results r ON r.image_url IS NOT NULL
+     AND (r.food_code = f.food_code OR regexp_replace(r.target_name, '[\\s_()]', '', 'g') = regexp_replace(f.name, '[\\s_()]', '', 'g'))
+   WHERE f.food_code = ANY($1) ORDER BY f.food_code, (r.food_code = f.food_code) DESC`, [options.map((o) => o.code)]);
+ const image = new Map(rows.map((r) => [r.food_code, r.image_url]));
+ return options.map((o) => ({...o, image: image.get(o.code) ?? null}));
+}
+
 const allowed = (f: FoodReference, excluded: ExcludedFood[]) => !excluded.some((k) => excludedFoodAliases[k].some((w) => f.name.includes(w)));
 
 // 추천: 종류(선택)에 맞는 흔한 식당 메뉴 중 이번 끼니에 잘 맞는 3개. 매번 조금씩 다르게.
@@ -115,7 +127,7 @@ export async function suggestEatOut(userId: string | null, kind: EatOutKind | nu
  // 매번 조금씩 다르게: 메뉴마다 흔들림을 한 번만 정하고 그 값으로 정렬한다.
  const judged = pool.map((f) => ({f: judge(f, s), j: Math.random() * 18})).sort((a, b) => (b.f.score + b.j) - (a.f.score + a.j)).map((x) => x.f)
   .filter((f) => { const base = f.name.split(' ')[0].replace(/자장/g, '짜장').replace(/^간/, ''); if (seen.has(base)) return false; seen.add(base); return true; });
- return {state: s.state, options: judged.slice(0, 3)};
+ return {state: s.state, options: await withImages(judged.slice(0, 3))};
 }
 
 // 비교: 고민 중인 메뉴 이름들을 사전에서 찾아 이번 끼니 기준으로 순위를 매긴다.
@@ -131,5 +143,5 @@ export async function compareEatOut(userId: string | null, names: string[]) {
   if (pick) found.push(judge(pick, s)); else missing.push(name);
  }
  found.sort((a, b) => b.score - a.score);
- return {state: s.state, options: found, missing};
+ return {state: s.state, options: await withImages(found), missing};
 }

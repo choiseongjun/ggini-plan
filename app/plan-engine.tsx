@@ -18,6 +18,7 @@ export type PlanEngine = {
  alternatives(ids: string[], index: number, c: PlanConditions, limit?: number): Promise<PlanProduct[]>;
  picker(ids: string[], index: number, c: PlanConditions): Promise<{items: PickerItem[]; current: number}>;
  products(ids: string[], c?: PlanConditions): Promise<{products: PlanProduct[]; valid?: boolean}>;
+ sides(id: string, c?: PlanConditions): Promise<{product: PlanProduct; reason: string}[]>;
 };
 
 async function call<T>(body: Record<string, unknown>): Promise<T> {
@@ -37,6 +38,7 @@ export function remoteEngine(learn: (products: PlanProduct[]) => void): PlanEngi
   alternatives: (ids, index, conditions, limit) => call<{products: PlanProduct[]}>({action: 'alternatives', ids, index, conditions, limit}).then(withLearn).then((d) => d.products.slice(0, limit ?? 6)),
   picker: (ids, index, conditions) => call<{items: PickerItem[]; current: number}>({action: 'picker', ids, index, conditions}),
   products: (ids, conditions) => call<{products: PlanProduct[]; valid?: boolean}>({action: 'products', ids, conditions}).then(withLearn),
+  sides: (id, conditions) => call<{sides: {product: PlanProduct; reason: string}[]}>({action: 'sides', id, conditions}).then((d) => d.sides),
  };
 }
 
@@ -48,6 +50,8 @@ export function localEngine(catalog: PlanProduct[]): PlanEngine {
   alternatives: async (ids, index, c, limit) => alternativesFor(catalog, ids, c, index, limit),
   picker: async (ids, index, c) => ({items: pickerItems(catalog, ids, index, c, false), current: basketTotal(ids.filter(Boolean), catalog, c.owned, c.supply, c.people)}),
   products: async (ids, c) => ({products: catalog.filter((p) => ids.includes(p.id)), valid: c ? validMealIds(ids, catalog, c) && basketTotal(ids, catalog, c.owned, c.supply, c.people) <= c.budget : undefined}),
+  // 대만판은 밑반찬 데이터가 없다.
+  sides: async () => [],
  };
 }
 

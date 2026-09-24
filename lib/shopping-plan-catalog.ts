@@ -10,6 +10,16 @@ import {governmentOptimizedRecipeProducts} from './recipe-optimizer-plan';
 const TTL = 10 * 60_000;
 let cached: {at: number; products: Promise<PlanProduct[]>} | null = null;
 
+// 밑반찬(메인 옆 곁들임) 목록: "밑반찬 추천"에서만 쓴다. 메인 목록과 따로 같은 방식으로 캐시한다.
+let cachedSides: {at: number; products: Promise<PlanProduct[]>} | null = null;
+export async function sideProducts(): Promise<PlanProduct[]> {
+ if (cachedSides && Date.now() - cachedSides.at < TTL) return cachedSides.products;
+ const products = governmentOptimizedRecipeProducts('side').then((list) => list.map(slimRecipe));
+ cachedSides = {at: Date.now(), products};
+ products.catch(() => { if (cachedSides?.products === products) cachedSides = null; });
+ return products;
+}
+
 export async function planProducts():Promise<PlanProduct[]> {
  if (cached && Date.now() - cached.at < TTL) return cached.products;
  const products = governmentOptimizedRecipeProducts().then((list) => list.map(slimRecipe));

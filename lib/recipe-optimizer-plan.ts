@@ -168,7 +168,11 @@ function usageEntries(entries: {ingredientId: string; grams: number}[], scale: n
 // flow through the existing beam search unchanged. There is no real catalog product or seller
 // behind any of this — price/nutrition are the optimizer's own estimates, explicitly labelled as
 // such everywhere the value could reach a person, and productUrl is always null (nothing to link to).
-export async function governmentOptimizedRecipeProducts(): Promise<PlanProduct[]> {
+// 밑반찬 1인분(g): AI 재료는 메인 크기로 만들어져 있어 반찬으로 쓸 때 이만큼으로 줄인다.
+const SIDE_SERVING_GRAMS = 80;
+
+// kind='side': 메인 옆에 곁들이는 밑반찬(역할 side) — "밑반찬 추천"에 쓴다. 밥은 붙이지 않는다.
+export async function governmentOptimizedRecipeProducts(kind: 'meal' | 'side' = 'meal'): Promise<PlanProduct[]> {
  const results = await listRecipeOptimizerResults();
  const packs = canonicalPacks(results);
  const now = new Date().toISOString();
@@ -188,18 +192,21 @@ export async function governmentOptimizedRecipeProducts(): Promise<PlanProduct[]
   if (!role) return r.source === 'optimizer' && (isOneBowl(r.templateId, r.targetName) || mainProteinOf(r) >= 10);
   return role === 'main' || role === 'one-bowl' || (role === 'soup' && mainProteinOf(r) >= 10);
  };
- return results.filter((result) => !SIDE_DISH_TEMPLATES.has(result.templateId) && result.aiIngredients?.ingredients.length && isMeal(result)).map((result) => {
+ const isSide = (r: StoredRecipeResult) => roles[r.foodCode] === 'side';
+ return results.filter((result) => kind === 'side' ? result.aiIngredients?.ingredients.length && isSide(result) : !SIDE_DISH_TEMPLATES.has(result.templateId) && result.aiIngredients?.ingredients.length && isMeal(result)).map((result) => {
   // A GPT-composed realistic ingredient list (scripts/synthesize-ai-ingredients.mjs), when present,
   // replaces the deterministic 26-generic-ingredient mix for the main dish — it isn't a closer numeric
   // fit to the target, but it's an ingredient list that actually resembles the named dish. Rice/side
   // pairing below stays the same either way.
-  const ai = result.aiIngredients?.ingredients.length ? result.aiIngredients.ingredients : null;
+  const fullAi = result.aiIngredients?.ingredients.length ? result.aiIngredients.ingredients : null;
+  const sideFactor = kind === 'side' && fullAi ? Math.min(1, SIDE_SERVING_GRAMS / Math.max(1, fullAi.reduce((sum, i) => sum + i.grams, 0))) : 1;
+  const ai = fullAi && sideFactor < 1 ? fullAi.map((i) => ({...i, grams: Math.max(1, Math.round(i.grams * sideFactor))})) : fullAi;
   const baseIngredients = ai ? aiUsageEntries(ai, now, packs) : usageEntries(result.ingredients, SERVING_SCALE, now);
   const mainGrams = ai ? ai.reduce((sum, i) => sum + i.grams, 0) : Math.round(result.totalGrams * SERVING_SCALE);
   const mainCalories = ai ? ai.reduce((sum, i) => sum + i.caloriesKcal * i.grams / 100, 0) : (result.predicted.kcal ?? 0) * SERVING_SCALE;
   const mainProtein = ai ? ai.reduce((sum, i) => sum + i.proteinG * i.grams / 100, 0) : (result.predicted.protein ?? 0) * SERVING_SCALE;
 
-  const needsPairing = !isOneBowl(result.templateId, result.targetName) && !noRice.has(result.foodCode) && !(result.source !== 'optimizer' && roles[result.foodCode] === 'one-bowl');
+  const needsPairing = kind === 'meal' && !isOneBowl(result.templateId, result.targetName) && !noRice.has(result.foodCode) && !(result.source !== 'optimizer' && roles[result.foodCode] === 'one-bowl');
   const ricePairing = needsPairing ? usageEntries([{ingredientId: 'rice-raw', grams: RICE_PAIRING_RAW_GRAMS}], 1, now, '함께 먹는 밥') : [];
 
   // 밑반찬(김치·나물)은 자동으로 붙이지 않는다 — 한 끼는 메인 요리와 밥 한 공기.
