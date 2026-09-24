@@ -4,10 +4,10 @@ import {nutritionIsEstimated,servingNutrients} from './serving-nutrients';
 
 export const shoppingGoals = {
  maintain: {label:'균형 잡힌 식사',description:'필요 열량과 탄수화물·단백질·지방 구성을 함께 비교해요.'},
- lose: {label:'🥗 다이어트 식단',description:'한 끼 열량과 열량 대비 단백질을 함께 비교해요.'},
- muscle: {label:'💪 헬스·고단백 식단',description:'한 끼 단백질 함량을 우선하고 열량 대비 구성도 살펴요.'},
+ lose: {label:'다이어트 식단',description:'한 끼 열량과 열량 대비 단백질을 함께 비교해요.'},
+ muscle: {label:'헬스·고단백 식단',description:'한 끼 단백질 함량을 우선하고 열량 대비 구성도 살펴요.'},
  lowfat: {label:'저지방',description:'등록된 영양정보로 열량 대비 지방이 적은 메뉴를 우선해요.'},
- lowcarb: {label:'🥑 저탄고지',description:'탄수화물 비중이 낮고 지방 비중이 높은 메뉴를 우선 비교해요.'},
+ lowcarb: {label:'저탄고지',description:'탄수화물 비중이 낮고 지방 비중이 높은 메뉴를 우선 비교해요.'},
 } as const;
 export type ShoppingGoal = keyof typeof shoppingGoals;
 export const isShoppingGoal=(value:unknown):value is ShoppingGoal=>typeof value==='string'&&Object.hasOwn(shoppingGoals,value);

@@ -65,3 +65,5 @@
 .site-shell .home-planner .planner-exclusions-toggle small{display:block;font-size:12px;line-height:1.6;margin-top:5px;color:#6d725e}
 .site-shell .home-planner .planner-exclusions-toggle button{flex:none;min-height:44px;min-width:58px;padding:10px 13px;border:1px solid #dcdcca;border-radius:12px;background:#fffef9;color:#46613c;font-weight:700}
 .site-shell .home-planner .planner-exclusions{padding:16px;border:1px solid #e5e5d4;border-radius:17px;margin-top:12px;background:#fffef9}
+.site-shell .home-planner .planner-mode-hint{margin:0 0 14px;font-size:13px;line-height:1.5;color:#6b7563}
+.site-shell .home-planner p.planner-profile-summary{margin:0 0 14px;padding:10px 12px;border-radius:12px;background:#f1f4ea;font-size:13px;line-height:1.5;color:#4d5d45}

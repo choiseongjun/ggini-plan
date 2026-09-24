@@ -5,7 +5,7 @@ import styles from './shopping-goal-picker.module.css';
 export function ShoppingGoalPicker({value='maintain',onChange,settings,disabled}:{value?:ShoppingGoal;onChange:(goal:ShoppingGoal)=>void;settings:boolean;disabled?:boolean}){
  return <fieldset className={styles.picker} disabled={disabled}>
   <legend>어떤 식단으로 먹고 싶어요?</legend>
-  <p>{settings?'자주 쓰는 목표를 저장해 두세요. 홈에서 이번 추천의 목표를 바꿀 수도 있어요.':'예산 안에서 고른 목표에 맞춰 메뉴의 추천 순서를 바꿔요.'}</p>
+  <p>{settings?'자주 쓰는 목표를 저장해 두세요. 홈에서 이번 추천의 목표를 바꿀 수도 있어요.':'고른 목표에 맞춰 메뉴 추천 순서를 바꿔요.'}</p>
   <div className={styles.options}>{(Object.keys(shoppingGoals) as ShoppingGoal[]).map(goal=><label key={goal} className={value===goal?styles.selected:undefined}>
    <input type="radio" name="shopping-goal" value={goal} checked={value===goal} onChange={()=>onChange(goal)}/>
    <span><strong>{shoppingGoals[goal].label}</strong><small>{shoppingGoals[goal].description}</small></span>
