@@ -1,5 +1,6 @@
 import { catalogItems } from "../../../lib/catalog-db";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, after } from "next/server";
+import { generateAiGuide } from "../../../lib/weekly-guide-ai";
 import { authFailure, sameOrigin, sessionUser } from "../../../lib/auth";
 import { parseBodyProfile } from "../../../lib/body-profile";
 import { parseDiet, recommendMeals } from "../../../lib/meal-plan";
@@ -59,6 +60,7 @@ export async function POST(request: NextRequest) {
         WHERE monthly_meal_plans.profile<>EXCLUDED.profile OR monthly_meal_plans.diet<>EXCLUDED.diet`,
         [user.id,month,JSON.stringify(profile),JSON.stringify(diet),JSON.stringify(days)]);
       await client.query("COMMIT");
+      after(() => generateAiGuide(String(user.id)).catch(() => {}));
       return json({ plan: { ...plan, ...result.rows[0] }, saved: true }, 201);
     } catch (error) { await client.query("ROLLBACK"); throw error; }
     finally { client.release(); }

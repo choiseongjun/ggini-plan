@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, after } from "next/server";
+import { generateAiGuide } from "../../../lib/weekly-guide-ai";
 import { authFailure, sameOrigin, sessionUser } from "../../../lib/auth";
 import { getPool } from "../../../lib/db";
 import { parseBodyProfile } from "../../../lib/body-profile";
@@ -44,6 +45,8 @@ export async function PUT(request: NextRequest) {
       activity=EXCLUDED.activity,meals=EXCLUDED.meals,pregnancy=EXCLUDED.pregnancy,diet_preferences=COALESCE($9::jsonb,body_profiles.diet_preferences),
       nutrition_target=COALESCE($10::jsonb,body_profiles.nutrition_target),updated_at=NOW()`,
     [user.id,p.height,p.weight,p.age,p.sex,p.activity,p.meals,p.pregnancy,diet ? JSON.stringify(diet) : null,targetParam]);
+    // 정보가 바뀌었으니 AI 맞춤 가이드를 새로 만든다(응답은 기다리지 않는다).
+    after(() => generateAiGuide(String(user.id)).catch(() => {}));
     return NextResponse.json({ profile: p, nutritionTarget }, { headers: { "Cache-Control": "no-store" } });
   } catch { return authFailure("저장하지 못했어요. 잠시 후 다시 시도해 주세요.", 503); }
 }

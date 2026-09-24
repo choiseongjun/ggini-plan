@@ -1,0 +1,28 @@
+.wg-card{margin:0 0 18px;padding:16px 16px 14px;border-radius:18px;background:#f3f7ec;border:1px solid #e0e9d5}
+.wg-card.is-empty p{margin:6px 0 10px;font-size:14px;color:#3d4b37}
+.wg-kicker{display:block;font-size:12px;font-weight:800;color:#5a7a4b}
+.wg-headline{margin:6px 0 10px;font-size:15px;line-height:1.5;font-weight:700;color:#26321f}
+.wg-points{margin:0 0 12px;padding-left:20px;font-size:14px;line-height:1.6;color:#3d4b37}
+.wg-more{width:100%;min-height:42px;border:0;border-radius:12px;background:#526c47;color:#fff;font-weight:700}
+.wg-link{font-size:14px;font-weight:700;color:#4d6645}
+.wg-dialog{width:min(560px,calc(100vw - 24px));max-height:calc(100dvh - 32px);padding:0;border:0;border-radius:20px;background:#fff}
+.wg-dialog::backdrop{background:rgba(20,28,18,.45)}
+.wg-sheet{padding:18px 18px 22px;overflow-y:auto;max-height:calc(100dvh - 32px)}
+.wg-sheet header{display:flex;align-items:center;justify-content:space-between}
+.wg-sheet header h2{margin:0;font-size:18px}
+.wg-sheet header button{display:grid;place-items:center;width:32px;height:32px;border:0;border-radius:50%;background:#f2f5ee;color:#5b6a55}
+.wg-sheet h3{margin:18px 0 8px;font-size:15px;color:#2f3d29}
+.wg-table{width:100%;border-collapse:collapse;font-size:13px}
+.wg-table th,.wg-table td{padding:7px 4px;border-bottom:1px solid #eef2e9;text-align:left}
+.wg-table thead th{font-size:12px;color:#6c7a64;font-weight:700}
+.wg-table .is-over{color:#b24a2e;font-weight:700}
+.wg-table .is-under{color:#b7791f;font-weight:700}
+.wg-muted{color:#9aa592}
+.wg-note{margin:8px 0 0;font-size:12px;color:#6c7a64}
+.wg-focus{margin:0;padding-left:20px}
+.wg-focus li{margin-bottom:10px}
+.wg-focus strong{font-size:14px;color:#26321f}
+.wg-focus p{margin:3px 0 0;font-size:13px;line-height:1.55;color:#4d5c47}
+.wg-lists{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.wg-lists ul,.wg-plate{margin:0;padding-left:18px;font-size:13px;line-height:1.7;color:#3d4b37}
+.wg-foot{display:block;margin-top:16px;font-size:11px;line-height:1.5;color:#8a9583}
