@@ -4,6 +4,7 @@ import type {ReactNode} from 'react';
 import {RiceBuddy} from './rice-buddy';
 import {BetaBanner} from './beta-banner';
 import {usePlannerLocale} from './planner-locale';
+import './fresh-theme.css';
 export type IconName = "home" | "bag" | "chart" | "user" | "users" | "chevron" | "arrow" | "check" | "spark" | "calendar" | "wallet" | "fire" | "close" | "edit" | "left";
 
 
@@ -33,7 +34,7 @@ export function Brand({ light = false }: { light?: boolean }) {
 }
 
 
-export function AppShell({children,overlay}:{children:ReactNode;overlay?:ReactNode}){const locale=usePlannerLocale();return locale.render(<main className="site-shell" lang={locale.isTaiwan?'zh-TW':'ko-KR'}>    <aside className="promo-panel" aria-label="끼니플랜 서비스 소개"><div className="promo-inner">
+export function AppShell({children,overlay}:{children:ReactNode;overlay?:ReactNode}){const locale=usePlannerLocale();return locale.render(<main className="site-shell fresh-shell" lang={locale.isTaiwan?'zh-TW':'ko-KR'}>    <aside className="promo-panel" aria-label="끼니플랜 서비스 소개"><div className="promo-inner">
       <div className="promo-top"><Brand light/><span>MY MEAL, MY HEALTH</span></div>
       <div className="promo-copy"><div className="eyebrow">먹은 것과 먹을 것을 분석해요</div><h1>내 식사에서<br/><em>건강을 찾다.</em></h1><p>먹은 음식과 먹을 음식을 함께 살펴서<br/>내게 필요한 영양과 음식을 찾아드려요.<br/>예산에 맞는 장보기까지 한 번에.</p><div className="promo-rule"><span>부족한 영양 채우고</span><span>내 예산에 맞게</span><span>매일 더 건강하게</span></div></div>
       <div className="promo-playground"><span className="promo-sticker sticker-one">잘 먹고 🥄</span><span className="promo-sticker sticker-two">조금씩 아끼고 🌱</span><div className="promo-buddy-circle"><RiceBuddy/></div><span className="promo-veggie veggie-one">🥦</span><span className="promo-veggie veggie-two">🍅</span><div className="promo-character-caption">밥 친구 끼니랑, 매일 한 끼씩.</div></div>

@@ -1,0 +1,208 @@
+/* Shared app skin. The explicit root keeps route CSS from reviving old themes. */
+.site-shell.fresh-shell {
+  --ink: #263b39;
+  --muted: #52655d;
+  --font-rounded: KkiniRound, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --green: #168575;
+  --deep: #21594f;
+  --line: #e7eeec;
+  --cream: #f7f9fa;
+  --cute-ink: var(--ink);
+  --cute-green: var(--green);
+  --cute-cream: var(--cream);
+  color: var(--ink);
+  background: var(--cream);
+  font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  letter-spacing: -.015em;
+}
+.fresh-shell.site-shell :is(h1, h2, h3, .brand, .metric-value, .calorie-hero>strong) {
+  font-family: var(--font-rounded);
+  font-weight: 400;
+  letter-spacing: -.015em;
+  color: var(--ink);
+}
+.fresh-shell.site-shell :is(button, input, select, textarea) { font-family: inherit; }
+.fresh-shell.site-shell :is(button, a, input, select, textarea, summary):focus-visible {
+  outline: 3px solid #26a998;
+  outline-offset: 4px;
+}
+.fresh-shell.site-shell :is(.app-side, .app-frame, .app-header) { background: var(--cream); }
+.fresh-shell.site-shell .app-header { height: 80px; padding: 16px 30px; border: 0; }
+.fresh-shell.site-shell .brand { font-size: 23px; gap: 9px; color: #264e46; }
+.fresh-shell.site-shell .brand-dot { color: #24b59c; }
+.fresh-shell.site-shell .brand-mark { transform: none; gap: 3px; }
+.fresh-shell.site-shell .brand-mark span:nth-child(1) { background: #39b9a2; }
+.fresh-shell.site-shell .brand-mark span:nth-child(2) { background: #a5dfcd; }
+.fresh-shell.site-shell .brand-mark span:nth-child(3) { background: #f8c783; }
+.fresh-shell.site-shell .brand-mark span:nth-child(4) { background: #70a79c; }
+.fresh-shell.site-shell .avatar { width: 36px; height: 36px; border-radius: 50%; background: #e5f3ee; color: #247564; }
+.fresh-shell.site-shell .logout-link { color: #657874; font-size: 12px; min-height: 40px; }
+.fresh-shell.site-shell .app-content { padding: 10px 30px 28px; }
+.fresh-shell.site-shell .beta-banner { background: #eef3f2; border: 0; color: #697975; padding: 9px 16px; }
+.fresh-shell.site-shell .beta-banner p { font-size: 11px; line-height: 1.65; }
+.fresh-shell.site-shell .beta-banner button { color: #697975; }
+
+/* A compact welcome, with one friendly character instead of scattered stickers. */
+.fresh-shell.site-shell .mobile-buddy {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px; min-height: 182px; padding: 22px 24px; margin: 0 0 20px;
+  background: #e6f5ef; border: 0; border-radius: 28px; overflow: hidden;
+}
+.fresh-shell .mobile-buddy-copy { display: block; min-width: 0; }
+.fresh-shell .buddy-greeting { font-size: 11px; font-weight: 700; color: #498273; }
+.fresh-shell.site-shell .mobile-buddy h2 { font-size: 27px; line-height: 1.38; margin: 10px 0 8px; color: #244c41; }
+.fresh-shell .mobile-buddy h2 span { color: #2aa98d; }
+.fresh-shell .mobile-buddy-copy p { font-family: inherit; font-size: 12px; color: #628277; line-height: 1.6; margin: 0; }
+.fresh-shell .mobile-buddy-scene { position: relative; flex: 0 0 135px; height: 142px; }
+.fresh-shell .mobile-buddy-circle { position: absolute; inset: 4px 0 0; background: #cbeadd; border-radius: 50%; transform: none; display: grid; place-items: center; }
+.fresh-shell .mobile-buddy-circle .rice-buddy { width: 145px; height: 145px; transform: rotate(5deg); }
+.fresh-shell .mobile-buddy-spark { position: absolute; top: 14px; left: 2px; color: #55ac94; font-size: 21px; }
+.fresh-shell .buddy-hello { position: absolute; right: 0; bottom: -6px; padding: 7px 11px; background: white; border-radius: 12px 12px 12px 3px; font-size: 10px; font-weight: 700; color: #467e6a; transform: rotate(-5deg); }
+
+.fresh-shell.site-shell .home-planner { margin-bottom: 18px; }
+.fresh-shell.site-shell .home-start { display: block; text-align: left; padding: 28px; margin: 0; background: #fff; border: 1px solid var(--line); border-radius: 26px; box-shadow: 0 5px 24px #263b3904; }
+.fresh-shell.site-shell .home-start-kicker { display: inline-block; padding: 0; background: none; color: #278c78; font-size: 10px; font-weight: 800; letter-spacing: .12em; }
+.fresh-shell.site-shell .home-start h2 { margin: 12px 0; font-size: 28px; line-height: 1.42; }
+.fresh-shell.site-shell .home-start p { color: #7a8783; font-size: 13px; line-height: 1.8; margin: 0; max-width: none; }
+.fresh-shell .home-start-benefits { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0; }
+.fresh-shell .home-start-benefits span { padding: 9px 10px; border-radius: 10px; color: #697a72; background: #f5f8f7; font-size: 11px; }
+.fresh-shell.site-shell :is(.primary-button, .auth-submit) { background: #168575; border: 0; border-radius: 16px; color: white; box-shadow: none; font-size: 15px; font-weight: 700; min-height: 52px; }
+.fresh-shell.site-shell .home-start-cta { display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: none; padding: 16px 20px; margin: 0; }
+.fresh-shell .home-start-cta span { font-size: 23px; line-height: 1; }
+.fresh-shell.site-shell .home-start-custom { display: block; margin: 10px auto -6px; min-height: 42px; font-size: 12px; color: #76827d; text-decoration: none; background: transparent; border: 0; }
+.fresh-shell.site-shell :is(.primary-button, .auth-submit):hover:not(:disabled) { background: #106d60; transform: translateY(-1px); }
+.fresh-shell.site-shell :is(.primary-button, .auth-submit):disabled { background: #e3eeea; color: #697d75; box-shadow: none; cursor: wait; }
+.fresh-shell.site-shell .eo-entry { background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 18px; margin: 0 0 16px; box-shadow: none; gap: 16px; }
+.fresh-shell.site-shell .eo-entry strong { color: #475a54; font-size: 14px; }
+.fresh-shell.site-shell .eo-entry span { color: #7c8a85; font-size: 11px; line-height: 1.65; }
+.fresh-shell.site-shell .eo-entry>button { background: #fff1df; color: #886138; border: 0; border-radius: 12px; font-size: 12px; min-height: 44px; box-shadow: none; }
+
+/* Forms, results, and account screens share the same surfaces and controls. */
+.fresh-shell.site-shell :is(.home-planner .planner-controls, .auth-card, .calendar-card, .living-trend, .calorie-detail-grid article, .setup-modal, .food-card, .meal-card) { background: white; border: 1px solid var(--line); border-radius: 24px; box-shadow: none; }
+.fresh-shell.site-shell .home-planner .planner-controls { padding: 24px; }
+.fresh-shell.site-shell .home-planner .planner-heading { border-bottom: 1px solid var(--line); padding-bottom: 16px; }
+.fresh-shell.site-shell .home-planner .planner-heading h2 { font-family: var(--font-rounded); font-size: 28px; font-weight: 400; color: var(--ink); }
+.fresh-shell.site-shell .home-planner .planner-heading>span { background: #e9f5ef; color: #397b65; border-radius: 8px; }
+.fresh-shell.site-shell .home-planner .planner-heading p { color: #72817a; font-size: 13px; }
+.fresh-shell.site-shell :is(.planner-buddy>span, .planner-step) { background: #e5f3ec; color: #41856e; font-family: inherit; }
+.fresh-shell.site-shell .home-planner .planner-mode { background: #f0f5f3; border: 0; border-radius: 14px; }
+.fresh-shell.site-shell .home-planner .planner-mode button[aria-pressed=true] { background: white; color: #168575; }
+.fresh-shell.site-shell .home-planner .planner-simple>div button { background: #f7f9f8; color: #64776f; border: 1px solid #e7eeea; box-shadow: none; border-radius: 16px; min-height: 62px; }
+.fresh-shell.site-shell .home-planner .planner-simple>div button[aria-pressed=true] { border-color: #299b80; background: #e9f7ef; color: #246f58; box-shadow: inset 0 0 0 1px #299b80; }
+.fresh-shell.site-shell .home-planner .planner-simple>div button strong { font-family: inherit; font-weight: 700; font-size: 16px; }
+.fresh-shell.site-shell :is(.planner-form, .body-form, .auth-card) :is(input:not([type=checkbox]), select, textarea) { border: 1px solid #dde7e2; background: #fcfdfd; border-radius: 12px; color: #344f44; font-size: 16px; min-height: 48px; }
+.fresh-shell.site-shell .home-planner .planner-form>.primary-button { background: #168575; border: 0; box-shadow: none; font-family: inherit; font-size: 15px; font-weight: 700; border-radius: 16px; }
+.fresh-shell.site-shell :is(.home-explore, .home-secondary, .home-guide-entry, .planner-more-options, .planner-profile-summary, .profile-extra) { background: white; border: 1px solid var(--line); border-radius: 18px; color: #63796e; box-shadow: none; }
+.fresh-shell.site-shell :is(.home-explore>summary, .home-explore nav a, .home-guide-entry a, .text-link) { color: #547767; }
+.fresh-shell.site-shell .home-explore { margin: 18px 0; padding: 18px; }
+.fresh-shell.site-shell .calorie-hero { background: #e6f5ef; border: 0; border-radius: 24px; }
+.fresh-shell.site-shell .calorie-hero>strong { color: #267460; }
+.fresh-shell.site-shell :is(.auth-stage, .auth-header) { background: var(--cream); }
+.fresh-shell.site-shell .auth-intro h2 em { color: #168575; }
+.fresh-shell.site-shell .auth-switch { background: #edf4f0; }
+.fresh-shell.site-shell .auth-switch button.active { color: #168575; }
+.fresh-shell.site-shell .energy-card { background: #e6f5ef; border: 0; border-radius: 24px; box-shadow: none; color: #365b4c; }
+.fresh-shell.site-shell .energy-card.is-empty { padding: 24px 20px; gap: 14px; }
+.fresh-shell.site-shell .energy-card.is-empty>div:last-child { min-width: 0; }
+.fresh-shell.site-shell .energy-card.is-empty strong { font-family: var(--font-rounded); font-weight: 400; font-size: 22px; line-height: 1.5; word-break: keep-all; }
+.fresh-shell.site-shell .energy-card.is-empty p { color: #668276; font-size: 12px; line-height: 1.75; }
+.fresh-shell.site-shell .wizard-next { background: #168575; border: 0; border-radius: 14px; box-shadow: none; font-family: inherit; font-size: 14px; min-height: 46px; }
+.fresh-shell.site-shell .reset-data { background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 20px; }
+.fresh-shell.site-shell .reset-data h3 { font-size: 17px; }
+.fresh-shell.site-shell .reset-data p { color: #7b8782; font-size: 12px; }
+.fresh-shell.site-shell .page-intro h2 span { color: #268b73; }
+.fresh-shell.site-shell .planner-profile-summary { background: #f2f8f5; color: #607c6e; }
+.fresh-shell.site-shell .bottom-nav { background: #ffffffed; border-top: 1px solid var(--line); box-shadow: 0 -6px 24px #314e3f03; min-height: 72px; }
+.fresh-shell.site-shell .bottom-nav button { color: #94a39c; position: relative; }
+.fresh-shell.site-shell .bottom-nav button.active { color: #168575; }
+.fresh-shell.site-shell .bottom-nav button.active::before { display: none; }
+.fresh-shell.site-shell .bottom-nav.launch-nav button::after { display: none; }
+.fresh-shell.site-shell .bottom-nav button.active svg { background: #e5f5ed; box-sizing: content-box; padding: 6px 16px; margin: -6px -16px; border-radius: 18px; stroke-width: 2; }
+
+/* The desktop introduction uses the same calm, mint palette. */
+.fresh-shell.site-shell .promo-panel { background: #e8f4ef; }
+.fresh-shell.site-shell .promo-inner { display: flex; flex-direction: column; padding: 38px 48px 28px; }
+.fresh-shell.site-shell .promo-copy { margin-top: clamp(32px, 6vh, 70px); }
+.fresh-shell.site-shell .promo-copy h1 { font-size: clamp(38px, 3.6vw, 58px); line-height: 1.28; color: #294d40; }
+.fresh-shell.site-shell .promo-copy h1 em { color: #269d81; }
+.fresh-shell.site-shell .promo-copy p { color: #6b8479; font-size: 14px; }
+.fresh-shell.site-shell :is(.eyebrow, .promo-rule, .promo-top>span, .promo-footer) { color: #688e7c; }
+.fresh-shell.site-shell .promo-rule { display: flex; flex-wrap: wrap; gap: 8px; }
+.fresh-shell.site-shell .promo-rule span { padding: 7px 10px; border-radius: 20px; background: #ffffff80; font-size: 11px; }
+.fresh-shell.site-shell .promo-playground { position: relative; inset: auto; flex: 1; min-height: 180px; max-height: 330px; width: 100%; margin: 24px auto 0; }
+.fresh-shell.site-shell .promo-buddy-circle { width: min(60%, 250px); max-height: 100%; background: #c9e8d9; border-radius: 50%; transform: none; }
+.fresh-shell.site-shell .promo-sticker { font-family: inherit; font-size: 13px; font-weight: 700; padding: 12px 16px; background: #fff; color: #518371; box-shadow: 0 5px 20px #4d856509; }
+.fresh-shell.site-shell .promo-veggie { font-size: 32px; }
+.fresh-shell.site-shell .promo-character-caption { display: none; }
+.fresh-shell.site-shell .promo-footer { position: static; margin-top: auto; padding-top: 30px; font-size: 10px; }
+
+/* Rounded titles carry the personality; reading and action text stay crisp. */
+.fresh-shell.site-shell :is(h1, h2, h3, p, summary, .eo-entry span) {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.fresh-shell.site-shell .brand { font-size: 28px; }
+.fresh-shell.site-shell .mobile-buddy h2 { font-size: 30px; line-height: 1.35; }
+.fresh-shell.site-shell .home-start h2 { font-size: 32px; line-height: 1.35; }
+.fresh-shell.site-shell :is(.home-start p, .home-planner .planner-heading p, .page-intro p, .auth-intro p, .energy-card.is-empty p, .reset-data p) {
+  color: var(--muted); font-size: 15px; line-height: 1.8;
+}
+.fresh-shell.site-shell :is(.mobile-buddy-copy p, .eo-entry span) {
+  color: #486457; font-size: 14px; line-height: 1.7;
+}
+.fresh-shell.site-shell .eo-entry strong { font-size: 16px; color: #314d40; }
+.fresh-shell.site-shell :is(.buddy-greeting, .home-start-kicker, .home-planner .planner-heading>span) {
+  font-size: 13px; color: #326a56; letter-spacing: .015em;
+}
+.fresh-shell.site-shell .buddy-hello { font-size: 12px; color: #32634e; }
+.fresh-shell.site-shell .home-start-benefits span { font-size: 13px; color: #486052; }
+.fresh-shell.site-shell :is(.logout-link, .home-start-custom, .eo-entry>button) { font-size: 14px; color: #4f6258; }
+.fresh-shell.site-shell :is(.primary-button, .auth-submit, .home-planner .planner-form>.primary-button, .wizard-next) {
+  font-size: 16px; font-weight: 700; letter-spacing: 0; line-height: 1.5;
+}
+.fresh-shell.site-shell :is(.home-explore>summary, .home-secondary>summary, .profile-extra>summary, .home-guide-entry a, .home-explore nav a) {
+  font-size: 15px; color: #3f5f4e; line-height: 1.7;
+}
+.fresh-shell.site-shell :is(.body-note, .planner-mode-hint, .planner-profile-summary, .planner-profile-summary a, .planner-simple small, .planner-budget-input>small, .auth-demo-note, .google-signin-caption) {
+  font-size: 14px; line-height: 1.75; color: var(--muted);
+}
+.fresh-shell.site-shell .beta-banner { color: #4d6058; }
+.fresh-shell.site-shell .beta-banner p { font-size: 12px; line-height: 1.65; }
+.fresh-shell.site-shell .bottom-nav button { color: #5a7064; }
+.fresh-shell.site-shell .bottom-nav button span { font-size: 13px; }
+.fresh-shell.site-shell .promo-copy p { font-size: 17px; line-height: 1.85; color: #476453; }
+.fresh-shell.site-shell :is(.eyebrow, .promo-rule, .promo-top>span, .promo-footer) { color: #4a6a58; }
+.fresh-shell.site-shell :is(.promo-rule span, .promo-footer) { font-size: 12px; }
+@media (min-width: 911px) {
+  .fresh-shell.site-shell { grid-template-columns: minmax(380px, 45%) minmax(480px, 55%); }
+  .fresh-shell.site-shell .app-frame { width: 100%; max-width: none; border-left: 1px solid #e2eee7; border-right: 0; }
+  .fresh-shell.site-shell .app-side { justify-content: flex-start; }
+}
+@media (max-width: 480px) {
+  .fresh-shell.site-shell .app-header { height: 72px; padding: max(14px, env(safe-area-inset-top)) 22px 14px; }
+  .fresh-shell.site-shell .app-content { padding: 8px 18px 24px; }
+  .fresh-shell.site-shell .mobile-buddy { min-height: 172px; padding: 20px; border-radius: 24px; }
+  .fresh-shell.site-shell .mobile-buddy h2 { font-size: 27px; }
+  .fresh-shell .mobile-buddy-scene { flex-basis: 108px; height: 126px; }
+  .fresh-shell .mobile-buddy-circle .rice-buddy { width: 125px; height: 125px; }
+  .fresh-shell.site-shell .mobile-buddy-copy p { font-size: 13px; }
+  .fresh-shell.site-shell .home-start { padding: 24px 22px; border-radius: 24px; }
+  .fresh-shell.site-shell .home-start h2 { font-size: 29px; }
+  .fresh-shell.site-shell .home-planner .planner-controls { padding: 20px 16px; }
+  .fresh-shell.site-shell .eo-entry { padding: 16px; gap: 10px; }
+  .fresh-shell.site-shell .eo-entry>button { flex-shrink: 0; }
+}
+@media (max-width: 360px) {
+  .fresh-shell.site-shell .mobile-buddy { padding: 16px; }
+  .fresh-shell.site-shell .mobile-buddy h2 { font-size: 25px; }
+  .fresh-shell .mobile-buddy-scene { flex-basis: 90px; }
+  .fresh-shell .mobile-buddy-circle .rice-buddy { width: 110px; }
+  .fresh-shell .home-start-benefits { gap: 5px; }
+  .fresh-shell.site-shell .home-start-benefits span { padding: 8px; font-size: 12px; }
+  .fresh-shell.site-shell .eo-entry { flex-wrap: wrap; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fresh-shell *, .fresh-shell *::before, .fresh-shell *::after { animation: none !important; transition: none !important; }
+}

@@ -7,7 +7,7 @@
 .options input{width:16px;height:16px;margin:3px 0 0;flex:none;accent-color:#44735b}
 .options input:focus-visible{outline:2px solid #23553c;outline-offset:3px}
 .options strong{display:block;font-size:14px;line-height:1.5}
-.options small{display:block;margin-top:5px;font-size:12px;font-weight:400;line-height:1.6;color:#625e59}
+.options small{display:block;margin-top:5px;font-size:14px;font-weight:400;line-height:1.7;color:#526057;word-break:keep-all;overflow-wrap:anywhere}
 .picker .note{font-size:12px;margin-bottom:0}
 @media(max-width:680px){.options{grid-template-columns:1fr}.options label{padding:12px}.options small{margin-top:2px}}
 

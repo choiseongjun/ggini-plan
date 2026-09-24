@@ -337,10 +337,11 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    <button type="button" className="planner-restart" disabled={busy||progress.busy} onClick={returnToSetup}><span aria-hidden="true">⚙️</span> 조건 바꿔서 다시 추천받기</button>
   </div>}
   {mode==='plan'&&!ids.length&&!locale.isTaiwan&&!showSetup&&<section className="home-start" aria-labelledby="planner-title">
-   <span className="home-start-kicker">내 건강에 맞는 먹거리</span>
-   <h2 id="planner-title">이번 주 뭐 먹을지,<br/>한 번에 정해 드릴게요</h2>
+   <span className="home-start-kicker">MY MEAL PLAN</span>
+   <h2 id="planner-title">이번 주 식단,<br/>고민 없이 준비해요</h2>
    <p>{personalization?.hasProfile?'내 몸 정보와 목표에 맞춰 끼니별 메뉴·재료·영양을 준비해요.':'버튼 한 번이면 끼니별 메뉴와 재료, 영양까지 준비해요.'}</p>
-   <button type="button" className="primary-button home-start-cta" disabled={loading||busy||!progress.ready||!catalogReady} onClick={()=>void generate()}>{loading?'준비 중…':busy?'식단을 짜고 있어요…':'식단 추천받기'}</button>
+   <div className="home-start-benefits"><span>🥗 끼니별 메뉴</span><span>🧺 장보기 재료</span><span>🥚 영양 정보</span></div>
+   <button type="button" className="primary-button home-start-cta" disabled={loading||busy||!progress.ready||!catalogReady} onClick={()=>void generate()}>{loading?'준비 중…':busy?'식단을 짜고 있어요…':<>내 식단 추천받기 <span aria-hidden="true">↗</span></>}</button>
    <button type="button" className="home-start-custom" disabled={loading||busy} onClick={()=>setShowSetup(true)}>조건 직접 정하기</button>
   </section>}
   {(mode!=='plan'||!ids.length)&&(mode!=='plan'||locale.isTaiwan||showSetup)&&<details ref={setupRef} tabIndex={-1} className="planner-controls" open={mode==='settings'||mode==='plan'}><summary>{ids.length?'조건 바꿔서 새로 추천받기':locale.isTaiwan?'내 예산으로 식단 준비하기':'조건 정해서 추천받기'}</summary>
