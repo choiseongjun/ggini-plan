@@ -83,7 +83,8 @@ export default function Home() {
   async function saveSetup(event:React.FormEvent){event.preventDefault();setSavingBudget(true);setDataError("");try{const r=await fetch("/api/dashboard",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"budget",amount:Number(draftBudget)})});const d=await r.json();if(!r.ok)throw new Error(d.error);await refreshDashboard();setShowSetup(false);}catch(e){setDataError(e instanceof Error?e.message:"저장하지 못했어요.");}finally{setSavingBudget(false);}}
   const displayName = authUser?.name ?? "나";
 
-  const needsCatalog = tab === "home" || tab === "cart" || tab === "compare" || tab === "community";
+  // 홈은 레시피 추천(/api/shopping-plan)만 쓴다 — 예전 상품 목록(/api/catalog)은 받지 않는다.
+  const needsCatalog = tab === "cart" || tab === "compare" || tab === "community";
   useEffect(() => {
     if(!needsCatalog||catalogLoaded)return;
     const controller=new AbortController();
@@ -180,7 +181,7 @@ export default function Home() {
         {dataError&&<p className="auth-error" role="alert">{dataError}</p>}
 
         {(tab==="home"||tab==="cart"||tab==="compare") && catalogError && <p className="auth-error" role="alert">{catalogError}</p>}
-        {(tab==="home"||tab==="cart") && catalogLoaded && !catalogError && products.length===0 && <p className="body-note">등록된 상품이 없습니다.</p>}
+        {tab==="cart" && catalogLoaded && !catalogError && products.length===0 && <p className="body-note">등록된 상품이 없습니다.</p>}
         {tab==="compare" && catalogLoaded && !catalogError && !compareProduct && <p className="body-note">상품을 찾을 수 없습니다.</p>}
         {tab === "record" && <section className="home-guide-entry"><strong>지난 식단과 지출 돌아보기</strong><p>달력은 기록이 쌓인 뒤 필요할 때 열어 보세요.</p><Link href="/calendar">식단·지출 달력 열기 →</Link></section>}
         {tab === "record" && dashboard && <Dashboard key={`${authUser?.id??"guest"}-${tab}-${recordDate}`} mode={tab} recordDate={recordDate} data={dashboard} userId={authUser?.id} products={products} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")} onCalendar={()=>setTab("calendar")} onBudget={editBudget} onRefresh={refreshDashboard} onCompare={openCompare}/>}

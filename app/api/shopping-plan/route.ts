@@ -12,7 +12,12 @@ import {initialConditions} from '../../../lib/shopping-plan';
 async function personalizedCatalog(userId?:string){
  const row=userId?(await getPool().query('SELECT height::float8,weight::float8,age,sex,activity,meals,pregnancy,diet_preferences,nutrition_target FROM body_profiles WHERE user_id=$1',[userId])).rows[0]:null;
  const catalog=await planProducts(),diet=parseDiet(row?.diet_preferences)??defaultDiet;
- return {...personalizeProducts(catalog,row,row?.diet_preferences,row?.nutrition_target),baseProducts:personalizeProducts(catalog,row,{...diet,excluded:[]},row?.nutrition_target).products,excluded:diet.excluded};
+ const filtered=personalizeProducts(catalog,row,row?.diet_preferences,row?.nutrition_target);
+ const base=personalizeProducts(catalog,row,{...diet,excluded:[]},row?.nutrition_target).products;
+ // 프로필 제외 재료로 걸러진 목록을 따로 통째로 보내지 않는다(같은 메뉴 수백 개가 두 번 가서 응답이 13MB였다).
+ // 전체 목록 한 번 + 걸러진 메뉴 id만 보내고, 제외 재료는 추천 조건에서 다시 적용된다.
+ const visible=new Set(filtered.products.map(p=>p.id));
+ return {personalization:filtered.personalization,products:base,filtered:filtered.products,profileHiddenIds:base.filter(p=>!visible.has(p.id)).map(p=>p.id),excluded:diet.excluded};
 }
 export const runtime='nodejs';
 export async function PATCH(request:NextRequest){
@@ -40,7 +45,8 @@ export async function GET(request:NextRequest){
   const resetAt=user?(await getPool().query('SELECT reset_at AS "resetAt" FROM user_data_resets WHERE user_id=$1',[user.id])).rows[0]?.resetAt:null;
   const preferences=user?(await getPool().query('SELECT conditions FROM shopping_preferences WHERE user_id=$1',[user.id])).rows[0]?.conditions:null;
   const plan=user?(await getPool().query('SELECT conditions,meal_ids AS "mealIds" FROM shopping_plans WHERE user_id=$1 ORDER BY id DESC LIMIT 1',[user.id])).rows[0]:null;
-  return json({...await personalizedCatalog(user?.id),preferences:preferences??null,plan:plan??null,resetAt:resetAt??null});
+  const catalog=await personalizedCatalog(user?.id);
+  return json({personalization:catalog.personalization,products:catalog.products,profileHiddenIds:catalog.profileHiddenIds,excluded:catalog.excluded,preferences:preferences??null,plan:plan??null,resetAt:resetAt??null});
  }catch{return authFailure('장보기 식단을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.',503);}
 }
 export async function PUT(request:NextRequest){
@@ -66,7 +72,7 @@ export async function POST(request:NextRequest){
   if(personalized.personalization.blocked)return authFailure('현재 신체 정보에서는 자동 맞춤 추천을 제공하지 않아요.',422);
   const stock=parseStock((await getPool().query("SELECT stock FROM shopping_progress WHERE user_id=$1 AND scope='products'",[user.id])).rows[0]?.stock??{})??{};
   c.supply=Object.fromEntries(Object.values(stock).map(i=>[i.id,i.owned+i.ordered]));
-  const products=c.excluded===undefined?personalized.products:personalized.baseProducts;
+  const products=c.excluded===undefined?personalized.filtered:personalized.products;
   if(!validMealIds(ids,products,c)||basketTotal(ids,products,c.owned,c.supply,c.people)>c.budget)return authFailure('상품 또는 가격이 변경됐어요. 식단을 다시 추천받아 주세요.',409);
   await getPool().query('INSERT INTO shopping_plans(user_id,conditions,meal_ids) VALUES($1,$2,$3)',[user.id,JSON.stringify(c),JSON.stringify(ids)]);
   return json({saved:true},201);

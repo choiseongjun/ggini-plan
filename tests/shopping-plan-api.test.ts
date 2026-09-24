@@ -35,8 +35,8 @@ test('guest recommendation, authenticated save, account isolation and server val
   assert.equal(personalized.personalization.hasProfile,true);
   assert.deepEqual(personalized.personalization.excluded,['새우']);
   assert.deepEqual(personalized.excluded,['shrimp']);
-  assert.ok(personalized.baseProducts.length>personalized.products.length);
-  const restoredProduct=personalized.baseProducts.find((p:{id:string;name:string})=>!personalized.products.some((q:{id:string})=>q.id===p.id)&&!/시리얼|그래놀라/.test(p.name));
+  assert.ok(personalized.profileHiddenIds.length>0);
+  const restoredProduct=personalized.products.find((p:{id:string;name:string})=>personalized.profileHiddenIds.includes(p.id)&&!/시리얼|그래놀라/.test(p.name));
   assert.ok(restoredProduct);
   const cleared={...initialConditions,budget:200000,days:1,meals:1,excluded:[]};
   assert.equal((await POST(req(cookies[0],{conditions:cleared,mealIds:[restoredProduct.id]}))).status,201);

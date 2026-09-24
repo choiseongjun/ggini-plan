@@ -135,7 +135,9 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
  useEffect(()=>{
   const controller=new AbortController();
   // Revisiting 홈 reuses this session's copy instead of re-downloading the catalog behind a loader.
-  const finishLoading=hasFreshJson(planKey,planTtl)?()=>{}:startLoading('나에게 맞는 장보기를 준비하고 있어요');
+  // 저장된 식단이 있을 때만 전체 화면 로딩을 띄운다. 첫 화면(버튼 하나)은 데이터 없이도 보이므로 뒤에서 받는다.
+  const hasDraft=(()=>{try{const d=JSON.parse(localStorage.getItem(draftKey)??sessionStorage.getItem(draftKey)??'null');return Array.isArray(d?.mealIds)&&d.mealIds.some(Boolean);}catch{return false;}})();
+  const finishLoading=hasFreshJson(planKey,planTtl)||(mode==='plan'&&!hasDraft)?()=>{}:startLoading('나에게 맞는 장보기를 준비하고 있어요');
   cachedJson(endpoint,{key:planKey,ttl:planTtl}).then(d=>{
    if(controller.signal.aborted)return;
    const catalog=d.baseProducts??d.products,defaults=d.excluded??[];
@@ -156,7 +158,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    }catch{/* An expired draft should not stop browsing. */}
   }).catch(e=>{if(!controller.signal.aborted)setError(e.message);}).finally(()=>{if(!controller.signal.aborted)setLoading(false);finishLoading();});
   return()=>{controller.abort();finishLoading();};
- },[retry,draftKey,locale,endpoint,planKey,defaultConditions,startLoading]);
+ },[retry,draftKey,locale,endpoint,planKey,defaultConditions,startLoading,mode]);
  function remember(c:PlanConditions,mealIds:string[]){try{localStorage.setItem(draftKey,encodeDraft(c,mealIds));}catch{/* Saving to an account remains available. */}}
  function updateMealKinds(mealKinds:MealKind[]){updatePreferences({mealKinds});}
  function updatePreferences(patch:Partial<Pick<PlanConditions,'mealKinds'|'goal'|'budgetMode'|'swapPreferences'>>){
