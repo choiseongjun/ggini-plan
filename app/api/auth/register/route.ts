@@ -6,8 +6,12 @@ import { validMemberConsent } from '../../../../lib/member-policy';
 
 export const runtime = "nodejs";
 
+// 이메일 회원가입은 닫았다 — 새 계정은 구글로만 만든다. 기존 이메일 계정의 로그인(/api/auth/login)은 그대로.
+const EMAIL_SIGNUP_CLOSED = true;
+
 export async function POST(request: NextRequest) {
   if (!sameOrigin(request)) return authFailure("요청을 확인할 수 없습니다.", 403);
+  if (EMAIL_SIGNUP_CLOSED) return authFailure("이메일 회원가입은 종료됐어요. Google로 계속하기를 이용해 주세요.", 410);
   let input: unknown;
   try { input = await request.json(); } catch { return authFailure("입력 내용을 확인해 주세요.", 400); }
   if (!input || typeof input !== "object") return authFailure("입력 내용을 확인해 주세요.", 400);

@@ -82,11 +82,6 @@ export function AuthScreen({ onSuccess, onExplore, initialError = "", admin = fa
     }
   }
 
-  function switchMode(next: "login" | "register") {
-    setMode(next);
-    setError("");
-    setPassword("");
-  }
 
   return <div className="auth-stage">
     {(pending||googlePending)&&<AppLoading message={googlePending?"구글 로그인을 기다리고 있어요":mode==="register"?"나만의 식탁을 만들고 있어요":"로그인하고 있어요"}/>}
@@ -101,14 +96,12 @@ export function AuthScreen({ onSuccess, onExplore, initialError = "", admin = fa
         </button>
         <p className="google-signin-caption">처음 이용한다면 가입 동의를 확인한 뒤 계정을 만들어요.</p></>}
         {error && <p className="auth-error" role="alert">{error}</p>}
-        {!admin && <div className="auth-divider"><span>또는 이메일로 계속하기</span></div>}
-        {!admin && <div className="auth-switch" role="tablist" aria-label="계정 선택"><button type="button" role="tab" aria-selected={mode === "login"} className={mode === "login" ? "active" : ""} onClick={() => switchMode("login")}>로그인</button><button type="button" role="tab" aria-selected={mode === "register"} className={mode === "register" ? "active" : ""} onClick={() => switchMode("register")}>회원가입</button></div>}
-        <form onSubmit={submit}>
+        {admin && <form onSubmit={submit}>
           {mode === "register" && <label>이름<input autoComplete="name" value={name} onChange={(event) => setName(event.target.value)} minLength={2} maxLength={40} required placeholder="이름을 입력해 주세요"/></label>}
           <label>이메일<input type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} required placeholder="hello@example.com"/></label>
           <label>비밀번호<input type="password" autoComplete={mode === "login" ? "current-password" : "new-password"} value={password} onChange={(event) => setPassword(event.target.value)} minLength={mode === "register" ? 8 : undefined} required placeholder={mode === "register" ? "8자 이상 입력해 주세요" : "비밀번호를 입력해 주세요"}/></label>
           <button className="auth-submit" type="submit" disabled={pending || googlePending}>{pending ? "처리하는 중…" : mode === "login" ? "로그인하기" : "계정 만들기"}</button>
-        </form>
+        </form>}
       </div>
       <button className="auth-explore" type="button" onClick={onExplore}>로그인 없이 둘러보기 <span aria-hidden="true">→</span></button>
       <PolicyLinks/>
