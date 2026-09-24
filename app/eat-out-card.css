@@ -1,0 +1,45 @@
+.eo-entry{display:flex;align-items:center;gap:12px;margin:0 0 18px;padding:14px 14px 14px 16px;border-radius:20px;background:#fff7ee;border:1px solid #f1e0cc;box-shadow:0 4px 14px #5a3a1a0d}
+.eo-entry>div{flex:1;min-width:0;display:grid;gap:2px}
+.eo-entry strong{font-size:15px;color:#4a3320}
+.eo-entry span{font-size:12px;line-height:1.45;color:#7d6450}
+.eo-entry>button{flex:none;min-height:42px;padding:0 14px;border:0;border-radius:14px;background:#e98a63;color:#fff;font:inherit;font-size:14px;font-weight:800;cursor:pointer}
+dialog.eo-dialog{position:fixed;inset:0;width:min(560px,calc(100% - 24px));height:fit-content;max-height:90dvh;margin:auto;padding:0;border:0;border-radius:28px;background:#fbfcf6;color:#33402c;box-shadow:0 24px 60px #1d2a1a40;overflow:hidden}
+dialog.eo-dialog:not([open]){display:none}
+dialog.eo-dialog[open]{display:flex;animation:eo-in .42s cubic-bezier(.22,.9,.3,1) both}
+dialog.eo-dialog::backdrop{background:#1d2a1a66;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+@keyframes eo-in{from{opacity:0;transform:translateY(40px) scale(.98)}}
+.eo-sheet{display:flex;flex-direction:column;width:100%;max-height:90dvh}
+.eo-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:18px 18px 10px;background:#fff}
+.eo-kicker{display:inline-block;padding:4px 10px;border-radius:999px;background:#fdeee4;font-size:11px;font-weight:800;color:#a4502e}
+.eo-head h2{margin:8px 0 0;font-size:20px;letter-spacing:-.02em}
+.eo-close{flex-shrink:0;display:grid;place-items:center;width:36px;height:36px;border:0;border-radius:50%;background:#eef2e4;color:#5c6e55;cursor:pointer}
+.eo-tabs{display:flex;gap:6px;padding:0 18px 12px;background:#fff;border-bottom:1px solid #eceee4}
+.eo-tabs button{flex:1;min-height:38px;border:1.5px solid #e1e6d6;border-radius:12px;background:#fff;color:#5c6e55;font:inherit;font-size:13px;font-weight:700}
+.eo-tabs button[aria-selected=true]{background:#526c47;border-color:#526c47;color:#fff}
+.eo-scroll{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:14px 14px 20px;display:grid;gap:10px;align-content:start}
+.eo-kinds{display:flex;flex-wrap:wrap;gap:6px}
+.eo-kinds button{padding:8px 12px;border:1.5px solid #e1e6d6;border-radius:999px;background:#fff;color:#5c6e55;font:inherit;font-size:13px;font-weight:700}
+.eo-kinds button[aria-pressed=true]{background:#e98a63;border-color:#e98a63;color:#fff}
+.eo-compare{display:flex;gap:8px}
+.eo-compare input{flex:1;min-width:0;height:46px;padding:0 12px;border:1.5px solid #e1e6d6;border-radius:14px;background:#fff;font:inherit;font-size:16px}
+.eo-compare button{flex:none;padding:0 16px;border:0;border-radius:14px;background:#526c47;color:#fff;font:inherit;font-weight:800}
+.eo-state{margin:0;font-size:12px;line-height:1.5;color:#6c7a64}
+.eo-winner{margin:0;padding:12px 14px;border-radius:16px;background:#e9f1dd;font-size:14px;line-height:1.55;color:#2f4527}
+.eo-note{margin:0;font-size:13px;color:#6c7a64}
+.eo-error{margin:0;font-size:13px;color:#b24a2e}
+.eo-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.eo-list>li{padding:14px;border-radius:20px;background:#fff;box-shadow:0 2px 10px #3a4a2a0d;border:2px solid transparent}
+.eo-list>li.is-good{border-color:#cfe0bf}
+.eo-item-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.eo-item-top strong{font-size:15px;line-height:1.4;color:#26321f}
+.eo-item-top em{flex:none;padding:3px 9px;border-radius:999px;font-style:normal;font-size:11px;font-weight:800}
+.is-good .eo-item-top em{background:#e3eed7;color:#3f5e33}
+.is-ok .eo-item-top em{background:#f3f1e3;color:#6c6a3c}
+.is-avoid .eo-item-top em{background:#fbe9e0;color:#a4502e}
+.eo-meta{margin:6px 0 0;font-size:12px;color:#6c7a64}
+.eo-reasons{margin:8px 0 0;padding-left:16px;font-size:13px;line-height:1.55;color:#4d5c47}
+.eo-eat{width:100%;min-height:40px;margin-top:10px;border:1.5px solid #cfdcc2;border-radius:12px;background:#f6f9f1;color:#3f5e33;font:inherit;font-size:13px;font-weight:800}
+.eo-eat:disabled{opacity:.7}
+.eo-again{min-height:42px;border:1.5px solid #e1e6d6;border-radius:14px;background:#fff;color:#5c6e55;font:inherit;font-weight:700}
+.eo-foot{font-size:11px;line-height:1.5;color:#8a9583}
+@media (prefers-reduced-motion:reduce){dialog.eo-dialog[open]{animation:none}}

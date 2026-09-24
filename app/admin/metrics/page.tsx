@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import {useEffect,useState} from 'react';
-const labels:Record<string,string>={visit:'방문',generated:'추천 완료',swapped:'메뉴 교체',seller:'판매처 이동',returned:'재방문',photo_logged:'사진 기록',weight_logged:'체중 기록',push_enabled:'알림 켬',push_opened:'알림으로 들어옴',push_logged:'알림으로 들어와 기록',push_action_logged:'알림 버튼으로 바로 기록',snack_logged:'간식·음료 기록'};
+const labels:Record<string,string>={visit:'방문',generated:'추천 완료',swapped:'메뉴 교체',seller:'판매처 이동',returned:'재방문',photo_logged:'사진 기록',weight_logged:'체중 기록',push_enabled:'알림 켬',push_opened:'알림으로 들어옴',push_logged:'알림으로 들어와 기록',push_action_logged:'알림 버튼으로 바로 기록',snack_logged:'간식·음료 기록',eat_out_used:'지금 뭐 먹지'};
 export default function Metrics(){
  const [rows,setRows]=useState<{day:string;event:string;visitors:number}[]|null>(null),[error,setError]=useState('');
  const [habit,setHabit]=useState<{weeks:{week:number;active:number;habit:number}[];members:number;today:string}|null>(null);

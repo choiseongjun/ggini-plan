@@ -25,6 +25,7 @@ import { useLoadingTask } from "./app-loading";
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {PlanEngineContext,localEngine,remoteEngine} from './plan-engine';
 import {WeeklyGuideCard} from './weekly-guide-card';
+import {EatOutCard} from './eat-out-card';
 import Link from 'next/link';
 import type {personalizeProducts} from '../lib/shopping-personalization';
 import {healthFlags,type TodayContext} from '../lib/today-context';
@@ -309,6 +310,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    <button type="button" disabled={loading||busy||progress.busy||!progress.ready||(!ids.length&&!Object.values(progress.stock).some(i=>i.owned||i.ordered))} onClick={()=>setConfirmReset(true)}>모두 초기화</button>
    {confirmReset&&<div role="group" aria-label="장바구니 초기화 확인"><strong>추천 메뉴와 주문·보유 목록을 모두 비울까요?</strong><p>홈의 현재 추천 식단도 함께 비워요. 먹은 기록·식비 기록·예산과 취향·공유 링크는 유지돼요. 판매처의 실제 주문은 취소되지 않아요. 이 추천 밖에서 따로 관리하는 재료 목록과 함께 담은 장바구니는 별도예요.</p><button type="button" disabled={progress.busy} onClick={()=>setConfirmReset(false)}>취소</button><button type="button" disabled={progress.busy||!progress.ready} onClick={()=>void resetCart()}>{progress.busy?'초기화 중…':'확인, 모두 초기화'}</button></div>}
   </section>}
+  {mode==='plan'&&!locale.isTaiwan&&<EatOutCard userId={userId} onLogin={onLogin}/>}
   {mode==='plan'&&!locale.isTaiwan&&userId&&<WeeklyGuideCard userId={userId}/>}
   {/* 앱의 한 바퀴: 맞춤 추천 → 장보고 요리 → 사진으로 기록 → 분석. 장보기를 시작했으면 기록 단계를 강조해요. */}
   {mode==='plan'&&ids.length>0&&(()=>{const shopping=Object.values(progress.stock).some(i=>i.owned>0||i.ordered>0);const current=shopping?3:2;return <ol className="home-steps" aria-label="식단 진행 단계">

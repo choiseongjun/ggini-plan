@@ -86,10 +86,10 @@ export function InstallPrompt({ active }: { active: boolean }) {
 
   if (!active || hidden || !mode) return null;
   return <aside className="install-prompt" aria-label="끼니플랜 앱 설치 안내">
-    <div className="install-prompt-copy"><span className="install-prompt-icon" aria-hidden="true"><Icon name="home" size={23}/></span><div><strong>끼니플랜, 앱으로 더 간편하게</strong><p>홈 화면에서 바로 열고, 오늘의 끼니를 챙겨요.</p></div></div>
+    <div className="install-prompt-copy"><span className="install-prompt-icon" aria-hidden="true"><Icon name="home" size={23}/></span><div><strong>끼니플랜, 앱으로 더 간편하게</strong><p>{mode === 'ios' ? '아이폰은 홈 화면에 추가해야 밥 먹을 시간에 식사 알림을 받을 수 있어요.' : '홈 화면에서 바로 열고, 밥 먹을 시간에 오늘 메뉴 알림을 받아요.'}</p></div></div>
     <button className="install-prompt-close" type="button" onClick={dismiss} aria-label="설치 안내 7일 동안 닫기"><Icon name="close" size={18}/></button>
     <div className="install-prompt-actions">{mode === 'native' ? <button className="install-prompt-primary" type="button" onClick={install} disabled={installing || Boolean(error)}>{installing ? '설치 확인 중…' : '앱 설치하기'}</button> : <button className="install-prompt-primary" type="button" onClick={() => setInstructions(!instructions)} aria-expanded={instructions} aria-controls="install-ios-help">홈 화면에 추가하기</button>}<button className="install-prompt-later" type="button" onClick={dismiss}>나중에</button></div>
-    {instructions && mode === 'ios' && <div id="install-ios-help" className="install-prompt-help"><p>Safari에서 아래 순서로 추가해 주세요.</p><ol><li>브라우저의 <strong>공유</strong> 버튼 누르기</li><li><strong>홈 화면에 추가</strong> 선택하기</li><li>‘웹 앱으로 열기’가 보이면 켜고 <strong>추가</strong> 누르기</li></ol></div>}
+    {instructions && mode === 'ios' && <div id="install-ios-help" className="install-prompt-help"><p>Safari에서 아래 순서로 추가해 주세요.</p><ol><li>브라우저의 <strong>공유</strong> 버튼 누르기</li><li><strong>홈 화면에 추가</strong> 선택하기</li><li>‘웹 앱으로 열기’가 보이면 켜고 <strong>추가</strong> 누르기</li><li>홈 화면의 끼니플랜을 열고 <strong>마이 → 식사 알림</strong> 켜기</li></ol></div>}
     {error && <p className="install-prompt-help" role="status">{error}</p>}
   </aside>;
 }
