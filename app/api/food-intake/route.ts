@@ -6,6 +6,8 @@ import {parseStock} from '../../../lib/shopping-progress';
 import {consumeFood,restoreConsumption,availablePortions,servingNutrition,validPortions} from '../../../lib/food-intake';
 import {emptyDashboard} from '../../../lib/dashboard';
 import {logMeal} from '../../../lib/intake-log';
+import {plannerVisitor,savePlannerEvent} from '../../../lib/planner-events';
+import {comparisonDay} from '../../../lib/comparison-interest';
 export const runtime='nodejs';
 const json=(data:unknown,status=200)=>NextResponse.json(data,{status,headers:{'Cache-Control':'no-store'}});
 const validDate=(s:string)=>/^20\d{2}-(0[1-9]|1[0-2])-\d{2}$/.test(s)&&!Number.isNaN(Date.parse(s))&&new Date(s).toISOString().slice(0,10)===s;
@@ -37,7 +39,15 @@ export async function POST(request:NextRequest){
   let input;try{input=await request.json();}catch{return authFailure('입력을 확인해 주세요.',400);}
   if(!input||!['eat','undo','log'].includes(input.action)||typeof input.id!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(input.id)||!Number.isSafeInteger(input.version)||input.version<0)return authFailure('기록을 확인해 주세요.',400);
   if(input.action==='eat'&&(typeof input.productId!=='string'||input.productId.length>100||!validPortions(input.portions)))return authFailure('상품과 먹은 양을 확인해 주세요.',400);
-  if(input.action==='log')return await logMeal(user.id,input);
+  if(input.action==='log'){
+   const saved=await logMeal(user.id,input);
+   if(saved.ok&&input.source==='push'&&process.env.VERCEL_ENV==='production'){
+    const c=await getPool().connect();
+    try{await c.query('BEGIN');await savePlannerEvent(c,plannerVisitor(`user:${user.id}`,process.env.DATABASE_URL!),'push_action_logged',comparisonDay());await c.query('COMMIT');}
+    catch{await c.query('ROLLBACK').catch(()=>{});}finally{c.release();}
+   }
+   return saved;
+  }
   const product=input.action==='eat'?(await planProducts()).find(p=>p.id===input.productId):null;
   const client=await getPool().connect();
   try{

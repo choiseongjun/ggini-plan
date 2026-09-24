@@ -68,10 +68,10 @@ export function MealPhotoLog({productId,dishName,disabled,onLogged,onFallback,on
  </div>;
 }
 
-export function PhotoLogSummary({result,streak,onUndo,busy}:{result:Extract<PhotoLogResult,{logged:true}>;streak:number|null;onUndo:()=>void;busy:boolean}){
+export function PhotoLogSummary({result,streak,onUndo,onEdit,busy}:{result:Extract<PhotoLogResult,{logged:true}>;streak:number|null;onUndo:()=>void;onEdit?:()=>void;busy:boolean}){
  return <div className="photo-log-done" role="status">
   <span className="photo-log-check" aria-hidden="true"/>
   <div><strong>{portionText(result.portion)}{result.extras.length?` + ${result.extras.map(k=>intakeExtras[k].label).join(', ')}`:''} · 약 {Math.round(result.calories).toLocaleString('ko-KR')}kcal 기록했어요</strong>{streak!==null&&<span className="photo-log-streak">{streak}일 연속 기록 중!</span>}{result.note&&<small>{result.note}</small>}</div>
-  <button type="button" disabled={busy} onClick={onUndo}>되돌리기</button>
+  <div className="photo-log-done-actions">{onEdit&&<button type="button" disabled={busy} onClick={onEdit}>수정</button>}<button type="button" disabled={busy} onClick={onUndo}>되돌리기</button></div>
  </div>;
 }

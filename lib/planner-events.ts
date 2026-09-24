@@ -1,6 +1,6 @@
 import {createHmac} from 'node:crypto';
 import type {PoolClient} from 'pg';
-export const plannerEvents=['visit','generated','swapped','seller','photo_logged','weight_logged','push_enabled','push_opened'] as const;
+export const plannerEvents=['visit','generated','swapped','seller','photo_logged','weight_logged','push_enabled','push_opened','push_logged','push_action_logged'] as const;
 export type PlannerEvent=typeof plannerEvents[number];
 export function parsePlannerEvent(raw:unknown):{event:PlannerEvent;visitor:string}|null{
  if(!raw||typeof raw!=='object')return null;const p=raw as Record<string,unknown>;

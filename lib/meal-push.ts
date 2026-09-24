@@ -4,7 +4,8 @@ import {planDate} from './daily-plan';
 import {mealSchedule,parseConditions,slotLabels,type MealSlot} from './shopping-plan';
 import {planProducts} from './shopping-plan-catalog';
 
-// 식사 시간 알림. "기록하세요"가 아니라 "오늘 뭐 먹을지"를 알려줘서 꺼두지 않게 한다 — 리텐션의 첫 신호.
+// 식사 시간 알림. "오늘 뭐 먹을지"를 알려 주고, 누르면 그 끼니 기록으로 바로 간다 — 알림은 추천 입구가 아니라 기록 입구.
+// [먹었어요] 버튼을 누르면 앱을 열지 않고 알림에서 바로 1인분이 기록된다(public/sw.js).
 export type MealTimes = Partial<Record<MealSlot, string>>;
 export const DEFAULT_MEAL_TIMES: MealTimes = {lunch: '12:00', dinner: '18:30'};
 const SLOTS: MealSlot[] = ['breakfast', 'lunch', 'dinner'];
@@ -64,7 +65,8 @@ export async function dispatchMealReminders() {
     if (ateRecently.has(row.user_id)) { skipped++; await markSent(); continue; }
     const menu = todaysMenu(planByUser.get(row.user_id), slot, today, products);
     const payload = menu
-      ? {title: `${SLOT_EMOJI[slot]} 오늘 ${slotLabels[slot]}은 ${menu}`, body: '재료와 만드는 법을 확인하고, 먹고 나면 사진 한 장 남겨요.', tag: `meal-${slot}`, url: '/?from=push'}
+      ? {title: `${SLOT_EMOJI[slot]} 오늘 ${slotLabels[slot]}은 ${menu.name}`, body: '먹고 나면 [먹었어요]만 눌러 주세요. 사진으로 남기려면 알림을 눌러요.', tag: `meal-${slot}`,
+         url: `/?from=push&meal=${encodeURIComponent(menu.productId)}`, productId: menu.productId, menuName: menu.name, actions: [{action: 'eaten', title: '먹었어요'}, {action: 'open', title: '사진으로 기록'}]}
       : {title: `${SLOT_EMOJI[slot]} ${slotLabels[slot]} 챙길 시간이에요`, body: '오늘 뭐 먹을지 버튼 한 번이면 정해 드려요.', tag: `meal-${slot}`, url: '/?from=push'};
     try {
       await webpush.sendNotification({endpoint: row.endpoint, keys: row.keys}, JSON.stringify(payload), {TTL: 60 * 60});
@@ -88,5 +90,5 @@ function todaysMenu(plan: {conditions: unknown; mealIds: string[]} | undefined, 
   const index = schedule.findIndex((s) => s.slot === slot && planDate(start, s.day) === today);
   if (index < 0) return null;
   const product = products.find((p) => p.id === plan.mealIds[index]);
-  return product ? product.name.split('_').join(' · ') : null;
+  return product ? {name: product.name.split('_').join(' · '), productId: product.id} : null;
 }

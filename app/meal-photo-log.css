@@ -34,3 +34,4 @@
 .photo-log-staged-actions{display:flex;gap:8px}
 .today-meals .photo-log-staged-actions button{flex:0 0 72px;min-height:48px;font-size:13px}
 .today-meals .photo-log-staged-actions .photo-log-submit{flex:1;border:0;border-radius:14px;background:linear-gradient(145deg,#6a8a5a,#46603c);color:#fff;font-size:15px;font-weight:800;box-shadow:0 6px 14px #46603c33}
+.photo-log-done>div.photo-log-done-actions{flex:none;display:flex;gap:6px}

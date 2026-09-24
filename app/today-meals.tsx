@@ -6,9 +6,10 @@ import {MealPlanOverview} from './meal-plan-overview';
 import {MealComparison} from './meal-comparison';
 import {MenuPickerModal} from './menu-picker-modal';
 import {EatLogPanel} from './eat-log-panel';
+import type {IntakeExtra} from '../lib/intake-extras';
 import {MealPhotoLog,PhotoLogSummary,type PhotoLogResult} from './meal-photo-log';
 import {BadgeToast,INTAKE_LOGGED_EVENT,StreakChip,useIntakeStats} from './record-progress';
-import {useState} from 'react';
+import {useEffect,useState} from 'react';
 import Link from 'next/link';
 import type {useFoodIntake} from './food-intake';
 import {ProductThumb} from './product-thumb';
@@ -31,7 +32,7 @@ function MealSection({title,meta,open,onToggle,children}:{title:string;meta?:str
  </div>;
 }
 const amount=(n:number)=>n.toLocaleString('ko-KR',{maximumFractionDigits:1});
-export function TodayMeals({overviewOpen,onOverviewOpen,nutritionReference,shoppingTotal,intake,userId,onLogin,ids,products,conditions,startDate,onStartDate,onSwap,onChoose,progress,dailyCalories,dashboard,perMealCalories}:{nutritionReference?:DailyNutritionReference;shoppingTotal:number;intake:ReturnType<typeof useFoodIntake>;userId?:string;onLogin:()=>void;ids:string[];products:PlanProduct[];conditions:PlanConditions;startDate:string;onStartDate:(date:string)=>void;onSwap:(index:number,reason?:SwapReason)=>void;onChoose:(index:number,id:string)=>void;progress:ReturnType<typeof useShoppingProgress>;dailyCalories:number|null;perMealCalories?:number|null;dashboard?:DashboardData|null;overviewOpen?:boolean;onOverviewOpen?:(open:boolean)=>void}){
+export function TodayMeals({focusMeal=null,overviewOpen,onOverviewOpen,nutritionReference,shoppingTotal,intake,userId,onLogin,ids,products,conditions,startDate,onStartDate,onSwap,onChoose,progress,dailyCalories,dashboard,perMealCalories}:{focusMeal?:number|null;nutritionReference?:DailyNutritionReference;shoppingTotal:number;intake:ReturnType<typeof useFoodIntake>;userId?:string;onLogin:()=>void;ids:string[];products:PlanProduct[];conditions:PlanConditions;startDate:string;onStartDate:(date:string)=>void;onSwap:(index:number,reason?:SwapReason)=>void;onChoose:(index:number,id:string)=>void;progress:ReturnType<typeof useShoppingProgress>;dailyCalories:number|null;perMealCalories?:number|null;dashboard?:DashboardData|null;overviewOpen?:boolean;onOverviewOpen?:(open:boolean)=>void}){
  const locale=usePlannerLocale();
  const won=locale.money;
  const {today,current,totals}=intake;
@@ -39,7 +40,9 @@ export function TodayMeals({overviewOpen,onOverviewOpen,nutritionReference,shopp
  const days=conditions.days??Math.max(1,...schedule.map(s=>s.day));
  const active=planDay(startDate,today,days);
  const [chosenDay,setChosenDay]=useState<number|null>(null);
- const [logging,setLogging]=useState<number|null>(null);
+ // 알림에서 들어온 끼니는 기록 패널을 연 채로 시작한다(알림 → 먹었어요, 두 번이면 끝).
+ const [logging,setLogging]=useState<number|null>(focusMeal);
+ useEffect(()=>{if(focusMeal===null)return;const card=document.getElementById(`today-meal-${focusMeal}`);card?.scrollIntoView({block:'center'});card?.focus({preventScroll:true});},[focusMeal]);
  // Each card shows its sections (재료·영상·메뉴 바꾸기·영양) as titled rows that open independently.
  const [openSections,setOpenSections]=useState<Set<string>>(()=>new Set());
  const isSection=(index:number,key:string)=>openSections.has(`${index}:${key}`);
@@ -50,6 +53,14 @@ export function TodayMeals({overviewOpen,onOverviewOpen,nutritionReference,shopp
   const r=photoResults[index];if(!r)return;
   for(const id of r.ids)if(!await intake.send({action:'undo',id,version:intake.current?.version??0}))return;
   setPhotoResults(all=>{const next={...all};delete next[index];return next;});
+ }
+ // 사진 기록 고치기: 고친 양으로 새로 기록한 뒤 사진 기록을 지운다(중간에 실패해도 기록이 사라지지 않게 이 순서로).
+ const [editingPhoto,setEditingPhoto]=useState<number|null>(null);
+ async function correctPhoto(index:number,productId:string,portions:number,extras:IntakeExtra[]){
+  const r=photoResults[index];if(!r)return;
+  if(!await intake.log(productId,portions,extras))return;
+  for(const id of r.ids)if(!await intake.send({action:'undo',id,version:intake.current?.version??0}))break;
+  setPhotoResults(all=>{const next={...all};delete next[index];return next;});setEditingPhoto(null);
  }
  const [managing,setManaging]=useState<number|null>(null),[purchaseMessage,setPurchaseMessage]=useState('');
  const [browsing,setBrowsing]=useState<number|null>(null);
@@ -115,10 +126,11 @@ export function TodayMeals({overviewOpen,onOverviewOpen,nutritionReference,shopp
        <ProductNutrition product={p}/>
       </MealSection>
      </div>
-     {photoResults[index]&&<PhotoLogSummary result={photoResults[index]} streak={stats?.streak.loggedToday?stats.streak.current:null} busy={intake.busy} onUndo={()=>void undoPhoto(index)}/>}
-     {userId&&!done&&<MealPhotoLog productId={p.id} dishName={p.name} disabled={disabled||!isToday} onLogged={r=>{setPhotoResults(all=>({...all,[index]:r}));setLogging(null);intake.reload();window.dispatchEvent(new CustomEvent(INTAKE_LOGGED_EVENT));trackPlanner('photo_logged');}} onFallback={()=>void intake.log(p.id,1,[])} onManual={()=>setLogging(logging===index?null:index)}/>}
+     {photoResults[index]&&editingPhoto!==index&&<PhotoLogSummary result={photoResults[index]} streak={stats?.streak.loggedToday?stats.streak.current:null} busy={intake.busy} onUndo={()=>void undoPhoto(index)} onEdit={()=>setEditingPhoto(index)}/>}
+     {photoResults[index]&&editingPhoto===index&&<EatLogPanel product={p} stockAvailable={0} disabled={intake.busy} title="먹은 양 고치기" submitLabel="이대로 고치기" initial={{portions:photoResults[index].portion,extras:photoResults[index].extras}} onClose={()=>setEditingPhoto(null)} onSubmit={({portions,extras})=>void correctPhoto(index,p.id,portions,extras)}/>}
+     {userId&&!done&&<MealPhotoLog productId={p.id} dishName={p.name} disabled={disabled||!isToday} onLogged={r=>{setPhotoResults(all=>({...all,[index]:r}));setLogging(null);intake.reload();window.dispatchEvent(new CustomEvent(INTAKE_LOGGED_EVENT));trackPlanner('photo_logged');if(index===focusMeal)trackPlanner('push_logged');}} onFallback={()=>void intake.log(p.id,1,[])} onManual={()=>setLogging(logging===index?null:index)}/>}
      <div className="today-actions">{done?(!photoResults[index]&&<Link href="/record">기록 확인·취소 →</Link>):!userId?<button type="button" onClick={onLogin}>로그인하고 먹었어요 기록</button>:!canEat&&(orderedParts.length>0?<button type="button" disabled={disabled} onClick={()=>void progress.update(orderedParts.map(item=>({item,quantity:item.ordered})),'receive')}>받았어요 ({orderedParts.reduce((n,s)=>n+s.ordered,0)}묶음)</button>:<button type="button" disabled={disabled} aria-expanded={managing===index} onClick={()=>{setManaging(managing===index?null:index);setPurchaseMessage('');}}>구매·보유 등록</button>)}</div>
-     {logging===index&&!done&&<EatLogPanel product={p} stockAvailable={owned?Math.floor(owned.available*4)/4:0} disabled={disabled||!isToday} onClose={()=>setLogging(null)} onSubmit={({portions,extras,deduct})=>{void intake.log(p.id,portions,extras,deduct?owned:undefined).then(ok=>{if(ok)setLogging(null);});}}/>}
+     {logging===index&&!done&&<EatLogPanel product={p} stockAvailable={owned?Math.floor(owned.available*4)/4:0} disabled={disabled||!isToday} onClose={()=>setLogging(null)} onSubmit={({portions,extras,deduct})=>{void intake.log(p.id,portions,extras,deduct?owned:undefined).then(ok=>{if(ok){setLogging(null);if(index===focusMeal)trackPlanner('push_logged');}});}}/>}
      {userId&&canEat&&!done&&<small className="today-left">집에 남은 음식 {amount(owned.available)}회분</small>}
      {managing===index&&<div className="today-purchase-panel">
       <div className="today-purchase-heading"><strong>{p.recipe?'이 끼니의 재료를 등록해요':'이 음식만 등록해요'}</strong><button type="button" disabled={progress.busy} onClick={()=>setManaging(null)}>닫기</button></div>

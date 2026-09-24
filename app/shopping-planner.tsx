@@ -111,6 +111,8 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
  // 한국판: products는 '지금 화면이 알고 있는 메뉴'(식단·후보)뿐이고 추천 계산은 서버 엔진이 한다.
  // 대만판: 전체 목록을 받아 기기에서 계산한다.
  const [catalogReady,setCatalogReady]=useState(false);
+ // 식사 알림을 누르고 들어온 경우: 알림의 메뉴(오늘 끼니) 기록을 바로 열어 준다.
+ const [pushMeal]=useState(()=>{if(typeof window==='undefined')return null;const q=new URLSearchParams(window.location.search);return q.get('from')==='push'?q.get('meal'):null;});
  const learn=useCallback((list:PlanProduct[])=>{if(list.length)setProducts(prev=>{const byId=new Map(prev.map(p=>[p.id,p]));for(const p of list)byId.set(p.id,p);return [...byId.values()];});},[]);
  const remote=useMemo(()=>remoteEngine(learn),[learn]);
  const local=useMemo(()=>localEngine(products),[products]);
@@ -321,7 +323,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    <small>추천·저장만으로 지출이나 먹은 기록이 생기지는 않아요. 구매 상태와 실제 먹은 양을 등록하면 기록에 반영돼요. 영양은 등록·추정 정보 기준이며 미확인 값은 제외해요.</small>
   </section>}
   {mode==='plan'&&ids.length>0&&building&&!ids.every(Boolean)&&<PlanBuilder ids={ids} products={products} conditions={conditions} onChoose={chooseMeal} disabled={busy||progress.busy}/>}
-  {mode==='plan'&&ids.length>0&&(!building||ids.every(Boolean))&&<TodayMeals overviewOpen={overviewOpen} onOverviewOpen={setOverviewOpen} nutritionReference={personalization?.nutritionReference??null} shoppingTotal={purchases.reduce((sum,row)=>sum+row.cost,0)} intake={intake} userId={userId} onLogin={onLogin} ids={ids} products={products} conditions={conditions} startDate={conditions.startDate??locale.today()} onStartDate={date=>{const c=parseConditions({...conditions,startDate:date});if(c){setConditions(c);remember(c,ids);}}} onSwap={swap} onChoose={chooseMeal} progress={progress} perMealCalories={personalization?.perMealCalories??null} dailyCalories={personalization?.blocked?null:personalization?.dailyCalories??null} dashboard={dashboard}/>}
+  {mode==='plan'&&ids.length>0&&(!building||ids.every(Boolean))&&<TodayMeals focusMeal={pushMeal?(()=>{const s=mealSchedule(conditions),today=locale.today();const i=ids.findIndex((id,index)=>id===pushMeal&&!!s[index]&&planDate(conditions.startDate??today,s[index].day)===today);return i<0?null:i;})():null} overviewOpen={overviewOpen} onOverviewOpen={setOverviewOpen} nutritionReference={personalization?.nutritionReference??null} shoppingTotal={purchases.reduce((sum,row)=>sum+row.cost,0)} intake={intake} userId={userId} onLogin={onLogin} ids={ids} products={products} conditions={conditions} startDate={conditions.startDate??locale.today()} onStartDate={date=>{const c=parseConditions({...conditions,startDate:date});if(c){setConditions(c);remember(c,ids);}}} onSwap={swap} onChoose={chooseMeal} progress={progress} perMealCalories={personalization?.perMealCalories??null} dailyCalories={personalization?.blocked?null:personalization?.dailyCalories??null} dashboard={dashboard}/>}
   {mode!=='settings'&&idsComplete&&ids.length>1&&new Set(ids).size===1&&<p className="body-note" role="status">현재 조건에서는 한 가지 메뉴로만 구성됐어요. 예산·조리 방식·제외 재료 설정을 확인해 주세요. 다른 메뉴를 원하면 조건을 조정하고 다시 추천받아 주세요.</p>}
   {!locale.isTaiwan&&mode!=='settings'&&ids.length>0&&idsComplete&&<details className="home-secondary"><summary>이 식단 공유하기</summary><SharePlanButton key={JSON.stringify([ids,conditions.days,conditions.slots])} userId={userId} onLogin={onLogin} conditions={conditions} mealIds={ids}/></details>}
   {/* 커뮤니티에 올리기는 잠시 숨김 (커뮤니티 기능 정리 전) */}
