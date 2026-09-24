@@ -49,44 +49,65 @@ export function WeeklyGuideCard({userId}: {userId: string}) {
  </section>;
 
  const t = guide.targets!, r = guide.recent;
- const rows: [string, string, number | null, number][] = [
-  ['열량', `${n(t.kcal)}kcal`, r?.kcal ?? null, t.kcal],
-  ['단백질', `${t.protein}g 이상`, r?.protein ?? null, t.protein],
-  ['탄수화물', `${t.carbs[0]}~${t.carbs[1]}g`, r?.carbs ?? null, t.carbs[1]],
-  ['나트륨', `${n(t.sodium)}mg 이하`, r?.sodium ?? null, t.sodium],
-  ['당류', `${t.sugar}g 이하`, r?.sugar ?? null, t.sugar],
+ // [이름, 목표 글, 최근 평균, 기준값, 단위, 많을수록 좋은가]
+ const rows: [string, string, number | null, number, string, boolean][] = [
+  ['열량', `${n(t.kcal)}kcal`, r?.kcal ?? null, t.kcal, 'kcal', false],
+  ['단백질', `${t.protein}g 이상`, r?.protein ?? null, t.protein, 'g', true],
+  ['탄수화물', `${t.carbs[0]}~${t.carbs[1]}g`, r?.carbs ?? null, t.carbs[1], 'g', false],
+  ['나트륨', `${n(t.sodium)}mg 이하`, r?.sodium ?? null, t.sodium, 'mg', false],
+  ['당류', `${t.sugar}g 이하`, r?.sugar ?? null, t.sugar, 'g', false],
  ];
+ const kicker = `${guide.ai ? '나만의 이번 주 가이드' : '이번 주 식단 가이드'} · ${guide.health.length ? guide.health.join('·') : guide.goal}`;
  return <section className="wg-card" aria-label="이번 주 식단 가이드">
-  <span className="wg-kicker">{guide.ai ? '나만의 이번 주 가이드' : '이번 주 이렇게 드세요'}{guide.health.length ? ` · ${guide.health.join('·')}` : ` · ${guide.goal}`}</span>
+  <span className="wg-kicker">{kicker}</span>
   <p className="wg-headline">{guide.headline}</p>
-  <ol className="wg-points">{guide.points.map((p) => <li key={p}>{p}</li>)}</ol>
+  <ol className="wg-points">{guide.points.map((p, i) => <li key={p}><b>{i + 1}</b><span>{p}</span></li>)}</ol>
   <button type="button" className="wg-more" onClick={() => setOpen(true)}>자세히 보기</button>
 
   {open && <dialog ref={dialog} className="wg-dialog" aria-labelledby="wg-title" onCancel={(e) => { e.preventDefault(); setOpen(false); }} onClick={(e) => { if (e.target === e.currentTarget) setOpen(false); }}>
    <div className="wg-sheet">
-    <header><h2 id="wg-title">이번 주 식단 가이드</h2><button type="button" aria-label="닫기" onClick={() => setOpen(false)}>
-     <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></header>
-    <p className="wg-headline">{guide.headline}</p>
+    <header className="wg-head">
+     <div><span className="wg-kicker">{kicker}</span><h2 id="wg-title">이번 주 식단 가이드</h2></div>
+     <button type="button" className="wg-close" aria-label="닫기" onClick={() => setOpen(false)}>
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </header>
+    <div className="wg-scroll">
+     <p className="wg-hero">{guide.headline}</p>
 
-    <h3>하루 영양 목표</h3>
-    <table className="wg-table"><thead><tr><th>항목</th><th>목표</th><th>{r ? `최근 ${r.days}일 평균` : '최근 평균'}</th></tr></thead>
-     <tbody>{rows.map(([label, goal, value, ref]) => <tr key={label}><th>{label}</th><td>{goal}</td>
-      <td>{value === null ? <span className="wg-muted">기록 부족</span> : <span className={value > ref * 1.15 && label !== '단백질' ? 'is-over' : label === '단백질' && value < ref * .8 ? 'is-under' : ''}>{n(value)}{label === '열량' ? 'kcal' : label === '나트륨' ? 'mg' : 'g'}</span>}</td></tr>)}</tbody></table>
-    <p className="wg-note">한 끼 약 {n(t.perMealKcal)}kcal 기준 · {r ? '기록한 날만 평균했어요.' : '먹은 걸 2일 이상 기록하면 내 평균과 비교해 드려요.'}</p>
+     <section className="wg-box">
+      <h3>하루 영양 목표</h3>
+      <ul className="wg-meters">{rows.map(([label, goal, value, ref, unit, more]) => {
+       const ratio = value === null ? 0 : value / ref;
+       const tone = value === null ? '' : more ? (ratio < .8 ? 'is-low' : 'is-good') : (ratio > 1.15 ? 'is-high' : 'is-good');
+       return <li key={label} className={tone}>
+        <div className="wg-meter-top"><strong>{label}</strong><span>목표 {goal}</span></div>
+        {value === null ? <small className="wg-muted">기록이 쌓이면 내 평균이 여기에 보여요</small> : <>
+         <div className="wg-bar" aria-hidden="true"><i style={{width: `${Math.min(100, ratio * 100)}%`}}/></div>
+         <small>최근 {r!.days}일 평균 <b>{n(value)}{unit}</b></small>
+        </>}
+       </li>;
+      })}</ul>
+      <p className="wg-note">한 끼 약 {n(t.perMealKcal)}kcal 기준{r ? ' · 기록한 날만 평균했어요' : ' · 먹은 걸 2일 이상 기록하면 내 평균과 비교해 드려요'}</p>
+     </section>
 
-    <h3>이번 주 집중할 것</h3>
-    <ol className="wg-focus">{guide.focus.map((f) => <li key={f.title}><strong>{f.title}</strong><p>{f.detail}</p></li>)}</ol>
+     <section className="wg-box">
+      <h3>이번 주 집중할 것</h3>
+      <ol className="wg-focus">{guide.focus.map((f, i) => <li key={f.title}><b>{i + 1}</b><div><strong>{f.title}</strong><p>{f.detail}</p></div></li>)}</ol>
+     </section>
 
-    {(guide.eatMore.length > 0 || guide.eatLess.length > 0) && <div className="wg-lists">
-     {guide.eatMore.length > 0 && <div><h3>더 챙길 것</h3><ul>{guide.eatMore.map((x) => <li key={x}>{x}</li>)}</ul></div>}
-     {guide.eatLess.length > 0 && <div><h3>줄일 것</h3><ul>{guide.eatLess.map((x) => <li key={x}>{x}</li>)}</ul></div>}
-    </div>}
+     {(guide.eatMore.length > 0 || guide.eatLess.length > 0) && <div className="wg-lists">
+      {guide.eatMore.length > 0 && <section className="wg-box"><h3>더 챙길 것</h3><ul className="wg-chips is-more">{guide.eatMore.map((x) => <li key={x}>{x}</li>)}</ul></section>}
+      {guide.eatLess.length > 0 && <section className="wg-box"><h3>줄일 것</h3><ul className="wg-chips is-less">{guide.eatLess.map((x) => <li key={x}>{x}</li>)}</ul></section>}
+     </div>}
 
-    <h3>한 끼는 이렇게</h3>
-    <ul className="wg-plate">{guide.plate.map((x) => <li key={x}>{x}</li>)}</ul>
+     <section className="wg-box">
+      <h3>한 끼는 이렇게</h3>
+      <ul className="wg-plate">{guide.plate.map((x) => { const [head, ...rest] = x.split(/[:：]/); return <li key={x}>{rest.length ? <><strong>{head.trim()}</strong><span>{rest.join(':').trim()}</span></> : <span>{x}</span>}</li>; })}</ul>
+     </section>
 
-    {guide.weight && <p className="wg-note">체중: 최근 {guide.weight.weeks}주 동안 {guide.weight.change > 0 ? '+' : ''}{guide.weight.change}kg</p>}
-    <small className="wg-foot">목표 수치는 2025 한국인 영양소 섭취기준과 내 정보로 계산했고, {guide.ai ? '조언은 AI가 내 정보·기록을 보고 썼어요' : '조언은 내 정보·기록 기준의 일반적인 안내예요'}. 질환 치료나 진단을 대신하지 않아요.</small>
+     {guide.weight && <p className="wg-note">체중: 최근 {guide.weight.weeks}주 동안 {guide.weight.change > 0 ? '+' : ''}{guide.weight.change}kg</p>}
+     <small className="wg-foot">목표 수치는 2025 한국인 영양소 섭취기준과 내 정보로 계산했고, {guide.ai ? '조언은 AI가 내 정보·기록을 보고 썼어요' : '조언은 내 정보·기록 기준의 일반적인 안내예요'}. 질환 치료나 진단을 대신하지 않아요.</small>
+    </div>
    </div>
   </dialog>}
  </section>;

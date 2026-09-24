@@ -1,28 +1,57 @@
-.wg-card{margin:0 0 18px;padding:16px 16px 14px;border-radius:18px;background:#f3f7ec;border:1px solid #e0e9d5}
-.wg-card.is-empty p{margin:6px 0 10px;font-size:14px;color:#3d4b37}
-.wg-kicker{display:block;font-size:12px;font-weight:800;color:#5a7a4b}
-.wg-headline{margin:6px 0 10px;font-size:15px;line-height:1.5;font-weight:700;color:#26321f}
-.wg-points{margin:0 0 12px;padding-left:20px;font-size:14px;line-height:1.6;color:#3d4b37}
-.wg-more{width:100%;min-height:42px;border:0;border-radius:12px;background:#526c47;color:#fff;font-weight:700}
-.wg-link{font-size:14px;font-weight:700;color:#4d6645}
-.wg-dialog{width:min(560px,calc(100vw - 24px));max-height:calc(100dvh - 32px);padding:0;border:0;border-radius:20px;background:#fff}
-.wg-dialog::backdrop{background:rgba(20,28,18,.45)}
-.wg-sheet{padding:18px 18px 22px;overflow-y:auto;max-height:calc(100dvh - 32px)}
-.wg-sheet header{display:flex;align-items:center;justify-content:space-between}
-.wg-sheet header h2{margin:0;font-size:18px}
-.wg-sheet header button{display:grid;place-items:center;width:32px;height:32px;border:0;border-radius:50%;background:#f2f5ee;color:#5b6a55}
-.wg-sheet h3{margin:18px 0 8px;font-size:15px;color:#2f3d29}
-.wg-table{width:100%;border-collapse:collapse;font-size:13px}
-.wg-table th,.wg-table td{padding:7px 4px;border-bottom:1px solid #eef2e9;text-align:left}
-.wg-table thead th{font-size:12px;color:#6c7a64;font-weight:700}
-.wg-table .is-over{color:#b24a2e;font-weight:700}
-.wg-table .is-under{color:#b7791f;font-weight:700}
-.wg-muted{color:#9aa592}
-.wg-note{margin:8px 0 0;font-size:12px;color:#6c7a64}
-.wg-focus{margin:0;padding-left:20px}
-.wg-focus li{margin-bottom:10px}
+/* 홈 카드 — 기존 카드(오늘의 식사·메뉴 고르기)와 같은 크림·초록 톤 */
+.wg-card{margin:0 0 18px;padding:18px 18px 16px;border-radius:24px;background:linear-gradient(160deg,#f6f9ef 0%,#fbfcf6 70%);border:1px solid #e3e9d8;box-shadow:0 6px 20px #3a4a2a0f}
+.wg-card.is-empty p{margin:8px 0 12px;font-size:14px;line-height:1.6;color:#3d4b37}
+.wg-kicker{display:inline-block;padding:4px 10px;border-radius:999px;background:#e6efdb;font-size:11px;font-weight:800;color:#4f6d42;letter-spacing:-.01em}
+.wg-headline{margin:10px 0 12px;font-size:17px;line-height:1.45;font-weight:800;letter-spacing:-.02em;color:#26321f}
+.wg-points{list-style:none;margin:0 0 14px;padding:0;display:grid;gap:8px}
+.wg-points li{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:16px;background:#fff;box-shadow:0 2px 10px #3a4a2a0d;font-size:14px;font-weight:700;color:#33402c}
+.wg-points b,.wg-focus b{flex:none;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#526c47;color:#fff;font-size:12px}
+.wg-more{width:100%;min-height:46px;border:0;border-radius:16px;background:#526c47;color:#fff;font:inherit;font-size:15px;font-weight:800;cursor:pointer;transition:transform .15s ease}
+.wg-more:active{transform:scale(.98)}
+.wg-link{font-size:14px;font-weight:800;color:#4d6645}
+
+/* 모달 — menu-picker와 같은 틀: 가운데, 28px 모서리, 흐린 배경, 올라오는 애니메이션 */
+dialog.wg-dialog{position:fixed;inset:0;width:min(560px,calc(100% - 24px));height:fit-content;max-height:90dvh;margin:auto;padding:0;border:0;border-radius:28px;background:#fbfcf6;color:#33402c;box-shadow:0 24px 60px #1d2a1a40;overflow:hidden}
+dialog.wg-dialog:not([open]){display:none}
+dialog.wg-dialog[open]{display:flex;animation:wg-in .42s cubic-bezier(.22,.9,.3,1) both}
+dialog.wg-dialog::backdrop{background:#1d2a1a66;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);animation:wg-fade .3s ease both}
+@keyframes wg-in{from{opacity:0;transform:translateY(40px) scale(.98)}}
+@keyframes wg-fade{from{opacity:0}}
+.wg-sheet{display:flex;flex-direction:column;width:100%;max-height:90dvh}
+.wg-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:18px 18px 14px;background:#fff;border-bottom:1px solid #eceee4}
+.wg-head h2{margin:8px 0 0;font-size:20px;letter-spacing:-.02em}
+.wg-close{flex-shrink:0;display:grid;place-items:center;width:36px;height:36px;border:0;border-radius:50%;background:#eef2e4;color:#5c6e55;cursor:pointer}
+.wg-scroll{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:14px 14px 20px;display:grid;gap:12px}
+.wg-hero{margin:0;padding:14px 16px;border-radius:20px;background:#e9f1dd;font-size:15px;line-height:1.55;font-weight:800;color:#2f4527}
+.wg-box{padding:14px 14px 12px;border-radius:20px;background:#fff;box-shadow:0 2px 10px #3a4a2a0d}
+.wg-box h3{margin:0 0 10px;font-size:15px;letter-spacing:-.01em;color:#2f3d29}
+.wg-meters{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.wg-meter-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.wg-meter-top strong{font-size:14px}
+.wg-meter-top span{font-size:12px;color:#6c7a64}
+.wg-bar{height:8px;margin:6px 0 4px;border-radius:999px;background:#eef2e7;overflow:hidden}
+.wg-bar i{display:block;height:100%;border-radius:999px;background:#8aa97a;transition:width .6s cubic-bezier(.22,.9,.3,1)}
+.wg-meters li.is-good .wg-bar i{background:#6a8a5a}
+.wg-meters li.is-low .wg-bar i{background:#e8b44a}
+.wg-meters li.is-high .wg-bar i{background:#e98a63}
+.wg-meters small{font-size:12px;color:#6c7a64}
+.wg-meters small b{color:#33402c}
+.wg-meters li.is-high small b{color:#c0582f}
+.wg-meters li.is-low small b{color:#a7751a}
+.wg-muted{display:block;margin-top:4px;color:#9aa592 !important}
+.wg-note{margin:10px 2px 0;font-size:12px;line-height:1.5;color:#6c7a64}
+.wg-focus{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.wg-focus li{display:flex;gap:10px;align-items:flex-start}
 .wg-focus strong{font-size:14px;color:#26321f}
-.wg-focus p{margin:3px 0 0;font-size:13px;line-height:1.55;color:#4d5c47}
+.wg-focus p{margin:3px 0 0;font-size:13px;line-height:1.6;color:#4d5c47}
 .wg-lists{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.wg-lists ul,.wg-plate{margin:0;padding-left:18px;font-size:13px;line-height:1.7;color:#3d4b37}
-.wg-foot{display:block;margin-top:16px;font-size:11px;line-height:1.5;color:#8a9583}
+.wg-chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.wg-chips li{padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;line-height:1.3}
+.wg-chips.is-more li{background:#e8f1dc;color:#3f5e33}
+.wg-chips.is-less li{background:#fbe9e0;color:#a4502e}
+.wg-plate{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.wg-plate li{display:grid;gap:3px;align-content:start;padding:10px;border-radius:16px;background:#f6f8f1;font-size:12px;line-height:1.45;color:#4d5c47}
+.wg-plate strong{font-size:13px;color:#33402c}
+.wg-foot{display:block;margin:4px 2px 0;font-size:11px;line-height:1.5;color:#8a9583}
+@media (max-width:420px){.wg-lists{grid-template-columns:1fr}.wg-plate{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){dialog.wg-dialog[open],dialog.wg-dialog::backdrop{animation:none}.wg-bar i{transition:none}}
