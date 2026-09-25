@@ -1,0 +1,16 @@
+.record-entry{padding:24px;margin:0 0 24px;border:1px solid #dce3d4;border-radius:24px;background:#f4f6ee;color:#344333}
+.record-entry-kicker{font-size:13px;font-weight:700;color:#63745b}
+.record-entry h2{font-size:25px;margin:8px 0 10px;line-height:1.4}
+.record-entry p{font-size:15px;line-height:1.7;margin:8px 0 16px}
+.record-entry small{display:block;font-size:13px;line-height:1.7;margin-top:12px;color:#616c5b}
+.record-entry-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.record-entry-actions button{min-height:52px;padding:12px 8px;border:1px solid #c4d0bc;border-radius:15px;background:#fffdf6;color:#344333;font-size:15px;font-weight:700;cursor:pointer}
+.record-entry-actions button[aria-pressed=true]{background:#465e3e;color:white;border-color:#465e3e}
+.record-entry-reward{display:flex;gap:12px;align-items:center;margin-top:18px;border-top:1px solid #dce3d4;padding-top:16px}
+.record-entry-reward>svg{width:70px;min-width:70px;height:80px}
+.record-entry-reward p{margin:5px 0;font-size:14px}
+.intake-log-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.intake-log-actions select{padding:10px;border-radius:10px;border:1px solid #c4d0bc;background:#fff;color:#344333;max-width:130px}
+.intake-pantry{margin:20px 0;border:1px solid #e0e4d8;border-radius:16px;padding:16px}
+.intake-pantry>summary{cursor:pointer;font-size:15px;font-weight:700}
+@media(max-width:420px){.record-entry{padding:18px}.record-entry h2{font-size:23px}.intake-history article{flex-wrap:wrap;gap:12px}}

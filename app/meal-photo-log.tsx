@@ -23,7 +23,7 @@ const stageText={prepare:'사진 준비 중',upload:'사진 올리는 중',analy
 const portionText=(p:number)=>p===1?'1인분':p===0.5?'반 인분':`${p}인분`;
 
 // 📷 먹었어요: pick or take a photo, the server judges portion + visible sides against the planned dish and logs it.
-export function MealPhotoLog({productId,dishName,disabled,onLogged,onFallback,onManual}:{productId:string;dishName:string;disabled:boolean;onLogged:(result:Extract<PhotoLogResult,{logged:true}>)=>void;onFallback:()=>void;onManual:()=>void}){
+export function MealPhotoLog({productId,referenceCode,dishName,disabled,onLogged,onFallback,onManual}:{productId?:string;referenceCode?:string;dishName:string;disabled:boolean;onLogged:(result:Extract<PhotoLogResult,{logged:true}>)=>void;onFallback:()=>void;onManual:()=>void}){
  const input=useRef<HTMLInputElement>(null);
  const [picked,setPicked]=useState<{file:File;url:string}[]>([]);
  const pickedRef=useRef(picked);
@@ -38,7 +38,7 @@ export function MealPhotoLog({productId,dishName,disabled,onLogged,onFallback,on
   const controller=new AbortController(),timer=window.setTimeout(()=>controller.abort(),40000);
   try{
    const photos=await Promise.all(files.map(shrink));
-   const form=new FormData();photos.forEach((photo,i)=>form.append('photo',photo,`meal-${i+1}.jpg`));form.set('productId',productId);form.set('id',crypto.randomUUID());
+   const form=new FormData();photos.forEach((photo,i)=>form.append('photo',photo,`meal-${i+1}.jpg`));if(referenceCode)form.set('referenceCode',referenceCode);else form.set('productId',productId??'');form.set('id',crypto.randomUUID());
    setStage('upload');
    const request=fetch('/api/food-intake/photo',{method:'POST',body:form,signal:controller.signal});
    // The upload is small now, so after a moment the wait is the analysis itself.

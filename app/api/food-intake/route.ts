@@ -8,6 +8,7 @@ import {emptyDashboard} from '../../../lib/dashboard';
 import {logMeal,logReference} from '../../../lib/intake-log';
 import {plannerVisitor,savePlannerEvent} from '../../../lib/planner-events';
 import {comparisonDay} from '../../../lib/comparison-interest';
+import {rescaleIntake} from '../../../lib/intake-edit';
 export const runtime='nodejs';
 const json=(data:unknown,status=200)=>NextResponse.json(data,{status,headers:{'Cache-Control':'no-store'}});
 const validDate=(s:string)=>/^20\d{2}-(0[1-9]|1[0-2])-\d{2}$/.test(s)&&!Number.isNaN(Date.parse(s))&&new Date(s).toISOString().slice(0,10)===s;
@@ -82,3 +83,36 @@ export async function POST(request:NextRequest){
  }catch{return authFailure('저장 결과를 확인하지 못했어요. 같은 요청으로 다시 확인해 주세요.',503);}
 }
 
+
+// Correct the existing row in place: its date and identity remain unchanged.
+export async function PATCH(request:NextRequest){
+ if(!sameOrigin(request))return authFailure('요청을 확인해 주세요.',403);
+ try{
+  const user=await sessionUser(request);if(!user)return authFailure('로그인이 필요해요.',401);
+  let input;try{input=await request.json();}catch{return authFailure('입력을 확인해 주세요.',400);}
+  if(!input||typeof input.id!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(input.id)||!validPortions(input.portions)||!Number.isSafeInteger(input.version)||input.version<0)return authFailure('먹은 양을 확인해 주세요.',400);
+  const client=await getPool().connect();
+  try{
+   await client.query('BEGIN');
+   const progress=(await client.query("SELECT stock,version FROM shopping_progress WHERE user_id=$1 AND scope='products' FOR UPDATE",[user.id])).rows[0];
+   const row=(await client.query('SELECT * FROM food_intake_logs WHERE user_id=$1 AND id=$2 AND undone_at IS NULL FOR UPDATE',[user.id,input.id])).rows[0];
+   if(!row){await client.query('ROLLBACK');return authFailure('수정할 기록을 찾지 못했어요.',404);}
+   const previous=Number(row.portions),next=input.portions;
+   let packs=Number(row.packs),snapshot=row.stock_item;
+   if(snapshot?.kind!=='none'&&next!==previous){
+    const stock=parseStock(progress?.stock??{});
+    if(!stock||!progress||progress.version!==input.version){await client.query('ROLLBACK');return authFailure('보유 수량이 바뀌었어요. 새로고침 후 다시 수정해 주세요.',409);}
+    const product=(await planProducts()).find(p=>p.id===row.product_id);
+    if(!product){await client.query('ROLLBACK');return authFailure('이 음식의 보유 수량을 확인할 수 없어요.',409);}
+    let consumed;
+    try{consumed=consumeFood(restoreConsumption(stock,snapshot,packs),product,next);}
+    catch(e){await client.query('ROLLBACK');return authFailure(e instanceof Error?e.message:'남은 수량을 확인해 주세요.',409);}
+    packs=consumed.packs;snapshot=consumed.snapshot;
+    await client.query("UPDATE shopping_progress SET stock=$2,version=version+1,updated_at=NOW() WHERE user_id=$1 AND scope='products'",[user.id,JSON.stringify(consumed.stock)]);
+   }
+   const scale=(v:number|string|null)=>rescaleIntake(v,previous,next);
+   await client.query('UPDATE food_intake_logs SET portions=$3,packs=$4,stock_item=$5,calories=$6,protein=$7,cost=$8,carbs=$9,sugar=$10,sodium=$11,fat=$12 WHERE user_id=$1 AND id=$2',[user.id,input.id,next,packs,JSON.stringify(snapshot),scale(row.calories),scale(row.protein),scale(row.cost),scale(row.carbs),scale(row.sugar),scale(row.sodium),scale(row.fat)]);
+   await client.query('COMMIT');return json({saved:true});
+  }catch(e){await client.query('ROLLBACK');throw e;}finally{client.release();}
+ }catch{return authFailure('수정하지 못했어요. 잠시 후 다시 시도해 주세요.',503);}
+}

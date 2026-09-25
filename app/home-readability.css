@@ -24,7 +24,7 @@
 .site-shell .home-explore>summary{cursor:pointer;font-size:14px;font-weight:600;color:#4c614c;min-height:24px}
 .site-shell .home-explore nav{display:grid;margin-top:14px}
 .site-shell .home-explore nav a{display:flex;justify-content:space-between;gap:12px;padding:14px 0;color:#365c41;text-decoration:none;font-size:14px;border-top:1px solid #edf0e8}
-.site-shell .bottom-nav.launch-nav{grid-template-columns:repeat(2,minmax(0,1fr))}
+.site-shell .bottom-nav.launch-nav{grid-template-columns:repeat(3,minmax(0,1fr))}
 @media(max-width:480px){.site-shell .home-planner .planner-controls{padding:20px 16px;border-radius:18px}.site-shell .home-planner .planner-heading h2{font-size:25px}.site-shell .home-planner .planner-exclusions-toggle>span{line-height:1.6}}
 
 /* Bring back Kkini's warm stationery and rice-buddy identity. */

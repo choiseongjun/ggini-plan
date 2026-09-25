@@ -6,6 +6,7 @@ import {intakeTotals,type IntakeData,type IntakeProduct} from '../lib/food-intak
 import './food-intake.css';
 import {taiwanIntakeData,updateTaiwanIntake} from '../lib/taiwan-intake';
 import type {PlanProduct} from '../lib/shopping-plan';
+import {RecordEntry} from './record-entry';
 import {ProductThumb} from './product-thumb';
 
 type Command={action:'eat'|'undo'|'log';id:string;version:number;productId?:string;portions?:number;extras?:string[]};
@@ -76,11 +77,14 @@ export function useFoodIntake(userId?:string,history=false,externalDate?:string)
 export function FoodIntake({userId,onLogin,history=false,recordDate,onDateChange}:{userId?:string;onLogin:()=>void;history?:boolean;recordDate?:string;onDateChange?:(date:string)=>void}){
  const locale=usePlannerLocale();
  const {today,setDate,current,totals,products,visible,disabled,loading,error,message,pending,busy,reload,send,eat,editing,setEditing,amounts,setAmounts,showAll,setShowAll,setLoading,setError,selectedDate,pendingRef}=useFoodIntake(userId,history,recordDate);
+ const [editingLog,setEditingLog]=useState<string|null>(null),[logPortions,setLogPortions]=useState('1'),[editBusy,setEditBusy]=useState(false);
+ async function saveAmount(id:string){setEditBusy(true);setError('');try{const r=await fetch('/api/food-intake',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,portions:Number(logPortions),version:current?.version})});const d=await r.json();if(!r.ok)throw new Error(d.error);setEditingLog(null);reload();window.dispatchEvent(new CustomEvent('shopping-progress-changed',{detail:{scope:'products',source:'intake'}}));}catch(e){setError(e instanceof Error?e.message:'수정하지 못했어요.');}finally{setEditBusy(false);}}
  const mealCost=current?.logs.reduce((sum,log)=>sum+(log.cost??0),0)??0;
  const missingCost=current?.logs.filter(log=>log.cost==null).length??0;
  return locale.render(<section className="food-intake" aria-label={history?'먹은 음식 기록':'오늘 먹은 음식'}>
-  <header><span className="section-kicker">한 번 누르면 기록 끝</span><h2>{history?'실제로 먹은 기록':'오늘, 얼마나 챙겨 먹었나요?'}</h2><p>먹었어요를 누르면 칼로리·단백질과 남은 음식이 함께 반영돼요.</p></header>
-  {!userId?<div className="intake-empty"><p>구매한 음식의 영양정보를 불러와요. 음식 이름과 영양 수치를 다시 입력하지 않아도 돼요.</p><button type="button" onClick={onLogin}>로그인하고 먹은 기록 시작하기</button></div>:<>
+  {!locale.isTaiwan&&<RecordEntry userId={userId} onLogin={onLogin} onLogged={()=>{setDate(today);onDateChange?.(today);reload();}}/>}
+  <header><span className="section-kicker">날짜별 식사 일기</span><h2>{history?'실제로 먹은 기록':'오늘, 얼마나 챙겨 먹었나요?'}</h2><p>날짜를 골라 지난 식사를 보고, 먹은 양을 수정하거나 기록을 삭제할 수 있어요.</p></header>
+  {!userId?<div className="intake-empty"><p>저장한 식사를 날짜별로 모아 볼 수 있어요.</p><button type="button" onClick={onLogin}>로그인하고 먹은 기록 시작하기</button></div>:<>
    {history&&<label className="intake-date">기록 날짜<input type="date" value={selectedDate} max={today} disabled={busy||Boolean(pending)} onChange={e=>{if(e.target.value){setDate(e.target.value);onDateChange?.(e.target.value);setLoading(true);setError('');}}}/></label>}
    {loading&&<p role="status">먹은 기록을 불러오는 중…</p>}
    {error&&<div role="alert" className="intake-error"><p>{error}</p>{pending?<button type="button" disabled={busy} onClick={()=>void send(pending)}>저장 결과 다시 확인</button>:<button type="button" disabled={busy} onClick={reload}>다시 불러오기</button>}</div>}
@@ -91,7 +95,7 @@ export function FoodIntake({userId,onLogin,history=false,recordDate,onDateChange
     <div className="intake-meal-cost"><span>{selectedDate===today?'오늘':'이날'} 먹은 음식 비용 · 예상</span><strong>{locale.money(mealCost)}</strong><small>기록 당시 상품 가격을 먹은 양만큼 나눈 금액{missingCost?` · 금액 미확인 ${missingCost}건 별도`:''}</small></div>
     {!locale.isTaiwan&&<p className="intake-note">먹은 음식 비용은 위에 쌓이고, 실제 결제한 식비는 아래 생활비에 쌓여요. 구매할 때 기록한 금액을 먹을 때 다시 더하지 않아요. 구매금액이 빠져 있다면 <Link href="/cart">장바구니에서 구매금액 기록하기 →</Link></p>}
    </>}
-   {(!history||selectedDate===today)&&current&&<>
+   {(!history||selectedDate===today)&&current&&<details className="intake-pantry"><summary>보유한 음식에서 기록하기</summary>
     <div className="intake-section-title"><h3>보유한 음식 기록하기</h3><Link href="/cart">구매한 음식 관리 →</Link></div>
     {!products.length?<div className="intake-empty"><p>장바구니에서 산 음식을 한꺼번에 선택하고 ‘직접 샀어요’ 또는 ‘받았어요’를 눌러 주세요. 1회분이 확인된 상품이 여기에 표시돼요.</p><Link href="/cart">구매한 음식 등록하기 →</Link></div>:<>
      <div className="intake-foods">{visible.map(p=>{const amount=amounts[p.id]??1;return <article key={p.id}>
@@ -103,9 +107,9 @@ export function FoodIntake({userId,onLogin,history=false,recordDate,onDateChange
      </article>;})}</div>
      {products.length>3&&<button type="button" className="intake-more" onClick={()=>setShowAll(!showAll)}>{showAll?'간단히 보기':`다른 음식 ${products.length-3}종 보기`}</button>}
     </>}
-   </>}
-   {current&&<div className="intake-history"><div className="intake-section-title"><h3>{history?'선택한 날의 기록':'오늘 먹은 기록'}</h3>{!history&&<Link href="/record">날짜별로 보기 →</Link>}</div>
-    {!current.logs.length?<p className="intake-note">먹은 음식을 기록하면 시간과 섭취량이 여기에 쌓여요.</p>:current.logs.map(log=><article key={log.id}><div><small>{new Date(log.createdAt).toLocaleTimeString(locale.isTaiwan?'zh-TW':'ko-KR',{timeZone:locale.isTaiwan?'Asia/Taipei':'Asia/Seoul',hour:'2-digit',minute:'2-digit'})} · {log.portions}회분</small><strong>{log.name}</strong><span>{nutrition(log.calories,'kcal')} · 단백질 {nutrition(log.protein,'g')}</span><span>먹은 음식 비용 {log.cost==null?'미확인':locale.money(log.cost)}</span></div><button type="button" disabled={disabled} aria-label={`${log.name} 기록 취소`} onClick={()=>{if(!pendingRef.current)void send({action:'undo',id:log.id,version:current.version});}}>취소</button></article>)}
+   </details>}
+   {current&&<div className="intake-history" id="meal-history"><div className="intake-section-title"><h3>{history?'선택한 날의 기록':'오늘 먹은 기록'}</h3>{!history&&<Link href="/record">날짜별로 보기 →</Link>}</div>
+    {!current.logs.length?<p className="intake-note">먹은 음식을 기록하면 시간과 섭취량이 여기에 쌓여요.</p>:current.logs.map(log=><article key={log.id}><div><small>{new Date(log.createdAt).toLocaleTimeString(locale.isTaiwan?'zh-TW':'ko-KR',{timeZone:locale.isTaiwan?'Asia/Taipei':'Asia/Seoul',hour:'2-digit',minute:'2-digit'})} · {log.portions}회분</small><strong>{log.name}</strong><span>{nutrition(log.calories,'kcal')} · 단백질 {nutrition(log.protein,'g')}</span><span>먹은 음식 비용 {log.cost==null?'미확인':locale.money(log.cost)}</span></div><div className="intake-log-actions">{!locale.isTaiwan&&(editingLog===log.id?<><select aria-label={`${log.name} 먹은 양 수정`} value={logPortions} disabled={editBusy} onChange={e=>setLogPortions(e.target.value)}>{Array.from(new Set([0.25,0.5,0.75,1,1.5,2,3,4,log.portions])).sort((a,b)=>a-b).map(n=><option key={n} value={n}>{n}회분</option>)}</select><button type="button" disabled={editBusy||disabled} onClick={()=>void saveAmount(log.id)}>저장</button><button type="button" disabled={editBusy} onClick={()=>setEditingLog(null)}>닫기</button></>:<button type="button" disabled={disabled||editBusy} aria-label={`${log.name} 양 수정`} onClick={()=>{setEditingLog(log.id);setLogPortions(String(log.portions));}}>양 수정</button>)}<button type="button" disabled={disabled||editBusy} aria-label={`${log.name} 기록 삭제`} onClick={()=>{if(!pendingRef.current)void send({action:'undo',id:log.id,version:current.version});}}>삭제</button></div></article>)}
    </div>}
   </>}
  </section>);
