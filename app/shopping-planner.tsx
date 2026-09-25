@@ -1,5 +1,6 @@
 'use client';
 import {cachedJson,hasFreshJson,invalidateJson,primeJson} from '../lib/client-cache';
+import {Icon} from './app-shell';
 import {RiceBuddy} from './rice-buddy';
 import adoptionStyles from './plan-adoption.module.css';
 import {shoppingAvailabilityMessage} from '../lib/shopping-availability';
@@ -311,6 +312,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    <button type="button" disabled={loading||busy||progress.busy||!progress.ready||(!ids.length&&!Object.values(progress.stock).some(i=>i.owned||i.ordered))} onClick={()=>setConfirmReset(true)}>모두 초기화</button>
    {confirmReset&&<div role="group" aria-label="장바구니 초기화 확인"><strong>추천 메뉴와 주문·보유 목록을 모두 비울까요?</strong><p>홈의 현재 추천 식단도 함께 비워요. 먹은 기록·식비 기록·예산과 취향·공유 링크는 유지돼요. 판매처의 실제 주문은 취소되지 않아요. 이 추천 밖에서 따로 관리하는 재료 목록과 함께 담은 장바구니는 별도예요.</p><button type="button" disabled={progress.busy} onClick={()=>setConfirmReset(false)}>취소</button><button type="button" disabled={progress.busy||!progress.ready} onClick={()=>void resetCart()}>{progress.busy?'초기화 중…':'확인, 모두 초기화'}</button></div>}
   </section>}
+  {message&&<p role="status" className="planner-status-note"><Icon name="check" size={18}/><span>{message}</span></p>}
   {/* 앱의 한 바퀴: 맞춤 추천 → 장보고 요리 → 사진으로 기록 → 분석. 장보기를 시작했으면 기록 단계를 강조해요. */}
   {mode==='plan'&&ids.length>0&&(()=>{const shopping=Object.values(progress.stock).some(i=>i.owned>0||i.ordered>0);const current=shopping?3:2;return <ol className="home-steps" aria-label="식단 진행 단계">
    {[['내 몸에 맞는 추천',null],['장보고 요리',null],['사진으로 기록',null],['영양·체중 분석','/profile']].map(([label,href],i)=>{const step=i+1,state=step<current?'is-done':step===current?'is-current':'';const body=<><b>{step<current?'✓':step}</b><span>{label}</span></>;return <li key={label} className={state} aria-current={step===current?'step':undefined}>{href?<Link href={href}>{body}</Link>:body}</li>;})}
@@ -321,7 +323,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    <h3>마음에 드는 메뉴로, 이대로 먹어볼까요?</h3>
    <p>아래에서 메뉴를 바꿔 고른 뒤 저장하세요. {userId?'내 계정에서 식단을 이어 보고 기록할 수 있어요.':'로그인하면 고른 식단을 계정에 저장하고, 매일의 식비와 영양을 모아 볼 수 있어요.'}</p>
    <button type="button" className="primary-button" disabled={busy||loading||total>conditions.budget} onClick={()=>void save()}>{busy?'저장 중…':userId?'이대로 먹기 · 식단 저장':'이대로 먹기 · 로그인하고 저장'}</button>
-   {userId&&<div><Link href="/cart">장보기 이어가기 →</Link><Link href="/record">내 식비·영양 기록 →</Link></div>}
+   {userId&&<div><Link href="/record">내 식비·영양 기록 →</Link></div>}
    <small>추천·저장만으로 지출이나 먹은 기록이 생기지는 않아요. 구매 상태와 실제 먹은 양을 등록하면 기록에 반영돼요. 영양은 등록·추정 정보 기준이며 미확인 값은 제외해요.</small>
   </section>}
   {mode==='plan'&&ids.length>0&&building&&!ids.every(Boolean)&&<PlanBuilder ids={ids} products={products} conditions={conditions} onChoose={chooseMeal} disabled={busy||progress.busy}/>}
@@ -437,7 +439,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   {!locale.isTaiwan&&mode!=='settings'&&!!ids.length&&idsComplete&&<RecommendationFeedback key={JSON.stringify([ids,conditions.budget,conditions.meals])} conditions={conditions} mealNames={ids.map(id=>products.find(p=>p.id===id)?.name??'확인되지 않은 메뉴')} page={mode==='cart'?'/cart':'/'}/>}
   {mode==='cart'&&!ids.length&&<p><Link href="/">홈에서 이번에 살 것 추천받기 →</Link></p>}
   {mode==='settings'&&<div className="profile-shopping-links"><Link href="/">내 설정으로 추천받기 →</Link><Link href="/cart">이번 장보기 목록 →</Link>{!userId&&<small>로그인하면 설정을 계정에 저장할 수 있어요.</small>}</div>}
-  {message&&<p role="status" className="body-note">{message}</p>}
+
   {mode==='plan'&&!locale.isTaiwan&&<EatOutCard userId={userId} onLogin={onLogin}/>}
   {mode==='plan'&&!locale.isTaiwan&&userId&&<WeeklyGuideCard userId={userId}/>}
   {mode==='plan'&&!locale.isTaiwan&&ids.length>0&&idsComplete&&(!building||ids.every(Boolean))&&<PlannerFab actions={[

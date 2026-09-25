@@ -1,4 +1,12 @@
 /* Shared app skin. The explicit root keeps route CSS from reviving old themes. */
+.fresh-shell.site-shell .planner-status-note{display:flex;align-items:flex-start;gap:10px;margin:0 0 20px;padding:14px 16px;background:#edf1e2;border:1px solid #dbe3ca;border-radius:14px;color:#4e6240;font-size:14px;line-height:1.7;word-break:keep-all}
+.fresh-shell .planner-status-note svg{flex-shrink:0;margin-top:3px}
+.fresh-shell.site-shell .eo-entry{gap:20px;align-items:center}
+.fresh-shell.site-shell .eo-entry>div{min-width:0}
+.fresh-shell.site-shell .eo-entry strong{display:block;line-height:1.5}
+.fresh-shell.site-shell .eo-entry span{display:block;line-height:1.8}
+.fresh-shell.site-shell .eo-entry>button{flex-shrink:0;min-height:46px;border:1px solid #dddccb}
+@media(max-width:480px){.fresh-shell.site-shell .eo-entry{flex-direction:column;align-items:stretch;gap:14px}.fresh-shell.site-shell .eo-entry>button{width:100%}}
 .fresh-shell .home-tutorial-link{display:block;text-align:center;font-size:13px;color:#5b6b4e;padding:12px 10px;margin:0 0 8px;text-underline-offset:4px}
 .site-shell.fresh-shell {
   --ink: #353e30;
