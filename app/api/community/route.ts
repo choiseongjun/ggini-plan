@@ -15,7 +15,7 @@ const today = "(NOW() AT TIME ZONE 'Asia/Seoul')::date";
 const week = "date_trunc('week', NOW() AT TIME ZONE 'Asia/Seoul')::date";
 const validText = (x:unknown,max:number): x is string => typeof x === "string" && x.trim().length > 0 && x.trim().length <= max;
 const validId = (x:unknown): x is string => typeof x === "string" && /^[1-9][0-9]{0,17}$/.test(x);
-export const communityPageSize = 10;
+const communityPageSize = 10;
 export async function GET(request:NextRequest) {
  try {
   const user = await sessionUser(request); const uid=user?.id ?? null; const db=getPool();

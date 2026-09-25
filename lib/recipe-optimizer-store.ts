@@ -1,9 +1,10 @@
+import {menuQuality, type MenuQuality} from './menu-quality';
 import {getPool} from './db';
 import {reviewedRecipeImages} from './reviewed-recipe-images';
 import type {GeneratedRecipe} from './recipe-optimizer';
 import type {AiIngredient} from './recipe-ai-ingredients';
 
-export type StoredRecipeResult = GeneratedRecipe & {foodCode: string; createdAt: string; imageUrl: string | null; imageUrls: string[] | null; aiIngredients: {ingredients: AiIngredient[]; note: string} | null; source: string};
+export type StoredRecipeResult = GeneratedRecipe & {foodCode: string; menuQuality: MenuQuality; createdAt: string; imageUrl: string | null; imageUrls: string[] | null; aiIngredients: {ingredients: AiIngredient[]; note: string} | null; source: string};
 
 export async function saveRecipeOptimizerResult(foodCode: string, recipe: GeneratedRecipe): Promise<void> {
  await getPool().query(
@@ -18,11 +19,13 @@ export async function saveRecipeOptimizerResult(foodCode: string, recipe: Genera
 
 export async function listRecipeOptimizerResults(): Promise<StoredRecipeResult[]> {
  const {rows} = await getPool().query('SELECT * FROM recipe_optimizer_results ORDER BY created_at DESC');
- return rows.map((r) => ({
-  foodCode: r.food_code, targetName: r.target_name, targetBasisAmount: r.target_basis_amount, templateId: r.template_id, templateName: r.template_name,
+ return rows.map((r) => {
+ const quality=menuQuality(r.food_code,r.target_name,r.ai_ingredients?.ingredients??[]);
+ return ({
+  menuQuality:quality, foodCode: r.food_code, targetName: quality.action==='rename'?quality.name:r.target_name, targetBasisAmount: r.target_basis_amount, templateId: r.template_id, templateName: r.template_name,
   totalGrams: Number(r.total_grams), ingredients: r.ingredients, target: r.target, predicted: r.predicted, error: r.error,
-  score: Number(r.score), createdAt: r.created_at.toISOString(), imageUrl: reviewedRecipeImages(r.food_code)?.[0] ?? r.image_url, imageUrls: reviewedRecipeImages(r.food_code) ?? r.image_urls, aiIngredients: r.ai_ingredients, source: r.source ?? 'optimizer',
- }));
+  score: Number(r.score), createdAt: r.created_at.toISOString(), imageUrl: reviewedRecipeImages(r.food_code, r.image_url) !== undefined ? reviewedRecipeImages(r.food_code, r.image_url)![0] ?? null : r.image_url, imageUrls: reviewedRecipeImages(r.food_code, r.image_url) ?? r.image_urls, aiIngredients: r.ai_ingredients, source: r.source ?? 'optimizer',
+ });});
 }
 
 // Populated separately by scripts/synthesize-ai-ingredients.mjs (GPT-composed realistic ingredients),

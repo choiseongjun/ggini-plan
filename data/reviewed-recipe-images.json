@@ -30,5 +30,23 @@
     "approved": [
       "https://search1.kakaocdn.net/argon/130x130_85_c/2YOA0svrVHM"
     ]
+  },
+  {
+    "foodCode": "AI-c445b721092a",
+    "name": "두부구이",
+    "previousPrimary": "https://search4.kakaocdn.net/argon/130x130_85_c/LaKAmM5g7H1",
+    "candidates": [
+      "https://search4.kakaocdn.net/argon/130x130_85_c/LaKAmM5g7H1",
+      "https://search1.kakaocdn.net/argon/130x130_85_c/1iyb7Ob0iW8",
+      "https://search4.kakaocdn.net/argon/130x130_85_c/8tsdWWhnEN9",
+      "https://search2.kakaocdn.net/argon/130x130_85_c/2fLLmkeN0Kn",
+      "https://search4.kakaocdn.net/argon/130x130_85_c/LYl6d7WK2Tp",
+      "https://search1.kakaocdn.net/argon/130x130_85_c/3lNXD28qmP"
+    ],
+    "approved": [
+      "https://search1.kakaocdn.net/argon/130x130_85_c/3lNXD28qmP",
+      "https://search4.kakaocdn.net/argon/130x130_85_c/8tsdWWhnEN9",
+      "https://search4.kakaocdn.net/argon/130x130_85_c/LYl6d7WK2Tp"
+    ]
   }
 ]

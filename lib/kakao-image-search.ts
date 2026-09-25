@@ -1,9 +1,5 @@
-// Kakao Daum Search API (이미지 검색): https://developers.kakao.com/docs/latest/ko/daum-search/dev-guide
-// Used only to backfill a representative food photo for synthetic govDB recipes (lib/recipe-optimizer-plan.ts),
-// which have no real product behind them to photograph. Naver's equivalent free API stopped issuing new
-// keys on 2026-07-31, and Google's Custom Search JSON API is now closed to new customers entirely — Kakao
-// is the only one of the three still onboarding new free users, so relevance is tuned here via query
-// wording and a source-domain preference rather than switching providers again.
+// Prefer the configured NAVER API HUB search; retain Kakao as a fallback.
+import {searchNaverDishImages} from './naver-dish-images';
 export type KakaoImageResult = {thumbnail: string; link: string; sourceHost: string};
 
 // Recipe/food-blog sites return an actual cooked-dish photo far more reliably than a generic web image
@@ -34,6 +30,7 @@ export function dishImageQuery(dishName: string): string {
 // the UI can show a small gallery — one search hit being off-target is far less of a problem than
 // trusting it as the only photo.
 export async function searchDishImages(dishName: string, count = 6): Promise<KakaoImageResult[]> {
+ try { const images=await searchNaverDishImages(dishName,count); if(images.length)return images; } catch { /* Kakao remains available if Naver fails. */ }
  const key = process.env.KAKAO_REST_API_KEY;
  if (!key) throw new Error('KAKAO_REST_API_KEY is not set in the environment.');
  const url = new URL('https://dapi.kakao.com/v2/search/image');

@@ -1,3 +1,4 @@
+import {qualityAllowsRecommendation} from '../../../../lib/menu-quality';
 import {NextRequest} from 'next/server';
 import {adminUser} from '../../../../lib/admin';
 import {listRecipeOptimizerResults} from '../../../../lib/recipe-optimizer-store';
@@ -19,11 +20,11 @@ export async function GET(request: NextRequest) {
    const p = byCode.get(r.foodCode), role = roles[r.foodCode] ?? null;
    const n = p ? servingNutrients(p) : null;
    const kcal = n?.calories ?? null;
-   const reason = p
+   const reason = !qualityAllowsRecommendation(r.menuQuality) ? r.menuQuality.reason : p
     ? (kcal !== null && kcal < (p.recipe?.slots.every((s) => s === 'breakfast') ? 120 : 250) ? '한 끼 열량 부족' : null)
     : !r.aiIngredients?.ingredients.length ? '재료 생성 전' : !role ? '분류 전' : role === 'side' ? '반찬' : role === 'other' ? '끼니 아님·중복' : ['namul', 'kimchi'].includes(r.templateId) ? '반찬 템플릿' : '단백질 부족(국)';
    return {
-    code: r.foodCode, name: p?.name ?? r.targetName, source: r.source, role, template: r.templateId,
+    quality:r.menuQuality, code: r.foodCode, name: p?.name ?? r.targetName, source: r.source, role, template: r.templateId,
     breakfast: breakfast.has(r.foodCode), withRice: p ? p.recipe?.ingredients.some((i) => i.label.startsWith('함께 먹는 밥')) ?? false : !noRice.has(r.foodCode),
     included: Boolean(p) && reason === null, reason,
     kcal: kcal === null ? null : Math.round(kcal), protein: n?.protein == null ? null : Math.round(n.protein), carbs: n?.carbs == null ? null : Math.round(n.carbs), sodium: n?.sodium == null ? null : Math.round(n.sodium),

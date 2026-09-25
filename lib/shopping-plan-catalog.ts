@@ -1,3 +1,5 @@
+import {applyPairings} from './meal-pairings';
+import {listPairings} from './meal-pairing-store';
 import type { PlanProduct } from './shopping-plan';
 import {governmentOptimizedRecipeProducts} from './recipe-optimizer-plan';
 
@@ -22,7 +24,7 @@ export async function sideProducts(): Promise<PlanProduct[]> {
 
 export async function planProducts():Promise<PlanProduct[]> {
  if (cached && Date.now() - cached.at < TTL) return cached.products;
- const products = governmentOptimizedRecipeProducts().then((list) => list.map(slimRecipe));
+ const products = Promise.all([governmentOptimizedRecipeProducts(),governmentOptimizedRecipeProducts('side'),listPairings()]).then(([mains,sides,relations]) => applyPairings(mains,sides,relations).map(slimRecipe));
  cached = {at: Date.now(), products};
  products.catch(() => { if (cached?.products === products) cached = null; });
  return products;
@@ -39,3 +41,5 @@ function slimIngredient(p: PlanProduct): PlanProduct {
  for (const key of ['searchQuery', 'updatedAt', 'nutritionSourceName', 'portions', 'protein', 'inWeeklyCart', 'servingNote']) delete rest[key];
  return rest as unknown as PlanProduct;
 }
+
+export function clearPlanCatalog(){cached=null;cachedSides=null;}

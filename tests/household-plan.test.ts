@@ -26,7 +26,7 @@ test('household requirements multiply before subtracting stock and rounding pack
 test('side counts represent real ingredients, nutrition, budget and saved identities',()=>{
  const products=withCookingSides([main],[cabbage,mushroom,zucchini]);
  for(const sideCount of [0,1,2]){
-  const c={...initialConditions,days:1,meals:1,mealMode:'cook' as const,sideCount,people:2};
+  const c={...initialConditions,cookingEffort:'relaxed' as const,days:1,meals:1,mealMode:'cook' as const,sideCount,people:2};
   const pool=candidates(products,c);assert.equal(pool.length,1);assert.equal(pool[0].recipe?.sides?.length??0,sideCount);
   assert.ok(validMealIds([pool[0].id],products,c));
   if(sideCount){assert.ok(pool[0].price>main.price);assert.ok(pool[0].recipe!.nutrition.calories!>30);assert.ok(purchaseBasket([pool[0].id],products,[],{},undefined,2).length>1);}
