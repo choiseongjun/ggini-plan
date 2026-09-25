@@ -3,6 +3,8 @@
 import {useEffect,useState} from 'react';
 import {trackPlanner} from '../lib/track-planner';
 import './meal-reminder-card.css';
+import {nativePushPlatform} from '../lib/native-push-client';
+import {NativeMealReminderCard} from './native-meal-reminder-card';
 
 type Slot='breakfast'|'lunch'|'dinner';
 type Times=Partial<Record<Slot,string>>;
@@ -25,6 +27,13 @@ function keyBytes(base64:string){
 
 // 식사 시간 알림: 끼니마다 "오늘 저녁은 ○○" 알림을 받는다. 기기(브라우저)마다 따로 켠다.
 export function MealReminderCard(){
+ const [platform,setPlatform]=useState<string|undefined>();
+ useEffect(()=>{const update=()=>setPlatform(nativePushPlatform());update();window.addEventListener('ggini-native-ready',update);return()=>window.removeEventListener('ggini-native-ready',update);},[]);
+ if(platform==='android')return <NativeMealReminderCard/>;
+ if(platform==='unsupported')return <section className="mr-card"><p>이 기기의 앱 알림은 아직 준비 중이에요.</p></section>;
+ return <WebMealReminderCard/>;
+}
+function WebMealReminderCard(){
  const [support,setSupport]=useState<'checking'|'ok'|'unsupported'|'ios-install'>('checking');
  const [endpoint,setEndpoint]=useState<string|null>(null);
  const [subscribed,setSubscribed]=useState(false);

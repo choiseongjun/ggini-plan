@@ -103,7 +103,7 @@ export async function sendTestReminder(userId: string, endpoint: string) {
   }
 }
 
-function todaysMenu(plan: {conditions: unknown; mealIds: string[]} | undefined, slot: MealSlot, today: string, products: {id: string; name: string}[]) {
+export function todaysMenu(plan: {conditions: unknown; mealIds: string[]} | undefined, slot: MealSlot, today: string, products: {id: string; name: string}[]) {
   const c = parseConditions(plan?.conditions);
   if (!c || !plan || !Array.isArray(plan.mealIds)) return null;
   const start = c.startDate;

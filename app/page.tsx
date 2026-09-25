@@ -34,6 +34,7 @@ import { cachedJson, hasFreshJson, invalidateJson, primeJson } from "../lib/clie
 const catalogTtl=10*60_000,dashboardTtl=60_000;
 import {ServiceFeedback} from './service-feedback';
 import {DailyReturnCard} from './daily-return-card';
+import {useNativePush,nativePushLogout} from '../lib/native-push-client';
 
 type Tab = "community" | "home" | "calendar" | "cart" | "compare" | "record" | "profile";
 const formatWon=(value:number)=>new Intl.NumberFormat('ko-KR').format(value)+'원';
@@ -49,6 +50,7 @@ export default function Home() {
   const [products, setProducts] = useState<CatalogItem[]>([]);
   const [showAuth, setShowAuth] = useState(false);
   const [authUser, setAuthUser] = useState<PublicUser | null>(null);
+  useNativePush(authUser?.id);
   const [authError, setAuthError] = useState("");
   useEffect(()=>{
     const reset=(event:StorageEvent)=>{
@@ -151,6 +153,7 @@ export default function Home() {
     try {
       const response = await fetch("/api/auth/logout", { method: "POST", credentials: "same-origin" });
       if (!response.ok) throw new Error("로그아웃을 처리할 수 없습니다.");
+      nativePushLogout();
       setDashboard(null);
       setAuthUser(null);
       setShowAuth(false);
