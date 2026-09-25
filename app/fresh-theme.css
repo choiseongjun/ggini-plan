@@ -1,4 +1,12 @@
 /* Shared app skin. The explicit root keeps route CSS from reviving old themes. */
+.fresh-shell.site-shell .household-options{border:0;min-width:0;margin:20px 0;padding:0}
+.fresh-shell.site-shell .household-options legend{padding:0;margin-bottom:12px;font-size:16px;font-weight:700;color:#3f5135}
+.fresh-shell.site-shell .household-options>div{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;width:100%}
+.fresh-shell.site-shell .household-options button{display:flex;align-items:center;justify-content:center;min-width:0;min-height:50px;margin:0;padding:12px 8px;border:1px solid #dcdccb;border-radius:13px;background:#fffdf7;color:#536348;font-size:15px;line-height:1.5;font-weight:600;cursor:pointer}
+.fresh-shell.site-shell .household-options button[aria-pressed=true]{border-color:#6c8452;background:#eaf0db;color:#3e5830;box-shadow:inset 0 0 0 1px #6c8452;font-weight:800}
+.fresh-shell.site-shell .household-options small{display:block;margin:12px 0 0;font-size:13px;line-height:1.8;color:#637056;word-break:keep-all;overflow-wrap:anywhere}
+.fresh-shell.site-shell .household-options:disabled button{opacity:.55;cursor:wait}
+@media(max-width:360px){.fresh-shell.site-shell .household-options>div{gap:6px}.fresh-shell.site-shell .household-options button{padding:12px 4px}}
 .fresh-shell.site-shell .planner-status-note{display:flex;align-items:flex-start;gap:10px;margin:0 0 20px;padding:14px 16px;background:#edf1e2;border:1px solid #dbe3ca;border-radius:14px;color:#4e6240;font-size:14px;line-height:1.7;word-break:keep-all}
 .fresh-shell .planner-status-note svg{flex-shrink:0;margin-top:3px}
 .fresh-shell.site-shell .eo-entry{gap:20px;align-items:center}
