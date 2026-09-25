@@ -6,6 +6,7 @@ import adoptionStyles from './plan-adoption.module.css';
 import {shoppingAvailabilityMessage} from '../lib/shopping-availability';
 import {cookingDishId,repeatsDailyMain} from '../lib/shopping-plan';
 import {trackPlanner} from '../lib/track-planner';
+import {chooseShoppingDraft} from '../lib/shopping-draft';
 import {recommendationReasons} from '../lib/plan-explanation';
 import {usePlannerLocale} from './planner-locale';
 import {servingNutrients,nutritionIsEstimated} from '../lib/serving-nutrients';
@@ -181,12 +182,29 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
      const raw=storage.getItem(key);
      if(raw&&Number(JSON.parse(raw)?.savedAt??0)<=Date.parse(d.resetAt))storage.removeItem(key);
     }
-    if(draftKey!==guestKey&&!localStorage.getItem(draftKey)&&!sessionStorage.getItem(draftKey)){
-     const guest=localStorage.getItem(guestKey)??sessionStorage.getItem(guestKey);
-     if(guest&&parseConditions(JSON.parse(guest)?.conditions)){localStorage.setItem(draftKey,guest);localStorage.removeItem(guestKey);sessionStorage.removeItem(guestKey);}
+    const selected=chooseShoppingDraft(
+     localStorage.getItem(draftKey)??sessionStorage.getItem(draftKey),
+     draftKey!==guestKey ? localStorage.getItem(guestKey)??sessionStorage.getItem(guestKey) : null,
+     d.resetAt,
+    );
+    const draft=selected.draft??d.plan;const c=parseConditions(draft?.conditions);
+    if(c){
+     setAutomaticBudget(false);
+     const resolved:PlanConditions=resolveShoppingExclusions(selected.fromGuest ? c : {...c,swapPreferences:saved?.swapPreferences??c.swapPreferences,mealKinds:saved?.mealKinds??c.mealKinds,budgetMode:saved?.budgetMode??c.budgetMode,goal:saved?.goal??c.goal??'maintain'},defaults);
+     resolved.startDate??=locale.today();setConditions(resolved);
+     if(Array.isArray(draft.mealIds)&&draft.mealIds.length){
+      const check=locale.isTaiwan?{valid:validMealIds(draft.mealIds,catalog,resolved)}:await remote.products(draft.mealIds,resolved);
+      if(!controller.signal.aborted&&check.valid){
+       setIds(draft.mealIds);
+       localStorage.setItem(draftKey,encodeDraft(resolved,draft.mealIds));
+       if(selected.fromGuest){
+        // Delete the guest copy only after validation and successful persistence.
+        localStorage.removeItem(guestKey);sessionStorage.removeItem(guestKey);
+        setMessage('로그인 전에 고른 식단을 그대로 이어왔어요. 이대로 먹기를 누르면 계정에 저장돼요.');
+       }
+      }else if(!controller.signal.aborted&&selected.fromGuest){setError('고른 식단은 보관되어 있지만 현재 메뉴 정보를 확인하지 못했어요. 다시 불러와 주세요.');}
+     }
     }
-    const draft=JSON.parse(localStorage.getItem(draftKey)??sessionStorage.getItem(draftKey)??'null')??d.plan;const c=parseConditions(draft?.conditions);
-    if(c){setAutomaticBudget(false);const resolved:PlanConditions=resolveShoppingExclusions({...c,swapPreferences:saved?.swapPreferences??c.swapPreferences,mealKinds:saved?.mealKinds??c.mealKinds,budgetMode:saved?.budgetMode??c.budgetMode,goal:saved?.goal??c.goal??'maintain'},defaults);resolved.startDate??=locale.today();setConditions(resolved);if(Array.isArray(draft.mealIds)&&draft.mealIds.length){const check=locale.isTaiwan?{valid:validMealIds(draft.mealIds,catalog,resolved)}:await remote.products(draft.mealIds,resolved);if(!controller.signal.aborted&&check.valid){setIds(draft.mealIds);localStorage.setItem(draftKey,JSON.stringify({conditions:resolved,mealIds:draft.mealIds,savedAt:Date.now()}));}}}
    }catch{/* An expired draft should not stop browsing. */}
   }).catch(e=>{if(!controller.signal.aborted)setError(e.message);}).finally(()=>{if(!controller.signal.aborted)setLoading(false);finishLoading();});
   return()=>{controller.abort();finishLoading();};
