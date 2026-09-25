@@ -1,3 +1,4 @@
+import {manualFoodReference,rawFoodReference,rankFoodReferences,type RawFoodRow} from './basic-food-reference';
 import {getPool} from './db';
 
 // 음식 영양 사전(food_reference): 간식·디저트·음료·외식을 이름으로 찾아 1회 제공량 기준 영양을 알려 준다.
@@ -59,19 +60,22 @@ export async function searchFoodReference(rawQuery: string, limit = 30): Promise
    WHERE ${words.map((_, i) => `search_text LIKE '%'||$${i + 1}||'%'`).join(' AND ')} AND calories_kcal IS NOT NULL
    ORDER BY name, brand, serving_amount, food_code LIMIT 500`,
   words);
- const plain = query.trim().replace(/\s+/g, '');
- const rank = (r: Row) => { const name = r.name.replace(/[\s_]/g, ''); return (name === plain ? 0 : name.startsWith(plain) ? 1 : name.includes(plain) ? 2 : 3) * 1000 + r.name.length; };
- return rows.sort((a, b) => rank(a) - rank(b)).slice(0, limit).map(toReference);
+ const raw=await getPool().query<RawFoodRow>(`SELECT food_code,item_name,category_large,basis_amount,calories_kcal,protein_g,carbohydrates_g,sugar_g,fat_g,sodium_mg FROM foodsafety_processed_nutrition WHERE food_type='RAW' AND ${words.map((_,i)=>`replace(lower(item_name),'_','') LIKE '%'||$${i+1}||'%'`).join(' AND ')} AND calories_kcal IS NOT NULL ORDER BY length(item_name),item_name LIMIT 100`,words);
+ const rawItems=raw.rows.map(rawFoodReference).filter((f):f is FoodReference=>f!==null);
+ return rankFoodReferences([...rows.map(toReference),...rawItems],query,limit);
 }
 
 export async function foodReferenceByCode(code: string): Promise<FoodReference | null> {
- const {rows} = await getPool().query<Row>(`SELECT ${COLUMNS} FROM food_reference WHERE food_code=$1`, [code]);
- return rows[0] ? toReference(rows[0]) : null;
+ return (await foodReferencesByCodes([code]))[0]??null;
 }
 
 export async function foodReferencesByCodes(codes: string[]): Promise<FoodReference[]> {
  if (!codes.length) return [];
- const {rows} = await getPool().query<Row>(`SELECT ${COLUMNS} FROM food_reference WHERE food_code = ANY($1::text[])`, [codes]);
- const byCode = new Map(rows.map((r) => [r.food_code, toReference(r)]));
- return codes.flatMap((c) => { const r = byCode.get(c); return r ? [r] : []; });
+ const manual=codes.map(manualFoodReference).filter((f):f is FoodReference=>f!==null);
+ const rawCodes=codes.filter(c=>c.startsWith('raw:')).map(c=>c.slice(4));
+ const regular=codes.filter(c=>!c.startsWith('raw:')&&!c.startsWith('manual:'));
+ const rows=regular.length?(await getPool().query<Row>(`SELECT ${COLUMNS} FROM food_reference WHERE food_code = ANY($1::text[])`,[regular])).rows:[];
+ const raw=rawCodes.length?(await getPool().query<RawFoodRow>(`SELECT food_code,item_name,category_large,basis_amount,calories_kcal,protein_g,carbohydrates_g,sugar_g,fat_g,sodium_mg FROM foodsafety_processed_nutrition WHERE food_type='RAW' AND food_code=ANY($1::text[])`,[rawCodes])).rows:[];
+ const byCode=new Map([...rows.map(toReference),...raw.map(rawFoodReference).filter((f):f is FoodReference=>f!==null),...manual].map(f=>[f.code,f]));
+ return codes.flatMap(c=>{const f=byCode.get(c);return f?[f]:[];});
 }

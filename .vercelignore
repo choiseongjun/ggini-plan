@@ -1,0 +1,16 @@
+.env*
+.git
+.next
+node_modules
+artifacts
+newdata
+.cache
+.codex-remote-attachments
+*.tsbuildinfo
+data/nutrition-review
+data/taiwan-evidence
+data/shopping-source-research.json
+data/shopping-label-research.json
+toss/node_modules
+toss/dist
+*.traineddata

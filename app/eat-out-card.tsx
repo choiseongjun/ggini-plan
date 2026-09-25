@@ -1,6 +1,9 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
+import {NearbyRestaurants} from './nearby-restaurants';
+import {rememberRecordMode} from '../lib/record-intent';
 import {useEffect, useRef, useState} from 'react';
 import type {EatOutOption, EatOutState} from '../lib/eat-out';
 import {trackPlanner} from '../lib/track-planner';
@@ -137,9 +140,11 @@ export function EatOutCard({userId, onLogin}: {userId?: string; onLogin: () => v
        </div>
       </div>
       {o.reasons.length > 0 && <ul className="eo-reasons">{o.reasons.map((r) => <li key={r}>{r}</li>)}</ul>}
+      <NearbyRestaurants menu={o.name}/>
       <button type="button" className="eo-eat" disabled={busy || logged === o.code} onClick={() => void eat(o)}>{logged === o.code ? '기록했어요' : userId ? '이거 먹었어요' : '로그인하고 기록하기'}</button>
      </li>)}</ul>}
      {result && tab === 'suggest' && <button type="button" className="eo-again" disabled={busy} onClick={() => suggest()}>다른 메뉴 보기</button>}
+     {result&&<Link href="/record" className="eo-photo-record" onClick={()=>{rememberRecordMode('photo');setOpen(false);}}>먹고 난 뒤, 사진으로 기록하기</Link>}
      <small className="eo-foot">식품의약품안전처 식품영양성분 DB의 1인분 참고값이에요. 식당·양에 따라 달라요.</small>
     </div>
    </div>
