@@ -9,7 +9,6 @@ import {EatLogPanel} from './eat-log-panel';
 import {SnackLog} from './snack-log';
 import {SideDishSuggest} from './side-dish-suggest';
 import {sideFit} from '../lib/side-pairing';
-import type {LoggedExtra} from '../lib/intake-extras';
 import {MealPhotoLog,PhotoLogSummary,type PhotoLogResult} from './meal-photo-log';
 import {BadgeToast,INTAKE_LOGGED_EVENT,StreakChip,useIntakeStats} from './record-progress';
 import {useEffect,useId,useState} from 'react';
@@ -59,14 +58,6 @@ export function TodayMeals({focusMeal=null,overviewOpen,onOverviewOpen,nutrition
   const r=photoResults[index];if(!r)return;
   for(const id of r.ids)if(!await intake.send({action:'undo',id,version:intake.current?.version??0}))return;
   setPhotoResults(all=>{const next={...all};delete next[index];return next;});
- }
- // 사진 기록 고치기: 고친 양으로 새로 기록한 뒤 사진 기록을 지운다(중간에 실패해도 기록이 사라지지 않게 이 순서로).
- const [editingPhoto,setEditingPhoto]=useState<number|null>(null);
- async function correctPhoto(index:number,productId:string,portions:number,extras:LoggedExtra[]){
-  const r=photoResults[index];if(!r)return;
-  if(!await intake.log(productId,portions,extras))return;
-  for(const id of r.ids)if(!await intake.send({action:'undo',id,version:intake.current?.version??0}))break;
-  setPhotoResults(all=>{const next={...all};delete next[index];return next;});setEditingPhoto(null);
  }
  const [managing,setManaging]=useState<number|null>(null),[purchaseMessage,setPurchaseMessage]=useState('');
  const [browsing,setBrowsing]=useState<number|null>(null);
@@ -120,8 +111,7 @@ export function TodayMeals({focusMeal=null,overviewOpen,onOverviewOpen,nutrition
      <div className="today-menu-label"><span className="meal-slot">{slot==='breakfast'?'☀️':slot==='lunch'?'🌤️':'🌙'} {slotLabels[slot]}</span><b className={`meal-status${done?' is-done':''}`}>{done?'먹었어요 ✓':availablePortions(progress.stock,p)>=1?'집에 있어요':orderedParts.length?'배송 기다리는 중':'구매 전'}</b></div>
      <div className="today-product"><ProductThumb item={p} zoomable/><div className="today-menu-toggle-text"><span className="today-menu-name">{p.name.split('_').join(' · ')}</span><span className="today-menu-price">{p.recipe?'재료비':'한 끼'} 약 <b>{won(p.price/p.servings)}</b></span></div></div>
      {kcal!==null&&<div className="meal-kcal"><div className="meal-kcal-total"><b>{Math.round(kcal).toLocaleString('ko-KR')}</b><span>kcal</span><small>한 끼</small></div>{kcalParts.rice&&<p className="meal-kcal-line"><span>{p.name.split('_')[0]} 1인분{kcalParts.dish.grams!==null?` (약 ${kcalParts.dish.grams}g)`:''}</span> <b>{Math.round(kcalParts.dish.kcal??0)}</b> + <span>밥 한 공기</span> <b>{Math.round(kcalParts.rice.kcal)}</b></p>}</div>}
-     <div className="meal-primary-record">     {photoResults[index]&&editingPhoto!==index&&<PhotoLogSummary result={photoResults[index]} streak={stats?.streak.loggedToday?stats.streak.current:null} busy={intake.busy} onUndo={()=>void undoPhoto(index)} onEdit={()=>setEditingPhoto(index)}/>}
-     {photoResults[index]&&editingPhoto===index&&<EatLogPanel product={p} stockAvailable={0} disabled={intake.busy} title="먹은 양 고치기" submitLabel="이대로 고치기" initial={{portions:photoResults[index].portion,extras:photoResults[index].extras}} onClose={()=>setEditingPhoto(null)} onSubmit={({portions,extras})=>void correctPhoto(index,p.id,portions,extras)}/>}
+     <div className="meal-primary-record">     {photoResults[index]&&<PhotoLogSummary result={photoResults[index]} streak={stats?.streak.loggedToday?stats.streak.current:null} busy={intake.busy} onUndo={()=>void undoPhoto(index)} onEdit={()=>window.location.assign('/record#meal-history')}/>}
      {userId&&!done&&<MealPhotoLog productId={p.id} dishName={p.name} disabled={disabled||!isToday} onLogged={r=>{setPhotoResults(all=>({...all,[index]:r}));setLogging(null);intake.reload();window.dispatchEvent(new CustomEvent(INTAKE_LOGGED_EVENT));trackPlanner('photo_logged');if(index===focusMeal)trackPlanner('push_logged');}} onFallback={()=>void intake.log(p.id,1,[])} onManual={()=>setLogging(logging===index?null:index)}/>}
 
      {logging===index&&!done&&<EatLogPanel product={p} stockAvailable={owned?Math.floor(owned.available*4)/4:0} disabled={disabled||!isToday} onClose={()=>setLogging(null)} onSubmit={({portions,extras,deduct})=>{void intake.log(p.id,portions,extras,deduct?owned:undefined).then(ok=>{if(ok){setLogging(null);if(index===focusMeal)trackPlanner('push_logged');}});}}/>}

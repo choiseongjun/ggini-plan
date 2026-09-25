@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import {useEffect,useState} from 'react';
+import {MealPhotoLog} from './meal-photo-log';
 import {SnackLog} from './snack-log';
 import {RiceBuddy} from './rice-buddy';
 import {useIntakeStats} from './record-progress';
@@ -25,7 +26,7 @@ export function RecordEntry({userId,onLogin,onLogged}:{userId?:string;onLogin:()
   <p className="record-entry-intro">집밥도, 밖에서 먹은 한 끼도.<br/>편한 방법으로 오늘의 식사를 남겨보세요.</p>
   <div className="record-entry-actions">
    <button type="button" className="record-method record-method-photo" aria-label="사진으로 기록" aria-pressed={mode==='photo'} onClick={()=>choose('photo')}>
-    <span className="record-method-icon"><RecordIcon kind="photo"/></span><span className="record-method-copy"><strong>사진으로 기록</strong><span>음식 선택 후 사진 분석</span></span><span className="record-method-check" aria-hidden="true">{mode==='photo'&&<svg viewBox="0 0 16 16" fill="none"><path d="m4 8 3 3 5-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}</span>
+    <span className="record-method-icon"><RecordIcon kind="photo"/></span><span className="record-method-copy"><strong>사진으로 기록</strong><span>음식 사진만 올리면 칼로리 분석</span></span><span className="record-method-check" aria-hidden="true">{mode==='photo'&&<svg viewBox="0 0 16 16" fill="none"><path d="m4 8 3 3 5-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}</span>
    </button>
    <button type="button" className="record-method record-method-search" aria-label="음식 검색으로 기록" aria-pressed={mode==='search'} onClick={()=>choose('search')}>
     <span className="record-method-icon"><RecordIcon kind="search"/></span><span className="record-method-copy"><strong>음식 검색으로 기록</strong><span>음식 이름과 먹은 양만 선택</span></span><span className="record-method-check" aria-hidden="true">{mode==='search'&&<svg viewBox="0 0 16 16" fill="none"><path d="m4 8 3 3 5-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}</span>
@@ -33,7 +34,8 @@ export function RecordEntry({userId,onLogin,onLogged}:{userId?:string;onLogin:()
   </div>
   <div className="record-entry-help"><Link className="record-guide-link" href="/how-to#record"><RecordIcon kind="book"/>기록이 처음이라면</Link><span>방법을 함께 알아봐요</span></div>
   {!userId&&<small className="record-entry-login-note">로그인하면 내 식사 일기에 저장하고<br/>날짜별로 다시 볼 수 있어요.</small>}
-  {userId&&mode&&<SnackLog key={mode} initialOpen photo={mode==='photo'} onLogged={()=>{setDone(true);onLogged();}}/>}
+  {userId&&mode==='photo'&&<MealPhotoLog dishName="오늘 먹은 음식" disabled={false} onManual={()=>setMode('search')} onFallback={()=>setMode('search')} onLogged={()=>{setDone(true);window.dispatchEvent(new CustomEvent('intake-logged'));onLogged();}}/>}
+  {userId&&mode==='search'&&<SnackLog key={mode} initialOpen onLogged={()=>{setDone(true);onLogged();}}/>}
   {done&&<div className="record-entry-reward" role="status"><RiceBuddy stage={stats?.buddy?.stage??0}/><div><strong>한 끼 기록, 잘했어요!</strong><p>{stats?.buddy?`끼니와 함께한 ${stats.buddy.days}일${stats.buddy.next?` · ${stats.buddy.next.gift}까지 ${stats.buddy.remaining}일`:''}`:'아래 식사 일기에 남겼어요.'}</p><small>양을 잘못 골랐다면 아래 기록에서 수정해 주세요.</small></div></div>}
  </section>;
 }

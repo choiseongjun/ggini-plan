@@ -4,7 +4,7 @@ import {useEffect,useRef,useState} from 'react';
 import {intakeExtras,type IntakeExtra} from '../lib/intake-extras';
 import './meal-photo-log.css';
 
-export type PhotoLogResult={logged:true;portion:number;extras:IntakeExtra[];note:string;ids:string[];calories:number}|{logged:false;match:string;note:string};
+export type PhotoLogResult={logged:true;food?:{name:string}|null;portion:number;extras:IntakeExtra[];note:string;ids:string[];calories:number}|{logged:false;match:string;note:string};
 // Phone photos are 3–8MB (HEIC on iPhone); uploading them over mobile data was the slow part.
 // Downscale on the device to what the server sends the model anyway (≤1024px JPEG, ~150KB).
 async function shrink(file:File):Promise<Blob>{
@@ -23,7 +23,7 @@ const stageText={prepare:'사진 준비 중',upload:'사진 올리는 중',analy
 const portionText=(p:number)=>p===1?'1인분':p===0.5?'반 인분':`${p}인분`;
 
 // 📷 먹었어요: pick or take a photo, the server judges portion + visible sides against the planned dish and logs it.
-export function MealPhotoLog({productId,referenceCode,dishName,disabled,onLogged,onFallback,onManual}:{productId?:string;referenceCode?:string;dishName:string;disabled:boolean;onLogged:(result:Extract<PhotoLogResult,{logged:true}>)=>void;onFallback:()=>void;onManual:()=>void}){
+export function MealPhotoLog({productId,referenceCode,dishName,disabled,onLogged,onManual}:{productId?:string;referenceCode?:string;dishName:string;disabled:boolean;onLogged:(result:Extract<PhotoLogResult,{logged:true}>)=>void;onFallback:()=>void;onManual:()=>void}){
  const input=useRef<HTMLInputElement>(null);
  const [picked,setPicked]=useState<{file:File;url:string}[]>([]);
  const [aiAcknowledged,setAiAcknowledged]=useState(false);
@@ -40,7 +40,7 @@ export function MealPhotoLog({productId,referenceCode,dishName,disabled,onLogged
   const controller=new AbortController(),timer=window.setTimeout(()=>controller.abort(),40000);
   try{
    const photos=await Promise.all(files.map(shrink));
-   const form=new FormData();photos.forEach((photo,i)=>form.append('photo',photo,`meal-${i+1}.jpg`));if(referenceCode)form.set('referenceCode',referenceCode);else form.set('productId',productId??'');form.set('id',crypto.randomUUID());
+   const form=new FormData();photos.forEach((photo,i)=>form.append('photo',photo,`meal-${i+1}.jpg`));if(referenceCode)form.set('referenceCode',referenceCode);else if(productId)form.set('productId',productId);form.set('id',crypto.randomUUID());
    setStage('upload');
    const request=fetch('/api/food-intake/photo',{method:'POST',body:form,signal:controller.signal});
    // The upload is small now, so after a moment the wait is the analysis itself.
@@ -55,15 +55,16 @@ export function MealPhotoLog({productId,referenceCode,dishName,disabled,onLogged
  return <div className="photo-log">
   <input ref={input} type="file" accept="image/*" multiple hidden onChange={e=>{addFiles(e.target.files);e.target.value='';}}/>
   {stage?<div className="photo-log-busy" role="status"><span className="photo-log-spinner" aria-hidden="true"/><div><strong>{stageText[stage]}…</strong><small>보통 5초 안팎 걸려요</small></div></div>
-  :result&&!result.logged?<div className="photo-log-mismatch" role="status"><strong>{result.match==='different'?`${dishName}와(과) 달라 보여요`:'사진을 잘 알아보지 못했어요'}</strong>{result.note&&<small>{result.note}</small>}<div><button type="button" onClick={()=>{setResult(null);clearPicked();input.current?.click();}}>다시 찍기</button><button type="button" onClick={()=>{setResult(null);clearPicked();onFallback();}}>그래도 1인분으로 기록</button></div></div>
+  :result&&!result.logged?<div className="photo-log-mismatch" role="status"><strong>{result.match==='different'?`${dishName}와(과) 달라 보여요`:'사진을 잘 알아보지 못했어요'}</strong>{result.note&&<small>{result.note}</small>}<div><button type="button" onClick={()=>{setResult(null);clearPicked();input.current?.click();}}>다시 찍기</button><button type="button" onClick={()=>{setResult(null);clearPicked();onManual();}}>사진 없이 기록</button></div></div>
   :picked.length?<div className="photo-log-staged">
    <ul className="photo-log-thumbs">{picked.map((p,i)=><li key={p.url}>
     {/* eslint-disable-next-line @next/next/no-img-element -- local object URL preview, nothing to optimise */}
     <img src={p.url} alt={`먹은 사진 ${i+1}`}/><button type="button" aria-label={`사진 ${i+1} 빼기`} onClick={()=>removeAt(i)}>✕</button></li>)}
     {picked.length<MAX_PHOTOS&&<li><button type="button" className="photo-log-add" onClick={()=>input.current?.click()}><span aria-hidden="true">+</span>추가</button></li>}</ul>
+   <small className="photo-log-hint">추천과 다른 음식도 사진 속 음식으로 분석해요. 영양정보는 추정치예요.</small>
    <small className="photo-log-hint">먹기 전·후 사진이나 반찬을 따로 찍은 사진을 함께 올리면 더 정확해요 (최대 {MAX_PHOTOS}장)</small>
-   <p className="photo-log-hint">사진과 메뉴 정보는 식사량 분석을 위해 OpenAI로 전송됩니다. 끼니플랜은 분석용 사진 원본을 저장하지 않고 식사 기록을 저장합니다. OpenAI의 별도 보관 정책이 적용됩니다. 얼굴·신분증 등 개인정보가 나온 사진은 올리지 마세요. <a href="/privacy#meal-photos" target="_blank" rel="noreferrer">사진 처리 안내</a></p>
-   <label className="photo-log-hint"><input type="checkbox" checked={aiAcknowledged} onChange={e=>setAiAcknowledged(e.target.checked)}/> 사진의 OpenAI 전송·분석에 동의합니다. 원하지 않으면 취소 후 사진 없이 기록할 수 있습니다.</label>
+   <p className="photo-log-hint">사진과 메뉴 정보를 AI로 분석해 먹은 양과 예상 영양정보를 기록해요. 사진과 분석 결과는 내 식사 일기에 저장돼요. 기록을 삭제하면 사진도 함께 삭제돼요. <a href="/privacy#meal-photos" target="_blank" rel="noreferrer">사진 처리 안내</a></p>
+   <label className="photo-log-hint"><input type="checkbox" checked={aiAcknowledged} onChange={e=>setAiAcknowledged(e.target.checked)}/> AI 식사 분석과 내 식사 일기 사진 저장에 동의해요.</label>
    <div className="photo-log-staged-actions"><button type="button" onClick={()=>{clearPicked();setAiAcknowledged(false);}}>취소</button><button type="button" className="photo-log-submit" disabled={disabled||!aiAcknowledged} onClick={()=>void upload(picked.map(p=>p.file))}>기록하기 ({picked.length}장)</button></div>
   </div>
   :<><button type="button" className="photo-log-button" disabled={disabled} onClick={()=>input.current?.click()}><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.3l1.4-2h5.6l1.4 2h1.3A2.5 2.5 0 0 1 20 8.5v8a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5Z"/><circle cx="12" cy="12.5" r="3.4"/></svg>먹었어요 · 사진 올리기</button>
@@ -75,7 +76,7 @@ export function MealPhotoLog({productId,referenceCode,dishName,disabled,onLogged
 export function PhotoLogSummary({result,streak,onUndo,onEdit,busy}:{result:Extract<PhotoLogResult,{logged:true}>;streak:number|null;onUndo:()=>void;onEdit?:()=>void;busy:boolean}){
  return <div className="photo-log-done" role="status">
   <span className="photo-log-check" aria-hidden="true"/>
-  <div><strong>{portionText(result.portion)}{result.extras.length?` + ${result.extras.map(k=>intakeExtras[k].label).join(', ')}`:''} · 약 {Math.round(result.calories).toLocaleString('ko-KR')}kcal 기록했어요</strong>{streak!==null&&<span className="photo-log-streak">{streak}일 연속 기록 중!</span>}{result.note&&<small>{result.note}</small>}</div>
+  <div><strong>{result.food?result.food.name+' (사진 추정)':portionText(result.portion)}{result.extras.length?` + ${result.extras.map(k=>intakeExtras[k].label).join(', ')}`:''} · 약 {Math.round(result.calories).toLocaleString('ko-KR')}kcal 기록했어요</strong>{streak!==null&&<span className="photo-log-streak">{streak}일 연속 기록 중!</span>}{result.note&&<small>{result.note}</small>}</div>
   <div className="photo-log-done-actions">{onEdit&&<button type="button" disabled={busy} onClick={onEdit}>수정</button>}<button type="button" disabled={busy} onClick={onUndo}>되돌리기</button></div>
  </div>;
 }

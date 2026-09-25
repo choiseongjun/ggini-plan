@@ -8,7 +8,7 @@ export function servingNutrition(p:PlanProduct){
 export const stockPrecision=(n:number)=>Math.abs(n)<0.0000011?0:Math.round(n*1000000)/1000000;
 export function validStockQuantity(n:unknown):n is number{return typeof n==='number'&&Number.isFinite(n)&&n>=0&&n<=10000000&&Math.abs(n*1000000-Math.round(n*1000000))<0.01;}
 export function validPortions(n:unknown):n is number{return typeof n==='number'&&n>=0.25&&n<=10&&Number.isInteger(n*4);}
-export type IntakeLog={id:string;productId:string;name:string;portions:number;packs:number;calories:number|null;protein:number|null;cost?:number|null;createdAt:string};
+export type IntakeLog={id:string;productId:string;name:string;portions:number;packs:number;calories:number|null;protein:number|null;cost?:number|null;createdAt:string;photoCount?:number};
 export type IntakeProduct={id:string;name:string;servingNote:string;servings:number;available:number;calories:number|null;protein:number|null;image:string|null};
 export type IntakeData={date:string;version:number;products:IntakeProduct[];logs:IntakeLog[]};
 export function consumeFood(stock:ShoppingStock,p:PlanProduct,portions:number){

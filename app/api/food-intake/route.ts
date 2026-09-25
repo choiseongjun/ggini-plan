@@ -26,7 +26,7 @@ export async function GET(request:NextRequest){
   if(!validDate(date))return authFailure('날짜를 확인해 주세요.',400);
   const [progress,logs,products]=await Promise.all([
    getPool().query("SELECT stock,version FROM shopping_progress WHERE user_id=$1 AND scope='products'",[user.id]),
-   getPool().query(`SELECT id::text,product_id AS "productId",product_name AS name,portions::float8,packs::float8,calories::float8,protein::float8,cost::float8,created_at AS "createdAt" FROM food_intake_logs WHERE user_id=$1 AND undone_at IS NULL AND created_at>=($2::date::timestamp AT TIME ZONE 'Asia/Seoul') AND created_at<(($2::date+1)::timestamp AT TIME ZONE 'Asia/Seoul') ORDER BY created_at DESC,id DESC`,[user.id,date]),
+   getPool().query(`SELECT id::text,product_id AS "productId",product_name AS name,portions::float8,packs::float8,calories::float8,protein::float8,cost::float8,created_at AS "createdAt",(SELECT count(*)::int FROM food_intake_photos p WHERE p.user_id=food_intake_logs.user_id AND p.log_id=food_intake_logs.id) AS "photoCount" FROM food_intake_logs WHERE user_id=$1 AND undone_at IS NULL AND created_at>=($2::date::timestamp AT TIME ZONE 'Asia/Seoul') AND created_at<(($2::date+1)::timestamp AT TIME ZONE 'Asia/Seoul') ORDER BY created_at DESC,id DESC`,[user.id,date]),
    planProducts(),
   ]);
   const stock=parseStock(progress.rows[0]?.stock??{});if(!stock)throw new Error('Invalid stock');

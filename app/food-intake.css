@@ -2,3 +2,5 @@
 
 .intake-food-heading>.food-thumb{flex:0 0 56px;width:56px;height:56px;padding:0;overflow:hidden}.intake-food-heading>.food-thumb img{width:56px;height:56px;object-fit:cover}
 .intake-meal-cost{display:grid;gap:8px;padding:17px 14px;border-radius:16px;background:#fff0d5;margin:14px 0;color:#66502e}.intake-meal-cost>span{font-size:13px}.intake-meal-cost>strong{font-size:27px}.intake-meal-cost>small{font-size:11px;line-height:1.7}
+
+.intake-diary-photos{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.intake-diary-photos a{display:block;border-radius:14px;overflow:hidden}.intake-diary-photos img{display:block;width:96px;height:96px;object-fit:cover}
