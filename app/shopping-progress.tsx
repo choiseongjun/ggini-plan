@@ -29,7 +29,7 @@ export function useShoppingProgress(accountId:string|undefined,scope:'products'|
    }catch(e){if(!c.signal.aborted)setError(e instanceof Error?e.message:'구매 목록을 불러오지 못했어요.');}
   })();return()=>c.abort();
  },[key,userId,endpoint,revision]);
- useEffect(()=>{const changed=(event:Event)=>{const detail=(event as CustomEvent).detail;if(detail?.scope===scope&&detail?.source==='intake'){setReady(false);setRevision(n=>n+1);}};window.addEventListener('shopping-progress-changed',changed);return()=>window.removeEventListener('shopping-progress-changed',changed);},[scope]);
+ useEffect(()=>{const changed=(event:Event)=>{const detail=(event as CustomEvent).detail;if((event.type==='intake-logged'&&scope==='products')||(detail?.scope===scope&&detail?.source==='intake')){setReady(false);setRevision(n=>n+1);}};window.addEventListener('shopping-progress-changed',changed);window.addEventListener('intake-logged',changed);return()=>{window.removeEventListener('shopping-progress-changed',changed);window.removeEventListener('intake-logged',changed);};},[scope]);
  async function persist(makeStock:()=>ShoppingStock,resetConditions?:PlanConditions,expense?:ShoppingExpense){
   if(lock.current||!ready)return false;lock.current=true;setBusy(true);setError('');
   try{

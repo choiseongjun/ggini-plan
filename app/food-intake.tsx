@@ -30,9 +30,9 @@ export function useFoodIntake(userId?:string,history=false,externalDate?:string)
  useEffect(()=>{
   const refresh=()=>{setToday(locale.today());setRevision(n=>n+1);};
   const changed=(event:Event)=>{const detail=(event as CustomEvent).detail;if(detail?.scope==='products'&&['cart','intake'].includes(detail?.source))refresh();};
-  window.addEventListener('shopping-progress-changed',changed);window.addEventListener('focus',refresh);
+  window.addEventListener('shopping-progress-changed',changed);window.addEventListener('intake-logged',refresh);window.addEventListener('focus',refresh);
   const timer=window.setInterval(()=>setToday(locale.today()),60000);
-  return()=>{window.removeEventListener('shopping-progress-changed',changed);window.removeEventListener('focus',refresh);window.clearInterval(timer);};
+  return()=>{window.removeEventListener('shopping-progress-changed',changed);window.removeEventListener('intake-logged',refresh);window.removeEventListener('focus',refresh);window.clearInterval(timer);};
  },[locale]);
  function reload(){setError('');setLoading(true);setRevision(n=>n+1);}
  async function send(command:Command):Promise<boolean>{

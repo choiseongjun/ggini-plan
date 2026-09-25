@@ -48,9 +48,13 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
   const [custom, setCustom] = useState<CustomTarget | null>(null);
   const { stats: intakeStats } = useIntakeStats(userId);
   useEffect(() => {
-    if (!userId) return;
+    if (loading) return;
     const followLink = () => {
       const id = window.location.hash.slice(1);
+      if (id === 'profile-settings') {
+        setDirection(1); setError(''); setQuickWizard(true); setWizardStep(0);
+        return;
+      }
       if (id === 'weekly-report' || id === 'meal-reminders' || id === 'buddy-companion') {
         document.getElementById(id)?.scrollIntoView({block: 'start'});
       }
@@ -58,7 +62,7 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
     const frame = requestAnimationFrame(followLink);
     window.addEventListener('hashchange', followLink);
     return () => { cancelAnimationFrame(frame); window.removeEventListener('hashchange', followLink); };
-  }, [userId]);
+  }, [userId, loading]);
   const [wizardStep, setWizardStep] = useState<number | null>(null);
   const [quickWizard, setQuickWizard] = useState(false);
   const [direction, setDirection] = useState<1 | -1>(1);

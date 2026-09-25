@@ -4,7 +4,9 @@ import {parseConditions,type PlanConditions,type PlanProduct} from '../lib/shopp
 import {remoteEngine} from './plan-engine';
 export type HomePlan={conditions:PlanConditions;ids:string[];products:PlanProduct[]};
 export function useHomePlan(userId?:string){
- const [plan,setPlan]=useState<HomePlan|null>(null);
+ const [result,setResult]=useState<{owner:string;plan:HomePlan|null}|null>(null);
+ const owner=userId??'guest';
+ const plan=result?.owner===owner?result.plan:null;
  const [loading,setLoading]=useState(true),[error,setError]=useState('');
  const [retry,setRetry]=useState(0);
  useEffect(()=>{
@@ -23,9 +25,10 @@ export function useHomePlan(userId?:string){
      draft=(await response.json()).plan;
     }
     const conditions=parseConditions(draft?.conditions);
-    const ids:string[]=Array.isArray(draft?.mealIds)?draft.mealIds.filter((id:unknown)=>typeof id==='string'&&id):[];
-    const products=conditions&&ids.length?(await remoteEngine(()=>{}).products(ids)).products:[];
-    if(alive&&request===revision)setPlan(conditions&&ids.length?{conditions,ids,products}:null);
+    // Keep empty meal slots in place so calendar dates and meal times cannot shift.
+    const ids:string[]=Array.isArray(draft?.mealIds)?draft.mealIds.filter((id:unknown)=>typeof id==='string'):[];
+    const products=conditions&&ids.some(Boolean)?(await remoteEngine(()=>{}).products(ids,conditions)).products:[];
+    if(alive&&request===revision)setResult({owner:userId??'guest',plan:conditions&&ids.some(Boolean)?{conditions,ids,products}:null});
    }catch(e){if(alive&&request===revision)setError(e instanceof Error?e.message:'식단을 불러오지 못했어요.');}
    finally{if(alive&&request===revision)setLoading(false);}
   };

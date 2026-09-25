@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import {useCallback,useEffect,useRef,useState} from 'react';
+import {useCallback,useEffect,useState} from 'react';
 import type {IntakeStats} from '../lib/intake-stats';
 import type {buddyGrowth} from '../lib/buddy-growth';
 import {RecordMedal} from './record-medal';
@@ -12,20 +12,23 @@ export const INTAKE_LOGGED_EVENT='intake-logged';
 
 // Streak/badges/weekly report for the signed-in user; refetches whenever a meal is logged or undone.
 export function useIntakeStats(userId?:string){
- const [stats,setStats]=useState<Stats|null>(null);
+ const [result,setResult]=useState<{userId:string;stats:Stats|null}|null>(null);
+ const stats=userId&&result?.userId===userId?result.stats:null;
  const [newBadges,setNewBadges]=useState<Stats['badges']>([]);
- const earned=useRef<Set<string>|null>(null);
+
  useEffect(()=>{
   if(!userId)return;
   let alive=true,revision=0;
+  let earned:Set<string>|null=null;
+  const setStats=(stats:Stats|null)=>setResult({userId,stats});
   const day=()=>new Date().toLocaleDateString('sv-SE',{timeZone:'Asia/Seoul'});
   let lastDay=day();
   const load=()=>{const request=++revision;return fetch('/api/food-intake/stats',{cache:'no-store'}).then(r=>r.ok?r.json():null).then((d:Stats|null)=>{
    if(!alive||request!==revision||!d)return;
    const now=d.badges.filter(b=>b.earned);
    // Only celebrate badges earned while the page is open, not ones from before.
-   if(earned.current)setNewBadges(now.filter(b=>!earned.current!.has(b.key)));
-   earned.current=new Set(now.map(b=>b.key));
+   setNewBadges(earned?now.filter(b=>!earned!.has(b.key)):[]);
+   earned=new Set(now.map(b=>b.key));
    setStats(d);
   }).catch(()=>{});};
   void load();
@@ -37,7 +40,7 @@ export function useIntakeStats(userId?:string){
   return()=>{alive=false;window.clearInterval(timer);document.removeEventListener('visibilitychange',visible);window.removeEventListener(INTAKE_LOGGED_EVENT,changed);window.removeEventListener('shopping-progress-changed',changed);};
  },[userId]);
  const dismissBadges=useCallback(()=>setNewBadges([]),[]);
- return {stats,newBadges,dismissBadges};
+ return {stats,newBadges:stats?newBadges:[],dismissBadges};
 }
 
 const Flame=({size=18}:{size?:number})=><svg className="rp-flame" width={size} height={size} viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22c-4.4 0-7.4-2.9-7.4-7 0-3.9 2.6-6.4 4.3-8.6.4 1.9 1.5 3.2 2.7 3.8.2-3.3 1.9-6 4.1-8.2.4 3.4 1.7 5.2 3 7 1.1 1.6 2.1 3.4 2.1 5.9 0 4.4-3.8 7.1-8.8 7.1Z" fill="currentColor"/><path d="M12 22c-1.9 0-3.3-1.4-3.3-3.2 0-1.9 1.5-3.1 2.6-4.4.4 1.1 1 1.8 1.8 2.1.2-1 .7-1.8 1.2-2.4.8 1.1 1.2 2.3 1.2 3.4 0 2.6-1.5 4.5-3.5 4.5Z" fill="#fff4c9"/></svg>;
