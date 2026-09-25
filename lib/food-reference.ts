@@ -47,7 +47,7 @@ const COLUMNS = 'food_code,name,brand,category,basis_amount,basis_unit,serving_a
 export const normalizeFoodQuery = (text: string) => text.toLowerCase().replace(/[\s_()·,.\-\[\]]/g, '');
 
 // 자주 쓰는 줄임말 → DB 이름.
-const ALIASES: Record<string, string> = {'아아': '아이스 아메리카노', '뜨아': '아메리카노', '아바라': '바닐라 라떼', '아샷추': '샷 추가 아이스티', '카라멜마끼아또': '카라멜 마키아토', '마끼아또': '마키아토', '치맥': '치킨', '떡튀순': '떡볶이'};
+const ALIASES: Record<string, string> = {'계란후라이':'달걀후라이','계란프라이':'달걀후라이','달걀프라이':'달걀후라이','계란말이':'달걀말이','계란찜':'달걀찜','아아': '아이스 아메리카노', '뜨아': '아메리카노', '아바라': '바닐라 라떼', '아샷추': '샷 추가 아이스티', '카라멜마끼아또': '카라멜 마키아토', '마끼아또': '마키아토', '치맥': '치킨', '떡튀순': '떡볶이'};
 export async function searchFoodReference(rawQuery: string, limit = 30): Promise<FoodReference[]> {
  const query = ALIASES[rawQuery.trim().replace(/\s+/g, '')] ?? rawQuery;
  const key = normalizeFoodQuery(query);

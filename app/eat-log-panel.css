@@ -19,5 +19,30 @@
 .eat-log-deduct{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:12px;color:#5c6e55}
 .eat-log-deduct input{width:18px;height:18px;accent-color:#526c47}
 .today-meals .eat-log-submit{display:block;width:100%;margin-top:14px;min-height:50px;border:0;border-radius:15px;background:linear-gradient(145deg,#6a8a5a,#46603c);color:#fff;font-size:15px;font-weight:800;box-shadow:0 6px 14px #46603c33}
-.eat-log-note{display:block;margin-top:8px;text-align:center;font-size:11px;color:#98a28c}
+.eat-log-note{display:block;margin-top:10px;font-size:12px;line-height:1.6;color:#68765e}
+.eat-log-custom{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-top:10px;font-size:12px;color:#5c6e55}
+.eat-log-custom input,.eat-log-selected input{width:68px;min-height:40px;padding:8px;border:1px solid #cdd8c4;border-radius:10px;background:#fff;color:#33402c;font-size:16px;text-align:center}
+.eat-log-total{padding:14px 12px;border-radius:12px;background:#eaf0e2;line-height:1.7}
+.eat-log-total small{display:block;color:#627157}
+.eat-log-food-search{margin-top:20px;padding-top:16px;border-top:1px solid #dfe7d3}
+.eat-log-food-search .eat-log-label{margin:0;font-size:14px;color:#33402c}
+.eat-log-label>span{margin-left:5px;font-size:12px;font-weight:400;color:#68765e}
+.eat-log-food-search input[type=search]{display:block;box-sizing:border-box;width:100%;min-height:48px;margin-top:10px;padding:12px;border:1px solid #cdd8c4;border-radius:12px;background:white;color:#33402c;font-size:16px;font-weight:400}
+.eat-log input:focus-visible{outline:2px solid #6a8a5a;outline-offset:2px}
+.eat-log-search-hint{margin:8px 2px;font-size:12px;line-height:1.6;color:#68765e}
+.eat-log-search-results,.eat-log-selected{list-style:none;padding:0;margin:10px 0 0}
+.eat-log-search-results{max-height:260px;overflow-y:auto;border:1px solid #dfe7d3;border-radius:12px;background:#fff}
+.eat-log-search-results li+li{border-top:1px solid #edf0e7}
+.today-meals .eat-log-search-results button{display:flex;flex-direction:column;align-items:flex-start;gap:5px;width:100%;min-height:64px;padding:12px;border:0;border-radius:0;background:transparent;text-align:left;color:#33402c}
+.eat-log-search-results strong{font-size:14px;overflow-wrap:anywhere}
+.eat-log-search-results small{margin-left:6px;font-size:12px;font-weight:400}
+.eat-log-search-results span{font-size:12px;color:#68765e}
+.today-meals .eat-log-search-results button:hover{background:#f0f5e9}
+.eat-log-selected li{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:12px 0;border-bottom:1px solid #dfe7d3}
+.eat-log-selected li>div{flex:1 1 120px;min-width:0}
+.eat-log-selected strong{font-size:14px;overflow-wrap:anywhere}
+.eat-log-selected small{display:block;margin-top:4px;font-size:12px;line-height:1.5;color:#68765e}
+.eat-log-selected label{display:flex;align-items:center;gap:5px;font-size:12px;color:#68765e}
+.today-meals .eat-log-selected button{min-height:40px;padding:8px;border:0;background:transparent;color:#68765e;font-size:12px}
+.today-meals .eat-log button:disabled{opacity:.5;cursor:not-allowed}
 @media(prefers-reduced-motion:reduce){.eat-log{animation:none}}

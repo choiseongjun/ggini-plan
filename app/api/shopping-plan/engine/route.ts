@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
     const availability = shoppingAvailabilityMessage(products, c);
     if (availability) return authFailure(availability, 422);
     const missing = mealSchedule(c).find((_, i) => !slotCandidates(products, c, i).length);
-    if (missing) return authFailure(`${slotLabels[missing.slot]}에 맞는 메뉴가 부족해요. 해당 끼니를 빼거나 식단 목표·제외 재료를 조정해 주세요.`, 422);
+    if (missing) return authFailure(`${slotLabels[missing.slot]}에 맞는 메뉴가 부족해요. 해당 끼니를 빼거나 요리 수준·식단 목표·제외 재료를 조정해 주세요.`, 422);
     // 예산 안내(최저 구성 탐색)는 예산 상한이 있을 때만 필요하다.
     const guide = c.budget < 1000000 ? shoppingBudgetGuide(products, c) : null;
     if (guide && !guide.approximate && guide.minimum !== null && c.budget < guide.minimum) return authFailure(`선택한 ${c.meals}끼를 준비하려면 최소 ${won(guide.minimum)}이 필요해요.`, 422);
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
     const seed = typeof input.seed === 'number' && Number.isFinite(input.seed) ? input.seed : undefined;
     const context = await today();
     const ids = recommendShopping(products, c, false, previous, seed, context);
-    if (!ids) return authFailure('현재 조건으로는 중복 없는 식단을 채울 수 없어요. 끼니 수를 줄이거나 식단 목표·제외 재료·재료비 상한을 조정해 주세요.', 422);
+    if (!ids) return authFailure('현재 조건으로는 중복 없는 식단을 채울 수 없어요. 끼니 수를 줄이거나 요리 수준·식단 목표·제외 재료·재료비 상한을 조정해 주세요.', 422);
     if (user) await logRecommendations(user.id, c, ids, 'recommend');
     return json({ids, products: pickProducts(products, ids), today: context, personalization: catalog.personalization});
    }

@@ -1,0 +1,17 @@
+.cooking-effort-picker{border:0;padding:0;margin:18px 0;text-align:left;min-width:0;width:100%}
+.cooking-effort-picker legend{padding:0;margin-bottom:12px;color:#34472e;font-size:15px;font-weight:750}
+.cooking-effort-picker>div{display:grid;gap:8px}
+.cooking-effort-picker button{display:flex;align-items:center;gap:10px;width:100%;min-height:72px;padding:12px;border:1px solid #dddeda;border-radius:15px;background:#fffefb;color:#384432;text-align:left;cursor:pointer}
+.cooking-effort-picker button[aria-pressed=true]{border-color:#708862;background:#eef3e7;box-shadow:0 0 0 1px #708862}
+.cooking-effort-picker strong{display:block;font-size:14px;font-weight:700}
+.cooking-effort-picker small{display:block;margin-top:5px;font-size:12px;line-height:1.5;color:#697160}
+.cooking-effort-picker em{display:inline-block;margin-left:6px;font-size:10px;font-style:normal;color:#526b42}
+.effort-check{display:grid;place-items:center;flex:0 0 20px;height:20px;border:1px solid #bbc8ae;border-radius:50%;font-size:12px}
+[aria-pressed=true]>.effort-check{background:#60794d;border-color:#60794d;color:white}
+.effort-time{margin-left:auto;flex-shrink:0;font-size:11px;color:#67735d}
+.cooking-effort-picker>p{margin:10px 0 0;font-size:11px;line-height:1.6;color:#717967}
+.home-start>.cooking-effort-picker{width:calc(100% - 40px);margin:20px}
+.home-start .cooking-effort-picker>p{margin:10px 0 0;font-size:11px;line-height:1.6;color:#717967}
+.cooking-effort-picker button:disabled{opacity:.6;cursor:wait}
+.cooking-effort-picker button:focus-visible{outline:2px solid #60794d;outline-offset:3px}
+@media(max-width:380px){.cooking-effort-picker button{flex-wrap:wrap;gap:8px}.effort-time{flex-basis:100%;padding-left:28px}}

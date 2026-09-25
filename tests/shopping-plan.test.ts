@@ -19,8 +19,8 @@ test('budget is a hard constraint, with no invented meals when stock is unavaila
 });
 test('avoidance excludes unknown source and known ingredient aliases; cooking is respected',()=>{
  const p=[product('a',1000,1,{avoidanceText:'쇠고기 함유'}),product('b',1000,1,{avoidanceText:null}),product('c',1000,1,{category:'meal_kit'})];
- assert.deepEqual(candidates(p,{...initialConditions,avoid:'소고기'}).map(x=>x.id),['c']);
- assert.deepEqual(candidates(p,{...initialConditions,cooking:'kit'}).map(x=>x.id),['c']);
+ assert.deepEqual(candidates(p,{...initialConditions,cookingEffort:'relaxed',avoid:'소고기'}).map(x=>x.id),['c']);
+ assert.deepEqual(candidates(p,{...initialConditions,cookingEffort:'relaxed',cooking:'kit'}).map(x=>x.id),['c']);
 });
 test('swap changes only requested meal and never exceeds pack budget',()=>{
  const p=[product('a',3000,2),product('b',4000,1)];

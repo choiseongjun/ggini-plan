@@ -1,3 +1,4 @@
+import {allowsCookingEffort,isCookingEffort,type CookingEffort} from './cooking-effort';
 import {allowsMealKind,validMealKinds,type MealKind} from './meal-kinds';
 import {validPlanDate} from './daily-plan';
 import {isShoppingGoal,isBudgetMode,hasGoalNutrition,productsForGoal,type BudgetMode,type ShoppingGoal} from './shopping-goals';
@@ -20,8 +21,8 @@ export type MealSlot = 'breakfast'|'lunch'|'dinner';
 export const slotLabels={breakfast:'아침',lunch:'점심',dinner:'저녁'};
 export const MAX_PLAN_DAYS=15;
 export const MAX_PLAN_MEALS=MAX_PLAN_DAYS*3;
-export type PlanConditions = { people?:number; sideCount?:number; mealCountMode?:boolean; swapPreferences?:SwapPreference[]; budgetMode?:BudgetMode; mealKinds?:MealKind[]; goal?:ShoppingGoal; mealMode?:'ready'|'cook'|'mixed'; excluded?:ExcludedFood[]; startDate?:string; budget: number; meals: number; cooking: 'quick' | 'kit' | 'all'; avoid: string; owned: string[]; supply?:Record<string,number>; days?:number; slots?:MealSlot[] };
-export const initialConditions: PlanConditions = {people:1,sideCount:0,mealMode:'mixed',budget:50000,meals:7,cooking:'all',avoid:'',owned:[],days:7,slots:['dinner']};
+export type PlanConditions = { cookingEffort?:CookingEffort; people?:number; sideCount?:number; mealCountMode?:boolean; swapPreferences?:SwapPreference[]; budgetMode?:BudgetMode; mealKinds?:MealKind[]; goal?:ShoppingGoal; mealMode?:'ready'|'cook'|'mixed'; excluded?:ExcludedFood[]; startDate?:string; budget: number; meals: number; cooking: 'quick' | 'kit' | 'all'; avoid: string; owned: string[]; supply?:Record<string,number>; days?:number; slots?:MealSlot[] };
+export const initialConditions: PlanConditions = {cookingEffort:'easy',people:1,sideCount:0,mealMode:'mixed',budget:50000,meals:7,cooking:'all',avoid:'',owned:[],days:7,slots:['dinner']};
 export function mealSchedule(c:PlanConditions){
  const slots=c.slots??(c.meals>=10?['lunch','dinner'] as MealSlot[]:['dinner'] as MealSlot[]);
  return Array.from({length:c.meals},(_,i)=>({day:Math.floor(i/slots.length)+1,slot:slots[i%slots.length]}));
@@ -29,6 +30,7 @@ export function mealSchedule(c:PlanConditions){
 export function parseConditions(value: unknown): PlanConditions | null {
  if(!value || typeof value!=='object')return null;
  const p=value as PlanConditions;
+ if(p.cookingEffort!==undefined&&!isCookingEffort(p.cookingEffort))return null;
  if(p.people!==undefined&&(!Number.isInteger(p.people)||p.people<1||p.people>4))return null;
  if(p.sideCount!==undefined&&(!Number.isInteger(p.sideCount)||p.sideCount<0||p.sideCount>2))return null;
  if(p.mealCountMode!==undefined&&typeof p.mealCountMode!=='boolean')return null;
@@ -68,7 +70,7 @@ const aliases: Record<string,string[]> = {우유:['우유','유제품','치즈',
 // 250kcal도 안 되는 흰죽·누룽지 같은 메뉴는 한 끼 후보에서 뺀다 (영양값이 확인된 경우에만).
 export function candidates(products: PlanProduct[], c: PlanConditions) {
  const avoid=c.avoid.split(/[,，\n]/).map(x=>x.trim().toLowerCase()).filter(Boolean);
- return products.filter(p=>(!p.recipe||p.recipe.assembly||(p.recipe.sideCount??0)===(c.sideCount??0))&&mealRole(p)==='meal'&&hasGoalNutrition(p,c.goal)&&allowsMealKind(p,c.mealKinds)&&allowsExcludedFoods(p,c.excluded??[])&&(p.productUrl||p.recipe) && p.price>0 && !(typeof p.servingCalories==='number'&&p.servingCalories<(p.recipe?.slots.every(s=>s==='breakfast')?120:250)) && !(p.recipe&&/(소스|양념장|드레싱)$/.test(p.name.split('_')[0])) && ((c.mealMode??'ready')==='mixed'||((c.mealMode??'ready')==='cook'?!!p.recipe&&!p.recipe.assembly:!p.recipe||!!p.recipe.assembly)) && (!!p.recipe&&!p.recipe.assembly||c.cooking==='all'||(c.cooking==='kit'?p.category==='meal_kit':p.category!=='meal_kit')) && (!avoid.length || (p.avoidanceText!==null && !avoid.some(word=>(aliases[word]??[word]).some(a=>`${p.name} ${p.avoidanceText}`.toLowerCase().includes(a))))));
+ return products.filter(p=>allowsCookingEffort(p,c.cookingEffort)&&(!p.recipe||p.recipe.assembly||(p.recipe.sideCount??0)===(c.sideCount??0))&&mealRole(p)==='meal'&&hasGoalNutrition(p,c.goal)&&allowsMealKind(p,c.mealKinds)&&allowsExcludedFoods(p,c.excluded??[])&&(p.productUrl||p.recipe) && p.price>0 && !(typeof p.servingCalories==='number'&&p.servingCalories<(p.recipe?.slots.every(s=>s==='breakfast')?120:250)) && !(p.recipe&&/(소스|양념장|드레싱)$/.test(p.name.split('_')[0])) && ((c.mealMode??'ready')==='mixed'||((c.mealMode??'ready')==='cook'?!!p.recipe&&!p.recipe.assembly:!p.recipe||!!p.recipe.assembly)) && (!!p.recipe&&!p.recipe.assembly||c.cooking==='all'||(c.cooking==='kit'?p.category==='meal_kit':p.category!=='meal_kit')) && (!avoid.length || (p.avoidanceText!==null && !avoid.some(word=>(aliases[word]??[word]).some(a=>`${p.name} ${p.avoidanceText}`.toLowerCase().includes(a))))));
 }
 // id → 메뉴 색인. 추천 탐색이 장보기 금액을 수십만 번 계산하는데, 매번 1,000개가 넘는 메뉴를
 // 처음부터 훑던 find()가 추천 시간(약 9초)의 대부분이었다. 같은 배열이면 색인을 재사용한다.

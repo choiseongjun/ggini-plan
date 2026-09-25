@@ -8,8 +8,9 @@ import {taiwanIntakeData,updateTaiwanIntake} from '../lib/taiwan-intake';
 import type {PlanProduct} from '../lib/shopping-plan';
 import {RecordEntry} from './record-entry';
 import {ProductThumb} from './product-thumb';
+import type {LoggedExtra} from '../lib/intake-extras';
 
-type Command={action:'eat'|'undo'|'log';id:string;version:number;productId?:string;portions?:number;extras?:string[]};
+type Command={action:'eat'|'undo'|'log';id:string;version:number;productId?:string;portions?:number;extras?:LoggedExtra[]};
 const number=(n:number)=>n.toLocaleString('ko-KR',{maximumFractionDigits:1});
 const nutrition=(n:number|null,unit:string)=>n===null?'미확인':`${number(n)}${unit}`;
 
@@ -54,7 +55,7 @@ export function useFoodIntake(userId?:string,history=false,externalDate?:string)
   finally{locked.current=false;setBusy(false);}
  }
  // Logs what was eaten without needing it in the pantry: the dish at a portion and/or quick extras.
- async function log(productId:string|null,portions:number,extras:string[],deductFrom?:IntakeProduct){
+ async function log(productId:string|null,portions:number,extras:LoggedExtra[],deductFrom?:IntakeProduct){
   if(!data||pendingRef.current)return false;
   // Deducting from the pantry goes through the stock-checked 'eat' path; extras are logged alongside.
   if(deductFrom){

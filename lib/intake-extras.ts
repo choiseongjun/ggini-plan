@@ -13,5 +13,19 @@ export const intakeExtras = {
   soju: { label: "소주 반 병", calories: 200, protein: 0 },
 } as const;
 export type IntakeExtra = keyof typeof intakeExtras;
+export type ReferenceExtra = {referenceCode:string; portions:number};
+export type LoggedExtra = IntakeExtra | ReferenceExtra;
+export const isReferenceExtra = (value:unknown):value is ReferenceExtra => {
+ if(!value||typeof value!=='object')return false;
+ const v=value as ReferenceExtra;
+ return typeof v.referenceCode==='string'&&v.referenceCode.trim().length>0&&v.referenceCode.length<=60
+  &&typeof v.portions==='number'&&v.portions>=0.25&&v.portions<=10&&Number.isInteger(v.portions*4);
+};
+export function parseIntakeExtras(value:unknown):LoggedExtra[]|null{
+ if(value===undefined)return [];
+ if(!Array.isArray(value)||value.length>10||!value.every(v=>isIntakeExtra(v)||isReferenceExtra(v)))return null;
+ const keys=value.map(v=>typeof v==='string'?v:`ref:${v.referenceCode}`);
+ return new Set(keys).size===keys.length?value:null;
+}
 export const isIntakeExtra = (value: unknown): value is IntakeExtra => typeof value === "string" && Object.hasOwn(intakeExtras, value);
 export const EXTRA_PREFIX = "extra:";

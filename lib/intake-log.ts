@@ -2,10 +2,10 @@ import {NextResponse} from 'next/server';
 import {authFailure} from './auth';
 import {getPool} from './db';
 import {servingNutrition,validPortions} from './food-intake';
-import {EXTRA_PREFIX,intakeExtras,isIntakeExtra} from './intake-extras';
+import {EXTRA_PREFIX,intakeExtras,parseIntakeExtras} from './intake-extras';
 import {planProducts} from './shopping-plan-catalog';
 import {servingNutrients} from './serving-nutrients';
-import {REFERENCE_PREFIX,foodReferenceByCode} from './food-reference';
+import {REFERENCE_PREFIX,foodReferenceByCode,foodReferencesByCodes} from './food-reference';
 
 const json=(data:unknown,status=200)=>NextResponse.json(data,{status,headers:{'Cache-Control':'no-store'}});
 
@@ -13,8 +13,10 @@ const json=(data:unknown,status=200)=>NextResponse.json(data,{status,headers:{'C
 // extras — without requiring the ingredients to be registered as owned. Rows carry stock_item {kind:'none'}
 // so undo knows there is no pantry quantity to restore.
 export async function logMeal(userId:string|number,input:{id:string;productId?:unknown;portions?:unknown;extras?:unknown}){
- const extras=Array.isArray(input.extras)?input.extras:[];
- if(extras.length>10||!extras.every(isIntakeExtra)||new Set(extras).size!==extras.length)return authFailure('함께 먹은 것을 확인해 주세요.',400);
+ const extras=parseIntakeExtras(input.extras);
+ if(!extras)return authFailure('함께 먹은 음식과 양을 확인해 주세요.',400);
+ const references=await foodReferencesByCodes(extras.flatMap(e=>typeof e==='string'?[]:[e.referenceCode]));
+ if(extras.some(e=>typeof e!=='string'&&!references.some(f=>f.code===e.referenceCode)))return authFailure('추가한 음식 정보를 찾지 못했어요. 다시 검색해 주세요.',422);
  const hasMain=input.productId!==undefined&&input.productId!==null;
  if(hasMain&&(typeof input.productId!=='string'||input.productId.length>100||!validPortions(input.portions)))return authFailure('메뉴와 먹은 양을 확인해 주세요.',400);
  if(!hasMain&&!extras.length)return authFailure('기록할 음식을 골라 주세요.',400);
@@ -23,7 +25,14 @@ export async function logMeal(userId:string|number,input:{id:string;productId?:u
  const portions=hasMain?input.portions as number:1;
  const rows:Entry[]=[];
  if(main){const n=servingNutrition(main),m=servingNutrients(main),x=(v:number|null)=>v===null?null:v*portions;rows.push({id:input.id,productId:main.id,name:main.name,portions,calories:x(n.calories),protein:x(n.protein),cost:main.price/main.servings*portions,carbs:x(m.carbs),sugar:null,sodium:x(m.sodium),fat:x(m.fat)});}
- for(const key of extras){const e=intakeExtras[key];rows.push({id:rows.length?crypto.randomUUID():input.id,productId:`${EXTRA_PREFIX}${key}`,name:e.label,portions:1,calories:e.calories,protein:e.protein,cost:null,carbs:null,sugar:null,sodium:null,fat:null});}
+ for(const extra of extras){
+  const id=rows.length?crypto.randomUUID():input.id;
+  if(typeof extra==='string'){const e=intakeExtras[extra];rows.push({id,productId:`${EXTRA_PREFIX}${extra}`,name:e.label,portions:1,calories:e.calories,protein:e.protein,cost:null,carbs:null,sugar:null,sodium:null,fat:null});}
+  else{
+   const f=references.find(f=>f.code===extra.referenceCode)!,p=extra.portions,x=(v:number|null)=>v===null?null:Math.round(v*p*10)/10;
+   rows.push({id,productId:`${REFERENCE_PREFIX}${f.code}`,name:f.brand?`${f.name} (${f.brand})`:f.name,portions:p,calories:x(f.kcal),protein:x(f.protein),cost:null,carbs:x(f.carbs),sugar:x(f.sugar),sodium:x(f.sodium),fat:x(f.fat)});
+  }
+ }
  return insertEntries(userId,input.id,rows);
 }
 

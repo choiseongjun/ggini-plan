@@ -6,6 +6,7 @@ import {trackPlanner} from '../lib/track-planner';
 import {INTAKE_LOGGED_EVENT} from './record-progress';
 import './snack-log.css';
 import {MealPhotoLog} from './meal-photo-log';
+import {validPortions} from '../lib/food-intake';
 
 const portionsList = [[0.5, '반'], [1, '1회'], [1.5, '1.5'], [2, '2회']] as const;
 const n = (v: number) => Math.round(v).toLocaleString('ko-KR');
@@ -40,7 +41,7 @@ export function SnackLog({onLogged,initialOpen=false,photo=false}: {onLogged: ()
  }, [q]);
 
  async function log(amount=portions) {
-  if (!picked) return;
+  if (!picked || !validPortions(amount)) return;
   setBusy(true); setError('');
   try {
    const r = await fetch('/api/food-intake', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({action: 'log', id: crypto.randomUUID(), version: 0, referenceCode: picked.code, portions:amount})});
@@ -78,8 +79,9 @@ export function SnackLog({onLogged,initialOpen=false,photo=false}: {onLogged: ()
    <p><strong>{picked.name}</strong>{picked.brand && <small> {picked.brand}</small>}<span>1회 {serving(picked)} 기준</span></p>
    {photo&&<MealPhotoLog key={picked.code} referenceCode={picked.code} dishName={picked.name} disabled={busy} onManual={()=>void log()} onFallback={()=>void log(1)} onLogged={()=>{setPicked(null);setQuery('');setDone('사진으로 식사를 기록했어요. 아래에서 양을 수정할 수 있어요.');window.dispatchEvent(new CustomEvent(INTAKE_LOGGED_EVENT));onLogged();}}/>}
    <div className="snack-log-portions" role="radiogroup" aria-label="먹은 양">{portionsList.map(([value, label]) => <button type="button" role="radio" key={value} aria-checked={portions === value} onClick={() => setPortions(value)}>{label}</button>)}</div>
-   <p className="snack-log-total">{picked.kcal !== null ? <>약 <b>{n(picked.kcal * portions)}</b>kcal</> : '칼로리 정보 없음'}{picked.sugar !== null && ` · 당류 ${n(picked.sugar * portions)}g`}{picked.sodium !== null && ` · 나트륨 ${n(picked.sodium * portions)}mg`}</p>
-   <div className="snack-log-actions"><button type="button" onClick={() => setPicked(null)}>다시 고르기</button><button type="button" className="snack-log-submit" disabled={busy} onClick={() => void log()}>{busy ? '기록 중…' : '기록하기'}</button></div>
+   <label className="snack-log-custom">먹은 양 직접 입력<input type="number" min="0.25" max="10" step="0.25" aria-label="먹은 양 직접 입력" value={portions||''} disabled={busy} onChange={e=>setPortions(Number(e.target.value))}/>회</label>
+   <p className="snack-log-total" aria-live="polite">{!validPortions(portions)?'먹은 양을 0.25~10회, 0.25 단위로 입력해 주세요.':<>{picked.kcal !== null ? <>약 <b>{n(picked.kcal * portions)}</b>kcal</> : '칼로리 정보 없음'}{picked.sugar !== null && ` · 당류 ${n(picked.sugar * portions)}g`}{picked.sodium !== null && ` · 나트륨 ${n(picked.sodium * portions)}mg`}</>}</p>
+   <div className="snack-log-actions"><button type="button" onClick={() => setPicked(null)}>다시 고르기</button><button type="button" className="snack-log-submit" disabled={busy||!validPortions(portions)} onClick={() => void log()}>{busy ? '기록 중…' : '기록하기'}</button></div>
   </div>}
   {done&&<p className="snack-log-done" role="status">{done}</p>}
   {error && <p className="snack-log-error" role="alert">{error}</p>}
