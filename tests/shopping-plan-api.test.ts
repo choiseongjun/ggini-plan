@@ -5,7 +5,7 @@ import {NextRequest} from 'next/server';
 import {GET,POST,PUT} from '../app/api/shopping-plan/route';
 import {createSession,SESSION_COOKIE,type PublicUser} from '../lib/auth';
 import {getPool} from '../lib/db';
-import {initialConditions,recommendShopping,slotCandidates} from '../lib/shopping-plan';
+import {initialConditions,initialHomeConditions,recommendShopping,slotCandidates,mealSchedule,parseConditions} from '../lib/shopping-plan';
 import {loadPlanCatalog} from '../lib/plan-service';
 import {allowsExcludedFoods} from '../lib/shopping-exclusions';
 const req=(cookie='',body?:unknown,saved=false)=>new NextRequest(`http://localhost:3000/api/shopping-plan${saved?'?saved=1':''}`,{method:body?'POST':'GET',headers:{Cookie:cookie,origin:'http://localhost:3000','Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{})});
@@ -14,6 +14,11 @@ test('guest recommendation, authenticated save, account isolation and server val
  try{
   const response=await GET(req());assert.equal(response.status,200);assert.equal((await response.json()).products,undefined);
   const {products}=await loadPlanCatalog();assert.ok(products.length>0);
+  const home={...initialHomeConditions,budget:1000000};
+  assert.ok(parseConditions(home));assert.equal(home.cookingEffort,'easy');
+  const homeIds=recommendShopping(products,home)!;assert.equal(homeIds.length,21);
+  for(const slot of ['breakfast','lunch','dinner'])assert.equal(mealSchedule(home).filter(s=>s.slot===slot).length,7);
+  homeIds.forEach((id,index)=>assert.ok(slotCandidates(products,home,index).some(p=>p.id===id)));
   const mealIds=recommendShopping(products,initialConditions)!;assert.equal(mealIds.length,initialConditions.meals);
   const body={conditions:{...initialConditions,startDate:'2026-09-17'},mealIds};assert.equal((await POST(req('',body))).status,401);
   for(let i=0;i<2;i++){const user=(await db.query<PublicUser>("INSERT INTO users(name,email) VALUES('장보기 기능 테스트',$1) RETURNING id::text,name,email",[`planner-${randomUUID()}@example.test`])).rows[0];ids.push(user.id);cookies.push(`${SESSION_COOKIE}=${(await createSession(user)).cookies.get(SESSION_COOKIE)!.value}`);}

@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
    return json({items: await foodReferencesByCodes(rows.map((r) => r.product_id.slice(REFERENCE_PREFIX.length)))});
   }
   const q = (params.get('q') ?? '').slice(0, 40);
-  return json({items: await searchFoodReference(q)});
+  return NextResponse.json({items: await searchFoodReference(q)}, {headers:{'Cache-Control':'public, max-age=300, s-maxage=1800'}});
  } catch {
   return authFailure('음식을 찾지 못했어요. 잠시 후 다시 시도해 주세요.', 503);
  }

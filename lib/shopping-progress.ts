@@ -1,4 +1,5 @@
 import {stockPrecision,validStockQuantity} from './food-intake';
+import {validStockId} from './stock-id';
 export type StockItem = {id:string;name:string;unit:string;url:string|null;ordered:number;owned:number};
 export type ShoppingStock = Record<string,StockItem>;
 export type StockAction = 'order'|'buy'|'receive'|'cancel'|'consume'|'have';
@@ -8,7 +9,7 @@ export function parseStock(value:unknown):ShoppingStock|null {
  const entries=Object.entries(value);if(entries.length>300)return null;
  const result:ShoppingStock={};
  for(const [id,v] of entries){
-  if(!/^[a-zA-Z0-9_-]{1,100}$/.test(id)||['__proto__','constructor','prototype'].includes(id)||!v||typeof v!=='object')return null;
+  if(!validStockId(id)||!v||typeof v!=='object')return null;
   const p=v as StockItem;
   if(p.id!==id||typeof p.name!=='string'||!p.name.trim()||p.name.length>200||typeof p.unit!=='string'||p.unit.length>20||!p.unit)return null;
   if(p.url!==null){try{if(typeof p.url!=='string'||p.url.length>3000||!['https:','http:'].includes(new URL(p.url).protocol))return null;}catch{return null;}}

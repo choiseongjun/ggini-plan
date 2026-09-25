@@ -1,5 +1,6 @@
 'use client';
 
+import {trackAnalytics} from '../lib/analytics';
 import {useEffect,useRef,useState} from 'react';
 import {intakeExtras,type IntakeExtra} from '../lib/intake-extras';
 import './meal-photo-log.css';
@@ -36,6 +37,8 @@ export function MealPhotoLog({productId,referenceCode,dishName,disabled,onLogged
  const [stage,setStage]=useState<keyof typeof stageText|null>(null),[error,setError]=useState(''),[result,setResult]=useState<PhotoLogResult|null>(null);
  async function upload(files:File[]){
   if(!aiAcknowledged)return;
+  const started=performance.now();let failure:'timeout'|'network'|'server'|'rejected'='network';
+  trackAnalytics('photo_analysis_started',{photo_count:files.length});
   setStage('prepare');setError('');setResult(null);
   const controller=new AbortController(),timer=window.setTimeout(()=>controller.abort(),40000);
   try{
@@ -47,9 +50,11 @@ export function MealPhotoLog({productId,referenceCode,dishName,disabled,onLogged
    const analyzing=window.setTimeout(()=>setStage(current=>current==='upload'?'analyze':current),1200);
    const r=await request.finally(()=>window.clearTimeout(analyzing));
    const d=await r.json().catch(()=>({error:'사진을 분석하지 못했어요. 다시 시도해 주세요.'}));
+   if(!r.ok)failure=r.status>=500?'server':'rejected';
    if(!r.ok)throw new Error(d.error??'사진을 분석하지 못했어요.');
-   if(d.logged){clearPicked();onLogged(d);}else setResult(d);
-  }catch(e){setError(controller.signal.aborted?'시간이 오래 걸려 멈췄어요. 연결을 확인하고 다시 시도해 주세요.':e instanceof Error?e.message:'사진을 분석하지 못했어요.');}
+   trackAnalytics('photo_analysis_completed',{duration_ms:performance.now()-started,photo_count:files.length,outcome:d.logged?'recorded':'unrecognized'});
+   if(d.logged){trackAnalytics('meal_recorded',{method:'photo'});clearPicked();onLogged(d);}else setResult(d);
+  }catch(e){trackAnalytics('photo_analysis_failed',{duration_ms:performance.now()-started,failure:controller.signal.aborted?'timeout':failure});setError(controller.signal.aborted?'시간이 오래 걸려 멈췄어요. 연결을 확인하고 다시 시도해 주세요.':e instanceof Error?e.message:'사진을 분석하지 못했어요.');}
   finally{window.clearTimeout(timer);setStage(null);if(input.current)input.current.value='';}
  }
  return <div className="photo-log">

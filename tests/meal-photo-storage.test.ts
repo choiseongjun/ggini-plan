@@ -6,6 +6,8 @@ import {getPool} from '../lib/db';
 import {createSession,SESSION_COOKIE,type PublicUser} from '../lib/auth';
 import {logPhotoFood} from '../lib/intake-log';
 import {GET} from '../app/api/food-intake/photo/route';
+import {GET as intakeGET,PATCH,POST} from '../app/api/food-intake/route';
+import {GET as statsGET} from '../app/api/food-intake/stats/route';
 
 test('diary photos are private, atomic with logs, and removed on undo or account deletion',async()=>{
  const db=getPool(),users:PublicUser[]=[];
@@ -19,12 +21,20 @@ test('diary photos are private, atomic with logs, and removed on undo or account
   const photo=await GET(request(cookies[0],1));assert.equal(photo.status,200);assert.equal(photo.headers.get('Cache-Control'),'private, no-store');assert.deepEqual(Buffer.from(await photo.arrayBuffer()),image);
   assert.equal((await GET(request(cookies[1]))).status,404);assert.equal((await GET(request(''))).status,401);
   assert.equal((await GET(request(cookies[0],2))).status,404);
+  const edit=(cookie:string)=>new NextRequest('http://localhost:3000/api/food-intake',{method:'PATCH',headers:{cookie,origin:'http://localhost:3000','content-type':'application/json'},body:JSON.stringify({id,portions:0.5,version:0})});
+  assert.equal((await PATCH(edit(cookies[1]))).status,404);
+  assert.equal((await PATCH(edit(cookies[0]))).status,200);
+  const diary=await (await intakeGET(new NextRequest('http://localhost:3000/api/food-intake',{headers:{cookie:cookies[0]}}))).json();
+  assert.equal(diary.logs[0].calories,300);assert.equal(diary.logs[0].protein,10);assert.equal(diary.logs[0].photoCount,2);
+  const stats=await (await statsGET(new NextRequest('http://localhost:3000/api/food-intake/stats',{headers:{cookie:cookies[0]}}))).json();
+  assert.equal(stats.week.avgCalories,300);assert.equal(stats.buddy.days,1);assert.equal(stats.badges.find((b:{key:string})=>b.key==='first').earned,true);
+  assert.deepEqual(Buffer.from(await (await GET(request(cookies[0]))).arrayBuffer()),image);
   await logPhotoFood(users[0].id,id,food,[image]);
   assert.equal((await db.query('SELECT count(*)::int n FROM food_intake_photos WHERE user_id=$1',[users[0].id])).rows[0].n,2);
   const badId=crypto.randomUUID();
   await assert.rejects(()=>logPhotoFood(users[0].id,badId,food,Array(5).fill(image)));
   assert.equal((await db.query('SELECT 1 FROM food_intake_logs WHERE user_id=$1 AND id=$2',[users[0].id,badId])).rowCount,0);
-  await db.query('UPDATE food_intake_logs SET undone_at=now() WHERE user_id=$1 AND id=$2',[users[0].id,id]);
+  assert.equal((await POST(new NextRequest('http://localhost:3000/api/food-intake',{method:'POST',headers:{cookie:cookies[0],origin:'http://localhost:3000','content-type':'application/json'},body:JSON.stringify({action:'undo',id,version:0})}))).status,200);
   assert.equal((await GET(request(cookies[0]))).status,404);
   assert.equal((await db.query('SELECT count(*)::int n FROM food_intake_photos WHERE user_id=$1',[users[0].id])).rows[0].n,0);
   await logPhotoFood(users[0].id,crypto.randomUUID(),food,[image]);

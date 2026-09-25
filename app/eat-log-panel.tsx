@@ -1,6 +1,7 @@
 'use client';
 
 import {useEffect,useState} from 'react';
+import {hasCachedFoodSearch,searchFoods} from '../lib/food-search-client';
 import {servingNutrients} from '../lib/serving-nutrients';
 import {intakeExtras,isReferenceExtra,type IntakeExtra,type LoggedExtra} from '../lib/intake-extras';
 import {validPortions} from '../lib/food-intake';
@@ -24,13 +25,13 @@ export function EatLogPanel({product,stockAvailable,disabled,onSubmit,onClose,in
  const q=query.trim();
  useEffect(()=>{
   if(!q)return;
-  const controller=new AbortController();
+  let active=true;
   const timer=setTimeout(()=>{
-   fetch(`/api/food-reference?q=${encodeURIComponent(q)}`,{signal:controller.signal}).then(async r=>{const data=await r.json();if(!r.ok)throw new Error(data.error);return data;})
-    .then(data=>{if(!controller.signal.aborted)setSearch({q,items:data.items??[]});})
-    .catch(()=>{if(!controller.signal.aborted)setSearch({q,items:[],error:'음식을 찾지 못했어요. 잠시 후 다시 검색해 주세요.'});});
-  },250);
-  return()=>{clearTimeout(timer);controller.abort();};
+   searchFoods(q)
+    .then(data=>{if(active)setSearch({q,items:data.items});})
+    .catch(()=>{if(active)setSearch({q,items:[],error:'음식을 찾지 못했어요. 잠시 후 다시 검색해 주세요.'});});
+  },hasCachedFoodSearch(q)?0:150);
+  return()=>{clearTimeout(timer);active=false;};
  },[q]);
  const canDeduct=stockAvailable>=portions;
  const [deduct,setDeduct]=useState(stockAvailable>0);

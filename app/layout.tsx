@@ -1,3 +1,4 @@
+import {ProductAnalytics} from './product-analytics';
 import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -25,5 +26,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
-  return <html lang="ko"><body><AppLoadingProvider>{children}</AppLoadingProvider><KakaoBrowser /><Analytics /><SpeedInsights /></body></html>;
+  return <html lang="ko"><body><AppLoadingProvider>{children}</AppLoadingProvider><KakaoBrowser /><ProductAnalytics /><Analytics /><SpeedInsights /></body></html>;
 }

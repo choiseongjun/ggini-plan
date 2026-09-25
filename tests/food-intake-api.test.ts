@@ -7,7 +7,7 @@ import {GET as cartGET,PUT as cartPUT} from '../app/api/shopping-progress/route'
 import {createSession,SESSION_COOKIE,type PublicUser} from '../lib/auth';
 import {getPool} from '../lib/db';
 import {planProducts} from '../lib/shopping-plan-catalog';
-import {servingNutrition} from '../lib/food-intake';
+import {servingNutrition,consumeFood} from '../lib/food-intake';
 import {initialConditions} from '../lib/shopping-plan';
 import {emptyDashboard} from '../lib/dashboard';
 const req=(cookie='',body?:unknown,date?:string,origin='http://localhost:3000')=>new NextRequest(`http://localhost:3000/api/food-intake${date?'?date='+date:''}`,{method:body?'POST':'GET',headers:{Cookie:cookie,origin,'Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{})});
@@ -18,11 +18,11 @@ test('eating and undo are atomic, idempotent, isolated, and use server nutrition
   assert.equal((await GET(req())).status,401);
   assert.equal((await POST(req('',{action:'eat'}))).status,401);
   for(let i=0;i<2;i++){const user=(await db.query<PublicUser>("INSERT INTO users(name,email) VALUES('섭취 기록 테스트',$1) RETURNING id::text,name,email",[`intake-${randomUUID()}@example.test`])).rows[0];ids.push(user.id);cookies.push(`${SESSION_COOKIE}=${(await createSession(user)).cookies.get(SESSION_COOKIE)!.value}`);}
-  const p=(await planProducts()).find(p=>p.servings>=2&&servingNutrition(p).calories!==null)!;assert.ok(p,'real catalog has a verified multi-serving product');
-  const stock={[p.id]:{id:p.id,name:p.name,unit:'묶음',url:p.productUrl,ordered:0,owned:1}};
+  const p=(await planProducts()).find(p=>p.recipe?.ingredients.length&&p.recipe.ingredients.every(i=>i.packs>0&&i.packs<=1)&&servingNutrition(p).calories!==null)!;assert.ok(p,'current catalog has a recipe with nutrition and ingredients');
+  const stock=Object.fromEntries(p.recipe!.ingredients.map(({product})=>[product.id,{id:product.id,name:product.name,unit:'묶음',url:product.productUrl,ordered:0,owned:1}]));
   const purchaseDate=emptyDashboard().today;
-  const purchase={stock,version:0,expense:{id:randomUUID(),date:purchaseDate,amount:p.price,action:'buy',itemIds:[p.id]}};
-  assert.equal((await cartPUT(cartReq(cookies[0],purchase))).status,200);
+  const purchase={stock,version:0,expense:{id:randomUUID(),date:purchaseDate,amount:p.price,action:'buy',itemIds:Object.keys(stock)}};
+  const purchased=await cartPUT(cartReq(cookies[0],purchase));assert.equal(purchased.status,200,await purchased.text());
   assert.equal((await cartPUT(cartReq(cookies[0],purchase))).status,200);
   const paid=async()=>Number((await db.query("SELECT amount FROM daily_expenses WHERE user_id=$1 AND spent_on=$2 AND category='food'",[ids[0],purchaseDate])).rows[0].amount);
   assert.equal(await paid(),p.price);
@@ -32,8 +32,8 @@ test('eating and undo are atomic, idempotent, isolated, and use server nutrition
   const first=await(await GET(req(cookies[0]))).json();assert.equal(first.logs.length,1);
   assert.equal(first.logs[0].calories,Math.round(servingNutrition(p).calories!*0.5*10)/10);
   assert.equal(first.logs[0].cost,Math.round(p.price/p.servings*0.5));
-  const halfStock=(await(await cartGET(cartReq(cookies[0]))).json()).stock[p.id];
-  assert.equal(halfStock.owned,Math.round((1-0.5/p.servings)*1000000)/1000000);
+  const halfStock=(await(await cartGET(cartReq(cookies[0]))).json()).stock;
+  assert.deepEqual(halfStock,consumeFood(stock,p,0.5).stock);
   assert.equal(await paid(),p.price,'eating must not add a second purchase expense');
   assert.equal(first.version,2);assert.equal((await(await GET(req(cookies[1]))).json()).logs.length,0);
   assert.equal((await POST(req(cookies[1],{action:'undo',id:command.id,version:0}))).status,404);
@@ -42,7 +42,7 @@ test('eating and undo are atomic, idempotent, isolated, and use server nutrition
   const undo={action:'undo',id:command.id,version:first.version};
   assert.equal((await POST(req(cookies[0],undo))).status,200);
   assert.equal((await POST(req(cookies[0],undo))).status,200);
-  const restored=await(await cartGET(cartReq(cookies[0]))).json();assert.equal(restored.stock[p.id].owned,1);assert.equal(restored.version,3);
+  const restored=await(await cartGET(cartReq(cookies[0]))).json();assert.deepEqual(restored.stock,stock);assert.equal(restored.version,3);
   assert.equal((await(await GET(req(cookies[0]))).json()).logs.length,0);
   assert.equal(await paid(),p.price,'undo eating restores food without erasing the purchase');
   assert.equal((await POST(req(cookies[0],{...command,version:3}))).status,409);
@@ -65,7 +65,7 @@ test('eating and undo are atomic, idempotent, isolated, and use server nutrition
   assert.equal((await(await GET(req(cookies[0],undefined,'2026-09-18'))).json()).logs.length,1);
 
   // A recipe stores all consumed ingredient snapshots in the same atomic log.
-  const recipe=(await planProducts()).find(p=>p.id==='cook-tofu-egg')!;assert.ok(recipe?.recipe);
+  const recipe=p;
   const ingredients=Object.fromEntries(recipe.recipe!.ingredients.map(({product})=>[product.id,{id:product.id,name:product.name,unit:'묶음',url:product.productUrl,owned:1,ordered:0}]));
   const resetVersion=(await(await cartGET(cartReq(cookies[0]))).json()).version;
   assert.equal((await cartPUT(cartReq(cookies[0],{stock:ingredients,version:resetVersion}))).status,200);
@@ -73,9 +73,9 @@ test('eating and undo are atomic, idempotent, isolated, and use server nutrition
   assert.equal((await POST(req(cookies[0],recipeRequest))).status,200);
   assert.equal((await POST(req(cookies[0],recipeRequest))).status,200);
   const eaten=(await(await cartGET(cartReq(cookies[0]))).json());
-  assert.equal(eaten.stock.eggs.owned,0.9);assert.equal(eaten.stock.tofu.owned,0.5);assert.equal(eaten.stock.rice.owned,0.5);
+  assert.deepEqual(eaten.stock,consumeFood(ingredients,recipe,1).stock);
   const log=(await db.query('SELECT product_name,cost,stock_item FROM food_intake_logs WHERE user_id=$1 AND id=$2',[ids[0],recipeRequest.id])).rows[0];
-  assert.equal(log.product_name,recipe.name);assert.equal(Number(log.cost),recipe.price);assert.equal(log.stock_item.ingredients.length,3);
+  assert.equal(log.product_name,recipe.name);assert.equal(Number(log.cost),recipe.price);assert.equal(log.stock_item.ingredients.length,recipe.recipe!.ingredients.length);
   assert.equal((await POST(req(cookies[1],{action:'undo',id:recipeRequest.id,version:0}))).status,404);
   assert.equal((await POST(req(cookies[0],{action:'undo',id:recipeRequest.id,version:eaten.version}))).status,200);
   assert.deepEqual((await(await cartGET(cartReq(cookies[0]))).json()).stock,ingredients);

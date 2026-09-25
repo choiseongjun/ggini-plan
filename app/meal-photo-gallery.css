@@ -1,0 +1,10 @@
+.meal-photo-gallery{padding:18px 0 20px;border-bottom:1px solid #e4e8dd}
+.meal-photo-gallery-heading{display:flex;align-items:center;gap:8px;color:#354c2e}
+.meal-photo-gallery-heading strong{font-size:16px}.meal-photo-gallery-heading>span{padding:3px 8px;background:#edf2e5;border-radius:20px;font-size:12px}
+.meal-photo-gallery>p{font-size:13px;line-height:1.7;color:#697360;margin:8px 0 14px}
+.meal-photo-gallery-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.meal-photo-gallery-grid>a{display:block;min-width:0;overflow:hidden;border:1px solid #e4e8dd;border-radius:14px;background:#fffdf7;color:#526348;text-decoration:none}
+.meal-photo-gallery-grid img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover}
+.meal-photo-gallery-grid a>span{display:block;padding:9px 10px;font-size:12px;line-height:1.5}
+.meal-photo-gallery-grid a:focus-visible{outline:2px solid #526c47;outline-offset:3px}
+@media(min-width:900px){.meal-photo-gallery-grid{gap:16px}.meal-photo-gallery-grid a>span{font-size:13px}}

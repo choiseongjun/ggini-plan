@@ -1,0 +1,13 @@
+.food-intake .record-calendar{margin:22px 0;padding:18px;border:1px solid #dce4d1;border-radius:20px;background:#fffef9;min-width:0}
+.record-calendar>header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.record-calendar header small{font-size:12px;color:#7b846f}.record-calendar h3{margin:5px 0 0;font-size:20px;letter-spacing:-.03em;color:#374c2c}
+.record-calendar-nav{display:flex;gap:6px}.food-intake .record-calendar-nav button{padding:7px 10px;min-width:36px;font-size:14px;border-color:#e0e6d7}
+.record-calendar-week,.record-calendar-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;text-align:center}
+.record-calendar-week{margin-bottom:8px;font-size:12px;color:#7b846f;line-height:24px}
+.food-intake .record-calendar-days button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0;min-height:55px;padding:6px 0;border:1px solid transparent;border-radius:12px;background:transparent;font-size:14px}
+.record-calendar-days small{min-height:13px;font-size:10px;line-height:13px;color:#708552}
+.food-intake .record-calendar-days button[aria-current=date]{border-color:#9bae87}
+.food-intake .record-calendar-days button[aria-pressed=true]{background:#526c47;color:white;border-color:#526c47}.record-calendar-days button[aria-pressed=true] small{color:#edf4df}
+.record-calendar>p{margin:14px 0 0;font-size:12px;line-height:1.7;color:#76816a}
+@media(max-width:380px){.food-intake .record-calendar{padding:14px 10px}.record-calendar h3{font-size:18px}.record-calendar-nav{gap:4px}.record-calendar-days{gap:2px}}
+.food-intake .record-calendar{margin:14px 0;padding:14px}.record-calendar>header{margin-bottom:10px}.food-intake .record-calendar-days button{min-height:66px;gap:2px}.record-calendar-days .calendar-meal-periods{display:flex;gap:2px;min-height:13px;line-height:13px}.calendar-meal-periods i{font-style:normal;font-size:9px;color:#576f44;background:#eaf0df;border-radius:3px;padding:0 2px}.record-calendar-days button[aria-pressed=true] .calendar-meal-periods i{background:#ffffff26;color:#fff}.record-calendar>p{margin-top:9px;font-size:11px}@media(max-width:380px){.calendar-meal-periods i{padding:0 1px;font-size:8px}.record-calendar-days .calendar-meal-periods{gap:1px}}

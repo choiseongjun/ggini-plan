@@ -19,12 +19,12 @@ try {
   try {
    const urls = [...new Set([row.image_url, ...(row.image_urls ?? [])].filter(Boolean))];
    const approved = await selectFoodPhotos(urls);
-   if (!approved.length) { uncertain++; continue; } // Never replace with an uncertain guess.
+   if (!approved.length) uncertain++; // Quarantine rejected photos; the importer can collect replacements.
    if (row.image_url === approved[0] && JSON.stringify(row.image_urls) === JSON.stringify(approved)) continue;
    // Preserve candidates before mutation for audit/recovery.
    appendFileSync('.cache/food-photo-review/changes.jsonl', JSON.stringify({at: new Date().toISOString(), apply, before: row, approved}) + '\n');
    if (apply) {
-    const result = await pool.query('UPDATE recipe_optimizer_results SET image_url=$1,image_urls=$2::jsonb WHERE food_code=$3 AND image_url=$4 AND image_urls IS NOT DISTINCT FROM $5::jsonb', [approved[0],JSON.stringify(approved),row.food_code,row.image_url,JSON.stringify(row.image_urls)]);
+    const result = await pool.query('UPDATE recipe_optimizer_results SET image_url=$1,image_urls=$2::jsonb WHERE food_code=$3 AND image_url=$4 AND image_urls IS NOT DISTINCT FROM $5::jsonb', [approved[0] ?? null,JSON.stringify(approved),row.food_code,row.image_url,JSON.stringify(row.image_urls)]);
     if (!result.rowCount) continue; // Another process changed the candidates.
    }
    changed++;

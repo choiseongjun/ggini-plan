@@ -404,3 +404,27 @@
 .today-next-plan small{font-size:12px;color:#64725e;margin:12px 0 0}
 
 .profile-guide-link{display:inline-block;margin-top:12px;padding:10px 0;color:#48613d;font-size:14px;line-height:1.7;text-underline-offset:4px}
+.fresh-shell .daily-return.daily-return-compact{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;margin-bottom:16px;border-radius:18px}
+.fresh-shell .daily-return-compact .daily-buddy-link{margin:0;min-width:0;gap:8px;font-size:12px}
+.fresh-shell .daily-return-compact .daily-buddy-link .rice-buddy{width:38px;height:42px}
+.fresh-shell .daily-return-compact .daily-return-record{flex-shrink:0;min-height:44px;display:inline-flex;align-items:center;padding:10px 12px;border:0;border-radius:12px;background:#edf0dc;color:#405c35;font:inherit;font-size:13px;text-decoration:none}
+.quick-meal-times{width:100%;box-sizing:border-box;align-self:stretch;border:0;padding:0;margin:22px 0;min-width:0;text-align:left}
+.home-start>.quick-meal-times{width:calc(100% - 40px);margin:22px 20px 8px}
+.quick-meal-times legend{padding:0;margin-bottom:12px;font-size:14px;font-weight:750;color:#43543b;letter-spacing:-.02em}
+.quick-meal-times>div{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.quick-meal-times button{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;min-width:0;min-height:102px;padding:16px 10px 13px;border:1px solid #e3e5d9;border-radius:19px;background:#fffdf8;color:#828778;font:inherit;cursor:pointer;transition:background .15s,border-color .15s,box-shadow .15s}
+.quick-meal-times .meal-time-symbol{display:grid;place-items:center;width:36px;height:32px;color:#979a87}
+.quick-meal-times .meal-time-label{font-size:15px;font-weight:650;line-height:1.4;letter-spacing:-.02em}
+.quick-meal-times .meal-time-check{position:absolute;right:9px;top:9px;display:grid;place-items:center;width:18px;height:18px;border:1px solid #dcdfd2;border-radius:50%;background:#fffdf8;color:transparent}
+.quick-meal-times button[aria-pressed=true]{background:#eef3e5;border-color:#90a479;color:#354e2d;box-shadow:inset 0 0 0 1px #90a47933,0 3px 8px #536b3b08}
+.quick-meal-times button[aria-pressed=true] .meal-time-symbol{color:#607b46}
+.quick-meal-times button[aria-pressed=true] .meal-time-check{background:#607b46;border-color:#607b46;color:#fff}
+.quick-meal-times>small{display:block;margin-top:12px;color:#737b68;font-size:12px;line-height:1.7}
+.quick-meal-times button:focus-visible{outline:3px solid #739254;outline-offset:3px}
+.quick-meal-times:disabled button{opacity:.55;cursor:wait}
+@media(hover:hover){.quick-meal-times button:not(:disabled):hover{border-color:#90a479;background:#f1f4e9}}
+@media(max-width:360px){.quick-meal-times>div{gap:7px}.quick-meal-times button{min-height:94px;border-radius:16px}.quick-meal-times .meal-time-check{right:7px;top:7px}}
+
+.personal-recommendation-entry{display:grid;gap:8px;margin:14px 0;text-align:center}
+.personal-recommendation-entry button{min-height:48px;padding:12px 16px;border:1px solid #b7c7a5;border-radius:14px;background:#f0f4e6;color:#405834;font:inherit;font-weight:700;cursor:pointer}
+.personal-recommendation-entry small{font-size:12px;line-height:1.7;color:#68735d;word-break:keep-all}

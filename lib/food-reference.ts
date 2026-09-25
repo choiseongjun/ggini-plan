@@ -49,20 +49,31 @@ export const normalizeFoodQuery = (text: string) => text.toLowerCase().replace(/
 
 // 자주 쓰는 줄임말 → DB 이름.
 const ALIASES: Record<string, string> = {'계란후라이':'달걀후라이','계란프라이':'달걀후라이','달걀프라이':'달걀후라이','계란말이':'달걀말이','계란찜':'달걀찜','아아': '아이스 아메리카노', '뜨아': '아메리카노', '아바라': '바닐라 라떼', '아샷추': '샷 추가 아이스티', '카라멜마끼아또': '카라멜 마키아토', '마끼아또': '마키아토', '치맥': '치킨', '떡튀순': '떡볶이'};
-export async function searchFoodReference(rawQuery: string, limit = 30): Promise<FoodReference[]> {
+const searchCache=new Map<string,{expires:number;result:Promise<FoodReference[]>}>();
+export function searchFoodReference(rawQuery:string,limit=30):Promise<FoodReference[]>{
+ const cacheKey=JSON.stringify([rawQuery.trim().toLowerCase().replace(/\s+/g,' '),limit]);
+ const cached=searchCache.get(cacheKey);
+ if(cached&&cached.expires>Date.now())return cached.result;
+ if(searchCache.size>=100)searchCache.delete(searchCache.keys().next().value!);
+ const result=loadFoodReference(rawQuery,limit);
+ searchCache.set(cacheKey,{expires:Date.now()+5*60_000,result});
+ result.catch(()=>{if(searchCache.get(cacheKey)?.result===result)searchCache.delete(cacheKey);});
+ return result;
+}
+async function loadFoodReference(rawQuery: string, limit = 30): Promise<FoodReference[]> {
  const query = ALIASES[rawQuery.trim().replace(/\s+/g, '')] ?? rawQuery;
  const key = normalizeFoodQuery(query);
  if (!key) return [];
  const words = query.trim().split(/\s+/).map(normalizeFoodQuery).filter(Boolean).slice(0, 4);
  // 여러 단어("스타벅스 라떼")는 모두 포함해야 한다. 이름이 검색어로 시작·일치하는 것, 칼로리가 있는 것, 짧은 이름 순.
- const {rows} = await getPool().query<Row>(
+ const [regular,raw] = await Promise.all([getPool().query<Row>(
   `SELECT DISTINCT ON (name, brand, serving_amount) ${COLUMNS}, length(name) AS len FROM food_reference
    WHERE ${words.map((_, i) => `search_text LIKE '%'||$${i + 1}||'%'`).join(' AND ')} AND calories_kcal IS NOT NULL
    ORDER BY name, brand, serving_amount, food_code LIMIT 500`,
-  words);
- const raw=await getPool().query<RawFoodRow>(`SELECT food_code,item_name,category_large,basis_amount,calories_kcal,protein_g,carbohydrates_g,sugar_g,fat_g,sodium_mg FROM foodsafety_processed_nutrition WHERE food_type='RAW' AND ${words.map((_,i)=>`replace(lower(item_name),'_','') LIKE '%'||$${i+1}||'%'`).join(' AND ')} AND calories_kcal IS NOT NULL ORDER BY length(item_name),item_name LIMIT 100`,words);
+  words),
+ getPool().query<RawFoodRow>(`SELECT food_code,item_name,category_large,basis_amount,calories_kcal,protein_g,carbohydrates_g,sugar_g,fat_g,sodium_mg FROM foodsafety_processed_nutrition WHERE food_type='RAW' AND ${words.map((_,i)=>`replace(lower(item_name),'_','') LIKE '%'||$${i+1}||'%'`).join(' AND ')} AND calories_kcal IS NOT NULL ORDER BY length(item_name),item_name LIMIT 100`,words)]);
  const rawItems=raw.rows.map(rawFoodReference).filter((f):f is FoodReference=>f!==null);
- return rankFoodReferences([...rows.map(toReference),...rawItems],query,limit);
+ return rankFoodReferences([...regular.rows.map(toReference),...rawItems],query,limit);
 }
 
 export async function foodReferenceByCode(code: string): Promise<FoodReference | null> {

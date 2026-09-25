@@ -9,7 +9,7 @@ export function ProductThumb({ item, className = "", zoomable = false }: { item:
   const [failedUrl, setFailedUrl] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const reviewed = reviewedRecipeImages(undefined, item.productImageUrl);
-  const primary = reviewed?.[0] ?? item.productImageUrl;
+  const primary = reviewed !== undefined ? reviewed[0] ?? null : item.productImageUrl;
   const hasPhoto = primary && primary !== failedUrl;
   const gallery = reviewed ?? (item.productImageUrls?.length ? item.productImageUrls : hasPhoto ? [primary!] : []);
   const canOpen = zoomable && gallery.length > 0;

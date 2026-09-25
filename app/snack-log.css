@@ -31,3 +31,5 @@
 .snack-log-foot{display:block;margin-top:10px;font-size:11px;line-height:1.5;color:#8a9583}
 .snack-log-custom{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-top:12px;font-size:12px;color:#5c6e55}
 .snack-log-custom input{width:68px;min-height:40px;padding:8px;border:1px solid #cdd8c4;border-radius:10px;background:#fff;color:#33402c;font-size:16px;text-align:center}
+
+.snack-log-manual{margin:12px 0;padding:14px;background:#f2f5e9;border:1px solid #dce4cd;border-radius:14px}.snack-log-manual>button{width:100%;min-height:44px;padding:10px;border:0;border-radius:10px;background:#e4edd7;color:#3e5732;font-size:14px;font-weight:700;line-height:1.6;overflow-wrap:anywhere}.snack-log-manual>small{display:block;margin-top:8px;color:#6b7660;font-size:12px;line-height:1.6}

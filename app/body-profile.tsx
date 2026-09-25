@@ -3,6 +3,7 @@
 import { Checkbox } from "./components/checkbox";
 
 import Link from "next/link";
+import {useRouter} from "next/navigation";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { activities, calorieEstimate, parseBodyProfile, type BodyProfile } from "../lib/body-profile";
 import { defaultDiet, dietStyles, excludedFoods, excludedFoodGroups, parseDiet, type recommendMeals, type DietPreferences } from "../lib/meal-plan";
@@ -22,6 +23,7 @@ import { bodyGoals, nutritionPlan, type BodyGoal } from "../lib/nutrition-plan";
 const draftKey = "profile-wizard-draft";
 
 export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string; name: string; onLogin: () => void; onSaved?:()=>void }) {
+ const router=useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
@@ -206,7 +208,7 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
       setWizardStep(null);onLogin();return false;
     }
     // Home recommendations rank by this goal; failure here shouldn't block the profile save.
-    if(g)void fetch('/api/shopping-plan',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({goal:g})}).catch(()=>{});
+    if(g)await fetch('/api/shopping-plan',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({goal:g})}).catch(()=>{});
     const ok=await persist(p,d,target);
     if(ok)setDirty(false);
     return ok;
@@ -234,7 +236,7 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
     {hasInfo && !loading && !loadError && <ProfileProgress fields={fields} reviewed={reviewed} saved={savedProfile} onOpen={openWizard}/>}
     <ProfileWizardModal step={wizardStep} direction={direction} quick={quickWizard} fields={fields} userId={userId} saving={saving} error={wizardStep === null ? "" : error}
       onStep={stepWizard} onChange={changeFields} onReviewed={step => setReviewed(r => new Set(r).add(step))} onClose={() => void closeWizard()}
-      onSave={() => { const result = wizardResult(); if (!result) return; void completeWizard(result).then(ok => { if (ok) setWizardStep(null); }); }}/>
+      onSave={() => { const result = wizardResult(); if (!result) return; void completeWizard(result).then(ok => { if (ok) {setWizardStep(null);if(!result.profile.pregnancy&&new URLSearchParams(window.location.search).get("personalize")==="1")router.push("/?recommend=profile");} }); }}/>
     {message && wizardStep === null && <p className="body-success" role="status">{message}</p>}
     {/* Hidden for now: the step modal replaces it. Kept for the fasting/first-meal/manual-target inputs the modal doesn't cover. */}
     <details className="profile-full-form" hidden><summary>전체 항목 한 번에 수정</summary>

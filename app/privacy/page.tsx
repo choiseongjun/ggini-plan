@@ -24,18 +24,21 @@ export default function PrivacyPage() {
     <p>장소 검색을 위한 위치 또는 동네·메뉴 검색어는 카카오에 전달됩니다. 지도 표시를 위한 위치는 네이버 클라우드의 지도 서비스에서 처리됩니다. 카카오 서비스의 접속 정보·이용 기록 처리와 보관은 <a href="https://www.kakao.com/policy/privacy" target="_blank" rel="noreferrer">카카오 개인정보처리방침</a>을 따릅니다. 네이버 지도 서비스의 정보 처리는 <a href="https://www.ncloud.com/policy/infou" target="_blank" rel="noreferrer">네이버 클라우드 개인정보처리방침</a>을 따릅니다. 끼니플랜에서 좌표를 저장하지 않는다는 안내가 카카오·네이버 클라우드·호스팅 제공업체의 모든 서비스 이용 기록이 즉시 삭제된다는 뜻은 아닙니다.</p>
     <h3 id="meal-photos">식사 사진 분석</h3>
     <p>‘먹었어요 · 사진 올리기’에서 이용자가 전송·분석에 동의하고 기록하기를 누르면 사진과 추천 메뉴 이름·재료 정보가 OpenAI API로 전송되어 음식·식사량과 예상 영양정보를 분석합니다. 서버에서 사진의 위치 등 EXIF 정보를 제거하고 크기를 줄여 전송합니다. 기록이 완료되면 위치 등 EXIF 정보를 제거하고 크기를 줄인 사진(최대 4장)과 음식·식사량·영양정보를 계정의 비공개 식사 일기에 저장합니다. 사진은 로그인한 본인만 조회할 수 있으며, 해당 기록 삭제·기록 초기화·회원 탈퇴 시 함께 삭제됩니다. 분석하지 못한 사진은 일기에 저장하지 않습니다. 사진 없이 직접 기록하는 방법도 제공합니다.</p>
+    <p>기록 화면에서 AI 예상 식비 계산을 요청하면 가격이 없는 음식의 이름·먹은 양·기록된 칼로리를 OpenAI API로 전송해 비용 범위를 추정합니다. 사진·계정 이름·이메일은 이 요청에 포함하지 않습니다. 추정 결과는 계정별로 저장해 같은 기록에 재사용하며 실제 결제 내역으로 처리하지 않습니다.</p>
     <p>API 응답 저장을 사용하지 않지만 이는 OpenAI의 모든 보관을 중지한다는 뜻은 아닙니다. OpenAI의 기본 API 정책상 남용 감시 로그는 최대 30일 보관될 수 있으며, 법률·안전상 예외가 적용될 수 있습니다. 실제 계정의 별도 보관 설정 및 국외 처리 내역은 확인 대상입니다. <a href="https://developers.openai.com/api/docs/guides/your-data" target="_blank" rel="noreferrer">OpenAI 데이터 처리 안내</a>를 참고하세요. 커뮤니티·상품 제보의 첨부 사진은 각 서비스의 별도 처리 방식이 적용됩니다.</p>
     <h2>3. 자동 수집·쿠키·브라우저 저장소</h2>
     <ul><li>로그인 유지: HttpOnly 세션 쿠키와 서버의 세션 토큰 해시를 사용합니다. 로그인 쿠키의 유효기간은 30일이고 로그아웃 시 해당 세션을 폐기합니다. 구글 로그인 과정의 일회성 상태값은 10분간 유효합니다.</li><li>방문·추천 통계: 브라우저의 임의 방문 식별자와 방문·추천·교체·판매처 이동 이벤트를 처리합니다. 식별자는 30일 주기로 갱신하며 서버에는 해시 형태로 저장합니다. 이벤트 저장 시 최근 30일보다 오래된 기록을 정리합니다. 남용 방지를 위해 네트워크 식별값을 해시하여 사용할 수 있습니다.</li><li>브라우저 저장소: 장보기 초안, 구매 진행 상태, 설치 안내 닫기 상태 등을 보관합니다. 설치 안내 닫기 기간은 7일입니다. 로그아웃만으로 모든 브라우저 저장 데이터가 삭제되지는 않습니다.</li><li>운영·성능: 호스팅 및 분석 제공업체가 접속 시각, 요청 경로, 브라우저·기기·네트워크 정보, 오류 및 성능 정보를 처리할 수 있습니다. Vercel Web Analytics와 Speed Insights를 사용합니다.</li></ul>
     <p>브라우저 설정에서 쿠키·사이트 저장 데이터를 차단하거나 삭제할 수 있습니다. 로그인 유지와 초안 복원 등 일부 기능이 제한될 수 있습니다. 운영 로그·분석 자료의 정확한 보유 기간은 아래 시행 전 확인사항에 포함되어 있습니다.</p>
+    <p>제품 사용 흐름과 재방문 분석에는 PostHog를 사용합니다. 브라우저에 저장된 임의 식별자, 화면 종류, 추천·기록 기능의 사용 여부, 사진 분석 성공 여부·소요시간·사진 장수를 미국 리전으로 전송합니다. 이름·이메일·계정 ID·사진·음식명·체중·건강정보·검색어와 주소의 쿼리 문자열은 이 분석 이벤트에 포함하지 않습니다. 화면 녹화와 자동 클릭 수집은 사용하지 않으며, 브라우저의 Do Not Track 설정을 존중합니다. 사이트 저장 데이터를 지우면 기존 브라우저 식별자와의 연결이 끊어집니다.</p>
     <h2>4. 공개 정보·제3자 제공</h2>
     <p>서비스 계정 정보를 판매하지 않습니다. 이용자가 공개 기능을 직접 사용하면 커뮤니티의 별명·게시물·댓글, 공유 링크의 식단, 승인된 상품 제보의 공개 정보가 다른 이용자에게 보일 수 있습니다. 외부 판매처 링크를 누르면 해당 사이트로 이동하며, 그곳의 개인정보 처리는 해당 사이트의 정책을 따릅니다.</p>
     <p>그 밖의 제3자 제공이 필요한 경우에는 법령상 근거가 있거나 별도의 동의를 받은 범위에서 처리합니다. 서비스 운영에 필요한 처리위탁은 다음 항목과 구분합니다.</p>
     <h2>5. 처리위탁·국외 처리</h2>
     <div className="legal-table" role="region" aria-label="개인정보 처리업체" tabIndex={0}><table><thead><tr><th>업체</th><th>업무·정보 범위</th><th>확인 자료</th></tr></thead><tbody>
       <tr><td>Vercel Inc.</td><td>웹사이트·API 호스팅, 접속·성능 분석. 요청에 포함된 서비스 정보와 접속·기기·성능 정보</td><td><a href="https://vercel.com/legal/dpa" target="_blank" rel="noreferrer">데이터 처리 조건</a> · <a href="https://vercel.com/docs/analytics/privacy-policy" target="_blank" rel="noreferrer">분석 개인정보 안내</a></td></tr>
+      <tr><td>PostHog</td><td>미국 리전의 기본 사용·재방문 분석. 임의 브라우저 식별자와 제한된 기능 사용 이벤트</td><td><a href="https://posthog.com/privacy" target="_blank" rel="noreferrer">개인정보 안내</a></td></tr>
       <tr><td>Supabase</td><td>회원 및 서비스 데이터베이스, 제보·상품 사진 저장</td><td><a href="https://supabase.com/privacy" target="_blank" rel="noreferrer">개인정보 안내</a></td></tr>
-      <tr><td>OpenAI</td><td>식사 사진과 추천 메뉴·재료 정보의 AI 분석. 분석용 사진의 메타데이터를 제거하여 전송</td><td><a href="https://developers.openai.com/api/docs/guides/your-data" target="_blank" rel="noreferrer">API 데이터 처리·보관 안내</a></td></tr>
+      <tr><td>OpenAI</td><td>식사 사진과 추천 메뉴·재료 정보의 AI 분석, 요청 시 음식 이름·섭취량·칼로리를 이용한 식비 추정. 분석용 사진의 메타데이터를 제거하여 전송</td><td><a href="https://developers.openai.com/api/docs/guides/your-data" target="_blank" rel="noreferrer">API 데이터 처리·보관 안내</a></td></tr>
       <tr><td>Google LLC (Firebase Authentication)</td><td>구글 로그인 인증. 계정 식별자·이메일·이름·인증 및 접속 정보. Firebase Authentication은 미국에서 처리</td><td><a href="https://firebase.google.com/support/privacy" target="_blank" rel="noreferrer">Firebase 개인정보 안내</a></td></tr>
     </tbody></table></div>
     <p>처리위탁 및 국외 이전은 실제 계약과 설정을 확인하여 공개해야 합니다. 이 검토본의 업체 목록만으로 국외 이전 고지나 동의를 완료한 것으로 보지 않습니다. 시행 전에 업체별 이전 국가·시기·방법·항목·목적·연락처·보유기간·법적 근거 및 거부 방법과 영향을 확정합니다. Google 로그인을 원하지 않으면 비회원 둘러보기를 사용할 수 있으며, 비회원 이용에도 호스팅·분석 처리가 적용됩니다.</p>

@@ -158,7 +158,7 @@ async function aiList() {
  for (const theme of THEMES) {
   const d = await gpt<{items: typeof list}>(
    `You list dishes Korean people actually cook at home or order as ONE MEAL in Korea today. Theme: ${theme}.
-Return 60 distinct, specific, commonly known dishes in Korean (e.g. "간장닭조림", not "닭요리"), no desserts, drinks, snacks or single side dishes.
+Return up to 20 distinct, specific, commonly known dishes in Korean. Return fewer or an empty list when established dishes are exhausted; NEVER invent names or unusual combinations to meet a quota. Avoid unclear transliterations and restaurant/brand names. Each name must identify one actual recognizable dish. List candidates still require a separate name-and-ingredient quality review before recommendation. Use clear Korean names (e.g. "간장닭조림", not "닭요리"), no desserts, drinks, snacks or single side dishes.
 For each give a realistic single-serving weight in grams (the dish only, WITHOUT a separate bowl of rice) and your best estimate of that serving's nutrition: kcal, protein g, fat g, carbohydrate g, sugar g, sodium mg.`,
    `이미 있는 메뉴 예시(중복 금지): ${[...have].slice(0, 400).join(', ')}`, listSchema);
   let added = 0;

@@ -31,6 +31,7 @@ try {
   await client.query(readFileSync(resolve(root, 'db/foodsafety-synthesized-recipes.sql'), 'utf8'));
   await client.query(readFileSync(resolve(root, 'db/recipe-optimizer-results.sql'), 'utf8'));
   await client.query(readFileSync(resolve(root, 'db/food-intake-photos.sql'), 'utf8'));
+  await client.query(readFileSync(resolve(root, 'db/intake-cost-estimates.sql'), 'utf8'));
   await client.query(readFileSync(resolve(root, 'db/meal-pairings.sql'), 'utf8'));
   await client.query('COMMIT');
   console.log("PostgreSQL schema is ready.");

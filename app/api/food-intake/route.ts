@@ -19,7 +19,7 @@ export async function GET(request:NextRequest){
   if(from||to){
    // Logs only, grouped by KST date — used by the weekly analysis to compare the plan with what was eaten.
    if(!from||!to||!validDate(from)||!validDate(to)||from>to||Date.parse(to)-Date.parse(from)>62*86400000)return authFailure('기간을 확인해 주세요.',400);
-   const logs=await getPool().query(`SELECT id::text,product_id AS "productId",product_name AS name,portions::float8,calories::float8,protein::float8,to_char(created_at AT TIME ZONE 'Asia/Seoul','YYYY-MM-DD') AS date FROM food_intake_logs WHERE user_id=$1 AND undone_at IS NULL AND created_at>=($2::date::timestamp AT TIME ZONE 'Asia/Seoul') AND created_at<(($3::date+1)::timestamp AT TIME ZONE 'Asia/Seoul') ORDER BY created_at`,[user.id,from,to]);
+   const logs=await getPool().query(`SELECT id::text,product_id AS "productId",product_name AS name,portions::float8,calories::float8,protein::float8,created_at AS "createdAt",to_char(created_at AT TIME ZONE 'Asia/Seoul','YYYY-MM-DD') AS date FROM food_intake_logs WHERE user_id=$1 AND undone_at IS NULL AND created_at>=($2::date::timestamp AT TIME ZONE 'Asia/Seoul') AND created_at<(($3::date+1)::timestamp AT TIME ZONE 'Asia/Seoul') ORDER BY created_at`,[user.id,from,to]);
    return json({logs:logs.rows});
   }
   const date=request.nextUrl.searchParams.get('date')??emptyDashboard().today;

@@ -1,4 +1,5 @@
 'use client';
+import {trackAnalytics} from '../lib/analytics';
 import Link from 'next/link';
 import {useEffect,useState} from 'react';
 import {MealPhotoLog} from './meal-photo-log';
@@ -15,7 +16,7 @@ function RecordIcon({kind}:{kind:'photo'|'search'|'book'}){
 export function RecordEntry({userId,onLogin,onLogged}:{userId?:string;onLogin:()=>void;onLogged:()=>void}){
  const [mode,setMode]=useState<'search'|'photo'|null>(null);
  useEffect(()=>{if(!userId)return;const next=pendingRecordMode();if(!next)return;const frame=requestAnimationFrame(()=>{setMode(next);clearRecordMode();});return()=>cancelAnimationFrame(frame);},[userId]);
- function choose(next:RecordMode){if(userId){setMode(next);return;}rememberRecordMode(next);onLogin();}
+ function choose(next:RecordMode){trackAnalytics('record_method_selected',{method:next});if(userId){setMode(next);return;}rememberRecordMode(next);onLogin();}
  const [done,setDone]=useState(false);
  const {stats}=useIntakeStats(userId);
  return <section className="record-entry" aria-label="식사 기록하기">

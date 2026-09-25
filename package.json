@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "menus:review:local": "node --env-file=.env.local --import tsx scripts/review-menu-ollama.ts",
     "catalog:collect": "node --env-file=.env.local scripts/expand-diverse-catalog.mjs --resume",
     "catalog:apply": "node --env-file=.env.local scripts/expand-diverse-catalog.mjs --apply",
     "catalog:expand": "node scripts/run-catalog-expansion.mjs",
@@ -43,6 +44,7 @@
     "google-auth-library": "^11.0.2",
     "next": "16.3.5",
     "pg": "^8.23.0",
+    "posthog-js": "^1.434.13",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "sharp": "^0.35.4",

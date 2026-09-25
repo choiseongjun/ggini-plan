@@ -6,7 +6,7 @@ import { resolve } from 'node:path';
 const directory = resolve('.cache/food-photo-review');
 mkdirSync(directory, {recursive: true});
 env.cacheDir = resolve(directory, 'models');
-const cachePath = resolve(directory, 'scores-v1.jsonl');
+const cachePath = resolve(directory, 'scores-v2.jsonl');
 const cache = new Map();
 try {
  for (const line of readFileSync(cachePath, 'utf8').split('\n').filter(Boolean)) {
@@ -18,6 +18,7 @@ const labels = [
  'a close-up photo of a finished meal served on a plate or in a bowl',
  'a photo of food cooking in a pan or pot',
  'a photo of raw ingredients and vegetables',
+ 'a photo of fresh fruit growing on a tree',
  'a portrait of a person or a human face',
  'a person presenting a cooking show on television',
  'a photo of mountains, scenery or a landscape',

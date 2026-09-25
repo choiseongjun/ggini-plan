@@ -35,6 +35,6 @@ export function RecommendationFeedback({conditions,mealNames,page}:{conditions:P
    <p className="recommendation-privacy">반응·추천 메뉴·예산·의견은 관리자에게만 전달돼요.<br/>의견을 보내도 현재 식단이 바로 바뀌지는 않아요.</p>
   </>}
   </div>
-  <div className="recommendation-product-tip"><span className="recommendation-eyebrow">함께 채우는 메뉴 정보</span><h3>찾는 상품이 없나요?</h3><p>판매 링크와 영양성분표 사진을 남겨 주세요.<br/>검토 후 상품 정보를 보완할게요.</p><div className="recommendation-tip-action"><Link href="/submissions#submit">상품·영양정보 제보하기</Link><small>로그인 후 이용할 수 있어요</small></div></div>
+  <details className="recommendation-product-tip"><summary>찾는 상품이 없나요? · 상품 제보</summary><span className="recommendation-eyebrow">함께 채우는 메뉴 정보</span><h3>찾는 상품이 없나요?</h3><p>판매 링크와 영양성분표 사진을 남겨 주세요.<br/>검토 후 상품 정보를 보완할게요.</p><div className="recommendation-tip-action"><Link href="/submissions#submit">상품·영양정보 제보하기</Link><small>로그인 후 이용할 수 있어요</small></div></details>
  </section>;
 }

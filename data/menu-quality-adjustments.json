@@ -1,0 +1,2506 @@
+{
+ "AI-29986d0b11f8": {
+  "originalName": "우족탕",
+  "ingredients": [
+   {
+    "name": "우족 (소꼬리)",
+    "grams": 120
+   },
+   {
+    "name": "무 (국용, 삶아서 사용)",
+    "grams": 30
+   },
+   {
+    "name": "대파",
+    "grams": 10
+   },
+   {
+    "name": "마늘 (생, 편 썰기)",
+    "grams": 6
+   },
+   {
+    "name": "국간장",
+    "grams": 8
+   },
+   {
+    "name": "참기름",
+    "grams": 4
+   },
+   {
+    "name": "소금",
+    "grams": 1
+   },
+   {
+    "name": "흑후추",
+    "grams": 1
+   }
+  ],
+  "name": "우족탕",
+  "action": "hold",
+  "reason": "주재료에 우족과 소꼬리가 혼용되어 재료 확인 필요",
+  "model": "manual-review"
+ },
+ "AI-6ff5103c3429": {
+  "originalName": "치아바타 샌드위치 치킨",
+  "ingredients": [
+   {
+    "name": "치아바타 빵",
+    "grams": 70
+   },
+   {
+    "name": "닭가슴살 (구운/슬라이스)",
+    "grams": 60
+   },
+   {
+    "name": "양상추",
+    "grams": 20
+   },
+   {
+    "name": "토마토",
+    "grams": 20
+   },
+   {
+    "name": "마요네즈",
+    "grams": 10
+   }
+  ],
+  "name": "치킨 치아바타 샌드위치",
+  "action": "rename",
+  "reason": "재료가 명확한 샌드위치로, 자연스러운 어순으로 정리",
+  "model": "manual-review"
+ },
+ "AI-7788753de8aa": {
+  "originalName": "채소닭가슴살볼포케",
+  "ingredients": [
+   {
+    "name": "닭가슴살(생)",
+    "grams": 80
+   },
+   {
+    "name": "오이",
+    "grams": 30
+   },
+   {
+    "name": "양파",
+    "grams": 20
+   },
+   {
+    "name": "당근",
+    "grams": 15
+   },
+   {
+    "name": "현미밥",
+    "grams": 40
+   },
+   {
+    "name": "마요네즈",
+    "grams": 10
+   },
+   {
+    "name": "간장",
+    "grams": 5
+   },
+   {
+    "name": "깨소금",
+    "grams": 5
+   }
+  ],
+  "name": "닭가슴살 채소 포케",
+  "action": "rename",
+  "reason": "닭가슴살·채소·현미밥 구성을 유지하며 이름 정리",
+  "model": "manual-review"
+ },
+ "AI-85b9d003828e": {
+  "originalName": "와플 햄치즈와플",
+  "ingredients": [
+   {
+    "name": "와플 믹스 (프리믹스, 계란/우유/설탕 포함 가정)",
+    "grams": 60
+   },
+   {
+    "name": "슬라이스 햄 (샌드위치용)",
+    "grams": 30
+   },
+   {
+    "name": "슬라이스 치즈 (체다, 가공치즈)",
+    "grams": 20
+   },
+   {
+    "name": "버터",
+    "grams": 8
+   },
+   {
+    "name": "케첩",
+    "grams": 7
+   },
+   {
+    "name": "달걀",
+    "grams": 35
+   }
+  ],
+  "name": "햄치즈 와플",
+  "action": "rename",
+  "reason": "와플·햄·치즈 구성을 유지하고 중복 표현 제거",
+  "model": "manual-review"
+ },
+ "AI-9401fd583b09": {
+  "originalName": "치즈스프롤",
+  "ingredients": [
+   {
+    "name": "식빵 (부드러운 흰식빵)",
+    "grams": 40
+   },
+   {
+    "name": "슬라이스 치즈 (직사각 슬라이스, 가공치즈)",
+    "grams": 18
+   },
+   {
+    "name": "버터 (무염)",
+    "grams": 6
+   },
+   {
+    "name": "달걀",
+    "grams": 25
+   },
+   {
+    "name": "우유 (일반 흰우유)",
+    "grams": 50
+   },
+   {
+    "name": "파슬리 가루 (토핑, 건조)",
+    "grams": 1
+   }
+  ],
+  "name": "치즈스프롤",
+  "action": "hold",
+  "reason": "스프롤의 요리 정체가 불분명해 임의의 다른 요리로 이름을 바꾸지 않고 보류",
+  "model": "manual-review"
+ },
+ "D301-013000000-0001": {
+  "originalName": "리소토/리조또_간편조리세트_베이컨버섯크림리조또",
+  "ingredients": [
+   {
+    "name": "볶음용 베이컨 (슬라이스, 시판)",
+    "grams": 40
+   },
+   {
+    "name": "양송이버섯",
+    "grams": 40
+   },
+   {
+    "name": "양파",
+    "grams": 30
+   },
+   {
+    "name": "이탈리안 아보리오 쌀 (리조또용 쌀)",
+    "grams": 70
+   },
+   {
+    "name": "생크림",
+    "grams": 60
+   },
+   {
+    "name": "파르미지아노 레지아노 치즈 (간 치즈)",
+    "grams": 12
+   },
+   {
+    "name": "버터",
+    "grams": 10
+   },
+   {
+    "name": "소금",
+    "grams": 1
+   }
+  ],
+  "name": "베이컨버섯크림리조또",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D301-013000000-0002": {
+  "originalName": "리소토/리조또_간편조리세트_쉬림프로제리조또",
+  "ingredients": [
+   {
+    "name": "냉동 볶음밥 (흰쌀밥+야채 약간)",
+    "grams": 150
+   },
+   {
+    "name": "새우 (냉동, 손질된)",
+    "grams": 50
+   },
+   {
+    "name": "로제 파스타 소스 (시판용, 크림+토마토)",
+    "grams": 60
+   },
+   {
+    "name": "모짜렐라 치즈",
+    "grams": 30
+   },
+   {
+    "name": "양파",
+    "grams": 20
+   }
+  ],
+  "name": "쉬림프로제리조또",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D301-017000000-0001": {
+  "originalName": "볶음밥_간편조리세트_돼지불백깍둑볶음누룽밥",
+  "ingredients": [
+   {
+    "name": "즉석 누룽지밥 (가마솥식, 백미)",
+    "grams": 150
+   },
+   {
+    "name": "돼지불백용 돼지고기 (다진갈비양념 포함)",
+    "grams": 80
+   },
+   {
+    "name": "양파 (깍둑썰기)",
+    "grams": 35
+   },
+   {
+    "name": "대파 (송송 썬 것)",
+    "grams": 10
+   },
+   {
+    "name": "식용유 (볶음용)",
+    "grams": 7
+   },
+   {
+    "name": "불백 볶음용 양념장 (고추장, 간장, 마늘, 설탕, 참기름 혼합)",
+    "grams": 18
+   }
+  ],
+  "name": "돼지불백 누룽지볶음밥",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D301-018000000-0001": {
+  "originalName": "비빔밥_간편조리세트_꼬막비빔밥",
+  "ingredients": [
+   {
+    "name": "밥 (즉석밥, 백미)",
+    "grams": 150
+   },
+   {
+    "name": "꼬막살 (절단, 데친 것)",
+    "grams": 50
+   },
+   {
+    "name": "나물믹스 (시금치, 고사리, 도라지 등 데친 믹스)",
+    "grams": 40
+   },
+   {
+    "name": "간장 비빔양념장 (고추장, 간장, 마늘, 설탕 혼합)",
+    "grams": 25
+   },
+   {
+    "name": "볶은 참깨",
+    "grams": 2
+   },
+   {
+    "name": "참기름",
+    "grams": 5
+   },
+   {
+    "name": "김가루",
+    "grams": 8
+   }
+  ],
+  "name": "꼬막비빔밥",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D303-147000000-0001": {
+  "originalName": "라멘_간편조리세트_매운돈코츠라멘",
+  "ingredients": [
+   {
+    "name": "라멘 생면",
+    "grams": 110
+   },
+   {
+    "name": "매운 돈코츠 라멘 스프 농축액 (시판용, 액상)",
+    "grams": 45
+   },
+   {
+    "name": "돼지고기 차슈 슬라이스",
+    "grams": 30
+   },
+   {
+    "name": "숙주나물",
+    "grams": 40
+   },
+   {
+    "name": "대파",
+    "grams": 10
+   },
+   {
+    "name": "계란(반숙란)",
+    "grams": 30
+   }
+  ],
+  "name": "매운돈코츠라멘",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D303-148000000-0001": {
+  "originalName": "라면_간편조리세트_똠양꿍요괴라면",
+  "ingredients": [
+   {
+    "name": "똠얌꿍맛 라면(봉지라면, 분말스프·면 포함)",
+    "grams": 100
+   },
+   {
+    "name": "숙주나물",
+    "grams": 40
+   },
+   {
+    "name": "새우살(냉동)",
+    "grams": 30
+   },
+   {
+    "name": "라임즙(시판, 작은팩)",
+    "grams": 10
+   },
+   {
+    "name": "고수잎(생)",
+    "grams": 5
+   },
+   {
+    "name": "양송이버섯",
+    "grams": 30
+   },
+   {
+    "name": "물",
+    "grams": 120
+   }
+  ],
+  "name": "똠얌꿍 라면",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D303-155000000-0001": {
+  "originalName": "볶음면_간편조리세트_소고기 야끼소바",
+  "ingredients": [
+   {
+    "name": "시판 볶음용 중화면 (생면)",
+    "grams": 120
+   },
+   {
+    "name": "소고기 불고기용 (우둔살)",
+    "grams": 50
+   },
+   {
+    "name": "양배추",
+    "grams": 50
+   },
+   {
+    "name": "양파",
+    "grams": 30
+   },
+   {
+    "name": "야끼소바 소스(시판, 오타후쿠 등)",
+    "grams": 35
+   },
+   {
+    "name": "식용유 (카놀라유 등)",
+    "grams": 12
+   }
+  ],
+  "name": "소고기 야끼소바",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D303-172000000-0001": {
+  "originalName": "짬뽕_간편조리세트_나가사키 짬뽕탕",
+  "ingredients": [
+   {
+    "name": "나가사키 짬뽕탕 전용라면사리 (생면/유탕처리 X)",
+    "grams": 80
+   },
+   {
+    "name": "나가사키 짬뽕 전용 액상스프 (해물육수+조미유 포함)",
+    "grams": 35
+   },
+   {
+    "name": "혼합해물믹스(오징어,홍합,새우)",
+    "grams": 40
+   },
+   {
+    "name": "양배추 (생)",
+    "grams": 30
+   },
+   {
+    "name": "양파 (생)",
+    "grams": 25
+   },
+   {
+    "name": "대파",
+    "grams": 10
+   },
+   {
+    "name": "식용유",
+    "grams": 3
+   },
+   {
+    "name": "마늘 (다진마늘)",
+    "grams": 7
+   }
+  ],
+  "name": "나가사키 짬뽕탕",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D303-172000000-0002": {
+  "originalName": "짬뽕_간편조리세트_통오징어짬뽕탕",
+  "ingredients": [
+   {
+    "name": "통오징어 (손질, 생물)",
+    "grams": 70
+   },
+   {
+    "name": "양배추",
+    "grams": 40
+   },
+   {
+    "name": "양파",
+    "grams": 30
+   },
+   {
+    "name": "대파",
+    "grams": 15
+   },
+   {
+    "name": "짬뽕 전용 국물베이스 (마늘, 고추기름, 고추가루, 간장, 소금 등 혼합 양념)",
+    "grams": 40
+   },
+   {
+    "name": "생면 (중화면, 짬뽕용)",
+    "grams": 85
+   }
+  ],
+  "name": "통오징어짬뽕탕",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D303-174000000-0001": {
+  "originalName": "칼국수_간편조리세트_닭한마리와 칼국수",
+  "ingredients": [
+   {
+    "name": "생칼국수면",
+    "grams": 80
+   },
+   {
+    "name": "닭가슴살 (데친 것)",
+    "grams": 70
+   },
+   {
+    "name": "한마리육수 (파우치/냉장육수)",
+    "grams": 150
+   },
+   {
+    "name": "애호박",
+    "grams": 20
+   },
+   {
+    "name": "당근",
+    "grams": 10
+   },
+   {
+    "name": "대파",
+    "grams": 10
+   },
+   {
+    "name": "간마늘",
+    "grams": 5
+   },
+   {
+    "name": "국간장",
+    "grams": 5
+   }
+  ],
+  "name": "닭칼국수",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D303-174000000-0002": {
+  "originalName": "칼국수_간편조리세트_세숫대야 바지락칼국수",
+  "ingredients": [
+   {
+    "name": "칼국수 생면",
+    "grams": 120
+   },
+   {
+    "name": "바지락(살, 냉동)",
+    "grams": 40
+   },
+   {
+    "name": "멸치다시팩 국물(멸치, 다시마 등)",
+    "grams": 200
+   },
+   {
+    "name": "애호박",
+    "grams": 20
+   },
+   {
+    "name": "다진마늘",
+    "grams": 5
+   },
+   {
+    "name": "국간장",
+    "grams": 8
+   },
+   {
+    "name": "참기름",
+    "grams": 3
+   }
+  ],
+  "name": "바지락칼국수",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D303-174000000-0003": {
+  "originalName": "칼국수_간편조리세트_원주식장칼국수",
+  "ingredients": [
+   {
+    "name": "칼국수 생면",
+    "grams": 130
+   },
+   {
+    "name": "장칼국수 국물 베이스(된장+고추장 혼합액상)",
+    "grams": 35
+   },
+   {
+    "name": "애호박",
+    "grams": 20
+   },
+   {
+    "name": "양파",
+    "grams": 20
+   },
+   {
+    "name": "대파",
+    "grams": 10
+   },
+   {
+    "name": "멸치다시팩(육수용, 끓였다가 건져냄)",
+    "grams": 5
+   }
+  ],
+  "name": "원주식장칼국수",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D303-174000000-0004": {
+  "originalName": "칼국수_간편조리세트_장칼국수",
+  "ingredients": [
+   {
+    "name": "생칼국수면",
+    "grams": 120
+   },
+   {
+    "name": "장칼국수 전용 양념장 (된장+고추장 혼합)",
+    "grams": 30
+   },
+   {
+    "name": "애호박",
+    "grams": 30
+   },
+   {
+    "name": "양파",
+    "grams": 20
+   },
+   {
+    "name": "멸치육수 (시판 멸치다시팩 우린 국물)",
+    "grams": 100
+   }
+  ],
+  "name": "장칼국수",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D305-229000000-0001": {
+  "originalName": "새우탕_간편조리세트_전복민물새우탕",
+  "ingredients": [
+   {
+    "name": "전복 (손질 후, 슬라이스)",
+    "grams": 30
+   },
+   {
+    "name": "민물새우 (생, 깐것)",
+    "grams": 40
+   },
+   {
+    "name": "무 (슬라이스)",
+    "grams": 40
+   },
+   {
+    "name": "대파 (어슷 썰기)",
+    "grams": 12
+   },
+   {
+    "name": "청양고추 (어슷 썰기)",
+    "grams": 6
+   },
+   {
+    "name": "국간장",
+    "grams": 10
+   },
+   {
+    "name": "다진 마늘",
+    "grams": 6
+   },
+   {
+    "name": "생수",
+    "grams": 156
+   }
+  ],
+  "name": "전복민물새우탕",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D305-237000000-0001": {
+  "originalName": "어묵국(어묵탕)_간편조리세트_프리미엄 이자카야어묵탕",
+  "ingredients": [
+   {
+    "name": "프리미엄 이자카야 어묵(모둠)",
+    "grams": 100
+   },
+   {
+    "name": "무 (생 것)",
+    "grams": 40
+   },
+   {
+    "name": "대파",
+    "grams": 15
+   },
+   {
+    "name": "국간장",
+    "grams": 10
+   },
+   {
+    "name": "다시마(육수용)",
+    "grams": 4
+   },
+   {
+    "name": "정제수(생수)",
+    "grams": 130
+   }
+  ],
+  "name": "모둠어묵탕",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D306-264000000-0001": {
+  "originalName": "곱창전골_간편조리세트_대한곱창 곱창전골",
+  "ingredients": [
+   {
+    "name": "소곱창 (씻은 것, 손질)",
+    "grams": 100
+   },
+   {
+    "name": "양념장 (간장+고추장+설탕+다진마늘, 혼합)",
+    "grams": 35
+   },
+   {
+    "name": "양배추",
+    "grams": 40
+   },
+   {
+    "name": "대파",
+    "grams": 20
+   },
+   {
+    "name": "숙주",
+    "grams": 50
+   },
+   {
+    "name": "사골육수 (시판팩, 무가염)",
+    "grams": 55
+   }
+  ],
+  "name": "소곱창전골",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D306-264000000-0002": {
+  "originalName": "곱창전골_간편조리세트_소곱창순대전골",
+  "ingredients": [
+   {
+    "name": "소곱창 (손질된, 데친 것)",
+    "grams": 60
+   },
+   {
+    "name": "순대 (찐, 일반)",
+    "grams": 60
+   },
+   {
+    "name": "양배추",
+    "grams": 30
+   },
+   {
+    "name": "대파",
+    "grams": 12
+   },
+   {
+    "name": "고추장",
+    "grams": 18
+   },
+   {
+    "name": "국간장",
+    "grams": 8
+   },
+   {
+    "name": "다진마늘",
+    "grams": 8
+   },
+   {
+    "name": "물 (전골육수 대체)",
+    "grams": 104
+   }
+  ],
+  "name": "소곱창순대전골",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D306-268000000-0001": {
+  "originalName": "꽃게탕_간편조리세트_3마리꽃게탕",
+  "ingredients": [
+   {
+    "name": "냉동 꽃게",
+    "grams": 100
+   },
+   {
+    "name": "양파",
+    "grams": 35
+   },
+   {
+    "name": "무",
+    "grams": 40
+   },
+   {
+    "name": "대파",
+    "grams": 15
+   },
+   {
+    "name": "청양고추",
+    "grams": 8
+   },
+   {
+    "name": "꽃게탕 양념장 (시판용, 간장베이스)",
+    "grams": 25
+   },
+   {
+    "name": "미소된장",
+    "grams": 7
+   },
+   {
+    "name": "다진 마늘",
+    "grams": 5
+   }
+  ],
+  "name": "꽃게탕",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D306-270000000-0001": {
+  "originalName": "낙지전골_간편조리세트_낙곱새",
+  "ingredients": [
+   {
+    "name": "손질 낙지 (냉동)",
+    "grams": 60
+   },
+   {
+    "name": "한우 곱창 (손질/냉동)",
+    "grams": 25
+   },
+   {
+    "name": "새우 (냉동, 중간 크기, 손질)",
+    "grams": 30
+   },
+   {
+    "name": "배추",
+    "grams": 40
+   },
+   {
+    "name": "양파",
+    "grams": 35
+   },
+   {
+    "name": "대파",
+    "grams": 20
+   },
+   {
+    "name": "전골 양념 (고추장+고춧가루+간장+설탕 혼합)",
+    "grams": 35
+   },
+   {
+    "name": "멸치 다시육수 (멸치+무+물로 우림)",
+    "grams": 55
+   }
+  ],
+  "name": "낙곱새",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D306-274000000-0001": {
+  "originalName": "돼지고기찌개_간편조리세트_돼지고기 짜글이",
+  "ingredients": [
+   {
+    "name": "돼지고기 앞다리살 (덩어리/불고기용)",
+    "grams": 100
+   },
+   {
+    "name": "감자",
+    "grams": 60
+   },
+   {
+    "name": "양파",
+    "grams": 40
+   },
+   {
+    "name": "청양고추",
+    "grams": 10
+   },
+   {
+    "name": "대파",
+    "grams": 15
+   },
+   {
+    "name": "고추장",
+    "grams": 20
+   },
+   {
+    "name": "국간장",
+    "grams": 7
+   },
+   {
+    "name": "다진 마늘",
+    "grams": 8
+   }
+  ],
+  "name": "돼지고기 짜글이",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D306-274000000-0002": {
+  "originalName": "돼지고기찌개_간편조리세트_돼지고기고추장찌개",
+  "ingredients": [
+   {
+    "name": "돼지고기 등심 (thinly sliced, lean)",
+    "grams": 50
+   },
+   {
+    "name": "양파",
+    "grams": 35
+   },
+   {
+    "name": "애호박",
+    "grams": 25
+   },
+   {
+    "name": "청양고추",
+    "grams": 8
+   },
+   {
+    "name": "두부",
+    "grams": 50
+   },
+   {
+    "name": "고추장",
+    "grams": 16
+   },
+   {
+    "name": "다진 마늘",
+    "grams": 6
+   },
+   {
+    "name": "국간장",
+    "grams": 7
+   }
+  ],
+  "name": "돼지고기고추장찌개",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D306-275000000-0001": {
+  "originalName": "된장찌개_간편조리세트_고깃집 된장찌개",
+  "ingredients": [
+   {
+    "name": "한우 양지 (소고기)",
+    "grams": 40
+   },
+   {
+    "name": "두부 (일반)",
+    "grams": 60
+   },
+   {
+    "name": "된장 (시판용)",
+    "grams": 24
+   },
+   {
+    "name": "애호박",
+    "grams": 30
+   },
+   {
+    "name": "양파",
+    "grams": 25
+   },
+   {
+    "name": "청양고추",
+    "grams": 4
+   },
+   {
+    "name": "다진마늘",
+    "grams": 6
+   },
+   {
+    "name": "물",
+    "grams": 110
+   }
+  ],
+  "name": "소고기 된장찌개",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D306-275000000-0002": {
+  "originalName": "된장찌개_간편조리세트_구수한 버섯된장찌개",
+  "ingredients": [
+   {
+    "name": "된장 (Korean soybean paste)",
+    "grams": 20
+   },
+   {
+    "name": "느타리버섯 (Oyster mushrooms)",
+    "grams": 40
+   },
+   {
+    "name": "두부 (firm tofu)",
+    "grams": 50
+   },
+   {
+    "name": "애호박 (Korean zucchini)",
+    "grams": 25
+   },
+   {
+    "name": "양파 (onion)",
+    "grams": 25
+   },
+   {
+    "name": "청양고추 (Cheongyang chili pepper)",
+    "grams": 5
+   },
+   {
+    "name": "국물용 다시마+멸치 (kelp & anchovy stock pack, mixed)",
+    "grams": 10
+   },
+   {
+    "name": "물 (water)",
+    "grams": 125
+   }
+  ],
+  "name": "버섯된장찌개",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D306-278000000-0001": {
+  "originalName": "마라탕_간편조리세트_마라탕",
+  "ingredients": [
+   {
+    "name": "마라탕 간편조리세트(야채, 버섯, 어묵, 두부 등 섞인 냉장팩)",
+    "grams": 180
+   },
+   {
+    "name": "마라탕 육수 베이스(마라소스, 파우더 포함)",
+    "grams": 25
+   },
+   {
+    "name": "중국 당면",
+    "grams": 25
+   },
+   {
+    "name": "얇게 썬 소고기 샤브샤브용",
+    "grams": 40
+   },
+   {
+    "name": "청경채(혹은 배추, 시금치 등 추가 채소)",
+    "grams": 30
+   }
+  ],
+  "name": "마라탕",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D306-279000000-0001": {
+  "originalName": "만두전골_간편조리세트_얼큰왕만두전골",
+  "ingredients": [
+   {
+    "name": "냉동 왕만두 (고기, 채소 혼합)",
+    "grams": 130
+   },
+   {
+    "name": "배추 (생)",
+    "grams": 50
+   },
+   {
+    "name": "대파",
+    "grams": 15
+   },
+   {
+    "name": "전골육수 (즉석팩, 소고기/멸치베이스)",
+    "grams": 90
+   },
+   {
+    "name": "고추장",
+    "grams": 8
+   },
+   {
+    "name": "두부 (부침두부)",
+    "grams": 20
+   }
+  ],
+  "name": "얼큰왕만두전골",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D306-282000000-0001": {
+  "originalName": "버섯전골_간편조리세트_남도식 들깨 버섯전골",
+  "ingredients": [
+   {
+    "name": "느타리버섯",
+    "grams": 60
+   },
+   {
+    "name": "팽이버섯",
+    "grams": 40
+   },
+   {
+    "name": "두부",
+    "grams": 40
+   },
+   {
+    "name": "시금치",
+    "grams": 20
+   },
+   {
+    "name": "들깨가루",
+    "grams": 12
+   },
+   {
+    "name": "국간장",
+    "grams": 7
+   },
+   {
+    "name": "마늘 (다진)",
+    "grams": 4
+   },
+   {
+    "name": "물",
+    "grams": 110
+   }
+  ],
+  "name": "남도식 들깨 버섯전골",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D306-284000000-0001": {
+  "originalName": "부대찌개_간편조리세트_오뎅식당 부대찌개",
+  "ingredients": [
+   {
+    "name": "스팸(런천미트)",
+    "grams": 40
+   },
+   {
+    "name": "비엔나 소시지",
+    "grams": 40
+   },
+   {
+    "name": "오뎅(어묵, 사각)",
+    "grams": 30
+   },
+   {
+    "name": "김치",
+    "grams": 30
+   },
+   {
+    "name": "두부",
+    "grams": 40
+   },
+   {
+    "name": "라면 사리 (생)",
+    "grams": 35
+   },
+   {
+    "name": "부대찌개 양념장 (고추장, 고춧가루, 마늘 등 혼합)",
+    "grams": 25
+   },
+   {
+    "name": "물",
+    "grams": 60
+   }
+  ],
+  "name": "어묵 부대찌개",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D306-284000000-0002": {
+  "originalName": "부대찌개_간편조리세트_의정부식부대찌개",
+  "ingredients": [
+   {
+    "name": "햄(슬라이스)",
+    "grams": 45
+   },
+   {
+    "name": "소시지(비엔나 또는 후랑크)",
+    "grams": 35
+   },
+   {
+    "name": "두부",
+    "grams": 45
+   },
+   {
+    "name": "김치(볶음용)",
+    "grams": 30
+   },
+   {
+    "name": "스팸(작게 자른 것)",
+    "grams": 20
+   },
+   {
+    "name": "부대찌개 전용 소스(고추장, 간장, 고춧가루 등 혼합 소스)",
+    "grams": 25
+   },
+   {
+    "name": "양파",
+    "grams": 25
+   },
+   {
+    "name": "물/육수",
+    "grams": 105
+   }
+  ],
+  "name": "의정부식부대찌개",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D306-284000000-0003": {
+  "originalName": "부대찌개_간편조리세트_햄듬뿍부대찌개",
+  "ingredients": [
+   {
+    "name": "스팸(햄)",
+    "grams": 50
+   },
+   {
+    "name": "비엔나 소시지",
+    "grams": 40
+   },
+   {
+    "name": "두부",
+    "grams": 40
+   },
+   {
+    "name": "양파",
+    "grams": 30
+   },
+   {
+    "name": "국물용 사골육수(파우치)",
+    "grams": 120
+   },
+   {
+    "name": "부대찌개 양념장",
+    "grams": 15
+   },
+   {
+    "name": "대파",
+    "grams": 5
+   }
+  ],
+  "name": "햄 부대찌개",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D306-285000000-0001": {
+  "originalName": "불고기전골_간편조리세트_서울식 소불고기전골",
+  "ingredients": [
+   {
+    "name": "소고기 불고기용 (양념 소불고기, 간편조리용)",
+    "grams": 90
+   },
+   {
+    "name": "양파",
+    "grams": 45
+   },
+   {
+    "name": "표고버섯",
+    "grams": 25
+   },
+   {
+    "name": "대파",
+    "grams": 13
+   },
+   {
+    "name": "당면 (사리)",
+    "grams": 25
+   },
+   {
+    "name": "불고기전골용 육수 (간장・설탕 포함)",
+    "grams": 90
+   },
+   {
+    "name": "당근",
+    "grams": 12
+   }
+  ],
+  "name": "서울식 소불고기전골",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D306-285000000-0002": {
+  "originalName": "불고기전골_간편조리세트_서울식 육수불고기",
+  "ingredients": [
+   {
+    "name": "불고기용 소고기 (양지, 다짐육 혼합)",
+    "grams": 60
+   },
+   {
+    "name": "양파",
+    "grams": 40
+   },
+   {
+    "name": "대파",
+    "grams": 18
+   },
+   {
+    "name": "당면 (불린 것 기준)",
+    "grams": 42
+   },
+   {
+    "name": "표고버섯",
+    "grams": 15
+   },
+   {
+    "name": "서울식 불고기전골 육수 (시판용, 간장베이스)",
+    "grams": 110
+   },
+   {
+    "name": "불고기 양념 (간장, 설탕, 마늘, 참기름 등 혼합)",
+    "grams": 15
+   }
+  ],
+  "name": "서울식 육수불고기",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D306-285000000-0003": {
+  "originalName": "불고기전골_간편조리세트_서울식불고기전골",
+  "ingredients": [
+   {
+    "name": "샤브샤브용 소고기 (우둔살)",
+    "grams": 60
+   },
+   {
+    "name": "서울식 불고기전골용 간장소스",
+    "grams": 35
+   },
+   {
+    "name": "양파",
+    "grams": 35
+   },
+   {
+    "name": "당면 (불린 후)",
+    "grams": 40
+   },
+   {
+    "name": "대파",
+    "grams": 15
+   },
+   {
+    "name": "표고버섯",
+    "grams": 20
+   }
+  ],
+  "name": "서울식불고기전골",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D306-286000000-0001": {
+  "originalName": "불낙전골_간편조리세트_이게불낙이야",
+  "ingredients": [
+   {
+    "name": "손질 낙지 (cleaned octopus)",
+    "grams": 70
+   },
+   {
+    "name": "소고기 샤브샤브용 (beef for shabu-shabu)",
+    "grams": 40
+   },
+   {
+    "name": "양파 (onion)",
+    "grams": 25
+   },
+   {
+    "name": "대파 (green onion)",
+    "grams": 15
+   },
+   {
+    "name": "불낙전골 양념장 (beef & octopus hotpot seasoning sauce, 통마늘/고추장/간장/",
+    "grams": 30
+   },
+   {
+    "name": "시판 사골육수 (commercial beef bone broth)",
+    "grams": 120
+   }
+  ],
+  "name": "불낙전골",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D306-289000000-0001": {
+  "originalName": "소고기전골_간편조리세트_어복쟁반",
+  "ingredients": [
+   {
+    "name": "소고기 불고기용 (slightly marbled beef slices)",
+    "grams": 60
+   },
+   {
+    "name": "표고버섯",
+    "grams": 25
+   },
+   {
+    "name": "알배추",
+    "grams": 50
+   },
+   {
+    "name": "양파",
+    "grams": 30
+   },
+   {
+    "name": "당면",
+    "grams": 12
+   },
+   {
+    "name": "간장 (진간장)",
+    "grams": 15
+   },
+   {
+    "name": "마늘 (다진 마늘)",
+    "grams": 6
+   },
+   {
+    "name": "대파",
+    "grams": 12
+   }
+  ],
+  "name": "어복쟁반",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D306-289000000-0002": {
+  "originalName": "소고기전골_간편조리세트_파빌리온 얼큰 소고기 전골",
+  "ingredients": [
+   {
+    "name": "쇠고기 불고기용 (한우/수입혼합)",
+    "grams": 70
+   },
+   {
+    "name": "두부 (일반)",
+    "grams": 50
+   },
+   {
+    "name": "알배추",
+    "grams": 35
+   },
+   {
+    "name": "느타리버섯",
+    "grams": 25
+   },
+   {
+    "name": "당면 (불린)",
+    "grams": 25
+   },
+   {
+    "name": "파빌리온 얼큰 소고기전골 전골소스 (양념장)",
+    "grams": 35
+   },
+   {
+    "name": "육수 (멸치/무/다시마 베이스, 희석)",
+    "grams": 60
+   }
+  ],
+  "name": "얼큰 소고기전골",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D306-289000000-0003": {
+  "originalName": "소고기전골_간편조리세트_평양식 어복쟁반",
+  "ingredients": [
+   {
+    "name": "소고기(불고기용)",
+    "grams": 90
+   },
+   {
+    "name": "표고버섯",
+    "grams": 35
+   },
+   {
+    "name": "대파",
+    "grams": 25
+   },
+   {
+    "name": "당면",
+    "grams": 30
+   },
+   {
+    "name": "국간장",
+    "grams": 12
+   },
+   {
+    "name": "다시마육수",
+    "grams": 100
+   },
+   {
+    "name": "마늘 (다진)",
+    "grams": 8
+   }
+  ],
+  "name": "평양식 어복쟁반",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D306-291000000-0001": {
+  "originalName": "순두부찌개_간편조리세트_강릉식 짬뽕 순두부",
+  "ingredients": [
+   {
+    "name": "순두부 (silken tofu)",
+    "grams": 150
+   },
+   {
+    "name": "짬뽕 베이스 양념 (Jjamppong seasoning soup base, pouch)",
+    "grams": 40
+   },
+   {
+    "name": "바지락(모시조개, 해감 후)",
+    "grams": 30
+   },
+   {
+    "name": "양파",
+    "grams": 30
+   },
+   {
+    "name": "대파",
+    "grams": 15
+   },
+   {
+    "name": "홍고추",
+    "grams": 5
+   },
+   {
+    "name": "다진 마늘",
+    "grams": 5
+   },
+   {
+    "name": "식용유",
+    "grams": 5
+   }
+  ],
+  "name": "강릉식 짬뽕 순두부",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D306-291000000-0002": {
+  "originalName": "순두부찌개_간편조리세트_우삼겹 순두부찌개",
+  "ingredients": [
+   {
+    "name": "순두부 (Soft Tofu)",
+    "grams": 150
+   },
+   {
+    "name": "우삼겹 (Thin Sliced Beef Brisket)",
+    "grams": 35
+   },
+   {
+    "name": "순두부찌개 양념장 (Sundubu-jjigae Seasoning Paste, commercial type)",
+    "grams": 20
+   },
+   {
+    "name": "대파 (Green Onion)",
+    "grams": 15
+   },
+   {
+    "name": "마늘 (Minced Garlic)",
+    "grams": 7
+   },
+   {
+    "name": "물 (Water)",
+    "grams": 73
+   }
+  ],
+  "name": "우삼겹 순두부찌개",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D306-291000000-0004": {
+  "originalName": "순두부찌개_간편조리세트_짬뽕순두부찌개",
+  "ingredients": [
+   {
+    "name": "순두부 (Soft Tofu)",
+    "grams": 150
+   },
+   {
+    "name": "간편 짬뽕찌개 베이스 (즉석 용액형, 조미짬뽕베이스)",
+    "grams": 40
+   },
+   {
+    "name": "모둠해물믹스 (냉동 해물믹스, 오징어·홍합·새우 등)",
+    "grams": 60
+   },
+   {
+    "name": "대파",
+    "grams": 10
+   },
+   {
+    "name": "식용유",
+    "grams": 5
+   },
+   {
+    "name": "고춧가루",
+    "grams": 3
+   }
+  ],
+  "name": "짬뽕순두부찌개",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D306-291000000-0005": {
+  "originalName": "순두부찌개_간편조리세트_해물짬뽕순두부",
+  "ingredients": [
+   {
+    "name": "순두부 (연두부)",
+    "grams": 160
+   },
+   {
+    "name": "해물믹스 (냉동, 오징어·홍합·새우 혼합)",
+    "grams": 40
+   },
+   {
+    "name": "양파",
+    "grams": 30
+   },
+   {
+    "name": "간편 짬뽕순두부찌개 양념장 (시판용)",
+    "grams": 35
+   }
+  ],
+  "name": "해물짬뽕순두부",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D306-297000000-0001": {
+  "originalName": "청국장찌개_간편조리세트_영월식 청국장",
+  "ingredients": [
+   {
+    "name": "청국장 (완제품, 200g)",
+    "grams": 80
+   },
+   {
+    "name": "두부 (부침용, 300g/모)",
+    "grams": 50
+   },
+   {
+    "name": "애호박",
+    "grams": 30
+   },
+   {
+    "name": "양파",
+    "grams": 35
+   },
+   {
+    "name": "대파",
+    "grams": 15
+   },
+   {
+    "name": "멸치 다시마 육수 (or 물+다시팩)",
+    "grams": 80
+   },
+   {
+    "name": "다진마늘",
+    "grams": 5
+   }
+  ],
+  "name": "영월식 청국장",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D306-297000000-0002": {
+  "originalName": "청국장찌개_간편조리세트_우삼겹 청국장찌개",
+  "ingredients": [
+   {
+    "name": "청국장 찌개용 간편팩(청국장, 두부, 야채믹스, 베이스)",
+    "grams": 160
+   },
+   {
+    "name": "우삼겹(구이용, 슬라이스)",
+    "grams": 40
+   },
+   {
+    "name": "양파(생, 썬 것)",
+    "grams": 30
+   },
+   {
+    "name": "애호박",
+    "grams": 30
+   },
+   {
+    "name": "청양고추",
+    "grams": 5
+   },
+   {
+    "name": "다진마늘",
+    "grams": 5
+   },
+   {
+    "name": "국간장",
+    "grams": 6
+   },
+   {
+    "name": "물",
+    "grams": 85
+   }
+  ],
+  "name": "우삼겹 청국장찌개",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D306-300000000-0001": {
+  "originalName": "해물탕_간편조리세트_바다를 품은 해물탕",
+  "ingredients": [
+   {
+    "name": "해물믹스 (오징어, 홍합, 새우 등 혼합)",
+    "grams": 100
+   },
+   {
+    "name": "무 (볶음/국용)",
+    "grams": 40
+   },
+   {
+    "name": "알배추",
+    "grams": 30
+   },
+   {
+    "name": "양파",
+    "grams": 30
+   },
+   {
+    "name": "국간장",
+    "grams": 8
+   },
+   {
+    "name": "고춧가루",
+    "grams": 2
+   },
+   {
+    "name": "다진 마늘",
+    "grams": 5
+   },
+   {
+    "name": "대파",
+    "grams": 10
+   }
+  ],
+  "name": "해물탕",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D307-309000000-0001": {
+  "originalName": "김치찜_간편조리세트_돼지고기 김치찜",
+  "ingredients": [
+   {
+    "name": "돼지고기 앞다리살(생, 불고기용)",
+    "grams": 120
+   },
+   {
+    "name": "묵은지(익은 배추김치)",
+    "grams": 100
+   },
+   {
+    "name": "양파",
+    "grams": 40
+   },
+   {
+    "name": "대파",
+    "grams": 15
+   },
+   {
+    "name": "고춧가루",
+    "grams": 5
+   },
+   {
+    "name": "다진 마늘",
+    "grams": 7
+   },
+   {
+    "name": "국간장",
+    "grams": 8
+   },
+   {
+    "name": "설탕",
+    "grams": 5
+   }
+  ],
+  "name": "돼지고기 김치찜",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D307-309000000-0002": {
+  "originalName": "김치찜_간편조리세트_돼지고기 묵은지찜",
+  "ingredients": [
+   {
+    "name": "돼지고기 앞다리살 (Pork shoulder)",
+    "grams": 80
+   },
+   {
+    "name": "묵은지 (Old fermented kimchi)",
+    "grams": 100
+   },
+   {
+    "name": "양파 (Onion)",
+    "grams": 40
+   },
+   {
+    "name": "대파 (Green onion)",
+    "grams": 15
+   },
+   {
+    "name": "고추가루 (Korean red pepper powder)",
+    "grams": 4
+   },
+   {
+    "name": "국간장 (Soup soy sauce)",
+    "grams": 8
+   },
+   {
+    "name": "마늘 (Garlic, minced)",
+    "grams": 5
+   },
+   {
+    "name": "설탕 (Sugar)",
+    "grams": 3
+   }
+  ],
+  "name": "돼지고기 묵은지찜",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D307-318000000-0001": {
+  "originalName": "닭찜_간편조리세트_안동식 찜닭",
+  "ingredients": [
+   {
+    "name": "닭고기(찜닭용, 뼈없는)",
+    "grams": 120
+   },
+   {
+    "name": "감자",
+    "grams": 60
+   },
+   {
+    "name": "당근",
+    "grams": 30
+   },
+   {
+    "name": "양파",
+    "grams": 40
+   },
+   {
+    "name": "당면(불린 것)",
+    "grams": 40
+   },
+   {
+    "name": "간장(양념용)",
+    "grams": 17
+   },
+   {
+    "name": "물엿",
+    "grams": 15
+   },
+   {
+    "name": "마늘(다진 것)",
+    "grams": 8
+   }
+  ],
+  "name": "안동식 찜닭",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D307-324000000-0001": {
+  "originalName": "돼지갈비찜_간편조리세트_국내산순살돼지갈비찜",
+  "ingredients": [
+   {
+    "name": "국내산 순살 돼지갈비 (boneless pork short rib)",
+    "grams": 180
+   },
+   {
+    "name": "간장 (Korean soy sauce)",
+    "grams": 20
+   },
+   {
+    "name": "설탕 (sugar)",
+    "grams": 12
+   },
+   {
+    "name": "양파 (onion)",
+    "grams": 30
+   },
+   {
+    "name": "간마늘 (minced garlic)",
+    "grams": 8
+   },
+   {
+    "name": "다진 생강 (minced ginger)",
+    "grams": 3
+   },
+   {
+    "name": "후추 (ground black pepper)",
+    "grams": 1
+   },
+   {
+    "name": "대파 (spring onion)",
+    "grams": 10
+   }
+  ],
+  "name": "순살 돼지갈비찜",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D307-338000000-0001": {
+  "originalName": "아귀찜_간편조리세트_쫀득쫀득아귀찜",
+  "ingredients": [
+   {
+    "name": "손질 아귀 (냉동)",
+    "grams": 120
+   },
+   {
+    "name": "콩나물",
+    "grams": 70
+   },
+   {
+    "name": "미나리",
+    "grams": 20
+   },
+   {
+    "name": "양파",
+    "grams": 25
+   },
+   {
+    "name": "대파",
+    "grams": 10
+   },
+   {
+    "name": "찜 양념(고추장+고춧가루+간장+설탕+마늘 혼합)",
+    "grams": 40
+   },
+   {
+    "name": "삶은 당면",
+    "grams": 15
+   }
+  ],
+  "name": "아귀찜",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D307-348000000-0001": {
+  "originalName": "해물찜_간편조리세트_낙지한마리해물찜",
+  "ingredients": [
+   {
+    "name": "손질 낙지 (fresh cleaned octopus)",
+    "grams": 80
+   },
+   {
+    "name": "혼합 해물 믹스(새우, 오징어, 홍합, 조개)",
+    "grams": 70
+   },
+   {
+    "name": "대파",
+    "grams": 20
+   },
+   {
+    "name": "양파",
+    "grams": 25
+   },
+   {
+    "name": "해물찜 양념장 (고추장, 고춧가루, 간장, 설탕, 마늘, 생강, 참기름 혼합)",
+    "grams": 40
+   },
+   {
+    "name": "미나리(고명)",
+    "grams": 15
+   },
+   {
+    "name": "콩나물",
+    "grams": 50
+   }
+  ],
+  "name": "낙지 해물찜",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D307-348000000-0002": {
+  "originalName": "해물찜_간편조리세트_백합&바지락통찜",
+  "ingredients": [
+   {
+    "name": "백합",
+    "grams": 80
+   },
+   {
+    "name": "바지락",
+    "grams": 70
+   },
+   {
+    "name": "양파",
+    "grams": 40
+   },
+   {
+    "name": "대파",
+    "grams": 15
+   },
+   {
+    "name": "청양고추",
+    "grams": 5
+   },
+   {
+    "name": "마늘",
+    "grams": 6
+   },
+   {
+    "name": "해물찜양념(시판용, 국물 포함)",
+    "grams": 60
+   },
+   {
+    "name": "물",
+    "grams": 24
+   }
+  ],
+  "name": "백합&바지락통찜",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D308-375000000-0003": {
+  "originalName": "돼지불고기_간편조리세트_매콤 콩나물불고기",
+  "ingredients": [
+   {
+    "name": "돼지고기 목살 (불고기용)",
+    "grams": 120
+   },
+   {
+    "name": "콩나물",
+    "grams": 70
+   },
+   {
+    "name": "양파",
+    "grams": 40
+   },
+   {
+    "name": "고추장",
+    "grams": 25
+   },
+   {
+    "name": "진간장",
+    "grams": 12
+   },
+   {
+    "name": "설탕",
+    "grams": 7
+   },
+   {
+    "name": "고춧가루",
+    "grams": 6
+   },
+   {
+    "name": "다진 마늘",
+    "grams": 10
+   }
+  ],
+  "name": "매콤 콩나물불고기",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D309-442000000-0001": {
+  "originalName": "해물파전_간편조리세트_모둠해물파전",
+  "ingredients": [
+   {
+    "name": "모둠 해물 믹스 (오징어, 새우, 홍합 등 냉동)",
+    "grams": 80
+   },
+   {
+    "name": "부침가루 (해물파전용)",
+    "grams": 60
+   },
+   {
+    "name": "달걀",
+    "grams": 55
+   },
+   {
+    "name": "대파",
+    "grams": 45
+   },
+   {
+    "name": "식용유 (부침용)",
+    "grams": 30
+   },
+   {
+    "name": "청양고추 (선택)",
+    "grams": 10
+   },
+   {
+    "name": "양파",
+    "grams": 20
+   }
+  ],
+  "name": "모둠해물파전",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D310-462000000-0001": {
+  "originalName": "닭볶음(닭갈비)_간편조리세트_모짜렐라 치즈 닭갈비",
+  "ingredients": [
+   {
+    "name": "닭가슴살 (생, 무염)",
+    "grams": 150
+   },
+   {
+    "name": "양배추",
+    "grams": 40
+   },
+   {
+    "name": "고구마",
+    "grams": 40
+   },
+   {
+    "name": "양파",
+    "grams": 30
+   },
+   {
+    "name": "모짜렐라 치즈 (피자용)",
+    "grams": 30
+   },
+   {
+    "name": "닭갈비 양념 (시판용)",
+    "grams": 60
+   }
+  ],
+  "name": "치즈 닭갈비",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D310-462000000-0002": {
+  "originalName": "닭볶음(닭갈비)_간편조리세트_치즈 품은 닭갈비",
+  "ingredients": [
+   {
+    "name": "닭다리살 (무뼈, 손질된/포장육)",
+    "grams": 150
+   },
+   {
+    "name": "양배추",
+    "grams": 50
+   },
+   {
+    "name": "떡볶이 떡",
+    "grams": 35
+   },
+   {
+    "name": "닭갈비 양념장 (고추장, 간장, 설탕, 마늘, 기타 혼합)",
+    "grams": 40
+   },
+   {
+    "name": "모짜렐라 슈레드 치즈",
+    "grams": 25
+   }
+  ],
+  "name": "치즈 닭갈비",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D310-462000000-0003": {
+  "originalName": "닭볶음(닭갈비)_간편조리세트_치즈이불 닭갈비",
+  "ingredients": [
+   {
+    "name": "간편 닭갈비용 손질 닭고기 (닭다리살, 양념 X)",
+    "grams": 150
+   },
+   {
+    "name": "양념 닭갈비 소스 (고추장, 간장, 설탕, 마늘 등)",
+    "grams": 45
+   },
+   {
+    "name": "양배추",
+    "grams": 40
+   },
+   {
+    "name": "고구마",
+    "grams": 40
+   },
+   {
+    "name": "떡볶이용 떡",
+    "grams": 30
+   },
+   {
+    "name": "피자치즈 (모짜렐라)",
+    "grams": 35
+   }
+  ],
+  "name": "치즈 닭갈비",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D310-464000000-0001": {
+  "originalName": "돼지고기볶음_간편조리세트_돼지고기 숙주 볶음",
+  "ingredients": [
+   {
+    "name": "돼지고기(목살, 불고기용)",
+    "grams": 100
+   },
+   {
+    "name": "숙주",
+    "grams": 80
+   },
+   {
+    "name": "양파",
+    "grams": 40
+   },
+   {
+    "name": "대파",
+    "grams": 20
+   },
+   {
+    "name": "다진 마늘",
+    "grams": 10
+   },
+   {
+    "name": "간장",
+    "grams": 15
+   },
+   {
+    "name": "올리고당",
+    "grams": 15
+   },
+   {
+    "name": "식용유",
+    "grams": 10
+   }
+  ],
+  "name": "돼지고기 숙주 볶음",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D310-481000000-0001": {
+  "originalName": "소고기볶음_간편조리세트_차돌박이숙주볶음",
+  "ingredients": [
+   {
+    "name": "차돌박이(소)",
+    "grams": 110
+   },
+   {
+    "name": "숙주나물",
+    "grams": 120
+   },
+   {
+    "name": "양파",
+    "grams": 40
+   },
+   {
+    "name": "대파",
+    "grams": 15
+   },
+   {
+    "name": "진간장",
+    "grams": 18
+   },
+   {
+    "name": "다진 마늘",
+    "grams": 7
+   },
+   {
+    "name": "식용유",
+    "grams": 10
+   }
+  ],
+  "name": "차돌박이숙주볶음",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D310-483000000-0001": {
+  "originalName": "순대볶음_간편조리세트_매콤 깻잎 순대볶음",
+  "ingredients": [
+   {
+    "name": "순대 (가열용, 당면순대)",
+    "grams": 150
+   },
+   {
+    "name": "양배추",
+    "grams": 60
+   },
+   {
+    "name": "양파",
+    "grams": 30
+   },
+   {
+    "name": "깻잎",
+    "grams": 10
+   },
+   {
+    "name": "고추장 (양념용)",
+    "grams": 25
+   },
+   {
+    "name": "식용유",
+    "grams": 8
+   },
+   {
+    "name": "고춧가루",
+    "grams": 7
+   },
+   {
+    "name": "간장",
+    "grams": 10
+   }
+  ],
+  "name": "매콤 깻잎 순대볶음",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D310-483000000-0002": {
+  "originalName": "순대볶음_간편조리세트_신림동 백순대볶음",
+  "ingredients": [
+   {
+    "name": "백순대 (돼지 내장 순대)",
+    "grams": 120
+   },
+   {
+    "name": "양배추",
+    "grams": 60
+   },
+   {
+    "name": "대파",
+    "grams": 15
+   },
+   {
+    "name": "당면 (불린 것)",
+    "grams": 40
+   },
+   {
+    "name": "간편 볶음용 백순대 양념(기성 제품: 소금, 후추, 마늘, 참기름, 흰후추, 다시다 등 조합)",
+    "grams": 25
+   },
+   {
+    "name": "식용유",
+    "grams": 10
+   },
+   {
+    "name": "양파",
+    "grams": 30
+   }
+  ],
+  "name": "신림동 백순대볶음",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D311-514000000-0001": {
+  "originalName": "닭볶음탕_간편조리세트_곱도리탕",
+  "ingredients": [
+   {
+    "name": "닭고기(정육, 생물, 뼈없는)",
+    "grams": 120
+   },
+   {
+    "name": "감자(생)",
+    "grams": 60
+   },
+   {
+    "name": "양파(생)",
+    "grams": 40
+   },
+   {
+    "name": "떡(가래떡, 떡볶이떡)",
+    "grams": 50
+   },
+   {
+    "name": "곱창(돼지, 데친 것)",
+    "grams": 30
+   },
+   {
+    "name": "고추장(시판용)",
+    "grams": 15
+   },
+   {
+    "name": "간장(진간장, 양조간장)",
+    "grams": 7
+   },
+   {
+    "name": "설탕",
+    "grams": 7
+   }
+  ],
+  "name": "곱도리탕",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D312-537000000-0001": {
+  "originalName": "감자튀김_간편조리세트_몬스터 치즈 프라이",
+  "ingredients": [
+   {
+    "name": "감자튀김 (냉동 후라이즈)",
+    "grams": 180
+   },
+   {
+    "name": "모짜렐라 치즈 (슈레드, 피자치즈)",
+    "grams": 50
+   },
+   {
+    "name": "체다 치즈소스 (시판, 오리지널)",
+    "grams": 35
+   },
+   {
+    "name": "파슬리 가루",
+    "grams": 1
+   },
+   {
+    "name": "식용유 (튀김용, 해바라기유 등)",
+    "grams": 34
+   }
+  ],
+  "name": "치즈 감자튀김",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D312-566000000-0001": {
+  "originalName": "탕수육_간편조리세트_김치피자탕수육",
+  "ingredients": [
+   {
+    "name": "돼지고기 탕수육(튀김용, 냉동)",
+    "grams": 150
+   },
+   {
+    "name": "김치(잘게 썬 것, 볶음용)",
+    "grams": 50
+   },
+   {
+    "name": "피자치즈(모짜렐라)",
+    "grams": 40
+   },
+   {
+    "name": "탕수육 소스 (시판 간편소스)",
+    "grams": 40
+   },
+   {
+    "name": "식용유 (튀김용)",
+    "grams": 15
+   },
+   {
+    "name": "양파",
+    "grams": 30
+   }
+  ],
+  "name": "김치피자탕수육",
+  "action": "rename",
+  "reason": "상품 분류·홍보 문구를 덜고 재료에 맞는 메뉴명으로 정리",
+  "model": "manual-review"
+ },
+ "D211-521000000-0001": {
+  "originalName": "미트볼조림_샤샤삭슈카",
+  "ingredients": [
+   {
+    "name": "다진 소고기 (갈은 소고기)",
+    "grams": 60
+   },
+   {
+    "name": "계란",
+    "grams": 25
+   },
+   {
+    "name": "빵가루",
+    "grams": 10
+   },
+   {
+    "name": "양파",
+    "grams": 40
+   },
+   {
+    "name": "토마토소스(시판용)",
+    "grams": 70
+   },
+   {
+    "name": "피망",
+    "grams": 25
+   },
+   {
+    "name": "식용유(소량)",
+    "grams": 8
+   }
+  ],
+  "name": "미트볼 토마토조림",
+  "action": "rename",
+  "reason": "미트볼·토마토소스 구성에 맞춰 상품명 대신 조리명 사용",
+  "model": "manual-review"
+ }
+}

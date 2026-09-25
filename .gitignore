@@ -13,6 +13,8 @@
 # testing
 /coverage
 /.cache/food-photo-review/
+/.cache/menu-review-ollama/
+/artifacts/menu-review/ollama-review.json*
 
 # next.js
 /.next/
@@ -56,3 +58,7 @@ next-env.d.ts
 /data/nutrition-review/
 /data/taiwan-evidence/
 /*.traineddata
+
+# Local build verification, caches, and generated review artifacts
+/.cache/
+/artifacts/

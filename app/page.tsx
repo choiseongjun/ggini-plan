@@ -1,5 +1,6 @@
 "use client";
 
+import {takeProfileIntent,clearProfileIntent} from '../lib/profile-intent';
 import './home-readability.css';
 import {pendingRecordMode,clearRecordMode} from '../lib/record-intent';
 import {InstallPrompt} from './install-prompt';
@@ -123,7 +124,8 @@ export default function Home() {
         const data = await response.json() as { user: PublicUser | null; error?: string };
         if (!response.ok) throw new Error(data.error ?? "로그인 상태를 확인할 수 없습니다.");
         setAuthUser(data.user);
-        if(data.user&&pendingRecordMode())router.replace("/record");
+        if(data.user&&takeProfileIntent())router.replace("/profile?personalize=1#profile-settings");
+        else if(data.user&&pendingRecordMode())router.replace("/record");
       })
       .catch((error: unknown) => {
         if (error instanceof Error && error.name === "AbortError") return;
@@ -171,11 +173,11 @@ export default function Home() {
 
   return <AppShell>
     {savingBudget && <AppLoading message="이번 주 예산을 저장하고 있어요"/>}
-      {showAuth ? <AuthScreen initialError={authError} onExplore={() => { clearRecordMode();setShowAuth(false); setAuthError(""); }} onSuccess={(user) => { setDashboard(null); setAuthUser(user); setAuthError(""); setShowAuth(false); setTab(pendingRecordMode()?"record":"home"); }}/> : <>
+      {showAuth ? <AuthScreen initialError={authError} onExplore={() => { clearRecordMode();clearProfileIntent();setShowAuth(false); setAuthError(""); }} onSuccess={(user) => { setDashboard(null); setAuthUser(user); setAuthError(""); setShowAuth(false); if(takeProfileIntent())router.push("/profile?personalize=1#profile-settings");else setTab(pendingRecordMode()?"record":"home"); }}/> : <>
       <header className="app-header"><Brand/><div className="app-header-actions">{authUser ? <button className="logout-link" type="button" onClick={signOut}>로그아웃</button> : <button className="logout-link" type="button" onClick={() => { setAuthError(""); setShowAuth(true); }}>로그인</button>}</div></header>
       <div className={`app-content app-content-${tab}`} ref={contentRef}>
         <InstallPrompt active={tab === 'home'}/>
-        {tab === "record" && <FoodIntake key={`intake-${authUser?.id??"guest"}-${tab}`} userId={authUser?.id} onLogin={()=>setShowAuth(true)} history={tab==="record"} recordDate={recordDate} onDateChange={setRecordDate}/>}
+        {tab === "record" && <FoodIntake key={`intake-${authUser?.id??"guest"}-${tab}`} userId={authUser?.id} onLogin={()=>setShowAuth(true)} history={tab==="record"} recordDate={recordDate} onDateChange={setRecordDate} expenseManagement={dashboard&&<Dashboard key={`${authUser?.id??"guest"}-${tab}-${recordDate}`} mode={tab} recordDate={recordDate} data={dashboard} userId={authUser?.id} products={products} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")} onCalendar={()=>setTab("calendar")} onBudget={editBudget} onRefresh={refreshDashboard} onCompare={openCompare}/>}/>}
         {tab==='home'&&authUser&&<DailyReturnCard key={authUser.id} userId={authUser.id} onRecord={()=>{setRecordDate(emptyDashboard().today);setTab('record');}}/>}
         {tab === "home" && <ShoppingPlanner key={`shopping-home-${authUser?.id??"guest"}`} dashboard={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/>}
         {authError && <p className="auth-inline-error" role="alert">{authError}</p>}
@@ -184,8 +186,8 @@ export default function Home() {
         {(tab==="home"||tab==="cart"||tab==="compare") && catalogError && <p className="auth-error" role="alert">{catalogError}</p>}
         {tab==="cart" && catalogLoaded && !catalogError && products.length===0 && <p className="body-note">등록된 상품이 없습니다.</p>}
         {tab==="compare" && catalogLoaded && !catalogError && !compareProduct && <p className="body-note">상품을 찾을 수 없습니다.</p>}
-        {tab === "record" && <section className="home-guide-entry"><strong>지난 식단과 지출 돌아보기</strong><p>달력은 기록이 쌓인 뒤 필요할 때 열어 보세요.</p><Link href="/calendar">식단·지출 달력 열기 →</Link></section>}
-        {tab === "record" && dashboard && <details className="intake-pantry"><summary>식비·생활비 관리</summary><Dashboard key={`${authUser?.id??"guest"}-${tab}-${recordDate}`} mode={tab} recordDate={recordDate} data={dashboard} userId={authUser?.id} products={products} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")} onCalendar={()=>setTab("calendar")} onBudget={editBudget} onRefresh={refreshDashboard} onCompare={openCompare}/></details>}
+
+
         {tab === "calendar" && <><PlanCalendar key={`plan-calendar-${authUser?.id??"guest"}`} userId={authUser?.id}/>{dashboard&&<details><summary>지출 기록·기존 하루 식단 보기</summary><Dashboard key={`${authUser?.id??"guest"}-calendar`} mode="calendar" data={dashboard} userId={authUser?.id} products={products} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")} onCalendar={()=>setTab("calendar")} onBudget={editBudget} onRefresh={refreshDashboard} onCompare={openCompare}/></details>}</>}
         {tab === "cart" && <>
           <ShoppingPlanner key={`shopping-${authUser?.id??"guest"}`} mode="cart" userId={authUser?.id} onLogin={()=>setShowAuth(true)}/><details><summary>직접 요리할 식단의 재료 보기</summary><MonthlyPlanner key={`ingredients-${authUser?.id??"guest"}`} mode="cart" userId={authUser?.id} onLogin={()=>setShowAuth(true)}/></details>
