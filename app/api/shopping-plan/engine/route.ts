@@ -32,10 +32,12 @@ export async function POST(request: NextRequest) {
  if (!input || typeof input !== 'object') return authFailure('입력을 확인해 주세요.', 400);
  try {
   const user = await sessionUser(request);
-  const catalog = await loadPlanCatalog(user?.id);
-  const {products} = catalog;
   const conditions = input.conditions === undefined ? null : parseConditions(input.conditions);
   if (input.conditions !== undefined && !conditions) return authFailure('챙길 끼니와 조건을 확인해 주세요.', 400);
+  if (input.action === 'products' && !validIds(input.ids, true)) return authFailure('메뉴를 확인해 주세요.', 400);
+  // Restoring a plan only needs its chosen meals, not scores for every recipe.
+  const catalog = await loadPlanCatalog(user?.id, input.action === 'products' ? input.ids as string[] : undefined);
+  const {products} = catalog;
   const today = async () => user ? await todayContext(user.id, products, catalog.personalization, catalog.health).catch(() => null) : null;
   const slotIndex = (c: PlanConditions) => typeof input.index === 'number' && Number.isInteger(input.index) && input.index >= 0 && input.index < c.meals ? input.index : null;
 

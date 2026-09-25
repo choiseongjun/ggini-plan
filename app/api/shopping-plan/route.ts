@@ -44,12 +44,15 @@ export async function GET(request:NextRequest){
    return json({plan:result.rows[0]??null});
   }
   const user=await sessionUser(request);
-  const resetAt=user?(await getPool().query('SELECT reset_at AS "resetAt" FROM user_data_resets WHERE user_id=$1',[user.id])).rows[0]?.resetAt:null;
-  const preferences=user?(await getPool().query('SELECT conditions FROM shopping_preferences WHERE user_id=$1',[user.id])).rows[0]?.conditions:null;
-  const plan=user?(await getPool().query('SELECT conditions,meal_ids AS "mealIds" FROM shopping_plans WHERE user_id=$1 ORDER BY id DESC LIMIT 1',[user.id])).rows[0]:null;
-  const catalog=await personalizedCatalog(user?.id);
-  // 메뉴 전체(수 MB)는 보내지 않는다 — 추천·후보 계산은 /api/shopping-plan/engine이 서버에서 한다.
-  return json({personalization:catalog.personalization,excluded:catalog.excluded,preferences:preferences??null,plan:plan??null,resetAt:resetAt??null});
+  // Bootstrap only needs account settings, never the full recipe catalog.
+  const row=user?(await getPool().query(`SELECT
+   (SELECT row_to_json(p) FROM (SELECT height::float8,weight::float8,age,sex,activity,meals,pregnancy,diet_preferences,nutrition_target FROM body_profiles WHERE user_id=$1) p) AS profile,
+   (SELECT reset_at FROM user_data_resets WHERE user_id=$1) AS "resetAt",
+   (SELECT conditions FROM shopping_preferences WHERE user_id=$1) AS preferences,
+   (SELECT row_to_json(p) FROM (SELECT conditions,meal_ids AS "mealIds" FROM shopping_plans WHERE user_id=$1 ORDER BY id DESC LIMIT 1) p) AS plan`,[user.id])).rows[0]:null;
+  const profile=row?.profile;
+  const personalization=personalizeProducts([],profile,profile?.diet_preferences,profile?.nutrition_target).personalization;
+  return json({personalization:{...personalization,nutritionMatched:null},excluded:parseDiet(profile?.diet_preferences)?.excluded??[],preferences:row?.preferences??null,plan:row?.plan??null,resetAt:row?.resetAt??null});
  }catch{return authFailure('장보기 식단을 불러오지 못했어요. 잠시 후 다시 시도해 주세요.',503);}
 }
 export async function PUT(request:NextRequest){
