@@ -1,0 +1,34 @@
+[
+  {
+    "foodCode": "AI-ea3c03eb37af",
+    "name": "간짜장",
+    "previousPrimary": "https://search2.kakaocdn.net/argon/130x130_85_c/3uZnTEOwxZT",
+    "candidates": [
+      "https://search2.kakaocdn.net/argon/130x130_85_c/3uZnTEOwxZT",
+      "https://search3.kakaocdn.net/argon/130x130_85_c/1YNQY9gjyi",
+      "https://search3.kakaocdn.net/argon/130x130_85_c/4AiwUDa8QnF",
+      "https://search3.kakaocdn.net/argon/130x130_85_c/9hOnUta2twd",
+      "https://search1.kakaocdn.net/argon/130x130_85_c/2g4SVX4UFpR",
+      "https://search4.kakaocdn.net/argon/130x130_85_c/6hPrieQfICt"
+    ],
+    "approved": [
+      "https://search3.kakaocdn.net/argon/130x130_85_c/4AiwUDa8QnF"
+    ]
+  },
+  {
+    "foodCode": "D303-148440000-0001",
+    "name": "라면_짜장라면",
+    "previousPrimary": "https://search3.kakaocdn.net/argon/130x130_85_c/E9HdXAg4R5r",
+    "candidates": [
+      "https://search3.kakaocdn.net/argon/130x130_85_c/E9HdXAg4R5r",
+      "https://search2.kakaocdn.net/argon/130x130_85_c/Ko16K0l5mWF",
+      "https://search4.kakaocdn.net/argon/130x130_85_c/91yTaeHX719",
+      "https://search1.kakaocdn.net/argon/130x130_85_c/2YOA0svrVHM",
+      "https://search3.kakaocdn.net/argon/130x130_85_c/GuriIjG76jS",
+      "https://search3.kakaocdn.net/argon/130x130_85_c/GMal32oBcq0"
+    ],
+    "approved": [
+      "https://search1.kakaocdn.net/argon/130x130_85_c/2YOA0svrVHM"
+    ]
+  }
+]

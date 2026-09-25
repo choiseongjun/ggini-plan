@@ -1,0 +1,6 @@
+import Link from 'next/link';
+import DeleteAccountScreen from './screen';
+import '../legal.css';
+import {POLICY_EMAIL} from '../../lib/member-policy';
+export const metadata={title:'회원 탈퇴·데이터 삭제 | 끼니플랜'};
+export default function Page(){return <main className="legal-page"><header><Link href="/">끼니플랜 홈</Link></header><article><h1>끼니플랜 회원 탈퇴·데이터 삭제</h1><p>계정을 삭제하면 로그인 정보, 신체·체중 정보, 식단·장보기·식사·지출 기록, 공유 식단, 커뮤니티 글·댓글·좋아요와 첨부 사진, 상품 제보와 첨부 사진, 알림 구독이 삭제됩니다. 완료된 삭제는 되돌릴 수 없습니다.</p><p>아래에서 로그인한 계정을 확인하고 본인 확인 후 탈퇴하세요. 정상 처리 시 운영 DB의 계정과 연결 기록, 저장 사진을 바로 삭제합니다. Google 계정 자체는 삭제하지 않으며 끼니플랜의 Firebase 인증 등록을 삭제합니다.</p><DeleteAccountScreen/><h2>로그인할 수 없거나 일부 정보만 삭제하려면</h2><p>가입 이메일에서 <a href={`mailto:${POLICY_EMAIL}?subject=${encodeURIComponent('[끼니플랜] 계정·데이터 삭제 요청')}`}>{POLICY_EMAIL}</a>로 ‘끼니플랜 삭제 요청’을 보내 주세요. 전체 탈퇴인지 삭제할 기록·게시물·사진인지 적어 주세요. 비밀번호·인증번호·신분증 사본을 보내지 마세요.</p><h2>처리 범위와 예외</h2><p>식사 분석용 사진 원본은 끼니플랜 저장소에 보관하지 않습니다. OpenAI 처리 로그 및 호스팅·인증·DB 제공업체의 보안 로그와 백업에는 업체별 보관 정책이 적용됩니다. 문의로 관련 삭제 요청도 접수할 수 있습니다. 다른 이용자가 이미 복사한 공개 자료와 외부 사이트·기기에 저장된 사본은 직접 삭제할 수 없습니다. 계정과 연결하지 않는 방문 통계·의견은 자동으로 식별할 수 없으므로 별도 삭제 요청 시 내용을 알려 주세요.</p><p><Link href="/privacy">개인정보처리방침</Link></p></article></main>;}

@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import type {ReactNode} from 'react';
 import {RiceBuddy} from './rice-buddy';
+import {GuidedTour} from './guided-tour';
 import {BetaBanner} from './beta-banner';
 import {usePlannerLocale} from './planner-locale';
 import './fresh-theme.css';
@@ -46,4 +47,4 @@ export function AppShell({children,overlay}:{children:ReactNode;overlay?:ReactNo
       <div className="promo-footer"><span>© 끼니플랜</span><span>매일 완벽하지 않아도, 한 끼부터.</span></div>
     </div></aside>
     <section className="app-side" aria-label="끼니플랜 앱"><div className="app-frame">
-{!locale.isTaiwan&&<BetaBanner/>}{children}</div></section>{overlay}</main>);}
+{!locale.isTaiwan&&<BetaBanner/>}{children}</div></section>{overlay}{!locale.isTaiwan&&<GuidedTour/>}</main>);}

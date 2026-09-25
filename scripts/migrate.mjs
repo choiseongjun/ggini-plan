@@ -26,6 +26,7 @@ try {
   await client.query(readFileSync(resolve(root, "db/catalog-created-at.sql"), "utf8"));
   await client.query(readFileSync(resolve(root, 'db/catalog-nutrition-estimate.sql'), 'utf8'));
   await client.query(readFileSync(resolve(root, 'db/member-policy.sql'), 'utf8'));
+  await client.query(readFileSync(resolve(root, 'db/mobile-login.sql'), 'utf8'));
   await client.query(readFileSync(resolve(root, 'db/foodsafety-processed-nutrition.sql'), 'utf8'));
   await client.query(readFileSync(resolve(root, 'db/foodsafety-synthesized-recipes.sql'), 'utf8'));
   await client.query(readFileSync(resolve(root, 'db/recipe-optimizer-results.sql'), 'utf8'));

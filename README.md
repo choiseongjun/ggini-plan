@@ -58,6 +58,8 @@ FIREBASE_PROJECT_ID=ggini-plan
 
 배포 시 `AUTH_URL`을 실제 HTTPS 서비스 주소로 변경하고 Firebase의 승인된 도메인에 배포 도메인을 추가합니다. 공개 환경변수는 빌드할 때 반영됩니다. 운영 환경에서는 `AUTH_URL`이 필수입니다.
 
+운영 사이트 `gginiplan.kr`에서는 로그인 주소도 `gginiplan.kr`을 사용합니다. `next.config.ts`가 `/__/auth/*`를 기존 Firebase 프로젝트로 프록시합니다. Google Cloud의 Firebase용 웹 OAuth 클라이언트에는 `https://gginiplan.kr/__/auth/handler`를 승인된 리디렉션 URI로 등록해야 합니다. 기존 Firebase URI는 로컬·미리보기 로그인을 위해 유지합니다. 이 변경은 코드 배포 후 적용되며 localhost에서는 위 환경변수의 Firebase 도메인을 계속 사용합니다.
+
 서버는 `firebase-admin`으로 서명·발급자·대상 프로젝트·만료를 검증하고 Google 제공자, 확인된 이메일, 5분 이내의 인증 시각을 확인합니다. 검증된 토큰의 구글 고유 ID를 기존 `oauth_accounts`와 연결하므로 이메일로 계정을 임의 통합하지 않습니다. Firebase 토큰은 브라우저 메모리에서만 사용하고 DB 세션 발급 후 Firebase 클라이언트에서 로그아웃합니다. Analytics는 초기화하지 않습니다.
 
 현재 사용하는 공개키 기반 ID 토큰 검증에는 명시적인 프로젝트 ID만 설정하며 서비스 계정 JSON은 사용하지 않습니다. Firebase 사용자 관리나 토큰 폐기 여부 조회는 별도 관리자 자격 증명이 필요합니다. Firebase에서 계정을 비활성화해도 이미 발급한 앱의 DB 세션이 자동으로 폐기되지는 않습니다.

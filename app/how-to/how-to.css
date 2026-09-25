@@ -8,3 +8,8 @@
 .tutorial-faq{margin:28px 0}.tutorial-faq details{padding:16px 4px;border-bottom:1px solid #e0dfce}.tutorial-faq summary{cursor:pointer;font-size:15px;font-weight:700;color:#46583a;line-height:1.7}.tutorial-faq p{margin-bottom:0}.tutorial-start{display:block;padding:16px;background:#587548;color:white;border-radius:16px;text-align:center;text-decoration:none;font-weight:700;margin-bottom:20px}
 @media(max-width:480px){.tutorial-welcome{padding:20px}.tutorial-welcome>svg{width:95px;height:110px}.fresh-shell .tutorial-welcome h1{font-size:30px}.tutorial-welcome p{font-size:14px}.tutorial-step{padding:20px}.fresh-shell .tutorial-step h2{font-size:23px}}
 @media(prefers-reduced-motion:reduce){.fresh-shell .tutorial-content{scroll-behavior:auto}}
+
+.tutorial-map{padding:22px;margin:0 0 24px;border:1px solid #dde4d4;border-radius:22px;background:#fffdf7}
+.tutorial-map h2{font-size:21px;margin:0 0 14px;color:#354b33}
+.tutorial-map a{display:flex;align-items:center;gap:18px;padding:15px 0;color:#354b33;text-decoration:none;border-bottom:1px solid #e8ebdf}
+.tutorial-map strong{min-width:32px;font-size:16px}.tutorial-map span,.tutorial-map p{font-size:14px;line-height:1.7}.tutorial-map p{color:#64725e;margin:15px 0 0}

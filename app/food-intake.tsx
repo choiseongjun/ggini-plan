@@ -83,8 +83,8 @@ export function FoodIntake({userId,onLogin,history=false,recordDate,onDateChange
  const missingCost=current?.logs.filter(log=>log.cost==null).length??0;
  return locale.render(<section className="food-intake" aria-label={history?'먹은 음식 기록':'오늘 먹은 음식'}>
   {!locale.isTaiwan&&<RecordEntry userId={userId} onLogin={onLogin} onLogged={()=>{setDate(today);onDateChange?.(today);reload();}}/>}
-  <header><span className="section-kicker">날짜별 식사 일기</span><h2>{history?'실제로 먹은 기록':'오늘, 얼마나 챙겨 먹었나요?'}</h2><p>날짜를 골라 지난 식사를 보고, 먹은 양을 수정하거나 기록을 삭제할 수 있어요.</p></header>
-  {!userId?<div className="intake-empty"><p>저장한 식사를 날짜별로 모아 볼 수 있어요.</p><button type="button" onClick={onLogin}>로그인하고 먹은 기록 시작하기</button></div>:<>
+  {userId&&<header><span className="section-kicker">날짜별 식사 일기</span><h2>{history?'실제로 먹은 기록':'오늘, 얼마나 챙겨 먹었나요?'}</h2><p>날짜를 골라 지난 식사를 보고, 먹은 양을 수정하거나 기록을 삭제할 수 있어요.</p></header>}
+  {!userId?null:<>
    {history&&<label className="intake-date">기록 날짜<input type="date" value={selectedDate} max={today} disabled={busy||Boolean(pending)} onChange={e=>{if(e.target.value){setDate(e.target.value);onDateChange?.(e.target.value);setLoading(true);setError('');}}}/></label>}
    {loading&&<p role="status">먹은 기록을 불러오는 중…</p>}
    {error&&<div role="alert" className="intake-error"><p>{error}</p>{pending?<button type="button" disabled={busy} onClick={()=>void send(pending)}>저장 결과 다시 확인</button>:<button type="button" disabled={busy} onClick={reload}>다시 불러오기</button>}</div>}

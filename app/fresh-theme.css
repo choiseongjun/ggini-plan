@@ -395,3 +395,12 @@
 .fresh-shell .daily-return-actions :is(a,button):first-child { border: 0; background: #edf0dc; border-radius: 10px; padding: 10px 14px; font-weight: 700; text-decoration: none; }
 .fresh-shell .profile-retention-section { scroll-margin-top: 24px; }
 .fresh-shell.site-shell .profile-extra .rp-card { margin: 0; }
+
+.profile-quick-settings{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px 18px;margin:0 0 18px;background:#f3f5ec;border:1px solid #dde4d3;border-radius:18px}
+.profile-quick-settings small{display:block;margin-top:6px;font-size:12px;color:#64725e;line-height:1.5}
+.profile-quick-settings button{flex-shrink:0;min-height:44px;padding:10px 14px;border:1px solid #b8c5aa;border-radius:12px;background:#fffdf7;color:#354d30;font-weight:700}
+.today-next-plan{padding:18px;margin:16px 0;border:1px solid #dce4d1;border-radius:18px;background:#f4f6ee}
+.today-next-plan p,.today-next-plan small{display:block;line-height:1.7;margin:0 0 12px}
+.today-next-plan small{font-size:12px;color:#64725e;margin:12px 0 0}
+
+.profile-guide-link{display:inline-block;margin-top:12px;padding:10px 0;color:#48613d;font-size:14px;line-height:1.7;text-underline-offset:4px}

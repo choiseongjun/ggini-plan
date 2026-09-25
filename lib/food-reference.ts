@@ -12,13 +12,16 @@ type Row = {food_code: string; name: string; brand: string | null; category: str
  calories_kcal: string | null; protein_g: string | null; carbohydrates_g: string | null; sugar_g: string | null; fat_g: string | null; sodium_mg: string | null};
 
 // DB 이름("분류_세부")을 사람이 쓰는 이름으로: 국밥_순대국밥 → 순대국밥, 덮밥_돼지고기(제육) → 제육덮밥, 커피_아메리카노 → 아메리카노.
-const PREFIX_ONLY = /^(커피|라떼|음료|케이크|빵|쿠키|마카롱|스콘|아이스티|주스|스무디|샌드위치|토스트|베이글|도넛|파이\/만주|캔디|과자|아이스크림|빙수|차|에이드|프라푸치노)$/;
+// 분류가 뒤로 가야 자연스러운 것: 스프_감자 → 감자 수프, 과ㆍ채주스_딸기 바나나 → 딸기 바나나 주스, 샐러드_양상추 → 양상추 샐러드.
+const SPACED_SUFFIX: Record<string, string> = {'스프': '수프', '수프': '수프', '샐러드': '샐러드', '과ㆍ채주스': '주스', '과·채주스': '주스', '주스': '주스', '스무디': '스무디'};
+const PREFIX_ONLY = /^(커피|라떼|음료|케이크|빵|쿠키|마카롱|스콘|아이스티|샌드위치|토스트|베이글|도넛|파이\/만주|캔디|과자|아이스크림|빙수|차|에이드|프라푸치노)$/;
 const TYPE_SUFFIX = /^(덮밥|볶음밥|비빔밥|국밥|김밥|주먹밥|찌개|전골|국|탕|죽|국수|칼국수|냉면|우동|파스타|스파게티|피자|버거)$/;
 export function displayFoodName(raw: string) {
  const [a, b, ...rest] = raw.split('_').map((x) => x.trim());
  if (!b) return raw.trim();
  const tail = rest.length ? ` ${rest.join(' ')}` : '';
  if (b.replace(/\s/g, '').includes(a.replace(/\s/g, ''))) return b + tail;
+ if (SPACED_SUFFIX[a]) return `${[b, ...rest].join(' ')} ${SPACED_SUFFIX[a]}`;
  if (PREFIX_ONLY.test(a)) return b + tail;
  if (TYPE_SUFFIX.test(a)) return `${(b.match(/\(([^)]+)\)/)?.[1] ?? b).replace(/\s/g, '')}${a}${tail}`;
  return `${a} ${b}${tail}`;

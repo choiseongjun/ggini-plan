@@ -213,6 +213,7 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
   }
 
   return <>
+    <div className="profile-quick-settings"><div><strong>내 몸과 식사 취향</strong><small>신체 정보·목표·못 먹는 재료</small></div><button type="button" disabled={loading||saving||loadError} onClick={focusProfile}>내 정보 수정</button></div>
     <BuddyCompanion key={userId??'guest'} userId={userId} recordCount={intakeStats?.week.meals} weekStart={intakeStats?.week.start} growth={intakeStats?.buddy} loggedToday={intakeStats?.streak.loggedToday} guest={!userId} onLogin={onLogin}/>
     {loading ? <AppLoading message="저장된 정보를 불러오는 중이에요"/> : loadError ? <section className="energy-card is-empty"><div><strong>정보를 불러오지 못했어요</strong><p>잠시 후 다시 시도해 주세요.</p><button type="button" className="wizard-next" onClick={()=>window.location.reload()}>다시 불러오기</button></div></section>
     : calories ? <section className="energy-card" aria-label="하루 에너지">

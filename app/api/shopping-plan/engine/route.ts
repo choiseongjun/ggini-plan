@@ -7,7 +7,9 @@ import {shoppingAvailabilityMessage} from '../../../../lib/shopping-availability
 import {pickerItems} from '../../../../lib/plan-picker';
 import {logRecommendations} from '../../../../lib/recommendation-log';
 import {sideProducts} from '../../../../lib/shopping-plan-catalog';
-import {pickSides, type DishTraits} from '../../../../lib/side-pairing';
+import {pickSides, sideFit, type DishTraits, type SideExtra, type WesternPick} from '../../../../lib/side-pairing';
+import {foodReferencesByCodes} from '../../../../lib/food-reference';
+import westernPairings from '../../../../data/western-pairings.json';
 import {allowsExcludedFoods} from '../../../../lib/shopping-exclusions';
 import dishTraits from '../../../../data/dish-traits.json';
 import {alternativesFor, basketTotal, mealSchedule, parseConditions, recommendShopping, slotCandidates, slotLabels, swapMeal, swapReasons, validMealIds, type PlanConditions, type SwapReason} from '../../../../lib/shopping-plan';
@@ -88,9 +90,16 @@ export async function POST(request: NextRequest) {
     const id = typeof input.id === 'string' ? input.id : '';
     const main = pickProducts(products, [id])[0];
     if (!main) return authFailure('메뉴를 확인해 주세요.', 400);
+    // 양식·빵·샐러드: 밑반찬 대신 AI로 골라 둔 곁들임(음료·수프·샐러드·빵·소스·피클).
+    if (sideFit(main) === 'none') {
+     const picks = (westernPairings as Record<string, WesternPick[]>)[main.id] ?? [];
+     const refs = new Map((await foodReferencesByCodes(picks.map((p) => p.code).filter(Boolean))).map((r) => [r.code, r]));
+     const extras: SideExtra[] = picks.map((p) => { const r = p.code ? refs.get(p.code) : undefined; return {name: r?.name ?? p.name, kind: p.kind, reason: p.reason, kcal: r?.kcal ?? null, serving: r ? `${Math.round(r.servingAmount)}${r.servingUnit}` : null}; });
+     return json({sides: [], extras});
+    }
     const excluded = conditions?.excluded ?? catalog.excluded;
     const sides = pickSides(main, await sideProducts(), dishTraits as Record<string, DishTraits>, 3, (s) => !allowsExcludedFoods(s, excluded));
-    return json({sides: sides.map((s) => ({reason: s.reason, product: s.product}))});
+    return json({sides: sides.map((s) => ({reason: s.reason, product: s.product})), extras: []});
    }
    case 'products': {
     const ids = input.ids;

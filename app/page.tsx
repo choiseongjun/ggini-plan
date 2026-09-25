@@ -1,6 +1,7 @@
 "use client";
 
 import './home-readability.css';
+import {pendingRecordMode,clearRecordMode} from '../lib/record-intent';
 import {InstallPrompt} from './install-prompt';
 import {PolicyLinks} from './policy-links';
 import {PlanCalendar} from './plan-calendar';
@@ -122,6 +123,7 @@ export default function Home() {
         const data = await response.json() as { user: PublicUser | null; error?: string };
         if (!response.ok) throw new Error(data.error ?? "로그인 상태를 확인할 수 없습니다.");
         setAuthUser(data.user);
+        if(data.user&&pendingRecordMode())router.replace("/record");
       })
       .catch((error: unknown) => {
         if (error instanceof Error && error.name === "AbortError") return;
@@ -140,7 +142,7 @@ export default function Home() {
         }
       });
     return () => { controller.abort(); finish(); };
-  }, [startLoading]);
+  }, [startLoading,router]);
 
   const signOut = async () => {
     const finish = startLoading("로그아웃하고 있어요");
@@ -169,7 +171,7 @@ export default function Home() {
 
   return <AppShell>
     {savingBudget && <AppLoading message="이번 주 예산을 저장하고 있어요"/>}
-      {showAuth ? <AuthScreen initialError={authError} onExplore={() => { setShowAuth(false); setAuthError(""); }} onSuccess={(user) => { setDashboard(null); setAuthUser(user); setAuthError(""); setShowAuth(false); setTab("home"); }}/> : <>
+      {showAuth ? <AuthScreen initialError={authError} onExplore={() => { clearRecordMode();setShowAuth(false); setAuthError(""); }} onSuccess={(user) => { setDashboard(null); setAuthUser(user); setAuthError(""); setShowAuth(false); setTab(pendingRecordMode()?"record":"home"); }}/> : <>
       <header className="app-header"><Brand/><div className="app-header-actions">{authUser ? <button className="logout-link" type="button" onClick={signOut}>로그아웃</button> : <button className="logout-link" type="button" onClick={() => { setAuthError(""); setShowAuth(true); }}>로그인</button>}</div></header>
       <div className={`app-content app-content-${tab}`} ref={contentRef}>
         <InstallPrompt active={tab === 'home'}/>
@@ -213,7 +215,7 @@ export default function Home() {
           <p className="compare-disclaimer">비교 결과의 상품 용량, 배송비, 할인 조건은 판매처마다 달라질 수 있습니다. 결제 전 상품 상세 정보를 확인하세요.</p>
         </>}
         {tab === "community" && <CommunityPanel key={authUser?.id ?? "guest"} userId={authUser?.id} products={products} budget={budget} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")}/>}
-        {tab === "profile" && <><div className="page-intro"><div className="week-label">마이페이지</div><h2>{authUser?`${displayName}님의`:'나의'} <span>식사 취향</span></h2><p>내 몸과 생활에 맞게, 한 번만 설정해요.</p></div><BodyProfilePanel key={authUser?.id ?? "guest"} userId={authUser?.id} name={displayName} onLogin={() => setShowAuth(true)}/><h3 className="profile-group-title">식비 관리</h3><details className="profile-extra"><summary>한 달 식비 예산</summary><BudgetSettings monthlyOnly key={`budget-${authUser?.id ?? "guest"}`} data={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)} onRefresh={refreshDashboard}/></details><h3 className="profile-group-title">도움이 필요할 때</h3><nav className="profile-menu" aria-label="도움말 및 관리"><Link href="/how-to"><span>처음이라면 · 끼니플랜 사용법</span><Icon name="chevron" size={16}/></Link><Link href="/submissions#mine"><span>내 제보와 검토 결과</span><Icon name="chevron" size={16}/></Link><a href="mailto:choisj2702@gmail.com"><span>문의·협업</span><Icon name="chevron" size={16}/></a></nav></> }
+        {tab === "profile" && <><div className="page-intro"><div className="week-label">마이페이지</div><h2>{authUser?`${displayName}님의`:'나의'} <span>식사 취향</span></h2><p>내 몸과 생활에 맞게, 한 번만 설정해요.</p><Link className="profile-guide-link" href="/how-to">처음 오셨나요? 끼니플랜 소개·사용 가이드</Link></div><BodyProfilePanel key={authUser?.id ?? "guest"} userId={authUser?.id} name={displayName} onLogin={() => setShowAuth(true)}/><h3 className="profile-group-title">식비 관리</h3><details className="profile-extra"><summary>한 달 식비 예산</summary><BudgetSettings monthlyOnly key={`budget-${authUser?.id ?? "guest"}`} data={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)} onRefresh={refreshDashboard}/></details><h3 className="profile-group-title">도움이 필요할 때</h3><nav className="profile-menu" aria-label="도움말 및 관리"><Link href="/how-to"><span>처음이라면 · 끼니플랜 사용법</span><Icon name="chevron" size={16}/></Link><Link href="/submissions#mine"><span>내 제보와 검토 결과</span><Icon name="chevron" size={16}/></Link><a href="mailto:choisj2702@gmail.com"><span>문의·협업</span><Icon name="chevron" size={16}/></a></nav></> }
         {tab==='cart'&&<section className="home-guide-entry"><strong>상품·영양정보 제보</strong><Link href="/submissions">상품 정보 보완하기 →</Link></section>}
         {tab!=='home'&&<ServiceFeedback page={`/${tab}`}/>}
         {tab==='profile'&&<details className="home-explore"><summary>상품 비교·이용 안내</summary><ComparisonTrends/><nav aria-label="더 알아보기"><Link href="/products">상품 가격·영양 비교 <span>→</span></Link><Link href="/guides">식단·식비 가이드 <span>→</span></Link><Link href="/submissions">상품·영양정보 제보 <span>→</span></Link><a href="mailto:choisj2702@gmail.com">문의·협업 <span>↗</span></a></nav></details>}

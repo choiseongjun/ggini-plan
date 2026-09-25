@@ -14,3 +14,5 @@
 .intake-pantry{margin:20px 0;border:1px solid #e0e4d8;border-radius:16px;padding:16px}
 .intake-pantry>summary{cursor:pointer;font-size:15px;font-weight:700}
 @media(max-width:420px){.record-entry{padding:18px}.record-entry h2{font-size:23px}.intake-history article{flex-wrap:wrap;gap:12px}}
+
+.record-guide-link{display:inline-block;padding:10px 0;font-size:13px;line-height:1.6;color:#48613d;text-underline-offset:4px}

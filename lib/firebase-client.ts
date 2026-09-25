@@ -9,7 +9,11 @@ export function firebaseAuth(): Auth {
   if (auth) return auth;
   const config = {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    // Production's auth helpers are proxied by next.config.ts. Keep the
+    // configured Firebase domain for localhost and preview deployments.
+    authDomain: typeof window !== "undefined" && window.location.hostname === "gginiplan.kr"
+      ? "gginiplan.kr"
+      : process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
     projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
   };

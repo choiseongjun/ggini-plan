@@ -12,6 +12,7 @@
 
 # testing
 /coverage
+/.cache/food-photo-review/
 
 # next.js
 /.next/

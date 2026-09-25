@@ -3,6 +3,7 @@
 // (Kakao search APIs default to 100,000 calls/day) to run to completion in one pass.
 import {listRecipeOptimizerResultsMissingImage, setRecipeOptimizerImages} from '../lib/recipe-optimizer-store.ts';
 import {searchDishImages} from '../lib/kakao-image-search.ts';
+import {selectFoodPhotos} from './food-photo-selector.mjs';
 
 const missing = await listRecipeOptimizerResultsMissingImage();
 console.log(`이미지 없는 레시피 ${missing.length}건. 시작합니다.`);
@@ -11,7 +12,9 @@ for (const [i, dish] of missing.entries()) {
  try {
   const results = await searchDishImages(dish.targetName);
   if (!results.length) { skipped++; console.log(`[${i + 1}/${missing.length}] (검색결과 없음) ${dish.targetName}`); continue; }
-  await setRecipeOptimizerImages(dish.foodCode, results.map((r) => r.thumbnail));
+  const approved = await selectFoodPhotos(results.map((r) => r.thumbnail));
+  if (!approved.length) { skipped++; console.log(`[${i + 1}/${missing.length}] (음식사진 판별 보류) ${dish.targetName}`); continue; }
+  await setRecipeOptimizerImages(dish.foodCode, approved);
   saved++;
   console.log(`[${i + 1}/${missing.length}] ${dish.targetName} -> ${results.length}장 (${results.map((r) => r.sourceHost || '?').join(', ')})`);
  } catch (e) {

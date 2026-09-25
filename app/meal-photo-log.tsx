@@ -26,6 +26,7 @@ const portionText=(p:number)=>p===1?'1인분':p===0.5?'반 인분':`${p}인분`;
 export function MealPhotoLog({productId,referenceCode,dishName,disabled,onLogged,onFallback,onManual}:{productId?:string;referenceCode?:string;dishName:string;disabled:boolean;onLogged:(result:Extract<PhotoLogResult,{logged:true}>)=>void;onFallback:()=>void;onManual:()=>void}){
  const input=useRef<HTMLInputElement>(null);
  const [picked,setPicked]=useState<{file:File;url:string}[]>([]);
+ const [aiAcknowledged,setAiAcknowledged]=useState(false);
  const pickedRef=useRef(picked);
  useEffect(()=>{pickedRef.current=picked;},[picked]);
  useEffect(()=>()=>{for(const p of pickedRef.current)URL.revokeObjectURL(p.url);},[]);
@@ -34,6 +35,7 @@ export function MealPhotoLog({productId,referenceCode,dishName,disabled,onLogged
  const clearPicked=()=>setPicked(list=>{for(const p of list)URL.revokeObjectURL(p.url);return [];});
  const [stage,setStage]=useState<keyof typeof stageText|null>(null),[error,setError]=useState(''),[result,setResult]=useState<PhotoLogResult|null>(null);
  async function upload(files:File[]){
+  if(!aiAcknowledged)return;
   setStage('prepare');setError('');setResult(null);
   const controller=new AbortController(),timer=window.setTimeout(()=>controller.abort(),40000);
   try{
@@ -60,7 +62,9 @@ export function MealPhotoLog({productId,referenceCode,dishName,disabled,onLogged
     <img src={p.url} alt={`먹은 사진 ${i+1}`}/><button type="button" aria-label={`사진 ${i+1} 빼기`} onClick={()=>removeAt(i)}>✕</button></li>)}
     {picked.length<MAX_PHOTOS&&<li><button type="button" className="photo-log-add" onClick={()=>input.current?.click()}><span aria-hidden="true">+</span>추가</button></li>}</ul>
    <small className="photo-log-hint">먹기 전·후 사진이나 반찬을 따로 찍은 사진을 함께 올리면 더 정확해요 (최대 {MAX_PHOTOS}장)</small>
-   <div className="photo-log-staged-actions"><button type="button" onClick={clearPicked}>취소</button><button type="button" className="photo-log-submit" disabled={disabled} onClick={()=>void upload(picked.map(p=>p.file))}>기록하기 ({picked.length}장)</button></div>
+   <p className="photo-log-hint">사진과 메뉴 정보는 식사량 분석을 위해 OpenAI로 전송됩니다. 끼니플랜은 분석용 사진 원본을 저장하지 않고 식사 기록을 저장합니다. OpenAI의 별도 보관 정책이 적용됩니다. 얼굴·신분증 등 개인정보가 나온 사진은 올리지 마세요. <a href="/privacy#meal-photos" target="_blank" rel="noreferrer">사진 처리 안내</a></p>
+   <label className="photo-log-hint"><input type="checkbox" checked={aiAcknowledged} onChange={e=>setAiAcknowledged(e.target.checked)}/> 사진의 OpenAI 전송·분석에 동의합니다. 원하지 않으면 취소 후 사진 없이 기록할 수 있습니다.</label>
+   <div className="photo-log-staged-actions"><button type="button" onClick={()=>{clearPicked();setAiAcknowledged(false);}}>취소</button><button type="button" className="photo-log-submit" disabled={disabled||!aiAcknowledged} onClick={()=>void upload(picked.map(p=>p.file))}>기록하기 ({picked.length}장)</button></div>
   </div>
   :<><button type="button" className="photo-log-button" disabled={disabled} onClick={()=>input.current?.click()}><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.3l1.4-2h5.6l1.4 2h1.3A2.5 2.5 0 0 1 20 8.5v8a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5Z"/><circle cx="12" cy="12.5" r="3.4"/></svg>먹었어요 · 사진 올리기</button>
    <button type="button" className="photo-log-manual" disabled={disabled} onClick={onManual}>사진 없이 기록</button></>}

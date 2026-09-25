@@ -3,12 +3,15 @@
 import Image from "next/image";
 import { useState } from "react";
 import type { CatalogItem } from "../lib/catalog";
+import { reviewedRecipeImages } from "../lib/reviewed-recipe-images";
 
 export function ProductThumb({ item, className = "", zoomable = false }: { item: Pick<CatalogItem, "color" | "productImageUrl" | "productImageUrls" | "emoji" | "nutritionEstimate"> & { name?: string }; className?: string; zoomable?: boolean }) {
   const [failedUrl, setFailedUrl] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
-  const hasPhoto = item.productImageUrl && item.productImageUrl !== failedUrl;
-  const gallery = (item.productImageUrls?.length ? item.productImageUrls : hasPhoto ? [item.productImageUrl!] : []);
+  const reviewed = reviewedRecipeImages(undefined, item.productImageUrl);
+  const primary = reviewed?.[0] ?? item.productImageUrl;
+  const hasPhoto = primary && primary !== failedUrl;
+  const gallery = reviewed ?? (item.productImageUrls?.length ? item.productImageUrls : hasPhoto ? [primary!] : []);
   const canOpen = zoomable && gallery.length > 0;
   return <>
     <span
@@ -21,7 +24,7 @@ export function ProductThumb({ item, className = "", zoomable = false }: { item:
       onKeyDown={canOpen ? (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpen(true); } } : undefined}
     >
       {hasPhoto
-        ? <Image src={item.productImageUrl!} alt="" width={56} height={56} unoptimized onError={() => setFailedUrl(item.productImageUrl)}/>
+        ? <Image src={primary!} alt="" width={56} height={56} unoptimized onError={() => setFailedUrl(primary)}/>
         : item.emoji}{item.nutritionEstimate&&<small style={{position:"absolute",bottom:0,left:0,right:0,background:"#fff2cc",color:"#654400",fontSize:10,textAlign:"center",lineHeight:"16px"}}>영양 추정</small>}
     </span>
     {open && gallery.length > 0 && <div

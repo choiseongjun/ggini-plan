@@ -1,4 +1,5 @@
 import {getPool} from './db';
+import {reviewedRecipeImages} from './reviewed-recipe-images';
 import type {GeneratedRecipe} from './recipe-optimizer';
 import type {AiIngredient} from './recipe-ai-ingredients';
 
@@ -20,7 +21,7 @@ export async function listRecipeOptimizerResults(): Promise<StoredRecipeResult[]
  return rows.map((r) => ({
   foodCode: r.food_code, targetName: r.target_name, targetBasisAmount: r.target_basis_amount, templateId: r.template_id, templateName: r.template_name,
   totalGrams: Number(r.total_grams), ingredients: r.ingredients, target: r.target, predicted: r.predicted, error: r.error,
-  score: Number(r.score), createdAt: r.created_at.toISOString(), imageUrl: r.image_url, imageUrls: r.image_urls, aiIngredients: r.ai_ingredients, source: r.source ?? 'optimizer',
+  score: Number(r.score), createdAt: r.created_at.toISOString(), imageUrl: reviewedRecipeImages(r.food_code)?.[0] ?? r.image_url, imageUrls: reviewedRecipeImages(r.food_code) ?? r.image_urls, aiIngredients: r.ai_ingredients, source: r.source ?? 'optimizer',
  }));
 }
 
@@ -40,6 +41,7 @@ export async function listRecipeOptimizerResultsMissingAiIngredients(): Promise<
 // saveRecipeOptimizerResult — regenerating a recipe's nutrition/ingredients shouldn't discard its photos.
 // image_url mirrors urls[0] so the plain single-photo readers (product-thumb fallback) keep working.
 export async function setRecipeOptimizerImages(foodCode: string, urls: string[]): Promise<void> {
+ urls = reviewedRecipeImages(foodCode) ?? urls;
  await getPool().query('UPDATE recipe_optimizer_results SET image_url = $1, image_urls = $2::jsonb WHERE food_code = $3', [urls[0] ?? null, JSON.stringify(urls), foodCode]);
 }
 

@@ -28,9 +28,11 @@
     "test:meals": "node --env-file=.env.local --import tsx --test tests/body-profile.test.ts tests/meal-plan.test.ts tests/meal-plans-api.test.ts",
     "test:community": "node --env-file=.env.local --import tsx --test tests/community.test.ts",
     "db:catalog": "node --env-file=.env.local scripts/seed-verified-catalog.mjs",
-    "test:dashboard": "node --env-file=.env.local --import tsx --test tests/dashboard.test.ts"
+    "test:dashboard": "node --env-file=.env.local --import tsx --test tests/dashboard.test.ts",
+    "recipes:review-images": "node --env-file=.env.local --import tsx scripts/review-recipe-images.mjs --apply"
   },
   "dependencies": {
+    "@huggingface/transformers": "^4.3.0",
     "@supabase/supabase-js": "^2.116.0",
     "@vercel/analytics": "^2.0.1",
     "@vercel/functions": "^3.9.8",

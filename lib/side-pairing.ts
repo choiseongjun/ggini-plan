@@ -6,8 +6,14 @@ export const METHODS = ['볶음', '조림', '무침', '나물', '생채', '김�
 export const MAIN_INGREDIENTS = ['pork', 'beef', 'chicken', 'duck', 'fish', 'seafood', 'egg', 'tofu', 'bean', 'vegetable', 'mushroom', 'seaweed', 'potato', 'noodle', 'rice', 'dairy', 'other'] as const;
 export type DishTraits = {spicy: 0 | 1 | 2; salty: 0 | 1 | 2; sweet: 0 | 1 | 2; oily: 0 | 1 | 2; sour: boolean; soupy: boolean; method: typeof METHODS[number]; main: typeof MAIN_INGREDIENTS[number]; veg: 0 | 1 | 2; protein: 0 | 1 | 2; /** 반찬만: 한국 가정에서 얼마나 흔한 밑반찬인지 0~2 */ common?: 0 | 1 | 2};
 export type SidePick = {product: PlanProduct; reason: string};
+// 양식·빵·샐러드 메인의 곁들임(scripts/pair-western-sides.ts가 AI로 골라 data/western-pairings.json에 저장).
+// code가 있으면 음식 영양 사전 항목(칼로리·기록 가능), 빈 문자열이면 사전에 없는 소스·피클(이름만).
+export const WESTERN_EXTRA_KINDS = ['음료', '수프', '샐러드', '빵', '사이드', '소스·피클'] as const;
+export type WesternPick = {code: string; name: string; kind: typeof WESTERN_EXTRA_KINDS[number]; reason: string};
+// 화면에 보내는 곁들임 한 개: 사전 항목이면 1회 제공량 칼로리를 함께.
+export type SideExtra = {name: string; kind: string; reason: string; kcal: number | null; serving: string | null};
 
-// 이 메인에 밑반찬이 맞는가: 밥과 먹는 한식 → 반찬 3개 / 밥·면이 든 한 그릇 → 김치류만 / 양식·빵·샐러드 → 없음.
+// 이 메인에 밑반찬이 맞는가: 밥과 먹는 한식 → 반찬 3개 / 밥·면이 든 한 그릇 → 김치류만 / 양식·빵·샐러드 → 밑반찬 대신 음료·수프 같은 곁들임.
 const WESTERN = /샌드위치|토스트|베이글|크로크|파니니|브런치|핫도그|버거|피자|파스타|스파게티|까르보나라|리조또|리소토|그라탕|라자냐|뇨끼|스테이크|샐러드|포케|오믈렛|프렌치|수프|스프|타코|부리토|퀘사디아|또띠아|피타|요거트|시리얼|그래놀라|팬케이크|와플|크루아상|크로와상/;
 export type SideFit = 'full' | 'kimchi' | 'none';
 export function sideFit(main: PlanProduct): SideFit {

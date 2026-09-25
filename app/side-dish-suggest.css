@@ -15,3 +15,4 @@
 .sd-actions{display:flex;gap:14px;margin-top:6px}
 .sd-actions .sd-toggle{margin-top:0}
 .sd-video{margin-top:8px}
+.sd-kind{flex:0 0 52px;display:grid;place-items:center;height:52px;border-radius:14px;background:#fdeee4;color:#a4502e;font-size:11px;font-weight:800;text-align:center;line-height:1.2;padding:2px}
