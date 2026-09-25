@@ -1,6 +1,7 @@
 'use client';
 import {useEffect,useState} from 'react';
 import './record-calendar.css';
+import {subscribeRecordSync} from '../lib/record-sync';
 import {calendarCalories} from '../lib/intake-calendar';
 
 export function RecordCalendar({date,today,disabled,onChange}:{date:string;today:string;disabled:boolean;onChange:(date:string)=>void}){
@@ -11,9 +12,10 @@ export function RecordCalendar({date,today,disabled,onChange}:{date:string;today
  const [result,setResult]=useState<{month:string;counts:ReturnType<typeof calendarCalories>;error?:boolean}|null>(null);
  useEffect(()=>{
   const refresh=()=>setRevision(value=>value+1);
+  const stopSync=subscribeRecordSync(refresh);
   const changed=(event:Event)=>{if((event as CustomEvent).detail?.source==='intake')refresh();};
   window.addEventListener('intake-logged',refresh);window.addEventListener('shopping-progress-changed',changed);
-  return()=>{window.removeEventListener('intake-logged',refresh);window.removeEventListener('shopping-progress-changed',changed);};
+  return()=>{stopSync();window.removeEventListener('intake-logged',refresh);window.removeEventListener('shopping-progress-changed',changed);};
  },[]);
  useEffect(()=>{
   const controller=new AbortController();

@@ -139,6 +139,7 @@ export function ProfileWizardModal({ step, direction, fields, userId, saving, er
         <div className="wizard-dots" aria-hidden="true">{visibleSteps.map(i => <button type="button" tabIndex={-1} key={steps[i].title} className={i === current ? "is-current" : i < current ? "is-past" : undefined} onClick={() => onStep(i)} />)}</div>
       </header>
 
+      {!fields.pregnancy&&(shown||estimate)&&<div className="wizard-target-summary"><span>하루 목표 칼로리<br/><strong>{n(shown?.calories??estimate!.daily)} kcal</strong></span>{!quick&&current!==5&&<button type="button" onClick={()=>onStep(5)}>칼로리·탄단지 수정</button>}</div>}
       <div key={current} className={`wizard-step ${direction === 1 ? "from-right" : "from-left"}`}>
         {current === 0 && <>
           <span className="wizard-label">계산식 기준 성별</span>

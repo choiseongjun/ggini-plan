@@ -1,4 +1,5 @@
 "use client";
+import {ProfileCalorieHistory} from './profile-calorie-history';
 
 import { Checkbox } from "./components/checkbox";
 
@@ -215,8 +216,9 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
   }
 
   return <>
-    <div className="profile-quick-settings"><div><strong>내 몸과 식사 취향</strong><small>신체 정보·목표·못 먹는 재료</small></div><button type="button" disabled={loading||saving||loadError} onClick={focusProfile}>내 정보 수정</button></div>
-    <BuddyCompanion key={userId??'guest'} userId={userId} recordCount={intakeStats?.week.meals} weekStart={intakeStats?.week.start} growth={intakeStats?.buddy} loggedToday={intakeStats?.streak.loggedToday} guest={!userId} onLogin={onLogin}/>
+    <div className="profile-quick-settings"><div><strong>내 몸과 식사 취향</strong><small>신체 정보·목표·못 먹는 재료</small>{!loading&&!loadError&&calories&&<strong className="profile-target-preview">하루 목표 {number(shownTarget?.calories??calories.daily)} kcal</strong>}</div><button type="button" disabled={loading||saving||loadError} onClick={focusProfile}>내 정보 수정</button></div>
+    <ProfileCalorieHistory userId={userId} target={calories?shownTarget?.calories??calories.daily:null} onLogin={onLogin} weekly={<WeeklyReportCard stats={intakeStats}/>} analysis={hasInfo&&!loading&&!loadError?<WeekAnalysis userId={userId} profile={profile} target={shownTarget} onOpenInfo={focusProfile}/>:null}/>
+    <details className="profile-target-details"><summary>하루 목표·탄단지 자세히 보기</summary>
     {loading ? <AppLoading message="저장된 정보를 불러오는 중이에요"/> : loadError ? <section className="energy-card is-empty"><div><strong>정보를 불러오지 못했어요</strong><p>잠시 후 다시 시도해 주세요.</p><button type="button" className="wizard-next" onClick={()=>window.location.reload()}>다시 불러오기</button></div></section>
     : calories ? <section className="energy-card" aria-label="하루 에너지">
       <div className="energy-top"><span>하루 목표 칼로리 · {custom ? "직접 설정" : goal ? bodyGoals[goal].label : "체중 유지 기준"}</span><button type="button" onClick={()=>openWizard(5)}>칼로리·탄단지 설정</button></div>
@@ -227,12 +229,12 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
       <dl className="energy-stats"><div><dt>기초대사량</dt><dd>{number(calories.resting)}<small>kcal</small></dd></div><div><dt>유지 칼로리</dt><dd>{number(calories.daily)}<small>kcal</small></dd></div>{bodyInfo && <div><dt>BMI</dt><dd>{bodyInfo.value}<small>{bodyInfo.label}</small></dd></div>}</dl>
     </section>
     : <section className="energy-card is-empty" aria-label="하루 에너지"><div className="energy-buddy" aria-hidden="true"><RiceBuddy/></div><div><strong>{pregnancy ? "임신·수유 중에는 자동 계산을 쉬어요" : "내 하루 칼로리를 알아볼까요?"}</strong><p>{pregnancy ? "개인별 영양 상담을 권해요. 취향은 메뉴 추천에 반영돼요." : "키·체중·활동량을 알려주면 칼로리와 탄단지를 바로 계산해요."}</p>{!pregnancy && <button type="button" className="wizard-next" onClick={focusProfile}>1분 만에 입력하기</button>}</div></section>}
+    </details>
+    <BuddyCompanion key={userId??'guest'} userId={userId} recordCount={intakeStats?.week.meals} weekStart={intakeStats?.week.start} growth={intakeStats?.buddy} loggedToday={intakeStats?.streak.loggedToday} guest={!userId} onLogin={onLogin}/>
     {/* 정보가 없을 땐 위의 '1분 만에 입력하기' 카드 하나만 — 선택지를 늘리지 않는다. */}
     {userId && <section id="meal-reminders" className="profile-retention-section"><h3 className="profile-group-title">다음 식사도 잊지 않게</h3><MealReminderCard/></section>}
     {hasInfo && userId && <WeightCard userId={userId} fallbackWeight={Number(weight)||null} onLogged={kg=>setWeight(String(kg))}/>}
     {userId && <details className="profile-extra"><summary>내 기록 배지 보기</summary><RecordCard stats={intakeStats}/></details>}
-    {userId && <section id="weekly-report" className="profile-retention-section"><WeeklyReportCard stats={intakeStats}/></section>}
-    {hasInfo && !loading && !loadError && <WeekAnalysis userId={userId} profile={profile} target={shownTarget} onOpenInfo={focusProfile}/>}
     {hasInfo && !loading && !loadError && <ProfileProgress fields={fields} reviewed={reviewed} saved={savedProfile} onOpen={openWizard}/>}
     <ProfileWizardModal step={wizardStep} direction={direction} quick={quickWizard} fields={fields} userId={userId} saving={saving} error={wizardStep === null ? "" : error}
       onStep={stepWizard} onChange={changeFields} onReviewed={step => setReviewed(r => new Set(r).add(step))} onClose={() => void closeWizard()}
@@ -315,7 +317,6 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
         {diet.fasting !== "none" && <p className="body-note">혈당을 낮추는 약을 복용 중이라면 단식 전에 의료진과 상의해 주세요. <a href="https://www.niddk.nih.gov/health-information/professionals/diabetes-discoveries-practice/fasting-safely-with-diabetes" target="_blank" rel="noopener noreferrer">안내 보기 ↗</a></p>}
       </> : <p className="meal-notice">{pregnancy ? "임신·수유 중에는 자동 식단 추천 대신 개인별 영양 상담을 권해요." : "신체 정보를 확인해 주세요. 선택한 조건에 맞는 식단이 있어야 추천할 수 있어요."}</p>}
     </section>}
-    {hasInfo && <nav className="profile-links" aria-label="바로가기"><Link href="/calendar"><b>식단 달력</b><span>홈에서 고른 식단을 날짜별로</span></Link><Link href="/"><b>이번 주 장보기 추천</b><span>내 칼로리·취향이 반영돼요</span></Link></nav>}
     {hasInfo && <details className="calorie-method"><summary>칼로리는 어떻게 계산하나요?</summary><p>Mifflin–St Jeor 식으로 휴식 에너지 소비량을 추정하고, 선택한 활동계수(1.2~1.725)를 곱해 하루 유지 필요량을 계산해요. 실제 섭취 기록의 평균이나 측정된 대사량은 아니에요.</p><p>기초대사량은 최소 섭취 칼로리가 아니에요. 만 19~78세 성인용 참고값이며 임신·수유 중에는 계산하지 않아요. 한 끼 평균은 간식을 포함한 하루 총량을 식사 횟수로 나눈 값이에요.</p><a href="https://pubmed.ncbi.nlm.nih.gov/2305711/" target="_blank" rel="noopener noreferrer">계산식 연구 보기 ↗</a></details>}
   </>;
 }

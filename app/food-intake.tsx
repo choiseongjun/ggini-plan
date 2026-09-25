@@ -1,4 +1,5 @@
 'use client';
+import {subscribeRecordSync} from '../lib/record-sync';
 import {trackAnalytics} from '../lib/analytics';
 import {usePlannerLocale} from './planner-locale';
 import {useEffect,useRef,useState,type ReactNode} from 'react';
@@ -34,11 +35,10 @@ export function useFoodIntake(userId?:string,history=false,externalDate?:string)
   return()=>controller.abort();
  },[userId,selectedDate,revision,locale.isTaiwan]);
  useEffect(()=>{
-  const refresh=()=>{setToday(locale.today());setRevision(n=>n+1);};
+  const refresh=()=>{if(locked.current||pendingRef.current)return;setToday(locale.today());setRevision(n=>n+1);};
   const changed=(event:Event)=>{const detail=(event as CustomEvent).detail;if(detail?.scope==='products'&&['cart','intake'].includes(detail?.source))refresh();};
-  window.addEventListener('shopping-progress-changed',changed);window.addEventListener('intake-logged',refresh);window.addEventListener('focus',refresh);
-  const timer=window.setInterval(()=>setToday(locale.today()),60000);
-  return()=>{window.removeEventListener('shopping-progress-changed',changed);window.removeEventListener('intake-logged',refresh);window.removeEventListener('focus',refresh);window.clearInterval(timer);};
+  window.addEventListener('shopping-progress-changed',changed);window.addEventListener('intake-logged',refresh);const stopSync=subscribeRecordSync(refresh);
+  return()=>{window.removeEventListener('shopping-progress-changed',changed);window.removeEventListener('intake-logged',refresh);stopSync();};
  },[locale]);
  function reload(){setError('');setLoading(true);setRevision(n=>n+1);}
  async function send(command:Command):Promise<boolean>{

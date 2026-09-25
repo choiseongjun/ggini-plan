@@ -35,7 +35,7 @@ export function useIntakeStats(userId?:string){
   const changed=(e:Event)=>{const detail=(e as CustomEvent).detail;if(e.type===INTAKE_LOGGED_EVENT||detail?.source==='intake')void load();};
   window.addEventListener(INTAKE_LOGGED_EVENT,changed);window.addEventListener('shopping-progress-changed',changed);
   const visible=()=>{if(document.visibilityState==='visible'){const now=day();if(now!==lastDay)setStats(null);lastDay=now;void load();}};
-  const timer=window.setInterval(()=>{const now=day();if(now!==lastDay){lastDay=now;setStats(null);void load();}},60000);
+  const timer=window.setInterval(()=>{const now=day();if(now!==lastDay){lastDay=now;setStats(null);}if(document.visibilityState==='visible')void load();},60000);
   document.addEventListener('visibilitychange',visible);
   return()=>{alive=false;window.clearInterval(timer);document.removeEventListener('visibilitychange',visible);window.removeEventListener(INTAKE_LOGGED_EVENT,changed);window.removeEventListener('shopping-progress-changed',changed);};
  },[userId]);
