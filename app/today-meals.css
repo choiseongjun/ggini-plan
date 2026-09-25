@@ -110,3 +110,27 @@
 .meal-slot-empty p{font-size:13px;line-height:1.8;color:#6b775f}
 .today-meals .meal-slot-empty a{display:inline-block;margin-top:8px;padding:12px 18px;background:#526c47;color:#fff;border-radius:12px;text-decoration:none;font-size:14px;font-weight:650}
 @media(min-width:900px){.meal-switch{gap:12px}.today-meals .meal-switch>button{padding:18px 14px}.meal-switch strong{font-size:18px}.meal-switch small{font-size:13px}.meal-switch-hint{font-size:14px}.meal-more>summary{font-size:15px;padding:20px 0}}
+
+/* Preview each meal and make the recipe drawer visibly actionable. */
+.meal-switch-photo{display:grid;place-items:center;width:100%;aspect-ratio:1.45;border-radius:11px;overflow:hidden;background:#e9eee1;color:#86967a}
+.meal-switch-photo>.food-thumb{display:grid;place-items:center;width:100%;height:100%;min-width:0;border-radius:0;font-size:28px}
+.meal-switch-photo>.food-thumb img{display:block;width:100%;height:100%;object-fit:cover}
+.meal-switch-photo .food-thumb>small{display:none}
+.meal-switch>button>small{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.5;min-height:3em}
+.meal-more{border:1px solid #cedcbd;border-radius:16px;background:#f2f6e9;overflow:hidden;box-shadow:0 3px 0 #e7eddd}
+.meal-more>summary{padding:16px 14px;gap:12px;min-height:88px;transition:background .15s}
+.meal-more>summary:hover{background:#e9f0dd}
+.meal-more>summary:focus-visible{outline-offset:-4px}
+.meal-more>summary>.meal-more-icon{display:grid;place-items:center;flex:0 0 40px;height:40px;background:#fff;border-radius:12px;color:#526c47}
+.meal-more>summary>.meal-more-copy{display:grid;gap:6px;min-width:0;flex:1;white-space:normal}
+.meal-more-copy>strong{font-size:16px;line-height:1.5;color:#30482a;font-weight:800;word-break:keep-all}
+.meal-more-copy>small{font-size:12px;line-height:1.6;color:#617456;word-break:keep-all}
+.meal-more>summary>.meal-more-action{display:flex;align-items:center;gap:4px;flex-shrink:0;font-size:12px;font-weight:700;color:#476038}
+.meal-more-close-label{display:none}
+.meal-more[open] .meal-more-open-label{display:none}
+.meal-more[open] .meal-more-close-label{display:inline}
+.meal-more[open] .meal-more-action>svg{transform:rotate(180deg)}
+.meal-more[open]>summary{border-bottom:1px solid #dce6cf}
+.meal-more>.meal-sections{padding:0 14px 12px;background:#fffdf8}
+@media(max-width:420px){.meal-more>summary{gap:9px;padding:14px 12px;flex-wrap:wrap}.meal-more>summary>.meal-more-icon{flex-basis:34px;height:34px}.meal-more-copy>strong{font-size:15px}.meal-more>summary>.meal-more-action{margin-left:auto}.meal-more-copy>small{font-size:11px}}
+@media(min-width:900px){.meal-switch-photo{aspect-ratio:1.65;border-radius:13px}.meal-more>summary{padding:20px 18px}.meal-more-copy>strong{font-size:18px}.meal-more-copy>small{font-size:13px}.meal-more>.meal-sections{padding:0 18px 16px}}
