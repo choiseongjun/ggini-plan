@@ -37,7 +37,7 @@ export function useShoppingProgress(accountId:string|undefined,scope:'products'|
    if(expense&&!userId)throw new Error('로그인하면 구매금액을 식비에 기록할 수 있어요.');
    if(userId){const r=await fetch(endpoint,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({stock:next,version,resetConditions,expense})});const d=await r.json();if(!r.ok){setReady(false);throw new Error(d.error);}data=d;}
    else await (locale.isTaiwan?withTaiwanStockLock:withGuestStockLock)(async()=>{const previous=JSON.parse(localStorage.getItem(key)??'{"version":0}');if(previous.importId)throw new Error('로그인한 계정으로 목록을 옮기는 중이에요. 해당 계정에서 다시 불러와 주세요.');if(previous.version!==version){setReady(false);throw new Error('다른 화면에서 목록이 변경됐어요. 다시 불러와 주세요.');}localStorage.setItem(key,JSON.stringify({...previous,...data}));});
-   if(resetConditions){const draftKey=`kkiniplan-shopping-draft-v2-${userId??'guest'}${locale.storageSuffix}`;localStorage.setItem(draftKey,JSON.stringify({conditions:resetConditions,mealIds:[],savedAt:Date.now()}));sessionStorage.removeItem(draftKey);}
+   if(resetConditions){const draftKey=`kkiniplan-shopping-draft-v2-${userId??'guest'}${locale.storageSuffix}`;localStorage.setItem(draftKey,JSON.stringify({conditions:resetConditions,mealIds:[],savedAt:Date.now()}));sessionStorage.removeItem(draftKey);window.dispatchEvent(new CustomEvent('home-plan-changed',{detail:{key:draftKey}}));}
    setStock(data.stock);setVersion(data.version);window.dispatchEvent(new CustomEvent('shopping-progress-changed',{detail:{scope,source:'cart'}}));if(expense)window.dispatchEvent(new Event('expenses-changed'));return true;
   }catch(e){setError(e instanceof Error?e.message:'구매 상태를 저장하지 못했어요.');return false;}
   finally{lock.current=false;setBusy(false);}

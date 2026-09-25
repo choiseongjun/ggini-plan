@@ -34,6 +34,7 @@ import {MealSourceBadge,RecipeProductPreview} from './meal-source';
 import { MAX_PLAN_DAYS, mealFamily, swapReasons, type SwapReason, basket, purchaseBasket, basketTotal, validMealIds, slotCandidates, mealSchedule, slotLabels, initialConditions, parseConditions,  type MealSlot, type PlanConditions, type PlanProduct } from '../lib/shopping-plan';
 import './shopping-planner.css';
 import './planner-onboarding.css';
+import {MobileBuddy} from './mobile-buddy';
 import {shoppingBudgetGuide} from '../lib/shopping-budget';
 import {excludedFoods,excludedFoodGroups,type ExcludedFood} from '../lib/excluded-foods';
 import {resolveShoppingExclusions} from '../lib/shopping-exclusions';
@@ -189,7 +190,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   }).catch(e=>{if(!controller.signal.aborted)setError(e.message);}).finally(()=>{if(!controller.signal.aborted)setLoading(false);finishLoading();});
   return()=>{controller.abort();finishLoading();};
  },[retry,draftKey,locale,endpoint,planKey,defaultConditions,startLoading,mode,remote]);
- function remember(c:PlanConditions,mealIds:string[]){try{localStorage.setItem(draftKey,encodeDraft(c,mealIds));}catch{/* Saving to an account remains available. */}}
+ function remember(c:PlanConditions,mealIds:string[]){try{localStorage.setItem(draftKey,encodeDraft(c,mealIds));window.dispatchEvent(new CustomEvent('home-plan-changed',{detail:{key:draftKey}}));}catch{/* Saving to an account remains available. */}}
  function updatePreferences(patch:Partial<Pick<PlanConditions,'mealKinds'|'goal'|'budgetMode'|'swapPreferences'>>){
   update(patch);remember({...conditions,...patch},[]);
   if(userId&&!locale.isTaiwan){preferenceQueue.current=preferenceQueue.current.catch(()=>{}).then(async()=>{try{const r=await mutate({method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(patch)});if(!r.ok)throw new Error();}catch{setError('선택은 이 기기에 저장했지만 계정 저장에 실패했어요. 마이페이지에서 다시 저장해 주세요.');}});}
@@ -279,7 +280,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    await preferenceQueue.current;
    const clean={...c,owned:[],supply:conditions.supply};
    if(userId&&!locale.isTaiwan){const r=await mutate({method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({conditions:clean})});const d=await r.json();if(!r.ok)throw new Error(d.error);}
-   localStorage.setItem(draftKey,encodeDraft(clean,[]));
+   remember(clean,[]);
    setIds([]);await generate(clean);
   }catch(e){setError(e instanceof Error?e.message:'설정을 저장하지 못했어요.');}finally{setBusy(false);}
  }
@@ -310,18 +311,15 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    <button type="button" disabled={loading||busy||progress.busy||!progress.ready||(!ids.length&&!Object.values(progress.stock).some(i=>i.owned||i.ordered))} onClick={()=>setConfirmReset(true)}>모두 초기화</button>
    {confirmReset&&<div role="group" aria-label="장바구니 초기화 확인"><strong>추천 메뉴와 주문·보유 목록을 모두 비울까요?</strong><p>홈의 현재 추천 식단도 함께 비워요. 먹은 기록·식비 기록·예산과 취향·공유 링크는 유지돼요. 판매처의 실제 주문은 취소되지 않아요. 이 추천 밖에서 따로 관리하는 재료 목록과 함께 담은 장바구니는 별도예요.</p><button type="button" disabled={progress.busy} onClick={()=>setConfirmReset(false)}>취소</button><button type="button" disabled={progress.busy||!progress.ready} onClick={()=>void resetCart()}>{progress.busy?'초기화 중…':'확인, 모두 초기화'}</button></div>}
   </section>}
-  {mode==='plan'&&!locale.isTaiwan&&<EatOutCard userId={userId} onLogin={onLogin}/>}
-  {mode==='plan'&&!locale.isTaiwan&&userId&&<WeeklyGuideCard userId={userId}/>}
   {/* 앱의 한 바퀴: 맞춤 추천 → 장보고 요리 → 사진으로 기록 → 분석. 장보기를 시작했으면 기록 단계를 강조해요. */}
   {mode==='plan'&&ids.length>0&&(()=>{const shopping=Object.values(progress.stock).some(i=>i.owned>0||i.ordered>0);const current=shopping?3:2;return <ol className="home-steps" aria-label="식단 진행 단계">
    {[['내 몸에 맞는 추천',null],['장보고 요리',null],['사진으로 기록',null],['영양·체중 분석','/profile']].map(([label,href],i)=>{const step=i+1,state=step<current?'is-done':step===current?'is-current':'';const body=<><b>{step<current?'✓':step}</b><span>{label}</span></>;return <li key={label} className={state} aria-current={step===current?'step':undefined}>{href?<Link href={href}>{body}</Link>:body}</li>;})}
   </ol>;})()}
   {mode==='plan'&&!locale.isTaiwan&&ids.length>0&&idsComplete&&<p className="plan-cost-line">이번 식단 예상 재료비 <b>약 {won(total)}</b> · 끼당 약 {won(Math.round(total/ids.length))}<small>쓰는 양 기준 · 기본 양념 제외</small></p>}
   {mode==='plan'&&!locale.isTaiwan&&ids.length>0&&idsComplete&&<section className={adoptionStyles.card} aria-label="선택한 식단으로 기록 시작하기">
-   <span>🌱 {shoppingGoals[conditions.goal??'maintain'].label} · {ids.length}끼</span>
+   <span>{shoppingGoals[conditions.goal??'maintain'].label} · {ids.length}끼</span>
    <h3>마음에 드는 메뉴로, 이대로 먹어볼까요?</h3>
    <p>아래에서 메뉴를 바꿔 고른 뒤 저장하세요. {userId?'내 계정에서 식단을 이어 보고 기록할 수 있어요.':'로그인하면 고른 식단을 계정에 저장하고, 매일의 식비와 영양을 모아 볼 수 있어요.'}</p>
-   <div className={adoptionStyles.benefits}><span>🧺 나의 장보기</span><span>💰 월별 식비</span><span>🥚 칼로리·단백질 등 영양 기록</span></div>
    <button type="button" className="primary-button" disabled={busy||loading||total>conditions.budget} onClick={()=>void save()}>{busy?'저장 중…':userId?'이대로 먹기 · 식단 저장':'이대로 먹기 · 로그인하고 저장'}</button>
    {userId&&<div><Link href="/cart">장보기 이어가기 →</Link><Link href="/record">내 식비·영양 기록 →</Link></div>}
    <small>추천·저장만으로 지출이나 먹은 기록이 생기지는 않아요. 구매 상태와 실제 먹은 양을 등록하면 기록에 반영돼요. 영양은 등록·추정 정보 기준이며 미확인 값은 제외해요.</small>
@@ -333,31 +331,33 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   {/* 커뮤니티에 올리기는 잠시 숨김 (커뮤니티 기능 정리 전) */}
   {!locale.isTaiwan&&mode!=='settings'&&ids.length>0&&idsComplete&&<p className="body-note">식사 목표 · {shoppingGoals[conditions.goal??'maintain'].label}</p>}
   {mode==='plan'&&ids.length>0&&idsComplete&&<div className="planner-reroll-actions">
-   <button type="button" className="primary-button" disabled={busy||loading||progress.busy||!progress.ready} onClick={()=>void generate(conditions)}>🔀 다른 조합으로 다시 추천</button>
-   <button type="button" className="planner-restart" disabled={busy||progress.busy} onClick={returnToSetup}><span aria-hidden="true">⚙️</span> 조건 바꿔서 다시 추천받기</button>
+   <button type="button" className="primary-button" disabled={busy||loading||progress.busy||!progress.ready} onClick={()=>void generate(conditions)}>다른 식단 추천받기</button>
+   <button type="button" className="planner-restart" disabled={busy||progress.busy} onClick={returnToSetup}>추천 조건 바꾸기</button>
   </div>}
   {mode==='plan'&&!ids.length&&!locale.isTaiwan&&!showSetup&&<section className="home-start" aria-labelledby="planner-title">
-   <span className="home-start-kicker">MY MEAL PLAN</span>
-   <h2 id="planner-title">이번 주 식단,<br/>고민 없이 준비해요</h2>
-   <p>{personalization?.hasProfile?'내 몸 정보와 목표에 맞춰 끼니별 메뉴·재료·영양을 준비해요.':'버튼 한 번이면 끼니별 메뉴와 재료, 영양까지 준비해요.'}</p>
-   <div className="home-start-benefits"><span>🥗 끼니별 메뉴</span><span>🧺 장보기 재료</span><span>🥚 영양 정보</span></div>
-   <button type="button" className="primary-button home-start-cta" disabled={loading||busy||!progress.ready||!catalogReady} onClick={()=>void generate()}>{loading?'준비 중…':busy?'식단을 짜고 있어요…':<>내 식단 추천받기 <span aria-hidden="true">↗</span></>}</button>
-   <button type="button" className="home-start-custom" disabled={loading||busy} onClick={()=>setShowSetup(true)}>조건 직접 정하기</button>
+   <MobileBuddy titleId="planner-title"/>
+   <div className="home-start-actions">
+   <button type="button" className="primary-button home-start-cta" disabled={loading||busy||!progress.ready||!catalogReady} onClick={()=>void generate()}>{loading?'준비 중…':busy?'식단을 짜고 있어요…':'내 식단 추천받기'}</button>
+   <button type="button" className="home-start-custom" disabled={loading||busy} onClick={()=>setShowSetup(true)}>취향·못 먹는 재료 설정</button>
+   {!locale.isTaiwan&&<Link className="home-tutorial-link" href="/how-to">처음이라면? 사용법 살펴보기</Link>}
+   </div>
   </section>}
   {(mode!=='plan'||!ids.length)&&(mode!=='plan'||locale.isTaiwan||showSetup)&&<details ref={setupRef} tabIndex={-1} className="planner-controls" open={mode==='settings'||mode==='plan'}><summary>{ids.length?'조건 바꿔서 새로 추천받기':locale.isTaiwan?'내 예산으로 식단 준비하기':'조건 정해서 추천받기'}</summary>
-  <div className="planner-heading">{mode==='plan'&&<div className="planner-buddy" aria-hidden="true"><RiceBuddy/><span>잘 챙겨 먹자!</span></div>}<span>{locale.isTaiwan?'나에게 맞는 예산·영양 추천':'내 몸에 맞는 식단 추천'}</span><h2 id="planner-title">{mode==='settings'?'내 장보기 설정':mode==='cart'?'이번에 살 것':'이번 주, 뭐 먹을까요?'}</h2><p>{mode==='settings'?'자주 쓰는 예산과 식사 취향을 저장해 두세요. 다음 추천부터 다시 입력할 필요 없어요.':locale.isTaiwan?'예산과 몸 상태에 맞춰 인원과 끼니를 고르면, 칼로리·영양까지 맞는 메뉴를 추천해요.':ultra?'목표만 고르면 내 칼로리·영양에 맞는 메뉴를 추천해요.':simple?'목표와 챙길 끼니를 고르면 메뉴를 짜 드려요.':'인원·끼니·재료비까지 직접 정해서 추천받아요.'}</p></div>
+  {mode==='plan'&&!locale.isTaiwan&&<button type="button" className="planner-setup-back" onClick={()=>setShowSetup(false)}>처음으로 돌아가기</button>}
+  <div className="planner-heading">{mode==='plan'&&<div className="planner-buddy" aria-hidden="true"><RiceBuddy/><span>잘 챙겨 먹자!</span></div>}<span>{locale.isTaiwan?'나에게 맞는 예산·영양 추천':'내 몸에 맞는 식단 추천'}</span><h2 id="planner-title">{mode==='settings'?'내 장보기 설정':mode==='cart'?'이번에 살 것':'어떻게 먹고 싶어요?'}</h2><p>{mode==='settings'?'자주 쓰는 예산과 식사 취향을 저장해 두세요. 다음 추천부터 다시 입력할 필요 없어요.':locale.isTaiwan?'예산과 몸 상태에 맞춰 인원과 끼니를 고르면, 칼로리·영양까지 맞는 메뉴를 추천해요.':ultra?'목표와 피할 재료를 골라주세요.':simple?'목표와 챙길 끼니를 고르면 메뉴를 짜 드려요.':'인원·끼니·재료비까지 직접 정해서 추천받아요.'}</p></div>
   {progress.error&&!ids.length&&mode!=='cart'&&<p role="alert">{progress.error} <button type="button" onClick={progress.reload}>구매 상태 다시 불러오기</button></p>}
   {mode!=='cart'&&<form className="planner-form" onSubmit={e=>{e.preventDefault();if(waitingForBudget)return;if(mode==='settings')void savePreferences();else void generate();}}>
    {locale.isTaiwan&&<label className="planner-budget-input"><span>{locale.isTaiwan?'장보기 예산':`${conditions.people??1}명 전체 장보기 예산`}</span> <small>배송비 제외</small><input type="number" min={locale.isTaiwan?10:1000} max={locale.isTaiwan?10000:1000000} step={1} required value={conditions.budget/(locale.isTaiwan?100:1)||''} onChange={e=>update({budget:Math.round(Number(e.target.value)*(locale.isTaiwan?100:1))})}/></label>}
-   {mode==='plan'&&!locale.isTaiwan&&<div className="planner-mode" role="group" aria-label="추천 설정 모드">{([['ultra','초간단'],['simple','간단'],['detailed','상세']] as const).map(([value,label])=><button type="button" key={value} aria-pressed={formMode===value} onClick={()=>{setFormMode(value);if(value!=='detailed')setMealCap(null);}}>{label}</button>)}</div>}
-   {mode==='plan'&&!locale.isTaiwan&&<p className="planner-mode-hint">{ultra?'목표만 고르면 나머지는 저장된 설정으로 추천해요.':simple?'목표와 몇 끼·어느 끼니를 정해요.':'간단 모드에 인원·한 끼 재료비 상한이 더해져요.'}</p>}
    {!locale.isTaiwan&&personalization&&<PersonalizationSummary personalization={personalization}/>}
    {!locale.isTaiwan&&<ShoppingGoalPicker value={conditions.goal} onChange={goal=>updatePreferences({goal})} settings={false} disabled={loading||busy}/>}
+   {mode==='plan'&&!locale.isTaiwan&&<button type="button" className="planner-advanced" aria-expanded={!ultra} aria-controls="planner-advanced-fields" onClick={()=>setFormMode(ultra?'detailed':'ultra')}>{ultra?'더 설정하기':'추가 설정 접기'} <span>끼니·인원·예산</span></button>}
+   <div id="planner-advanced-fields" hidden={ultra||locale.isTaiwan}>
    {!locale.isTaiwan&&!ultra&&<fieldset className="planner-simple" disabled={loading||busy}><legend>몇 끼 준비할까요?</legend><div>{[3,5,7].map(n=><button type="button" key={n} aria-pressed={!customMeals&&conditions.meals===n} onClick={()=>{setCustomMeals(false);update({mealCountMode:true,meals:n,days:Math.ceil(n/(conditions.slots?.length??1)),slots:conditions.slots??['dinner']});}}><strong>{n}끼</strong></button>)}<button type="button" aria-pressed={customMeals||![3,5,7].includes(conditions.meals)} onClick={()=>setCustomMeals(true)}><strong>직접 입력</strong></button></div>
    {(customMeals||![3,5,7].includes(conditions.meals))&&<label className="planner-meals-custom">끼니 수 직접 입력 <span>1~{MAX_PLAN_DAYS*(conditions.slots?.length??1)}끼</span><input type="number" min={1} max={MAX_PLAN_DAYS*(conditions.slots?.length??1)} step={1} inputMode="numeric" value={conditions.meals} onChange={e=>{const max=MAX_PLAN_DAYS*(conditions.slots?.length??1);const n=Math.max(1,Math.min(max,Math.round(Number(e.target.value))||1));update({mealCountMode:true,meals:n,days:Math.ceil(n/(conditions.slots?.length??1)),slots:conditions.slots??['dinner']});}}/></label>}
    <div className="simple-meal-times" role="group" aria-label="추천받을 끼니"><span>어느 끼니를 챙길까요?</span>{(['breakfast','lunch','dinner'] as MealSlot[]).map(slot=><button type="button" key={slot} aria-pressed={(conditions.slots??['dinner']).includes(slot)} onClick={()=>{const current=conditions.slots??['dinner'];const slots=current.includes(slot)?current.filter(s=>s!==slot):[...current,slot].sort((a,b)=>Object.keys(slotLabels).indexOf(a)-Object.keys(slotLabels).indexOf(b));if(slots.length){const meals=Math.min(conditions.meals,MAX_PLAN_DAYS*slots.length);update({mealCountMode:true,meals,days:Math.ceil(meals/slots.length),slots});}}}>{slotLabels[slot]}</button>)}</div><small>총 {conditions.meals}끼 · {(conditions.slots??['dinner']).map(s=>slotLabels[s]).join('·')} 순서로 {conditions.days??conditions.meals}일 동안 준비해요.{conditions.meals%(conditions.slots?.length??1)!==0?' 마지막 날은 선택한 끼니 일부만 포함돼요.':''} 밖에서 먹는 끼니는 빼 주세요.</small></fieldset>}
    {!locale.isTaiwan&&detailedView&&<fieldset className="household-options" disabled={loading||busy}><legend>몇 명이 먹나요?</legend><div>{[1,2,3,4].map(people=><button type="button" key={people} aria-pressed={(conditions.people??1)===people} onClick={()=>update({people})}>{people}명</button>)}</div><small>장보기는 {(conditions.people??1)}명 전체 분량, 영양·먹은 기록은 내 1인분 기준이에요.</small></fieldset>}
    {!locale.isTaiwan&&detailedView&&<label className="planner-meal-cap"><span>한 끼 재료비 상한 <small>(선택)</small></span><input type="number" inputMode="numeric" min={500} max={50000} step={500} placeholder="제한 없음" value={mealCap??''} onChange={e=>{const v=Math.round(Number(e.target.value));setMealCap(v>0?v:null);}}/><small>비워 두면 가격 제한 없이 내 몸 기준으로 추천해요. 재료는 쓰는 양 기준으로 계산해요.</small></label>}
+   </div>
    {locale.isTaiwan&&<>
    <label>며칠을 준비할까요?<select value={conditions.days??5} onChange={e=>update({mealCountMode:false,days:Number(e.target.value),slots:conditions.slots??['dinner']})}>{Array.from({length:MAX_PLAN_DAYS},(_,i)=>i+1).map(days=><option key={days} value={days}>{days}일</option>)}</select></label>
    <fieldset className="planner-slots"><legend>앱이 챙겨줄 끼니</legend>{(Object.keys(slotLabels) as MealSlot[]).filter(slot=>!locale.isTaiwan||slot!=='breakfast').map(slot=><label key={slot}><Checkbox checked={(conditions.slots??['dinner']).includes(slot)} onChange={e=>{const current=conditions.slots??['dinner'];update({mealCountMode:false,days:conditions.days??5,slots:e.target.checked?[...current,slot].sort((a,b)=>Object.keys(slotLabels).indexOf(a)-Object.keys(slotLabels).indexOf(b)):current.filter(s=>s!==slot)});}}/>{slotLabels[slot]}</label>)}</fieldset>
@@ -402,8 +402,8 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    </fieldset>}
    </div>
    {!!conditions.swapPreferences?.length&&<p className="body-note">교체 의견 {conditions.swapPreferences.length}개 반영 중 <button type="button" disabled={busy} onClick={()=>updatePreferences({swapPreferences:[]})}>의견 초기화</button></p>}
-   <button className="primary-button" disabled={loading||busy||waitingForBudget||!progress.ready||(mode!=='settings'&&!catalogReady)}>{loading?'설정 불러오는 중…':waitingForBudget?'예산 계산 중…':busy?(mode==='settings'?'저장 중…':'추천 준비 중…'):mode==='settings'?'저장하고 내 정보로 추천받기':(locale.isTaiwan?'내 예산으로 추천받기 →':'내 몸에 맞는 식단 추천받기 →')}</button>
-   {mode==='plan'&&!locale.isTaiwan&&<button type="button" className="planner-restart" disabled={loading||busy||waitingForBudget||!progress.ready||!catalogReady} onClick={startBuilding}>🛠 직접 만들어서 담기</button>}
+   <button className="primary-button" disabled={loading||busy||waitingForBudget||!progress.ready||(mode!=='settings'&&!catalogReady)}>{loading?'설정 불러오는 중…':waitingForBudget?'예산 계산 중…':busy?(mode==='settings'?'저장 중…':'추천 준비 중…'):mode==='settings'?'저장하고 내 정보로 추천받기':(locale.isTaiwan?'내 예산으로 추천받기 →':'이 조건으로 추천받기')}</button>
+   {mode==='plan'&&!locale.isTaiwan&&<button type="button" className="planner-restart" disabled={loading||busy||waitingForBudget||!progress.ready||!catalogReady} onClick={startBuilding}>메뉴 직접 고르기</button>}
   </form>}
   </details>}
   {mode!=='settings'&&!loading&&!catalogReady&&<p>현재 추천할 수 있는 상품이 없어요. 판매 구성과 출처가 확인된 상품을 준비하고 있어요.</p>}
@@ -438,6 +438,8 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   {mode==='cart'&&!ids.length&&<p><Link href="/">홈에서 이번에 살 것 추천받기 →</Link></p>}
   {mode==='settings'&&<div className="profile-shopping-links"><Link href="/">내 설정으로 추천받기 →</Link><Link href="/cart">이번 장보기 목록 →</Link>{!userId&&<small>로그인하면 설정을 계정에 저장할 수 있어요.</small>}</div>}
   {message&&<p role="status" className="body-note">{message}</p>}
+  {mode==='plan'&&!locale.isTaiwan&&<EatOutCard userId={userId} onLogin={onLogin}/>}
+  {mode==='plan'&&!locale.isTaiwan&&userId&&<WeeklyGuideCard userId={userId}/>}
   {mode==='plan'&&!locale.isTaiwan&&ids.length>0&&idsComplete&&(!building||ids.every(Boolean))&&<PlannerFab actions={[
    {key:'overview',icon:fabIcons.overview,label:'전체 식단 한눈에',onClick:()=>setOverviewOpen(true)},
    {key:'reroll',icon:fabIcons.reroll,label:'다른 조합으로 다시 추천',disabled:busy||loading||progress.busy||!progress.ready,onClick:()=>void generate(conditions)},

@@ -16,7 +16,7 @@ export function BetaBanner() {
  }, []);
  if (!open) return null;
  return <div className="beta-banner" role="status">
-  <p><strong>끼니플랜은 현재 베타 서비스입니다.</strong> 예상치 못한 동작이나 데이터 손실이 발생할 수 있습니다. 여러분의 피드백이 개선에 큰 도움이 됩니다.</p>
+  <details className="beta-details"><summary>베타 테스트 중이에요 <span>자세히</span></summary><p>예상치 못한 동작이나 데이터 손실이 발생할 수 있습니다. 불편한 점은 마이페이지의 ‘의견 남기기’로 알려주세요.</p></details>
   <button type="button" aria-label="베타 안내 닫기" onClick={() => { setOpen(false); try { localStorage.setItem(KEY, '1'); } catch { /* 이번 방문 동안만 닫힌다. */ } }}>
    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
   </button>

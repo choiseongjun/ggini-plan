@@ -3,10 +3,11 @@
 import Link from 'next/link';
 import {useCallback,useEffect,useRef,useState} from 'react';
 import type {IntakeStats} from '../lib/intake-stats';
-import {ProfileIcon,type ProfileIconName} from './profile-icons';
+import type {buddyGrowth} from '../lib/buddy-growth';
+import {RecordMedal} from './record-medal';
 import './record-progress.css';
 
-type Stats=IntakeStats&{goals:{calories:number|null;protein:number|null}};
+type Stats=IntakeStats&{goals:{calories:number|null;protein:number|null};buddy?:ReturnType<typeof buddyGrowth>};
 export const INTAKE_LOGGED_EVENT='intake-logged';
 
 // Streak/badges/weekly report for the signed-in user; refetches whenever a meal is logged or undone.
@@ -16,19 +17,24 @@ export function useIntakeStats(userId?:string){
  const earned=useRef<Set<string>|null>(null);
  useEffect(()=>{
   if(!userId)return;
-  let alive=true;
-  const load=()=>fetch('/api/food-intake/stats',{cache:'no-store'}).then(r=>r.ok?r.json():null).then((d:Stats|null)=>{
-   if(!alive||!d)return;
+  let alive=true,revision=0;
+  const day=()=>new Date().toLocaleDateString('sv-SE',{timeZone:'Asia/Seoul'});
+  let lastDay=day();
+  const load=()=>{const request=++revision;return fetch('/api/food-intake/stats',{cache:'no-store'}).then(r=>r.ok?r.json():null).then((d:Stats|null)=>{
+   if(!alive||request!==revision||!d)return;
    const now=d.badges.filter(b=>b.earned);
    // Only celebrate badges earned while the page is open, not ones from before.
    if(earned.current)setNewBadges(now.filter(b=>!earned.current!.has(b.key)));
    earned.current=new Set(now.map(b=>b.key));
    setStats(d);
-  }).catch(()=>{});
+  }).catch(()=>{});};
   void load();
   const changed=(e:Event)=>{const detail=(e as CustomEvent).detail;if(e.type===INTAKE_LOGGED_EVENT||detail?.source==='intake')void load();};
   window.addEventListener(INTAKE_LOGGED_EVENT,changed);window.addEventListener('shopping-progress-changed',changed);
-  return()=>{alive=false;window.removeEventListener(INTAKE_LOGGED_EVENT,changed);window.removeEventListener('shopping-progress-changed',changed);};
+  const visible=()=>{if(document.visibilityState==='visible'){const now=day();if(now!==lastDay)setStats(null);lastDay=now;void load();}};
+  const timer=window.setInterval(()=>{const now=day();if(now!==lastDay){lastDay=now;setStats(null);void load();}},60000);
+  document.addEventListener('visibilitychange',visible);
+  return()=>{alive=false;window.clearInterval(timer);document.removeEventListener('visibilitychange',visible);window.removeEventListener(INTAKE_LOGGED_EVENT,changed);window.removeEventListener('shopping-progress-changed',changed);};
  },[userId]);
  const dismissBadges=useCallback(()=>setNewBadges([]),[]);
  return {stats,newBadges,dismissBadges};
@@ -48,7 +54,7 @@ export function BadgeToast({badges,onClose}:{badges:Stats['badges'];onClose:()=>
  if(!badges.length)return null;
  const b=badges[0];
  return <div className="rp-toast" role="status" onClick={onClose}>
-  <span className={`rp-toast-icon tone-${b.tone}`}><ProfileIcon name={b.icon as ProfileIconName} size={26}/></span>
+  <span className={`rp-toast-icon tone-${b.tone}`}><RecordMedal badgeKey={b.key}/></span>
   <div><small>새 배지를 받았어요</small><strong>{b.label}</strong><span>{b.description}</span></div>
  </div>;
 }
@@ -65,8 +71,9 @@ export function RecordCard({stats}:{stats:Stats|null}){
   <p className="rp-freeze"><span className={streak.freezeAvailable?'is-on':''} aria-hidden="true"/>{streak.freezeAvailable?'이번 주 쉬기권 1장 · 하루 못 올려도 연속 기록이 이어져요':'이번 주 쉬기권을 썼어요 · 다음 주 월요일에 다시 생겨요'}</p>
   {next&&<div className="rp-next"><span>다음 배지 · <b>{next.label}</b></span><div className="rp-bar"><i style={{width:`${next.progress/next.goal*100}%`}}/></div><small>{next.description} ({next.progress}/{next.goal})</small></div>}
   <ul className="rp-badges">{badges.map(b=><li key={b.key} className={b.earned?'is-earned':''} title={b.description}>
-   <span className={`rp-badge-icon tone-${b.tone}`}><ProfileIcon name={b.icon as ProfileIconName}/>{b.earned&&<i aria-hidden="true"/>}</span>
+   <span className={`rp-badge-icon tone-${b.tone}`}><RecordMedal badgeKey={b.key}/>{b.earned&&<i aria-hidden="true"/>}</span>
    <strong>{b.label}</strong><small>{b.earned?'획득':`${b.progress}/${b.goal}`}</small>
+   <span className="rp-badge-description">{b.description}</span>
   </li>)}</ul>
  </section>;
 }

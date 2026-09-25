@@ -9,6 +9,7 @@ import { defaultDiet, dietStyles, excludedFoods, excludedFoodGroups, parseDiet, 
 import { healthFlags, type HealthFlag } from "../lib/today-context";
 import { parseNutritionTarget, type NutritionTarget } from "../lib/nutrition-target";
 import { RiceBuddy } from "./rice-buddy";
+import { BuddyCompanion } from "./buddy-companion";
 import { AppLoading } from "./app-loading";
 import { invalidateJson } from "../lib/client-cache";
 import { WeekAnalysis } from "./week-analysis";
@@ -46,6 +47,18 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
   const [goal, setGoal] = useState<BodyGoal | "">("");
   const [custom, setCustom] = useState<CustomTarget | null>(null);
   const { stats: intakeStats } = useIntakeStats(userId);
+  useEffect(() => {
+    if (!userId) return;
+    const followLink = () => {
+      const id = window.location.hash.slice(1);
+      if (id === 'weekly-report' || id === 'meal-reminders' || id === 'buddy-companion') {
+        document.getElementById(id)?.scrollIntoView({block: 'start'});
+      }
+    };
+    const frame = requestAnimationFrame(followLink);
+    window.addEventListener('hashchange', followLink);
+    return () => { cancelAnimationFrame(frame); window.removeEventListener('hashchange', followLink); };
+  }, [userId]);
   const [wizardStep, setWizardStep] = useState<number | null>(null);
   const [quickWizard, setQuickWizard] = useState(false);
   const [direction, setDirection] = useState<1 | -1>(1);
@@ -196,6 +209,7 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
   }
 
   return <>
+    <BuddyCompanion key={userId??'guest'} userId={userId} recordCount={intakeStats?.week.meals} weekStart={intakeStats?.week.start} growth={intakeStats?.buddy} loggedToday={intakeStats?.streak.loggedToday} guest={!userId} onLogin={onLogin}/>
     {loading ? <AppLoading message="저장된 정보를 불러오는 중이에요"/> : loadError ? <section className="energy-card is-empty"><div><strong>정보를 불러오지 못했어요</strong><p>잠시 후 다시 시도해 주세요.</p><button type="button" className="wizard-next" onClick={()=>window.location.reload()}>다시 불러오기</button></div></section>
     : calories ? <section className="energy-card" aria-label="하루 에너지">
       <div className="energy-top"><span>하루 목표 칼로리 · {custom ? "직접 설정" : goal ? bodyGoals[goal].label : "체중 유지 기준"}</span><button type="button" onClick={()=>openWizard(5)}>칼로리·탄단지 설정</button></div>
@@ -207,10 +221,10 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
     </section>
     : <section className="energy-card is-empty" aria-label="하루 에너지"><div className="energy-buddy" aria-hidden="true"><RiceBuddy/></div><div><strong>{pregnancy ? "임신·수유 중에는 자동 계산을 쉬어요" : "내 하루 칼로리를 알아볼까요?"}</strong><p>{pregnancy ? "개인별 영양 상담을 권해요. 취향은 메뉴 추천에 반영돼요." : "키·체중·활동량을 알려주면 칼로리와 탄단지를 바로 계산해요."}</p>{!pregnancy && <button type="button" className="wizard-next" onClick={focusProfile}>1분 만에 입력하기</button>}</div></section>}
     {/* 정보가 없을 땐 위의 '1분 만에 입력하기' 카드 하나만 — 선택지를 늘리지 않는다. */}
-    {hasInfo && userId && <MealReminderCard/>}
+    {userId && <section id="meal-reminders" className="profile-retention-section"><h3 className="profile-group-title">다음 식사도 잊지 않게</h3><MealReminderCard/></section>}
     {hasInfo && userId && <WeightCard userId={userId} fallbackWeight={Number(weight)||null} onLogged={kg=>setWeight(String(kg))}/>}
-    {hasInfo && userId && <RecordCard stats={intakeStats}/>}
-    {hasInfo && userId && <WeeklyReportCard stats={intakeStats}/>}
+    {userId && <details className="profile-extra"><summary>내 기록 배지 보기</summary><RecordCard stats={intakeStats}/></details>}
+    {userId && <section id="weekly-report" className="profile-retention-section"><WeeklyReportCard stats={intakeStats}/></section>}
     {hasInfo && !loading && !loadError && <WeekAnalysis userId={userId} profile={profile} target={shownTarget} onOpenInfo={focusProfile}/>}
     {hasInfo && !loading && !loadError && <ProfileProgress fields={fields} reviewed={reviewed} saved={savedProfile} onOpen={openWizard}/>}
     <ProfileWizardModal step={wizardStep} direction={direction} quick={quickWizard} fields={fields} userId={userId} saving={saving} error={wizardStep === null ? "" : error}

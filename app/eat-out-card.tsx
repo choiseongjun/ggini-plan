@@ -107,8 +107,8 @@ export function EatOutCard({userId, onLogin}: {userId?: string; onLogin: () => v
 
  const s = result?.state;
  return <section className="eo-entry" aria-label="지금 뭐 먹지">
-  <div><strong>밖에서 먹어요?</strong><span>오늘 먹은 걸 보고 지금 먹기 좋은 메뉴를 골라 드려요</span></div>
-  <button type="button" onClick={() => { setOpen(true); if (!result) suggest(''); }}>지금 뭐 먹지?</button>
+  <div><strong>오늘은 밖에서 먹나요?</strong><span>지금 먹기 좋은 메뉴를 골라드려요.</span></div>
+  <button type="button" onClick={() => { setOpen(true); if (!result) suggest(''); }}>메뉴 찾기</button>
 
   {open && <dialog ref={dialog} className="eo-dialog" aria-labelledby="eo-title" onCancel={(e) => { e.preventDefault(); setOpen(false); }} onClick={(e) => { if (e.target === e.currentTarget) setOpen(false); }}>
    <div className="eo-sheet">

@@ -1,0 +1,25 @@
+.rice-buddy-body{transform-origin:120px 210px}
+.rice-buddy-eyes{transform-origin:120px 132px}
+.rice-buddy-spoon{transform-origin:45px 143px}
+@media(prefers-reduced-motion:no-preference){
+ .rice-buddy-alive .rice-buddy-body{animation:kkini-breathe 5s ease-in-out infinite}
+ .rice-buddy-alive .rice-buddy-eyes{animation:kkini-blink 7s linear infinite}
+ .promo-companion-art .rice-buddy-alive .rice-buddy-body{animation-duration:7s}
+ .buddy-pet[data-mood="0"] .rice-buddy-body{animation:kkini-curious 8s ease-in-out infinite}
+ .buddy-pet[data-mood="1"] .rice-buddy-spoon{animation:kkini-idle-wave 8s ease-in-out infinite}
+ .buddy-pet[data-mood="2"] .rice-buddy-body{animation:kkini-stretch 8s ease-in-out infinite}
+ .buddy-pet.is-wave .rice-buddy-spoon{animation:kkini-wave 1.2s ease-in-out 2}
+ .buddy-pet.is-record .rice-buddy-body,.buddy-pet.is-grow .rice-buddy-body{animation:kkini-hop 850ms ease-in-out 2}
+ .buddy-pet.is-grow .rice-buddy-spoon{animation:kkini-wave 1.2s ease-in-out 2}
+ .buddy-pet.is-grow::after{animation:kkini-gift 2.8s ease-out both}
+}
+.buddy-home.is-resting .rice-buddy *{animation-play-state:paused!important}
+.buddy-home.is-resting .buddy-pet.is-wave .rice-buddy-spoon{animation-play-state:running!important}
+@keyframes kkini-curious{0%,15%,65%,100%{transform:rotate(0) translateY(0)}30%,45%{transform:rotate(-5deg) translateY(-3px)}80%{transform:translateY(-2px)}}
+@keyframes kkini-idle-wave{0%,20%,65%,100%{transform:rotate(0)}30%,50%{transform:rotate(-15deg)}40%,60%{transform:rotate(8deg)}}
+@keyframes kkini-stretch{0%,20%,75%,100%{transform:scale(1) translateY(0)}40%,55%{transform:scale(.98,1.04) translateY(-4px)}65%{transform:scale(1.02,.98)}}
+@keyframes kkini-breathe{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-2px) scale(1.008,1.015)}}
+@keyframes kkini-blink{0%,42%,46%,100%{transform:scaleY(1)}44%{transform:scaleY(.12)}}
+@keyframes kkini-wave{0%,100%{transform:rotate(0)}25%,65%{transform:rotate(-12deg)}45%,85%{transform:rotate(10deg)}}
+@keyframes kkini-hop{0%,100%{transform:translateY(0)}20%{transform:translateY(2px) scale(1.03,.97)}48%{transform:translateY(-12px) rotate(-3deg)}70%{transform:translateY(0) scale(1.02,.98)}}
+@keyframes kkini-gift{0%{opacity:0;transform:translate(-50%,8px) scale(.8)}20%,75%{opacity:1;transform:translate(-50%,0) scale(1)}100%{opacity:0;transform:translate(-50%,-8px)}}

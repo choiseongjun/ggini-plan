@@ -1,11 +1,9 @@
 import { calorieEstimate, type BodyProfile } from "./body-profile";
 import { dailyNutritionReference } from "./daily-nutrition-reference";
 import type { NutritionTarget } from "./nutrition-target";
-import { servingNutrients } from "./serving-nutrients";
+import { servingNutrients, nutritionIsEstimated } from "./serving-nutrients";
 import { mealSchedule, type MealSlot, type PlanConditions, type PlanProduct } from "./shopping-plan";
 
-// ~7,700 kcal of cumulative surplus/deficit ≈ 1 kg of body weight (the common rule of thumb; real change varies).
-export const KCAL_PER_KG = 7700;
 const slotOrder: MealSlot[] = ["breakfast", "lunch", "dinner"];
 
 export type NutrientKey = "protein" | "carbs" | "fat" | "sodium";
@@ -17,9 +15,12 @@ export function analyzeWeek({ ids, products, conditions, profile, target }: { id
   if (!energy || !reference) return null;
   const dailyGoal = target?.calories ?? energy.daily;
   // What a meal "should" be: the user's own split for 아침·점심·저녁 when they set one, otherwise an even share.
-  const slotGoal = (slot: MealSlot) => target?.mealCalories && profile.meals === 3 ? target.mealCalories[slotOrder.indexOf(slot)] : dailyGoal / profile.meals;
+  const hasSplit=target?.mealCalories?.length===3&&profile.meals===3;
+  const slotGoal = (slot: MealSlot) => hasSplit ? target!.mealCalories![slotOrder.indexOf(slot)] : dailyGoal / profile.meals;
 
   const schedule = mealSchedule(conditions);
+  // Missing catalog items cannot silently become target-sized meals.
+  if (!ids.length || ids.length !== schedule.length || ids.some(id => !products.some(p => p.id === id))) return null;
   const dayCount = Math.max(0, ...schedule.map(s => s.day));
   const days = Array.from({ length: dayCount }, (_, i) => {
     const meals = ids.flatMap((id, index) => {
@@ -31,7 +32,7 @@ export function analyzeWeek({ ids, products, conditions, profile, target }: { id
     // Meals the plan doesn't cover (e.g. only 저녁 was recommended) are assumed to be eaten at the goal amount.
     const openSlots = Math.max(0, profile.meals - meals.length);
     const coveredSlots = new Set(meals.map(m => m.slot));
-    const openGoal = target?.mealCalories && profile.meals === 3
+    const openGoal = hasSplit
       ? slotOrder.filter(s => !coveredSlots.has(s)).slice(0, openSlots).reduce((sum, s) => sum + slotGoal(s), 0)
       : openSlots * dailyGoal / profile.meals;
     const intake = Math.round(planned + openGoal);
@@ -41,7 +42,6 @@ export function analyzeWeek({ ids, products, conditions, profile, target }: { id
 
   const avgIntake = Math.round(days.reduce((sum, d) => sum + d.intake, 0) / days.length);
   const avgDelta = avgIntake - energy.daily;
-  const weekKg = avgDelta * 7 / KCAL_PER_KG;
 
   // Nutrients: judged only on the recommended meals, each against its share of the daily goal.
   const planned = days.flatMap(d => d.meals);
@@ -57,25 +57,24 @@ export function analyzeWeek({ ids, products, conditions, profile, target }: { id
     const actual = known.reduce((sum, m) => sum + m.n[key]!, 0);
     const goal = known.reduce((sum, m) => sum + dailyTargets[key] * slotGoal(m.slot) / dailyGoal, 0);
     const percent = goal > 0 && known.length ? Math.round(actual / goal * 100) : null;
-    const status: NutrientStatus | null = percent === null ? null : key === "sodium" ? (percent > 100 ? "high" : "ok") : percent < 80 ? "low" : percent > 125 ? "high" : "ok";
+    const ratio=goal>0&&known.length?actual/goal:null;
+    const status: NutrientStatus | null = ratio === null ? null : key === "sodium" ? (ratio > 1 ? "high" : "ok") : ratio < .8 ? "low" : ratio > 1.25 ? "high" : "ok";
     return { key, percent, status, perMeal: known.length ? Math.round(actual / known.length) : null, goalPerMeal: known.length ? Math.round(goal / known.length) : null, known: known.length, missing: planned.length - known.length };
   });
 
-  return { days, maintenance: energy.daily, dailyGoal, avgIntake, avgDelta, weekKg, monthKg: weekKg * 4, nutrients, plannedMeals: planned.length, assumedMeals: days.reduce((n, d) => n + Math.max(0, profile.meals - d.meals.length), 0) };
+  return { days, maintenance: energy.daily, dailyGoal, avgIntake, avgDelta, totalDelta:days.reduce((sum,d)=>sum+d.delta,0), unknownMeals:days.reduce((sum,d)=>sum+d.unknown,0), estimatedMeals:planned.filter(m=>nutritionIsEstimated(m.product)).length, nutrients, plannedMeals: planned.length, assumedMeals: days.reduce((n, d) => n + Math.max(0, profile.meals - d.meals.length), 0) };
 }
 export type WeekAnalysis = NonNullable<ReturnType<typeof analyzeWeek>>;
 
-export type ActualLog = { productId: string; calories: number | null; date: string };
+export type ActualLog = { productId: string; calories: number | null; protein?:number|null; date: string };
 
-// Per plan day, what was actually logged. Like the plan, meals not logged that day are assumed at the
-// goal amount so the two lines stay comparable; quick extras (밥 추가, 음료…) add on top.
-export function actualByDay(analysis: WeekAnalysis, logs: ActualLog[], dates: string[], meals: number, extraPrefix: string) {
+// Recorded energy only. Missing meals and unknown calories are never invented.
+export function actualByDay(analysis: WeekAnalysis, logs: ActualLog[], dates: string[]) {
   return analysis.days.map((d, i) => {
     const dayLogs = logs.filter(l => l.date === dates[i]);
     if (!dayLogs.length) return null;
     const logged = Math.round(dayLogs.reduce((sum, l) => sum + (l.calories ?? 0), 0));
-    const mainMeals = dayLogs.filter(l => !l.productId.startsWith(extraPrefix)).length;
-    const assumed = Math.round(Math.max(0, meals - mainMeals) * analysis.dailyGoal / meals);
-    return { logged, assumed, intake: logged + assumed, vsPlan: logged + assumed - d.intake };
+    const proteins=dayLogs.filter(l=>typeof l.protein==='number');
+    return { logged, intake:logged, unknown:dayLogs.filter(l=>l.calories===null).length, protein:proteins.length?Math.round(proteins.reduce((sum,l)=>sum+l.protein!,0)*10)/10:null, proteinMissing:dayLogs.length-proteins.length };
   });
 }

@@ -1,7 +1,6 @@
 "use client";
 
 import './home-readability.css';
-import {MobileBuddy} from './mobile-buddy';
 import {InstallPrompt} from './install-prompt';
 import {PolicyLinks} from './policy-links';
 import {PlanCalendar} from './plan-calendar';
@@ -32,6 +31,7 @@ import { cachedJson, hasFreshJson, invalidateJson, primeJson } from "../lib/clie
 
 const catalogTtl=10*60_000,dashboardTtl=60_000;
 import {ServiceFeedback} from './service-feedback';
+import {DailyReturnCard} from './daily-return-card';
 
 type Tab = "community" | "home" | "calendar" | "cart" | "compare" | "record" | "profile";
 const formatWon=(value:number)=>new Intl.NumberFormat('ko-KR').format(value)+'원';
@@ -170,13 +170,12 @@ export default function Home() {
   return <AppShell>
     {savingBudget && <AppLoading message="이번 주 예산을 저장하고 있어요"/>}
       {showAuth ? <AuthScreen initialError={authError} onExplore={() => { setShowAuth(false); setAuthError(""); }} onSuccess={(user) => { setDashboard(null); setAuthUser(user); setAuthError(""); setShowAuth(false); setTab("home"); }}/> : <>
-      <header className="app-header"><Brand/><div className="app-header-actions">{authUser ? <button className="logout-link" type="button" onClick={signOut}>로그아웃</button> : <button className="logout-link" type="button" onClick={() => { setAuthError(""); setShowAuth(true); }}>로그인</button>}<button className="avatar" type="button" onClick={() => setTab("profile")} aria-label="내 정보 보기">{displayName.slice(0, 1)}</button></div></header>
-      <div className="app-content" ref={contentRef}>
+      <header className="app-header"><Brand/><div className="app-header-actions">{authUser ? <button className="logout-link" type="button" onClick={signOut}>로그아웃</button> : <button className="logout-link" type="button" onClick={() => { setAuthError(""); setShowAuth(true); }}>로그인</button>}</div></header>
+      <div className={`app-content app-content-${tab}`} ref={contentRef}>
         <InstallPrompt active={tab === 'home'}/>
-        {tab==='home'&&<MobileBuddy/>}
         {tab === "record" && <FoodIntake key={`intake-${authUser?.id??"guest"}-${tab}`} userId={authUser?.id} onLogin={()=>setShowAuth(true)} history={tab==="record"} recordDate={recordDate} onDateChange={setRecordDate}/>}
+        {tab==='home'&&authUser&&<DailyReturnCard key={authUser.id} userId={authUser.id} onRecord={()=>{setRecordDate(emptyDashboard().today);setTab('record');}}/>}
         {tab === "home" && <ShoppingPlanner key={`shopping-home-${authUser?.id??"guest"}`} dashboard={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/>}
-        {tab==='home'&&<details className="home-explore"><summary>상품 비교·이용 안내 더보기</summary><ComparisonTrends/><nav aria-label="더 알아보기"><Link href="/products">상품 가격·영양 비교 <span>→</span></Link><Link href="/guides">식단·식비 가이드 <span>→</span></Link><Link href="/submissions">상품·영양정보 제보 <span>→</span></Link><a href="mailto:choisj2702@gmail.com">문의·협업 <span>↗</span></a></nav></details>}
         {authError && <p className="auth-inline-error" role="alert">{authError}</p>}
         {dataError&&<p className="auth-error" role="alert">{dataError}</p>}
 
@@ -214,10 +213,11 @@ export default function Home() {
           <p className="compare-disclaimer">비교 결과의 상품 용량, 배송비, 할인 조건은 판매처마다 달라질 수 있습니다. 결제 전 상품 상세 정보를 확인하세요.</p>
         </>}
         {tab === "community" && <CommunityPanel key={authUser?.id ?? "guest"} userId={authUser?.id} products={products} budget={budget} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")}/>}
-        {tab === "profile" && <><div className="page-intro"><div className="week-label">MY PAGE</div><h2>{displayName}님의 <span>하루 에너지</span></h2><p>내 몸과 생활에 맞춘 칼로리·영양, 그리고 먹는 취향이에요.</p></div><BodyProfilePanel key={authUser?.id ?? "guest"} userId={authUser?.id} name={displayName} onLogin={() => setShowAuth(true)}/><details className="profile-extra"><summary>월 식비 예산·지출 관리</summary><BudgetSettings monthlyOnly key={`budget-${authUser?.id ?? "guest"}`} data={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)} onRefresh={refreshDashboard}/></details><ResetData key={`reset-${authUser?.id??"guest"}`} userId={authUser?.id}/></> }
-        {(tab==='cart'||tab==='profile')&&<section className="home-guide-entry"><strong>상품·영양정보 제보</strong><Link href={tab==='profile'?'/submissions#mine':'/submissions'}>{tab==='profile'?'내 제보와 검토 결과 보기 →':'상품 정보 보완하기 →'}</Link></section>}
-        {tab==='profile'&&<section className="home-guide-entry contact-entry"><strong>문의·협업</strong><a href="mailto:choisj2702@gmail.com">choisj2702@gmail.com ↗</a></section>}
-        <ServiceFeedback page={`/${tab==='home'?'':tab}`}/>
+        {tab === "profile" && <><div className="page-intro"><div className="week-label">마이페이지</div><h2>{authUser?`${displayName}님의`:'나의'} <span>식사 취향</span></h2><p>내 몸과 생활에 맞게, 한 번만 설정해요.</p></div><BodyProfilePanel key={authUser?.id ?? "guest"} userId={authUser?.id} name={displayName} onLogin={() => setShowAuth(true)}/><h3 className="profile-group-title">식비 관리</h3><details className="profile-extra"><summary>한 달 식비 예산</summary><BudgetSettings monthlyOnly key={`budget-${authUser?.id ?? "guest"}`} data={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)} onRefresh={refreshDashboard}/></details><h3 className="profile-group-title">도움이 필요할 때</h3><nav className="profile-menu" aria-label="도움말 및 관리"><Link href="/how-to"><span>처음이라면 · 끼니플랜 사용법</span><Icon name="chevron" size={16}/></Link><Link href="/submissions#mine"><span>내 제보와 검토 결과</span><Icon name="chevron" size={16}/></Link><a href="mailto:choisj2702@gmail.com"><span>문의·협업</span><Icon name="chevron" size={16}/></a></nav></> }
+        {tab==='cart'&&<section className="home-guide-entry"><strong>상품·영양정보 제보</strong><Link href="/submissions">상품 정보 보완하기 →</Link></section>}
+        {tab!=='home'&&<ServiceFeedback page={`/${tab}`}/>}
+        {tab==='profile'&&<details className="home-explore"><summary>상품 비교·이용 안내</summary><ComparisonTrends/><nav aria-label="더 알아보기"><Link href="/products">상품 가격·영양 비교 <span>→</span></Link><Link href="/guides">식단·식비 가이드 <span>→</span></Link><Link href="/submissions">상품·영양정보 제보 <span>→</span></Link><a href="mailto:choisj2702@gmail.com">문의·협업 <span>↗</span></a></nav></details>}
+        {tab==='profile'&&<details className="profile-extra profile-data"><summary>데이터 관리</summary><ResetData key={`reset-${authUser?.id??"guest"}`} userId={authUser?.id}/></details>}
         {(tab === 'home' || tab === 'profile') && <PolicyLinks/>}
       </div>
       {/* 식단공유(커뮤니티) 탭은 준비 중이라 메뉴에서 숨김 — /community 라우트 자체는 그대로 동작해요. */}

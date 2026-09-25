@@ -12,6 +12,10 @@
 .week-hero-main{display:grid;gap:2px}
 .week-hero-main>span{font-size:12px;color:#5c6e55}
 .week-hero-main strong{font-size:40px;line-height:1.15;letter-spacing:-.04em;color:#26321f}
+.week-hero-main strong small{font-size:16px;letter-spacing:0}
+.week-assumptions{font-size:13px;line-height:1.8;color:#56634b;word-break:keep-all;margin:14px 0 0}
+.week-nutrient-head{flex-wrap:wrap;gap:6px}
+@media(max-width:420px){.week-hero dl{grid-template-columns:1fr!important}.week-hero dl>div{display:flex;align-items:center;justify-content:space-between;gap:8px}}
 .week-hero-main em{display:inline-flex;align-items:center;gap:5px;width:max-content;margin-top:2px;padding:3px 10px;border-radius:999px;background:#fff;color:var(--hero);font-style:normal;font-size:12px;font-weight:800}
 .week-hero-main em i{font-style:normal}
 .week-hero dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0 0}

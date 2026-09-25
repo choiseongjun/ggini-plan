@@ -31,7 +31,8 @@
 .rp-badges{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:16px 0 0;padding:0;list-style:none}
 .rp-badges li{display:grid;justify-items:center;gap:4px;padding:12px 6px;border-radius:18px;background:#fafbf6;text-align:center}
 .rp-badges li:not(.is-earned) .rp-badge-icon{filter:grayscale(1);opacity:.4}
-.rp-badge-icon{position:relative;display:grid;place-items:center;width:46px;height:46px;border-radius:16px;background:var(--tone);color:var(--ink-tone)}
+.rp-badge-icon{position:relative;display:grid;place-items:center;width:64px;height:70px;color:var(--ink-tone)}
+.rp-badge-description{font-size:11px;line-height:1.5;color:#647568;word-break:keep-all}
 .rp-badge-icon i{position:absolute;right:-4px;bottom:-4px;width:18px;height:18px;border:2px solid #fff;border-radius:50%;background:#526c47 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 12.5 4 4 8-9'/%3E%3C/svg%3E") center/10px no-repeat}
 .rp-badges strong{font-size:12px;line-height:1.3}
 .rp-badges small{font-size:10px;color:#8a947e}
