@@ -24,7 +24,7 @@ export function RecordEntry({userId,onLogin,onLogged}:{userId?:string;onLogin:()
    <div><span className="record-entry-kicker"><RecordIcon kind="book"/>나의 식사 일기</span><h2>오늘 먹은 한 끼를<br/>차곡차곡 남겨요</h2></div>
    <div className="record-entry-buddy" aria-hidden="true"><RiceBuddy/></div>
   </div>
-  <p className="record-entry-intro">집밥도, 밖에서 먹은 한 끼도.<br/>편한 방법으로 오늘의 식사를 남겨보세요.</p>
+  <p className="record-entry-intro">추천과 다른 음식도 괜찮아요. 오늘 한 끼만 남겨보세요.<br/>오늘 먹은 칼로리·단백질을 확인하고, 기록이 쌓이면 주간 리포트에서 내 식사 패턴을 볼 수 있어요.</p>
   <div className="record-entry-actions">
    <button type="button" className="record-method record-method-photo" aria-label="사진으로 기록" aria-pressed={mode==='photo'} onClick={()=>choose('photo')}>
     <span className="record-method-icon"><RecordIcon kind="photo"/></span><span className="record-method-copy"><strong>사진으로 기록</strong><span>음식 사진만 올리면 칼로리 분석</span></span><span className="record-method-check" aria-hidden="true">{mode==='photo'&&<svg viewBox="0 0 16 16" fill="none"><path d="m4 8 3 3 5-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}</span>

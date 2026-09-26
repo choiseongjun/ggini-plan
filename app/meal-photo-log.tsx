@@ -24,7 +24,7 @@ const stageText={prepare:'사진 준비 중',upload:'사진 올리는 중',analy
 const portionText=(p:number)=>p===1?'1인분':p===0.5?'반 인분':`${p}인분`;
 
 // 📷 먹었어요: pick or take a photo, the server judges portion + visible sides against the planned dish and logs it.
-export function MealPhotoLog({productId,referenceCode,dishName,disabled,onLogged,onManual}:{productId?:string;referenceCode?:string;dishName:string;disabled:boolean;onLogged:(result:Extract<PhotoLogResult,{logged:true}>)=>void;onFallback:()=>void;onManual:()=>void}){
+export function MealPhotoLog({productId,referenceCode,dishName,disabled,onLogged,onManual,buttonLabel='먹었어요 · 사진 올리기',manualLabel='사진 없이 기록'}:{productId?:string;referenceCode?:string;buttonLabel?:string;manualLabel?:string;dishName:string;disabled:boolean;onLogged:(result:Extract<PhotoLogResult,{logged:true}>)=>void;onFallback:()=>void;onManual:()=>void}){
  const input=useRef<HTMLInputElement>(null);
  const [picked,setPicked]=useState<{file:File;url:string}[]>([]);
  const [aiAcknowledged,setAiAcknowledged]=useState(false);
@@ -72,8 +72,8 @@ export function MealPhotoLog({productId,referenceCode,dishName,disabled,onLogged
    <label className="photo-log-hint"><input type="checkbox" checked={aiAcknowledged} onChange={e=>setAiAcknowledged(e.target.checked)}/> AI 식사 분석과 내 식사 일기 사진 저장에 동의해요.</label>
    <div className="photo-log-staged-actions"><button type="button" onClick={()=>{clearPicked();setAiAcknowledged(false);}}>취소</button><button type="button" className="photo-log-submit" disabled={disabled||!aiAcknowledged} onClick={()=>void upload(picked.map(p=>p.file))}>기록하기 ({picked.length}장)</button></div>
   </div>
-  :<><button type="button" className="photo-log-button" disabled={disabled} onClick={()=>input.current?.click()}><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.3l1.4-2h5.6l1.4 2h1.3A2.5 2.5 0 0 1 20 8.5v8a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5Z"/><circle cx="12" cy="12.5" r="3.4"/></svg>먹었어요 · 사진 올리기</button>
-   <button type="button" className="photo-log-manual" disabled={disabled} onClick={onManual}>사진 없이 기록</button></>}
+  :<><button type="button" className="photo-log-button" disabled={disabled} onClick={()=>input.current?.click()}><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.3l1.4-2h5.6l1.4 2h1.3A2.5 2.5 0 0 1 20 8.5v8a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5Z"/><circle cx="12" cy="12.5" r="3.4"/></svg>{buttonLabel}</button>
+   <button type="button" className="photo-log-manual" disabled={disabled} onClick={onManual}>{manualLabel}</button></>}
   {error&&<p className="photo-log-error" role="alert">{error}</p>}
  </div>;
 }
