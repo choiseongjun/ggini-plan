@@ -122,10 +122,10 @@ export function mealFamily(p:PlanProduct){return p.recipe?.family??p.name.match(
 // 이름 뒤의 변형만 다른 요리(라면_김치·라면_치즈, 된장찌개_두부…)는 같은 음식이다. 각각 다른 id라서
 // 중복 금지를 피해 한 식단에 여러 번 뽑히던 문제를 막는 기준. 인스턴트 면류는 하나의 '라면'으로 묶는다.
 // "미역 된장국"과 "된장국_미역"처럼 단어 순서만 다른 같은 음식: 이름의 단어를 정렬해 비교한다.
-export function dishWords(p:PlanProduct){return (p.recipe?p.name:cookingDishId(p.id)).split(/[_\s]+/).filter(Boolean).sort().join('|');}
+export function dishWords(p:PlanProduct){return (p.recipe?p.name.split(' + ')[0]:cookingDishId(p.id)).split(/[_\s]+/).filter(Boolean).sort().join('|');}
 const sameDish=(a:PlanProduct,b:PlanProduct)=>dishBase(a)===dishBase(b)||dishWords(a)===dishWords(b);
 export function dishBase(p:PlanProduct){
- const name=(p.recipe?p.name:cookingDishId(p.id)).split('_')[0].replace(/\s+/g,'');
+ const name=(p.recipe?p.name.split(' + ')[0]:cookingDishId(p.id)).split('_')[0].replace(/\s+/g,'');
  return /라면|용기면|컵라면/.test(name)?'라면':name;
 }
 const SEAFOOD=/가자미|고등어|갈치|조기|삼치|꽁치|연어|참치|명태|동태|코다리|황태|북어|임연수|넙치|광어|우럭|도미|민어|병어|장어|오징어|낙지|주꾸미|새우|굴|홍합|바지락|전복|꽃게|멸치|대구|아귀/;

@@ -1,0 +1,506 @@
+[
+  {
+    "mainId": "recipe-opt-D410-529000000-0001",
+    "mainName": "제육볶음",
+    "sideId": "recipe-opt-D113-597000000-0001",
+    "sideName": "콩나물무침",
+    "reason": "제육볶음에 소량의 콩나물무침을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D410-529000000-0001",
+    "mainName": "제육볶음",
+    "sideId": "recipe-opt-D113-567000000-0001",
+    "sideName": "가지나물",
+    "reason": "제육볶음에 소량의 가지나물을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D108-386000000-0001",
+    "mainName": "소불고기",
+    "sideId": "recipe-opt-D414-644000000-0001",
+    "sideName": "오이무침",
+    "reason": "소불고기에 소량의 오이무침을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D108-386000000-0001",
+    "mainName": "소불고기",
+    "sideId": "recipe-opt-D113-584000000-0001",
+    "sideName": "숙주나물",
+    "reason": "소불고기에 소량의 숙주나물을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D408-386070000-0001",
+    "mainName": "소불고기_버섯",
+    "sideId": "recipe-opt-D114-627000000-0001",
+    "sideName": "무생채",
+    "reason": "소불고기 · 버섯에 소량의 무생채을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D408-386070000-0001",
+    "mainName": "소불고기_버섯",
+    "sideId": "recipe-opt-D110-450000000-0001",
+    "sideName": "감자볶음",
+    "reason": "소불고기 · 버섯에 소량의 감자볶음을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D111-514000000-0001",
+    "mainName": "닭볶음탕",
+    "sideId": "recipe-opt-D113-584000000-0001",
+    "sideName": "숙주나물",
+    "reason": "닭볶음탕에 소량의 숙주나물을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D111-514000000-0001",
+    "mainName": "닭볶음탕",
+    "sideId": "recipe-opt-D113-586000000-0001",
+    "sideName": "시금치나물",
+    "reason": "닭볶음탕에 소량의 시금치나물을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D106-266100000-0001",
+    "mainName": "김치찌개_돼지고기",
+    "sideId": "recipe-opt-D113-597000000-0001",
+    "sideName": "콩나물무침",
+    "reason": "김치찌개 · 돼지고기에 소량의 콩나물무침을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D106-266100000-0001",
+    "mainName": "김치찌개_돼지고기",
+    "sideId": "recipe-opt-D110-450000000-0001",
+    "sideName": "감자볶음",
+    "reason": "김치찌개 · 돼지고기에 소량의 감자볶음을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D106-266250000-0001",
+    "mainName": "김치찌개_참치",
+    "sideId": "recipe-opt-D113-567000000-0001",
+    "sideName": "가지나물",
+    "reason": "김치찌개 · 참치에 소량의 가지나물을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D106-266250000-0001",
+    "mainName": "김치찌개_참치",
+    "sideId": "recipe-opt-D113-584000000-0001",
+    "sideName": "숙주나물",
+    "reason": "김치찌개 · 참치에 소량의 숙주나물을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D506-291270000-0001",
+    "mainName": "순두부찌개_해물",
+    "sideId": "recipe-opt-D113-586000000-0001",
+    "sideName": "시금치나물",
+    "reason": "순두부찌개 · 해물에 소량의 시금치나물을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D506-291270000-0001",
+    "mainName": "순두부찌개_해물",
+    "sideId": "recipe-opt-D110-450000000-0001",
+    "sideName": "감자볶음",
+    "reason": "순두부찌개 · 해물에 소량의 감자볶음을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D106-297000000-0001",
+    "mainName": "청국장찌개",
+    "sideId": "recipe-opt-D414-644000000-0001",
+    "sideName": "오이무침",
+    "reason": "청국장찌개에 소량의 오이무침을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D106-297000000-0001",
+    "mainName": "청국장찌개",
+    "sideId": "recipe-opt-D110-475000000-0001",
+    "sideName": "미역줄기볶음",
+    "reason": "청국장찌개에 소량의 미역줄기볶음을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D106-282000000-0001",
+    "mainName": "버섯전골",
+    "sideId": "recipe-opt-D114-627000000-0001",
+    "sideName": "무생채",
+    "reason": "버섯전골에 소량의 무생채을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D106-282000000-0001",
+    "mainName": "버섯전골",
+    "sideId": "recipe-opt-D113-597000000-0001",
+    "sideName": "콩나물무침",
+    "reason": "버섯전골에 소량의 콩나물무침을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D408-357000000-0001",
+    "mainName": "고등어구이",
+    "sideId": "recipe-opt-D414-644000000-0001",
+    "sideName": "오이무침",
+    "reason": "고등어구이에 소량의 오이무침을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D408-357000000-0001",
+    "mainName": "고등어구이",
+    "sideId": "recipe-opt-D113-586000000-0001",
+    "sideName": "시금치나물",
+    "reason": "고등어구이에 소량의 시금치나물을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D108-383000000-0001",
+    "mainName": "삼치구이",
+    "sideId": "recipe-opt-D114-627000000-0001",
+    "sideName": "무생채",
+    "reason": "삼치구이에 소량의 무생채을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D108-383000000-0001",
+    "mainName": "삼치구이",
+    "sideId": "recipe-opt-D113-584000000-0001",
+    "sideName": "숙주나물",
+    "reason": "삼치구이에 소량의 숙주나물을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D106-275130000-0001",
+    "mainName": "된장찌개_바지락",
+    "sideId": "recipe-opt-D110-450000000-0001",
+    "sideName": "감자볶음",
+    "reason": "된장찌개 · 바지락에 소량의 감자볶음을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D106-275130000-0001",
+    "mainName": "된장찌개_바지락",
+    "sideId": "recipe-opt-D113-567000000-0001",
+    "sideName": "가지나물",
+    "reason": "된장찌개 · 바지락에 소량의 가지나물을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-AI-c445b721092a",
+    "mainName": "두부구이",
+    "sideId": "recipe-opt-D414-644000000-0001",
+    "sideName": "오이무침",
+    "reason": "두부구이에 소량의 오이무침을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-AI-c445b721092a",
+    "mainName": "두부구이",
+    "sideId": "recipe-opt-D110-475000000-0001",
+    "sideName": "미역줄기볶음",
+    "reason": "두부구이에 소량의 미역줄기볶음을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-AI-f716fc088802",
+    "mainName": "두부감자국",
+    "sideId": "recipe-opt-D113-586000000-0001",
+    "sideName": "시금치나물",
+    "reason": "두부감자국에 소량의 시금치나물을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-AI-f716fc088802",
+    "mainName": "두부감자국",
+    "sideId": "recipe-opt-D113-567000000-0001",
+    "sideName": "가지나물",
+    "reason": "두부감자국에 소량의 가지나물을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-AI-54a36f580a79",
+    "mainName": "백순두부탕",
+    "sideId": "recipe-opt-D114-627000000-0001",
+    "sideName": "무생채",
+    "reason": "백순두부탕에 소량의 무생채을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-AI-54a36f580a79",
+    "mainName": "백순두부탕",
+    "sideId": "recipe-opt-D110-475000000-0001",
+    "sideName": "미역줄기볶음",
+    "reason": "백순두부탕에 소량의 미역줄기볶음을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-AI-44bbf05c482e",
+    "mainName": "아욱국",
+    "sideId": "recipe-opt-D110-450000000-0001",
+    "sideName": "감자볶음",
+    "reason": "아욱국에 소량의 감자볶음을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-AI-44bbf05c482e",
+    "mainName": "아욱국",
+    "sideId": "recipe-opt-D414-644000000-0001",
+    "sideName": "오이무침",
+    "reason": "아욱국에 소량의 오이무침을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-AI-bad4de43573a",
+    "mainName": "북어해장국",
+    "sideId": "recipe-opt-D113-586000000-0001",
+    "sideName": "시금치나물",
+    "reason": "북어해장국에 소량의 시금치나물을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-AI-bad4de43573a",
+    "mainName": "북어해장국",
+    "sideId": "recipe-opt-D113-567000000-0001",
+    "sideName": "가지나물",
+    "reason": "북어해장국에 소량의 가지나물을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-AI-4a8fa1e2f77c",
+    "mainName": "쇠고기무국",
+    "sideId": "recipe-opt-D113-584000000-0001",
+    "sideName": "숙주나물",
+    "reason": "쇠고기무국에 소량의 숙주나물을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-AI-4a8fa1e2f77c",
+    "mainName": "쇠고기무국",
+    "sideId": "recipe-opt-D110-475000000-0001",
+    "sideName": "미역줄기볶음",
+    "reason": "쇠고기무국에 소량의 미역줄기볶음을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-AI-9a2b712016af",
+    "mainName": "들깨미역국",
+    "sideId": "recipe-opt-D414-644000000-0001",
+    "sideName": "오이무침",
+    "reason": "들깨미역국에 소량의 오이무침을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-AI-9a2b712016af",
+    "mainName": "들깨미역국",
+    "sideId": "recipe-opt-D110-450000000-0001",
+    "sideName": "감자볶음",
+    "reason": "들깨미역국에 소량의 감자볶음을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-AI-1ef054b59160",
+    "mainName": "황태미역국",
+    "sideId": "recipe-opt-D113-597000000-0001",
+    "sideName": "콩나물무침",
+    "reason": "황태미역국에 소량의 콩나물무침을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-AI-1ef054b59160",
+    "mainName": "황태미역국",
+    "sideId": "recipe-opt-D113-567000000-0001",
+    "sideName": "가지나물",
+    "reason": "황태미역국에 소량의 가지나물을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-AI-51da8a8dffae",
+    "mainName": "순한맛순두부찌개",
+    "sideId": "recipe-opt-D114-627000000-0001",
+    "sideName": "무생채",
+    "reason": "순한맛순두부찌개에 소량의 무생채을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-AI-51da8a8dffae",
+    "mainName": "순한맛순두부찌개",
+    "sideId": "recipe-opt-D110-450000000-0001",
+    "sideName": "감자볶음",
+    "reason": "순한맛순두부찌개에 소량의 감자볶음을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D705-299000000-0001",
+    "mainName": "소고기 두부국",
+    "sideId": "recipe-opt-D414-644000000-0001",
+    "sideName": "오이무침",
+    "reason": "소고기 두부국에 소량의 오이무침을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D705-299000000-0001",
+    "mainName": "소고기 두부국",
+    "sideId": "recipe-opt-D113-586000000-0001",
+    "sideName": "시금치나물",
+    "reason": "소고기 두부국에 소량의 시금치나물을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D405-278000000-0001",
+    "mainName": "두부 달걀탕",
+    "sideId": "recipe-opt-D113-597000000-0001",
+    "sideName": "콩나물무침",
+    "reason": "두부 달걀탕에 소량의 콩나물무침을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D405-278000000-0001",
+    "mainName": "두부 달걀탕",
+    "sideId": "recipe-opt-D110-475000000-0001",
+    "sideName": "미역줄기볶음",
+    "reason": "두부 달걀탕에 소량의 미역줄기볶음을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D405-204120000-0001",
+    "mainName": "굴두부국",
+    "sideId": "recipe-opt-D114-627000000-0001",
+    "sideName": "무생채",
+    "reason": "굴두부국에 소량의 무생채을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D405-204120000-0001",
+    "mainName": "굴두부국",
+    "sideId": "recipe-opt-D113-584000000-0001",
+    "sideName": "숙주나물",
+    "reason": "굴두부국에 소량의 숙주나물을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D405-276000000-0001",
+    "mainName": "닭고기 미역국",
+    "sideId": "recipe-opt-D110-450000000-0001",
+    "sideName": "감자볶음",
+    "reason": "닭고기 미역국에 소량의 감자볶음을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D405-276000000-0001",
+    "mainName": "닭고기 미역국",
+    "sideId": "recipe-opt-D113-567000000-0001",
+    "sideName": "가지나물",
+    "reason": "닭고기 미역국에 소량의 가지나물을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D505-275000000-0001",
+    "mainName": "달래 된장국",
+    "sideId": "recipe-opt-D113-597000000-0001",
+    "sideName": "콩나물무침",
+    "reason": "달래 된장국에 소량의 콩나물무침을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D505-275000000-0001",
+    "mainName": "달래 된장국",
+    "sideId": "recipe-opt-D414-644000000-0001",
+    "sideName": "오이무침",
+    "reason": "달래 된장국에 소량의 오이무침을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D105-203000000-0001",
+    "mainName": "곰탕",
+    "sideId": "recipe-opt-D114-627000000-0001",
+    "sideName": "무생채",
+    "reason": "곰탕에 소량의 무생채을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D105-203000000-0001",
+    "mainName": "곰탕",
+    "sideId": "recipe-opt-D113-586000000-0001",
+    "sideName": "시금치나물",
+    "reason": "곰탕에 소량의 시금치나물을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D105-231000000-0001",
+    "mainName": "설렁탕",
+    "sideId": "recipe-opt-D414-644000000-0001",
+    "sideName": "오이무침",
+    "reason": "설렁탕에 소량의 오이무침을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D105-231000000-0001",
+    "mainName": "설렁탕",
+    "sideId": "recipe-opt-D113-567000000-0001",
+    "sideName": "가지나물",
+    "reason": "설렁탕에 소량의 가지나물을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D108-352000000-0001",
+    "mainName": "가자미구이",
+    "sideId": "recipe-opt-D114-627000000-0001",
+    "sideName": "무생채",
+    "reason": "가자미구이에 소량의 무생채을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D108-352000000-0001",
+    "mainName": "가자미구이",
+    "sideId": "recipe-opt-D113-597000000-0001",
+    "sideName": "콩나물무침",
+    "reason": "가자미구이에 소량의 콩나물무침을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D408-355000000-0001",
+    "mainName": "갈치구이",
+    "sideId": "recipe-opt-D113-586000000-0001",
+    "sideName": "시금치나물",
+    "reason": "갈치구이에 소량의 시금치나물을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D408-355000000-0001",
+    "mainName": "갈치구이",
+    "sideId": "recipe-opt-D414-644000000-0001",
+    "sideName": "오이무침",
+    "reason": "갈치구이에 소량의 오이무침을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-AI-6ff5c4c8fc64",
+    "mainName": "매생이굴국",
+    "sideId": "recipe-opt-D110-450000000-0001",
+    "sideName": "감자볶음",
+    "reason": "매생이굴국에 소량의 감자볶음을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-AI-6ff5c4c8fc64",
+    "mainName": "매생이굴국",
+    "sideId": "recipe-opt-D113-584000000-0001",
+    "sideName": "숙주나물",
+    "reason": "매생이굴국에 소량의 숙주나물을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-AI-eee49d2c59de",
+    "mainName": "두부시래기국",
+    "sideId": "recipe-opt-D414-644000000-0001",
+    "sideName": "오이무침",
+    "reason": "두부시래기국에 소량의 오이무침을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-AI-eee49d2c59de",
+    "mainName": "두부시래기국",
+    "sideId": "recipe-opt-D110-475000000-0001",
+    "sideName": "미역줄기볶음",
+    "reason": "두부시래기국에 소량의 미역줄기볶음을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-AI-6a5c11d72230",
+    "mainName": "오징어무국",
+    "sideId": "recipe-opt-D113-586000000-0001",
+    "sideName": "시금치나물",
+    "reason": "오징어무국에 소량의 시금치나물을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-AI-6a5c11d72230",
+    "mainName": "오징어무국",
+    "sideId": "recipe-opt-D110-450000000-0001",
+    "sideName": "감자볶음",
+    "reason": "오징어무국에 소량의 감자볶음을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D406-344000000-0001",
+    "mainName": "연두부찌개",
+    "sideId": "recipe-opt-D113-597000000-0001",
+    "sideName": "콩나물무침",
+    "reason": "연두부찌개에 소량의 콩나물무침을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-D406-344000000-0001",
+    "mainName": "연두부찌개",
+    "sideId": "recipe-opt-D113-567000000-0001",
+    "sideName": "가지나물",
+    "reason": "연두부찌개에 소량의 가지나물을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-AI-0ebaa012ff39",
+    "mainName": "소고기장국",
+    "sideId": "recipe-opt-D414-644000000-0001",
+    "sideName": "오이무침",
+    "reason": "소고기장국에 소량의 오이무침을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-AI-0ebaa012ff39",
+    "mainName": "소고기장국",
+    "sideId": "recipe-opt-D113-584000000-0001",
+    "sideName": "숙주나물",
+    "reason": "소고기장국에 소량의 숙주나물을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-AI-9989ddeeaf14",
+    "mainName": "모시조개국",
+    "sideId": "recipe-opt-D113-586000000-0001",
+    "sideName": "시금치나물",
+    "reason": "모시조개국에 소량의 시금치나물을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  },
+  {
+    "mainId": "recipe-opt-AI-9989ddeeaf14",
+    "mainName": "모시조개국",
+    "sideId": "recipe-opt-D110-450000000-0001",
+    "sideName": "감자볶음",
+    "reason": "모시조개국에 소량의 감자볶음을 곁들이는 일상 한식 구성. 밥은 메인에 포함하며 반찬은 약 80g 기준."
+  }
+]
