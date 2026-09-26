@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
-import {initialConditions,parseConditions,purchaseBasket,basketTotal,recommendShopping,candidates,validMealIds,type PlanProduct} from '../lib/shopping-plan';
+import {initialConditions,parseConditions,purchaseBasket,basketTotal,recommendShopping,candidates,validMealIds,slotCandidates,swapMeal,alternativesFor,sideCountFor,initialHomeConditions,type PlanProduct,type MealSlot} from '../lib/shopping-plan';
 import {withCookingSides} from '../lib/cooking-sides';
 import {remainingPlanPortions} from '../lib/daily-plan';
 import {sharedPlanSnapshot} from '../lib/shared-plan';
@@ -39,4 +39,40 @@ test('personal intake consumes one portion while household shopping retains othe
  const rows=purchaseBasket([main.id],[main],[],{},remain,3);assert.equal(rows[0].required,1);
  const stock={cabbage:{id:'cabbage',name:'양배추',unit:'묶음',url:null,owned:2,ordered:0,updatedAt:'2026-09-20'}};
  const consumed=consumeFood(stock,main,1);assert.equal(consumed.stock.cabbage.owned,1.5);assert.equal(consumed.calories,30);
+});
+
+test('per-meal composition validates input and preserves legacy fallback',()=>{
+ assert.deepEqual(initialHomeConditions.mealSideCounts,{breakfast:0,lunch:1,dinner:2});
+ for(const mealSideCounts of [null,[],1,{snack:1},{breakfast:3},{lunch:-1},{dinner:1.5},{breakfast:'0'}])assert.equal(parseConditions({...initialConditions,mealSideCounts}),null);
+ const c=parseConditions({...initialConditions,sideCount:2,mealSideCounts:{breakfast:0}})!;
+ assert.equal(sideCountFor(c,'breakfast'),0);assert.equal(sideCountFor(c,'dinner'),2);
+ assert.equal(sideCountFor({...initialConditions,sideCount:1},'lunch'),1);
+});
+test('mixed compositions survive recommendation, swaps, validation and sharing',()=>{
+ const slots:MealSlot[]=['breakfast','lunch','dinner'];
+ const mains=['오트밀','버섯덮밥','애호박볶음밥','양배추전','토마토파스타','감자국'].map((name,i)=>({...main,id:`cook-mixed-${i}`,name,recipe:{...main.recipe!,slots,family:name}}));
+ const products=withCookingSides(mains,[cabbage,mushroom,zucchini]);
+ const c={...initialHomeConditions,days:1,meals:3,mealMode:'cook' as const,budget:1000000};
+ for(let i=0;i<3;i++){
+  const pool=slotCandidates(products,c,i);assert.ok(pool.length>0);
+  assert.ok(pool.every(p=>(p.recipe?.sideCount??0)===i));
+ }
+ const ids=recommendShopping(products,c,false,[],42);assert.ok(ids);assert.ok(validMealIds(ids,products,c));
+ for(let i=0;i<3;i++){
+  assert.equal(products.find(p=>p.id===ids[i])?.recipe?.sideCount??0,i);
+  const swapped=swapMeal(ids,i,products,c);assert.ok(swapped);assert.ok(validMealIds(swapped,products,c));
+  const alternatives=alternativesFor(products,ids,c,i);assert.ok(alternatives.length);
+  assert.ok(alternatives.every(p=>(p.recipe?.sideCount??0)===i));
+ }
+ assert.equal(validMealIds(ids,products,{...c,mealSideCounts:{breakfast:2,lunch:1,dinner:0}}),false);
+ assert.deepEqual(sharedPlanSnapshot(c,ids,products)?.mealSideCounts,c.mealSideCounts);
+ assert.ok(purchaseBasket(ids,products,[]).length>1);
+});
+test('simple meals keep cooking effort restrictions when other meals include sides',()=>{
+ const hard={...main,id:'hard',recipe:{...main.recipe!,slots:['breakfast','dinner'] as MealSlot[],minutes:60}};
+ const products=withCookingSides([hard],[cabbage,mushroom,zucchini]);
+ const c={...initialHomeConditions,days:1,meals:3,mealMode:'cook' as const};
+ assert.equal(slotCandidates(products,c,0).length,0);
+ assert.ok(slotCandidates(products,c,2).length>0);
+ assert.ok(candidates(products,c).every(p=>(p.recipe?.sideCount??0)>0));
 });

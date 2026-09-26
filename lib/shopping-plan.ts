@@ -20,12 +20,17 @@ export function validSwapPreferences(value:unknown):value is SwapPreference[]{
 export type PlanProduct = CatalogItem & { mealSlots?:MealSlot[]; servings: number; servingGrams?:number; servingNote: string; avoidanceText: string | null; personalizationScore?:number; servingCalories?:number|null; servingSodium?:number|null; servingCarbs?:number|null; recipe?: {composition?:{templateId:string;version:number;items:{id:string;role:string;reason:string}[]};sideCount?:number;sides?:{name:string;steps:string[];minutes:number;productImageUrl?:string|null;productImageUrls?:string[]|null}[];assembly?:boolean;minutes:number;slots:MealSlot[];family:string;steps:string[];ingredients:{product:PlanProduct;packs:number;label:string;group?:string}[];nutrition:{calories:number|null;protein:number|null}} };
 export type MealSlot = 'breakfast'|'lunch'|'dinner';
 export const slotLabels={breakfast:'아침',lunch:'점심',dinner:'저녁'};
+export type MealSideCounts=Partial<Record<MealSlot,number>>;
+export function validMealSideCounts(value:unknown):value is MealSideCounts{
+ return !!value&&typeof value==='object'&&!Array.isArray(value)&&Object.entries(value).every(([slot,count])=>Object.hasOwn(slotLabels,slot)&&Number.isInteger(count)&&(count as number)>=0&&(count as number)<=2);
+}
+export function sideCountFor(c:Pick<PlanConditions,'sideCount'|'mealSideCounts'>,slot:MealSlot){return c.mealSideCounts?.[slot]??c.sideCount??0;}
 export const MAX_PLAN_DAYS=15;
 export const MAX_PLAN_MEALS=MAX_PLAN_DAYS*3;
-export type PlanConditions = { cookingEffort?:CookingEffort; people?:number; sideCount?:number; mealCountMode?:boolean; swapPreferences?:SwapPreference[]; budgetMode?:BudgetMode; mealKinds?:MealKind[]; goal?:ShoppingGoal; mealMode?:'ready'|'cook'|'mixed'; excluded?:ExcludedFood[]; startDate?:string; budget: number; meals: number; cooking: 'quick' | 'kit' | 'all'; avoid: string; owned: string[]; supply?:Record<string,number>; days?:number; slots?:MealSlot[] };
+export type PlanConditions = { cookingEffort?:CookingEffort; people?:number; sideCount?:number; mealSideCounts?:MealSideCounts; mealCountMode?:boolean; swapPreferences?:SwapPreference[]; budgetMode?:BudgetMode; mealKinds?:MealKind[]; goal?:ShoppingGoal; mealMode?:'ready'|'cook'|'mixed'; excluded?:ExcludedFood[]; startDate?:string; budget: number; meals: number; cooking: 'quick' | 'kit' | 'all'; avoid: string; owned: string[]; supply?:Record<string,number>; days?:number; slots?:MealSlot[] };
 export const initialConditions: PlanConditions = {cookingEffort:'easy',people:1,sideCount:0,mealMode:'mixed',budget:50000,meals:7,cooking:'all',avoid:'',owned:[],days:7,slots:['dinner']};
 // New Korean home recommendations cover every meal; legacy saved plans keep their schedule.
-export const initialHomeConditions:PlanConditions={...initialConditions,days:7,meals:21,slots:['breakfast','lunch','dinner']};
+export const initialHomeConditions:PlanConditions={...initialConditions,mealSideCounts:{breakfast:0,lunch:1,dinner:2},days:7,meals:21,slots:['breakfast','lunch','dinner']};
 export function mealSchedule(c:PlanConditions){
  const slots=c.slots??(c.meals>=10?['lunch','dinner'] as MealSlot[]:['dinner'] as MealSlot[]);
  return Array.from({length:c.meals},(_,i)=>({day:Math.floor(i/slots.length)+1,slot:slots[i%slots.length]}));
@@ -33,6 +38,7 @@ export function mealSchedule(c:PlanConditions){
 export function parseConditions(value: unknown): PlanConditions | null {
  if(!value || typeof value!=='object')return null;
  const p=value as PlanConditions;
+ if(p.mealSideCounts!==undefined&&!validMealSideCounts(p.mealSideCounts))return null;
  if(p.cookingEffort!==undefined&&!isCookingEffort(p.cookingEffort))return null;
  if(p.people!==undefined&&(!Number.isInteger(p.people)||p.people<1||p.people>4))return null;
  if(p.sideCount!==undefined&&(!Number.isInteger(p.sideCount)||p.sideCount<0||p.sideCount>2))return null;
@@ -50,9 +56,10 @@ export function parseConditions(value: unknown): PlanConditions | null {
  if(p.supply!==undefined&&(!p.supply||typeof p.supply!=='object'||Array.isArray(p.supply)||Object.keys(p.supply).length>300||Object.entries(p.supply).some(([id,n])=>!validStockId(id)||!Number.isFinite(n)||n<0||n>20000000)))return null;
  return {...p,owned:[...new Set(p.owned)]};
 }
-export function slotCandidates(products:PlanProduct[],c:PlanConditions,index:number){
+export function slotCandidates(products:PlanProduct[],c:PlanConditions,index:number):PlanProduct[]{
  const slot=mealSchedule(c)[index]?.slot,breakfast=slot==='breakfast';
- return candidates(products,c).filter(p=>p.recipe?p.recipe.slots.includes(slot):p.mealSlots?p.mealSlots.includes(slot):breakfast?/시리얼|그래놀라|샌드위치|오트밀|죽/.test(p.name):!/시리얼|그래놀라/.test(p.name));
+ const sideCount=sideCountFor(c,slot);
+ return candidates(products,{...c,mealSideCounts:undefined,sideCount,cookingEffort:c.mealSideCounts&&sideCount>0?'relaxed':c.cookingEffort}).filter(p=>p.recipe?p.recipe.slots.includes(slot):p.mealSlots?p.mealSlots.includes(slot):breakfast?/시리얼|그래놀라|샌드위치|오트밀|죽/.test(p.name):!/시리얼|그래놀라/.test(p.name));
 }
 export const cookingDishId=(id:string)=>id.split('--sides-')[0].split('--auto--')[0].split('--with--')[0];
 const ingredientKeys=new WeakMap<PlanProduct,{name:string;keys:string[]}>();
@@ -75,7 +82,12 @@ export function repeatsDailyMain(ids:string[],products:PlanProduct[],c:PlanCondi
 export function validMealIds(ids:string[],products:PlanProduct[],c:PlanConditions){return ids.length===c.meals&&new Set(ids.map(cookingDishId)).size===ids.length&&ids.every((id,i)=>{const p=slotCandidates(products,c,i).find(p=>p.id===id);return !!p&&!repeatsDailyMain(ids,products,c,i,p);});}
 const aliases: Record<string,string[]> = {우유:['우유','유제품','치즈','크림'],달걀:['달걀','계란','알류'],계란:['달걀','계란','알류'],소고기:['소고기','쇠고기','한우','비프'],돼지고기:['돼지고기','돈육','베이컨','삼겹'],닭고기:['닭','치킨'],콩:['콩','대두','두부'],밀:['밀','소맥'],새우:['새우','쉬림프']};
 // 250kcal도 안 되는 흰죽·누룽지 같은 메뉴는 한 끼 후보에서 뺀다 (영양값이 확인된 경우에만).
-export function candidates(products: PlanProduct[], c: PlanConditions) {
+export function candidates(products: PlanProduct[], c: PlanConditions):PlanProduct[] {
+ if(c.mealSideCounts){
+  const indexes=new Map(mealSchedule(c).map(({slot},i)=>[slot,i]));
+  const allowed=new Set([...indexes.values()].flatMap(i=>slotCandidates(products,c,i)).map(p=>p.id));
+  return products.filter(p=>allowed.has(p.id));
+ }
  const avoid=c.avoid.split(/[,，\n]/).map(x=>x.trim().toLowerCase()).filter(Boolean);
  return products.filter(p=>allowsCookingEffort(p,c.cookingEffort)&&(!p.recipe||p.recipe.assembly||(p.recipe.sideCount??0)===(c.sideCount??0))&&mealRole(p)==='meal'&&hasGoalNutrition(p,c.goal)&&allowsMealKind(p,c.mealKinds)&&allowsExcludedFoods(p,c.excluded??[])&&(p.productUrl||p.recipe) && p.price>0 && !(typeof p.servingCalories==='number'&&p.servingCalories<(p.recipe?.slots.every(s=>s==='breakfast')?120:250)) && !(p.recipe&&/(소스|양념장|드레싱)$/.test(p.name.split('_')[0])) && ((c.mealMode??'ready')==='mixed'||((c.mealMode??'ready')==='cook'?!!p.recipe&&!p.recipe.assembly:!p.recipe||!!p.recipe.assembly)) && (!!p.recipe&&!p.recipe.assembly||c.cooking==='all'||(c.cooking==='kit'?p.category==='meal_kit':p.category!=='meal_kit')) && (!avoid.length || (p.avoidanceText!==null && !avoid.some(word=>(aliases[word]??[word]).some(a=>`${p.name} ${p.avoidanceText}`.toLowerCase().includes(a))))));
 }

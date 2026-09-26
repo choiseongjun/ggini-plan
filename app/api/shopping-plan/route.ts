@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { sessionUser, sameOrigin, authFailure } from '../../../lib/auth';
 import { getPool } from '../../../lib/db';
 import { planProducts } from '../../../lib/shopping-plan-catalog';
-import { parseConditions, validSwapPreferences, validMealIds, basketTotal } from '../../../lib/shopping-plan';
+import { parseConditions, validMealSideCounts, validSwapPreferences, validMealIds, basketTotal } from '../../../lib/shopping-plan';
 import {parseStock} from '../../../lib/shopping-progress';
 import {personalizeProducts} from '../../../lib/shopping-personalization';
 import {defaultDiet,parseDiet} from '../../../lib/meal-plan';
@@ -27,10 +27,11 @@ export async function PATCH(request:NextRequest){
   const user=await sessionUser(request);if(!user)return authFailure('로그인이 필요해요.',401);
   const raw=await request.text();if(raw.length>30000)return authFailure('음식 종류를 확인해 주세요.',400);
   let input;try{input=JSON.parse(raw);}catch{return authFailure('음식 종류를 확인해 주세요.',400);}
+  if(input?.mealSideCounts!==undefined&&!validMealSideCounts(input.mealSideCounts))return authFailure('끼니별 구성을 확인해 주세요.',400);
   if(input?.sideCount!==undefined&&(!Number.isInteger(input.sideCount)||input.sideCount<0||input.sideCount>2))return authFailure('반찬 개수를 확인해 주세요.',400);
   if(input?.cookingEffort!==undefined&&!isCookingEffort(input.cookingEffort))return authFailure('요리 난이도를 확인해 주세요.',400);
   if(input?.swapPreferences!==undefined&&!validSwapPreferences(input.swapPreferences))return authFailure('교체 의견을 확인해 주세요.',400);
-  if(!input||typeof input!=='object'||Array.isArray(input)||!Object.keys(input).length||Object.keys(input).some(k=>!['mealKinds','goal','budgetMode','swapPreferences','cookingEffort','sideCount'].includes(k))||(input.mealKinds!==undefined&&!validMealKinds(input.mealKinds))||(input.goal!==undefined&&!isShoppingGoal(input.goal))||(input.budgetMode!==undefined&&!isBudgetMode(input.budgetMode)))return authFailure('음식 종류를 확인해 주세요.',400);
+  if(!input||typeof input!=='object'||Array.isArray(input)||!Object.keys(input).length||Object.keys(input).some(k=>!['mealKinds','goal','budgetMode','swapPreferences','cookingEffort','sideCount','mealSideCounts'].includes(k))||(input.mealKinds!==undefined&&!validMealKinds(input.mealKinds))||(input.goal!==undefined&&!isShoppingGoal(input.goal))||(input.budgetMode!==undefined&&!isBudgetMode(input.budgetMode)))return authFailure('음식 종류를 확인해 주세요.',400);
   await getPool().query(`INSERT INTO shopping_preferences(user_id,conditions) VALUES($1,$2::jsonb)
    ON CONFLICT(user_id) DO UPDATE SET conditions=shopping_preferences.conditions::jsonb || $3::jsonb,updated_at=now()`,[user.id,JSON.stringify({...initialConditions,...input}),JSON.stringify(input)]);
   return Response.json({saved:true},{headers:{'Cache-Control':'no-store'}});

@@ -23,3 +23,15 @@
 @media(hover:hover){.meal-composition-options button:not(:disabled):hover{border-color:#9baa83;transform:translateY(-2px)}.meal-composition-options button:not(:disabled):hover .meal-table-illustration{transform:rotate(-2deg)}}
 @media(max-width:380px){.meal-composition-options{gap:7px}.meal-composition-options button{border-radius:18px;padding:22px 3px 14px}.meal-composition-options button strong{font-size:12px}.meal-composition-options button small{font-size:10px}.meal-composition-summary{gap:8px;padding:12px}.meal-composition-summary .meal-table-illustration{flex-basis:48px;width:48px}}
 @media(prefers-reduced-motion:reduce){.meal-composition-options button,.meal-composition-options .meal-table-illustration{transition:none}.meal-composition-options button:not(:disabled):hover,.meal-composition-options button:not(:disabled):hover .meal-table-illustration{transform:none}}
+.meal-composition-slot{border:0;padding:0;margin:0 0 14px;min-width:0}
+.meal-composition-picker .meal-composition-slot legend{font-size:14px;margin-bottom:7px}
+.meal-composition-by-slot .meal-composition-options{gap:7px}
+.meal-composition-by-slot .meal-composition-options button{padding:5px 3px 8px;border-radius:14px}
+.meal-composition-by-slot .meal-table-illustration{max-width:68px;margin:0}
+.meal-composition-by-slot .meal-composition-options button strong{font-size:12px}
+.meal-composition-by-slot .meal-composition-options button small{font-size:10px;margin-top:1px}
+.meal-composition-picker .meal-composition-apply{display:block;margin:6px 0 0 auto;padding:6px 3px;background:transparent;border:0;color:#4d663d;font-size:11px;text-decoration:underline;text-underline-offset:3px;cursor:pointer;min-height:32px}
+.meal-composition-apply:focus-visible{outline:2px solid #61764b;outline-offset:2px}
+
+.meal-composition-effort{margin:12px 0 20px;color:#52664a;font-size:12px}
+.meal-composition-effort>summary{cursor:pointer;padding:10px 0}

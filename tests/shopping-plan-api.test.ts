@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {test} from 'node:test';
 import {randomUUID} from 'node:crypto';
 import {NextRequest} from 'next/server';
-import {GET,POST,PUT} from '../app/api/shopping-plan/route';
+import {GET,POST,PUT,PATCH} from '../app/api/shopping-plan/route';
 import {createSession,SESSION_COOKIE,type PublicUser} from '../lib/auth';
 import {getPool} from '../lib/db';
 import {initialConditions,initialHomeConditions,recommendShopping,slotCandidates,mealSchedule,parseConditions} from '../lib/shopping-plan';
@@ -22,6 +22,12 @@ test('guest recommendation, authenticated save, account isolation and server val
   const mealIds=recommendShopping(products,initialConditions)!;assert.equal(mealIds.length,initialConditions.meals);
   const body={conditions:{...initialConditions,startDate:'2026-09-17'},mealIds};assert.equal((await POST(req('',body))).status,401);
   for(let i=0;i<2;i++){const user=(await db.query<PublicUser>("INSERT INTO users(name,email) VALUES('장보기 기능 테스트',$1) RETURNING id::text,name,email",[`planner-${randomUUID()}@example.test`])).rows[0];ids.push(user.id);cookies.push(`${SESSION_COOKIE}=${(await createSession(user)).cookies.get(SESSION_COOKIE)!.value}`);}
+  const patch=(value:unknown)=>new NextRequest('http://localhost:3000/api/shopping-plan',{method:'PATCH',headers:{Cookie:cookies[0],origin:'http://localhost:3000','Content-Type':'application/json'},body:JSON.stringify(value)});
+  assert.equal((await PATCH(patch({mealSideCounts:{breakfast:3}}))).status,400);
+  assert.equal((await PATCH(patch({mealSideCounts:home.mealSideCounts}))).status,200);
+  assert.deepEqual((await(await GET(req(cookies[0]))).json()).preferences.mealSideCounts,home.mealSideCounts);
+  assert.equal((await POST(req(cookies[0],{conditions:home,mealIds:homeIds}))).status,201);
+  assert.deepEqual((await(await GET(req(cookies[0]))).json()).plan.conditions.mealSideCounts,home.mealSideCounts);
   assert.equal((await POST(req(cookies[0],body))).status,201);
   assert.deepEqual((await(await GET(req(cookies[0],undefined,true))).json()).plan.mealIds,mealIds);
   const homePlan=(await(await GET(req(cookies[0]))).json()).plan;

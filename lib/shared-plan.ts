@@ -1,15 +1,15 @@
 import {createHash,randomUUID} from 'node:crypto';
-import {basket,purchaseBasket,mealSchedule,parseConditions,type PlanProduct,type MealSlot} from './shopping-plan';
+import {basket,purchaseBasket,mealSchedule,parseConditions,type PlanProduct,type MealSlot,type MealSideCounts} from './shopping-plan';
 import {servingNutrition} from './food-intake';
 import {getPool} from './db';
 
-export type SharedPlan={people?:number;sideCount?:number;days:number;slots:MealSlot[];meals:{productId:string;day:number;slot:MealSlot}[];products:{id:string;name:string;image:string|null;url:string|null;price:number;servings:number;calories:number|null;protein:number|null;packs:number}[];purchases?:{id:string;name:string;price:number;packs:number}[];total:number};
+export type SharedPlan={people?:number;sideCount?:number;mealSideCounts?:MealSideCounts;days:number;slots:MealSlot[];meals:{productId:string;day:number;slot:MealSlot}[];products:{id:string;name:string;image:string|null;url:string|null;price:number;servings:number;calories:number|null;protein:number|null;packs:number}[];purchases?:{id:string;name:string;price:number;packs:number}[];total:number};
 export function sharedPlanSnapshot(raw:unknown,mealIds:unknown,products:PlanProduct[]):SharedPlan|null{
  const c=parseConditions(raw);
  if(!c||!Array.isArray(mealIds)||mealIds.length!==c.meals||mealIds.some(id=>typeof id!=='string'||!products.some(p=>p.id===id)))return null;
  const schedule=mealSchedule(c),rows=basket(mealIds,products,[],{},c.people);
  // Explicit allowlist: no owner, preferences, inventory, budget or intake records.
- return {people:c.people??1,sideCount:c.sideCount??0,days:Math.max(...schedule.map(s=>s.day)),slots:[...new Set(schedule.map(s=>s.slot))],
+ return {people:c.people??1,sideCount:c.sideCount??0,...(c.mealSideCounts?{mealSideCounts:c.mealSideCounts}:{}),days:Math.max(...schedule.map(s=>s.day)),slots:[...new Set(schedule.map(s=>s.slot))],
   meals:mealIds.map((productId,i)=>({productId,...schedule[i]})),
   products:rows.map(({product:p,packs})=>({id:p.id,name:p.name,image:p.productImageUrl,url:p.productUrl,price:p.price,servings:p.servings,...servingNutrition(p),packs})),
   purchases:purchaseBasket(mealIds,products,[],{},undefined,c.people).map(r=>({id:r.product.id,name:r.product.name,price:r.product.price,packs:r.packs})),

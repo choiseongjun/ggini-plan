@@ -38,7 +38,7 @@ export async function POST(request:NextRequest){
    const personalized=personalizeProducts(catalog,body,{...diet,excluded:savedConditions?.excluded??diet.excluded});
    if(personalized.personalization.blocked)return authFailure('현재 신체 정보에서는 자동 맞춤 추천을 제공하지 않아요.',422);
    const stock=parseStock(progress.rows[0]?.stock??{})??{};
-   const conditions=parseConditions({...initialConditions,...parseConditions(preferences.rows[0]?.conditions),people:shared.people??1,sideCount:shared.sideCount??0,budget:input.budget,days:shared.days,slots:shared.slots,meals:shared.days*shared.slots.length,owned:[],supply:Object.fromEntries(Object.values(stock).map(i=>[i.id,i.owned+i.ordered])),startDate:emptyDashboard().today});
+   const conditions=parseConditions({...initialConditions,...parseConditions(preferences.rows[0]?.conditions),people:shared.people??1,sideCount:shared.sideCount??0,mealSideCounts:shared.mealSideCounts,budget:input.budget,days:shared.days,slots:shared.slots,meals:shared.days*shared.slots.length,owned:[],supply:Object.fromEntries(Object.values(stock).map(i=>[i.id,i.owned+i.ordered])),startDate:emptyDashboard().today});
    if(!conditions)return authFailure('식단 조건을 확인해 주세요.',400);
    const original=shared.meals.map(m=>m.productId),products=personalized.products;
    const same=validMealIds(original,products,conditions)&&basketTotal(original,products,[],conditions.supply,conditions.people)<=conditions.budget;

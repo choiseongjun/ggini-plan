@@ -1,5 +1,6 @@
 'use client';
 import './meal-composition-picker.css';
+import {sideCountFor,slotLabels,type MealSlot,type MealSideCounts,type PlanConditions} from '../lib/shopping-plan';
 
 // Small tableware illustrations share the same palette and hand-drawn curves.
 export function MealTableIllustration({sides=0}:{sides?:number}){
@@ -39,14 +40,20 @@ export function MealTableIllustration({sides=0}:{sides?:number}){
  </svg>;
 }
 
-export function MealCompositionPicker({value,onChange,disabled}:{value:number;onChange:(count:number)=>void;disabled:boolean}){
- return <fieldset className="meal-composition-picker" disabled={disabled}>
-  <legend>어떻게 차릴까요?</legend>
-  <p className="meal-composition-intro">오늘의 식탁, 내 마음에 맞게</p>
-  <div className="meal-composition-options">{[{count:0,label:'간단하게',hint:'기본 메뉴'},{count:1,label:'밥과 반찬',hint:'메인 + 반찬 1개'},{count:2,label:'든든한 한 상',hint:'메인 + 반찬 2개'}].map(option=><button type="button" key={option.count} aria-pressed={value===option.count} onClick={()=>onChange(option.count)}>
-   <span className="meal-composition-check" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="m4 8 3 3 5-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
-   <MealTableIllustration sides={option.count}/><strong>{option.label}</strong><small>{option.hint}</small>
-  </button>)}</div>
-  <p className="meal-composition-note"><span aria-hidden="true"/>{value>0?'밥부터 반찬까지 함께 구성해요. 조리는 30분 이상 여유롭게 생각해 주세요.':'요리 하나로 가볍게 차려요. 메뉴에 따라 밥도 함께 담아요.'}</p>
+const options=[{count:0,label:'간단하게',hint:'기본 메뉴'},{count:1,label:'밥과 반찬',hint:'반찬 1개'},{count:2,label:'든든한 한 상',hint:'반찬 2개'}];
+export function MealCompositionPicker({conditions,onChange,disabled}:{conditions:PlanConditions;onChange:(counts:MealSideCounts)=>void;disabled:boolean}){
+ const slots=conditions.slots??['dinner'];
+ const counts=Object.fromEntries((Object.keys(slotLabels) as MealSlot[]).map(slot=>[slot,sideCountFor(conditions,slot)]));
+ return <fieldset className="meal-composition-picker meal-composition-by-slot" disabled={disabled}>
+  <legend>끼니마다 어떻게 차릴까요?</legend>
+  <p className="meal-composition-intro">아침은 간단하게, 저녁은 든든하게. 끼니마다 골라요.</p>
+  {slots.map(slot=><fieldset className="meal-composition-slot" key={slot}>
+   <legend>{slotLabels[slot]}</legend>
+   <div className="meal-composition-options">{options.map(option=><button type="button" key={option.count} aria-label={`${slotLabels[slot]} ${option.label}`} aria-pressed={counts[slot]===option.count} onClick={()=>onChange({...counts,[slot]:option.count})}>
+    <MealTableIllustration sides={option.count}/><strong>{option.label}</strong><small>{option.hint}</small>
+   </button>)}</div>
+   <button className="meal-composition-apply" type="button" onClick={()=>onChange({breakfast:counts[slot],lunch:counts[slot],dinner:counts[slot]})}>{slotLabels[slot]} 구성으로 모든 끼니에 적용</button>
+  </fieldset>)}
+  <p className="meal-composition-note"><span aria-hidden="true"/>반찬을 함께 고른 끼니는 조리에 30분 이상 여유를 두세요.</p>
  </fieldset>;
 }
