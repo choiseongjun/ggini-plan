@@ -15,7 +15,9 @@ test('only approved compatible pairings are used; avoid has priority; substitute
  assert.equal(applyPairings([main],[side],[r]).length,2);
 });
 test('composition counts rice once, preserves ingredient pooling and one-person nutrition',()=>{
- const combo=composePairing(main,[side],[r]);
+ const combo=composePairing({...main,productImageUrl:'https://example.com/main.jpg'},[{...side,productImageUrl:'https://example.com/side.jpg'}],[r]);
+ assert.equal(combo.productImageUrl,'https://example.com/main.jpg');
+ assert.equal(combo.recipe!.sides![0].productImageUrl,'https://example.com/side.jpg');
  assert.equal(combo.recipe!.ingredients.length,2);assert.equal(combo.recipe!.nutrition.calories,540);assert.equal(combo.price,1400);
  assert.equal(basketTotal([combo.id],[combo],[],{},2),4000);
  assert.equal(combo.recipe!.composition!.items[1].reason,'검수 이유');

@@ -34,7 +34,7 @@ export function composePairing(main:PlanProduct,sides:PlanProduct[],relations:Pa
   allergens:[...new Set([main,...sides].flatMap(p=>p.allergens??[]))],
   recipe:{...main.recipe,sideCount:sides.length,ingredients,nutrition:{calories:sum('calories'),protein:sum('protein')},minutes:main.recipe.minutes+sides.reduce((n,s)=>n+s.recipe!.minutes,0),
    composition:{templateId:relations[0]?.template_id??'rice-meal',version:1,items:[{id:main.id,role:'main',reason:'메인과 기본 주식'},...sides.map(s=>({id:s.id,role:relations.find(r=>r.companion_id===s.id)?.slot??'side',reason:relations.find(r=>r.companion_id===s.id)?.reason??'조합 미리보기'}))]},
-   sides:sides.map(s=>({name:s.name,steps:s.recipe!.steps,minutes:s.recipe!.minutes})),steps:[...main.recipe.steps,...sides.flatMap(s=>s.recipe!.steps.map(step=>`${s.name}: ${step}`))]}};
+   sides:sides.map(s=>({name:s.name,productImageUrl:s.productImageUrl,productImageUrls:s.productImageUrls,steps:s.recipe!.steps,minutes:s.recipe!.minutes})),steps:[...main.recipe.steps,...sides.flatMap(s=>s.recipe!.steps.map(step=>`${s.name}: ${step}`))]}};
 }
 export function applyPairings(mains:PlanProduct[],sides:PlanProduct[],relations:Pairing[],configs:Template[]=templates):PlanProduct[]{
  const byId=new Map(sides.map(s=>[s.id,s]));

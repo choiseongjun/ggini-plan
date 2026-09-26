@@ -1,4 +1,5 @@
 'use client';
+import {MealTableIllustration} from './meal-composition-picker';
 import {trackAnalytics} from '../lib/analytics';
 import type {DailyNutritionReference} from '../lib/daily-nutrition-reference';
 import {usePlannerLocale} from './planner-locale';
@@ -15,7 +16,7 @@ import {BadgeToast,INTAKE_LOGGED_EVENT,StreakChip,useIntakeStats} from './record
 import {useEffect,useId,useState} from 'react';
 import Link from 'next/link';
 import type {useFoodIntake} from './food-intake';
-import {MealPhotoGallery} from './meal-photo-gallery';
+import {MealPhotoGallery,MealCompositionPhotos} from './meal-photo-gallery';
 import {mealCalorieParts} from '../lib/serving-nutrients';
 import {RecipeProductPreview} from './meal-source';
 import {RecipeVideos} from './recipe-videos';
@@ -102,7 +103,8 @@ export function TodayMeals({onAllMeals,focusMeal=null,overviewOpen,onOverviewOpe
     return <article hidden={slot!==selectedSlot} key={index} id={`today-meal-${index}`} tabIndex={-1} className={done?'today-menu done':'today-menu'}>
      <div className="today-menu-label"><span className="meal-slot">{slot==='breakfast'?'☀️':slot==='lunch'?'🌤️':'🌙'} {slotLabels[slot]}</span><b className={`meal-status${done?' is-done':''}`}>{done?'먹었어요 ✓':availablePortions(progress.stock,p)>=1?'집에 있어요':orderedParts.length?'배송 기다리는 중':'구매 전'}</b></div>
      <div className="today-product"><div className="today-menu-toggle-text"><span className="today-menu-name">{p.name.split('_').join(' · ')}</span><span className="today-menu-price">{p.recipe?'재료비':'한 끼'} 약 <b>{won(p.price/p.servings)}</b></span></div></div>
-     {!!p.recipe?.sides?.length&&<p className="meal-composition-summary">🍚 밥 한 공기 · {p.name.split(' + ')[0].replace(/_/g,' · ')} · {p.recipe.sides.map(s=>s.name.replace(/_/g,' · ')).join(' · ')}<br/><small>밥·메인·반찬을 합친 1인분 재료비와 영양이에요.</small></p>}
+     {slot===selectedSlot&&!!p.recipe?.sides?.length&&<MealCompositionPhotos key={p.id} product={p}/>}
+     {!!p.recipe?.sides?.length&&<div className="meal-composition-summary"><MealTableIllustration sides={p.recipe.sides.length}/><div><strong>오늘의 한 상</strong><p>밥 한 공기 · {p.name.split(' + ')[0].replace(/_/g,' · ')} · {p.recipe.sides.map(s=>s.name.replace(/_/g,' · ')).join(' · ')}</p><small>밥·메인·반찬을 합친 1인분 재료비와 영양이에요.</small></div></div>}
      {kcal!==null&&<div className="meal-kcal"><div className="meal-kcal-total"><b>{Math.round(kcal).toLocaleString('ko-KR')}</b><span>kcal</span><small>한 끼</small></div>{kcalParts.rice&&<p className="meal-kcal-line"><span>{p.name.split(' + ')[0].split('_')[0]} 1인분{kcalParts.dish.grams!==null?` (약 ${kcalParts.dish.grams}g)`:''}</span> <b>{Math.round(kcalParts.dish.kcal??0)}</b> + <span>밥 한 공기</span> <b>{Math.round(kcalParts.rice.kcal)}</b>{kcalParts.sides&&<> + <span>반찬 {kcalParts.sides.names.length}개</span> <b>{Math.round(kcalParts.sides.kcal)}</b></>}</p>}</div>}
      <div className="meal-primary-record">     {photoResults[index]&&<PhotoLogSummary result={photoResults[index]} streak={stats?.streak.loggedToday?stats.streak.current:null} busy={intake.busy} onUndo={()=>void undoPhoto(index)} onEdit={()=>window.location.assign('/record#meal-history')}/>}
      {userId&&!done&&<MealPhotoLog productId={p.id} dishName={p.name} disabled={disabled||!isToday} onLogged={r=>{setPhotoResults(all=>({...all,[index]:r}));setLogging(null);intake.reload();window.dispatchEvent(new CustomEvent(INTAKE_LOGGED_EVENT));trackPlanner('photo_logged');if(index===focusMeal)trackPlanner('push_logged');}} onFallback={()=>void intake.log(p.id,1,[])} onManual={()=>setLogging(logging===index?null:index)}/>}
@@ -110,7 +112,7 @@ export function TodayMeals({onAllMeals,focusMeal=null,overviewOpen,onOverviewOpe
      {logging===index&&!done&&<EatLogPanel product={p} stockAvailable={owned?Math.floor(owned.available*4)/4:0} disabled={disabled||!isToday} onClose={()=>setLogging(null)} onSubmit={({portions,extras,deduct})=>{void intake.log(p.id,portions,extras,deduct?owned:undefined).then(ok=>{if(ok){setLogging(null);if(index===focusMeal)trackPlanner('push_logged');}});}}/>}
 </div>
      <details onToggle={e=>{const open=e.currentTarget.open;setDetailPhotos(previous=>{const next=new Set(previous);if(open)next.add(index);else next.delete(index);return next;});if(open)trackAnalytics('menu_details_opened');}} className="meal-more"><summary><span className="meal-more-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5c-3-2-6-2-9-1v15c3-1 6-1 9 1 3-2 6-2 9-1V4c-3-1-6-1-9 1Zm0 0v15M6 8h3M6 12h3M15 8h3M15 12h3"/></svg></span><span className="meal-more-copy"><strong>{p.recipe?'사진 · 재료 · 만드는 법':'사진 · 상품 · 영양정보'}</strong><small>메뉴 바꾸기{!locale.isTaiwan&&' · 근처 식당 찾기도 여기서'}</small></span><span className="meal-more-action"><span className="meal-more-open-label">펼치기</span><span className="meal-more-close-label">접기</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span></summary><div className="meal-sections">
-      {detailPhotos.has(index)&&<MealPhotoGallery key={p.id} product={p}/>}
+      {detailPhotos.has(index)&&!p.recipe?.sides?.length&&<MealPhotoGallery key={p.id} product={p}/>}
       {p.recipe?<MealSection title="재료" meta={`${p.recipe.ingredients.filter(i=>!i.group).length}가지`} open={isSection(index,'ing')} onToggle={()=>toggleSection(index,'ing')}><RecipeProductPreview product={p} videos={false}/></MealSection>
        :<MealSection title="상품 정보" open={isSection(index,'ing')} onToggle={()=>toggleSection(index,'ing')}><div className="today-product-links">
       {p.productUrl&&<a href={p.productUrl} target="_blank" rel="noopener noreferrer" aria-label={`${p.name} 판매 상품 보기 (새 창)`}>🛍️ 판매 상품 보기 ↗</a>}

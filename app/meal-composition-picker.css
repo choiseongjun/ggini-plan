@@ -1,1 +1,25 @@
-.meal-composition-picker{border:0;padding:0;margin:20px 0;min-width:0;width:100%}.meal-composition-picker legend{font-size:16px;font-weight:750;margin-bottom:12px;color:#3f5135}.meal-composition-picker>div{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.meal-composition-picker button{display:flex;flex-direction:column;align-items:center;gap:7px;min-width:0;padding:14px 6px;border:1px solid #dddcc9;border-radius:18px;background:#fffdf7;color:#4b6042;cursor:pointer}.meal-composition-picker button>span{font-size:26px}.meal-composition-picker button strong{font-size:14px}.meal-composition-picker button small{font-size:11px;line-height:1.5}.meal-composition-picker button[aria-pressed=true]{background:#edf3df;border-color:#719054;box-shadow:inset 0 0 0 1px #719054}.meal-composition-picker button:focus-visible{outline:3px solid #7b965e;outline-offset:3px}.meal-composition-picker p{font-size:12px;line-height:1.7;color:#68715e;margin:10px 0 0}.meal-composition-picker:disabled{opacity:.6}.meal-composition-summary{padding:12px 14px;background:#f1f5e8;border-radius:14px;font-size:14px;line-height:1.8;color:#3f5637;margin:12px 0}
+.meal-composition-picker{border:0;padding:0;margin:24px 0;min-width:0;width:100%;color:#384b36}
+.meal-composition-picker legend{padding:0;font-size:18px;font-weight:750;letter-spacing:-.6px;line-height:1.5}
+.meal-composition-picker .meal-composition-intro{margin:4px 0 17px;font-size:12px;letter-spacing:-.2px;color:#858777;line-height:1.6}
+.meal-composition-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.meal-composition-options button{position:relative;display:flex;flex-direction:column;align-items:center;min-width:0;margin:0;padding:20px 5px 18px;border:1px solid #e4e0d4;border-radius:23px;background:#fffdf7;color:#4f5747;cursor:pointer;box-shadow:0 3px 0 #e9e4d730;transition:background .18s,border-color .18s,box-shadow .18s,transform .18s}
+.meal-composition-options .meal-table-illustration{display:block;width:100%;max-width:160px;height:auto;margin:0 0 8px;transition:transform .18s}
+.meal-composition-options button strong{font-size:14px;font-weight:750;letter-spacing:-.5px;line-height:1.5;white-space:nowrap}
+.meal-composition-options button small{margin-top:5px;font-size:11px;font-weight:400;letter-spacing:-.3px;line-height:1.6;color:#838777;white-space:nowrap}
+.meal-composition-options button[aria-pressed=true]{background:#eef2e3;border-color:#7d9063;box-shadow:inset 0 0 0 1px #7d9063,0 4px 12px #52673b0b;color:#374e2d}
+.meal-composition-options button[aria-pressed=true] small{color:#69785b}
+.meal-composition-check{position:absolute;right:10px;top:10px;display:grid;place-items:center;width:18px;height:18px;border:1px solid #deded1;border-radius:50%;background:#fffdf8;color:transparent}
+.meal-composition-check svg{width:13px;height:13px}
+.meal-composition-options button[aria-pressed=true] .meal-composition-check{background:#61764b;border-color:#61764b;color:#fffdf4}
+.meal-composition-options button:focus-visible{outline:3px solid #889e6e;outline-offset:4px}
+.meal-composition-picker .meal-composition-note{display:flex;align-items:baseline;gap:8px;margin:14px 2px 0;font-size:12px;line-height:1.8;color:#737b68;word-break:keep-all;overflow-wrap:anywhere}
+.meal-composition-note>span{flex:0 0 5px;height:5px;border-radius:50%;background:#a7b495}
+.meal-composition-picker:disabled{opacity:.6}.meal-composition-picker:disabled button{cursor:wait}
+.meal-composition-summary{display:flex;align-items:center;gap:12px;padding:14px;background:#f3f4e9;border:1px solid #e5e7d8;border-radius:18px;color:#465b3e;margin:14px 0}
+.meal-composition-summary .meal-table-illustration{flex:0 0 60px;width:60px;height:auto}
+.meal-composition-summary strong{display:block;margin-bottom:4px;font-size:11px;letter-spacing:.3px;font-weight:650;color:#879174}
+.meal-composition-summary p{margin:0;font-size:14px;line-height:1.75;word-break:keep-all;overflow-wrap:anywhere}
+.meal-composition-summary small{display:block;margin-top:5px;font-size:11px;line-height:1.7;color:#7a816e}
+@media(hover:hover){.meal-composition-options button:not(:disabled):hover{border-color:#9baa83;transform:translateY(-2px)}.meal-composition-options button:not(:disabled):hover .meal-table-illustration{transform:rotate(-2deg)}}
+@media(max-width:380px){.meal-composition-options{gap:7px}.meal-composition-options button{border-radius:18px;padding:22px 3px 14px}.meal-composition-options button strong{font-size:12px}.meal-composition-options button small{font-size:10px}.meal-composition-summary{gap:8px;padding:12px}.meal-composition-summary .meal-table-illustration{flex-basis:48px;width:48px}}
+@media(prefers-reduced-motion:reduce){.meal-composition-options button,.meal-composition-options .meal-table-illustration{transition:none}.meal-composition-options button:not(:disabled):hover,.meal-composition-options button:not(:disabled):hover .meal-table-illustration{transform:none}}
