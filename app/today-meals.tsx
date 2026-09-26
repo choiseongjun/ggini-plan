@@ -26,7 +26,7 @@ import {ProductNutrition,DailyRecommendationNutrition} from './recommendation-nu
 import {purchaseBasket,swapReasons,visibleSwapReasons,type SwapReason,slotLabels,type PlanProduct,type PlanConditions,type MealSlot,mealSchedule} from '../lib/shopping-plan';
 import {planDay,planDate,recordedForSlot} from '../lib/daily-plan';
 import {addDays,type DashboardData} from '../lib/dashboard';
-import {ShoppingProgress,type useShoppingProgress} from './shopping-progress';
+import type {useShoppingProgress} from './shopping-progress';
 import './today-meals.css';
 import {recommendationReasons} from '../lib/plan-explanation';
 
@@ -62,7 +62,6 @@ export function TodayMeals({onAllMeals,focusMeal=null,overviewOpen,onOverviewOpe
   for(const id of r.ids)if(!await intake.send({action:'undo',id,version:intake.current?.version??0}))return;
   setPhotoResults(all=>{const next={...all};delete next[index];return next;});
  }
- const [managing,setManaging]=useState<number|null>(null),[purchaseMessage,setPurchaseMessage]=useState('');
  const [browsing,setBrowsing]=useState<number|null>(null);
  const day=chosenDay!==null&&chosenDay<=days?chosenDay:focusMeal!==null&&schedule[focusMeal]?schedule[focusMeal].day:active.day;
  const date=planDate(startDate,day),isToday=date===today;
@@ -81,14 +80,13 @@ export function TodayMeals({onAllMeals,focusMeal=null,overviewOpen,onOverviewOpe
   {intake.loading&&<p role="status">오늘 기록을 불러오는 중…</p>}
   {intake.error&&<p role="alert">{intake.error} <button type="button" disabled={intake.busy} onClick={()=>intake.pending?void intake.send(intake.pending):intake.reload()}>다시 확인</button></p>}
   {intake.message&&<p role="status">{intake.message}</p>}
-  {purchaseMessage&&<p role="status">{purchaseMessage}</p>}
   {ids.length>0?<>
    <div className="today-title"><h3 tabIndex={-1} data-recommended-menu-heading>{isToday?'오늘 이렇게 먹어요':`${day}일차 이렇게 먹어요`}</h3>{userId&&<StreakChip stats={stats}/>}<span>{date.slice(5).replace('-','/')}</span></div>
 
    {!active.active&&<div className="today-next-plan"><p>{today<startDate?'아직 시작 전인 식단이에요. 시작일을 바꿀 수 있어요.':'이 식단의 일정이 끝났어요. 오늘부터 먹을 메뉴를 준비해 볼까요?'}</p>{today>=startDate&&onNextPlan&&<><button type="button" className="primary-button" disabled={nextPlanBusy} onClick={onNextPlan}>{nextPlanBusy?'다음 식단 준비 중…':'같은 조건으로 다음 식단 만들기'}</button><small>인원·끼니·취향은 유지하고 오늘부터 새로 추천해요. 확인 후 식단을 저장해 주세요.</small></>}</div>}
-   <nav className="today-days" aria-label="준비한 식단 날짜">{Array.from({length:days},(_,i)=>i+1).map(n=><button type="button" key={n} aria-pressed={n===day} onClick={()=>{setChosenDay(n);setManaging(null);setBrowsing(null);}}><strong>{planDate(startDate,n)===today?'오늘':planDate(startDate,n)===addDays(today,1)?'내일':`${n}일차`}</strong><small>{planDate(startDate,n).slice(5).replace('-','/')}</small></button>)}</nav>
+   <nav className="today-days" aria-label="준비한 식단 날짜">{Array.from({length:days},(_,i)=>i+1).map(n=><button type="button" key={n} aria-pressed={n===day} onClick={()=>{setChosenDay(n);setBrowsing(null);}}><strong>{planDate(startDate,n)===today?'오늘':planDate(startDate,n)===addDays(today,1)?'내일':`${n}일차`}</strong><small>{planDate(startDate,n).slice(5).replace('-','/')}</small></button>)}</nav>
    <p className="meal-switch-hint">끼니를 눌러 메뉴를 확인하세요 · 영양·기록은 내 1인분 기준</p>
-   <nav className="meal-switch" aria-label="끼니 선택">{(['breakfast','lunch','dinner'] as const).map(slot=>{const entry=entries.find(e=>e.slot===slot);return <button type="button" key={slot} aria-pressed={selectedSlot===slot} aria-controls={`${mealNavId}-panel`} onClick={()=>{setChosenSlot(slot);setManaging(null);setBrowsing(null);}}><strong>{slotLabels[slot]}</strong><small>{entry?(eatenToday.has(entry.index)&&isToday?'기록 완료':entry.product.name.replace(/_/g,' · ')):'추천 식단 없음'}</small></button>;})}</nav>
+   <nav className="meal-switch" aria-label="끼니 선택">{(['breakfast','lunch','dinner'] as const).map(slot=>{const entry=entries.find(e=>e.slot===slot);return <button type="button" key={slot} aria-pressed={selectedSlot===slot} aria-controls={`${mealNavId}-panel`} onClick={()=>{setChosenSlot(slot);setBrowsing(null);}}><strong>{slotLabels[slot]}</strong><small>{entry?(eatenToday.has(entry.index)&&isToday?'기록 완료':entry.product.name.replace(/_/g,' · ')):'추천 식단 없음'}</small></button>;})}</nav>
    <div id={`${mealNavId}-panel`} role="region" aria-label={`${slotLabels[selectedSlot]} 식사`}>
    {!entries.some(e=>e.slot===selectedSlot)&&<div className="meal-slot-empty"><strong>{slotLabels[selectedSlot]}은 추천 식단에 없어요</strong><p>추천받을 때 선택한 끼니만 포함돼요. 먹은 음식은 따로 기록할 수 있어요.</p>{onAllMeals&&<button type="button" className="primary-button" disabled={nextPlanBusy} onClick={onAllMeals}>아침·점심·저녁 모두 추천받기</button>}<Link href="/record">먹은 음식 기록하기</Link></div>}
    <div className="today-menu-list">{entries.map(({product:p,index,slot},entryIndex)=>{
@@ -122,8 +120,8 @@ export function TodayMeals({onAllMeals,focusMeal=null,overviewOpen,onOverviewOpe
       {!locale.isTaiwan&&<MealSection title="근처 식당 찾기" meta="밖에서 먹을 때" open={isSection(index,'restaurants')} onToggle={()=>toggleSection(index,'restaurants')}><NearbyRestaurants key={p.id} menu={p.name.replace(/_/g,' ')} embedded/></MealSection>}
       {!locale.isTaiwan&&p.recipe&&<MealSection title={sideFit(p)==='none'?'곁들임 추천':sideFit(p)==='kimchi'?'곁들일 김치 추천':'밑반찬 추천'} meta={sideFit(p)==='none'?'음료·수프·샐러드·소스':sideFit(p)==='kimchi'?'한 그릇 요리에 곁들이기 좋은 김치':'이 메뉴에 어울리는 반찬'} open={isSection(index,'sides')} onToggle={()=>toggleSection(index,'sides')}><SideDishSuggest main={p} conditions={conditions}/></MealSection>}
       {!done&&<MealSection title="메뉴 바꾸기" open={isSection(index,'swap')} onToggle={()=>toggleSection(index,'swap')}>
-     {!done&&<div className="today-edit" role="group" aria-label={`${slotLabels[slot]} 메뉴 수정`}><button type="button" disabled={disabled} aria-haspopup="dialog" onClick={()=>setBrowsing(index)}>🔎 메뉴 직접 고르기</button><button type="button" disabled={disabled} onClick={()=>{setManaging(null);setBrowsing(null);onSwap(index);}}>🔀 바로 바꾸기</button></div>}
-     {!done&&<details className="swap-reasons"><summary>이유를 고르고 교체하기</summary><p>다음 추천에도 반영해요. 이유 없이 바꾸려면 ‘바로 바꾸기’를 누르세요.</p><div>{visibleSwapReasons.map(reason=><button type="button" key={reason} disabled={disabled} onClick={()=>{setManaging(null);onSwap(index,reason);}}>{swapReasons[reason]}</button>)}</div></details>}
+     {!done&&<div className="today-edit" role="group" aria-label={`${slotLabels[slot]} 메뉴 수정`}><button type="button" disabled={disabled} aria-haspopup="dialog" onClick={()=>setBrowsing(index)}>🔎 메뉴 직접 고르기</button><button type="button" disabled={disabled} onClick={()=>{setBrowsing(null);onSwap(index);}}>🔀 바로 바꾸기</button></div>}
+     {!done&&<details className="swap-reasons"><summary>이유를 고르고 교체하기</summary><p>다음 추천에도 반영해요. 이유 없이 바꾸려면 ‘바로 바꾸기’를 누르세요.</p><div>{visibleSwapReasons.map(reason=><button type="button" key={reason} disabled={disabled} onClick={()=>{onSwap(index,reason);}}>{swapReasons[reason]}</button>)}</div></details>}
      {!locale.isTaiwan&&<MealComparison key={p.id.split('--with--')[0]} product={p} index={index} ids={ids} products={products} conditions={conditions} onChoose={onChoose} disabled={disabled||done}/>}
       </MealSection>}
       <MealSection title="영양정보 · 추천 이유" meta={kcal!==null?`한 끼 약 ${Math.round(kcal)}kcal`:undefined} open={isSection(index,'nutri')} onToggle={()=>toggleSection(index,'nutri')}>
@@ -132,19 +130,15 @@ export function TodayMeals({onAllMeals,focusMeal=null,overviewOpen,onOverviewOpe
       </MealSection>
      </div>
      </details>
-     <div className="today-actions">{done?(!photoResults[index]&&<Link href="/record">기록 확인·취소 →</Link>):!userId?<button type="button" onClick={onLogin}>로그인하고 먹었어요 기록</button>:!canEat&&(orderedParts.length>0?<button type="button" disabled={disabled} onClick={()=>void progress.update(orderedParts.map(item=>({item,quantity:item.ordered})),'receive')}>받았어요 ({orderedParts.reduce((n,s)=>n+s.ordered,0)}묶음)</button>:<button type="button" disabled={disabled} aria-expanded={managing===index} onClick={()=>{setManaging(managing===index?null:index);setPurchaseMessage('');}}>구매·보유 등록</button>)}</div>
+     {(done&&!photoResults[index]||!done&&!userId)&&<div className="today-actions">{done?<Link href="/record">기록 확인·취소 →</Link>:<button type="button" onClick={onLogin}>로그인하고 먹었어요 기록</button>}</div>}
      {userId&&canEat&&!done&&<small className="today-left">집에 남은 음식 {amount(owned.available)}회분</small>}
-     {managing===index&&<div className="today-purchase-panel">
-      <div className="today-purchase-heading"><strong>{p.recipe?'이 끼니의 재료를 등록해요':'이 음식만 등록해요'}</strong><button type="button" disabled={progress.busy} onClick={()=>setManaging(null)}>닫기</button></div>
-      <ShoppingProgress key={p.id} single={!p.recipe} restrictToItems guest={locale.isTaiwan||!userId} progress={{...progress,update:async(changes,action,expense)=>{const ok=await progress.update(changes,action,expense);if(ok){setManaging(null);setPurchaseMessage(expense?'구매 상태와 식비를 함께 기록했어요.':'이 음식의 구매·보유 상태를 반영했어요.');}return ok;}}} items={parts.map(r=>({id:r.product.id,name:r.product.name,unit:'묶음',required:r.required*(1-recorded),packSize:1,url:r.product.productUrl,price:r.product.price,detail:r.product.detail}))} summary={<p className="today-note">지금 고른 음식의 수량만 반영해요. 실제 구매한 묶음 수로 조절해 주세요.</p>}/>
-     </div>}
      {!isToday&&<small>먹은 기록은 오늘 날짜의 메뉴에서 남겨 주세요.</small>}{recorded>0&&!done&&<small>오늘 {recorded}회분 기록했어요. 나머지를 드셨다면 먹었어요를 눌러 주세요.</small>}
     </article>;
    })}</div></div>
    {userId&&isToday&&<SnackLog onLogged={()=>intake.reload()}/>}
    <DailyRecommendationNutrition products={entries.map(e=>e.product)} reference={nutritionReference??null}/>
-   <MealPlanOverview ids={ids} products={products} conditions={conditions} startDate={startDate} shoppingTotal={shoppingTotal} onSwap={onSwap} locked={eatenToday} disabled={disabled} open={overviewOpen} onOpenChange={onOverviewOpen} onMeal={(n,index)=>{setChosenDay(n);setChosenSlot(schedule[index]?.slot??null);setManaging(null);setBrowsing(null);requestAnimationFrame(()=>requestAnimationFrame(()=>{const card=document.getElementById(`today-meal-${index}`);card?.scrollIntoView({behavior:'smooth',block:'start'});card?.focus({preventScroll:true});}));}}/>
-   <details className="today-date-settings"><summary>식단 시작일 변경</summary><label className="today-start">식단 시작일<input type="date" value={startDate} onChange={e=>{if(e.target.value){onStartDate(e.target.value);setChosenDay(null);setChosenSlot(null);setManaging(null);setBrowsing(null);}}}/></label></details>
+   <MealPlanOverview ids={ids} products={products} conditions={conditions} startDate={startDate} shoppingTotal={shoppingTotal} onSwap={onSwap} locked={eatenToday} disabled={disabled} open={overviewOpen} onOpenChange={onOverviewOpen} onMeal={(n,index)=>{setChosenDay(n);setChosenSlot(schedule[index]?.slot??null);setBrowsing(null);requestAnimationFrame(()=>requestAnimationFrame(()=>{const card=document.getElementById(`today-meal-${index}`);card?.scrollIntoView({behavior:'smooth',block:'start'});card?.focus({preventScroll:true});}));}}/>
+   <details className="today-date-settings"><summary>식단 시작일 변경</summary><label className="today-start">식단 시작일<input type="date" value={startDate} onChange={e=>{if(e.target.value){onStartDate(e.target.value);setChosenDay(null);setChosenSlot(null);setBrowsing(null);}}}/></label></details>
    <BadgeToast badges={newBadges} onClose={dismissBadges}/>
    <MenuPickerModal index={browsing} ids={ids} products={products} conditions={conditions} onChoose={onChoose} onClose={()=>setBrowsing(null)} disabled={disabled}/>
    <p className="today-note">한 끼 비용은 간편식의 회분 가격 또는 직접 요리에 쓰는 재료비예요. 실제 결제·배송비와 다를 수 있어요.</p>
@@ -158,6 +152,6 @@ export function TodayMeals({onAllMeals,focusMeal=null,overviewOpen,onOverviewOpe
    </div>
    {current&&!current.logs.length&&<p className="today-note">첫 끼를 기록해 보세요. 아래 메뉴의 ‘먹었어요’를 누르면 여기에 쌓여요.</p>}
    <Link href="/record">먹은 기록·식비 자세히 보기 →</Link>
-  </details>:<p className="today-note">비회원도 추천과 구매 상태를 이어서 볼 수 있어요. <button type="button" onClick={onLogin}>로그인하고 영양 기록 남기기 →</button></p>}
+  </details>:<p className="today-note">비회원도 추천 식단을 이어서 볼 수 있어요. <button type="button" onClick={onLogin}>로그인하고 영양 기록 남기기 →</button></p>}
  </section>);
 }

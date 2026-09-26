@@ -20,7 +20,6 @@
   .shopping-planner .today-menu,
   .shopping-planner .purchase-items > article,
   .shopping-planner .planner-result,
-  .shopping-planner .today-purchase-panel,
   .shopping-planner .planner-exclusions {
     animation: kkini-appear 220ms ease-out;
   }
