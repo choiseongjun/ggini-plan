@@ -118,7 +118,7 @@ export function TodayMeals({onAllMeals,focusMeal=null,overviewOpen,onOverviewOpe
       {p.productUrl&&<a href={p.productUrl} target="_blank" rel="noopener noreferrer" aria-label={`${p.name} 판매 상품 보기 (새 창)`}>🛍️ 판매 상품 보기 ↗</a>}
       <a href={locale.search(p.name)} target="_blank" rel="noopener noreferrer" aria-label={`${p.name} 네이버쇼핑에서 가격 검색 (새 창)`}>다른 판매처 가격 검색 ↗</a>
      </div></MealSection>}
-      {p.recipe&&!p.recipe.assembly&&<MealSection title="만드는 방법 영상" meta="YouTube" open={isSection(index,'video')} onToggle={()=>toggleSection(index,'video')}><RecipeVideos dishId={p.id}/></MealSection>}
+      {p.recipe&&!p.recipe.assembly&&<MealSection title="만드는 방법 영상" meta="하루한끼 우선 · YouTube" open={isSection(index,'video')} onToggle={()=>toggleSection(index,'video')}><RecipeVideos dishId={p.id}/></MealSection>}
       {!locale.isTaiwan&&<MealSection title="근처 식당 찾기" meta="밖에서 먹을 때" open={isSection(index,'restaurants')} onToggle={()=>toggleSection(index,'restaurants')}><NearbyRestaurants key={p.id} menu={p.name.replace(/_/g,' ')} embedded/></MealSection>}
       {!locale.isTaiwan&&p.recipe&&<MealSection title={sideFit(p)==='none'?'곁들임 추천':sideFit(p)==='kimchi'?'곁들일 김치 추천':'밑반찬 추천'} meta={sideFit(p)==='none'?'음료·수프·샐러드·소스':sideFit(p)==='kimchi'?'한 그릇 요리에 곁들이기 좋은 김치':'이 메뉴에 어울리는 반찬'} open={isSection(index,'sides')} onToggle={()=>toggleSection(index,'sides')}><SideDishSuggest main={p} conditions={conditions}/></MealSection>}
       {!done&&<MealSection title="메뉴 바꾸기" open={isSection(index,'swap')} onToggle={()=>toggleSection(index,'swap')}>

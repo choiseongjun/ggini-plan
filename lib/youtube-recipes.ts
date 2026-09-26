@@ -1,8 +1,12 @@
+export const HARU_CHANNEL_ID='UCPWFxcwPliEBMwJjmeFIDIg';
+export const HARU_CHANNEL_URL='https://www.youtube.com/channel/'+HARU_CHANNEL_ID;
+export const recipeVideoDishId=(id:string)=>id.split('--sides-')[0].split('--auto--')[0].split('--with--')[0];
 export type RecipeVideo={id:string;title:string;channel:string;url:string;thumbnail:string};
-export function parseRecipeVideos(data:unknown,limit=3):RecipeVideo[]{
+export function parseRecipeVideos(data:unknown,limit=3,channelId?:string):RecipeVideo[]{
  if(!data||typeof data!=='object'||!('items' in data)||!Array.isArray(data.items))return [];
  return data.items.flatMap(item=>{
   const id=item?.id?.videoId,s=item?.snippet;
+  if(channelId&&s?.channelId!==channelId)return [];
   if(typeof id!=='string'||!/^[a-zA-Z0-9_-]{11}$/.test(id)||typeof s?.title!=='string'||typeof s?.channelTitle!=='string')return [];
   return [{id,title:s.title,channel:s.channelTitle,url:`https://www.youtube.com/watch?v=${id}`,thumbnail:`https://i.ytimg.com/vi/${id}/mqdefault.jpg`}];
  }).slice(0,limit);
@@ -23,4 +27,17 @@ export function relevantRecipeVideos(videos:RecipeVideo[],name:string){
  ];
  const required=[...methods,...ingredients].filter(([menu])=>menu.test(name)).map(([,title])=>title);
  return videos.filter(v=>(!primary||primary.test(v.title))&&required.every(pattern=>pattern.test(v.title))).slice(0,3);
+}
+
+// A channel search may return popular but unrelated dishes; require the dish name too.
+export function relevantHaruVideos(videos:RecipeVideo[],name:string){
+ const normalize=(value:string)=>value.replace(/달걀/g,'계란').replace(/두부구이/g,'두부부침').replace(/[^가-힣a-z0-9]/gi,'').toLowerCase();
+ const base=normalize(name.split('_')[0].replace(/\(.*?\)/g,''));
+ const matching=videos.filter(video=>base.length>0&&normalize(video.title).includes(base));
+ // Pan-fried tofu is commonly titled 두부부침 rather than 두부구이.
+ return relevantRecipeVideos(matching,name.replace(/두부구이/g,'두부부침').replace(/계란/g,'달걀'));
+}
+
+export function mergeRecipeVideos(preferred:RecipeVideo[],general:RecipeVideo[]):RecipeVideo[]{
+ return [...new Map([...preferred,...general].map(video=>[video.id,video])).values()];
 }
