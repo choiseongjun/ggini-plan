@@ -51,19 +51,23 @@ export function parseConditions(value: unknown): PlanConditions | null {
  return {...p,owned:[...new Set(p.owned)]};
 }
 export function slotCandidates(products:PlanProduct[],c:PlanConditions,index:number){
- const breakfast=mealSchedule(c)[index]?.slot==='breakfast';
- return candidates(products,c).filter(p=>p.recipe?p.recipe.slots.includes(mealSchedule(c)[index]?.slot):p.mealSlots?p.mealSlots.includes(mealSchedule(c)[index]?.slot):breakfast?/시리얼|그래놀라|샌드위치|오트밀|죽/.test(p.name):!/시리얼|그래놀라/.test(p.name));
+ const slot=mealSchedule(c)[index]?.slot,breakfast=slot==='breakfast';
+ return candidates(products,c).filter(p=>p.recipe?p.recipe.slots.includes(slot):p.mealSlots?p.mealSlots.includes(slot):breakfast?/시리얼|그래놀라|샌드위치|오트밀|죽/.test(p.name):!/시리얼|그래놀라/.test(p.name));
 }
 export const cookingDishId=(id:string)=>id.split('--sides-')[0].split('--auto--')[0].split('--with--')[0];
+const ingredientKeys=new WeakMap<PlanProduct,{name:string;keys:string[]}>();
 export function mainIngredients(p:PlanProduct):string[]{
+ const cached=ingredientKeys.get(p);
+ if(cached?.name===p.name)return cached.keys.slice();
  const name=p.name.replace(/\[[^\]]*\]/g,'');
  const meat: [string,RegExp][]=[['beef',/소불고기|소고기|쇠고기|한우|비프/],['pork',/돼지|돈육|한돈|삼겹|목살|제육|베이컨|햄|잠봉/],['chicken',/닭|치킨/],['duck',/오리/],['fish',/생선|연어|고등어|삼치|참치|명태|대구살/],['shrimp',/새우|쉬림프/]];
  const keys=meat.filter(([,pattern])=>pattern.test(name)).map(([key])=>key);
- if(keys.length)return keys;
- return ([['tofu',/두부/],['egg',/달걀|계란|에그/]] as [string,RegExp][]).filter(([,pattern])=>pattern.test(name)).map(([key])=>key);
+ const result=keys.length?keys:([['tofu',/두부/],['egg',/달걀|계란|에그/]] as [string,RegExp][]).filter(([,pattern])=>pattern.test(name)).map(([key])=>key);
+ ingredientKeys.set(p,{name:p.name,keys:result});
+ return result.slice();
 }
-export function repeatsDailyMain(ids:string[],products:PlanProduct[],c:PlanConditions,index:number,candidate:PlanProduct){
- const schedule=mealSchedule(c),slot=schedule[index];
+export function repeatsDailyMain(ids:string[],products:PlanProduct[],c:PlanConditions,index:number,candidate:PlanProduct,schedule=mealSchedule(c)){
+ const slot=schedule[index];
  if(!slot||slot.slot==='breakfast')return false;
  const keys=mainIngredients(candidate);if(!keys.length)return false;
  return ids.some((id,i)=>{if(i===index||schedule[i]?.day!==slot.day||schedule[i]?.slot==='breakfast')return false;const other=productById(products,id);return !!other&&mainIngredients(other).some(key=>keys.includes(key));});
@@ -264,7 +268,12 @@ export function recommendShopping(products: PlanProduct[], c: PlanConditions, ch
  // 끼니가 많으면(한 주 세 끼 등) 탐색 폭을 줄인다: 21끼에서 약 7.6초 걸리던 계산을 줄이기 위해.
  const wide=c.meals<=12,beam=wide?80:45,cheapBeam=wide?20:10;
  const costCache=new Map<string,number>();
- const schedule=mealSchedule(c),options=schedule.map((_,i)=>diverseOptions(slotCandidates(pool,c,i),previousIds,c,wide?80:45,costCache));
+ const schedule=mealSchedule(c),optionsBySlot=new Map<MealSlot,PlanProduct[]>();
+ const options=schedule.map(({slot},i)=>{
+  let list=optionsBySlot.get(slot);
+  if(!list){list=diverseOptions(slotCandidates(pool,c,i),previousIds,c,wide?80:45,costCache);optionsBySlot.set(slot,list);}
+  return list;
+ });
  if(new Set(pool.map(p=>cookingDishId(p.id))).size<c.meals)return null;
  const previous=new Set(previousIds);
  const previousFamilies=new Set(pool.filter(p=>previous.has(p.id)).map(mealFamily));
@@ -276,7 +285,7 @@ export function recommendShopping(products: PlanProduct[], c: PlanConditions, ch
    if(state.ids.some(id=>cookingDishId(id)===cookingDishId(p.id)))continue;
    // 같은 음식의 변형(라면_김치·라면_떡…)은 한 식단에 한 번만.
    if(state.ids.some(id=>baseOf.get(id)===baseOf.get(p.id)||wordsOf.get(id)===wordsOf.get(p.id)))continue;
-   if(repeatsDailyMain(state.ids,pool,c,i,p))continue;
+   if(repeatsDailyMain(state.ids,pool,c,i,p,schedule))continue;
    const ids=[...state.ids,p.id], rows=basket(ids,pool,c.owned,c.supply,c.people), cost=rows.reduce((n,r)=>n+r.cost,0);
    if(cost>c.budget)continue;
    // Preserve the current day's order and the previous meal when merging states.

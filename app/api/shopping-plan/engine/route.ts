@@ -1,8 +1,7 @@
-import {NextRequest, NextResponse} from 'next/server';
+import {after, NextRequest, NextResponse} from 'next/server';
 import {sessionUser, sameOrigin, authFailure} from '../../../../lib/auth';
 import {loadPlanCatalog, pickProducts} from '../../../../lib/plan-service';
 import {todayContext} from '../../../../lib/today-context-server';
-import {shoppingBudgetGuide} from '../../../../lib/shopping-budget';
 import {shoppingAvailabilityMessage} from '../../../../lib/shopping-availability';
 import {pickerItems} from '../../../../lib/plan-picker';
 import {logRecommendations} from '../../../../lib/recommendation-log';
@@ -18,7 +17,6 @@ import {alternativesFor, basketTotal, mealSchedule, parseConditions, recommendSh
 export const runtime = 'nodejs';
 export const maxDuration = 60;
 const json = (data: unknown, status = 200) => NextResponse.json(data, {status, headers: {'Cache-Control': 'no-store'}});
-const won = (n: number) => `${Math.round(n).toLocaleString('ko-KR')}원`;
 const MAX_IDS = 70;
 const validIds = (value: unknown, allowEmpty = false): value is string[] =>
  Array.isArray(value) && value.length <= MAX_IDS && value.every((id) => typeof id === 'string' && id.length <= 200 && (allowEmpty || id.length > 0));
@@ -50,15 +48,13 @@ export async function POST(request: NextRequest) {
     if (availability) return authFailure(availability, 422);
     const missing = mealSchedule(c).find((_, i) => !slotCandidates(products, c, i).length);
     if (missing) return authFailure(`${slotLabels[missing.slot]}에 맞는 메뉴가 부족해요. 해당 끼니를 빼거나 요리 수준·식단 목표·제외 재료를 조정해 주세요.`, 422);
-    // 예산 안내(최저 구성 탐색)는 예산 상한이 있을 때만 필요하다.
-    const guide = c.budget < 1000000 ? shoppingBudgetGuide(products, c) : null;
-    if (guide && !guide.approximate && guide.minimum !== null && c.budget < guide.minimum) return authFailure(`선택한 ${c.meals}끼를 준비하려면 최소 ${won(guide.minimum)}이 필요해요.`, 422);
+    // 예산 안내는 근사값이라 사전 거절에 쓸 수 없다. 실제 탐색이 예산을 검증한다.
     const previous = validIds(input.previous) ? input.previous : [];
     const seed = typeof input.seed === 'number' && Number.isFinite(input.seed) ? input.seed : undefined;
     const context = await today();
     const ids = recommendShopping(products, c, false, previous, seed, context);
     if (!ids) return authFailure('현재 조건으로는 중복 없는 식단을 채울 수 없어요. 끼니 수를 줄이거나 요리 수준·식단 목표·제외 재료·재료비 상한을 조정해 주세요.', 422);
-    if (user) await logRecommendations(user.id, c, ids, 'recommend');
+    if (user) after(() => logRecommendations(user.id, c, ids, 'recommend'));
     return json({ids, products: pickProducts(products, ids), today: context, personalization: catalog.personalization});
    }
    case 'swap': {
@@ -68,7 +64,7 @@ export async function POST(request: NextRequest) {
     if (index === null) return authFailure('바꿀 끼니를 확인해 주세요.', 400);
     const reason = typeof input.reason === 'string' && Object.hasOwn(swapReasons, input.reason) ? input.reason as SwapReason : undefined;
     const next = swapMeal(ids, index, products, c, reason, await today());
-    if (user && next) await logRecommendations(user.id, c, next, 'swap', index);
+    if (user && next) after(() => logRecommendations(user.id, c, next, 'swap', index));
     return json({ids: next, products: pickProducts(products, next ?? ids)});
    }
    case 'alternatives': {

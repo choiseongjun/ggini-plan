@@ -1,7 +1,14 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
-import {basket,basketTotal,candidates,initialConditions,parseConditions,recommendShopping,swapMeal,mealSchedule,validMealIds,type PlanProduct} from '../lib/shopping-plan';
+import {basket,basketTotal,candidates,initialConditions,parseConditions,recommendShopping,swapMeal,mealSchedule,mainIngredients,validMealIds,type PlanProduct} from '../lib/shopping-plan';
 const product=(id:string,price:number,servings:number,extra:Partial<PlanProduct>={}):PlanProduct=>({id,price,servings,name:id,category:'frozen_meal',productUrl:'https://example.com/product',avoidanceText:'대두 함유',...extra} as PlanProduct);
+test('ingredient classification stays correct after returned keys or menu names change',()=>{
+ const p=product('dish',3000,1,{name:'닭볶음'});
+ mainIngredients(p).push('pork');
+ assert.deepEqual(mainIngredients(p),['chicken']);
+ p.name='두부조림';
+ assert.deepEqual(mainIngredients(p),['tofu']);
+});
 test('charges whole packs and shows unused portions; owned means the entire required amount',()=>{
  const p=[product('rice',8000,4)];
  const row=basket(['rice','rice','rice','rice','rice'],p,[])[0];
