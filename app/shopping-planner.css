@@ -62,6 +62,11 @@
 .planner-restart span{font-size:16px}
 .planner-restart:hover{background:#eef2e4;border-color:#bcccab}
 .planner-restart:disabled{opacity:.55;cursor:default}
+.planner-change-top{margin:0 0 20px;padding:14px;border:1px solid #c7d5b9;border-radius:18px;background:#eef4e7}
+.planner-change-top button{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:52px;padding:13px 16px;border:0;border-radius:12px;background:#365b35;color:#fff;font:inherit;font-size:16px;font-weight:800;cursor:pointer}
+.planner-change-top button:hover:not(:disabled){background:#294728}
+.planner-change-top button span{flex:1;text-align:left}
+.planner-change-top p{margin:9px 0 0;color:#455a3d;font-size:12px;line-height:1.6;overflow-wrap:anywhere}
 .planner-controls{scroll-margin-top:90px}
 .planner-exclusions-toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 15px;border:1px solid #dce2ca;border-radius:15px;background:#fafbf5;font-size:13px;color:#455a3d}
 .planner-exclusions-toggle button{min-height:44px;padding:8px 15px;border:1px solid #dce2ca;border-radius:12px;background:white;color:#455a3d;font:inherit;cursor:pointer}
