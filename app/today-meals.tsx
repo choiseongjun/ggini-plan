@@ -3,7 +3,6 @@ import {MealTableIllustration} from './meal-composition-picker';
 import {trackAnalytics} from '../lib/analytics';
 import type {DailyNutritionReference} from '../lib/daily-nutrition-reference';
 import {usePlannerLocale} from './planner-locale';
-import {trackPlanner} from '../lib/track-planner';
 import {MealPlanOverview} from './meal-plan-overview';
 import {MealComparison} from './meal-comparison';
 import {MenuPickerModal} from './menu-picker-modal';
@@ -120,7 +119,7 @@ export function TodayMeals({onAllMeals,focusMeal=null,overviewOpen,onOverviewOpe
      {!isToday&&<small>이날의 추천 메뉴예요. 오늘 먹은 음식은 아래 기록하기에서 남길 수 있어요.</small>}{recorded>0&&!done&&<small>오늘 {recorded}회분 기록했어요. 나머지를 드셨다면 먹었어요를 눌러 주세요.</small>}
     </article>;
    })}</div></div>
-   <MealRecordAccordion intake={intake} userId={userId} onLogin={onLogin} recommended={isToday?entries.find(entry=>entry.slot===selectedSlot)?.product:undefined} initialOpen={focusMeal!==null} onRecommendedLogged={()=>{if(focusMeal!==null)trackPlanner('push_logged');}}/>
+   <MealRecordAccordion intake={intake} userId={userId} onLogin={onLogin} initialOpen={focusMeal!==null}/>
    <DailyRecommendationNutrition products={entries.map(e=>e.product)} reference={nutritionReference??null}/>
    <MealPlanOverview ids={ids} products={products} conditions={conditions} startDate={startDate} shoppingTotal={shoppingTotal} onSwap={onSwap} locked={eatenToday} disabled={disabled} open={overviewOpen} onOpenChange={onOverviewOpen} onMeal={(n,index)=>{setChosenDay(n);setChosenSlot(schedule[index]?.slot??null);setBrowsing(null);requestAnimationFrame(()=>requestAnimationFrame(()=>{const card=document.getElementById(`today-meal-${index}`);card?.scrollIntoView({behavior:'smooth',block:'start'});card?.focus({preventScroll:true});}));}}/>
    <details className="today-date-settings"><summary>식단 시작일 변경</summary><label className="today-start">식단 시작일<input type="date" value={startDate} onChange={e=>{if(e.target.value){onStartDate(e.target.value);setChosenDay(null);setChosenSlot(null);setBrowsing(null);}}}/></label></details>

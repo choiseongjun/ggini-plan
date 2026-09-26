@@ -12,8 +12,6 @@
 .meal-record-today{font-size:12px;font-weight:650;margin:16px 0 0}
 .meal-record-body>small,.meal-record-method-hint{display:block;font-size:11px;line-height:1.7;color:#6d7865;margin:10px 0}
 .today-meals .meal-record-body .photo-log-manual{width:100%;min-height:46px;margin:8px 0 0;padding:10px;border:1px solid #d6dfcb;border-radius:14px;background:#fff;font-size:13px;text-decoration:none;color:#425939}
-.today-meals .meal-record-recommended{display:grid;gap:5px;text-align:left;width:100%;padding:13px;margin:12px 0 0;border:1px solid #dce2d4;background:#fafbf6}
-.meal-record-recommended strong{font-size:13px}.meal-record-recommended small{font-size:11px;line-height:1.6;color:#6c7862;overflow-wrap:anywhere}
 .meal-record-feedback{border:1px solid #d6e3c9;background:#f0f6e9;padding:15px;border-radius:16px;margin-top:16px;line-height:1.7}
 .meal-record-feedback strong{font-size:13px}.meal-record-feedback p{font-size:12px;margin:8px 0}.meal-record-feedback small{display:block;font-size:11px;color:#68765e}.meal-record-feedback a{display:inline-block;margin-top:10px}
 .meal-record-accordion .snack-log{margin:16px 0 0}.meal-record-accordion .photo-log-done{flex-wrap:wrap}
