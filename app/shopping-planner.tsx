@@ -102,6 +102,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
  const draftKey=`kkiniplan-shopping-draft-v2-${locale.isTaiwan?'guest':userId??'guest'}${locale.storageSuffix}`;
  const preferenceQueue=useRef(Promise.resolve());
  const setupRef=useRef<HTMLDetailsElement>(null);
+ const startRef=useRef<HTMLElement>(null);
  const plannerRef=useRef<HTMLElement>(null);
  const [resultFocus,setResultFocus]=useState(0);
  useEffect(()=>{
@@ -221,8 +222,8 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   if(userId&&!locale.isTaiwan){preferenceQueue.current=preferenceQueue.current.catch(()=>{}).then(async()=>{try{const r=await mutate({method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(patch)});if(!r.ok)throw new Error();}catch{setError('선택은 이 기기에 저장했지만 계정 저장에 실패했어요. 마이페이지에서 다시 저장해 주세요.');}});}
  }
  function returnToSetup(){
-  setShowSetup(true);setIds([]);setError('');setMessage('');remember(conditions,[]);
-  requestAnimationFrame(()=>{setupRef.current?.focus({preventScroll:true});setupRef.current?.scrollIntoView({behavior:'smooth',block:'start'});});
+  setShowSetup(false);setIds([]);setBuilding(false);setOverviewOpen(false);setError('');setMessage('');remember(conditions,[]);
+  requestAnimationFrame(()=>{const target=startRef.current??setupRef.current;target?.focus({preventScroll:true});target?.scrollIntoView({behavior:'instant',block:'start'});});
  }
  function update(patch:Partial<PlanConditions>){if(patch.budget!==undefined)setAutomaticBudget(false);const c={...conditions,...patch};if(c.slots&&c.days){if(c.mealCountMode)c.days=Math.ceil(c.meals/c.slots.length);else c.meals=c.slots.length*c.days;}setConditions(c);setIds([]);setMessage('');setError('');if(mode!=='settings')remember(c,[]);}
  async function generate(input=conditions){
@@ -369,7 +370,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    <button type="button" className="primary-button" disabled={busy||loading||progress.busy||!progress.ready} onClick={()=>void generate(conditions)}>다른 식단 추천받기</button>
    <button type="button" className="planner-restart" disabled={busy||progress.busy} onClick={returnToSetup}>추천 조건 바꾸기</button>
   </div>}
-  {mode==='plan'&&!ids.length&&!locale.isTaiwan&&!showSetup&&<section className="home-start" aria-labelledby="planner-title">
+  {mode==='plan'&&!ids.length&&!locale.isTaiwan&&!showSetup&&<section ref={startRef} tabIndex={-1} className="home-start" aria-labelledby="planner-title">
    <MobileBuddy titleId="planner-title"/>
    {compositionPicker}
    {!(conditions.sideCount??0)&&<CookingEffortPicker value={conditions.cookingEffort} onChange={cookingEffort=>updatePreferences({cookingEffort})} disabled={loading||busy}/>}
