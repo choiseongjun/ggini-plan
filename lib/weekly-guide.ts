@@ -39,10 +39,10 @@ export async function guideContext(userId: string): Promise<GuideContext> {
  const [profileRow, prefRow, logs, weights, topMenus] = await Promise.all([
   db.query('SELECT height::float8,weight::float8,age,sex,activity,meals,pregnancy,diet_preferences,nutrition_target FROM body_profiles WHERE user_id=$1', [userId]).then((r) => r.rows[0]),
   db.query('SELECT conditions FROM shopping_preferences WHERE user_id=$1', [userId]).then((r) => r.rows[0]),
-  db.query<Log>(`SELECT to_char(created_at AT TIME ZONE 'Asia/Seoul','YYYY-MM-DD') AS day, product_id, portions::float8, calories::float8, protein::float8, carbs::float8, sugar::float8, sodium::float8
-   FROM food_intake_logs WHERE user_id=$1 AND undone_at IS NULL AND created_at > NOW() - INTERVAL '7 days'`, [userId]).then((r) => r.rows),
+  db.query<Log>(`SELECT to_char(COALESCE(eaten_at,created_at) AT TIME ZONE 'Asia/Seoul','YYYY-MM-DD') AS day, product_id, portions::float8, calories::float8, protein::float8, carbs::float8, sugar::float8, sodium::float8
+   FROM food_intake_logs WHERE user_id=$1 AND undone_at IS NULL AND COALESCE(eaten_at,created_at) > NOW() - INTERVAL '7 days'`, [userId]).then((r) => r.rows),
   db.query<{day: string; weight_kg: string}>(`SELECT day::text, weight_kg FROM weight_logs WHERE user_id=$1 AND day > CURRENT_DATE - 60 ORDER BY day`, [userId]).then((r) => r.rows),
-  db.query<{name: string}>(`SELECT max(product_name) AS name FROM food_intake_logs WHERE user_id=$1 AND undone_at IS NULL AND created_at > NOW() - INTERVAL '14 days' AND product_id NOT LIKE 'extra:%' GROUP BY product_id ORDER BY count(*) DESC LIMIT 8`, [userId]).then((r) => r.rows.map((x) => x.name.split('_').join(' '))),
+  db.query<{name: string}>(`SELECT max(product_name) AS name FROM food_intake_logs WHERE user_id=$1 AND undone_at IS NULL AND COALESCE(eaten_at,created_at) > NOW() - INTERVAL '14 days' AND product_id NOT LIKE 'extra:%' GROUP BY product_id ORDER BY count(*) DESC LIMIT 8`, [userId]).then((r) => r.rows.map((x) => x.name.split('_').join(' '))),
  ]);
  const profile = parseBodyProfile(profileRow);
  const goal: ShoppingGoal = isShoppingGoal(prefRow?.conditions?.goal) ? prefRow.conditions.goal : 'maintain';

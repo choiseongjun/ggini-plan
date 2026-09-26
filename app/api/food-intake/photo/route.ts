@@ -1,3 +1,4 @@
+import {validEatenAt} from '../../../../lib/meal-time';
 import sharp from 'sharp';
 import {NextRequest,NextResponse} from 'next/server';
 import {sessionUser,sameOrigin,authFailure} from '../../../../lib/auth';
@@ -22,6 +23,8 @@ export async function POST(request:NextRequest){
   let form:FormData;try{form=await request.formData();}catch{return authFailure('사진을 확인해 주세요.',400);}
   const id=form.get('id'),productId=form.get('productId'),referenceCode=form.get('referenceCode');
   if(typeof id!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id)||(referenceCode!==null?(typeof referenceCode!=='string'||referenceCode.length>60):(productId!==null&&(typeof productId!=='string'||productId.length>100))))return authFailure('기록 요청을 확인해 주세요.',400);
+  const eatenAt=form.get('eatenAt')??undefined;
+  if(eatenAt!==undefined&&!validEatenAt(eatenAt))return authFailure('먹은 날짜와 시간을 확인해 주세요.',400);
   const files=form.getAll('photo');
   if(!files.length)return authFailure('사진을 선택해 주세요.',400);
   if(files.length>MAX_MEAL_PHOTOS)return authFailure(`사진은 ${MAX_MEAL_PHOTOS}장까지 올릴 수 있어요.`,400);
@@ -37,14 +40,14 @@ export async function POST(request:NextRequest){
   const diaryPhotos=analysis.match==='unclear'?[]:await Promise.all(photos.map(photo=>sharp(photo.bytes,{limitInputPixels:25_000_000}).rotate().resize({width:1024,height:1024,fit:'inside',withoutEnlargement:true}).jpeg({quality:80}).toBuffer()));
   // Different food uses its own estimated nutrition, never the planned dish values.
   if(analysis.match!=='unclear'&&analysis.food&&(analysis.match==='different'||(!product&&!reference))){
-   const saved=await logPhotoFood(user.id,id,analysis.food,diaryPhotos);
+   const saved=await logPhotoFood(user.id,id,analysis.food,diaryPhotos,eatenAt);
    if(!saved.ok)return saved;
    return json({logged:true,...analysis,portion:1,extras:[],note:`${analysis.food.name} · 사진으로 추정한 영양정보예요. 양과 조리법에 따라 달라질 수 있어요.`,...await saved.json()});
   }
   if(!product&&!reference||analysis.match==='different'||analysis.match==='unclear')return json({logged:false,...analysis});
   // Reference photos record the selected food only; other dishes can be added separately.
   if(reference){analysis.extras=[];analysis.note='선택한 음식의 양을 추정했어요. 함께 먹은 다른 음식은 따로 기록해 주세요.';}
-  const saved=reference?await logReference(user.id,{id,referenceCode,portions:analysis.portion},diaryPhotos):await logMeal(user.id,{id,productId,portions:analysis.portion,extras:analysis.extras},diaryPhotos);
+  const saved=reference?await logReference(user.id,{id,referenceCode,portions:analysis.portion,eatenAt},diaryPhotos):await logMeal(user.id,{id,productId,portions:analysis.portion,extras:analysis.extras,eatenAt},diaryPhotos);
   if(!saved.ok)return saved;
   return json({logged:true,...analysis,...await saved.json()});
  }catch{return authFailure('사진 기록을 저장하지 못했어요. 다시 시도해 주세요.',503);}

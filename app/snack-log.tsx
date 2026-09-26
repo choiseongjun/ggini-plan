@@ -1,5 +1,7 @@
 'use client';
 
+import {MealTimePicker} from './meal-time-picker';
+import {mealTimeISO,validEatenAt} from '../lib/meal-time';
 import {useEffect, useRef, useState} from 'react';
 import type {FoodReference} from '../lib/food-reference';
 import {trackPlanner} from '../lib/track-planner';
@@ -15,7 +17,10 @@ const n = (v: number) => Math.round(v).toLocaleString('ko-KR');
 const serving = (f: FoodReference) => `${n(f.servingAmount)}${f.servingUnit}`;
 
 // 간식·디저트·음료·외식 기록: 이름으로 찾아 한 번에 남긴다. 기록이 쌓일수록 하루 섭취량(칼로리·당류)이 정확해진다.
-export function SnackLog({onLogged,initialOpen=false,photo=false,onClose}: {onLogged: (name:string) => void;initialOpen?:boolean;photo?:boolean;onClose?:()=>void}) {
+export function SnackLog({onLogged,initialOpen=false,photo=false,onClose}: {onLogged: (name:string,eatenAt?:string) => void;initialOpen?:boolean;photo?:boolean;onClose?:()=>void}) {
+ const [mealTime,setMealTime]=useState('');
+ const timeISO=mealTime?mealTimeISO(mealTime):undefined;
+ const timeValid=!mealTime||!!timeISO&&validEatenAt(timeISO);
  const [open, setOpen] = useState(initialOpen);
  const [query, setQuery] = useState('');
  const [results, setResults] = useState<{q: string; items: FoodReference[]} | null>(null);
@@ -55,10 +60,10 @@ export function SnackLog({onLogged,initialOpen=false,photo=false,onClose}: {onLo
  }
 
  async function log(amount=portions) {
-  if (!picked || !validPortions(amount)) return;
+  if (!picked || !validPortions(amount)||!timeValid) return;
   setBusy(true); setError('');
   try {
-   const r = await fetch('/api/food-intake', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({action: 'log', id: crypto.randomUUID(), version: 0, referenceCode: picked.code, portions:amount})});
+   const r = await fetch('/api/food-intake', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({action: 'log', id: crypto.randomUUID(), version: 0, referenceCode: picked.code, portions:amount,...(timeISO?{eatenAt:timeISO}:{})})});
    const d = await r.json();
    if (!r.ok) throw new Error(d.error);
    setDone(`${picked.name} 기록했어요${picked.kcal !== null ? ` · 약 ${n(picked.kcal * amount)}kcal` : ''}`);
@@ -66,7 +71,7 @@ export function SnackLog({onLogged,initialOpen=false,photo=false,onClose}: {onLo
    setPicked(null); setQuery(''); setResults(null); setPortions(1);
    trackPlanner('snack_logged');
    window.dispatchEvent(new CustomEvent(INTAKE_LOGGED_EVENT));
-   onLogged(picked.name);
+   onLogged(picked.name,d.eatenAt);
   } catch (e) { setError(e instanceof Error ? e.message : '기록하지 못했어요.'); } finally { setBusy(false); }
  }
 
@@ -79,6 +84,7 @@ export function SnackLog({onLogged,initialOpen=false,photo=false,onClose}: {onLo
  return <section className="snack-log" aria-label="간식·음료·외식 기록">
   <header><strong>무엇을 먹었어요?</strong><button type="button" aria-label="닫기" onClick={() => { setOpen(false); setPicked(null); setQuery(''); onClose?.(); }}>
    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></header>
+  <MealTimePicker value={mealTime} onChange={setMealTime} disabled={busy}/>
   {photo&&<p className="snack-log-note">음식을 고른 뒤 사진을 올리면 먹은 양을 추정해요. 올린 사진은 식사 기록에 함께 보관돼요.</p>}
   <input ref={input} type="search" value={query} placeholder="예: 카페라떼, 치즈케이크, 스타벅스, 순대국밥" aria-label="음식 이름 검색" maxLength={40} disabled={busy} onChange={(e) => { setQuery(e.target.value); setPicked(null);setSearchError('');setDone(''); }}/>
   {!q&&recentLoading&&!recent.length&&<p className="snack-log-note" role="status">최근 기록을 불러오는 중이에요. 음식 이름을 바로 검색할 수 있어요.</p>}
@@ -98,7 +104,7 @@ export function SnackLog({onLogged,initialOpen=false,photo=false,onClose}: {onLo
    <div className="snack-log-portions" role="radiogroup" aria-label="먹은 양">{portionsList.map(([value, label]) => <button type="button" role="radio" key={value} aria-checked={portions === value} onClick={() => setPortions(value)}>{label}</button>)}</div>
    <label className="snack-log-custom">먹은 양 직접 입력<input type="number" min="0.25" max="10" step="0.25" aria-label="먹은 양 직접 입력" value={portions||''} disabled={busy} onChange={e=>setPortions(Number(e.target.value))}/>회</label>
    <p className="snack-log-total" aria-live="polite">{!validPortions(portions)?'먹은 양을 0.25~10회, 0.25 단위로 입력해 주세요.':<>{picked.kcal !== null ? <>약 <b>{n(picked.kcal * portions)}</b>kcal</> : '칼로리 정보 없음'}{picked.sugar !== null && ` · 당류 ${n(picked.sugar * portions)}g`}{picked.sodium !== null && ` · 나트륨 ${n(picked.sodium * portions)}mg`}</>}</p>
-   <div className="snack-log-actions"><button type="button" onClick={() => setPicked(null)}>다시 고르기</button><button type="button" className="snack-log-submit" disabled={busy||!validPortions(portions)} onClick={() => void log()}>{busy ? '기록 중…' : '기록하기'}</button></div>
+   <div className="snack-log-actions"><button type="button" onClick={() => setPicked(null)}>다시 고르기</button><button type="button" className="snack-log-submit" disabled={busy||!validPortions(portions)||!timeValid} onClick={() => void log()}>{busy ? '기록 중…' : '기록하기'}</button></div>
   </div>}
   {done&&<p className="snack-log-done" role="status">{done}</p>}
   {error && <p className="snack-log-error" role="alert">{error}</p>}

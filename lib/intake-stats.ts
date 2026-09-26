@@ -1,6 +1,7 @@
+import {timePeriod,timePeriods} from './meal-time';
 import { EXTRA_PREFIX } from "./intake-extras";
 
-export type StatLog = { productId: string; name: string; calories: number | null; protein: number | null; cost: number | null; date: string };
+export type StatLog = { productId: string; name: string; calories: number | null; protein: number | null; cost: number | null; date: string; eatenAt?:string };
 
 const addDays = (date: string, n: number) => { const d = new Date(`${date}T00:00:00Z`); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); };
 export const weekStart = (date: string) => addDays(date, -((new Date(`${date}T00:00:00Z`).getUTCDay() + 6) % 7));
@@ -80,12 +81,17 @@ export function weeklyReport(logs: StatLog[], start: string, goals: { calories: 
   const favorite = [...counts].sort((a, b) => b[1] - a[1])[0] ?? null;
   const spent = Math.round(meals.reduce((s, l) => s + (l.cost ?? 0), 0));
   const extras = week.length - meals.length;
+  const timeCounts=timePeriods.map(period=>({period,count:week.filter(log=>log.eatenAt&&timePeriod(log.eatenAt)===period).length}));
+  const timedCount=timeCounts.reduce((n,item)=>n+item.count,0);
+  const highest=Math.max(...timeCounts.map(item=>item.count));
+  const peak=timeCounts.filter(item=>item.count===highest);
+  const timeInsight=timedCount>=3&&peak.length===1?`음식 기록 ${timedCount}건 중 ${peak[0].count}건이 ${peak[0].period} 시간대에 있어요.`:null;
   const tip = !days.length ? null
     : goals.protein && avgProtein !== null && avgProtein < goals.protein * 0.8 ? { kind: "protein", text: "단백질이 목표보다 적었어요. 다음 주는 고기·생선·두부 메뉴를 한두 끼 더 넣어 보세요." }
     : goals.calories && avgCalories !== null && avgCalories > goals.calories * 1.1 && days.length >= 3 ? { kind: "over", text: "기록한 날 칼로리가 목표보다 많았어요. 국물·튀김 메뉴를 줄이면 쉽게 맞출 수 있어요." }
     : extras >= days.length * 2 ? { kind: "extras", text: "함께 먹은 간식·음료가 많았어요. 음료 한 잔만 줄여도 하루 100~150kcal가 줄어요." }
     : days.length < 4 ? { kind: "habit", text: "기록한 날이 아직 적어요. 저녁 한 끼만이라도 사진으로 남겨 보세요." }
     : { kind: "good", text: "목표에 맞게 잘 챙겨 먹었어요. 다음 주도 이대로 가 봐요!" };
-  return { start, end, days: days.length, meals: meals.length, extras, avgCalories, avgProtein, proteinDays, favorite: favorite ? { name: favorite[0], count: favorite[1] } : null, spent, tip };
+  return { timeCounts,timeInsight,start, end, days: days.length, meals: meals.length, extras, avgCalories, avgProtein, proteinDays, favorite: favorite ? { name: favorite[0], count: favorite[1] } : null, spent, tip };
 }
 export type IntakeStats = ReturnType<typeof intakeStats>;

@@ -56,7 +56,7 @@ test('eating and undo are atomic, idempotent, isolated, and use server nutrition
   assert.equal((await POST(req(cookies[0],{...command,id:randomUUID(),version:before.version,portions:0.3}))).status,400);
   assert.equal((await GET(req(cookies[0],undefined,'2026-02-30'))).status,400);
   // A UTC evening belongs to the following Korean calendar day.
-  await db.query("UPDATE food_intake_logs SET created_at='2026-09-17T16:00:00Z' WHERE user_id=$1 AND undone_at IS NULL",[ids[0]]);
+  await db.query("UPDATE food_intake_logs SET eaten_at='2026-09-17T16:00:00Z' WHERE user_id=$1 AND undone_at IS NULL",[ids[0]]);
   assert.equal((await(await GET(req(cookies[0],undefined,'2026-09-17'))).json()).logs.length,0);
   assert.equal((await(await GET(req(cookies[0],undefined,'2026-09-18'))).json()).logs.length,1);
   const finalStock=await(await cartGET(cartReq(cookies[0]))).json();

@@ -1,11 +1,13 @@
 'use client';
 
+import {MealTimePicker} from './meal-time-picker';
+import {mealTimeISO,validEatenAt} from '../lib/meal-time';
 import {trackAnalytics} from '../lib/analytics';
 import {useEffect,useRef,useState} from 'react';
 import {intakeExtras,type IntakeExtra} from '../lib/intake-extras';
 import './meal-photo-log.css';
 
-export type PhotoLogResult={logged:true;food?:{name:string}|null;portion:number;extras:IntakeExtra[];note:string;ids:string[];calories:number}|{logged:false;match:string;note:string};
+export type PhotoLogResult={logged:true;eatenAt?:string;food?:{name:string}|null;portion:number;extras:IntakeExtra[];note:string;ids:string[];calories:number}|{logged:false;match:string;note:string};
 // Phone photos are 3–8MB (HEIC on iPhone); uploading them over mobile data was the slow part.
 // Downscale on the device to what the server sends the model anyway (≤1024px JPEG, ~150KB).
 async function shrink(file:File):Promise<Blob>{
@@ -25,6 +27,9 @@ const portionText=(p:number)=>p===1?'1인분':p===0.5?'반 인분':`${p}인분`;
 
 // 📷 먹었어요: pick or take a photo, the server judges portion + visible sides against the planned dish and logs it.
 export function MealPhotoLog({productId,referenceCode,dishName,disabled,onLogged,onManual,buttonLabel='먹었어요 · 사진 올리기',manualLabel='사진 없이 기록'}:{productId?:string;referenceCode?:string;buttonLabel?:string;manualLabel?:string;dishName:string;disabled:boolean;onLogged:(result:Extract<PhotoLogResult,{logged:true}>)=>void;onFallback:()=>void;onManual:()=>void}){
+ const [mealTime,setMealTime]=useState('');
+ const timeISO=mealTime?mealTimeISO(mealTime):undefined;
+ const timeValid=!mealTime||!!timeISO&&validEatenAt(timeISO);
  const input=useRef<HTMLInputElement>(null);
  const [picked,setPicked]=useState<{file:File;url:string}[]>([]);
  const [aiAcknowledged,setAiAcknowledged]=useState(false);
@@ -36,14 +41,14 @@ export function MealPhotoLog({productId,referenceCode,dishName,disabled,onLogged
  const clearPicked=()=>setPicked(list=>{for(const p of list)URL.revokeObjectURL(p.url);return [];});
  const [stage,setStage]=useState<keyof typeof stageText|null>(null),[error,setError]=useState(''),[result,setResult]=useState<PhotoLogResult|null>(null);
  async function upload(files:File[]){
-  if(!aiAcknowledged)return;
+  if(!aiAcknowledged||!timeValid)return;
   const started=performance.now();let failure:'timeout'|'network'|'server'|'rejected'='network';
   trackAnalytics('photo_analysis_started',{photo_count:files.length});
   setStage('prepare');setError('');setResult(null);
   const controller=new AbortController(),timer=window.setTimeout(()=>controller.abort(),40000);
   try{
    const photos=await Promise.all(files.map(shrink));
-   const form=new FormData();photos.forEach((photo,i)=>form.append('photo',photo,`meal-${i+1}.jpg`));if(referenceCode)form.set('referenceCode',referenceCode);else if(productId)form.set('productId',productId);form.set('id',crypto.randomUUID());
+   const form=new FormData();photos.forEach((photo,i)=>form.append('photo',photo,`meal-${i+1}.jpg`));if(referenceCode)form.set('referenceCode',referenceCode);else if(productId)form.set('productId',productId);form.set('id',crypto.randomUUID());form.set('eatenAt',timeISO??new Date().toISOString());
    setStage('upload');
    const request=fetch('/api/food-intake/photo',{method:'POST',body:form,signal:controller.signal});
    // The upload is small now, so after a moment the wait is the analysis itself.
@@ -58,6 +63,7 @@ export function MealPhotoLog({productId,referenceCode,dishName,disabled,onLogged
   finally{window.clearTimeout(timer);setStage(null);if(input.current)input.current.value='';}
  }
  return <div className="photo-log">
+  <MealTimePicker value={mealTime} onChange={setMealTime} disabled={disabled||!!stage}/>
   <input ref={input} type="file" accept="image/*" multiple hidden onChange={e=>{addFiles(e.target.files);e.target.value='';}}/>
   {stage?<div className="photo-log-busy" role="status"><span className="photo-log-spinner" aria-hidden="true"/><div><strong>{stageText[stage]}…</strong><small>보통 5초 안팎 걸려요</small></div></div>
   :result&&!result.logged?<div className="photo-log-mismatch" role="status"><strong>{result.match==='different'?`${dishName}와(과) 달라 보여요`:'사진을 잘 알아보지 못했어요'}</strong>{result.note&&<small>{result.note}</small>}<div><button type="button" onClick={()=>{setResult(null);clearPicked();input.current?.click();}}>다시 찍기</button><button type="button" onClick={()=>{setResult(null);clearPicked();onManual();}}>사진 없이 기록</button></div></div>
@@ -70,7 +76,7 @@ export function MealPhotoLog({productId,referenceCode,dishName,disabled,onLogged
    <small className="photo-log-hint">먹기 전·후 사진이나 반찬을 따로 찍은 사진을 함께 올리면 더 정확해요 (최대 {MAX_PHOTOS}장)</small>
    <p className="photo-log-hint">사진과 메뉴 정보를 AI로 분석해 먹은 양과 예상 영양정보를 기록해요. 사진과 분석 결과는 내 식사 일기에 저장돼요. 기록을 삭제하면 사진도 함께 삭제돼요. <a href="/privacy#meal-photos" target="_blank" rel="noreferrer">사진 처리 안내</a></p>
    <label className="photo-log-hint"><input type="checkbox" checked={aiAcknowledged} onChange={e=>setAiAcknowledged(e.target.checked)}/> AI 식사 분석과 내 식사 일기 사진 저장에 동의해요.</label>
-   <div className="photo-log-staged-actions"><button type="button" onClick={()=>{clearPicked();setAiAcknowledged(false);}}>취소</button><button type="button" className="photo-log-submit" disabled={disabled||!aiAcknowledged} onClick={()=>void upload(picked.map(p=>p.file))}>기록하기 ({picked.length}장)</button></div>
+   <div className="photo-log-staged-actions"><button type="button" onClick={()=>{clearPicked();setAiAcknowledged(false);}}>취소</button><button type="button" className="photo-log-submit" disabled={disabled||!aiAcknowledged||!timeValid} onClick={()=>void upload(picked.map(p=>p.file))}>기록하기 ({picked.length}장)</button></div>
   </div>
   :<><button type="button" className="photo-log-button" disabled={disabled} onClick={()=>input.current?.click()}><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.3l1.4-2h5.6l1.4 2h1.3A2.5 2.5 0 0 1 20 8.5v8a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5Z"/><circle cx="12" cy="12.5" r="3.4"/></svg>{buttonLabel}</button>
    <button type="button" className="photo-log-manual" disabled={disabled} onClick={onManual}>{manualLabel}</button></>}

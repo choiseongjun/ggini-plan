@@ -41,6 +41,11 @@ const formatWon=(value:number)=>new Intl.NumberFormat('ko-KR').format(value)+'ì›
 export default function Home() {
   const [recordDate,setRecordDate]=useState(()=>emptyDashboard().today);
   const pathname = usePathname();
+  useEffect(()=>{
+   if(pathname!=='/record')return;
+   const value=new URLSearchParams(window.location.search).get('date');
+   if(value&&/^20\d{2}-\d{2}-\d{2}$/.test(value)&&!Number.isNaN(Date.parse(value))&&new Date(value).toISOString().slice(0,10)===value&&value<=emptyDashboard().today){const frame=requestAnimationFrame(()=>setRecordDate(value));return()=>cancelAnimationFrame(frame);}
+  },[pathname]);
   const router = useRouter();
   const section = pathname.split("/")[1];
   const tab: Tab = (["calendar", "cart", "record", "community", "profile", "compare"] as string[]).includes(section) ? section as Tab : "home";

@@ -102,6 +102,7 @@ export function WeeklyReportCard({stats}:{stats:Stats|null}){
     {r.spent>0&&<li><span>기록한 식사 비용</span><b>약 {r.spent.toLocaleString('ko-KR')}원</b></li>}
     {r.extras>0&&<li><span>함께 먹은 간식·음료</span><b>{r.extras}번</b></li>}
    </ul>
+   {!!r.timeCounts?.some(item=>item.count)&&<div className="rp-time-pattern"><strong>언제 먹었나요?</strong><ul>{r.timeCounts.map(item=><li key={item.period}><span>{item.period}</span><b>{item.count}건</b></li>)}</ul>{r.timeInsight&&<p>{r.timeInsight}</p>}<small>기록한 음식만 집계해요. 기록이 없는 시간에 안 먹었다는 뜻은 아니에요. 예전 기록은 등록 시각 기준이에요.</small></div>}
    {r.tip&&<div className={`rp-tip is-${r.tip.kind}`}><strong>{which==='week'?'이번 주 팁':'다음 주엔 이렇게'}</strong><p>{r.tip.text}</p>{r.tip.kind!=='good'&&r.tip.kind!=='habit'&&<Link href="/">홈에서 다음 식단 추천받기 →</Link>}</div>}
   </>}
  </section>;

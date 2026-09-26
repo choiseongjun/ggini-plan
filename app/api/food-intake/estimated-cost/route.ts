@@ -15,7 +15,7 @@ async function handle(request:NextRequest,generate:boolean){
  const weekday=new Date(`${date}T00:00:00Z`).getUTCDay(),from=addDays(date,-((weekday+6)%7)),to=addDays(from,6);
  try{
   const db=getPool();
-  const {rows}=await db.query<CostMeal>(`SELECT id::text,product_name AS name,portions::float8,calories::float8,cost::float8 FROM food_intake_logs WHERE user_id=$1 AND undone_at IS NULL AND created_at>=($2::date::timestamp AT TIME ZONE 'Asia/Seoul') AND created_at<(($3::date+1)::timestamp AT TIME ZONE 'Asia/Seoul') ORDER BY id`,[user.id,from,to]);
+  const {rows}=await db.query<CostMeal>(`SELECT id::text,product_name AS name,portions::float8,calories::float8,cost::float8 FROM food_intake_logs WHERE user_id=$1 AND undone_at IS NULL AND COALESCE(eaten_at,created_at)>=($2::date::timestamp AT TIME ZONE 'Asia/Seoul') AND COALESCE(eaten_at,created_at)<(($3::date+1)::timestamp AT TIME ZONE 'Asia/Seoul') ORDER BY id`,[user.id,from,to]);
   const fingerprint=createHash('sha256').update(JSON.stringify({v:1,from,rows})).digest('hex');
   const missing=rows.filter(row=>row.cost===null);
   const cached=await db.query('SELECT result FROM intake_cost_estimates WHERE user_id=$1 AND fingerprint=$2',[user.id,fingerprint]);

@@ -18,7 +18,7 @@ export async function dispatchNativeMealReminders(){
  const ids=[...new Set(due.map(d=>d.device.user_id))];
  const [plans,recent,products]=await Promise.all([
   db.query('SELECT DISTINCT ON(user_id) user_id::text,conditions,meal_ids AS "mealIds" FROM shopping_plans WHERE user_id=ANY($1::bigint[]) ORDER BY user_id,id DESC',[ids]),
-  db.query("SELECT DISTINCT user_id::text FROM food_intake_logs WHERE user_id=ANY($1::bigint[]) AND undone_at IS NULL AND created_at>NOW()-INTERVAL '2 hours' AND product_id NOT LIKE 'ref:%' AND product_id NOT LIKE 'extra:%'",[ids]),
+  db.query("SELECT DISTINCT user_id::text FROM food_intake_logs WHERE user_id=ANY($1::bigint[]) AND undone_at IS NULL AND COALESCE(eaten_at,created_at)>NOW()-INTERVAL '2 hours' AND product_id NOT LIKE 'ref:%' AND product_id NOT LIKE 'extra:%'",[ids]),
   planProducts(),
  ]);
  const byUser=new Map(plans.rows.map(p=>[p.user_id,p])),ate=new Set(recent.rows.map(r=>r.user_id));

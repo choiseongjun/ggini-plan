@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
    if (!user) return json({items: []});
    const {rows} = await getPool().query<{product_id: string}>(
     `SELECT product_id FROM food_intake_logs WHERE user_id=$1 AND undone_at IS NULL AND product_id LIKE $2
-     GROUP BY product_id ORDER BY max(created_at) DESC LIMIT 8`, [user.id, `${REFERENCE_PREFIX}%`]);
+     GROUP BY product_id ORDER BY max(COALESCE(eaten_at,created_at)) DESC LIMIT 8`, [user.id, `${REFERENCE_PREFIX}%`]);
    return json({items: await foodReferencesByCodes(rows.map((r) => r.product_id.slice(REFERENCE_PREFIX.length)))});
   }
   const q = (params.get('q') ?? '').slice(0, 40);

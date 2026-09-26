@@ -33,6 +33,6 @@ export function RecordCalendar({date,today,disabled,onChange}:{date:string;today
    const value=`${month}-${String(i+1).padStart(2,'0')}`,day=result?.month===month?result.counts[value]:undefined;
    return <button type="button" key={value} disabled={disabled||value>today} aria-pressed={date===value} aria-current={value===today?'date':undefined} aria-label={`${number}월 ${i+1}일${day?`, ${day.periods.join('·')} 시간대, 기록 ${day.count}건, ${Math.round(day.kcal)} kcal${day.missing?`, 미확인 ${day.missing}건`:''}`:''}`} onClick={()=>onChange(value)}><span>{i+1}</span><small>{day?(day.count===day.missing?'미확인':`${Math.round(day.kcal).toLocaleString('ko-KR')}${day.missing?'+':''}`):' '}</small><span className="calendar-meal-periods" aria-hidden="true">{day?.periods.map(period=><i key={period} title={`${period} 시간대 기록`}>{period==='아침'?'아':period==='점심'?'점':period==='저녁'?'저':'밤'}</i>)}</span></button>;
   })}</div>
-  <p role="status">{result?.month!==month?'기록한 날짜를 불러오고 있어요.':result.error?'기록 표시를 불러오지 못했어요. 날짜를 눌러 확인할 수 있어요.':'하루 kcal · +는 미확인 음식 포함. 아·점·저·밤은 기록 시간대 기준이에요.'}</p>
+  <p role="status">{result?.month!==month?'기록한 날짜를 불러오고 있어요.':result.error?'기록 표시를 불러오지 못했어요. 날짜를 눌러 확인할 수 있어요.':'하루 kcal · +는 미확인 음식 포함. 아·점·저·밤은 먹은 시간 기준이에요. 예전 기록은 등록 시각을 사용해요.'}</p>
  </section>;
 }

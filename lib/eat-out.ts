@@ -43,8 +43,8 @@ async function stateFor(userId: string | null) {
   else if (health.includes('pressure')) sodium = SODIUM_DAILY_PRESSURE;
   const logs = (await getPool().query<{product_name: string; calories: number | null; sodium: number | null; sugar: number | null; carbs: number | null; today: boolean}>(
    `SELECT product_name, calories::float8, sodium::float8, sugar::float8, carbs::float8,
-     (created_at AT TIME ZONE 'Asia/Seoul')::date = (NOW() AT TIME ZONE 'Asia/Seoul')::date AS today
-    FROM food_intake_logs WHERE user_id=$1 AND undone_at IS NULL AND created_at > NOW() - INTERVAL '3 days'`, [userId])).rows;
+     (COALESCE(eaten_at,created_at) AT TIME ZONE 'Asia/Seoul')::date = (NOW() AT TIME ZONE 'Asia/Seoul')::date AS today
+    FROM food_intake_logs WHERE user_id=$1 AND undone_at IS NULL AND COALESCE(eaten_at,created_at) > NOW() - INTERVAL '3 days'`, [userId])).rows;
   for (const l of logs) if (l.today) { eaten.meals++; eaten.kcal += l.calories ?? 0; eaten.sodium += l.sodium ?? 0; eaten.sugar += l.sugar ?? 0; eaten.carbs += l.carbs ?? 0; }
   recent = logs.map((l) => l.product_name.replace(/[\s_()]/g, ''));
  }
