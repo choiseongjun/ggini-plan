@@ -5,8 +5,9 @@ import './home-welcome.css';
 export function HomeWelcome({onRecommend}:{onRecommend:()=>void}){
  return <div className="welcome-home">
   <section className="welcome-hero">
-   <div className="welcome-copy"><span>끼니와 함께, 오늘도</span><h2 id="planner-title">뭐 먹을지 고민 끝.<br/>오늘도 맛있는 한 끼</h2><p>나에게 맞는 메뉴를 골라드릴게요.</p><button type="button" onClick={onRecommend}>식단 추천받기 <span aria-hidden="true">↗</span></button></div>
+   <div className="welcome-copy"><span>끼니와 함께, 오늘도</span><h2 id="planner-title">뭐 먹을지 고민 끝.<br/>오늘도 맛있는 한 끼</h2><p>나에게 맞는 메뉴를 골라드릴게요.</p></div>
    <div className="welcome-art" aria-hidden="true"><span className="welcome-orbit"/><span className="welcome-spark">✦</span><RiceBuddy stage={4}/><span className="welcome-art-note">오늘도 잘 챙겨요!</span></div>
+   <button className="welcome-recommend-button" type="button" onClick={onRecommend}>식단 추천받기 <span aria-hidden="true">↗</span></button>
   </section>
   <div className="welcome-section-label"><h3>한 끼를 더 편하게</h3><span>필요한 것만 쏙</span></div>
   <div className="welcome-shortcuts">
