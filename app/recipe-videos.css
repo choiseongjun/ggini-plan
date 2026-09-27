@@ -18,3 +18,19 @@
 .recipe-reading-body .recipe-reading-original{white-space:pre-wrap;margin:10px 0;max-height:320px;overflow-y:auto;font-size:13px}
 .recipe-reading-body>a{font-size:12px;color:#526746}
 .recipe-reading-toggle:focus-visible,.recipe-reading-body summary:focus-visible{outline:2px solid #667f51;outline-offset:-3px}
+
+/* Keep the expanded video area spacious without squeezing phone players. */
+.meal-video-entry>.recipe-videos{margin:0;padding:20px;border:0;background:#f9faf4}
+.meal-video-entry .recipe-videos>strong{display:block;font-size:15px;line-height:1.5;margin-bottom:8px}
+.meal-video-entry .recipe-videos>p{margin:0 0 20px;line-height:1.8;color:#7c876e}
+.meal-video-entry .recipe-video-list{gap:22px}
+.meal-video-entry .recipe-video-list>article{padding:14px;border-radius:18px;border-color:#e2e7d8;box-shadow:0 4px 14px #52663805;min-width:0}
+.meal-video-entry .recipe-video-list iframe{height:auto;min-height:0;aspect-ratio:16/9;border-radius:12px}
+.meal-video-entry .recipe-video-list article>strong{font-size:15px;line-height:1.65;margin:16px 3px 6px;overflow-wrap:anywhere}
+.meal-video-entry .recipe-video-list article>small{margin:0 3px 16px;font-size:12px;color:#89917e}
+.meal-video-entry .recipe-reading{margin:16px 0 12px;border-radius:13px}
+.meal-video-entry .recipe-reading-toggle{padding:15px;min-height:50px;font-size:13px;line-height:1.6}
+.meal-video-entry .recipe-reading-body{padding:18px;font-size:13px;line-height:1.9}
+.meal-video-entry .recipe-video-list article>a{display:flex;align-items:center;justify-content:center;min-height:46px;padding:12px;margin-top:14px;border-radius:12px;border:1px solid #e0e5d7;color:#536844;background:#fafbf6;text-decoration:none;font-size:12px;box-sizing:border-box}
+.meal-video-entry .recipe-videos>a{display:block;text-align:center;padding:14px 8px;margin-top:18px;color:#6c7d58;font-size:12px}
+@media(max-width:480px){.meal-video-entry>.recipe-videos{padding:14px 10px}.meal-video-entry .recipe-video-list>article{padding:10px}.meal-video-entry .recipe-reading-body{padding:14px}.meal-video-entry .recipe-video-list article>strong{font-size:14px}}
