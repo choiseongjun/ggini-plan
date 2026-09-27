@@ -1,4 +1,4 @@
-import {validEatenAt} from './meal-time';
+import {validEatenAt,validMealSlot} from './meal-time';
 import {NextResponse} from 'next/server';
 import {authFailure} from './auth';
 import {getPool} from './db';
@@ -13,7 +13,7 @@ const json=(data:unknown,status=200)=>NextResponse.json(data,{status,headers:{'C
 // Records what was actually eaten — the recommended dish at a chosen portion and/or quick "함께 먹은 것"
 // extras — without requiring the ingredients to be registered as owned. Rows carry stock_item {kind:'none'}
 // so undo knows there is no pantry quantity to restore.
-export async function logMeal(userId:string|number,input:{id:string;productId?:unknown;portions?:unknown;extras?:unknown;eatenAt?:unknown},photos:Buffer[]=[]){
+export async function logMeal(userId:string|number,input:{id:string;productId?:unknown;portions?:unknown;extras?:unknown;eatenAt?:unknown;mealSlot?:unknown},photos:Buffer[]=[]){
  const extras=parseIntakeExtras(input.extras);
  if(!extras)return authFailure('함께 먹은 음식과 양을 확인해 주세요.',400);
  const references=await foodReferencesByCodes(extras.flatMap(e=>typeof e==='string'?[]:[e.referenceCode]));
@@ -34,36 +34,47 @@ export async function logMeal(userId:string|number,input:{id:string;productId?:u
    rows.push({id,productId:`${REFERENCE_PREFIX}${f.code}`,name:f.brand?`${f.name} (${f.brand})`:f.name,portions:p,calories:x(f.kcal),protein:x(f.protein),cost:null,carbs:x(f.carbs),sugar:x(f.sugar),sodium:x(f.sodium),fat:x(f.fat)});
   }
  }
- return insertEntries(userId,input.id,rows,photos,input.eatenAt);
+ return insertEntries(userId,input.id,rows,photos,input.eatenAt,input.mealSlot);
 }
 
 type Entry={id:string;productId:string;name:string;portions:number;calories:number|null;protein:number|null;cost:number|null;carbs:number|null;sugar:number|null;sodium:number|null;fat:number|null};
 
 // 간식·디저트·음료·외식: 음식 영양 사전의 1회 제공량 × 먹은 양. 영양은 서버가 사전에서 다시 계산한다(화면 값을 믿지 않는다).
-export async function logReference(userId:string|number,input:{id:string;referenceCode?:unknown;portions?:unknown;eatenAt?:unknown},photos:Buffer[]=[]){
+export async function logReference(userId:string|number,input:{id:string;referenceCode?:unknown;portions?:unknown;eatenAt?:unknown;mealSlot?:unknown},photos:Buffer[]=[]){
  if(typeof input.referenceCode!=='string'||input.referenceCode.length>60||!validPortions(input.portions))return authFailure('음식과 먹은 양을 확인해 주세요.',400);
  const food=await foodReferenceByCode(input.referenceCode);
  if(!food)return authFailure('음식 정보를 찾지 못했어요.',422);
  const p=input.portions as number,x=(v:number|null)=>v===null?null:Math.round(v*p*10)/10;
- return insertEntries(userId,input.id,[{id:input.id,productId:`${REFERENCE_PREFIX}${food.code}`,name:food.brand?`${food.name} (${food.brand})`:food.name,portions:p,calories:x(food.kcal),protein:x(food.protein),cost:null,carbs:x(food.carbs),sugar:x(food.sugar),sodium:x(food.sodium),fat:x(food.fat)}],photos,input.eatenAt);
+ return insertEntries(userId,input.id,[{id:input.id,productId:`${REFERENCE_PREFIX}${food.code}`,name:food.brand?`${food.name} (${food.brand})`:food.name,portions:p,calories:x(food.kcal),protein:x(food.protein),cost:null,carbs:x(food.carbs),sugar:x(food.sugar),sodium:x(food.sodium),fat:x(food.fat)}],photos,input.eatenAt,input.mealSlot);
 }
 
-async function insertEntries(userId:string|number,requestId:string,rows:Entry[],photos:Buffer[]=[],eatenAt?:unknown){
+async function insertEntries(userId:string|number,requestId:string,rows:Entry[],photos:Buffer[]=[],eatenAt?:unknown,mealSlot?:unknown){
  if(eatenAt!==undefined&&!validEatenAt(eatenAt))return authFailure('먹은 날짜와 시간을 확인해 주세요. 미래 시각은 기록할 수 없어요.',400);
+ if(mealSlot!==undefined&&mealSlot!==null&&!validMealSlot(mealSlot))return authFailure('끼니를 확인해 주세요.',400);
  const occurred=eatenAt??new Date().toISOString();
  const client=await getPool().connect();
  try{
   await client.query('BEGIN');
-  const prior=(await client.query('SELECT COALESCE(eaten_at,created_at) AS eaten_at FROM food_intake_logs WHERE user_id=$1 AND id=$2',[userId,requestId])).rows[0];
-  if(prior){await client.query('COMMIT');return json({saved:true,replayed:true,eatenAt:prior.eaten_at});}
+  await client.query('SELECT pg_advisory_xact_lock(hashtextextended($1,0))',[`${userId}:${requestId}`]);
+  const prior=await savedIntake(userId,requestId,client);
+  if(prior){await client.query('COMMIT');return prior.deleted?authFailure('삭제한 기록 요청이에요.',409):json(prior);}
   for(const r of rows)
-   await client.query('INSERT INTO food_intake_logs(user_id,id,product_id,product_name,portions,packs,calories,protein,stock_item,cost,carbs,sugar,sodium,fat,eaten_at) VALUES($1,$2,$3,$4,$5,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)',[userId,r.id,r.productId,r.name,r.portions,r.calories,r.protein,JSON.stringify({kind:'none'}),r.cost,r.carbs,r.sugar,r.sodium,r.fat,occurred]);
+   await client.query('INSERT INTO food_intake_logs(user_id,id,product_id,product_name,portions,packs,calories,protein,stock_item,cost,carbs,sugar,sodium,fat,eaten_at,meal_slot,request_id) VALUES($1,$2,$3,$4,$5,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)',[userId,r.id,r.productId,r.name,r.portions,r.calories,r.protein,JSON.stringify({kind:'none'}),r.cost,r.carbs,r.sugar,r.sodium,r.fat,occurred,mealSlot??null,requestId]);
   for(const [position,image] of photos.entries())await client.query('INSERT INTO food_intake_photos(user_id,log_id,position,image) VALUES($1,$2,$3,$4)',[userId,requestId,position,image]);
-  await client.query('COMMIT');return json({saved:true,eatenAt:occurred,count:rows.length,ids:rows.map(r=>r.id),calories:rows.reduce((sum,r)=>sum+(r.calories??0),0)});
+  const result=await savedIntake(userId,requestId,client);await client.query('COMMIT');return json({...result,replayed:false});
  }catch(e){await client.query('ROLLBACK');throw e;}finally{client.release();}
 }
 
 // Only server-validated photo estimates reach this function. No price or stock deduction.
-export async function logPhotoFood(userId:string|number,id:string,food:import('./meal-photo-ai').PhotoFood,photos:Buffer[]=[],eatenAt?:unknown){
- return insertEntries(userId,id,[{id,productId:`photo:${id}`,name:`${food.name} (사진 추정)`,portions:1,calories:food.calories,protein:food.protein,carbs:food.carbs,fat:food.fat,sugar:food.sugar??null,sodium:food.sodium??null,cost:null}],photos,eatenAt);
+export async function logPhotoFood(userId:string|number,id:string,food:import('./meal-photo-ai').PhotoFood,photos:Buffer[]=[],eatenAt?:unknown,mealSlot?:unknown){
+ return insertEntries(userId,id,[{id,productId:`photo:${id}`,name:`${food.name} (사진 추정)`,portions:1,calories:food.calories,protein:food.protein,carbs:food.carbs,fat:food.fat,sugar:food.sugar??null,sodium:food.sodium??null,cost:null}],photos,eatenAt,mealSlot);
+}
+
+export async function savedIntake(userId:string|number,id:string,db:Pick<import('pg').PoolClient,'query'>=getPool()){
+ const result=await db.query('SELECT id,product_name,calories::float8,protein::float8,carbs::float8,fat::float8,sugar::float8,sodium::float8,COALESCE(eaten_at,created_at) AS eaten_at,meal_slot,undone_at FROM food_intake_logs WHERE user_id=$1 AND (request_id=$2 OR id=$2) ORDER BY created_at,id',[userId,id]);
+ if(!result.rows.length)return null;
+ if(result.rows.some(row=>row.undone_at))return {saved:false,deleted:true};
+ const first=result.rows[0];
+ const nutrition=Object.fromEntries(['calories','protein','carbs','fat','sugar','sodium'].map(key=>[key,result.rows.some(row=>row[key]!==null)?result.rows.reduce((sum,row)=>sum+(row[key]??0),0):null]));
+ return {saved:true,replayed:true,eatenAt:first.eaten_at,mealSlot:first.meal_slot,ids:result.rows.map(row=>row.id),count:result.rows.length,calories:nutrition.calories??0,nutrition,food:{name:result.rows.map(row=>row.product_name).join(' + ')}};
 }

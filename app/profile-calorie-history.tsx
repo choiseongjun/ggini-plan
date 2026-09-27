@@ -1,11 +1,12 @@
 'use client';
+import {mealSlotLabels,type MealSlot} from '../lib/meal-time';
 import {useEffect,useRef,useState,type ReactNode} from 'react';
 import {subscribeRecordSync} from '../lib/record-sync';
 import {calendarCalories} from '../lib/intake-calendar';
 import {historyNutrients,nutritionHistoryTotals,type NutritionHistoryLog} from '../lib/nutrition-history';
 import {calorieHistoryRange} from '../lib/calorie-history';
 import './profile-calorie-history.css';
-type HistoryLog=NutritionHistoryLog&{id:string;date:string;name:string;portions:number;calories:number|null;protein:number|null;createdAt:string;eatenAt?:string};
+type HistoryLog=NutritionHistoryLog&{mealSlot?:MealSlot|null;id:string;date:string;name:string;portions:number;calories:number|null;protein:number|null;createdAt:string;eatenAt?:string};
 const nutrient=(value:number|null|undefined,unit:string)=>value==null||!Number.isFinite(value)?'미확인':`${value.toLocaleString('ko-KR',{maximumFractionDigits:1})} ${unit}`;
 function NutritionSummary({logs,average=false}:{logs:HistoryLog[];average?:boolean}){
  return <dl className="history-nutrient-grid">{nutritionHistoryTotals(logs).map(n=><div key={n.key}><dt>{n.label}</dt><dd>{nutrient(n.total,n.unit)}</dd>{average&&<small>하루 평균 {nutrient(n.average,n.unit)} · 확인된 {n.days}일</small>}{n.missing>0&&<small>미확인 {n.missing}건 제외</small>}</div>)}</dl>;
@@ -40,7 +41,7 @@ export function ProfileCalorieHistory({userId,target,onLogin,analysis,weekly}:{u
   const totalLabel=!day?'기록 없음':day.count===day.missing?'칼로리 미확인':`${Math.round(day.kcal).toLocaleString()} kcal`;
   if(date>today)return <div className="calorie-history-future" key={date}><span>{label}</span><strong>예정</strong></div>;
   return <details className="calorie-history-day" key={date}><summary><span>{label}</span><span><strong>{totalLabel}</strong>{day?.missing&&day.count>day.missing?<small> + 미확인 {day.missing}건</small>:null}<small className="calorie-day-expand">상세 보기 ▾</small></span></summary>
-   <div className="calorie-day-content">{logs.length?<><p>{logs.length}건의 음식 기록 · 먹은 시간은 한국 시간 기준이에요.</p><h4>이날 영양소 합계</h4><NutritionSummary logs={logs}/><ul>{logs.map(log=><li key={log.id}><div><strong>{log.name}</strong><span>{Number.isFinite(log.portions)?`${log.portions}인분 · `:''}{Number.isFinite(Date.parse(log.eatenAt??log.createdAt))?new Date(log.eatenAt??log.createdAt).toLocaleTimeString('ko-KR',{timeZone:'Asia/Seoul',hour:'2-digit',minute:'2-digit',hour12:false}):'시간 미확인'} 기록</span></div><dl className="history-food-nutrients">{historyNutrients.map(([key,label,unit])=><div key={key}><dt>{label}</dt><dd>{nutrient(log[key],unit)}</dd></div>)}</dl></li>)}</ul></>:<p>이날 저장된 음식 기록이 없어요.</p>}</div>
+   <div className="calorie-day-content">{logs.length?<><p>{logs.length}건의 음식 기록 · 먹은 시간은 한국 시간 기준이에요.</p><h4>이날 영양소 합계</h4><NutritionSummary logs={logs}/><ul>{logs.map(log=><li key={log.id}><div><strong>{log.name}</strong><span>{log.mealSlot&&`${mealSlotLabels[log.mealSlot]} · `}{Number.isFinite(log.portions)?`${log.portions}인분 · `:''}{Number.isFinite(Date.parse(log.eatenAt??log.createdAt))?new Date(log.eatenAt??log.createdAt).toLocaleTimeString('ko-KR',{timeZone:'Asia/Seoul',hour:'2-digit',minute:'2-digit',hour12:false}):'시간 미확인'} 기록</span></div><dl className="history-food-nutrients">{historyNutrients.map(([key,label,unit])=><div key={key}><dt>{label}</dt><dd>{nutrient(log[key],unit)}</dd></div>)}</dl></li>)}</ul></>:<p>이날 저장된 음식 기록이 없어요.</p>}</div>
   </details>;
  })}</div></>}
  {mode==='week'&&offset===0&&weekly}

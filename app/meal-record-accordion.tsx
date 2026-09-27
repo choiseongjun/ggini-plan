@@ -37,7 +37,7 @@ export function MealRecordAccordion({intake,userId,onLogin,initialOpen=false}:{i
   <div className="meal-record-body">
    <p className="meal-record-explainer">매 끼니 다 남기지 않아도 돼요. 실제 먹은 음식으로 오늘의 영양을 확인하고, 마이페이지의 주간 리포트에서 기록한 날의 식사를 돌아보세요.</p>
    {!userId?<><button type="button" className="meal-record-login" onClick={onLogin}>로그인하고 오늘 한 끼 남기기</button><small>내 식사 일기에 저장해 날짜별로 다시 볼 수 있어요.</small></>:<>
-    <p className="meal-record-today">먹은 시간을 바꿔 지난 식사도 남길 수 있어요</p>
+    <p className="meal-record-today">오늘·어제와 먹은 끼니를 골라 남겨 주세요</p>
     <MealPhotoLog dishName="실제로 먹은 음식" buttonLabel="사진으로 기록" manualLabel="음식 검색으로 기록" disabled={intake.disabled} onManual={()=>{setMethod('search');trackAnalytics('record_method_selected',{method:'search'});}} onFallback={()=>setMethod('search')} onLogged={result=>{setPhoto(result);setMethod(null);saved(result.food?.name??'사진 속 음식',result.eatenAt);trackPlanner('photo_logged');}}/>
     <p className="meal-record-method-hint">집밥·외식·간식·음료, 무엇을 먹었든 남길 수 있어요.</p>
     {method==='search'&&<SnackLog initialOpen onClose={()=>setMethod(null)} onLogged={(name,eatenAt)=>{setMethod(null);setPhoto(null);saved(name,eatenAt);}}/>}

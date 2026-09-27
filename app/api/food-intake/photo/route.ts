@@ -1,9 +1,9 @@
-import {validEatenAt} from '../../../../lib/meal-time';
+import {validEatenAt,validMealSlot} from '../../../../lib/meal-time';
 import {diaryPhoto} from '../../../../lib/diary-photo';
 import {NextRequest,NextResponse} from 'next/server';
 import {sessionUser,sameOrigin,authFailure} from '../../../../lib/auth';
 import {getPool} from '../../../../lib/db';
-import {logMeal,logReference,logPhotoFood} from '../../../../lib/intake-log';
+import {logMeal,logReference,logPhotoFood,savedIntake} from '../../../../lib/intake-log';
 import {analyzeMealPhoto,MAX_MEAL_PHOTOS,MealPhotoError} from '../../../../lib/meal-photo-ai';
 import {validatedPhoto} from '../../../../lib/nutrition-photo';
 import {planProducts} from '../../../../lib/shopping-plan-catalog';
@@ -23,6 +23,11 @@ export async function POST(request:NextRequest){
   let form:FormData;try{form=await request.formData();}catch{return authFailure('사진을 확인해 주세요.',400);}
   const id=form.get('id'),productId=form.get('productId'),referenceCode=form.get('referenceCode');
   if(typeof id!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id)||(referenceCode!==null?(typeof referenceCode!=='string'||referenceCode.length>60):(productId!==null&&(typeof productId!=='string'||productId.length>100))))return authFailure('기록 요청을 확인해 주세요.',400);
+  const prior=await savedIntake(user.id,id);
+  if(prior?.deleted)return authFailure('삭제한 기록이에요. 새 사진 기록을 시작해 주세요.',409);
+  if(prior?.saved)return json({logged:true,portion:1,extras:[],note:'저장된 기록을 확인했어요.',...prior});
+  const mealSlot=form.get('mealSlot')??undefined;
+  if(mealSlot!==undefined&&!validMealSlot(mealSlot))return authFailure('끼니를 확인해 주세요.',400);
   const eatenAt=form.get('eatenAt')??undefined;
   if(eatenAt!==undefined&&!validEatenAt(eatenAt))return authFailure('먹은 날짜와 시간을 확인해 주세요.',400);
   const files=form.getAll('photo');
@@ -40,14 +45,14 @@ export async function POST(request:NextRequest){
   const diaryPhotos=analysis.match==='unclear'?[]:await Promise.all(photos.map(photo=>diaryPhoto(photo.bytes)));
   // Different food uses its own estimated nutrition, never the planned dish values.
   if(analysis.match!=='unclear'&&analysis.food&&(analysis.match==='different'||(!product&&!reference))){
-   const saved=await logPhotoFood(user.id,id,analysis.food,diaryPhotos,eatenAt);
+   const saved=await logPhotoFood(user.id,id,analysis.food,diaryPhotos,eatenAt,mealSlot);
    if(!saved.ok)return saved;
    return json({logged:true,...analysis,portion:1,extras:[],note:`${analysis.food.name} · 사진으로 추정한 영양정보예요. 양과 조리법에 따라 달라질 수 있어요.`,...await saved.json()});
   }
   if(!product&&!reference||analysis.match==='different'||analysis.match==='unclear')return json({logged:false,...analysis});
   // Reference photos record the selected food only; other dishes can be added separately.
   if(reference){analysis.extras=[];analysis.note='선택한 음식의 양을 추정했어요. 함께 먹은 다른 음식은 따로 기록해 주세요.';}
-  const saved=reference?await logReference(user.id,{id,referenceCode,portions:analysis.portion,eatenAt},diaryPhotos):await logMeal(user.id,{id,productId,portions:analysis.portion,extras:analysis.extras,eatenAt},diaryPhotos);
+  const saved=reference?await logReference(user.id,{id,referenceCode,portions:analysis.portion,eatenAt,mealSlot},diaryPhotos):await logMeal(user.id,{id,productId,portions:analysis.portion,extras:analysis.extras,eatenAt,mealSlot},diaryPhotos);
   if(!saved.ok)return saved;
   return json({logged:true,...analysis,...await saved.json()});
  }catch{return authFailure('사진 기록을 저장하지 못했어요. 다시 시도해 주세요.',503);}

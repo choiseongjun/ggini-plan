@@ -1,4 +1,4 @@
-import {validEatenAt} from '../../../lib/meal-time';
+import {validEatenAt,validMealSlot} from '../../../lib/meal-time';
 import {NextRequest,NextResponse} from 'next/server';
 import {sessionUser,sameOrigin,authFailure} from '../../../lib/auth';
 import {getPool} from '../../../lib/db';
@@ -20,14 +20,14 @@ export async function GET(request:NextRequest){
   if(from||to){
    // Logs only, grouped by KST date — used by the weekly analysis to compare the plan with what was eaten.
    if(!from||!to||!validDate(from)||!validDate(to)||from>to||Date.parse(to)-Date.parse(from)>62*86400000)return authFailure('기간을 확인해 주세요.',400);
-   const logs=await getPool().query(`SELECT id::text,product_id AS "productId",product_name AS name,portions::float8,calories::float8,protein::float8,carbs::float8,fat::float8,sugar::float8,sodium::float8,(SELECT count(*)::int FROM food_intake_photos p WHERE p.user_id=food_intake_logs.user_id AND p.log_id=food_intake_logs.id) AS "photoCount",created_at AS "createdAt",COALESCE(eaten_at,created_at) AS "eatenAt",to_char(COALESCE(eaten_at,created_at) AT TIME ZONE 'Asia/Seoul','YYYY-MM-DD') AS date FROM food_intake_logs WHERE user_id=$1 AND undone_at IS NULL AND COALESCE(eaten_at,created_at)>=($2::date::timestamp AT TIME ZONE 'Asia/Seoul') AND COALESCE(eaten_at,created_at)<(($3::date+1)::timestamp AT TIME ZONE 'Asia/Seoul') ORDER BY COALESCE(eaten_at,created_at)`,[user.id,from,to]);
+   const logs=await getPool().query(`SELECT id::text,product_id AS "productId",product_name AS name,portions::float8,calories::float8,protein::float8,carbs::float8,fat::float8,sugar::float8,sodium::float8,(SELECT count(*)::int FROM food_intake_photos p WHERE p.user_id=food_intake_logs.user_id AND p.log_id=food_intake_logs.id) AS "photoCount",created_at AS "createdAt",meal_slot AS "mealSlot",COALESCE(eaten_at,created_at) AS "eatenAt",to_char(COALESCE(eaten_at,created_at) AT TIME ZONE 'Asia/Seoul','YYYY-MM-DD') AS date FROM food_intake_logs WHERE user_id=$1 AND undone_at IS NULL AND COALESCE(eaten_at,created_at)>=($2::date::timestamp AT TIME ZONE 'Asia/Seoul') AND COALESCE(eaten_at,created_at)<(($3::date+1)::timestamp AT TIME ZONE 'Asia/Seoul') ORDER BY COALESCE(eaten_at,created_at)`,[user.id,from,to]);
    return json({logs:logs.rows});
   }
   const date=request.nextUrl.searchParams.get('date')??emptyDashboard().today;
   if(!validDate(date))return authFailure('날짜를 확인해 주세요.',400);
   const [progress,logs,products]=await Promise.all([
    getPool().query("SELECT stock,version FROM shopping_progress WHERE user_id=$1 AND scope='products'",[user.id]),
-   getPool().query(`SELECT id::text,product_id AS "productId",product_name AS name,portions::float8,packs::float8,calories::float8,protein::float8,carbs::float8,fat::float8,sugar::float8,sodium::float8,cost::float8,created_at AS "createdAt",COALESCE(eaten_at,created_at) AS "eatenAt",(SELECT count(*)::int FROM food_intake_photos p WHERE p.user_id=food_intake_logs.user_id AND p.log_id=food_intake_logs.id) AS "photoCount" FROM food_intake_logs WHERE user_id=$1 AND undone_at IS NULL AND COALESCE(eaten_at,created_at)>=($2::date::timestamp AT TIME ZONE 'Asia/Seoul') AND COALESCE(eaten_at,created_at)<(($2::date+1)::timestamp AT TIME ZONE 'Asia/Seoul') ORDER BY COALESCE(eaten_at,created_at),id`,[user.id,date]),
+   getPool().query(`SELECT id::text,product_id AS "productId",product_name AS name,portions::float8,packs::float8,calories::float8,protein::float8,carbs::float8,fat::float8,sugar::float8,sodium::float8,cost::float8,created_at AS "createdAt",meal_slot AS "mealSlot",COALESCE(eaten_at,created_at) AS "eatenAt",(SELECT count(*)::int FROM food_intake_photos p WHERE p.user_id=food_intake_logs.user_id AND p.log_id=food_intake_logs.id) AS "photoCount" FROM food_intake_logs WHERE user_id=$1 AND undone_at IS NULL AND COALESCE(eaten_at,created_at)>=($2::date::timestamp AT TIME ZONE 'Asia/Seoul') AND COALESCE(eaten_at,created_at)<(($2::date+1)::timestamp AT TIME ZONE 'Asia/Seoul') ORDER BY COALESCE(eaten_at,created_at),id`,[user.id,date]),
    planProducts(),
   ]);
   const stock=parseStock(progress.rows[0]?.stock??{});if(!stock)throw new Error('Invalid stock');
@@ -40,6 +40,7 @@ export async function POST(request:NextRequest){
   const user=await sessionUser(request);if(!user)return authFailure('로그인이 필요해요.',401);
   let input;try{input=await request.json();}catch{return authFailure('입력을 확인해 주세요.',400);}
   if(!input||!['eat','undo','log'].includes(input.action)||typeof input.id!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(input.id)||!Number.isSafeInteger(input.version)||input.version<0)return authFailure('기록을 확인해 주세요.',400);
+  if(input.mealSlot!==undefined&&!validMealSlot(input.mealSlot))return authFailure('끼니를 확인해 주세요.',400);
   if(input.eatenAt!==undefined&&!validEatenAt(input.eatenAt))return authFailure('먹은 날짜와 시간을 확인해 주세요.',400);
   if(input.action==='eat'&&(typeof input.productId!=='string'||input.productId.length>100||!validPortions(input.portions)))return authFailure('상품과 먹은 양을 확인해 주세요.',400);
   if(input.action==='log'){
@@ -92,7 +93,7 @@ export async function PATCH(request:NextRequest){
  try{
   const user=await sessionUser(request);if(!user)return authFailure('로그인이 필요해요.',401);
   let input;try{input=await request.json();}catch{return authFailure('입력을 확인해 주세요.',400);}
-  if(!input||typeof input.id!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(input.id)||(input.portions!==undefined&&!validPortions(input.portions))||(input.eatenAt!==undefined&&!validEatenAt(input.eatenAt))||(input.portions===undefined&&input.eatenAt===undefined)||!Number.isSafeInteger(input.version)||input.version<0)return authFailure('먹은 양을 확인해 주세요.',400);
+  if(!input||typeof input.id!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(input.id)||(input.portions!==undefined&&!validPortions(input.portions))||(input.eatenAt!==undefined&&!validEatenAt(input.eatenAt))||(input.mealSlot!==undefined&&!validMealSlot(input.mealSlot))||(input.portions===undefined&&input.eatenAt===undefined&&input.mealSlot===undefined)||!Number.isSafeInteger(input.version)||input.version<0)return authFailure('먹은 양을 확인해 주세요.',400);
   const client=await getPool().connect();
   try{
    await client.query('BEGIN');
@@ -113,7 +114,7 @@ export async function PATCH(request:NextRequest){
     await client.query("UPDATE shopping_progress SET stock=$2,version=version+1,updated_at=NOW() WHERE user_id=$1 AND scope='products'",[user.id,JSON.stringify(consumed.stock)]);
    }
    const scale=(v:number|string|null)=>rescaleIntake(v,previous,next);
-   await client.query('UPDATE food_intake_logs SET portions=$3,packs=$4,stock_item=$5,calories=$6,protein=$7,cost=$8,carbs=$9,sugar=$10,sodium=$11,fat=$12,eaten_at=COALESCE($13::timestamptz,eaten_at) WHERE user_id=$1 AND id=$2',[user.id,input.id,next,packs,JSON.stringify(snapshot),scale(row.calories),scale(row.protein),scale(row.cost),scale(row.carbs),scale(row.sugar),scale(row.sodium),scale(row.fat),input.eatenAt??null]);
+   await client.query('UPDATE food_intake_logs SET portions=$3,packs=$4,stock_item=$5,calories=$6,protein=$7,cost=$8,carbs=$9,sugar=$10,sodium=$11,fat=$12,eaten_at=COALESCE($13::timestamptz,eaten_at),meal_slot=COALESCE($14,meal_slot) WHERE user_id=$1 AND id=$2',[user.id,input.id,next,packs,JSON.stringify(snapshot),scale(row.calories),scale(row.protein),scale(row.cost),scale(row.carbs),scale(row.sugar),scale(row.sodium),scale(row.fat),input.eatenAt??null,input.mealSlot??null]);
    await client.query('COMMIT');return json({saved:true});
   }catch(e){await client.query('ROLLBACK');throw e;}finally{client.release();}
  }catch{return authFailure('수정하지 못했어요. 잠시 후 다시 시도해 주세요.',503);}

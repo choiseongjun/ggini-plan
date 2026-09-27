@@ -26,3 +26,11 @@ export function mealTimeline<T extends {eatenAt?:string|null;createdAt:string}>(
  const sorted=logs.slice().sort((a,b)=>Date.parse(eatenTime(a))-Date.parse(eatenTime(b)));
  return timePeriods.map(period=>({period,logs:sorted.filter(log=>timePeriod(eatenTime(log))===period)})).filter(group=>group.logs.length);
 }
+
+export const mealSlots=['breakfast','lunch','dinner','snack'] as const;
+export type MealSlot=typeof mealSlots[number];
+export const mealSlotLabels:Record<MealSlot,string>={breakfast:'아침',lunch:'점심',dinner:'저녁',snack:'간식'};
+export function validMealSlot(value:unknown):value is MealSlot{return typeof value==='string'&&mealSlots.includes(value as MealSlot);}
+export function inferredMealSlot(time:string):MealSlot{const hour=Number(mealTimeLocal(time).slice(11,13));return hour<11?'breakfast':hour<16?'lunch':'dinner';}
+export function recordDestination(time:string,slot:MealSlot|null){const day=(time||mealTimeLocal()).slice(0,10),today=mealTimeLocal().slice(0,10);return `${day===today?'오늘':day} ${slot?mealSlotLabels[slot]:'식사'}`;}
+export function mealGroups<T extends {mealSlot?:MealSlot|null;eatenAt?:string|null;createdAt:string}>(logs:T[]){return mealSlots.map(slot=>({period:mealSlotLabels[slot],logs:logs.filter(log=>(log.mealSlot??inferredMealSlot(eatenTime(log)))===slot).sort((a,b)=>Date.parse(eatenTime(a))-Date.parse(eatenTime(b)))})).filter(group=>group.logs.length);}
