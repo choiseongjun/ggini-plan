@@ -34,3 +34,13 @@
 .meal-video-entry .recipe-video-list article>a{display:flex;align-items:center;justify-content:center;min-height:46px;padding:12px;margin-top:14px;border-radius:12px;border:1px solid #e0e5d7;color:#536844;background:#fafbf6;text-decoration:none;font-size:12px;box-sizing:border-box}
 .meal-video-entry .recipe-videos>a{display:block;text-align:center;padding:14px 8px;margin-top:18px;color:#6c7d58;font-size:12px}
 @media(max-width:480px){.meal-video-entry>.recipe-videos{padding:14px 10px}.meal-video-entry .recipe-video-list>article{padding:10px}.meal-video-entry .recipe-reading-body{padding:14px}.meal-video-entry .recipe-video-list article>strong{font-size:14px}}
+
+/* Expanded phone videos escape the nested meal-card padding. */
+@media(max-width:600px){
+ .meal-action-flow .meal-video-entry[open]{width:calc(100vw - 24px);max-width:none;box-sizing:border-box;margin-inline:calc(50% - 50vw + 12px)}
+ .meal-video-entry[open]>.recipe-videos{padding:16px 0}
+ .meal-video-entry[open]>.recipe-videos>strong,.meal-video-entry[open]>.recipe-videos>p{margin-inline:14px}
+ .meal-video-entry .recipe-video-list>article{padding:0 0 14px;border-inline:0;border-radius:0;box-shadow:none}
+ .meal-video-entry .recipe-video-list iframe{width:100%;height:auto;min-height:0;aspect-ratio:16/9;border-radius:0}
+ .meal-video-entry .recipe-video-list article>strong,.meal-video-entry .recipe-video-list article>small,.meal-video-entry .recipe-reading,.meal-video-entry .recipe-video-list article>a{margin-inline:14px}
+}
