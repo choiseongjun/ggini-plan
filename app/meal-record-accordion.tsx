@@ -29,17 +29,12 @@ export function MealRecordAccordion({intake,userId,onLogin,initialOpen=false}:{i
  }
  return <details id="meal-record-entry" tabIndex={-1} className="meal-record-accordion" open={open}>
   <summary onClick={event=>{event.preventDefault();setOpen(value=>!value);}}>
-   <span className="meal-record-kicker">오늘 한 끼만 가볍게</span>
-   <span className="meal-record-title">실제로 먹은 한 끼 기록하기 <span className="meal-record-chevron" aria-hidden="true">⌄</span></span>
-   <span className="meal-record-benefit">오늘 먹은 칼로리·단백질을 확인하고,<br/>기록이 쌓이면 내 식사 패턴을 볼 수 있어요.</span>
-   <span className="meal-record-permission">추천과 다른 음식도 괜찮아요 · 사진 또는 검색</span>
+   <span className="meal-record-title">먹은 음식 기록하기 <span className="meal-record-chevron" aria-hidden="true">⌄</span></span>
+   <span className="meal-record-permission">사진 또는 음식 검색</span>
   </summary>
   <div className="meal-record-body">
-   <p className="meal-record-explainer">매 끼니 다 남기지 않아도 돼요. 실제 먹은 음식으로 오늘의 영양을 확인하고, 마이페이지의 주간 리포트에서 기록한 날의 식사를 돌아보세요.</p>
-   {!userId?<><button type="button" className="meal-record-login" onClick={onLogin}>로그인하고 오늘 한 끼 남기기</button><small>내 식사 일기에 저장해 날짜별로 다시 볼 수 있어요.</small></>:<>
-    <p className="meal-record-today">오늘·어제와 먹은 끼니를 골라 남겨 주세요</p>
+   {!userId?<><button type="button" className="meal-record-login" onClick={onLogin}>로그인하고 기록하기</button></>:<>
     <MealPhotoLog dishName="실제로 먹은 음식" buttonLabel="사진으로 기록" manualLabel="음식 검색으로 기록" disabled={intake.disabled} onManual={()=>{setMethod('search');trackAnalytics('record_method_selected',{method:'search'});}} onFallback={()=>setMethod('search')} onLogged={result=>{setPhoto(result);setMethod(null);saved(result.food?.name??'사진 속 음식',result.eatenAt);trackPlanner('photo_logged');}}/>
-    <p className="meal-record-method-hint">집밥·외식·간식·음료, 무엇을 먹었든 남길 수 있어요.</p>
     {method==='search'&&<SnackLog initialOpen onClose={()=>setMethod(null)} onLogged={(name,eatenAt)=>{setMethod(null);setPhoto(null);saved(name,eatenAt);}}/>}
     {photo&&<PhotoLogSummary result={photo} streak={null} busy={intake.disabled} onUndo={()=>void undoPhoto()} onEdit={()=>router.push(`/record?date=${savedDate||intake.today}#meal-history`)}/>}
     {savedName&&<div className="meal-record-feedback" role="status"><strong>{savedName} · {savedDate===intake.today?'오늘':savedDate} 기록에 남겼어요</strong>{savedDate!==intake.today?<p>먹은 날짜의 식사 일기와 주간 리포트에 반영했어요.</p>:intake.loading?<p>오늘 영양 합계를 업데이트하고 있어요…</p>:intake.error?<p>기록은 저장됐어요. 오늘 합계는 다시 불러와 주세요.</p>:totals&&<><p>오늘 기록한 영양 <b>{current?.logs.some(log=>log.calories!==null)?`${number(totals.calories).toLocaleString('ko-KR')} kcal`:'칼로리 미확인'}</b> · 단백질 <b>{current?.logs.some(log=>log.protein!==null)?`${number(totals.protein)} g`:'미확인'}</b></p><small>기록한 음식만 합산한 값이에요. 사진 분석은 추정치이며, 미확인 영양정보는 제외돼요.</small></>}<Link href={`/record?date=${savedDate}#meal-history`}>방금 기록한 식사 확인·수정 →</Link></div>}

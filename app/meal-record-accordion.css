@@ -1,20 +1,15 @@
 .meal-record-accordion{margin:18px 0 24px;border:1px solid #cbd9bb;border-radius:22px;background:#f3f6eb;color:#35492e;overflow:hidden}
 .meal-record-accordion>summary{display:block;list-style:none;padding:20px;cursor:pointer}
 .meal-record-accordion>summary::-webkit-details-marker{display:none}
-.meal-record-kicker{display:block;color:#667d51;font-size:11px;font-weight:700;margin-bottom:7px}
-.meal-record-title{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:17px;font-weight:750;line-height:1.5;letter-spacing:-.5px}
+.meal-record-title{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:22px;font-weight:800;line-height:1.5;letter-spacing:-.5px}
 .meal-record-chevron{font-size:24px;flex:none;line-height:1;transition:transform .15s}
 .meal-record-accordion[open] .meal-record-chevron{transform:rotate(180deg)}
-.meal-record-benefit{display:block;font-size:13px;line-height:1.8;margin:9px 0;color:#52634a;word-break:keep-all}
-.meal-record-permission{display:block;font-size:11px;line-height:1.6;color:#5e734c}
-.meal-record-body{padding:0 20px 20px;border-top:1px solid #dfe7d4;background:#fffef8}
-.meal-record-explainer{font-size:12px;line-height:1.8;color:#65725d;margin:16px 0;word-break:keep-all}
-.meal-record-today{font-size:12px;font-weight:650;margin:16px 0 0}
-.meal-record-body>small,.meal-record-method-hint{display:block;font-size:11px;line-height:1.7;color:#6d7865;margin:10px 0}
+.meal-record-permission{display:block;font-size:12px;line-height:1.6;color:#5e734c;margin-top:5px}
+.meal-record-body{padding:16px 20px 20px;border-top:1px solid #dfe7d4;background:#fffef8}
 .today-meals .meal-record-body .photo-log-manual{width:100%;min-height:46px;margin:8px 0 0;padding:10px;border:1px solid #d6dfcb;border-radius:14px;background:#fff;font-size:13px;text-decoration:none;color:#425939}
 .meal-record-feedback{border:1px solid #d6e3c9;background:#f0f6e9;padding:15px;border-radius:16px;margin-top:16px;line-height:1.7}
 .meal-record-feedback strong{font-size:13px}.meal-record-feedback p{font-size:12px;margin:8px 0}.meal-record-feedback small{display:block;font-size:11px;color:#68765e}.meal-record-feedback a{display:inline-block;margin-top:10px}
 .meal-record-accordion .snack-log{margin:16px 0 0}.meal-record-accordion .photo-log-done{flex-wrap:wrap}
 .meal-record-accordion>summary:focus-visible{outline:3px solid #718d57;outline-offset:-4px;border-radius:20px}
-@media(max-width:380px){.meal-record-accordion>summary{padding:16px}.meal-record-body{padding:0 16px 16px}.meal-record-title{font-size:16px}}
+@media(max-width:380px){.meal-record-accordion>summary{padding:16px}.meal-record-body{padding:14px 16px 16px}.meal-record-title{font-size:20px}}
 @media(prefers-reduced-motion:reduce){.meal-record-chevron{transition:none}}

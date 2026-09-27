@@ -1,0 +1,7 @@
+.food-search-modal{position:fixed;inset:0;margin:auto;width:min(560px,calc(100vw - 24px));max-width:none;max-height:88dvh;padding:0;border:1px solid #dce4d0;border-radius:24px;background:#fffef8;color:#35492e;overflow-y:auto;overscroll-behavior:contain;box-shadow:0 20px 70px #24351c30}
+.food-search-modal::backdrop{background:#17241080}
+.food-search-modal .snack-log{margin:0;padding:22px;border:0;border-radius:0;background:transparent}
+.food-search-modal .snack-log header strong{font-size:22px}
+.food-search-modal .snack-log header button{width:44px;height:44px;flex-shrink:0}
+.food-search-modal .snack-log>input[type=search]{min-height:48px;font-size:16px}
+@media(max-width:420px){.food-search-modal{max-height:92dvh;border-radius:20px}.food-search-modal .snack-log{padding:16px}}
