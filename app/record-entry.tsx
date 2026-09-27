@@ -26,20 +26,20 @@ export function RecordEntry({userId,onLogin,onLogged}:{userId?:string;onLogin:()
  const {stats}=useIntakeStats(userId);
  return <section className="record-entry" aria-label="식사 기록하기">
   <div className="record-entry-heading">
-   <div><span className="record-entry-kicker"><RecordIcon kind="book"/>나의 식사 일기</span><h2>잘 먹은 순간을<br/>오늘도 하나씩</h2></div>
+   <div><span className="record-entry-kicker"><RecordIcon kind="book"/>나의 식사 일기</span><h2>오늘, 무엇을 드셨나요?</h2></div>
    <div className="record-entry-buddy" aria-hidden="true"><RiceBuddy/></div>
   </div>
-  <p className="record-entry-intro">근사한 한 상도, 가벼운 간식도 좋아요.<br/>사진 한 장으로 나만의 식사 이야기를 모아 보세요.</p>
+  <p className="record-entry-intro">한 끼도, 작은 간식도 남겨보세요.</p>
   {resumed&&<p className="record-entry-intro" role="status">로그인됐어요. {mode==='photo'?'아래 음식 사진 선택 버튼을 눌러 이어서 기록해 주세요.':'음식을 검색해 이어서 기록해 주세요.'}</p>}
   <div className="record-entry-actions">
    <button type="button" className="record-method record-method-photo" aria-label="음식 사진 선택" aria-pressed={mode==='photo'} onClick={()=>choose('photo')}>
-    <span className="record-method-icon"><RecordIcon kind="photo"/></span><span className="record-method-copy"><strong>음식 사진 선택</strong><span>사진을 고르면 영양을 추정해요</span></span><span className="record-method-check" aria-hidden="true">{mode==='photo'&&<svg viewBox="0 0 16 16" fill="none"><path d="m4 8 3 3 5-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}</span>
+    <span className="record-method-icon"><RecordIcon kind="photo"/></span><span className="record-method-copy"><strong>사진으로 기록</strong><span>사진 한 장으로</span></span><span className="record-method-check" aria-hidden="true">{mode==='photo'&&<svg viewBox="0 0 16 16" fill="none"><path d="m4 8 3 3 5-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}</span>
    </button>
    <button type="button" className="record-method record-method-search" aria-label="음식 검색으로 기록" aria-haspopup="dialog" aria-pressed={mode==='search'} onClick={()=>choose('search')}>
-    <span className="record-method-icon"><RecordIcon kind="search"/></span><span className="record-method-copy"><strong>음식 검색으로 기록</strong><span>음식 이름과 먹은 양만 선택</span></span><span className="record-method-check" aria-hidden="true">{mode==='search'&&<svg viewBox="0 0 16 16" fill="none"><path d="m4 8 3 3 5-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}</span>
+    <span className="record-method-icon"><RecordIcon kind="search"/></span><span className="record-method-copy"><strong>음식 검색</strong><span>이름으로 찾아서</span></span><span className="record-method-check" aria-hidden="true">{mode==='search'&&<svg viewBox="0 0 16 16" fill="none"><path d="m4 8 3 3 5-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}</span>
    </button>
   </div>
-  <div className="record-entry-help"><Link className="record-guide-link" href="/how-to#record"><RecordIcon kind="book"/>기록이 처음이라면</Link><span>방법을 함께 알아봐요</span></div>
+  <div className="record-entry-help"><Link className="record-guide-link" href="/how-to#record"><RecordIcon kind="book"/>기록이 처음이라면</Link></div>
   {!userId&&<small className="record-entry-login-note">로그인하면 내 식사 일기에 저장하고<br/>날짜별로 다시 볼 수 있어요.</small>}
   {userId&&<div hidden={mode==='search'}><MealPhotoLog pickerRef={photoPicker} hidePickerActions dishName="오늘 먹은 음식" disabled={false} onManual={()=>setMode('search')} onFallback={()=>setMode('search')} onLogged={result=>{setSaved({name:result.food?.name??'사진 속 음식',date:mealTimeLocal(result.eatenAt??new Date()).slice(0,10),ids:result.ids,nutrition:result.nutrition,mealSlot:result.mealSlot});setDone(true);window.dispatchEvent(new CustomEvent('intake-logged'));onLogged(result.eatenAt?mealTimeLocal(result.eatenAt).slice(0,10):undefined);}}/></div>}
   {userId&&mode==='search'&&<FoodSearchModal onClose={()=>{setMode(null);setResumed(false);}} onLogged={(name,eatenAt,result)=>{setSaved({name,date:mealTimeLocal(eatenAt??new Date()).slice(0,10),ids:result?.ids??[],nutrition:result?.nutrition,mealSlot:result?.mealSlot});setDone(true);onLogged(eatenAt?mealTimeLocal(eatenAt).slice(0,10):undefined);}}/>}
