@@ -1,0 +1,483 @@
+[
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8800271907099_1.png",
+    "name": "도)마제소밥함박정식",
+    "price": 5900,
+    "id": "cu-0",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8801771037705.jpg",
+    "name": "도)알뜰한끼햄너겟정식",
+    "price": 4900,
+    "id": "cu-1",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8809895791657.jpg",
+    "name": "샌)어니언크림샐러드샌드",
+    "price": 3900,
+    "id": "cu-2",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8809196622070.jpg",
+    "name": "도)제육볶음돈까스더블",
+    "price": 5500,
+    "id": "cu-3",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8801771305316.jpg",
+    "name": "햄)레벨업불갈비치킨반반",
+    "price": 3900,
+    "id": "cu-4",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8801771037521.jpg",
+    "name": "삼)스페셜트리플삼각",
+    "price": 3500,
+    "id": "cu-5",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8800348944187.jpg",
+    "name": "면)소시지듬뿍나폴리탄",
+    "price": 5300,
+    "id": "cu-6",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8801771305354.jpg",
+    "name": "샌)미니한손쏙에그에그",
+    "price": 3900,
+    "id": "cu-7",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8800387752569.jpg",
+    "name": "핫)할라피뇨랜치핫도그",
+    "price": 3600,
+    "id": "cu-8",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8800387752514.jpg",
+    "name": "도)풍성한가위정찬도시락",
+    "price": 6500,
+    "id": "cu-9",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8800387752460.jpg",
+    "name": "김)밥도둑묵은지스팸",
+    "price": 3500,
+    "id": "cu-10",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8800387752071.jpg",
+    "name": "삼)곱창김참치마요",
+    "price": 1300,
+    "id": "cu-11",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8800361441151.jpg",
+    "name": "햄)와규오리지널버거",
+    "price": 3500,
+    "id": "cu-12",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8800348943951.jpg",
+    "name": "면)불고기듬뿍크림파스타",
+    "price": 5300,
+    "id": "cu-13",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8800271907006.jpg",
+    "name": "도)풍성한가위잡채&전",
+    "price": 5600,
+    "id": "cu-14",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8800387752026.png",
+    "name": "김)레벨업햄참치제주",
+    "price": 3700,
+    "id": "cu-15",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8801771037477.jpg",
+    "name": "주)미니밥바한끼세트",
+    "price": 2900,
+    "id": "cu-16",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8800387752385.jpg",
+    "name": "햄)치즈데리버거",
+    "price": 3000,
+    "id": "cu-17",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8800271906863.jpg",
+    "name": "도)크카당맛있당정식",
+    "price": 5700,
+    "id": "cu-18",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8801771037613.jpg",
+    "name": "도)튀김순대떡볶이트리플",
+    "price": 5900,
+    "id": "cu-19",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8800387752323.jpg",
+    "name": "빅삼)참치전주빅더블",
+    "price": 3200,
+    "id": "cu-20",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8800271906900.jpg",
+    "name": "샌)호밀햄치즈치킨반반",
+    "price": 3300,
+    "id": "cu-21",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8809895791695.jpg",
+    "name": "샌)히팅치즈쏙햄치즈",
+    "price": 4900,
+    "id": "cu-22",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8809196622025.jpg",
+    "name": "도)함박한입돈까스더블",
+    "price": 5300,
+    "id": "cu-23",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8801771037668.jpg",
+    "name": "도)미니햄감자샐러드컵",
+    "price": 2500,
+    "id": "cu-24",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8800387751883.jpg",
+    "name": "샌)루꼴라잠봉화덕샌드",
+    "price": 4500,
+    "id": "cu-25",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8800271906948.jpg",
+    "name": "빅삼)레벨업햄참치카레",
+    "price": 1900,
+    "id": "cu-26",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8809895791572.jpg",
+    "name": "샌)샤샤샤우유크림샌드",
+    "price": 4300,
+    "id": "cu-27",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8801771037576.jpg",
+    "name": "도)미니감자마카로니컵",
+    "price": 2400,
+    "id": "cu-28",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8801771037422.jpg",
+    "name": "삼)베스트트리플삼각",
+    "price": 3500,
+    "id": "cu-29",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8801068944174.jpg",
+    "name": "샐)바질닭가슴살&계란샐",
+    "price": 3900,
+    "id": "cu-30",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8800387751944_1.png",
+    "name": "도)간장불백돈까스트리플",
+    "price": 5900,
+    "id": "cu-31",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8800387751760.jpg",
+    "name": "겟모닝)스팸에그반반꼬마",
+    "price": 3400,
+    "id": "cu-32",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8800271906764.jpg",
+    "name": "샌)치킨카츠계란샌드",
+    "price": 4000,
+    "id": "cu-33",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8809954750748.jpg",
+    "name": "샐)저당라임유자샐러드",
+    "price": 2600,
+    "id": "cu-34",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8809895791732.jpg",
+    "name": "샌)히팅올리브쏙잠봉모짜",
+    "price": 4900,
+    "id": "cu-35",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8801771305224.jpg",
+    "name": "햄)레벨업불고기새우반반",
+    "price": 3900,
+    "id": "cu-36",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8801068943665.jpg",
+    "name": "핫)볼로네제핫도그",
+    "price": 3800,
+    "id": "cu-37",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8800387751821.jpg",
+    "name": "빅삼)레벨업햄참치김치",
+    "price": 1900,
+    "id": "cu-38",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "image": "https://tqklhszfkvzk6518638.edge.naverncp.com/product/8800271906801.jpg",
+    "name": "도)간장불백김치제육더블",
+    "price": 5500,
+    "id": "cu-39",
+    "brand": "CU",
+    "url": "https://cu.bgfretail.com/product/product.do",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "id": "seven-0",
+    "brand": "세븐일레븐",
+    "name": "그린)복가득담은떡갈비김밥",
+    "price": 3600,
+    "image": "https://www.7-eleven.co.kr/upload/product/8809827/508285.1.jpg",
+    "url": "https://www.7-eleven.co.kr/product/bestdosirakList.asp",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "id": "seven-1",
+    "brand": "세븐일레븐",
+    "name": "지역한정)스팸김치꼬마김밥",
+    "price": 2900,
+    "image": "https://www.7-eleven.co.kr/upload/product/8809838/035206.1.jpg",
+    "url": "https://www.7-eleven.co.kr/product/bestdosirakList.asp",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "id": "seven-2",
+    "brand": "세븐일레븐",
+    "name": "삼립)프리미엄햄에그샌드",
+    "price": 3000,
+    "image": "https://www.7-eleven.co.kr/upload/product/8801068/944419.1.jpg",
+    "url": "https://www.7-eleven.co.kr/product/bestdosirakList.asp",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "id": "seven-3",
+    "brand": "세븐일레븐",
+    "name": "그린)BELT샌드",
+    "price": 3400,
+    "image": "https://www.7-eleven.co.kr/upload/product/8809827/508261.1.jpg",
+    "url": "https://www.7-eleven.co.kr/product/bestdosirakList.asp",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "id": "seven-4",
+    "brand": "세븐일레븐",
+    "name": "롯데)복가득담은한상도시락",
+    "price": 6900,
+    "image": "https://www.7-eleven.co.kr/upload/product/8801118/034527.1.jpg",
+    "url": "https://www.7-eleven.co.kr/product/bestdosirakList.asp",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "id": "seven-5",
+    "brand": "세븐일레븐",
+    "name": "그린)복가득담은고기산적무스비",
+    "price": 2400,
+    "image": "https://www.7-eleven.co.kr/upload/product/8809827/508247.1.jpg",
+    "url": "https://www.7-eleven.co.kr/product/bestdosirakList.asp",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "id": "seven-6",
+    "brand": "세븐일레븐",
+    "name": "삼립)고구마크림치즈샌드",
+    "price": 3200,
+    "image": "https://www.7-eleven.co.kr/upload/product/8801068/944372.1.jpg",
+    "url": "https://www.7-eleven.co.kr/product/bestdosirakList.asp",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "id": "seven-7",
+    "brand": "세븐일레븐",
+    "name": "삼립)치폴레치킨버거",
+    "price": 4300,
+    "image": "https://www.7-eleven.co.kr/upload/product/8801068/944396.1.jpg",
+    "url": "https://www.7-eleven.co.kr/product/bestdosirakList.asp",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "id": "seven-8",
+    "brand": "세븐일레븐",
+    "name": "시경픽)비법강된장불고기비빔밥",
+    "price": 5200,
+    "image": "https://www.7-eleven.co.kr/upload/product/8809827/508223.1.jpg",
+    "url": "https://www.7-eleven.co.kr/product/bestdosirakList.asp",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "id": "seven-9",
+    "brand": "세븐일레븐",
+    "name": "롯데)갈릭불고기버거",
+    "price": 3900,
+    "image": "https://www.7-eleven.co.kr/upload/product/8801118/034398.1.jpg",
+    "url": "https://www.7-eleven.co.kr/product/bestdosirakList.asp",
+    "checkedAt": "2026-09-27"
+  },
+  {
+    "id": "gs-numberone-chicken",
+    "brand": "GS25",
+    "name": "넘버원 치킨도시락",
+    "price": 4900,
+    "image": "https://hpsimg.gsretail.com/medias/sys_master/images/images/h39/haf/9154260107294.jpg",
+    "url": "https://www.gsretail.com/news/press-releases/detail?prrSeqno=4332",
+    "checkedAt": "2026-09-27",
+    "priceNote": "2026-08-25 공식 출시 가격",
+    "imageNote": "공식 출시 보도사진"
+  },
+  {
+    "id": "gs-hyeja-jeyuk",
+    "brand": "GS25",
+    "name": "혜자로운집밥 정성가득제육&치킨난반",
+    "price": null,
+    "image": null,
+    "url": "https://www.gsretail.com/news/press-releases/detail?prrSeqno=4344",
+    "checkedAt": "2026-09-27",
+    "priceNote": "공식 출시 확인 · 가격 미확인"
+  },
+  {
+    "id": "gs-hyeja-hamburg",
+    "brand": "GS25",
+    "name": "혜자로운집밥 육즙함박&간장불고기",
+    "price": null,
+    "image": null,
+    "url": "https://www.gsretail.com/news/press-releases/detail?prrSeqno=4344",
+    "checkedAt": "2026-09-27",
+    "priceNote": "공식 출시 확인 · 가격 미확인"
+  }
+]

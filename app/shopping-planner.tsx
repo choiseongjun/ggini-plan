@@ -1,4 +1,5 @@
 'use client';
+import {HomeMealChoice} from './home-meal-choice';
 import {sideCountFor} from '../lib/shopping-plan';
 import {MealCompositionPicker} from './meal-composition-picker';
 import {rememberProfileIntent} from '../lib/profile-intent';
@@ -374,6 +375,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    <button type="button" className="primary-button" disabled={busy||loading||progress.busy||!progress.ready} onClick={()=>void generate(conditions)}>다른 식단 추천받기</button>
    <button type="button" className="planner-restart" disabled={busy||progress.busy} onClick={returnToSetup}>추천 조건 바꾸기</button>
   </div>}
+  {mode==='plan'&&!ids.length&&!locale.isTaiwan&&<HomeMealChoice/>}
   {mode==='plan'&&!ids.length&&!locale.isTaiwan&&!showSetup&&<section ref={startRef} tabIndex={-1} className="home-start" aria-labelledby="planner-title">
    <MobileBuddy titleId="planner-title"/>
    {mealTimesPicker}

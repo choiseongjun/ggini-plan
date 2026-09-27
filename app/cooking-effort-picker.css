@@ -14,4 +14,13 @@
 .home-start .cooking-effort-picker>p{margin:10px 0 0;font-size:11px;line-height:1.6;color:#717967}
 .cooking-effort-picker button:disabled{opacity:.6;cursor:wait}
 .cooking-effort-picker button:focus-visible{outline:2px solid #60794d;outline-offset:3px}
-@media(max-width:380px){.cooking-effort-picker button{flex-wrap:wrap;gap:8px}.effort-time{flex-basis:100%;padding-left:28px}}
+.cooking-effort-picker button{display:grid;grid-template-columns:22px minmax(0,1fr);gap:8px 12px;min-height:112px;padding:18px;box-sizing:border-box}
+.cooking-effort-picker .effort-check{grid-column:1;grid-row:1;align-self:start;margin-top:2px}
+.cooking-effort-picker button>span:nth-child(2){grid-column:2;min-width:0}
+.cooking-effort-picker strong{display:flex;align-items:center;flex-wrap:wrap;gap:6px;line-height:1.5;font-size:15px}
+.cooking-effort-picker em{margin-left:0;padding:2px 7px;border-radius:6px;background:#e5edda;white-space:nowrap}
+.cooking-effort-picker .effort-time{grid-column:2;margin:0;justify-self:start;padding:4px 9px;border-radius:7px;background:#f1f2e9;font-size:12px;line-height:1.4}
+.cooking-effort-picker>div{gap:10px}
+.meal-composition-effort[open]{padding:16px;border:1px solid #e0e5d7;border-radius:18px;background:#f8f9f3;box-sizing:border-box;width:100%;min-width:0}
+.meal-composition-effort[open]>.cooking-effort-picker{margin:14px 0 0;width:100%}
+@media(max-width:380px){.cooking-effort-picker button{padding:15px 12px;column-gap:9px}.meal-composition-effort[open]{padding:12px}}
