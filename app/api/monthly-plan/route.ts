@@ -39,7 +39,7 @@ export async function POST(request:NextRequest){
     return json({ok:true});
    }
   }
-  const r=await db.query('SELECT height::float8,weight::float8,age,sex,activity,meals,pregnancy,diet_preferences FROM body_profiles WHERE user_id=$1',[user.id]);
+  const r=await db.query('SELECT height::float8,weight::float8,age,(to_jsonb(body_profiles)->>\'birth_year\')::int AS birth_year,sex,activity,meals,pregnancy,diet_preferences FROM body_profiles WHERE user_id=$1',[user.id]);
   const profile=parseBodyProfile(r.rows[0]),diet=parseDiet(r.rows[0]?.diet_preferences);
   if(!profile||!diet)return authFailure('마이에서 신체 정보와 식단 취향을 먼저 저장해 주세요.',422);
   const days=makeMonth(month,profile,diet,await catalogItems());if(!days)return authFailure('시간대와 제외 재료 조건에 맞는 메뉴가 부족해요. 마이에서 설정을 조정해 주세요.',422);

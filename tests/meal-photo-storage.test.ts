@@ -15,7 +15,7 @@ test('diary photos are private, atomic with logs, and removed on undo or account
   for(let i=0;i<2;i++)users.push((await db.query<PublicUser>("INSERT INTO users(name,email) VALUES('photo test',$1) RETURNING id::text,name,email",[`photo-${crypto.randomUUID()}@example.test`])).rows[0]);
   const cookies=await Promise.all(users.map(async user=>`${SESSION_COOKIE}=${(await createSession(user)).cookies.get(SESSION_COOKIE)!.value}`));
   const image=await sharp({create:{width:16,height:16,channels:3,background:'#fff'}}).jpeg().toBuffer();
-  const id=crypto.randomUUID(),food={name:'사진 테스트',calories:600,protein:20,carbs:80,fat:20};
+  const id=crypto.randomUUID(),food={name:'사진 테스트',calories:600,protein:20,carbs:80,fat:20,sugar:8,sodium:1000};
   assert.equal((await logPhotoFood(users[0].id,id,food,[image,image])).status,200);
   const request=(cookie:string,position=0)=>new NextRequest(`http://localhost:3000/api/food-intake/photo?id=${id}&position=${position}`,{headers:{cookie}});
   const photo=await GET(request(cookies[0],1));assert.equal(photo.status,200);assert.equal(photo.headers.get('Cache-Control'),'private, no-store');assert.deepEqual(Buffer.from(await photo.arrayBuffer()),image);
@@ -26,6 +26,10 @@ test('diary photos are private, atomic with logs, and removed on undo or account
   assert.equal((await PATCH(edit(cookies[0]))).status,200);
   const diary=await (await intakeGET(new NextRequest('http://localhost:3000/api/food-intake',{headers:{cookie:cookies[0]}}))).json();
   assert.equal(diary.logs[0].calories,300);assert.equal(diary.logs[0].protein,10);assert.equal(diary.logs[0].photoCount,2);
+  assert.equal(diary.logs[0].carbs,40);assert.equal(diary.logs[0].fat,10);
+  assert.equal(diary.logs[0].sugar,4);assert.equal(diary.logs[0].sodium,500);
+  const range=await(await intakeGET(new NextRequest(`http://localhost:3000/api/food-intake?from=${diary.date}&to=${diary.date}`,{headers:{cookie:cookies[0]}}))).json();
+  assert.equal(range.logs[0].photoCount,2);assert.equal(range.logs[0].carbs,40);assert.equal(range.logs[0].fat,10);assert.equal(range.logs[0].sodium,500);
   const stats=await (await statsGET(new NextRequest('http://localhost:3000/api/food-intake/stats',{headers:{cookie:cookies[0]}}))).json();
   assert.equal(stats.week.avgCalories,300);assert.equal(stats.buddy.days,1);assert.equal(stats.badges.find((b:{key:string})=>b.key==='first').earned,true);
   assert.deepEqual(Buffer.from(await (await GET(request(cookies[0]))).arrayBuffer()),image);

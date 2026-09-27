@@ -9,15 +9,17 @@ import './meal-photo-log.css';
 
 export type PhotoLogResult={logged:true;eatenAt?:string;food?:{name:string}|null;portion:number;extras:IntakeExtra[];note:string;ids:string[];calories:number}|{logged:false;match:string;note:string};
 // Phone photos are 3–8MB (HEIC on iPhone); uploading them over mobile data was the slow part.
-// Downscale on the device to what the server sends the model anyway (≤1024px JPEG, ~150KB).
+// Preserve a sharper diary image. AI input is resized independently on the server.
 async function shrink(file:File):Promise<Blob>{
  try{
   const bitmap=await createImageBitmap(file);
-  const scale=Math.min(1,1024/Math.max(bitmap.width,bitmap.height));
+  const scale=Math.min(1,1600/Math.max(bitmap.width,bitmap.height));
+  if(scale===1&&['image/jpeg','image/png','image/webp'].includes(file.type)){bitmap.close();return file;}
   const canvas=document.createElement('canvas');
   canvas.width=Math.round(bitmap.width*scale);canvas.height=Math.round(bitmap.height*scale);
-  canvas.getContext('2d')!.drawImage(bitmap,0,0,canvas.width,canvas.height);bitmap.close();
-  const blob=await new Promise<Blob|null>(resolve=>canvas.toBlob(resolve,'image/jpeg',0.82));
+  const context=canvas.getContext('2d')!;context.imageSmoothingEnabled=true;context.imageSmoothingQuality='high';
+  context.drawImage(bitmap,0,0,canvas.width,canvas.height);bitmap.close();
+  const blob=await new Promise<Blob|null>(resolve=>canvas.toBlob(resolve,'image/jpeg',0.92));
   return blob??file;
  }catch{return file;}
 }

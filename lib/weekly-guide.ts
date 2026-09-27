@@ -37,7 +37,7 @@ export async function weeklyGuide(userId: string): Promise<WeeklyGuide> { return
 export async function guideContext(userId: string): Promise<GuideContext> {
  const db = getPool();
  const [profileRow, prefRow, logs, weights, topMenus] = await Promise.all([
-  db.query('SELECT height::float8,weight::float8,age,sex,activity,meals,pregnancy,diet_preferences,nutrition_target FROM body_profiles WHERE user_id=$1', [userId]).then((r) => r.rows[0]),
+  db.query('SELECT height::float8,weight::float8,age,(to_jsonb(body_profiles)->>\'birth_year\')::int AS birth_year,sex,activity,meals,pregnancy,diet_preferences,nutrition_target FROM body_profiles WHERE user_id=$1', [userId]).then((r) => r.rows[0]),
   db.query('SELECT conditions FROM shopping_preferences WHERE user_id=$1', [userId]).then((r) => r.rows[0]),
   db.query<Log>(`SELECT to_char(COALESCE(eaten_at,created_at) AT TIME ZONE 'Asia/Seoul','YYYY-MM-DD') AS day, product_id, portions::float8, calories::float8, protein::float8, carbs::float8, sugar::float8, sodium::float8
    FROM food_intake_logs WHERE user_id=$1 AND undone_at IS NULL AND COALESCE(eaten_at,created_at) > NOW() - INTERVAL '7 days'`, [userId]).then((r) => r.rows),

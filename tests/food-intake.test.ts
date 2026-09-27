@@ -26,6 +26,6 @@ test('unknown nutrition is preserved as unknown, not inferred from marketing or 
  assert.deepEqual(servingNutrition({...p,nutritionSourceUrl:null,nutritionPhotoUrl:null}),{calories:null,protein:null});
  assert.deepEqual(servingNutrition({...p,nutritionBasis:'100mL당'}),{calories:null,protein:null});
  assert.equal(servingNutrition({...p,unit:'개',servingGrams:undefined}).calories,null);
- const a={calories:360,protein:null} as IntakeLog,b={calories:null,protein:14} as IntakeLog;
- assert.deepEqual(intakeTotals([a,b]),{calories:360,protein:14,missingCalories:1,missingProtein:1});
+ const a={calories:360,protein:null,carbs:40,fat:0,sugar:null,sodium:150} as IntakeLog,b={calories:null,protein:14,carbs:10.5,fat:null} as IntakeLog;
+ assert.deepEqual(intakeTotals([a,b]),{calories:360,protein:14,missingCalories:1,missingProtein:1,carbs:50.5,fat:0,sugar:0,sodium:150,missing_carbs:0,missing_fat:1,missing_sugar:2,missing_sodium:1});
 });

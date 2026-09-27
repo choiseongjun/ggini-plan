@@ -11,7 +11,7 @@ import {isShoppingGoal,isBudgetMode} from '../../../lib/shopping-goals';
 import {validMealKinds} from '../../../lib/meal-kinds';
 import {initialConditions} from '../../../lib/shopping-plan';
 async function personalizedCatalog(userId?:string){
- const row=userId?(await getPool().query('SELECT height::float8,weight::float8,age,sex,activity,meals,pregnancy,diet_preferences,nutrition_target FROM body_profiles WHERE user_id=$1',[userId])).rows[0]:null;
+ const row=userId?(await getPool().query('SELECT height::float8,weight::float8,age,(to_jsonb(body_profiles)->>\'birth_year\')::int AS birth_year,sex,activity,meals,pregnancy,diet_preferences,nutrition_target FROM body_profiles WHERE user_id=$1',[userId])).rows[0]:null;
  const catalog=await planProducts(),diet=parseDiet(row?.diet_preferences)??defaultDiet;
  const filtered=personalizeProducts(catalog,row,row?.diet_preferences,row?.nutrition_target);
  const base=personalizeProducts(catalog,row,{...diet,excluded:[]},row?.nutrition_target).products;
@@ -48,7 +48,7 @@ export async function GET(request:NextRequest){
   const user=await sessionUser(request);
   // Bootstrap only needs account settings, never the full recipe catalog.
   const row=user?(await getPool().query(`SELECT
-   (SELECT row_to_json(p) FROM (SELECT height::float8,weight::float8,age,sex,activity,meals,pregnancy,diet_preferences,nutrition_target FROM body_profiles WHERE user_id=$1) p) AS profile,
+   (SELECT row_to_json(p) FROM (SELECT height::float8,weight::float8,age,(to_jsonb(body_profiles)->>\'birth_year\')::int AS birth_year,sex,activity,meals,pregnancy,diet_preferences,nutrition_target FROM body_profiles WHERE user_id=$1) p) AS profile,
    (SELECT reset_at FROM user_data_resets WHERE user_id=$1) AS "resetAt",
    (SELECT conditions FROM shopping_preferences WHERE user_id=$1) AS preferences,
    (SELECT row_to_json(p) FROM (SELECT conditions,meal_ids AS "mealIds" FROM shopping_plans WHERE user_id=$1 ORDER BY id DESC LIMIT 1) p) AS plan`,[user.id])).rows[0]:null;

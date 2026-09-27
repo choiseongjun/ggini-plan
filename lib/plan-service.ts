@@ -6,7 +6,7 @@ import type {PlanProduct} from './shopping-plan';
 
 // 사용자 신체 정보·목표로 점수를 매긴 메뉴 전체. 추천 계산은 서버에서만 이 목록으로 한다 — 휴대폰에는 필요한 메뉴만 보낸다.
 export async function loadPlanCatalog(userId?: string, selectedIds?: string[]) {
- const [profileResult, catalog] = await Promise.all([userId ? getPool().query('SELECT height::float8,weight::float8,age,sex,activity,meals,pregnancy,diet_preferences,nutrition_target FROM body_profiles WHERE user_id=$1', [userId]) : Promise.resolve(null), planProducts()]);
+ const [profileResult, catalog] = await Promise.all([userId ? getPool().query('SELECT height::float8,weight::float8,age,(to_jsonb(body_profiles)->>\'birth_year\')::int AS birth_year,sex,activity,meals,pregnancy,diet_preferences,nutrition_target FROM body_profiles WHERE user_id=$1', [userId]) : Promise.resolve(null), planProducts()]);
  const row = profileResult?.rows[0];
  const diet = parseDiet(row?.diet_preferences) ?? defaultDiet;
  const selected = selectedIds === undefined ? catalog : pickProducts(catalog, selectedIds);

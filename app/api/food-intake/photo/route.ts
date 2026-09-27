@@ -1,5 +1,5 @@
 import {validEatenAt} from '../../../../lib/meal-time';
-import sharp from 'sharp';
+import {diaryPhoto} from '../../../../lib/diary-photo';
 import {NextRequest,NextResponse} from 'next/server';
 import {sessionUser,sameOrigin,authFailure} from '../../../../lib/auth';
 import {getPool} from '../../../../lib/db';
@@ -37,7 +37,7 @@ export async function POST(request:NextRequest){
   let analysis;
   try{analysis=await analyzeMealPhoto({images:photos.map(photo=>photo.bytes),dishName:reference?`${reference.name} (1회 제공량 ${reference.servingAmount}${reference.servingUnit})`:product?.name??'지정 메뉴 없음',ingredients:reference?[`1인분 기준 ${reference.servingAmount}${reference.servingUnit}`]:product?.recipe?product.recipe.ingredients.map(i=>i.label):product?[product.servingNote]:[]});}
   catch(e){return authFailure(e instanceof MealPhotoError?e.message:'사진을 분석하지 못했어요.',502);}
-  const diaryPhotos=analysis.match==='unclear'?[]:await Promise.all(photos.map(photo=>sharp(photo.bytes,{limitInputPixels:25_000_000}).rotate().resize({width:1024,height:1024,fit:'inside',withoutEnlargement:true}).jpeg({quality:80}).toBuffer()));
+  const diaryPhotos=analysis.match==='unclear'?[]:await Promise.all(photos.map(photo=>diaryPhoto(photo.bytes)));
   // Different food uses its own estimated nutrition, never the planned dish values.
   if(analysis.match!=='unclear'&&analysis.food&&(analysis.match==='different'||(!product&&!reference))){
    const saved=await logPhotoFood(user.id,id,analysis.food,diaryPhotos,eatenAt);

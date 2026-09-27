@@ -22,13 +22,13 @@ export function RecordEntry({userId,onLogin,onLogged}:{userId?:string;onLogin:()
  const {stats}=useIntakeStats(userId);
  return <section className="record-entry" aria-label="식사 기록하기">
   <div className="record-entry-heading">
-   <div><span className="record-entry-kicker"><RecordIcon kind="book"/>나의 식사 일기</span><h2>오늘 먹은 한 끼를<br/>차곡차곡 남겨요</h2></div>
+   <div><span className="record-entry-kicker"><RecordIcon kind="book"/>나의 식사 일기</span><h2>잘 먹은 순간을<br/>오늘도 하나씩</h2></div>
    <div className="record-entry-buddy" aria-hidden="true"><RiceBuddy/></div>
   </div>
-  <p className="record-entry-intro">추천과 다른 음식도 괜찮아요. 오늘 한 끼만 남겨보세요.<br/>오늘 먹은 칼로리·단백질을 확인하고, 기록이 쌓이면 주간 리포트에서 내 식사 패턴을 볼 수 있어요.</p>
+  <p className="record-entry-intro">근사한 한 상도, 가벼운 간식도 좋아요.<br/>사진 한 장으로 나만의 식사 이야기를 모아 보세요.</p>
   <div className="record-entry-actions">
    <button type="button" className="record-method record-method-photo" aria-label="사진으로 기록" aria-pressed={mode==='photo'} onClick={()=>choose('photo')}>
-    <span className="record-method-icon"><RecordIcon kind="photo"/></span><span className="record-method-copy"><strong>사진으로 기록</strong><span>음식 사진만 올리면 칼로리 분석</span></span><span className="record-method-check" aria-hidden="true">{mode==='photo'&&<svg viewBox="0 0 16 16" fill="none"><path d="m4 8 3 3 5-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}</span>
+    <span className="record-method-icon"><RecordIcon kind="photo"/></span><span className="record-method-copy"><strong>사진으로 기록</strong><span>한 장으로 남기는 식사 일기</span></span><span className="record-method-check" aria-hidden="true">{mode==='photo'&&<svg viewBox="0 0 16 16" fill="none"><path d="m4 8 3 3 5-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}</span>
    </button>
    <button type="button" className="record-method record-method-search" aria-label="음식 검색으로 기록" aria-pressed={mode==='search'} onClick={()=>choose('search')}>
     <span className="record-method-icon"><RecordIcon kind="search"/></span><span className="record-method-copy"><strong>음식 검색으로 기록</strong><span>음식 이름과 먹은 양만 선택</span></span><span className="record-method-check" aria-hidden="true">{mode==='search'&&<svg viewBox="0 0 16 16" fill="none"><path d="m4 8 3 3 5-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>}</span>
@@ -38,6 +38,6 @@ export function RecordEntry({userId,onLogin,onLogged}:{userId?:string;onLogin:()
   {!userId&&<small className="record-entry-login-note">로그인하면 내 식사 일기에 저장하고<br/>날짜별로 다시 볼 수 있어요.</small>}
   {userId&&mode==='photo'&&<MealPhotoLog dishName="오늘 먹은 음식" disabled={false} onManual={()=>setMode('search')} onFallback={()=>setMode('search')} onLogged={result=>{setDone(true);window.dispatchEvent(new CustomEvent('intake-logged'));onLogged(result.eatenAt?mealTimeLocal(result.eatenAt).slice(0,10):undefined);}}/>}
   {userId&&mode==='search'&&<SnackLog key={mode} initialOpen onLogged={(_name,eatenAt)=>{setDone(true);onLogged(eatenAt?mealTimeLocal(eatenAt).slice(0,10):undefined);}}/>}
-  {done&&<div className="record-entry-reward" role="status"><RiceBuddy stage={stats?.buddy?.stage??0}/><div><strong>한 끼 기록, 잘했어요!</strong><p>{stats?.buddy?`끼니와 함께한 ${stats.buddy.days}일${stats.buddy.next?` · ${stats.buddy.next.gift}까지 ${stats.buddy.remaining}일`:''}`:'아래 식사 일기에 남겼어요.'}</p><small>양을 잘못 골랐다면 아래 기록에서 수정해 주세요.</small></div></div>}
+  {done&&<div className="record-entry-reward" role="status"><RiceBuddy stage={stats?.buddy?.stage??0}/><div><strong>나를 챙긴 순간이 하나 더!</strong><p>{stats?.buddy?`끼니와 함께한 ${stats.buddy.days}일${stats.buddy.next?` · ${stats.buddy.next.gift}까지 ${stats.buddy.remaining}일`:''}`:'아래 식사 일기에 남겼어요.'}</p>{stats?.week&&<small>이번 주 {stats.week.days}일의 식사 이야기가 모였어요.</small>}</div></div>}
  </section>;
 }

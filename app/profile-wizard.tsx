@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef } from "react";
-import { activities, calorieEstimate, parseBodyProfile, type BodyProfile } from "../lib/body-profile";
+import { activities, calorieEstimate, parseBodyProfile, profileYear, type BodyProfile } from "../lib/body-profile";
 import { dietStyles, excludedFoods, excludedFoodGroups, type DietPreferences } from "../lib/meal-plan";
 import { healthFlags, type HealthFlag } from "../lib/today-context";
 import { bmi, bodyGoals, nutritionPlan, type BodyGoal } from "../lib/nutrition-plan";
@@ -11,7 +11,7 @@ import "./profile-wizard.css";
 
 export type WizardResult = { profile: BodyProfile; diet: DietPreferences; target: NutritionTarget | null; goal: BodyGoal | "" };
 export type CustomTarget = { mealCalories: number[]; proteinRatio: number; fatRatio: number };
-export type ProfileFields = { sex: string; age: string; height: string; weight: string; activity: string; meals: string; pregnancy: boolean; diet: DietPreferences; goal: BodyGoal | ""; custom: CustomTarget | null };
+export type ProfileFields = { sex: string; birthYear: string; height: string; weight: string; activity: string; meals: string; pregnancy: boolean; diet: DietPreferences; goal: BodyGoal | ""; custom: CustomTarget | null };
 
 const steps = [
   { title: "기본 정보", question: "나에 대해 알려주세요", icon: "face", tone: "peach" },
@@ -43,10 +43,10 @@ export function effectiveTarget(f: ProfileFields, plan: ReturnType<typeof nutrit
 const goalLook: Record<BodyGoal, { icon: ProfileIconName; tone: string }> = { lose: { icon: "leaf", tone: "mint" }, maintain: { icon: "balance", tone: "sky" }, muscle: { icon: "bolt", tone: "peach" } };
 
 export function readFields(f: ProfileFields) {
-  const age = Number(f.age), height = Number(f.height), weight = Number(f.weight);
-  const ageOk = Number.isInteger(age) && age >= 19 && age <= 78;
+  const birthYear = Number(f.birthYear), height = Number(f.height), weight = Number(f.weight);
+  const ageOk = Number.isInteger(birthYear) && birthYear >= profileYear()-78 && birthYear <= profileYear()-19;
   const heightOk = height >= 100 && height <= 250, weightOk = weight >= 30 && weight <= 350;
-  const profile = parseBodyProfile({ height, weight, age, sex: f.sex, activity: f.activity, meals: Number(f.meals), pregnancy: f.pregnancy });
+  const profile = parseBodyProfile({ height, weight, birthYear, sex: f.sex, activity: f.activity, meals: Number(f.meals), pregnancy: f.pregnancy });
   const plan = profile && f.goal ? nutritionPlan(profile, f.goal) : null;
   const body = heightOk && weightOk ? bmi({ height, weight }) : null;
   const target = f.pregnancy ? null : effectiveTarget(f, plan);
@@ -60,7 +60,7 @@ export function sectionStatus(f: ProfileFields, reviewed: Set<number>, saved: bo
   const { ageOk, heightOk, weightOk, body } = readFields(f);
   const done = [Boolean(f.sex) && ageOk, heightOk && weightOk, Boolean(f.activity), Boolean(f.goal) || f.pregnancy, saved || reviewed.has(4), Boolean(f.custom) || saved || reviewed.has(5), saved || reviewed.has(6)];
   const summary = [
-    done[0] ? `${f.sex === "female" ? "여성" : "남성"} · 만 ${f.age}세` : "성별·나이",
+    done[0] ? `${f.sex === "female" ? "여성" : "남성"} · ${f.birthYear}년생` : "성별·출생연도",
     done[1] ? `${f.height}cm · ${f.weight}kg${body ? ` · BMI ${body.value}` : ""}` : "키·체중·BMI",
     f.activity ? activities[f.activity as BodyProfile["activity"]].label : "평소 활동량",
     f.goal ? bodyGoals[f.goal].label : f.pregnancy ? "임신·수유 중" : "감량·유지·근육",
@@ -144,8 +144,9 @@ export function ProfileWizardModal({ step, direction, fields, userId, saving, er
         {current === 0 && <>
           <span className="wizard-label">계산식 기준 성별</span>
           <div className="wizard-options two">{([["female", "여성", "female", "peach"], ["male", "남성", "male", "sky"]] as const).map(([key, label, icon, tone]) => <button type="button" key={key} aria-pressed={fields.sex === key} onClick={() => onChange({ sex: key, pregnancy: key === "male" ? false : fields.pregnancy })}><span className={`option-icon tone-${tone}`}><ProfileIcon name={icon} size={26} /></span><strong>{label}</strong></button>)}</div>
-          <label className="wizard-field">만 나이<div><input type="number" inputMode="numeric" min={19} max={78} placeholder="28" value={fields.age} onChange={e => onChange({ age: e.target.value })} /><span>세</span></div></label>
-          {fields.age && !ageOk && <p className="wizard-warn">만 19~78세 성인 기준으로 계산해요.</p>}
+          <label className="wizard-field">출생연도<div><input type="number" inputMode="numeric" min={profileYear()-78} max={profileYear()-19} placeholder="1998" value={fields.birthYear} onChange={e => onChange({ birthYear: e.target.value })} /><span>년생</span></div></label>
+          <p className="wizard-hint">생일 없이 출생연도로 나이를 추정해 영양 계산에 사용해요. 기존 나이만 저장되어 있다면 출생연도를 입력해 주세요.</p>
+          {fields.birthYear && !ageOk && <p className="wizard-warn">출생연도 기준 19~78세 범위로 입력해 주세요.</p>}
         </>}
 
         {current === 1 && <>

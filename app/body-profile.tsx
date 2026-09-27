@@ -6,7 +6,7 @@ import { Checkbox } from "./components/checkbox";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { activities, calorieEstimate, parseBodyProfile, type BodyProfile } from "../lib/body-profile";
+import { activities, calorieEstimate, parseBodyProfile, profileYear, type BodyProfile } from "../lib/body-profile";
 import { defaultDiet, dietStyles, excludedFoods, excludedFoodGroups, parseDiet, type recommendMeals, type DietPreferences } from "../lib/meal-plan";
 import { healthFlags, type HealthFlag } from "../lib/today-context";
 import { parseNutritionTarget, type NutritionTarget } from "../lib/nutrition-target";
@@ -28,7 +28,7 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
   const formRef = useRef<HTMLFormElement>(null);
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
-  const [age, setAge] = useState("");
+  const [birthYear, setBirthYear] = useState("");
   const [sex, setSex] = useState("");
   const [activity, setActivity] = useState("");
   const [meals, setMeals] = useState("3");
@@ -71,10 +71,10 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
   const [direction, setDirection] = useState<1 | -1>(1);
   const [reviewed, setReviewed] = useState<Set<number>>(() => new Set());
   const [dirty, setDirty] = useState(false);
-  const fields: ProfileFields = { sex, age, height, weight, activity, meals, pregnancy, diet, goal, custom };
+  const fields: ProfileFields = { sex, birthYear, height, weight, activity, meals, pregnancy, diet, goal, custom };
   function changeFields(patch: Partial<ProfileFields>) {
     if (patch.sex !== undefined) setSex(patch.sex);
-    if (patch.age !== undefined) setAge(patch.age);
+    if (patch.birthYear !== undefined) setBirthYear(patch.birthYear);
     if (patch.height !== undefined) setHeight(patch.height);
     if (patch.weight !== undefined) setWeight(patch.weight);
     if (patch.activity !== undefined) setActivity(patch.activity);
@@ -103,7 +103,7 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
     if (dirty && userId && result) { if (await completeWizard(result)) setWizardStep(null); }
     else setWizardStep(null);
   }
-  const profile = parseBodyProfile({ height: Number(height), weight: Number(weight), age: Number(age), sex, activity, meals: Number(meals), pregnancy });
+  const profile = parseBodyProfile({ height: Number(height), weight: Number(weight), birthYear: Number(birthYear), sex, activity, meals: Number(meals), pregnancy });
   const ratioSum = Number(carbRatio) + Number(proteinRatio) + Number(fatRatio);
   const nutritionTarget = targetMode === "manual" ? parseNutritionTarget({ calories: Number(targetCalories), carbRatio: Number(carbRatio), proteinRatio: Number(proteinRatio), fatRatio: Number(fatRatio) }) : null;
   const targetError = targetMode === "manual" && !nutritionTarget;
@@ -117,7 +117,7 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
   }
   const calories = profile ? calorieEstimate(profile) : null;
   const hasInfo = savedProfile || Boolean(profile);
-  const { body: bodyInfo, target: activeTarget } = readFields({ sex, age, height, weight, activity, meals, pregnancy, diet, goal, custom });
+  const { body: bodyInfo, target: activeTarget } = readFields({ sex, birthYear, height, weight, activity, meals, pregnancy, diet, goal, custom });
   const shownTarget = activeTarget ?? nutritionTarget;
   const shownMeals = shownTarget ? shownTarget.mealCalories ?? splitCalories(shownTarget.calories, Number(meals)) : [];
   const number = (value: number | undefined) => value === undefined ? "—" : value.toLocaleString("ko-KR");
@@ -146,7 +146,7 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
       if (data.profile) {
         setSavedProfile(true);
         const p = data.profile;
-        setHeight(String(p.height)); setWeight(String(p.weight)); setAge(String(p.age)); setSex(p.sex);
+        setHeight(String(p.height)); setWeight(String(p.weight)); setBirthYear(p.birthYear?String(p.birthYear):''); setSex(p.sex);
         setDiet(parseDiet(data.diet) ?? defaultDiet);
         setActivity(p.activity); setMeals(String(p.meals)); setPregnancy(p.pregnancy);
       }
@@ -168,7 +168,7 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
   async function generate(nextVariant: number) {
     if (saving) return;
     setMessage(""); setError("");
-    if (!profile) { setError("모든 항목을 입력해 주세요. 만 19~78세의 성인 계산을 지원해요."); return; }
+    if (!profile) { setError("모든 항목을 입력해 주세요. 출생연도 기준 19~78세 범위로 계산해요."); return; }
     if (targetError) { setError("칼로리·탄단지 목표를 확인해 주세요. 칼로리는 800~6000kcal, 비율 합은 100%여야 해요."); return; }
     setSaving(true);
     try {
@@ -201,7 +201,7 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
   }
   async function completeWizard(result: WizardResult) {
     const {profile:p,diet:d,target,goal:g}=result;
-    setHeight(String(p.height));setWeight(String(p.weight));setAge(String(p.age));setSex(p.sex);setActivity(p.activity);setMeals(String(p.meals));setPregnancy(p.pregnancy);setDiet(d);
+    setHeight(String(p.height));setWeight(String(p.weight));setBirthYear(p.birthYear?String(p.birthYear):'');setSex(p.sex);setActivity(p.activity);setMeals(String(p.meals));setPregnancy(p.pregnancy);setDiet(d);
     setGoal(g);
     if(target){setTargetMode('manual');setTargetCalories(String(target.calories));setCarbRatio(String(target.carbRatio));setProteinRatio(String(target.proteinRatio));setFatRatio(String(target.fatRatio));}
     if(!userId){
@@ -249,7 +249,7 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
         <div className="body-input-grid">
           <label>키 <span>cm</span><input type="number" min="100" max="250" step="0.1" inputMode="decimal" placeholder="예: 165" required value={height} onChange={e => setHeight(e.target.value)}/></label>
           <label>현재 체중 <span>kg</span><input type="number" min="30" max="350" step="0.1" inputMode="decimal" placeholder="예: 60" required value={weight} onChange={e => setWeight(e.target.value)}/></label>
-          <label>만 나이 <span>세</span><input type="number" min="19" max="78" inputMode="numeric" placeholder="예: 28" required value={age} onChange={e => setAge(e.target.value)}/></label>
+          <label>출생연도 <span>년생</span><input type="number" min={profileYear()-78} max={profileYear()-19} inputMode="numeric" placeholder="예: 1998" required value={birthYear} onChange={e => setBirthYear(e.target.value)}/></label>
           <label>계산식 기준 성별<select required value={sex} onChange={e => setSex(e.target.value)}><option value="">선택해 주세요</option><option value="female">여성</option><option value="male">남성</option></select></label>
         </div>
         <label>평소 활동량<select required value={activity} onChange={e => setActivity(e.target.value)}><option value="">생활 패턴을 선택해 주세요</option>{Object.entries(activities).map(([key, value]) => <option value={key} key={key}>{value.label}</option>)}</select></label>

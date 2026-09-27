@@ -65,5 +65,5 @@ async function insertEntries(userId:string|number,requestId:string,rows:Entry[],
 
 // Only server-validated photo estimates reach this function. No price or stock deduction.
 export async function logPhotoFood(userId:string|number,id:string,food:import('./meal-photo-ai').PhotoFood,photos:Buffer[]=[],eatenAt?:unknown){
- return insertEntries(userId,id,[{id,productId:`photo:${id}`,name:`${food.name} (사진 추정)`,portions:1,calories:food.calories,protein:food.protein,carbs:food.carbs,fat:food.fat,sugar:null,sodium:null,cost:null}],photos,eatenAt);
+ return insertEntries(userId,id,[{id,productId:`photo:${id}`,name:`${food.name} (사진 추정)`,portions:1,calories:food.calories,protein:food.protein,carbs:food.carbs,fat:food.fat,sugar:food.sugar??null,sodium:food.sodium??null,cost:null}],photos,eatenAt);
 }

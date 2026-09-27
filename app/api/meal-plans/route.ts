@@ -43,12 +43,12 @@ export async function POST(request: NextRequest) {
     const client = await getPool().connect();
     try {
       await client.query("BEGIN");
-      await client.query(`INSERT INTO body_profiles (user_id,height,weight,age,sex,activity,meals,pregnancy,diet_preferences,nutrition_target)
-        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) ON CONFLICT (user_id) DO UPDATE SET
-        height=EXCLUDED.height,weight=EXCLUDED.weight,age=EXCLUDED.age,sex=EXCLUDED.sex,
+      await client.query(`INSERT INTO body_profiles (user_id,height,weight,age,sex,activity,meals,pregnancy,diet_preferences,nutrition_target,birth_year)
+        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) ON CONFLICT (user_id) DO UPDATE SET
+        height=EXCLUDED.height,weight=EXCLUDED.weight,age=EXCLUDED.age,sex=EXCLUDED.sex,birth_year=COALESCE(EXCLUDED.birth_year,body_profiles.birth_year),
         activity=EXCLUDED.activity,meals=EXCLUDED.meals,pregnancy=EXCLUDED.pregnancy,
         diet_preferences=EXCLUDED.diet_preferences,nutrition_target=EXCLUDED.nutrition_target,updated_at=NOW()`,
-        [user.id,profile.height,profile.weight,profile.age,profile.sex,profile.activity,profile.meals,profile.pregnancy,JSON.stringify(diet),JSON.stringify(nutritionTarget??{})]);
+        [user.id,profile.height,profile.weight,profile.age,profile.sex,profile.activity,profile.meals,profile.pregnancy,JSON.stringify(diet),JSON.stringify(nutritionTarget??{}),profile.birthYear??null]);
       const result = await client.query(`INSERT INTO meal_plans (user_id,profile_snapshot,diet_snapshot,nutrition_target_snapshot,recommendation,variant)
         VALUES ($1,$2,$3,$4,$5,$6) RETURNING id::text,created_at AS "createdAt"`,
         [user.id,JSON.stringify(profile),JSON.stringify(diet),nutritionTarget?JSON.stringify(nutritionTarget):null,JSON.stringify(recommendation),variant]);

@@ -1,0 +1,1 @@
+ALTER TABLE body_profiles ADD COLUMN IF NOT EXISTS birth_year INTEGER CHECK (birth_year BETWEEN 1900 AND 2100);

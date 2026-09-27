@@ -16,7 +16,7 @@ export async function GET(request:NextRequest){
   const user=await sessionUser(request);if(!user)return authFailure('로그인하면 기록 현황을 볼 수 있어요.',401);
   const [logs,profile,growth]=await Promise.all([
    getPool().query(`SELECT product_id AS "productId",product_name AS name,calories::float8,protein::float8,cost::float8,COALESCE(eaten_at,created_at) AS "eatenAt",to_char(COALESCE(eaten_at,created_at) AT TIME ZONE 'Asia/Seoul','YYYY-MM-DD') AS date FROM food_intake_logs WHERE user_id=$1 AND undone_at IS NULL AND COALESCE(eaten_at,created_at)>=NOW()-INTERVAL '400 days'`,[user.id]),
-   getPool().query('SELECT height::float8,weight::float8,age,sex,activity,meals,pregnancy,nutrition_target FROM body_profiles WHERE user_id=$1',[user.id]),
+   getPool().query('SELECT height::float8,weight::float8,age,(to_jsonb(body_profiles)->>\'birth_year\')::int AS birth_year,sex,activity,meals,pregnancy,nutrition_target FROM body_profiles WHERE user_id=$1',[user.id]),
    getPool().query(`SELECT COUNT(DISTINCT (COALESCE(eaten_at,created_at) AT TIME ZONE 'Asia/Seoul')::date)::int AS days FROM food_intake_logs WHERE user_id=$1 AND undone_at IS NULL AND left(product_id,length($2))<>$2`,[user.id,EXTRA_PREFIX]),
   ]);
   const row=profile.rows[0],body=parseBodyProfile(row),target=parseNutritionTarget(row?.nutrition_target);

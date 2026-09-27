@@ -14,7 +14,7 @@ const schema={
   portion:{type:'number'},
   extras:{type:'array',items:{type:'string',enum:extraKeys}},
   note:{type:'string'},
-  food:{type:['object','null'],additionalProperties:false,properties:{name:{type:'string'},calories:{type:'number'},protein:{type:'number'},carbs:{type:'number'},fat:{type:'number'}},required:['name','calories','protein','carbs','fat']},
+  food:{type:['object','null'],additionalProperties:false,properties:{name:{type:'string'},calories:{type:'number'},protein:{type:'number'},carbs:{type:'number'},fat:{type:'number'},sugar:{type:'number'},sodium:{type:'number'}},required:['name','calories','protein','carbs','fat','sugar','sodium']},
  },
  required:['match','portion','extras','note','food'],
 };
@@ -26,7 +26,7 @@ Other foods in the photos that match an allowed extras key go into extras; foods
 portion: how much of ONE standard 1인분 of the planned dish the photo shows being eaten, as a multiple between 0.25 and 3 (1 = one normal serving). If the plate looks finished, judge from the vessel and leftovers. If unsure, use 1.
 extras: only foods clearly visible in addition to the planned dish, chosen from the allowed keys (rice-half = 반 공기 of rice, rice-full = 한 공기, egg-fried, kimchi, gim, fruit, snack, soda, beer, soju). Do not list rice if the planned dish already includes rice (e.g. 비빔밥, 볶음밥, 덮밥, 국밥). Empty array if none.
 note: one short Korean sentence explaining the judgement (portion and visible sides). No health advice.
-If no planned dish is given OR the photographed food differs, identify the actual food and estimate total calories (kcal), protein/carbs/fat (g) for the amount eaten in ALL photos together. Return this in food with a short Korean name including sides. Do not count repeated views twice. For this path set match="different", portion=1, extras=[] and explain in Korean that nutrition is a photo estimate. If food cannot be identified, set match="unclear" and food=null; never invent nutrition for nonfood or unreadable photos. For the matching planned dish, food=null.`;
+If no planned dish is given OR the photographed food differs, identify the actual food and estimate total calories (kcal), protein/carbs/fat/total sugar (g) and sodium (mg) for the amount eaten in ALL photos together. Estimate total sugar and sodium using the identified food, usual ingredients, sauces and visible portion. These are approximate recipe-based estimates, not measurements of invisible ingredients; do not omit them just because they cannot be seen. Sugar is part of total carbohydrates and must not exceed carbs. Return this in food with a short Korean name including sides. Do not count repeated views twice. For this path set match="different", portion=1, extras=[] and explain in Korean that nutrition is a photo estimate. If food cannot be identified, set match="unclear" and food=null; never invent nutrition for nonfood or unreadable photos. For the matching planned dish, food=null.`;
 
 export const MAX_MEAL_PHOTOS=4;
 
@@ -57,13 +57,14 @@ export async function analyzeMealPhoto(input:{images:Buffer[];dishName:string;in
  return {match,portion,extras,note,model,food};
 }
 
-export type PhotoFood={name:string;calories:number;protein:number;carbs:number;fat:number};
+export type PhotoFood={name:string;calories:number;protein:number;carbs:number;fat:number;sugar?:number;sodium?:number};
 export function parsePhotoFood(value:unknown):PhotoFood|null{
  if(!value||typeof value!=='object')return null;
  const v=value as Record<string,unknown>;
  if(typeof v.name!=='string'||!v.name.trim()||v.name.length>120)return null;
- for(const [key,max] of [['calories',10000],['protein',1000],['carbs',2000],['fat',1000]] as const){
+ for(const [key,max] of [['calories',10000],['protein',1000],['carbs',2000],['fat',1000],['sugar',2000],['sodium',50000]] as const){
   if(typeof v[key]!=='number'||!Number.isFinite(v[key])||v[key]<0||v[key]>max)return null;
  }
- return {name:v.name.trim(),calories:Math.round(v.calories as number),protein:Math.round(v.protein as number),carbs:Math.round(v.carbs as number),fat:Math.round(v.fat as number)};
+ if((v.sugar as number)>(v.carbs as number))return null;
+ return {name:v.name.trim(),calories:Math.round(v.calories as number),protein:Math.round(v.protein as number),carbs:Math.round(v.carbs as number),fat:Math.round(v.fat as number),sugar:Math.round((v.sugar as number)*10)/10,sodium:Math.round(v.sodium as number)};
 }

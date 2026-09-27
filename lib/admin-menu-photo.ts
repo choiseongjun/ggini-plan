@@ -20,5 +20,9 @@ export async function chooseMenuPhoto(name: string, previous: string | null) {
  if (!response.ok) throw new Error('AI 사진 검수에 실패했어요. 잠시 후 다시 시도해 주세요.');
  const data=await response.json();
  const raw=(data.output??[]).filter((v:{type:string})=>v.type==='message').flatMap((v:{content: {type:string;text?:string}[]})=>v.content??[]).filter((v:{type:string})=>v.type==='output_text').map((v:{text:string})=>v.text).join('');
- return parseMenuPhotoChoice(raw,urls);
+ const choice=parseMenuPhotoChoice(raw,urls);
+ // Keep the exact reviewed image, but save its original rather than a tiny search thumbnail.
+ const original=candidates.find(c=>c.thumbnail===choice.image)?.link;
+ if(choice.image&&original){try{const url=new URL(original);if(url.protocol==='https:')return {...choice,image:url.href};}catch{/* retain reviewed thumbnail */}}
+ return choice;
 }

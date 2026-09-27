@@ -29,7 +29,7 @@ export async function POST(request:NextRequest){
    if(!row)return authFailure('공유 식단을 찾을 수 없어요.',404);
    const shared=row.snapshot as SharedPlan;
    const [profile,preferences,progress,catalog]=await Promise.all([
-    getPool().query('SELECT height::float8,weight::float8,age,sex,activity,meals,pregnancy,diet_preferences FROM body_profiles WHERE user_id=$1',[user.id]),
+    getPool().query('SELECT height::float8,weight::float8,age,(to_jsonb(body_profiles)->>\'birth_year\')::int AS birth_year,sex,activity,meals,pregnancy,diet_preferences FROM body_profiles WHERE user_id=$1',[user.id]),
     getPool().query('SELECT conditions FROM shopping_preferences WHERE user_id=$1',[user.id]),
     getPool().query("SELECT stock FROM shopping_progress WHERE user_id=$1 AND scope='products'",[user.id]),planProducts(),
    ]);

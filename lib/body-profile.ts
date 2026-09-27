@@ -5,17 +5,21 @@ export const activities = {
   active: { label: "활동이 많아요 · 운동 주 6~7회", factor: 1.725 },
 } as const;
 
-export type BodyProfile = { height: number; weight: number; age: number; sex: "female" | "male"; activity: keyof typeof activities; meals: number; pregnancy: boolean };
+export type BodyProfile = { height: number; weight: number; age: number; birthYear?:number; sex: "female" | "male"; activity: keyof typeof activities; meals: number; pregnancy: boolean };
+export const profileYear=()=>Number(new Date().toLocaleDateString('sv-SE',{timeZone:'Asia/Seoul'}).slice(0,4));
 
 export function parseBodyProfile(value: unknown): BodyProfile | null {
   if (!value || typeof value !== "object") return null;
   const p = value as Record<string, unknown>;
+  const birthYear=p.birthYear??p.birth_year;
+  if(birthYear!==undefined&&birthYear!==null&&(typeof birthYear!=='number'||!Number.isInteger(birthYear)||birthYear<1900||birthYear>profileYear()))return null;
+  const age=typeof birthYear==='number'?profileYear()-birthYear:p.age;
   if (typeof p.height !== "number" || !Number.isFinite(p.height) || p.height < 100 || p.height > 250 ||
       typeof p.weight !== "number" || !Number.isFinite(p.weight) || p.weight < 30 || p.weight > 350 ||
-      typeof p.age !== "number" || !Number.isInteger(p.age) || p.age < 19 || p.age > 78 ||
+      typeof age !== "number" || !Number.isInteger(age) || age < 19 || age > 78 ||
       (p.sex !== "female" && p.sex !== "male") || typeof p.activity !== "string" || !Object.hasOwn(activities, p.activity) ||
       typeof p.meals !== "number" || !Number.isInteger(p.meals) || p.meals < 1 || p.meals > 6 || typeof p.pregnancy !== "boolean") return null;
-  return { height: p.height, weight: p.weight, age: p.age, sex: p.sex, activity: p.activity as BodyProfile["activity"], meals: p.meals, pregnancy: p.pregnancy };
+  return { height: p.height, weight: p.weight, age, ...(typeof birthYear==='number'?{birthYear}:{}),sex: p.sex, activity: p.activity as BodyProfile["activity"], meals: p.meals, pregnancy: p.pregnancy };
 }
 
 export function calorieEstimate(profile: BodyProfile) {
