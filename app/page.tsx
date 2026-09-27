@@ -1,5 +1,6 @@
 "use client";
 
+import {scrollToAppTop} from '../lib/scroll-to-top';
 import {takeProfileIntent,clearProfileIntent} from '../lib/profile-intent';
 import './home-readability.css';
 import {pendingRecordMode,clearRecordMode} from '../lib/record-intent';
@@ -65,7 +66,7 @@ export default function Home() {
     window.addEventListener('storage',reset);return()=>window.removeEventListener('storage',reset);
   },[authUser?.id]);
   // 넓은 화면은 안쪽 영역, 모바일은 페이지 전체가 스크롤된다 — 탭을 바꾸면 둘 다 맨 위로.
-  useEffect(()=>{contentRef.current?.scrollTo({top:0});window.scrollTo({top:0});},[tab]);
+  useEffect(()=>{scrollToAppTop(contentRef.current);const frame=requestAnimationFrame(()=>scrollToAppTop(contentRef.current));return()=>cancelAnimationFrame(frame);},[pathname]);
   const [dashboard,setDashboard]=useState<DashboardData|null>(null);
   const [catalogError,setCatalogError]=useState("");
   const [catalogLoaded,setCatalogLoaded]=useState(false);

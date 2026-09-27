@@ -1,4 +1,5 @@
 'use client';
+import {scrollToAppTop} from '../lib/scroll-to-top';
 import {HomeSetupDialog} from './home-setup-dialog';
 import {HomeWelcome} from './home-welcome';
 import {sideCountFor} from '../lib/shopping-plan';
@@ -111,7 +112,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   if(!resultFocus)return;
   const heading=plannerRef.current?.querySelector<HTMLElement>('[data-recommended-menu-heading]');
   heading?.focus({preventScroll:true});
-  heading?.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+  scrollToAppTop(plannerRef.current);
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   const animations=Array.from(plannerRef.current?.querySelectorAll<HTMLElement>('.today-menu')??[])
    .map(card=>card.animate([{opacity:0.4,transform:'translateY(6px)'},{opacity:1,transform:'translateY(0)'}],{duration:220,easing:'ease-out'}));
@@ -225,10 +226,11 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
  }
  function returnToSetup(){
   setShowSetup(false);setIds([]);setBuilding(false);setOverviewOpen(false);setError('');setMessage('');remember(conditions,[]);
-  requestAnimationFrame(()=>{const target=startRef.current??setupRef.current;target?.focus({preventScroll:true});target?.scrollIntoView({behavior:'instant',block:'start'});});
+  requestAnimationFrame(()=>{const target=startRef.current??setupRef.current;target?.focus({preventScroll:true});scrollToAppTop(plannerRef.current);});
  }
  function update(patch:Partial<PlanConditions>){if(patch.budget!==undefined)setAutomaticBudget(false);const c={...conditions,...patch};if(c.slots&&c.days){if(c.mealCountMode)c.days=Math.ceil(c.meals/c.slots.length);else c.meals=c.slots.length*c.days;}setConditions(c);setIds([]);setMessage('');setError('');if(mode!=='settings')remember(c,[]);}
  async function generate(input=conditions){
+  scrollToAppTop(plannerRef.current);
   setMessage('');setError('');if(!progress.ready){setError('구매 상태를 먼저 불러와 주세요.');return;}
   // 예산 활용 방식은 예산을 입력받는 대만판에서만 고른다. 한국판은 세 모드 모두 같은 기준(balanced)으로 계산한다.
   const c=parseConditions({...input,...(!locale.isTaiwan?{cookingEffort:input.cookingEffort??'easy'}:{}),budgetMode:locale.isTaiwan?input.budgetMode:'balanced',startDate:locale.today(),supply:conditions.supply});
