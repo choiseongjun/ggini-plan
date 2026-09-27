@@ -9,8 +9,8 @@ function ComboDialog({label,onClose,children}:{label:string;onClose:()=>void;chi
  return <dialog ref={ref} className="combo-dialog" aria-label={label} onCancel={onClose} onClick={e=>{if(e.target===e.currentTarget)onClose();}}>{children}</dialog>;
 }
 
-export function HomeMealChoice(){
- const [open,setOpen]=useState(false);
+export function HomeMealChoice({initialOpen=false}:{initialOpen?:boolean}){
+ const [open,setOpen]=useState(initialOpen);
  const [brand,setBrand]=useState('CU');
  const [budget,setBudget]=useState(6000);
  const [offset,setOffset]=useState(0);
@@ -35,7 +35,7 @@ export function HomeMealChoice(){
  function reset(){setOffset(0);setCustom(null);setReplacement(null);setRecorded(false);}
  function savePreview(){try{const key='kkini-convenience-preview-records';const previous=JSON.parse(localStorage.getItem(key)||'[]');localStorage.setItem(key,JSON.stringify([...(Array.isArray(previous)?previous:[]),{at:new Date().toISOString(),slot,brand,items:picked.map(p=>({id:p.id,name:p.name,price:p.price})),total}]));setRecorded(true);setRecordOpen(false);}catch{setRecordError('저장하지 못했어요. 브라우저 저장 공간을 확인해 주세요.');}}
  return <section className="meal-choice meal-fallback" aria-label="요리가 어려운 날의 대안">
-  <button type="button" className="meal-fallback-toggle" aria-expanded={open} onClick={()=>setOpen(value=>!value)}><span>오늘은 요리하기 어려워요</span><span aria-hidden="true">{open?'−':'＋'}</span></button>
+  {!initialOpen&&<button type="button" className="meal-fallback-toggle" aria-expanded={open} onClick={()=>setOpen(value=>!value)}><span>편의점 한 끼 찾기</span><span aria-hidden="true">{open?'−':'＋'}</span></button>}
   {open&&<div className="home-convenience"><div className="home-convenience-title"><h2>그럼 간편하게 챙겨요</h2><span>편의점과 한 끼 예산만 골라주세요.</span></div>
    <div className="home-store-controls"><div aria-label="편의점 선택">{['CU','GS25','세븐일레븐'].map(b=><button key={b} type="button" aria-pressed={brand===b} onClick={()=>{setBrand(b);reset();}}>{b}</button>)}</div><select aria-label="한 끼 총 예산" value={budget} onChange={e=>{setBudget(Number(e.target.value));reset();}}>{[4000,6000,8000,10000].map(n=><option key={n} value={n}>{n.toLocaleString()}원 이하</option>)}</select></div>
    {picked.length>0?<article className="meal-combo"><div className="meal-combo-heading"><span>{brand} · 오늘의 한 끼</span><strong>합계 {total.toLocaleString()}원</strong></div><h3>{picked.length===1?'도시락·식사 메뉴 하나로 간편하게':'메인에 곁들임을 더했어요'}</h3><p className="combo-reason">{picked.length===1?'추가 상품 없이 예산 안에서 골랐어요.':'같은 편의점에서 살 수 있는 메인과 샐러드 조합이에요.'}</p><div className="combo-items">{picked.map((p,i)=><div className="combo-item" key={p.id}><img src={p.image!} alt={p.name} onError={()=>{setFailedImages(ids=>[...ids,p.id]);reset();}}/><div><small>{picked.length===1?'한 끼 메뉴':i===0?'메인':'곁들임'} · 1개</small><h4>{p.name.replace(/^(?:도|면|샌|샐|그린|삼립|롯데)\)/,'')}</h4><strong>{p.price!.toLocaleString()}원</strong><a href={p.url} target="_blank" rel="noopener noreferrer">상품 출처 ↗</a></div><button type="button" onClick={()=>setReplacement(i)}>교체</button></div>)}</div><div className="combo-actions"><button type="button" disabled={combinations.length<2} onClick={()=>{setOffset(n=>n+1);setCustom(null);setRecorded(false);}}>다른 조합 ↻</button><button type="button" onClick={()=>{setRecordError('');setRecordOpen(true);}}>{recorded?'기록 확인하기':'이렇게 먹었어요'}</button></div>{recorded&&<p role="status">체험 기록을 이 브라우저에 저장했어요.</p>}</article>:<p className="combo-empty">이 편의점에서 예산에 맞는 한 끼 구성을 아직 찾지 못했어요. 편의점이나 예산을 바꿔주세요.</p>}

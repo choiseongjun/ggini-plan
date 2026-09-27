@@ -13,9 +13,11 @@ import {INTAKE_LOGGED_EVENT} from './record-progress';
 import './meal-record-accordion.css';
 
 const number=(value:number)=>Math.round(value*10)/10;
-export function MealRecordAccordion({intake,userId,onLogin,initialOpen=false}:{intake:ReturnType<typeof useFoodIntake>;userId?:string;onLogin:()=>void;initialOpen?:boolean}){
+export function MealRecordAccordion({intake,userId,onLogin,initialOpen=false,expanded,onExpandedChange}:{intake:ReturnType<typeof useFoodIntake>;userId?:string;onLogin:()=>void;initialOpen?:boolean;expanded?:boolean;onExpandedChange?:(value:boolean)=>void}){
  const router=useRouter();
- const [open,setOpen]=useState(initialOpen);
+ const [localOpen,setLocalOpen]=useState(initialOpen);
+ const open=expanded??localOpen;
+ const setOpen=(value:boolean)=>{setLocalOpen(value);onExpandedChange?.(value);};
  const [method,setMethod]=useState<'search'|null>(null);
  const [photo,setPhoto]=useState<Extract<PhotoLogResult,{logged:true}>|null>(null);
  const [savedDate,setSavedDate]=useState('');
@@ -28,7 +30,7 @@ export function MealRecordAccordion({intake,userId,onLogin,initialOpen=false}:{i
   setPhoto(null);setSavedName('');
  }
  return <details id="meal-record-entry" tabIndex={-1} className="meal-record-accordion" open={open}>
-  <summary onClick={event=>{event.preventDefault();setOpen(value=>!value);}}>
+  <summary onClick={event=>{event.preventDefault();setOpen(!open);}}>
    <span className="meal-record-title">먹은 음식 기록하기 <span className="meal-record-chevron" aria-hidden="true">⌄</span></span>
    <span className="meal-record-permission">사진 또는 음식 검색</span>
   </summary>

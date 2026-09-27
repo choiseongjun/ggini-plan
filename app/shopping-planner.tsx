@@ -1,5 +1,6 @@
 'use client';
-import {HomeMealChoice} from './home-meal-choice';
+import {HomeSetupDialog} from './home-setup-dialog';
+import {HomeWelcome} from './home-welcome';
 import {sideCountFor} from '../lib/shopping-plan';
 import {MealCompositionPicker} from './meal-composition-picker';
 import {rememberProfileIntent} from '../lib/profile-intent';
@@ -44,8 +45,6 @@ import {MealSourceBadge,RecipeProductPreview} from './meal-source';
 import { MAX_PLAN_DAYS, mealFamily, swapReasons, type SwapReason, basket, purchaseBasket, basketTotal, validMealIds, slotCandidates, mealSchedule, slotLabels, initialConditions, initialHomeConditions, parseConditions,  type MealSlot, type PlanConditions, type PlanProduct } from '../lib/shopping-plan';
 import './shopping-planner.css';
 import './planner-onboarding.css';
-import {MobileBuddy} from './mobile-buddy';
-import {HomeRecordBenefit} from './home-record-benefit';
 import {shoppingBudgetGuide} from '../lib/shopping-budget';
 import {excludedFoods,excludedFoodGroups,type ExcludedFood} from '../lib/excluded-foods';
 import {resolveShoppingExclusions} from '../lib/shopping-exclusions';
@@ -347,6 +346,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   // eslint-disable-next-line react-hooks/exhaustive-deps
  },[loading,progress.ready,catalogReady,userId,mode,locale.isTaiwan]);
 
+ const [quickSetup,setQuickSetup]=useState(false);
  const simpleEffortPicker=(conditions.slots??['dinner']).some(slot=>sideCountFor(conditions,slot)===0)&&<details className="meal-composition-effort"><summary>간단하게 고른 끼니 · {cookingEfforts[conditions.cookingEffort??'easy'].label}</summary><CookingEffortPicker value={conditions.cookingEffort} onChange={cookingEffort=>updatePreferences({cookingEffort})} disabled={loading||busy}/></details>;
  const compositionPicker=<MealCompositionPicker conditions={conditions} disabled={loading||busy} onChange={mealSideCounts=>updatePreferences({mealSideCounts})}/>;
  return locale.render(<PlanEngineContext.Provider value={engine}><section onClickCapture={e=>{if(locale.isTaiwan)return;const a=(e.target as Element).closest('a');if(a&&products.some(p=>p.productUrl===a.href||p.recipe?.ingredients.some(i=>i.product.productUrl===a.href)))trackPlanner('seller');}} ref={plannerRef} id={mode==='settings'?'shopping-settings':undefined} className={`shopping-planner${mode==='plan'?' home-planner':''}${!ids.length?' planner-empty':''}`} aria-labelledby="planner-title">
@@ -361,7 +361,6 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   </div>}
   {mode==='plan'&&ids.length>0&&building&&!ids.every(Boolean)&&<PlanBuilder ids={ids} products={products} conditions={conditions} onChoose={chooseMeal} disabled={busy||progress.busy}/>}
   {mode==='plan'&&ids.length>0&&(!building||ids.every(Boolean))&&<TodayMeals onAllMeals={()=>void generate({...conditions,slots:['breakfast','lunch','dinner'],mealCountMode:false,meals:(conditions.days??7)*3})} onNextPlan={()=>void generate(conditions)} nextPlanBusy={busy||loading||progress.busy||!progress.ready} focusMeal={pushMeal?(()=>{const s=mealSchedule(conditions),today=locale.today();const i=ids.findIndex((id,index)=>id===pushMeal&&!!s[index]&&planDate(conditions.startDate??today,s[index].day)===today);return i<0?null:i;})():null} overviewOpen={overviewOpen} onOverviewOpen={setOverviewOpen} nutritionReference={personalization?.nutritionReference??null} shoppingTotal={purchases.reduce((sum,row)=>sum+row.cost,0)} intake={intake} userId={userId} onLogin={onLogin} ids={ids} products={products} conditions={conditions} startDate={conditions.startDate??locale.today()} onStartDate={date=>{const c=parseConditions({...conditions,startDate:date});if(c){setConditions(c);remember(c,ids);}}} onSwap={swap} onChoose={chooseMeal} progress={progress} perMealCalories={personalization?.perMealCalories??null} dailyCalories={personalization?.blocked?null:personalization?.dailyCalories??null} dashboard={dashboard}/>}
-  {mode==='plan'&&!locale.isTaiwan&&ids.length>0&&idsComplete&&<HomeRecordBenefit compact/>}
   {mode==='plan'&&ids.length>0&&idsComplete&&personalRecommendation}
   {mode==='plan'&&!locale.isTaiwan&&ids.length>0&&idsComplete&&<section className={adoptionStyles.card} aria-label="선택한 식단 저장">
    <div><strong>{ids.length}끼 식단 · 약 {won(total)}</strong><small>{conditions.people??1}명 전체 예상 재료비 · 기본 양념 제외</small></div>
@@ -375,20 +374,17 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    <button type="button" className="primary-button" disabled={busy||loading||progress.busy||!progress.ready} onClick={()=>void generate(conditions)}>다른 식단 추천받기</button>
    <button type="button" className="planner-restart" disabled={busy||progress.busy} onClick={returnToSetup}>추천 조건 바꾸기</button>
   </div>}
-  {mode==='plan'&&!ids.length&&!locale.isTaiwan&&<HomeMealChoice/>}
   {mode==='plan'&&!ids.length&&!locale.isTaiwan&&!showSetup&&<section ref={startRef} tabIndex={-1} className="home-start" aria-labelledby="planner-title">
-   <MobileBuddy titleId="planner-title"/>
-   {mealTimesPicker}
-   {compositionPicker}
-   {simpleEffortPicker}
+   <HomeWelcome onRecommend={()=>setQuickSetup(true)}/>
+   <HomeSetupDialog key={String(quickSetup)} open={quickSetup} onClose={()=>setQuickSetup(false)} meals={mealTimesPicker} cooking={<CookingEffortPicker value={conditions.cookingEffort} onChange={cookingEffort=>updatePreferences({cookingEffort})} disabled={loading||busy}/>} >
+   <details className="home-extra-settings"><summary>더 맞춰볼까요? <span>식사 구성 · 취향</span></summary>{compositionPicker}<button type="button" className="home-start-custom" disabled={loading||busy} onClick={()=>{setQuickSetup(false);setShowSetup(true);}}>취향·못 먹는 재료 설정 →</button>{personalRecommendation}</details>
 
    <div className="home-start-actions">
-   <button type="button" className="primary-button home-start-cta" disabled={loading||busy||!progress.ready||!catalogReady} onClick={()=>void generate()}>{loading?'준비 중…':busy?'식단을 짜고 있어요…':'내 식단 추천받기'}</button>
-   <button type="button" className="home-start-custom" disabled={loading||busy} onClick={()=>setShowSetup(true)}>취향·못 먹는 재료 설정</button>
-   {personalRecommendation}
+   <button type="button" className="primary-button home-start-cta" disabled={loading||busy||!progress.ready||!catalogReady} onClick={()=>{setQuickSetup(false);void generate();}}>{loading?'준비 중…':busy?'식단을 짜고 있어요…':'내 식단 추천받기'}</button>
    {!locale.isTaiwan&&<Link className="home-tutorial-link" href="/how-to">처음이라면? 사용법 살펴보기</Link>}
    </div>
-   <HomeRecordBenefit/>
+   </HomeSetupDialog>
+
   </section>}
   {(mode!=='plan'||!ids.length)&&(mode!=='plan'||locale.isTaiwan||showSetup)&&<details ref={setupRef} tabIndex={-1} className="planner-controls" open={mode==='settings'||mode==='plan'}><summary>{ids.length?'조건 바꿔서 새로 추천받기':locale.isTaiwan?'내 예산으로 식단 준비하기':'조건 정해서 추천받기'}</summary>
   {mode==='plan'&&!locale.isTaiwan&&<button type="button" className="planner-setup-back" onClick={()=>setShowSetup(false)}>처음으로 돌아가기</button>}
@@ -485,7 +481,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    <button type="button" className="primary-button" disabled={busy||total>conditions.budget} onClick={save}>{busy?'저장 중…':userId?'이 식단 저장하기':'로그인하고 이 식단 저장하기'}</button>
   </details>}
   {mode==='cart'&&!ids.length&&<ShoppingProgress guest={locale.isTaiwan||!userId} progress={progress} items={[]}/>}
-  {!locale.isTaiwan&&mode!=='settings'&&!!ids.length&&idsComplete&&<RecommendationFeedback key={JSON.stringify([ids,conditions.budget,conditions.meals])} conditions={conditions} mealNames={ids.map(id=>products.find(p=>p.id===id)?.name??'확인되지 않은 메뉴')} page={mode==='cart'?'/cart':'/'}/>}
+  {!locale.isTaiwan&&mode!=='settings'&&!!ids.length&&idsComplete&&<details className="home-secondary"><summary>추천에 의견 남기기</summary><RecommendationFeedback key={JSON.stringify([ids,conditions.budget,conditions.meals])} conditions={conditions} mealNames={ids.map(id=>products.find(p=>p.id===id)?.name??'확인되지 않은 메뉴')} page={mode==='cart'?'/cart':'/'}/></details>}
   {mode==='cart'&&!ids.length&&<p><Link href="/">홈에서 이번에 살 것 추천받기 →</Link></p>}
   {mode==='settings'&&<div className="profile-shopping-links"><Link href="/">내 설정으로 추천받기 →</Link><Link href="/cart">이번 장보기 목록 →</Link>{!userId&&<small>로그인하면 설정을 계정에 저장할 수 있어요.</small>}</div>}
 
