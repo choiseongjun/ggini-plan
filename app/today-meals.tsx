@@ -1,11 +1,11 @@
 'use client';
+import {MealActionFlow} from './meal-action-flow';
 import {MealTableIllustration} from './meal-composition-picker';
 import {trackAnalytics} from '../lib/analytics';
 import type {DailyNutritionReference} from '../lib/daily-nutrition-reference';
 import {usePlannerLocale} from './planner-locale';
 import {MealPlanOverview} from './meal-plan-overview';
 import {MealAlternatives} from './meal-alternatives';
-import {MealComparison} from './meal-comparison';
 import {MenuPickerModal} from './menu-picker-modal';
 import {MealRecordAccordion} from './meal-record-accordion';
 import {SideDishSuggest} from './side-dish-suggest';
@@ -21,7 +21,7 @@ import {RecipeVideos} from './recipe-videos';
 import {NearbyRestaurants} from './nearby-restaurants';
 import {availablePortions,servingNutrition} from '../lib/food-intake';
 import {ProductNutrition,DailyRecommendationNutrition} from './recommendation-nutrition';
-import {purchaseBasket,swapReasons,visibleSwapReasons,type SwapReason,slotLabels,type PlanProduct,type PlanConditions,type MealSlot,mealSchedule} from '../lib/shopping-plan';
+import {purchaseBasket,type SwapReason,slotLabels,type PlanProduct,type PlanConditions,type MealSlot,mealSchedule} from '../lib/shopping-plan';
 import {planDay,planDate,recordedForSlot} from '../lib/daily-plan';
 import {addDays,type DashboardData} from '../lib/dashboard';
 import type {useShoppingProgress} from './shopping-progress';
@@ -97,25 +97,15 @@ export function TodayMeals({onAllMeals,focusMeal=null,overviewOpen,onOverviewOpe
      {!!p.recipe?.sides?.length&&<div className="meal-composition-summary"><MealTableIllustration sides={p.recipe.sides.length}/><div><strong>오늘의 한 상</strong><p>밥 한 공기 · {p.name.split(' + ')[0].replace(/_/g,' · ')} · {p.recipe.sides.map(s=>s.name.replace(/_/g,' · ')).join(' · ')}</p><small>밥·메인·반찬을 합친 1인분 재료비와 영양이에요.</small></div></div>}
      {kcal!==null&&<div className="meal-kcal"><div className="meal-kcal-total"><b>{Math.round(kcal).toLocaleString('ko-KR')}</b><span>kcal</span><small>한 끼</small></div>{kcalParts.rice&&<p className="meal-kcal-line"><span>{p.name.split(' + ')[0].split('_')[0]} 1인분{kcalParts.dish.grams!==null?` (약 ${kcalParts.dish.grams}g)`:''}</span> <b>{Math.round(kcalParts.dish.kcal??0)}</b> + <span>밥 한 공기</span> <b>{Math.round(kcalParts.rice.kcal)}</b>{kcalParts.sides&&<> + <span>반찬 {kcalParts.sides.names.length}개</span> <b>{Math.round(kcalParts.sides.kcal)}</b></>}</p>}</div>}
      {p.recipe&&<p className="meal-ingredient-count">🧺 등록 재료 {p.recipe.ingredients.length}가지 <small>양념 포함 · 메인 메뉴 기준</small></p>}
-     <div className="meal-primary-actions"><button type="button" disabled={disabled} onClick={()=>setBrowsing(index)}>다른 메뉴</button><button type="button" onClick={()=>{setRecordExpanded(true);requestAnimationFrame(()=>{const entry=document.getElementById('meal-record-entry');entry?.scrollIntoView({behavior:'smooth',block:'start'});entry?.focus({preventScroll:true});});}}>먹었어요</button></div>
+     <p className="meal-price-basis">1인분 사용량 기준 · {p.recipe?'재료비 추정이며, 집에 있는 재료를 뺀 추가 구매액은 아니에요.':'실제 구매 단위·배송비에 따라 결제 금액은 달라요.'}</p>
+     <MealActionFlow key={`${index}-${p.id}`} disabled={disabled} onBrowse={()=>setBrowsing(index)} onRecord={()=>{setRecordExpanded(true);requestAnimationFrame(()=>{const entry=document.getElementById('meal-record-entry');entry?.scrollIntoView({behavior:'smooth',block:'start'});entry?.focus({preventScroll:true});});}} recipe={p.recipe?<><RecipeProductPreview product={p} videos={false}/><p className="meal-action-recipe-note">재료와 조리 순서를 먼저 확인하세요. 참고 영상은 재료·분량이 다를 수 있어요.</p>{!p.recipe.assembly&&<details><summary>영상으로도 살펴보기</summary><RecipeVideos dishId={p.id}/></details>}</>:<p>직접 조리하는 레시피가 없는 메뉴예요. 상품의 조리 안내를 확인하세요.</p>} outside={!locale.isTaiwan?<NearbyRestaurants key={p.id} menu={p.name.replace(/_/g,' ')} embedded/>:<p>현재 지역에서는 식당 찾기를 준비 중이에요.</p>} alternatives={<MealAlternatives key={p.id} index={index} ids={ids} products={products} conditions={conditions} limit={3} disabled={disabled||done} onChoose={onChoose}/>}/>
 
-     <details onToggle={e=>{const open=e.currentTarget.open;setDetailPhotos(previous=>{const next=new Set(previous);if(open)next.add(index);else next.delete(index);return next;});if(open)trackAnalytics('menu_details_opened');}} className="meal-more"><summary><span className="meal-more-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5c-3-2-6-2-9-1v15c3-1 6-1 9 1 3-2 6-2 9-1V4c-3-1-6-1-9 1Zm0 0v15M6 8h3M6 12h3M15 8h3M15 12h3"/></svg></span><span className="meal-more-copy"><strong>{p.recipe?'재료 · 만드는 법 · 영양정보':'상품 · 영양정보'}</strong></span><span className="meal-more-action"><span className="meal-more-open-label">펼치기</span><span className="meal-more-close-label">접기</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span></summary><div className="meal-sections">
-     {!done&&<div className="similar-meal-picker"><button type="button" className="similar-meal-toggle" disabled={disabled} aria-expanded={isSection(index,'similar')} onClick={()=>toggleSection(index,'similar')}>↔ {isSection(index,'similar')?'비슷한 메뉴 접기':'비슷한 메뉴로 바꾸기'}</button>{isSection(index,'similar')&&<MealAlternatives key={p.id} index={index} ids={ids} products={products} conditions={conditions} limit={3} disabled={disabled} onChoose={onChoose}/>}</div>}
+
+     <details onToggle={e=>{const open=e.currentTarget.open;setDetailPhotos(previous=>{const next=new Set(previous);if(open)next.add(index);else next.delete(index);return next;});if(open)trackAnalytics('menu_details_opened');}} className="meal-more"><summary><span className="meal-more-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5c-3-2-6-2-9-1v15c3-1 6-1 9 1 3-2 6-2 9-1V4c-3-1-6-1-9 1Zm0 0v15M6 8h3M6 12h3M15 8h3M15 12h3"/></svg></span><span className="meal-more-copy"><strong>{'사진 · 곁들임 · 영양정보'}</strong></span><span className="meal-more-action"><span className="meal-more-open-label">펼치기</span><span className="meal-more-close-label">접기</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span></summary><div className="meal-sections">
+
       {detailPhotos.has(index)&&!p.recipe?.sides?.length&&<MealPhotoGallery key={p.id} product={p}/>}
-      {p.recipe?<MealSection title="재료" meta={`${p.recipe.ingredients.filter(i=>!i.group).length}가지`} open={isSection(index,'ing')} onToggle={()=>toggleSection(index,'ing')}><RecipeProductPreview product={p} videos={false}/></MealSection>
-       :<MealSection title="상품 정보" open={isSection(index,'ing')} onToggle={()=>toggleSection(index,'ing')}><div className="today-product-links">
-      {p.productUrl&&<a href={p.productUrl} target="_blank" rel="noopener noreferrer" aria-label={`${p.name} 판매 상품 보기 (새 창)`}>🛍️ 판매 상품 보기 ↗</a>}
-      <a href={locale.search(p.name)} target="_blank" rel="noopener noreferrer" aria-label={`${p.name} 네이버쇼핑에서 가격 검색 (새 창)`}>다른 판매처 가격 검색 ↗</a>
-     </div></MealSection>}
-      {p.recipe&&!p.recipe.assembly&&<MealSection title="만드는 방법 영상" meta="하루한끼 우선 · YouTube" open={isSection(index,'video')} onToggle={()=>toggleSection(index,'video')}><RecipeVideos dishId={p.id}/></MealSection>}
-      {!locale.isTaiwan&&<MealSection title="근처 식당 찾기" meta="밖에서 먹을 때" open={isSection(index,'restaurants')} onToggle={()=>toggleSection(index,'restaurants')}><NearbyRestaurants key={p.id} menu={p.name.replace(/_/g,' ')} embedded/></MealSection>}
-      {!locale.isTaiwan&&p.recipe&&<MealSection title={sideFit(p)==='none'?'곁들임 추천':sideFit(p)==='kimchi'?'곁들일 김치 추천':'밑반찬 추천'} meta={sideFit(p)==='none'?'음료·수프·샐러드·소스':sideFit(p)==='kimchi'?'한 그릇 요리에 곁들이기 좋은 김치':'이 메뉴에 어울리는 반찬'} open={isSection(index,'sides')} onToggle={()=>toggleSection(index,'sides')}><SideDishSuggest main={p} conditions={conditions}/></MealSection>}
-      {!done&&<MealSection title="메뉴 바꾸기" open={isSection(index,'swap')} onToggle={()=>toggleSection(index,'swap')}>
-     {!done&&<div className="today-edit" role="group" aria-label={`${slotLabels[slot]} 메뉴 수정`}><button type="button" disabled={disabled} aria-haspopup="dialog" onClick={()=>setBrowsing(index)}>🔎 메뉴 직접 고르기</button><button type="button" disabled={disabled} onClick={()=>{setBrowsing(null);onSwap(index);}}>🔀 바로 바꾸기</button></div>}
-     {!done&&<details className="swap-reasons"><summary>이유를 고르고 교체하기</summary><p>다음 추천에도 반영해요. 이유 없이 바꾸려면 ‘바로 바꾸기’를 누르세요.</p><div>{visibleSwapReasons.map(reason=><button type="button" key={reason} disabled={disabled} onClick={()=>{onSwap(index,reason);}}>{swapReasons[reason]}</button>)}</div></details>}
-     {!locale.isTaiwan&&<MealComparison key={p.id.split('--with--')[0]} product={p} index={index} ids={ids} products={products} conditions={conditions} onChoose={onChoose} disabled={disabled||done}/>}
-      </MealSection>}
-      <MealSection title="영양정보 · 추천 이유" meta={kcal!==null?`한 끼 약 ${Math.round(kcal)}kcal`:undefined} open={isSection(index,'nutri')} onToggle={()=>toggleSection(index,'nutri')}>
+      {!locale.isTaiwan&&p.recipe&&<MealSection title={sideFit(p)==='none'?'곁들임 추천':sideFit(p)==='kimchi'?'곁들일 김치 추천':'이 메뉴와 잘 맞는 반찬'} meta={sideFit(p)==='none'?'음료·수프·샐러드·소스':sideFit(p)==='kimchi'?'한 그릇 요리에 곁들이기 좋은 김치':'이 메뉴에 어울리는 반찬'} open={isSection(index,'sides')} onToggle={()=>toggleSection(index,'sides')}><SideDishSuggest main={p} conditions={conditions}/></MealSection>}
+      <MealSection title="왜 이 조합을 추천했나요?" meta={kcal!==null?`한 끼 약 ${Math.round(kcal)}kcal`:undefined} open={isSection(index,'nutri')} onToggle={()=>toggleSection(index,'nutri')}>
      {!locale.isTaiwan&&<p className="recommendation-reasons">{recommendationReasons(p,conditions,perMealCalories??null).join(' · ')}</p>}
        <ProductNutrition product={p}/>
       </MealSection>
