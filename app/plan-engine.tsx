@@ -36,7 +36,7 @@ export function remoteEngine(learn: (products: PlanProduct[]) => void): PlanEngi
   remote: true,
   recommend: (conditions, previous, seed) => call<RecommendResult>({action: 'recommend', conditions, previous, seed}).then(withLearn),
   swap: (ids, index, conditions, reason) => call<{ids: string[] | null; products: PlanProduct[]}>({action: 'swap', ids, index, conditions, reason}).then(withLearn),
-  alternatives: (ids, index, conditions, limit) => call<{products: PlanProduct[]}>({action: 'alternatives', ids, index, conditions, limit}).then(withLearn).then((d) => d.products.slice(0, limit ?? 6)),
+  alternatives: (ids, index, conditions, limit) => call<{alternativeIds:string[];products: PlanProduct[]}>({action: 'alternatives', ids, index, conditions, limit}).then(withLearn).then((d) => d.alternativeIds.flatMap(id=>{const p=d.products.find(p=>p.id===id);return p?[p]:[];})),
   picker: (ids, index, conditions) => call<{items: PickerItem[]; current: number}>({action: 'picker', ids, index, conditions}),
   products: (ids, conditions) => call<{products: PlanProduct[]; valid?: boolean}>({action: 'products', ids, conditions}).then(withLearn),
   sides: (id, conditions) => call<{sides: {product: PlanProduct; reason: string}[]; extras: SideExtra[]}>({action: 'sides', id, conditions}),

@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
     if (index === null) return authFailure('끼니를 확인해 주세요.', 400);
     const limit = typeof input.limit === 'number' && Number.isInteger(input.limit) ? Math.min(12, Math.max(1, input.limit)) : 6;
     const alternatives = alternativesFor(products, ids, c, index, limit);
-    return json({products: [...alternatives, ...pickProducts(products, ids.filter(Boolean))]});
+    return json({alternativeIds: alternatives.map(p=>p.id), products: [...alternatives, ...pickProducts(products, ids.filter(Boolean))]});
    }
    case 'picker': {
     const c = conditions, ids = input.ids;

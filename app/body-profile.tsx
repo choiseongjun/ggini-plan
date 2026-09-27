@@ -16,6 +16,7 @@ import { AppLoading } from "./app-loading";
 import { invalidateJson } from "../lib/client-cache";
 import { WeekAnalysis } from "./week-analysis";
 import { WeightCard } from "./weight-card";
+import {WeeklyFeedbackCard} from "./weekly-feedback-card";
 import { RecordCard, WeeklyReportCard, useIntakeStats } from "./record-progress";
 import { mealLabels, ProfileProgress, ProfileWizardModal, readFields, sectionStatus, splitCalories, type CustomTarget, type ProfileFields, type WizardResult } from "./profile-wizard";
 import { bodyGoals, nutritionPlan, type BodyGoal } from "../lib/nutrition-plan";
@@ -57,7 +58,7 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
         setDirection(1); setError(''); setQuickWizard(true); setWizardStep(0);
         return;
       }
-      if (id === 'weekly-report' || id === 'meal-reminders' || id === 'buddy-companion') {
+      if (id === 'weekly-feedback' || id === 'weekly-report' || id === 'meal-reminders' || id === 'buddy-companion') {
         document.getElementById(id)?.scrollIntoView({block: 'start'});
       }
     };
@@ -216,6 +217,7 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
 
   return <>
     <div className="profile-quick-settings"><div><strong>내 몸과 식사 취향</strong><small>신체 정보·목표·못 먹는 재료</small>{!loading&&!loadError&&calories&&<strong className="profile-target-preview">하루 목표 {number(shownTarget?.calories??calories.daily)} kcal</strong>}</div><button type="button" disabled={loading||saving||loadError} onClick={focusProfile}>내 정보 수정</button></div>
+    {userId&&<WeeklyFeedbackCard key={`weekly-feedback-${userId}`} userId={userId}/>}
     <ProfileCalorieHistory userId={userId} target={calories?shownTarget?.calories??calories.daily:null} onLogin={onLogin} weekly={<WeeklyReportCard stats={intakeStats}/>} analysis={hasInfo&&!loading&&!loadError?<WeekAnalysis userId={userId} profile={profile} target={shownTarget} onOpenInfo={focusProfile}/>:null}/>
     <details className="profile-target-details"><summary>하루 목표·탄단지 자세히 보기</summary>
     {loading ? <AppLoading message="저장된 정보를 불러오는 중이에요"/> : loadError ? <section className="energy-card is-empty"><div><strong>정보를 불러오지 못했어요</strong><p>잠시 후 다시 시도해 주세요.</p><button type="button" className="wizard-next" onClick={()=>window.location.reload()}>다시 불러오기</button></div></section>

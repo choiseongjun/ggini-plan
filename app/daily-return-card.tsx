@@ -12,5 +12,6 @@ export function DailyReturnCard({userId,onRecord}:{userId:string;onRecord:()=>vo
   return <section className="daily-return daily-return-compact" aria-label="오늘의 기록 습관">
     {stats.buddy&&<Link className="daily-buddy-link" href="/profile#buddy-companion"><RiceBuddy stage={stats.buddy.stage}/><span>Lv. {stats.buddy.level} 끼니 · 함께한 {stats.buddy.days}일</span></Link>}
     {stats.streak.loggedToday?<Link className="daily-return-record" href="/record">오늘 기록 보기</Link>:<button className="daily-return-record" type="button" onClick={onRecord}>한 끼 기록하기</button>}
+    <Link className="daily-return-record" href="/profile#weekly-feedback">주간 피드백 · 다음 주 식단 →</Link>
   </section>;
 }

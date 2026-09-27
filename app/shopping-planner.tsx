@@ -272,11 +272,11 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   setMessage('');setError('');setConditions(c);setIds(Array(c.meals).fill(''));setBuilding(true);remember(c,[]);
  }
  async function chooseMeal(index:number,id:string){
-  const c={...conditions,mealMode:'mixed' as const,cooking:'all' as const};
   // 목록에서 고른 메뉴는 요약 정보뿐일 수 있다 — 재료까지 든 전체 정보를 받아 온 뒤 검사한다.
   let choice=products.find(p=>p.id===id);
   if(!choice||(choice.recipe&&!choice.recipe.ingredients.length)){try{choice=(await engine.products([id])).products.find(p=>p.id===id);}catch{choice=undefined;}}
   if(!choice){setError('메뉴 정보를 불러오지 못했어요. 다시 시도해 주세요.');return;}
+  const c=slotCandidates([choice],conditions,index).length?conditions:{...conditions,mealMode:'mixed' as const,cooking:'all' as const};
   const known=[...products.filter(p=>p.id!==id),choice];
   if(!slotCandidates([choice],c,index).length)return;
   if(ids.some((existing,i)=>i!==index&&cookingDishId(existing)===cookingDishId(id))){setError('이미 다른 끼니에 있는 메뉴예요. 다른 음식을 골라 주세요.');return;}

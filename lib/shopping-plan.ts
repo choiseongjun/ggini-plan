@@ -1,5 +1,6 @@
 import {allowsCookingEffort,isCookingEffort,type CookingEffort} from './cooking-effort';
 import {validStockId} from './stock-id';
+import {mealSimilarity} from './meal-similarity';
 import {allowsMealKind,validMealKinds,type MealKind} from './meal-kinds';
 import {validPlanDate} from './daily-plan';
 import {isShoppingGoal,isBudgetMode,hasGoalNutrition,productsForGoal,type BudgetMode,type ShoppingGoal} from './shopping-goals';
@@ -330,10 +331,15 @@ export function swapMeal(ids:string[], index:number, products:PlanProduct[], c:P
 // Browsable candidates for one slot, so the UI can let people pick instead of only accepting a single auto-swap.
 export function alternativesFor(products:PlanProduct[], ids:string[], c:PlanConditions, index:number, limit=6):PlanProduct[] {
  const current=ids[index]?cookingDishId(ids[index]):null;
+ const original=products.find(p=>p.id===ids[index]);
+ const seen=new Set<string>();
  return productsForGoal(slotCandidates(products,c,index),c.goal)
   .filter(p=>cookingDishId(p.id)!==current)
   .filter(p=>!ids.some((id,i)=>i!==index&&cookingDishId(id)===cookingDishId(p.id)))
   .filter(p=>!repeatsDailyMain(ids,products,c,index,p))
-  .sort((a,b)=>(b.personalizationScore??0)-(a.personalizationScore??0)||a.price/a.servings-b.price/b.servings)
-  .slice(0,limit);
+  .filter(p=>basketTotal(ids.map((id,i)=>i===index?p.id:id).filter(Boolean),products,c.owned,c.supply,c.people)<=c.budget)
+  .map(p=>({p,similarity:original?mealSimilarity(original,p).score:0}))
+  .sort((a,b)=>b.similarity-a.similarity||(b.p.personalizationScore??0)-(a.p.personalizationScore??0)||a.p.price/a.p.servings-b.p.price/b.p.servings)
+  .filter(({p})=>{const key=`id:${cookingDishId(p.id)}`,name=`name:${dishWords(p)}`;if(seen.has(key)||seen.has(name))return false;seen.add(key);seen.add(name);return true;})
+  .slice(0,limit).map(({p})=>p);
 }

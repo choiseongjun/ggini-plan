@@ -16,4 +16,10 @@
 .meal-alternative-actions .primary-button{margin:0;background:#526c47;border-color:#526c47;color:#fff;font-weight:700}
 .meal-alternative-actions button:disabled{opacity:.55;cursor:default;filter:none}
 .meal-alternatives-empty{font-size:12px;line-height:1.7;color:#837466}
+.similar-meal-picker{margin:14px 0}
+.similar-meal-toggle{width:100%;min-height:46px;padding:12px 16px;border:1px solid #d8e3cc;border-radius:15px;background:#f0f5e8;color:#405c35;font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.similar-meal-toggle:disabled{opacity:.55;cursor:default}
+.similar-meal-toggle:focus-visible{outline:2px solid #526c47;outline-offset:3px}
+.meal-alternative-reasons{display:flex;flex-wrap:wrap;gap:6px}
+.meal-alternative-reasons span{padding:5px 9px;border-radius:12px;background:#edf3e5;color:#4b663c;font-size:12px;line-height:1.5}
 @media(max-width:380px){.meal-alternative-card{padding:13px}}
