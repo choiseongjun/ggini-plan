@@ -16,7 +16,6 @@ import { AppLoading } from "./app-loading";
 import { invalidateJson } from "../lib/client-cache";
 import { WeekAnalysis } from "./week-analysis";
 import { WeightCard } from "./weight-card";
-import { MealReminderCard } from "./meal-reminder-card";
 import { RecordCard, WeeklyReportCard, useIntakeStats } from "./record-progress";
 import { mealLabels, ProfileProgress, ProfileWizardModal, readFields, sectionStatus, splitCalories, type CustomTarget, type ProfileFields, type WizardResult } from "./profile-wizard";
 import { bodyGoals, nutritionPlan, type BodyGoal } from "../lib/nutrition-plan";
@@ -232,7 +231,6 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
     </details>
     <BuddyCompanion key={userId??'guest'} userId={userId} recordCount={intakeStats?.week.meals} weekStart={intakeStats?.week.start} growth={intakeStats?.buddy} loggedToday={intakeStats?.streak.loggedToday} guest={!userId} onLogin={onLogin}/>
     {/* 정보가 없을 땐 위의 '1분 만에 입력하기' 카드 하나만 — 선택지를 늘리지 않는다. */}
-    {userId && <section id="meal-reminders" className="profile-retention-section"><h3 className="profile-group-title">다음 식사도 잊지 않게</h3><MealReminderCard/></section>}
     {hasInfo && userId && <WeightCard userId={userId} fallbackWeight={Number(weight)||null} onLogged={kg=>setWeight(String(kg))}/>}
     {userId && <details className="profile-extra"><summary>내 기록 배지 보기</summary><RecordCard stats={intakeStats}/></details>}
     {hasInfo && !loading && !loadError && <ProfileProgress fields={fields} reviewed={reviewed} saved={savedProfile} onOpen={openWizard}/>}
