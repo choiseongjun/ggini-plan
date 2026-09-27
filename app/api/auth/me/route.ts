@@ -5,7 +5,10 @@ export const runtime = "nodejs";
 
 export async function GET(request: NextRequest) {
   try {
-    const response = NextResponse.json({ user: await sessionUser(request) });
+    const renewal = new NextResponse();
+    const user = await sessionUser(request, renewal);
+    const response = NextResponse.json({ user });
+    for (const cookie of renewal.cookies.getAll()) response.cookies.set(cookie);
     response.headers.set("Cache-Control", "no-store");
     return response;
   } catch (error) {

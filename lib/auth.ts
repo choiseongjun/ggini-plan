@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getPool } from "./db";
 
 export const SESSION_COOKIE = "kkiniplan_session";
-const SESSION_SECONDS = 60 * 60 * 24 * 30;
+const SESSION_SECONDS = 60 * 60 * 24 * 365;
 
 export type PublicUser = { id: string; name: string; email: string };
 
@@ -19,8 +19,8 @@ export function sameOrigin(request: NextRequest): boolean {
 export async function createSession(user: PublicUser, response: NextResponse = NextResponse.json({ user })): Promise<NextResponse> {
   const token = randomBytes(32).toString("base64url");
   await getPool().query(
-    "INSERT INTO sessions (token_hash, user_id, expires_at) VALUES ($1, $2, NOW() + INTERVAL '30 days')",
-    [tokenHash(token), user.id],
+    "INSERT INTO sessions (token_hash, user_id, expires_at) VALUES ($1, $2, NOW() + $3 * INTERVAL '1 second')",
+    [tokenHash(token), user.id, SESSION_SECONDS],
   );
   response.cookies.set(SESSION_COOKIE, token, {
     httpOnly: true,
@@ -33,15 +33,26 @@ export async function createSession(user: PublicUser, response: NextResponse = N
   return response;
 }
 
-export async function sessionUser(request: NextRequest): Promise<PublicUser | null> {
+export async function sessionUser(request: NextRequest, renewResponse?: NextResponse): Promise<PublicUser | null> {
   const token = request.cookies.get(SESSION_COOKIE)?.value;
   if (!token) return null;
-  const result = await getPool().query<PublicUser>(
-    `SELECT users.id::text AS id, users.name, users.email
+  const result = await getPool().query<PublicUser>(renewResponse
+    ? `UPDATE sessions SET expires_at = NOW() + $2 * INTERVAL '1 second'
+       FROM users WHERE users.id = sessions.user_id
+       AND sessions.token_hash = $1 AND sessions.expires_at > NOW()
+       RETURNING users.id::text AS id, users.name, users.email`
+    : `SELECT users.id::text AS id, users.name, users.email
      FROM sessions JOIN users ON users.id = sessions.user_id
      WHERE sessions.token_hash = $1 AND sessions.expires_at > NOW()`,
-    [tokenHash(token)],
+    renewResponse ? [tokenHash(token), SESSION_SECONDS] : [tokenHash(token)],
   );
+  if (renewResponse && result.rows[0]) {
+    renewResponse.cookies.set(SESSION_COOKIE, token, {
+      httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production",
+      path: "/", maxAge: SESSION_SECONDS,
+    });
+    renewResponse.headers.set("Cache-Control", "no-store");
+  }
   return result.rows[0] ?? null;
 }
 
