@@ -6,23 +6,24 @@ import './home-readability.css';
 import {pendingRecordMode,clearRecordMode} from '../lib/record-intent';
 import {InstallPrompt} from './install-prompt';
 import {PolicyLinks} from './policy-links';
-import {PlanCalendar} from './plan-calendar';
-import {ComparisonTrends} from './comparison-trends';
+const PlanCalendar=dynamic(()=>import("./plan-calendar").then(module=>module.PlanCalendar));
+const ComparisonTrends=dynamic(()=>import("./comparison-trends").then(module=>module.ComparisonTrends));
 import {trackComparison} from '../lib/track-comparison';
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { usePathname, useRouter } from "next/navigation";
 
 import { useEffect, useRef, useState } from "react";
-import { MonthlyPlanner } from "./monthly-planner";
+const MonthlyPlanner=dynamic(()=>import("./monthly-planner").then(module=>module.MonthlyPlanner));
 import { Dashboard } from "./dashboard";
 import { ResetData } from "./reset-data";
 import { FoodIntake } from "./food-intake";
 import { ShoppingPlanner } from "./shopping-planner";
 import { emptyDashboard, type DashboardData } from "../lib/dashboard";
-import { AuthScreen } from "./auth-screen";
+const AuthScreen=dynamic(()=>import("./auth-screen").then(module=>module.AuthScreen));
 import { CommunityPanel, SharedBasket } from "./community";
 import { BudgetSettings } from "./budget-settings";
-import { BodyProfilePanel } from "./body-profile";
+const BodyProfilePanel=dynamic(()=>import("./body-profile").then(module=>module.BodyProfilePanel));
 import {AppShell,Brand,Icon,type IconName} from './app-shell';
 import { googleAuthErrors, type GoogleAuthErrorCode } from "../lib/auth-messages";
 import type { PublicUser } from "../lib/auth";
@@ -106,6 +107,7 @@ export default function Home() {
   },[needsCatalog,catalogLoaded,startLoading]);
 
   useEffect(() => {
+    if(!authUser)return;
     let controller:AbortController|undefined;
     const reload=(showLoading:boolean)=>{
       controller?.abort();
