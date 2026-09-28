@@ -11,7 +11,7 @@ export function NearbyRestaurants({menu,embedded=false}:{menu:string;embedded?:b
  const id=useId();
  const [open,setOpen]=useState(false),[area,setArea]=useState(''),[radius,setRadius]=useState(3000);
  const [query,setQuery]=useState(restaurantKeywords(menu)[0]);
- const [filter,setFilter]=useState<'all'|'menu'|'similar'>('all'),[limit,setLimit]=useState(5),[showMap,setShowMap]=useState(true);
+ const [filter,setFilter]=useState<'all'|'menu'|'similar'>('all'),[limit,setLimit]=useState(5),[showMap,setShowMap]=useState(false);
  const [origin,setOrigin]=useState<MapPoint|null>(null),[selected,setSelected]=useState<string|null>(null);
  const selectRestaurant=useCallback((placeId:string)=>{setSelected(placeId);document.getElementById(`${id}-place-${placeId}`)?.scrollIntoView({behavior:'smooth',block:'nearest'});},[id]);
  const [manual,setManual]=useState(false),[locating,setLocating]=useState(false);
@@ -28,7 +28,7 @@ export function NearbyRestaurants({menu,embedded=false}:{menu:string;embedded?:b
   }catch(e){if(token===version.current&&!controller.signal.aborted)setError(e instanceof Error?e.message:'식당을 찾지 못했어요.');}
   finally{if(token===version.current)setBusy(false);}
  }
- function start(){const token=++version.current;active.current?.abort();setBusy(true);setError('');setResults(null);setSelected(null);setLimit(5);setFilter('all');return token;}
+ function start(){const token=++version.current;active.current?.abort();setBusy(true);setError('');setResults(null);setSelected(null);setLimit(5);setFilter('all');setShowMap(false);return token;}
  function nearby(nextRadius=radius){
   const token=start();setOrigin(null);setLocating(true);
   if(!navigator.geolocation){setLocating(false);setManual(true);setBusy(false);setError('이 브라우저에서는 위치를 확인할 수 없어요. 동네를 직접 입력해 주세요.');return;}
@@ -39,7 +39,7 @@ export function NearbyRestaurants({menu,embedded=false}:{menu:string;embedded?:b
  return <div className="nearby-restaurants">
   {!embedded&&<button type="button" className="nearby-toggle" aria-expanded={open} aria-controls={id} onClick={()=>setOpen(!open)}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 0 1 14 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>이 메뉴, 근처에서 찾기<span aria-hidden="true">{open?'−':'+'}</span></button>}
   {(embedded||open)&&<div className="nearby-body" id={id}>
-   <div className="nearby-heading"><span className="nearby-eyebrow">오늘의 한 끼, 동네에서</span><strong>{query} 먹으러 갈까요?</strong><p className="nearby-intro">같은 메뉴부터 비슷한 음식까지 모았어요. 지도에서 가까운 곳을 골라보세요.</p>
+   <div className="nearby-heading"><span className="nearby-eyebrow">오늘의 한 끼, 동네에서</span><strong>{query} 먹으러 갈까요?</strong><p className="nearby-intro">식당 목록에서 먹고 싶은 곳을 고르고, 식당 정보·길찾기로 찾아가세요.</p>
    <button type="button" className="nearby-adjust" aria-expanded={manual} disabled={busy} onClick={()=>setManual(!manual)}>{manual?'검색 조건 접기':'다른 동네·메뉴로 찾기'}</button></div>
    {manual&&<label className="nearby-menu">검색할 메뉴<input value={query} maxLength={60} disabled={busy} onChange={e=>setQuery(e.target.value)}/></label>}
    <div className="nearby-privacy"><p>내 위치로 찾기를 누르면 대략적인 위치·검색 메뉴는 카카오에, 지도 표시 위치는 네이버 클라우드에 전달해요.</p><p>위치는 계정에 저장하거나 백그라운드에서 추적하지 않아요. 위치 제공 없이 동네 이름으로도 검색할 수 있어요.</p><a href="/privacy#nearby-location">위치정보 처리 안내 ↗</a></div>
@@ -48,7 +48,7 @@ export function NearbyRestaurants({menu,embedded=false}:{menu:string;embedded?:b
    {busy&&<p role="status">{locating?'현재 위치를 확인하고 있어요…':'가까운 식당을 찾고 있어요…'}</p>}{error&&<p className="nearby-error" role="alert">{error}</p>}
    {results&&<div className="nearby-discovery-tools"><div className="nearby-match-tabs" role="group" aria-label="식당 추천 범위">{([['all','전체'],['menu','메뉴 검색'],['similar','비슷한 음식']] as const).map(([value,label])=><button key={value} type="button" aria-pressed={filter===value} onClick={()=>{setFilter(value);setLimit(5);setSelected(null);}}>{label} <span>{results.places.filter(p=>value==='all'||p.match===value).length}</span></button>)}</div><button type="button" className="nearby-map-toggle" aria-pressed={showMap} onClick={()=>setShowMap(!showMap)}>{showMap?'지도 접기':'지도 보기'}</button></div>}
    {showMap&&(origin||visible.some(p=>p.position))&&<RestaurantMap origin={origin} places={visible.length?visible:noPlaces} onSelect={selectRestaurant}/>}
-   {results&&<><p className="nearby-results-label" role="status">{results.label} · {filtered.length}곳</p><p className="nearby-match-note">메뉴 검색 결과도 판매가 확인된 것은 아니에요. 비슷한 음식은 관련 음식 종류로 찾은 곳이에요.</p>{results.partial&&<p role="status">일부 검색이 지연되어 확인된 식당만 보여드려요. 다시 검색하면 나머지도 확인할 수 있어요.</p>}{filtered.length?<ul className="nearby-list">{visible.map((p,index)=><li key={p.id} id={`${id}-place-${p.id}`} className={selected===p.id?'is-selected':undefined}><div><strong><span className="nearby-number">{index+1}</span>{p.name}</strong>{p.distance!==null&&<span>{p.distance<1000?`${Math.round(p.distance)}m`:`${(p.distance/1000).toFixed(1)}km`}</span>}</div><span className={`nearby-match-badge ${p.match}`}>{p.match==='menu'?'메뉴 검색':'비슷한 음식'} · {p.keyword}</span><small>{p.category}</small><p>{p.address}</p><div className="nearby-links"><a href={p.url} target="_blank" rel="noopener noreferrer">상세·길찾기 ↗</a>{p.phone&&<a href={`tel:${p.phone.replace(/[^\d+]/g,'')}`}>전화</a>}</div><RestaurantContent name={p.name} address={p.address}/></li>)}</ul>:<p>이 범위에서 찾은 식당이 없어요. 전체 결과를 보거나 다른 동네·반경으로 다시 찾아보세요.</p>}{filtered.length>limit&&<button className="nearby-more" type="button" onClick={()=>setLimit(n=>n+5)}>식당 더 보기 · {filtered.length-limit}곳 남음</button>}<small className="nearby-source">장소 정보 · 카카오맵 / 지도 · 네이버. 검색 결과이며 메뉴 판매·가격·영업 여부는 방문 전 확인해 주세요. 위 영양정보는 해당 식당의 분석값이 아니에요.</small></>}
+   {results&&<><p className="nearby-results-label" role="status">{results.label} · {filtered.length}곳</p><p className="nearby-match-note">메뉴 검색 결과도 판매가 확인된 것은 아니에요. 비슷한 음식은 관련 음식 종류로 찾은 곳이에요.</p>{results.partial&&<p role="status">일부 검색이 지연되어 확인된 식당만 보여드려요. 다시 검색하면 나머지도 확인할 수 있어요.</p>}{filtered.length?<ul className="nearby-list">{visible.map((p,index)=><li key={p.id} id={`${id}-place-${p.id}`} className={selected===p.id?'is-selected':undefined}><div><strong><span className="nearby-number">{index+1}</span>{p.name}</strong>{p.distance!==null&&<span>{p.distance<1000?`${Math.round(p.distance)}m`:`${(p.distance/1000).toFixed(1)}km`}</span>}</div><span className={`nearby-match-badge ${p.match}`}>{p.match==='menu'?'메뉴 검색':'비슷한 음식'} · {p.keyword}</span><small>{p.category}</small><p>{p.address}</p><div className="nearby-links"><a href={p.url} target="_blank" rel="noopener noreferrer">식당 정보·길찾기 ↗</a>{p.phone&&<a href={`tel:${p.phone.replace(/[^\d+]/g,'')}`}>전화</a>}</div><RestaurantContent name={p.name} address={p.address}/></li>)}</ul>:<p>이 범위에서 찾은 식당이 없어요. 전체 결과를 보거나 다른 동네·반경으로 다시 찾아보세요.</p>}{filtered.length>limit&&<button className="nearby-more" type="button" onClick={()=>setLimit(n=>n+5)}>식당 더 보기 · {filtered.length-limit}곳 남음</button>}<small className="nearby-source">장소 정보 · 카카오맵 / 지도 · 네이버. 검색 결과이며 메뉴 판매·가격·영업 여부는 방문 전 확인해 주세요. 위 영양정보는 해당 식당의 분석값이 아니에요.</small></>}
   </div>}
  </div>;
 }
