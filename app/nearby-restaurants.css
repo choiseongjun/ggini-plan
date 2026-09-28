@@ -84,3 +84,24 @@
  .restaurant-blogs strong{font-size:15px}
  .restaurant-map .restaurant-map-pin,.today-meals .restaurant-map .restaurant-map-pin{min-height:32px;padding:0;font-size:13px}
 }
+
+/* Nearby meal discovery */
+.nearby-eyebrow{font-size:11px;font-weight:800;letter-spacing:.08em;color:#6e835a}
+.nearby-heading .nearby-intro{margin:0;color:#738069;font-size:13px;line-height:1.7}
+.nearby-heading{gap:9px}.nearby-heading>strong{font-size:22px;letter-spacing:-.7px}
+.nearby-discovery-tools{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:22px}
+.nearby-match-tabs{display:flex;flex:1;gap:5px;min-width:0}
+.nearby-match-tabs button{flex:1;white-space:nowrap;font-size:12px;padding:10px 7px;background:#f0f3e9;border-color:transparent}
+.nearby-match-tabs button[aria-pressed=true]{background:#526d41;color:#fff;border-color:#526d41}
+.nearby-match-tabs span{font-size:10px;opacity:.8}.nearby-body .nearby-map-toggle{font-size:11px;padding:8px;background:transparent;border:0}
+.nearby-match-note{font-size:11px;color:#7c826e;line-height:1.7;margin:0 0 14px}
+.nearby-match-badge{display:inline-block;margin-top:10px;padding:3px 9px;border-radius:7px;background:#edf4e5;color:#4f6f3c;font-size:11px;font-weight:700}
+.nearby-match-badge.similar{background:#f8efdf;color:#8d7044}
+.nearby-body .nearby-more{display:block;width:100%;margin-top:14px;background:#edf2e5}
+.nearby-preview{max-width:680px;margin:0 auto;padding:32px 20px 80px;box-sizing:border-box;color:#35472d}
+.nearby-preview>h1{font-size:34px;line-height:1.35;letter-spacing:-1.5px;margin:14px 0}.nearby-preview>p{line-height:1.8}
+.nearby-preview>a{font-size:13px;color:#657b52}.nearby-preview>.nearby-eyebrow{margin-top:32px}
+.nearby-preview-menus{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0}
+.nearby-preview-menus button{min-height:42px;border:1px solid #dce3cf;border-radius:22px;background:#fafcf5;padding:9px 14px;color:#516641;font:inherit;font-size:13px;cursor:pointer}
+.nearby-preview-menus button[aria-pressed=true]{background:#526d41;color:white}
+@media(max-width:480px){.nearby-body{padding:14px}.nearby-heading>strong{font-size:19px}.nearby-match-tabs{flex-basis:100%}.nearby-preview{padding:22px 12px 60px}.nearby-preview>h1{font-size:30px}}
