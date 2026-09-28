@@ -1,54 +1,56 @@
 'use client';
-import {useCallback,useEffect,useId,useRef,useState} from 'react';
-import type {NearbyRestaurant,RestaurantSearch,MapPoint} from '../lib/nearby-restaurants';
+import {useCallback,useEffect,useId,useMemo,useRef,useState} from 'react';
 import {restaurantKeywords,type RestaurantMatch} from '../lib/restaurant-discovery';
-import './nearby-restaurants.css';
 import {RestaurantMap} from './restaurant-map';
 import {RestaurantContent} from './restaurant-content';
-const noPlaces:NearbyRestaurant[]=[];
-type Results={places:RestaurantMatch[];label:string;partial:boolean};
+import './nearby-restaurants.css';
+
+type Results={places:RestaurantMatch[];city:string;partial:boolean};
 export function NearbyRestaurants({menu,embedded=false}:{menu:string;embedded?:boolean}){
  const id=useId();
- const [open,setOpen]=useState(false),[area,setArea]=useState(''),[radius,setRadius]=useState(3000);
- const [query,setQuery]=useState(restaurantKeywords(menu)[0]);
- const [filter,setFilter]=useState<'all'|'menu'|'similar'>('all'),[limit,setLimit]=useState(5),[showMap,setShowMap]=useState(false);
- const [origin,setOrigin]=useState<MapPoint|null>(null),[selected,setSelected]=useState<string|null>(null);
- const selectRestaurant=useCallback((placeId:string)=>{setSelected(placeId);document.getElementById(`${id}-place-${placeId}`)?.scrollIntoView({behavior:'smooth',block:'nearest'});},[id]);
- const [manual,setManual]=useState(false),[locating,setLocating]=useState(false);
- const [locationConsent,setLocationConsent]=useState(false);
- const [busy,setBusy]=useState(false),[error,setError]=useState(''),[results,setResults]=useState<Results|null>(null);
+ const [open,setOpen]=useState(false),[city,setCity]=useState('');
+ const [filter,setFilter]=useState<'all'|'menu'|'similar'>('all'),[limit,setLimit]=useState(5);
+ const [selected,setSelected]=useState<string|null>(null),[busy,setBusy]=useState(false),[error,setError]=useState('');
+ const [results,setResults]=useState<Results|null>(null);
  const active=useRef<AbortController|null>(null),version=useRef(0);
+ const query=restaurantKeywords(menu)[0];
+ const selectedPlaces=useMemo(()=>results?.places.filter(p=>p.id===selected)??[],[results,selected]);
+ const selectRestaurant=useCallback((placeId:string)=>setSelected(placeId),[]);
  useEffect(()=>()=>{version.current++;active.current?.abort();},[]);
- async function search(input:RestaurantSearch,label:string,token:number){
-  const controller=new AbortController();active.current?.abort();active.current=controller;
+ useEffect(()=>{if(selected)document.getElementById(`${id}-map-${selected}`)?.scrollIntoView({behavior:'smooth',block:'nearest'});},[id,selected]);
+ async function search(nextCity=city){
+  const area=nextCity.trim();if(area.length<2||busy)return;
+  const token=++version.current,controller=new AbortController();active.current?.abort();active.current=controller;
+  setCity(area);setBusy(true);setError('');setResults(null);setSelected(null);setFilter('all');setLimit(5);
   try{
-   const r=await fetch('/api/nearby-restaurants',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(input),signal:controller.signal});
-   const data=await r.json();if(!r.ok)throw new Error(data.error);
-   if(token===version.current)setResults({places:data.places,label,partial:!!data.partial});
+   const response=await fetch('/api/nearby-restaurants',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({menu:query,area,radius:3000}),signal:controller.signal});
+   const data=await response.json();if(!response.ok)throw new Error(data.error||'식당을 불러오지 못했어요.');
+   if(token===version.current)setResults({places:data.places,city:area,partial:!!data.partial});
   }catch(e){if(token===version.current&&!controller.signal.aborted)setError(e instanceof Error?e.message:'식당을 찾지 못했어요.');}
   finally{if(token===version.current)setBusy(false);}
  }
- function start(){const token=++version.current;active.current?.abort();setBusy(true);setError('');setResults(null);setSelected(null);setLimit(5);setFilter('all');setShowMap(false);return token;}
- function nearby(nextRadius=radius){
-  const token=start();setOrigin(null);setLocating(true);
-  if(!navigator.geolocation){setLocating(false);setManual(true);setBusy(false);setError('이 브라우저에서는 위치를 확인할 수 없어요. 동네를 직접 입력해 주세요.');return;}
-  navigator.geolocation.getCurrentPosition(p=>{if(token===version.current){setLocating(false);const point={latitude:Math.round(p.coords.latitude*1000)/1000,longitude:Math.round(p.coords.longitude*1000)/1000};setOrigin(point);void search({menu:query.trim(),...point,radius:nextRadius},`내 주변 식당 · ${nextRadius/1000}km · 가까운 순`,token);}},()=>{if(token===version.current){setLocating(false);setManual(true);setBusy(false);setError('위치를 확인하지 못했어요. 위치 권한을 허용하거나 동네를 입력해 주세요.');}},{enableHighAccuracy:false,timeout:10000,maximumAge:60000});
- }
  const filtered=results?.places.filter(p=>filter==='all'||p.match===filter)??[];
- const visible=filtered.slice(0,limit);
  return <div className="nearby-restaurants">
-  {!embedded&&<button type="button" className="nearby-toggle" aria-expanded={open} aria-controls={id} onClick={()=>setOpen(!open)}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 0 1 14 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>이 메뉴, 근처에서 찾기<span aria-hidden="true">{open?'−':'+'}</span></button>}
+  {!embedded&&<button type="button" className="nearby-toggle" aria-expanded={open} aria-controls={id} onClick={()=>setOpen(!open)}>지역별 식당 찾기<span aria-hidden="true">{open?'−':'+'}</span></button>}
   {(embedded||open)&&<div className="nearby-body" id={id}>
-   <div className="nearby-heading"><span className="nearby-eyebrow">오늘의 한 끼, 동네에서</span><strong>주변 식당부터 골라보세요</strong><p className="nearby-intro">추천 메뉴가 없어도 주변 식당을 먼저 보여드려요. 원하는 곳을 골라 식당 정보·길찾기로 이동하세요.</p>
-   <button type="button" className="nearby-adjust" aria-expanded={manual} disabled={busy} onClick={()=>setManual(!manual)}>{manual?'검색 조건 접기':'다른 동네·메뉴로 찾기'}</button></div>
-   {manual&&<label className="nearby-menu">검색할 메뉴<input value={query} maxLength={60} disabled={busy} onChange={e=>setQuery(e.target.value)}/></label>}
-   <div className="nearby-privacy"><p>내 위치로 찾기를 누르면 대략적인 위치·검색 메뉴는 카카오에, 지도 표시 위치는 네이버 클라우드에 전달해요.</p><p>위치는 계정에 저장하거나 백그라운드에서 추적하지 않아요. 위치 제공 없이 동네 이름으로도 검색할 수 있어요.</p><a href="/privacy#nearby-location">위치정보 처리 안내 ↗</a></div>
-   <div className="nearby-location"><button type="button" disabled={busy||!query.trim()} onClick={()=>{setLocationConsent(true);nearby();}}>{locationConsent?'내 위치로 다시 찾기':'동의하고 내 위치로 찾기'}</button><label>반경<select value={radius} disabled={busy} onChange={e=>setRadius(Number(e.target.value))}><option value={1000}>1km</option><option value={3000}>3km</option><option value={5000}>5km</option></select></label></div>
-   <form className="nearby-area" onSubmit={e=>{e.preventDefault();if(area.trim().length<2||!query.trim()||busy)return;const token=start();setOrigin(null);void search({menu:query.trim(),area:area.trim(),radius},`${area.trim()} 식당 · 관련도순`,token);}}><label htmlFor={`${id}-area`}>또는 동네·역 이름으로 찾기</label><div><input id={`${id}-area`} placeholder="예: 강남역, 연남동" value={area} maxLength={60} minLength={2} required disabled={busy} onChange={e=>setArea(e.target.value)}/><button type="submit" disabled={busy||!query.trim()||area.trim().length<2}>검색</button></div></form>
-   {busy&&<p role="status">{locating?'현재 위치를 확인하고 있어요…':'가까운 식당을 찾고 있어요…'}</p>}{error&&<p className="nearby-error" role="alert">{error}</p>}
-   {results&&<div className="nearby-discovery-tools"><div className="nearby-match-tabs" role="group" aria-label="식당 추천 범위">{([['all','주변 식당'],['menu','메뉴 검색'],['similar','비슷한 음식']] as const).map(([value,label])=><button key={value} type="button" aria-pressed={filter===value} onClick={()=>{setFilter(value);setLimit(5);setSelected(null);}}>{label} <span>{results.places.filter(p=>value==='all'||p.match===value).length}</span></button>)}</div><button type="button" className="nearby-map-toggle" aria-pressed={showMap} onClick={()=>setShowMap(!showMap)}>{showMap?'지도 접기':'지도 보기'}</button></div>}
-   {showMap&&(origin||visible.some(p=>p.position))&&<RestaurantMap origin={origin} places={visible.length?visible:noPlaces} onSelect={selectRestaurant}/>}
-   {results&&<><p className="nearby-results-label" role="status">{results.label} · {filtered.length}곳</p><p className="nearby-match-note">식당 목록은 메뉴와 관계없이 불러와요. 메뉴 검색·비슷한 음식 표시는 추천 메뉴와의 검색 연관성이며 판매 확인은 아니에요.</p>{results.partial&&<p role="status">일부 검색이 지연되어 확인된 식당만 보여드려요. 다시 검색하면 나머지도 확인할 수 있어요.</p>}{filtered.length?<ul className="nearby-list">{visible.map((p,index)=><li key={p.id} id={`${id}-place-${p.id}`} className={selected===p.id?'is-selected':undefined}><div><strong><span className="nearby-number">{index+1}</span>{p.name}</strong>{p.distance!==null&&<span>{p.distance<1000?`${Math.round(p.distance)}m`:`${(p.distance/1000).toFixed(1)}km`}</span>}</div><span className={`nearby-match-badge ${p.match}`}>{p.match==='menu'?'메뉴 검색':p.match==='similar'?'비슷한 음식':'주변 식당'}{p.keyword&&` · ${p.keyword}`}</span><small>{p.category}</small><p>{p.address}</p><div className="nearby-links"><a href={p.url} target="_blank" rel="noopener noreferrer">식당 정보·길찾기 ↗</a>{p.phone&&<a href={`tel:${p.phone.replace(/[^\d+]/g,'')}`}>전화</a>}</div><RestaurantContent name={p.name} address={p.address}/></li>)}</ul>:<p>{filter==='all'?'이 위치에서 식당을 찾지 못했어요. 반경을 넓히거나 동네 이름으로 찾아보세요.':'추천 메뉴와 관련된 검색 결과가 없어요. 주변 식당 탭에서 다른 식당을 골라보세요.'}</p>}{filtered.length>limit&&<button className="nearby-more" type="button" onClick={()=>setLimit(n=>n+5)}>식당 더 보기 · {filtered.length-limit}곳 남음</button>}<small className="nearby-source">장소 정보 · 카카오맵 / 지도 · 네이버. 검색 결과이며 메뉴 판매·가격·영업 여부는 방문 전 확인해 주세요. 위 영양정보는 해당 식당의 분석값이 아니에요.</small></>}
+   <div className="nearby-heading"><span className="nearby-eyebrow">밖에서 먹는 한 끼</span><strong>어느 시에서 먹을까요?</strong><p className="nearby-intro">시 이름으로 식당 목록을 먼저 찾아요. 식당을 누르면 그곳의 지도 위치가 펼쳐져요.</p></div>
+   <form className="nearby-area" onSubmit={e=>{e.preventDefault();void search();}}><label htmlFor={`${id}-city`}>시 이름</label><div><input id={`${id}-city`} placeholder="예: 수원시, 성남시, 서울" value={city} maxLength={60} minLength={2} required disabled={busy} onChange={e=>setCity(e.target.value)}/><button type="submit" disabled={busy||city.trim().length<2}>식당 찾기</button></div></form>
+   <div className="nearby-city-options" role="group" aria-label="시 빠른 선택">{['서울','부산','인천','수원시','성남시'].map(value=><button key={value} type="button" disabled={busy} aria-pressed={results?.city===value} onClick={()=>void search(value)}>{value}</button>)}</div>
+   <p className="nearby-match-note">현재 위치 권한 없이 검색해요. 도시 전체의 검색 결과이며 거리순이 아니에요.</p>
+   {busy&&<p role="status">{city} 식당 목록을 찾고 있어요…</p>}{error&&<p className="nearby-error" role="alert">{error}</p>}
+   {results&&<>
+    <p className="nearby-results-label" role="status">{results.city} · 검색된 식당 {results.places.length}곳</p>
+    <div className="nearby-match-tabs" role="group" aria-label="식당 추천 범위">{([['all','식당 목록'],['menu','메뉴 검색'],['similar','비슷한 음식']] as const).map(([value,label])=><button key={value} type="button" aria-pressed={filter===value} onClick={()=>{setFilter(value);setLimit(5);setSelected(null);}}>{label} <span>{results.places.filter(p=>value==='all'||p.match===value).length}</span></button>)}</div>
+    <p className="nearby-match-note">추천 메뉴: {query} · 메뉴와 관계없이 식당을 보여줘요. 메뉴 관련 표시는 검색 연관성이며 판매 확인은 아니에요.</p>
+    {results.partial&&<p role="status">일부 검색이 지연되어 확인된 식당만 보여드려요.</p>}
+    {filtered.length?<ul className="nearby-list">{filtered.slice(0,limit).map((p,index)=><li key={p.id} className={selected===p.id?'is-selected':undefined}>
+     <button type="button" className="nearby-place-select" aria-expanded={selected===p.id} aria-controls={`${id}-map-${p.id}`} onClick={()=>setSelected(selected===p.id?null:p.id)}><span><strong><span className="nearby-number">{index+1}</span>{p.name}</strong><small>{p.category}</small><span className="nearby-place-address">{p.address}</span></span><span className="nearby-place-pin">{selected===p.id?'지도 접기':'위치 보기'}<span aria-hidden="true"> {selected===p.id?'−':'⌖'}</span></span></button>
+     {p.match!=='nearby'&&<span className={`nearby-match-badge ${p.match}`}>{p.match==='menu'?'메뉴 검색':'비슷한 음식'} · {p.keyword}</span>}
+     {selected===p.id&&<div id={`${id}-map-${p.id}`} className="nearby-selected-map"><strong>{p.name} 위치</strong>{p.position?<RestaurantMap origin={null} places={selectedPlaces} onSelect={selectRestaurant}/>:<p>지도 좌표가 없어요. 아래 식당 정보에서 위치를 확인해 주세요.</p>}<div className="nearby-links"><a href={p.url} target="_blank" rel="noopener noreferrer">식당 정보·길찾기 ↗</a>{p.phone&&<a href={`tel:${p.phone.replace(/[^\d+]/g,'')}`}>전화</a>}</div><RestaurantContent name={p.name} address={p.address}/></div>}
+    </li>)}</ul>:<p>{filter==='all'?'이 지역에서 식당을 찾지 못했어요. 시 이름을 확인해 주세요.':'메뉴 관련 결과가 없어요. 식당 목록 탭에서 다른 식당을 골라보세요.'}</p>}
+    {filtered.length>limit&&<button className="nearby-more" type="button" onClick={()=>setLimit(n=>n+5)}>식당 더 보기 · {filtered.length-limit}곳 남음</button>}
+    <small className="nearby-source">장소 정보 · 카카오맵 / 지도 · 네이버. 검색 가능한 일부 식당을 보여줘요. 메뉴·가격·영업 여부는 방문 전 확인해 주세요.</small>
+   </>}
   </div>}
  </div>;
 }

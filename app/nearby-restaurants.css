@@ -105,3 +105,13 @@
 .nearby-preview-menus button{min-height:42px;border:1px solid #dce3cf;border-radius:22px;background:#fafcf5;padding:9px 14px;color:#516641;font:inherit;font-size:13px;cursor:pointer}
 .nearby-preview-menus button[aria-pressed=true]{background:#526d41;color:white}
 @media(max-width:480px){.nearby-body{padding:14px}.nearby-heading>strong{font-size:19px}.nearby-match-tabs{flex-basis:100%}.nearby-preview{padding:22px 12px 60px}.nearby-preview>h1{font-size:30px}}
+
+.nearby-city-options{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.nearby-body .nearby-city-options button{font-size:12px;padding:7px 12px;min-height:38px;border-radius:20px}
+.nearby-city-options button[aria-pressed=true]{background:#526d41;color:white}
+.nearby-body .nearby-place-select,.today-meals .nearby-body .nearby-place-select{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;border:0;padding:4px;background:transparent;text-align:left;color:#35472d}
+.nearby-place-select>span:first-child{min-width:0}.nearby-place-select strong{display:block;line-height:1.6}
+.nearby-place-address{display:block;margin-top:6px;font-size:12px;line-height:1.6;color:#727c67}
+.nearby-place-pin{flex-shrink:0;font-size:11px;color:#526d41}
+.nearby-selected-map{margin-top:14px;padding-top:14px;border-top:1px solid #e0e6d8;scroll-margin-top:20px}
+.nearby-selected-map>.restaurant-map{margin:10px 0}.nearby-selected-map>strong{font-size:13px}

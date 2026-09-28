@@ -33,7 +33,7 @@ export function RestaurantMap({origin,places,onSelect}:{origin:MapPoint|null;pla
   loadMaps().then(maps=>{
    if(!active||!node)return;
    const first=origin??places.find(p=>p.position)?.position;if(!first)return;
-   const center=new maps.LatLng(first.latitude,first.longitude),map=new maps.Map(node,{center,zoom:14});instance=map;mapRef.current={map,maps};
+   const center=new maps.LatLng(first.latitude,first.longitude),map=new maps.Map(node,{center,zoom:places.length===1&&!origin?16:14});instance=map;mapRef.current={map,maps};
    const bounds=new maps.LatLngBounds();let count=0;
    function marker(point:MapPoint,node:HTMLElement,zIndex:number){const pos=new maps.LatLng(point.latitude,point.longitude);bounds.extend(pos);count++;overlays.push(new maps.Marker({position:pos,icon:{content:node,anchor:new maps.Point(18,36)},map,zIndex}));}
    if(origin){const node=document.createElement('span');node.className='restaurant-map-me';node.textContent='내 위치';node.title='기기에서 확인한 대략적인 위치';marker(origin,node,10);}
@@ -43,5 +43,6 @@ export function RestaurantMap({origin,places,onSelect}:{origin:MapPoint|null;pla
   }).catch(e=>{if(active)setError(e instanceof Error?e.message:'지도를 불러오지 못했어요.');});
   return()=>{active=false;observer?.disconnect();overlays.forEach(o=>o.setMap(null));instance?.destroy();mapRef.current=null;node?.replaceChildren();};
  },[origin,places,onSelect]);
- return <div className="restaurant-map"><div ref={container} className="restaurant-map-canvas" role="region" aria-label={origin?'내 위치와 주변 식당 지도':'검색된 식당 지도'}/>{error?<p role="status">{error}</p>:!ready?<p role="status">지도를 불러오고 있어요…</p>:<p>{origin&&'파란 표시: 내 위치(추정) · '}번호: 아래 식당 목록{origin&&<button type="button" onClick={()=>{const current=mapRef.current;if(current)current.map.setCenter(new current.maps.LatLng(origin.latitude,origin.longitude));}}>내 위치로</button>}</p>}</div>;
+ return <div className="restaurant-map"><div ref={container} className="restaurant-map-canvas" role="region" aria-label={origin?'내 위치와 주변 식당 지도':'검색된 식당 지도'}/>{error?<p role="status">{error}</p>:!ready?<p role="status">지도를 불러오고 있어요…</p>:<p>{origin&&'파란 표시: 내 위치(추정) · '}{places.length===1?'선택한 식당 위치':'번호: 식당 목록'}{origin&&<button type="button" onClick={()=>{const current=mapRef.current;if(current)current.map.setCenter(new current.maps.LatLng(origin.latitude,origin.longitude));}}>내 위치로</button>}</p>}</div>;
 }
+
