@@ -29,7 +29,7 @@ export function MealAlternatives({index,ids,products,conditions,onChoose,disable
  const known=[...products,...alternatives];
  const current=basketTotal(ids.filter(Boolean),known,conditions.owned,conditions.supply,conditions.people);
  const original=products.find(p=>p.id===ids[index]);
- if(!alternatives.length)return <p className="meal-alternatives-empty">🥲 이 끼니에 바꿀 만한 다른 후보가 없어요. 조리 방식·제외 재료 설정을 확인해 주세요.</p>;
+ if(!alternatives.length)return <p className="meal-alternatives-empty">현재 조건에서 재료나 음식 종류가 비슷한 메뉴를 찾지 못했어요. 아래 ‘메뉴 직접 검색하기’에서 다른 음식을 골라보세요.</p>;
  return <div className="meal-alternatives">
   <p className="meal-alternatives-lead">🍽️ {original?'비슷한 메뉴를 골라 이 끼니만 바꿔요':'입맛에 맞는 메뉴를 골라보세요'}</p>
   <div className="meal-alternatives-list" aria-label="이 끼니의 다른 메뉴 후보">

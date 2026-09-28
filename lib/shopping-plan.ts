@@ -338,7 +338,9 @@ export function alternativesFor(products:PlanProduct[], ids:string[], c:PlanCond
   .filter(p=>!ids.some((id,i)=>i!==index&&cookingDishId(id)===cookingDishId(p.id)))
   .filter(p=>!repeatsDailyMain(ids,products,c,index,p))
   .filter(p=>basketTotal(ids.map((id,i)=>i===index?p.id:id).filter(Boolean),products,c.owned,c.supply,c.people)<=c.budget)
-  .map(p=>({p,similarity:original?mealSimilarity(original,p).score:0}))
+  .map(p=>({p,match:original?mealSimilarity(original,p):null}))
+  .filter(({match})=>!match||match.related)
+  .map(({p,match})=>({p,similarity:match?.score??0}))
   .sort((a,b)=>b.similarity-a.similarity||(b.p.personalizationScore??0)-(a.p.personalizationScore??0)||a.p.price/a.p.servings-b.p.price/b.p.servings)
   .filter(({p})=>{const key=`id:${cookingDishId(p.id)}`,name=`name:${dishWords(p)}`;if(seen.has(key)||seen.has(name))return false;seen.add(key);seen.add(name);return true;})
   .slice(0,limit).map(({p})=>p);

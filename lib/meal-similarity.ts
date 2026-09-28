@@ -7,17 +7,25 @@ const ingredients: [string,RegExp][] = [
  ['돼지고기',/돼지|제육|돈육|삼겹|목살/],['소고기',/소고기|쇠고기|소불고기|한우|비프/],
  ['새우',/새우|쉬림프/],['오징어',/오징어/],['고등어',/고등어/],['연어',/연어/],
  ['참치',/참치/],['버섯',/버섯/],['감자',/(?<!고구)감자/],['가지',/가지/],
+ ['북어·명태',/북어|황태|명태|동태|코다리/],['갈치',/갈치/],['삼치',/삼치/],
+ ['가자미',/가자미/],['오리',/오리/],['낙지',/낙지|주꾸미/],
 ];
-const styles = /볶음밥|비빔밥|덮밥|샌드위치|파스타|국수|찌개|조림|구이|볶음|찜|죽/;
+const styles = /볶음밥|비빔밥|덮밥|샌드위치|베이글|파스타|국수|찌개|조림|구이|볶음|찜|죽|국밥|곰탕|전골/;
+const fish=/북어|황태|명태|동태|코다리|고등어|갈치|삼치|가자미|조기|꽁치|연어|참치|장어|대구|아귀/;
+const bread=/베이글|샌드위치|토스트|햄버거|버거|빵|크루아상/;
 
 // Explain observable similarities, not a predicted taste or health benefit.
 export function mealSimilarity(current:PlanProduct,candidate:PlanProduct){
  const a=current.name.split(' + ')[0],b=candidate.name.split(' + ')[0];
  const reasons:string[]=[];let score=0;
+ // Nutrition or cooking effort alone must never qualify an unrelated dish.
+ if(bread.test(a)!==bread.test(b))return {score:0,related:false,reasons:[]};
  const shared=ingredients.find(([,pattern])=>pattern.test(a)&&pattern.test(b));
  if(shared){score+=100;reasons.push(`${shared[0]}를 활용한 다른 메뉴`);}
+ else if(fish.test(a)&&fish.test(b)){score+=70;reasons.push('생선을 활용한 다른 메뉴');}
  const style=a.match(styles)?.[0];
  if(style&&style===b.match(styles)?.[0]){score+=55;reasons.push(`같은 ${style} 종류`);}
+ const related=score>0;
  if(current.recipe&&candidate.recipe&&recipeEffort(current)===recipeEffort(candidate)){
   score+=20;reasons.push('비슷한 조리 부담');
  }
@@ -26,5 +34,5 @@ export function mealSimilarity(current:PlanProduct,candidate:PlanProduct){
  if(close(an.calories,bn.calories)&&close(an.protein,bn.protein)){
   score+=35;reasons.push('열량·단백질이 비슷해요');
  }
- return {score,reasons:reasons.length?reasons.slice(0,2):['현재 식단 조건에 맞는 대안']};
+ return {score,related,reasons:related?reasons.slice(0,2):[]};
 }

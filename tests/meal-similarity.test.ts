@@ -23,7 +23,7 @@ test('unknown nutrition and shared side dishes do not create similarity claims',
 });
 test('different side combinations do not fill the list with the same main dish',()=>{
  const a=dish('a','두부구이'),b=dish('b--sides-1','두부조림 + 오이무침'),d=dish('b--sides-2','두부조림 + 콩나물무침'),e=dish('e','달걀찜');
- assert.deepEqual(alternativesFor([a,b,d,e],['a'],c,0,3).map(p=>p.id),['b--sides-1','e']);
+ assert.deepEqual(alternativesFor([a,b,d,e],['a'],c,0,3).map(p=>p.id),['b--sides-1']);
 });
 test('over-budget, excluded and wrong-slot alternatives are removed before limit',()=>{
  const a=dish('a','두부구이');
@@ -31,7 +31,7 @@ test('over-budget, excluded and wrong-slot alternatives are removed before limit
  const expensive=dish('expensive','두부조림',{recipe:{...a.recipe!,ingredients:[{product:ingredient,packs:1,label:'재료'}]}});
  const excluded=dish('excluded','새우구이',{avoidanceText:'새우'});
  const breakfast=dish('breakfast','두부찜',{recipe:{...a.recipe!,slots:['breakfast']}});
- const allowed=dish('allowed','달걀찜');
+ const allowed=dish('allowed','두부볶음');
  assert.deepEqual(alternativesFor([a,expensive,excluded,breakfast,allowed],['a'],{...c,avoid:'새우'},0,3).map(p=>p.id),['allowed']);
 });
 test('existing meals are not returned as alternatives when fewer than three exist',async()=>{
@@ -46,4 +46,20 @@ test('existing meals are not returned as alternatives when fewer than three exis
   globalThis.fetch=async()=>new Response(JSON.stringify({alternativeIds:[],products:[a]}),{status:200});
   assert.deepEqual(await engine.alternatives(['a'],0,c,3),[]);
  }finally{globalThis.fetch=originalFetch;}
+});
+
+
+test('북어찜 alternatives prefer fish and never pad results with bagels or unrelated tofu',()=>{
+ const original=dish('original','북어찜');
+ const bagel=dish('bagel','베이글_베이글 플레인',{personalizationScore:9999});
+ const tofu=dish('tofu','초당순두부');
+ const grilled=dish('grilled','북어구이');
+ const otherFish=dish('fish','고등어조림');
+ assert.deepEqual(alternativesFor([original,bagel,tofu,otherFish,grilled],['original'],c,0,3).map(p=>p.id),['grilled','fish']);
+ assert.equal(mealSimilarity(original,bagel).related,false);
+ assert.equal(mealSimilarity(original,tofu).related,false);
+ assert.deepEqual(alternativesFor([original,bagel,tofu],['original'],c,0,3),[]);
+});
+test('shared meat does not bridge bread and cooked main dishes',()=>{
+ assert.equal(mealSimilarity(dish('a','닭구이'),dish('b','치킨샌드위치')).related,false);
 });
