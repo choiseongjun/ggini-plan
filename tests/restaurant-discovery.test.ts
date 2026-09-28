@@ -24,3 +24,20 @@ test('area searches prefer explicit restaurant names over indirect keyword hits'
  assert.equal(result[0].id,'2');
  assert.deepEqual(restaurantKeywords('처음보는음식'),['처음보는음식']);
 });
+import {surroundingRestaurantsUrl,withSurroundingRestaurants} from '../lib/restaurant-discovery';
+test('nearby restaurant discovery never uses the recommended menu as a restriction',()=>{
+ const url=new URL(surroundingRestaurantsUrl({menu:'북어찜',latitude:37.498,longitude:127.028,radius:3000},2));
+ assert.equal(url.pathname,'/v2/local/search/category.json');
+ assert.equal(url.searchParams.has('query'),false);
+ assert.equal(url.searchParams.get('category_group_code'),'FD6');
+ assert.equal(url.searchParams.get('page'),'2');
+ assert.equal(url.searchParams.get('radius'),'3000');
+ const area=new URL(surroundingRestaurantsUrl({menu:'북어찜',area:'강남역',radius:3000}));
+ assert.equal(area.searchParams.get('query'),'강남역 음식점');
+});
+test('zero menu matches still returns nearby restaurants and deduplicates overlapping pages',()=>{
+ const result=withSurroundingRestaurants([place('1',200),place('2',50),place('1',200)],[],true);
+ assert.deepEqual(result.map(p=>[p.id,p.match]),[['2','nearby'],['1','nearby']]);
+ const overlap=withSurroundingRestaurants([place('1',200)],[{...place('1',200),match:'menu',keyword:'북어찜'}],true);
+ assert.equal(overlap.length,1);assert.equal(overlap[0].match,'menu');
+});

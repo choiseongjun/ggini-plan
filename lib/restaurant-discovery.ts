@@ -1,6 +1,20 @@
-import type {NearbyRestaurant} from './nearby-restaurants';
+import {restaurantSearchParams,type NearbyRestaurant,type RestaurantSearch} from './nearby-restaurants';
 
-export type RestaurantMatch=NearbyRestaurant&{match:'menu'|'similar';keyword:string};
+export type RestaurantMatch=NearbyRestaurant&{match:'menu'|'similar'|'nearby';keyword:string};
+export function surroundingRestaurantsUrl(input:RestaurantSearch,page=1){
+ const params=restaurantSearchParams({...input,menu:'음식점'});
+ params.set('page',String(page));
+ if(input.latitude!==undefined){params.delete('query');return `https://dapi.kakao.com/v2/local/search/category.json?${params}`;}
+ return `https://dapi.kakao.com/v2/local/search/keyword.json?${params}`;
+}
+export function withSurroundingRestaurants(nearby:NearbyRestaurant[],matched:RestaurantMatch[],hasOrigin:boolean){
+ const matches=new Map(matched.map(place=>[place.id,place]));
+ const combined=new Map<string,RestaurantMatch>();
+ for(const place of nearby)combined.set(place.id,matches.get(place.id)??{...place,match:'nearby',keyword:''});
+ for(const place of matched)if(!combined.has(place.id))combined.set(place.id,place);
+ const results=[...combined.values()];
+ return hasOrigin?results.sort((a,b)=>(a.distance??Infinity)-(b.distance??Infinity)):results;
+}
 export function restaurantKeywords(menu:string){
  const main=menu.split(/\s*\+\s*/)[0].replace(/[_·]/g,' ').replace(/\([^)]*\)/g,'').trim();
  const rules:Array<[RegExp,string[]]>=[
@@ -15,7 +29,7 @@ export function restaurantKeywords(menu:string){
   [/샐러드|포케/,['샐러드','포케']],
   [/돈까스|돈가스|카츠/,['돈까스','일식']],
   [/국수|냉면|우동|칼국수/,['국수','면요리']],
-  [/고등어|갈치|가자미|생선/,['생선구이','생선요리']],
+  [/북어|황태|명태|동태|코다리|고등어|갈치|가자미|생선/,['생선구이','생선요리']],
   [/닭|치킨/,['닭요리','치킨']],
   [/피자/,['피자','이탈리안']],
   [/초밥|스시|회덮밥/,['초밥','일식']],
