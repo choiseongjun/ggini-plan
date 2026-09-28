@@ -5,7 +5,7 @@ export function parseRestaurantSearch(value:unknown):RestaurantSearch|null{
  if(!value||typeof value!=='object')return null;
  const v=value as Record<string,unknown>;
  if(typeof v.menu!=='string'||!v.menu.trim()||v.menu.length>60)return null;
- const radius=v.radius??3000;if(typeof radius!=='number'||![1000,3000,5000].includes(radius))return null;
+ const radius=v.radius??3000;if(typeof radius!=='number'||![1000,3000,5000,10000,20000].includes(radius))return null;
  if(v.area!==undefined){
   if(typeof v.area!=='string'||v.area.trim().length<2||v.area.length>60||v.latitude!==undefined||v.longitude!==undefined)return null;
   return {menu:v.menu.trim(),area:v.area.trim(),radius};

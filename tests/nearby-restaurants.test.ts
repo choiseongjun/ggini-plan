@@ -19,3 +19,11 @@ test('accepts food places only and builds trusted links instead of forwarding pr
  assert.equal(parseRestaurants({documents:[{...place,x:'',y:''}]},true)[0].position,null);
  assert.equal(parseRestaurants({documents:[{...place,x:'127',y:'999'}]},true)[0].position,null);
 });
+
+test('supports 20km nearby search and forwards the full radius to the provider',()=>{
+ const input=parseRestaurantSearch({menu:'북어찜',latitude:37.498,longitude:127.028,radius:20000});
+ assert.ok(input);
+ assert.equal(restaurantSearchParams(input).get('radius'),'20000');
+ assert.equal(restaurantSearchParams(input).get('sort'),'distance');
+ assert.equal(parseRestaurantSearch({...input,radius:20001}),null);
+});

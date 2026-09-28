@@ -115,3 +115,4 @@
 .nearby-place-pin{flex-shrink:0;font-size:11px;color:#526d41}
 .nearby-selected-map{margin-top:14px;padding-top:14px;border-top:1px solid #e0e6d8;scroll-margin-top:20px}
 .nearby-selected-map>.restaurant-map{margin:10px 0}.nearby-selected-map>strong{font-size:13px}
+.nearby-city-fallback{margin:16px 0;border-top:1px solid #e0e6d8;padding-top:12px}.nearby-city-fallback>summary{cursor:pointer;font-size:13px;color:#627651;padding:8px 0}.nearby-distance{font-weight:650;color:#506b40}
