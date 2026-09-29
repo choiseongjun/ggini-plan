@@ -83,7 +83,17 @@ export function repeatsDailyMain(ids:string[],products:PlanProduct[],c:PlanCondi
  const keys=mainIngredients(candidate);if(!keys.length)return false;
  return ids.some((id,i)=>{if(i===index||schedule[i]?.day!==slot.day||schedule[i]?.slot==='breakfast')return false;const other=productById(products,id);return !!other&&mainIngredients(other).some(key=>keys.includes(key));});
 }
-export function validMealIds(ids:string[],products:PlanProduct[],c:PlanConditions){return ids.length===c.meals&&new Set(ids.map(cookingDishId)).size===ids.length&&ids.every((id,i)=>{const p=slotCandidates(products,c,i).find(p=>p.id===id);return !!p&&!repeatsDailyMain(ids,products,c,i,p);});}
+export function validMealIds(ids:string[],products:PlanProduct[],c:PlanConditions){
+ if(ids.length!==c.meals||new Set(ids.map(cookingDishId)).size!==ids.length)return false;
+ const schedule=mealSchedule(c),bySlot=new Map<MealSlot,Map<string,PlanProduct>>();
+ return ids.every((id,i)=>{
+  const slot=schedule[i]?.slot;if(!slot)return false;
+  let allowed=bySlot.get(slot);
+  if(!allowed){allowed=new Map(slotCandidates(products,c,i).map(p=>[p.id,p]));bySlot.set(slot,allowed);}
+  const p=allowed.get(id);
+  return !!p&&!repeatsDailyMain(ids,products,c,i,p,schedule);
+ });
+}
 const aliases: Record<string,string[]> = {우유:['우유','유제품','치즈','크림'],달걀:['달걀','계란','알류'],계란:['달걀','계란','알류'],소고기:['소고기','쇠고기','한우','비프'],돼지고기:['돼지고기','돈육','베이컨','삼겹'],닭고기:['닭','치킨'],콩:['콩','대두','두부'],밀:['밀','소맥'],새우:['새우','쉬림프']};
 // 250kcal도 안 되는 흰죽·누룽지 같은 메뉴는 한 끼 후보에서 뺀다 (영양값이 확인된 경우에만).
 export function candidates(products: PlanProduct[], c: PlanConditions):PlanProduct[] {
@@ -143,9 +153,14 @@ export function mealFamily(p:PlanProduct){return p.recipe?.family??p.name.match(
 // "미역 된장국"과 "된장국_미역"처럼 단어 순서만 다른 같은 음식: 이름의 단어를 정렬해 비교한다.
 export function dishWords(p:PlanProduct){return (p.recipe?p.name.split(' + ')[0]:cookingDishId(p.id)).split(/[_\s]+/).filter(Boolean).sort().join('|');}
 const sameDish=(a:PlanProduct,b:PlanProduct)=>dishBase(a)===dishBase(b)||dishWords(a)===dishWords(b);
+const dishBases=new WeakMap<PlanProduct,{source:string;recipe:boolean;value:string}>();
 export function dishBase(p:PlanProduct){
+ const source=p.recipe?p.name:p.id,recipe=!!p.recipe,cached=dishBases.get(p);
+ if(cached?.source===source&&cached.recipe===recipe)return cached.value;
  const name=(p.recipe?p.name.split(' + ')[0]:cookingDishId(p.id)).split('_')[0].replace(/\s+/g,'');
- return /라면|용기면|컵라면/.test(name)?'라면':name;
+ const value=/라면|용기면|컵라면/.test(name)?'라면':name;
+ dishBases.set(p,{source,recipe,value});
+ return value;
 }
 const SEAFOOD=/가자미|고등어|갈치|조기|삼치|꽁치|연어|참치|명태|동태|코다리|황태|북어|임연수|넙치|광어|우럭|도미|민어|병어|장어|오징어|낙지|주꾸미|새우|굴|홍합|바지락|전복|꽃게|멸치|대구|아귀/;
 const MEAT_OR_EGG=/고기|돼지|소고기|쇠고기|닭|오리|햄|소시지|베이컨|육|갈비|삼겹|목살|달걀|계란|두부|해물|어묵|맛살|참치|돈까스|돈가스|까스/;
@@ -292,12 +307,12 @@ export function recommendShopping(products: PlanProduct[], c: PlanConditions, ch
  if(new Set(pool.map(p=>cookingDishId(p.id))).size<c.meals)return null;
  const previous=new Set(previousIds);
  const previousFamilies=new Set(pool.filter(p=>previous.has(p.id)).map(mealFamily));
- const baseOf=new Map(pool.map(p=>[p.id,dishBase(p)])),wordsOf=new Map(pool.map(p=>[p.id,dishWords(p)]));
+ const baseOf=new Map(pool.map(p=>[p.id,dishBase(p)])),wordsOf=new Map(pool.map(p=>[p.id,dishWords(p)])),dishIds=new Map(pool.map(p=>[p.id,cookingDishId(p.id)]));
  let states: {ids:string[];cost:number;score:number}[]=[{ids:[],cost:0,score:0}];
  for(let i=0;i<c.meals;i++){
   const next=new Map<string,{ids:string[];cost:number;score:number}>();
   for(const state of states)for(const p of options[i]){
-   if(state.ids.some(id=>cookingDishId(id)===cookingDishId(p.id)))continue;
+   if(state.ids.some(id=>dishIds.get(id)===dishIds.get(p.id)))continue;
    // 같은 음식의 변형(라면_김치·라면_떡…)은 한 식단에 한 번만.
    if(state.ids.some(id=>baseOf.get(id)===baseOf.get(p.id)||wordsOf.get(id)===wordsOf.get(p.id)))continue;
    if(repeatsDailyMain(state.ids,pool,c,i,p,schedule))continue;

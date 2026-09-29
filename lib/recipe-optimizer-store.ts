@@ -3,6 +3,7 @@ import {getPool} from './db';
 import {reviewedRecipeImages} from './reviewed-recipe-images';
 import type {GeneratedRecipe} from './recipe-optimizer';
 import type {AiIngredient} from './recipe-ai-ingredients';
+import {complexPreparationSteps} from './cooking-effort';
 
 export type StoredRecipeResult = GeneratedRecipe & {foodCode: string; menuQuality: MenuQuality; createdAt: string; imageUrl: string | null; imageUrls: string[] | null; aiIngredients: {ingredients: AiIngredient[]; note: string} | null; source: string};
 
@@ -17,8 +18,13 @@ export async function saveRecipeOptimizerResult(foodCode: string, recipe: Genera
  );
 }
 
-export async function listRecipeOptimizerResults(): Promise<StoredRecipeResult[]> {
- const {rows} = await getPool().query('SELECT * FROM recipe_optimizer_results ORDER BY created_at DESC');
+export async function listRecipeOptimizerResults(compact=false): Promise<StoredRecipeResult[]> {
+ const columns=compact?`food_code,target_name,target_basis_amount,template_id,template_name,total_grams,
+ ingredients,target,predicted,error,score,created_at,source,
+ NULL::text AS image_url,NULL::jsonb AS image_urls,
+ CASE WHEN ai_ingredients IS NULL THEN NULL ELSE jsonb_build_object('ingredients',ai_ingredients->'ingredients','note',
+ CASE WHEN ai_ingredients->>'note' ~ '${complexPreparationSteps.source}' THEN '반죽' ELSE '' END) END AS ai_ingredients`:'*';
+ const {rows} = await getPool().query(`SELECT ${columns} FROM recipe_optimizer_results ORDER BY created_at DESC`);
  return rows.map((r) => {
  const quality=menuQuality(r.food_code,r.target_name,r.ai_ingredients?.ingredients??[]);
  return ({

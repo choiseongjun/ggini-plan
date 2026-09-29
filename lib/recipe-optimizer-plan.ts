@@ -174,7 +174,11 @@ const SIDE_SERVING_GRAMS = 80;
 
 // kind='side': 메인 옆에 곁들이는 밑반찬(역할 side) — "밑반찬 추천"에 쓴다. 밥은 붙이지 않는다.
 export async function governmentOptimizedRecipeProducts(kind: 'meal' | 'side' = 'meal'): Promise<PlanProduct[]> {
- const results = (await listRecipeOptimizerResults()).filter(r=>qualityAllowsRecommendation(r.menuQuality));
+ return recipeProductsFromResults(await listRecipeOptimizerResults(),kind);
+}
+
+export function recipeProductsFromResults(source:StoredRecipeResult[],kind:'meal'|'side'='meal'):PlanProduct[]{
+ const results = source.filter(r=>qualityAllowsRecommendation(r.menuQuality));
  const packs = canonicalPacks(results);
  const now = new Date().toISOString();
  // 김치/나물 자체는 반찬이지 "한 끼"가 아니다 — 위 두 풀로 다른 요리의 밑반찬 재료로는 계속 쓰지만,

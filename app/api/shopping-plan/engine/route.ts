@@ -1,6 +1,8 @@
 import {after, NextRequest, NextResponse} from 'next/server';
 import {sessionUser, sameOrigin, authFailure} from '../../../../lib/auth';
 import {loadPlanCatalog, pickProducts} from '../../../../lib/plan-service';
+import {cachedRecommendationProducts} from '../../../../lib/recommendation-catalog-cache';
+import {hydrateRecommendationProducts} from '../../../../lib/recommendation-catalog';
 import {todayContext} from '../../../../lib/today-context-server';
 import {shoppingAvailabilityMessage} from '../../../../lib/shopping-availability';
 import {pickerItems} from '../../../../lib/plan-picker';
@@ -34,7 +36,7 @@ export async function POST(request: NextRequest) {
   if (input.conditions !== undefined && !conditions) return authFailure('챙길 끼니와 조건을 확인해 주세요.', 400);
   if (input.action === 'products' && !validIds(input.ids, true)) return authFailure('메뉴를 확인해 주세요.', 400);
   // Restoring a plan only needs its chosen meals, not scores for every recipe.
-  const catalog = await loadPlanCatalog(user?.id, input.action === 'products' ? input.ids as string[] : undefined);
+  const catalog = await loadPlanCatalog(user?.id, input.action === 'products' ? input.ids as string[] : undefined,input.action==='recommend'?cachedRecommendationProducts:undefined);
   const {products} = catalog;
   const today = async () => user ? await todayContext(user.id, products, catalog.personalization, catalog.health).catch(() => null) : null;
   const slotIndex = (c: PlanConditions) => typeof input.index === 'number' && Number.isInteger(input.index) && input.index >= 0 && input.index < c.meals ? input.index : null;
@@ -55,7 +57,7 @@ export async function POST(request: NextRequest) {
     const ids = recommendShopping(products, c, false, previous, seed, context);
     if (!ids) return authFailure('현재 조건으로는 중복 없는 식단을 채울 수 없어요. 끼니 수를 줄이거나 요리 수준·식단 목표·제외 재료·재료비 상한을 조정해 주세요.', 422);
     if (user) after(() => logRecommendations(user.id, c, ids, 'recommend'));
-    return json({ids, products: pickProducts(products, ids), today: context, personalization: catalog.personalization});
+    return json({ids, products: await hydrateRecommendationProducts(pickProducts(products, ids)), today: context, personalization: catalog.personalization});
    }
    case 'swap': {
     const c = conditions, ids = input.ids;

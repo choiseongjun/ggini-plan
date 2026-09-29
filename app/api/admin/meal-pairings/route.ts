@@ -6,6 +6,8 @@ import {governmentOptimizedRecipeProducts} from '../../../../lib/recipe-optimize
 import {composePairing,proposePairings,templates} from '../../../../lib/meal-pairings';
 import {listPairings,savePairingProposals} from '../../../../lib/meal-pairing-store';
 import {clearPlanCatalog} from '../../../../lib/shopping-plan-catalog';
+import {revalidateTag} from 'next/cache';
+import {RECOMMENDATION_CATALOG_TAG} from '../../../../lib/recommendation-catalog';
 import {servingNutrients} from '../../../../lib/serving-nutrients';
 import roles from '../../../../data/dish-roles.json';
 export const maxDuration=60;
@@ -54,6 +56,6 @@ export async function PATCH(request:NextRequest){
   if(available&&old.relation_type==='pairing'&&(!available[0].some(p=>p.id===old.anchor_id&&p.recipe?.ingredients.some(i=>i.label.startsWith('함께 먹는 밥')))||!available[1].some(p=>p.id===old.companion_id))){await client.query('ROLLBACK');return json({error:'현재 사용할 수 없는 메뉴예요. 분류와 재료를 확인해 주세요.'},422);}
   const updated=(await client.query('UPDATE meal_pairing_relations SET status=$2,score=$3,reason=$4,reviewed_by=$5,updated_at=now() WHERE id=$1 RETURNING *',[input.id,input.status,input.score,input.reason.trim(),user.id])).rows[0];
   await client.query('INSERT INTO meal_pairing_audit(relation_id,actor,before_data,after_data) VALUES($1,$2,$3,$4)',[input.id,user.id,JSON.stringify(old),JSON.stringify(updated)]);
-  await client.query('COMMIT');clearPlanCatalog();return json({saved:true});
+  await client.query('COMMIT');clearPlanCatalog();revalidateTag(RECOMMENDATION_CATALOG_TAG,{expire:0});return json({saved:true});
  }catch{await client.query('ROLLBACK');return json({error:'저장하지 못했어요.'},503);}finally{client.release();}
 }
