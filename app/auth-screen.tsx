@@ -29,7 +29,9 @@ export function AuthScreen({ onSuccess, onExplore, initialError = "", admin = fa
     const label=kind==='apple'?'Apple':'Google';
     setSocialName(label);
     const bridge=(window as Window & {ReactNativeWebView?:{postMessage:(message:string)=>void}}).ReactNativeWebView;
-    if(bridge&&kind==='google'){bridge.postMessage(JSON.stringify({type:'ggini-google-login'}));return;}
+    // Keep the existing bridge message for older builds. The system-browser login
+    // screen supports both providers; Apple must not open a popup inside WKWebView.
+    if(bridge){bridge.postMessage(JSON.stringify({type:'ggini-google-login',provider:kind}));return;}
     if (mode === 'register' && !consentComplete) { setError('회원가입 필수 동의 항목을 확인해 주세요.'); return; }
     setSocialPending(true);
     setError("");

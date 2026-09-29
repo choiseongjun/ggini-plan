@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { Icon } from './app-shell';
+import {isNativeApp} from '../lib/native-environment';
 import './install-prompt.css';
 
 type InstallEvent = Event & {
@@ -25,7 +26,7 @@ export function InstallPrompt({ active }: { active: boolean }) {
     const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
     const isEmbedded = /KAKAOTALK|NAVER|Instagram|FBAN|FBAV|Line\/|; wv\)/i.test(navigator.userAgent);
     const suppressed = () => {
-      if (isStandalone()) return true;
+      if (isStandalone() || isNativeApp(window,navigator.userAgent)) return true;
       try {
         return Number(localStorage.getItem(dismissalKey)) > Date.now() || sessionStorage.getItem(installedKey) === '1';
       } catch { return false; }
@@ -36,6 +37,7 @@ export function InstallPrompt({ active }: { active: boolean }) {
     }, 0);
     const beforeInstall = (event: Event) => {
       event.preventDefault();
+      if(isNativeApp(window,navigator.userAgent))return;
       installEvent.current = event as InstallEvent;
       setMode('native');
       setHidden(suppressed());
@@ -46,18 +48,21 @@ export function InstallPrompt({ active }: { active: boolean }) {
       try { sessionStorage.setItem(installedKey, '1'); } catch { /* Storage can be disabled. */ }
     };
     const displayChanged = () => { if (isStandalone()) installed(); };
+    const nativeReady=()=>{if(isNativeApp(window,navigator.userAgent)){installEvent.current=null;setMode(null);setHidden(true);setInstructions(false);}};
     const storageChanged = (event: StorageEvent) => {
       if (event.key === dismissalKey) setHidden(suppressed());
     };
     window.addEventListener('beforeinstallprompt', beforeInstall);
     window.addEventListener('appinstalled', installed);
     window.addEventListener('storage', storageChanged);
+    window.addEventListener('ggini-native-ready',nativeReady);
     standalone.addEventListener('change', displayChanged);
     return () => {
       window.clearTimeout(initialize);
       window.removeEventListener('beforeinstallprompt', beforeInstall);
       window.removeEventListener('appinstalled', installed);
       window.removeEventListener('storage', storageChanged);
+      window.removeEventListener('ggini-native-ready',nativeReady);
       standalone.removeEventListener('change', displayChanged);
     };
   }, []);
