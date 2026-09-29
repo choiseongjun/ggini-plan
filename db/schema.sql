@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS body_profiles (
 ALTER TABLE users ALTER COLUMN password_hash DROP NOT NULL;
 
 CREATE TABLE IF NOT EXISTS oauth_accounts (
-  provider TEXT NOT NULL CHECK (provider = 'google'),
+  provider TEXT NOT NULL CHECK (provider IN ('google', 'apple')),
   provider_subject TEXT NOT NULL,
   user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),

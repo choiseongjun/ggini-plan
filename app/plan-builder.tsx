@@ -1,4 +1,6 @@
 'use client';
+import {shoppingBudgetLimit} from '../lib/shopping-plan';
+
 import {useState} from 'react';
 import {ProductThumb} from './product-thumb';
 import {MealAlternatives} from './meal-alternatives';
@@ -17,7 +19,7 @@ export function PlanBuilder({ids,products,conditions,onChoose,disabled}:{ids:str
  const complete=ids.every(Boolean)&&validMealIds(ids,products,conditions);
  return <section className="plan-builder" aria-label="직접 식단 만들기">
   <header className="plan-builder-head"><strong>🛠 직접 식단 만들기</strong><p>끼니마다 원하는 메뉴를 직접 골라요 · {filledCount}/{conditions.meals}끼 완료</p></header>
-  <div className="plan-builder-total"><span>지금까지 예상 금액</span><strong>{won(total)}</strong><small>{total>conditions.budget?`예산보다 ${won(total-conditions.budget)} 많아요`:`예산에서 ${won(conditions.budget-total)} 남아요`}</small></div>
+  <div className="plan-builder-total"><span>지금까지 예상 금액</span><strong>{won(total)}</strong><small>{conditions.budgetUnlimited?'가격 제한 없음':total>shoppingBudgetLimit(conditions)?`예산보다 ${won(total-conditions.budget)} 많아요`:`예산에서 ${won(conditions.budget-total)} 남아요`}</small></div>
   {Array.from({length:days},(_,i)=>i+1).map(day=><section className="plan-builder-day" key={day}><h3>🌱 {day}일차</h3>
    {schedule.flatMap((s,index)=>s.day===day?[{slot:s.slot,index}]:[]).map(({slot,index})=>{
     const product=products.find(p=>p.id===ids[index]);

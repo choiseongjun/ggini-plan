@@ -28,7 +28,8 @@ export function validMealSideCounts(value:unknown):value is MealSideCounts{
 export function sideCountFor(c:Pick<PlanConditions,'sideCount'|'mealSideCounts'>,slot:MealSlot){return c.mealSideCounts?.[slot]??c.sideCount??0;}
 export const MAX_PLAN_DAYS=15;
 export const MAX_PLAN_MEALS=MAX_PLAN_DAYS*3;
-export type PlanConditions = { cookingEffort?:CookingEffort; people?:number; sideCount?:number; mealSideCounts?:MealSideCounts; mealCountMode?:boolean; swapPreferences?:SwapPreference[]; budgetMode?:BudgetMode; mealKinds?:MealKind[]; goal?:ShoppingGoal; mealMode?:'ready'|'cook'|'mixed'; excluded?:ExcludedFood[]; startDate?:string; budget: number; meals: number; cooking: 'quick' | 'kit' | 'all'; avoid: string; owned: string[]; supply?:Record<string,number>; days?:number; slots?:MealSlot[] };
+export type PlanConditions = { budgetUnlimited?:boolean; mealCostCap?:number; cookingEffort?:CookingEffort; people?:number; sideCount?:number; mealSideCounts?:MealSideCounts; mealCountMode?:boolean; swapPreferences?:SwapPreference[]; budgetMode?:BudgetMode; mealKinds?:MealKind[]; goal?:ShoppingGoal; mealMode?:'ready'|'cook'|'mixed'; excluded?:ExcludedFood[]; startDate?:string; budget: number; meals: number; cooking: 'quick' | 'kit' | 'all'; avoid: string; owned: string[]; supply?:Record<string,number>; days?:number; slots?:MealSlot[] };
+export const shoppingBudgetLimit=(c:PlanConditions)=>c.budgetUnlimited?Infinity:c.budget;
 export const initialConditions: PlanConditions = {cookingEffort:'easy',people:1,sideCount:0,mealMode:'mixed',budget:50000,meals:7,cooking:'all',avoid:'',owned:[],days:7,slots:['dinner']};
 // New Korean home recommendations cover every meal; legacy saved plans keep their schedule.
 export const initialHomeConditions:PlanConditions={...initialConditions,mealSideCounts:{breakfast:0,lunch:1,dinner:2},days:7,meals:21,slots:['breakfast','lunch','dinner']};
@@ -47,6 +48,8 @@ export function parseConditions(value: unknown): PlanConditions | null {
  if(p.mealCountMode&&(p.days===undefined||p.slots===undefined))return null;
  if(p.swapPreferences!==undefined&&!validSwapPreferences(p.swapPreferences))return null;
  if(p.mealKinds!==undefined&&!validMealKinds(p.mealKinds))return null;
+ if(p.mealCostCap!==undefined&&(!Number.isSafeInteger(p.mealCostCap)||p.mealCostCap<500||p.mealCostCap>50000))return null;
+ if(p.budgetUnlimited!==undefined&&typeof p.budgetUnlimited!=='boolean')return null;
  if(p.budgetMode!==undefined&&!isBudgetMode(p.budgetMode))return null;
  if(p.goal!==undefined&&!isShoppingGoal(p.goal))return null;
  if(p.mealMode!==undefined&&!['ready','cook','mixed'].includes(p.mealMode))return null;
@@ -90,7 +93,7 @@ export function candidates(products: PlanProduct[], c: PlanConditions):PlanProdu
   return products.filter(p=>allowed.has(p.id));
  }
  const avoid=c.avoid.split(/[,，\n]/).map(x=>x.trim().toLowerCase()).filter(Boolean);
- return products.filter(p=>allowsCookingEffort(p,c.cookingEffort)&&(!p.recipe||p.recipe.assembly||(p.recipe.sideCount??0)===(c.sideCount??0))&&mealRole(p)==='meal'&&hasGoalNutrition(p,c.goal)&&allowsMealKind(p,c.mealKinds)&&allowsExcludedFoods(p,c.excluded??[])&&(p.productUrl||p.recipe) && p.price>0 && !(typeof p.servingCalories==='number'&&p.servingCalories<(p.recipe?.slots.every(s=>s==='breakfast')?120:250)) && !(p.recipe&&/(소스|양념장|드레싱)$/.test(p.name.split('_')[0])) && ((c.mealMode??'ready')==='mixed'||((c.mealMode??'ready')==='cook'?!!p.recipe&&!p.recipe.assembly:!p.recipe||!!p.recipe.assembly)) && (!!p.recipe&&!p.recipe.assembly||c.cooking==='all'||(c.cooking==='kit'?p.category==='meal_kit':p.category!=='meal_kit')) && (!avoid.length || (p.avoidanceText!==null && !avoid.some(word=>(aliases[word]??[word]).some(a=>`${p.name} ${p.avoidanceText}`.toLowerCase().includes(a))))));
+ return products.filter(p=>(c.mealCostCap===undefined||p.price/(p.recipe?1:p.servings)<=c.mealCostCap)&&allowsCookingEffort(p,c.cookingEffort)&&(!p.recipe||p.recipe.assembly||(p.recipe.sideCount??0)===(c.sideCount??0))&&mealRole(p)==='meal'&&hasGoalNutrition(p,c.goal)&&allowsMealKind(p,c.mealKinds)&&allowsExcludedFoods(p,c.excluded??[])&&(p.productUrl||p.recipe) && p.price>0 && !(typeof p.servingCalories==='number'&&p.servingCalories<(p.recipe?.slots.every(s=>s==='breakfast')?120:250)) && !(p.recipe&&/(소스|양념장|드레싱)$/.test(p.name.split('_')[0])) && ((c.mealMode??'ready')==='mixed'||((c.mealMode??'ready')==='cook'?!!p.recipe&&!p.recipe.assembly:!p.recipe||!!p.recipe.assembly)) && (!!p.recipe&&!p.recipe.assembly||c.cooking==='all'||(c.cooking==='kit'?p.category==='meal_kit':p.category!=='meal_kit')) && (!avoid.length || (p.avoidanceText!==null && !avoid.some(word=>(aliases[word]??[word]).some(a=>`${p.name} ${p.avoidanceText}`.toLowerCase().includes(a))))));
 }
 // id → 메뉴 색인. 추천 탐색이 장보기 금액을 수십만 번 계산하는데, 매번 1,000개가 넘는 메뉴를
 // 처음부터 훑던 find()가 추천 시간(약 9초)의 대부분이었다. 같은 배열이면 색인을 재사용한다.
@@ -128,9 +131,8 @@ export function purchaseBasket(ids:string[],products:PlanProduct[],owned:string[
  }
  return [...rows.values()].map(({product,required})=>{const have=owned.includes(product.id),available=supply[product.id]??0;
   const packs=have?0:Math.ceil(Math.max(0,required-available-0.000001));
-  // 요리 재료는 통째로 산 포장값이 아니라 실제로 쓰는 양(g)만큼만 비용으로 잡는다. 몇 개를 사야 하는지(packs)는
-  // 장보기 목록용으로 그대로 두고, 식단 비용·예산은 사용량 기준. 완제품(간편식 등)은 여전히 포장 단위.
-  const cost=have?0:product.category==='ingredient'?Math.round(Math.max(0,required-available)*product.price):packs*product.price;
+  // 추가 구매금액은 보유량을 뺀 뒤 판매 묶음으로 올림한다. 한 끼 사용량 기준 재료비는 메뉴의 price로 별도 표시한다.
+  const cost=packs*product.price;
   return {product,required:have?0:required,have,packs,cost,left:have?0:Math.max(0,available+packs-required)};
  });
 }
@@ -247,7 +249,7 @@ function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,
  // than defaulting to whichever pre-made item happens to be in the catalog.
  const cooked=ids.filter(id=>products.get(id)?.recipe).length*120;
  return cooked+reuse+rows.length*300-feedback-ids.filter(id=>previous.has(id)).length*900-ids.filter(id=>previousFamilies.has(mealFamily(products.get(id)!))).length*200+families.size*150-repeats*350-familyRepeats*40-baseRepeats*900-instant*400-light*300-sideLike*450-seafoodRepeats*500-batterOnly*500-meatOverflow*600-breakfastMix*350-repetition
-  -rows.reduce((n,r)=>n+r.left,0)*100-waste/300-rows.reduce((n,r)=>n+r.cost,0)/c.budget*(c.budgetMode==='save'?2000:c.budgetMode==='full'?-100:100)+fit+(context?contextScore(ids,products,schedule,context):0);
+  -rows.reduce((n,r)=>n+r.left,0)*100-waste/300-rows.reduce((n,r)=>n+r.cost,0)/shoppingBudgetLimit(c)*(c.budgetMode==='save'?2000:c.budgetMode==='full'?-100:100)+fit+(context?contextScore(ids,products,schedule,context):0);
 }
 // costCache: 메뉴 한 개의 장보기 금액은 끼니와 무관하다 — 끼니마다 다시 계산하면 메뉴가 많을 때 느려진다(21끼 8.6초).
 function diverseOptions(products:PlanProduct[],previous:string[],conditions:PlanConditions,limit=80,costCache=new Map<string,number>()){
@@ -300,7 +302,7 @@ export function recommendShopping(products: PlanProduct[], c: PlanConditions, ch
    if(state.ids.some(id=>baseOf.get(id)===baseOf.get(p.id)||wordsOf.get(id)===wordsOf.get(p.id)))continue;
    if(repeatsDailyMain(state.ids,pool,c,i,p,schedule))continue;
    const ids=[...state.ids,p.id], rows=basket(ids,pool,c.owned,c.supply,c.people), cost=rows.reduce((n,r)=>n+r.cost,0);
-   if(cost>c.budget)continue;
+   if(cost>shoppingBudgetLimit(c))continue;
    // Preserve the current day's order and the previous meal when merging states.
    const dayStart=schedule.findIndex(s=>s.day===schedule[i].day);
    const key=JSON.stringify([[...ids].sort(),ids.slice(Math.max(0,dayStart-1))]);
@@ -323,7 +325,7 @@ export function swapMeal(ids:string[], index:number, products:PlanProduct[], c:P
   reason==='price'?basketTotal(ids.map((id,i)=>i===index?p.id:id),products,c.owned,c.supply,c.people)<basketTotal(ids,products,c.owned,c.supply,c.people):
   reason==='effort'?(p.recipe?.minutes??(p.category==='meal_kit'?20:5))<(old.recipe?.minutes??(old.category==='meal_kit'?20:5)):
   reason==='repeat'?mealFamily(p)!==mealFamily(old):true
- )).map(p=>ids.map((id,i)=>i===index?p.id:id)).filter(next=>basketTotal(next,products,c.owned,c.supply,c.people)<=c.budget);
+ )).map(p=>ids.map((id,i)=>i===index?p.id:id)).filter(next=>basketTotal(next,products,c.owned,c.supply,c.people)<=shoppingBudgetLimit(c));
  const schedule=mealSchedule(c);
  options.sort((a,b)=>planScore(b,basket(b,products,c.owned,c.supply,c.people),c,schedule,undefined,undefined,context)-planScore(a,basket(a,products,c.owned,c.supply,c.people),c,schedule,undefined,undefined,context));
  return options[0]??null;
@@ -337,7 +339,7 @@ export function alternativesFor(products:PlanProduct[], ids:string[], c:PlanCond
   .filter(p=>cookingDishId(p.id)!==current)
   .filter(p=>!ids.some((id,i)=>i!==index&&cookingDishId(id)===cookingDishId(p.id)))
   .filter(p=>!repeatsDailyMain(ids,products,c,index,p))
-  .filter(p=>basketTotal(ids.map((id,i)=>i===index?p.id:id).filter(Boolean),products,c.owned,c.supply,c.people)<=c.budget)
+  .filter(p=>basketTotal(ids.map((id,i)=>i===index?p.id:id).filter(Boolean),products,c.owned,c.supply,c.people)<=shoppingBudgetLimit(c))
   .map(p=>({p,match:original?mealSimilarity(original,p):null}))
   .filter(({match})=>!match||match.related)
   .map(({p,match})=>({p,similarity:match?.score??0}))

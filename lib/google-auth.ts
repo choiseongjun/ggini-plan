@@ -83,17 +83,17 @@ export function googleIdentity(payload: TokenPayload | undefined, expectedNonce:
   };
 }
 
-export async function googleUser(identity: ReturnType<typeof googleIdentity>, consent?: unknown): Promise<PublicUser> {
+export async function googleUser(identity: ReturnType<typeof googleIdentity>, consent?: unknown, provider: 'google' | 'apple' = 'google'): Promise<PublicUser> {
   const db = await getPool().connect();
   const findAccount = () => db.query<PublicUser>(
     `SELECT u.id::text AS id, u.name, u.email FROM users u
-     JOIN oauth_accounts a ON a.user_id = u.id WHERE a.provider = 'google' AND a.provider_subject = $1`,
-    [identity.subject],
+     JOIN oauth_accounts a ON a.user_id = u.id WHERE a.provider = $2 AND a.provider_subject = $1`,
+    [identity.subject, provider],
   );
   try {
     await db.query("BEGIN");
-    // Serialize simultaneous callbacks for the same Google identity.
-    await db.query("SELECT pg_advisory_xact_lock(hashtextextended($1, 0))", [`google:${identity.subject}`]);
+    // Serialize simultaneous callbacks for the same provider identity.
+    await db.query("SELECT pg_advisory_xact_lock(hashtextextended($1, 0))", [`${provider}:${identity.subject}`]);
     const existing = (await findAccount()).rows[0];
     if (existing) { await db.query("COMMIT"); return existing; }
     if (!validMemberConsent(consent)) throw new GoogleAuthError('google_consent_required');
@@ -104,9 +104,9 @@ export async function googleUser(identity: ReturnType<typeof googleIdentity>, co
       [identity.name, identity.email, consent.version],
     );
     const user = result.rows[0];
-    // Email alone must never attach a Google identity to an existing account.
+    // Email alone must never attach a social identity to an existing account.
     if (!user) throw new GoogleAuthError("google_account_exists");
-    await db.query("INSERT INTO oauth_accounts (provider, provider_subject, user_id) VALUES ('google', $1, $2)", [identity.subject, user.id]);
+    await db.query("INSERT INTO oauth_accounts (provider, provider_subject, user_id) VALUES ($3, $1, $2)", [identity.subject, user.id, provider]);
     await db.query("COMMIT");
     return user;
   } catch (error) {

@@ -19,8 +19,8 @@ test('selected ingredient offer updates pack costs, consumption and restoration'
  const veg=changed.recipe!.ingredients.find(i=>i.product.id===offer.id)!;
  assert.equal(veg.packs,120/500);
  assert.equal(changed.price,Math.round(2000+1100+6990*120/500));
- assert.equal(basketTotal([changed.id],all,[]),changed.price,'meal cost counts only the amount used');
- assert.equal(basketTotal([changed.id],all,[],{[offer.id]:.24}),2000+1100);
+ assert.equal(basketTotal([changed.id],all,[]),2000+2200+6990,'checkout includes whole selling packs');
+ assert.equal(basketTotal([changed.id],all,[],{[offer.id]:.24}),2000+2200);
  const stock=Object.fromEntries(changed.recipe!.ingredients.map(({product:p})=>[p.id,{id:p.id,name:p.name,unit:'묶음',url:p.productUrl,ordered:0,owned:1}]));
  const consumed=consumeFood(stock,changed,1);
  assert.equal(consumed.stock[offer.id].owned,.76);
@@ -43,7 +43,8 @@ test('multiple ingredient selections persist together; eggs use counts rather th
  assert.equal(parts.find(i=>i.product.id===tofuOffer.id)!.packs,150/500);
  assert.equal(combined.recipe!.nutrition.calories,null,'shell weight is not edible weight');
  assert.equal(purchaseBasket([combined.id],all,[]).length,3);
- assert.ok(Math.abs(basketTotal([combined.id],all,[])-combined.price)<=2,'usage-based cost matches the recipe price');
+ assert.equal(basketTotal([combined.id],all,[]),9000,'three 3000-won selling packs are needed');
+ assert.equal(combined.price,Math.round(3000*(105/1680+2/10+150/500)),'meal price still reflects consumption');
  const restored=cookingProducts([...catalog,...fixtures]).find(p=>p.id===combined.id);
  assert.deepEqual(restored,combined);
  const alternateRice=alternatives.groups.find(g=>g.baseId==='rice')!.offers[1];
@@ -54,7 +55,7 @@ test('two recipes share selling packs and preserve fractional leftovers',()=>{
  assert.equal(rows.find(r=>r.product.id==='rice')?.packs,2);
  assert.equal(rows.find(r=>r.product.id==='kurly-5036690')?.packs,1);
  assert.equal(rows.find(r=>r.product.id==='kurly-5036690')?.left,0.6);
- assert.equal(basketTotal(ids,products,[]),rows.reduce((sum,r)=>sum+Math.round(r.required*r.product.price),0));
+ assert.equal(basketTotal(ids,products,[]),rows.reduce((sum,r)=>sum+r.packs*r.product.price,0));
  assert.equal(basketTotal(ids,products,[],{'rice':2,'tofu':0.5,'eggs':0.1,'kurly-5036690':0.4}),0);
  assert.equal(purchaseBasket(ids,products,[],{}, {[tofu.id]:0,[egg.id]:0}).length,0);
 });

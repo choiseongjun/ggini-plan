@@ -1,4 +1,6 @@
 'use client';
+import {shoppingBudgetLimit} from '../lib/shopping-plan';
+
 
 import {useDeferredValue,useEffect,useId,useRef,useState} from 'react';
 import {mealSchedule,slotLabels,type PlanConditions,type PlanProduct} from '../lib/shopping-plan';
@@ -61,7 +63,7 @@ export function MenuPickerModal({index,ids,conditions,onChoose,onClose,disabled}
  const current=data?.current??0;
  const pickedItem=picked&&all?all.find(x=>x.p.id===picked)??null:null;
  const pickedTotal=pickedItem?pickedItem.total:null;
- const overBudget=pickedTotal!==null&&pickedTotal>conditions.budget;
+ const overBudget=pickedTotal!==null&&pickedTotal>shoppingBudgetLimit(conditions);
  const close=()=>{setPicked(null);setQuery('');setCategory('all');setShown(PAGE);onClose();};
 
  return <dialog ref={dialog} className="menu-picker" aria-labelledby={titleId} onCancel={e=>{e.preventDefault();close();}} onClick={e=>{if(e.target===e.currentTarget)close();}}>

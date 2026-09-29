@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { authFailure, createSession } from "../../../../lib/auth";
-import { firebaseAdminAuth, firebaseGoogleIdentity } from "../../../../lib/firebase-server";
+import { firebaseAdminAuth, firebaseGoogleIdentity, firebaseAppleIdentity } from "../../../../lib/firebase-server";
 import { appOrigin, GoogleAuthError, googleUser } from "../../../../lib/google-auth";
 import { googleAuthErrors } from "../../../../lib/auth-messages";
 
@@ -15,21 +15,24 @@ export async function POST(request: NextRequest) {
   const idToken = input && typeof input === "object" && "idToken" in input ? input.idToken : null;
   if (typeof idToken !== "string" || idToken.length < 100 || idToken.length > 16384) return authFailure("로그인 요청을 확인해 주세요.", 400);
   let auth;
-  try { auth = firebaseAdminAuth(); } catch { return authFailure("구글 로그인 설정을 확인해 주세요.", 503); }
+  try { auth = firebaseAdminAuth(); } catch { return authFailure("소셜 로그인 설정을 확인해 주세요.", 503); }
   let identity;
+  let provider: 'google' | 'apple' = 'google';
   try {
-    identity = firebaseGoogleIdentity(await auth.verifyIdToken(idToken));
+    const token=await auth.verifyIdToken(idToken);
+    provider=token.firebase?.sign_in_provider==='apple.com'?'apple':'google';
+    identity = provider==='apple'?firebaseAppleIdentity(token):firebaseGoogleIdentity(token);
   } catch {
-    return authFailure("구글 인증을 확인하지 못했어요. 다시 로그인해 주세요.", 401);
+    return authFailure("로그인 인증을 확인하지 못했어요. 다시 로그인해 주세요.", 401);
   }
   try {
     const consent = input && typeof input === 'object' && 'consent' in input ? input.consent : undefined;
-    return await createSession(await googleUser(identity, consent));
+    return await createSession(await googleUser(identity, consent, provider));
   } catch (error) {
     if (error instanceof GoogleAuthError && error.code === 'google_consent_required') {
-      return NextResponse.json({ error: googleAuthErrors[error.code], code: 'consent_required' }, { status: 409, headers: { 'Cache-Control': 'no-store' } });
+      return NextResponse.json({ error: googleAuthErrors[error.code].replaceAll('구글',provider==='apple'?'Apple':'구글').replaceAll('Google',provider==='apple'?'Apple':'Google'), code: 'consent_required' }, { status: 409, headers: { 'Cache-Control': 'no-store' } });
     }
-    if (error instanceof GoogleAuthError) return authFailure(googleAuthErrors[error.code], 409);
+    if (error instanceof GoogleAuthError) return authFailure(googleAuthErrors[error.code].replaceAll('구글',provider==='apple'?'Apple':'구글').replaceAll('Google',provider==='apple'?'Apple':'Google'), 409);
     return authFailure("로그인을 저장하지 못했어요. 잠시 후 다시 시도해 주세요.", 503);
   }
 }

@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { sessionUser, sameOrigin, authFailure } from '../../../lib/auth';
 import { getPool } from '../../../lib/db';
 import { planProducts } from '../../../lib/shopping-plan-catalog';
-import { parseConditions, validMealSideCounts, validSwapPreferences, validMealIds, basketTotal } from '../../../lib/shopping-plan';
+import { parseConditions, validMealSideCounts, validSwapPreferences, validMealIds, shoppingBudgetLimit, basketTotal } from '../../../lib/shopping-plan';
 import {parseStock} from '../../../lib/shopping-progress';
 import {personalizeProducts} from '../../../lib/shopping-personalization';
 import {defaultDiet,parseDiet} from '../../../lib/meal-plan';
@@ -81,7 +81,7 @@ export async function POST(request:NextRequest){
   const stock=parseStock((await getPool().query("SELECT stock FROM shopping_progress WHERE user_id=$1 AND scope='products'",[user.id])).rows[0]?.stock??{})??{};
   c.supply=Object.fromEntries(Object.values(stock).map(i=>[i.id,i.owned+i.ordered]));
   const products=c.excluded===undefined?personalized.filtered:personalized.products;
-  if(!validMealIds(ids,products,c)||basketTotal(ids,products,c.owned,c.supply,c.people)>c.budget)return authFailure('상품 또는 가격이 변경됐어요. 식단을 다시 추천받아 주세요.',409);
+  if(!validMealIds(ids,products,c)||basketTotal(ids,products,c.owned,c.supply,c.people)>shoppingBudgetLimit(c))return authFailure('상품 또는 가격이 변경됐어요. 식단을 다시 추천받아 주세요.',409);
   await getPool().query('INSERT INTO shopping_plans(user_id,conditions,meal_ids,composition_snapshot) VALUES($1,$2,$3,$4)',[user.id,JSON.stringify(c),JSON.stringify(ids),JSON.stringify({version:1,createdAt:new Date().toISOString(),products:ids.map(id=>products.find(p=>p.id===id)),conditions:c})]);
   return json({saved:true},201);
  }catch{return authFailure('식단을 저장하지 못했어요. 잠시 후 다시 시도해 주세요.',503);}

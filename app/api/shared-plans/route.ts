@@ -1,3 +1,4 @@
+import {shoppingBudgetLimit} from '../../../lib/shopping-plan';
 import {NextRequest,NextResponse} from 'next/server';
 import {sessionUser,sameOrigin,authFailure} from '../../../lib/auth';
 import {getPool} from '../../../lib/db';
@@ -41,7 +42,7 @@ export async function POST(request:NextRequest){
    const conditions=parseConditions({...initialConditions,...parseConditions(preferences.rows[0]?.conditions),people:shared.people??1,sideCount:shared.sideCount??0,mealSideCounts:shared.mealSideCounts,budget:input.budget,days:shared.days,slots:shared.slots,meals:shared.days*shared.slots.length,owned:[],supply:Object.fromEntries(Object.values(stock).map(i=>[i.id,i.owned+i.ordered])),startDate:emptyDashboard().today});
    if(!conditions)return authFailure('식단 조건을 확인해 주세요.',400);
    const original=shared.meals.map(m=>m.productId),products=personalized.products;
-   const same=validMealIds(original,products,conditions)&&basketTotal(original,products,[],conditions.supply,conditions.people)<=conditions.budget;
+   const same=validMealIds(original,products,conditions)&&basketTotal(original,products,[],conditions.supply,conditions.people)<=shoppingBudgetLimit(conditions);
    const mealIds=same?original:recommendShopping(products,conditions);
    if(!mealIds)return authFailure('내 예산·제외 재료 조건에 맞는 식단을 만들지 못했어요. 예산을 조정하거나 마이에서 취향을 확인해 주세요.',422);
    await getPool().query('INSERT INTO shopping_plans(user_id,conditions,meal_ids) VALUES($1,$2,$3)',[user.id,JSON.stringify(conditions),JSON.stringify(mealIds)]);

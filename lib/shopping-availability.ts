@@ -11,6 +11,10 @@ function availableDishes(products:PlanProduct[],conditions:PlanConditions){
 export function shoppingAvailabilityMessage(products:PlanProduct[],conditions:PlanConditions):string|null{
  const count=availableDishes(products,conditions);
  if(count>=conditions.meals)return null;
+ if(conditions.mealCostCap!==undefined){
+  const withoutCap=availableDishes(products,{...conditions,mealCostCap:undefined});
+  if(withoutCap>count)return `1인분 한 끼 재료비 ${conditions.mealCostCap.toLocaleString('ko-KR')}원 이하로는 현재 조건에 맞는 메뉴가 ${count}개라 ${conditions.meals}끼를 서로 다른 메뉴로 채우기 어려워요. 재료비 상한을 높이거나 비워서 제한을 해제해 주세요. 끼니 수나 요리 수준을 조정할 수도 있어요.`;
+ }
  if(conditions.goal&&conditions.goal!=='maintain'){
   const withoutGoal=availableDishes(products,{...conditions,goal:'maintain'});
   if(withoutGoal>count)return `${conditions.meals}끼를 서로 다른 메뉴로 준비해야 하는데, ‘${shoppingGoals[conditions.goal].label}’ 비교에 필요한 영양정보가 있는 메뉴는 ${count}개예요. 예산 부족이 아니에요. 식사 목표를 ‘균형 잡힌 식사’로 바꾸면 후보 ${withoutGoal}개를 확인할 수 있어요. 영양정보가 없는 메뉴는 목표에 맞는지 판단하지 않아요.`;

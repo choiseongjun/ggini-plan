@@ -1,4 +1,6 @@
 'use client';
+import {shoppingBudgetLimit} from '../lib/shopping-plan';
+
 import {slotCandidates,basketTotal,type PlanProduct,type PlanConditions} from '../lib/shopping-plan';
 import {ProductThumb} from './product-thumb';
 import './recipe-offer-picker.css';
@@ -15,7 +17,7 @@ export function RecipeOfferPicker({product,index,ids,products,conditions,onChoos
     <small>{p.detail} · 판매 {won(p.price)}{/달걀/.test(part.label)?` · 1개당 ${won(p.price/p.quantity)}`:grams?` · 100g당 ${won(p.price/grams*100)}`:''}</small>
     <strong>사용분 {won(p.price*entry.packs)}</strong><small>가격 확인 {p.priceCheckedAt?.slice(0,10)??'미확인'}</small>
     {!selected&&<small>선택하면 한 끼 {won(candidate.price)} · 전체 장보기 {won(total)}</small>}
-    <button type="button" aria-pressed={selected} disabled={disabled||selected||total>conditions.budget} onClick={()=>onChoose(index,candidate.id)}>{selected?'선택한 상품 ✓':total>conditions.budget?'예산을 초과해요':'이 상품으로 바꾸기'}</button>
+    <button type="button" aria-pressed={selected} disabled={disabled||selected||total>shoppingBudgetLimit(conditions)} onClick={()=>onChoose(index,candidate.id)}>{selected?'선택한 상품 ✓':total>shoppingBudgetLimit(conditions)?'예산을 초과해요':'이 상품으로 바꾸기'}</button>
    </div>;})}
   </fieldset>;
  })}<small>상품을 바꾸면 이 끼니의 재료와 구매 목록이 바뀝니다. 재료 구성·영양은 상품마다 달라요.</small></details>;

@@ -2,7 +2,7 @@
 
 import {createContext, useContext} from 'react';
 import {pickerItems, type PickerItem} from '../lib/plan-picker';
-import {alternativesFor, basketTotal, swapMeal, validMealIds, type PlanConditions, type PlanProduct, type SwapReason} from '../lib/shopping-plan';
+import {alternativesFor, shoppingBudgetLimit, basketTotal, swapMeal, validMealIds, type PlanConditions, type PlanProduct, type SwapReason} from '../lib/shopping-plan';
 import type {TodayContext} from '../lib/today-context';
 import type {SideExtra} from '../lib/side-pairing';
 import type {personalizeProducts} from '../lib/shopping-personalization';
@@ -50,7 +50,7 @@ export function localEngine(catalog: PlanProduct[]): PlanEngine {
   swap: async (ids, index, c, reason) => ({ids: swapMeal(ids, index, catalog, c, reason), products: catalog}),
   alternatives: async (ids, index, c, limit) => alternativesFor(catalog, ids, c, index, limit),
   picker: async (ids, index, c) => ({items: pickerItems(catalog, ids, index, c, false), current: basketTotal(ids.filter(Boolean), catalog, c.owned, c.supply, c.people)}),
-  products: async (ids, c) => ({products: catalog.filter((p) => ids.includes(p.id)), valid: c ? validMealIds(ids, catalog, c) && basketTotal(ids, catalog, c.owned, c.supply, c.people) <= c.budget : undefined}),
+  products: async (ids, c) => ({products: catalog.filter((p) => ids.includes(p.id)), valid: c ? validMealIds(ids, catalog, c) && basketTotal(ids, catalog, c.owned, c.supply, c.people) <= shoppingBudgetLimit(c) : undefined}),
   // 대만판은 밑반찬 데이터가 없다.
   sides: async () => ({sides: [], extras: []}),
  };

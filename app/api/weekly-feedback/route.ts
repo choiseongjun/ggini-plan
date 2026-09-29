@@ -1,3 +1,4 @@
+import {shoppingBudgetLimit} from '../../../lib/shopping-plan';
 import {NextRequest,NextResponse} from 'next/server';
 import {sessionUser,sameOrigin,authFailure} from '../../../lib/auth';
 import {getPool} from '../../../lib/db';
@@ -36,7 +37,7 @@ export async function POST(request:NextRequest){
   const adjusted=feedbackProducts(catalog.products,report);
   const ids=recommendShopping(adjusted,conditions,false,[],seed);
   if(!baseline||!ids)return authFailure('현재 예산·제외 재료·끼니 구성으로 다음 주 식단을 채우지 못했어요. 홈에서 조건을 조정해 주세요.',422);
-  if(!validMealIds(ids,catalog.products,conditions)||basketTotal(ids,catalog.products,[],{},conditions.people)>conditions.budget)return authFailure('조건에 맞는 식단을 만들지 못했어요.',422);
+  if(!validMealIds(ids,catalog.products,conditions)||basketTotal(ids,catalog.products,[],{},conditions.people)>shoppingBudgetLimit(conditions))return authFailure('조건에 맞는 식단을 만들지 못했어요.',422);
   const map=new Map(catalog.products.map(p=>[p.id,p]));
   const before=baseline.map(id=>map.get(id)!),after=ids.map(id=>map.get(id)!);
   const comparison=compareWeeklyPlans(before,after);

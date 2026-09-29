@@ -46,6 +46,23 @@ test("Firebase server verification and PostgreSQL session", async (t) => {
     assert.throws(() => firebaseGoogleIdentity({ ...token, firebase: { ...token.firebase, sign_in_provider: "password" } }));
     assert.throws(() => firebaseGoogleIdentity({ ...token, firebase: { sign_in_provider: "google.com", identities: {} } }));
   });
+  await t.test("Apple identity creates and reuses a separate account", async () => {
+    const appleEmail = `apple-${email}`;
+    const appleToken = { ...token, email: appleEmail, firebase: { sign_in_provider: 'apple.com', identities: { 'apple.com': [email] } } };
+    const verification = t.mock.method(firebaseAdminAuth(), 'verifyIdToken', async () => appleToken);
+    try {
+      const first = await POST(request('verified-apple-token'.repeat(10)));
+      assert.equal(first.status, 200);
+      const user = (await first.json()).user;
+      const second = await POST(request('verified-apple-token'.repeat(10)));
+      assert.equal((await second.json()).user.id, user.id);
+      const account = await getPool().query('SELECT provider FROM oauth_accounts WHERE user_id = $1', [user.id]);
+      assert.equal(account.rows[0].provider, 'apple');
+    } finally {
+      verification.mock.restore();
+      await getPool().query('DELETE FROM users WHERE email = $1', [appleEmail]);
+    }
+  });
   await t.test("verified identity creates a reusable DB account and logout revokes its session", async () => {
     // Only the external token verification response is mocked for this successful-flow test.
     const verification = t.mock.method(firebaseAdminAuth(), "verifyIdToken", async () => token);

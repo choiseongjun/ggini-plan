@@ -22,3 +22,16 @@ export function firebaseGoogleIdentity(token: DecodedIdToken) {
   // The verified Google subject is shared with the existing OAuth account mapping.
   return { subject, email: token.email.trim().toLowerCase(), name: (typeof token.name === "string" && token.name.trim() || token.email.split("@")[0]).slice(0, 80) };
 }
+
+export function firebaseAppleIdentity(token: DecodedIdToken) {
+  const subject = token.firebase?.identities?.['apple.com']?.[0];
+  const now = Math.floor(Date.now() / 1000);
+  if (token.firebase?.sign_in_provider !== 'apple.com' || typeof subject !== 'string' || !subject || subject.length > 255 ||
+      token.email_verified !== true || typeof token.email !== 'string' || token.email.length > 254 ||
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(token.email) ||
+      !Number.isFinite(token.auth_time) || token.auth_time > now + 60 || now - token.auth_time > 300) {
+    throw new Error('Invalid Apple sign-in claims');
+  }
+  // Apple may omit the name after the initial authorization. Never expose a relay address as the display name.
+  return { subject, email: token.email.trim().toLowerCase(), name: (typeof token.name === 'string' && token.name.trim() || '끼니 사용자').slice(0, 80) };
+}

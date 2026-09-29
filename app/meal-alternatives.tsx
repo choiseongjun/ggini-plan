@@ -1,4 +1,6 @@
 'use client';
+import {shoppingBudgetLimit} from '../lib/shopping-plan';
+
 import {useEffect,useState} from 'react';
 import {ProductThumb} from './product-thumb';
 import {MealSourceBadge,RecipeProductPreview} from './meal-source';
@@ -45,7 +47,7 @@ export function MealAlternatives({index,ids,products,conditions,onChoose,disable
      <div className="meal-alternative-actions">
       {p.recipe?<button type="button" aria-expanded={open} onClick={()=>setOpenId(open?null:p.id)}>{open?'레시피·영상 접기':'🎬 레시피·영상 보기'}</button>
        :p.productUrl&&<a href={p.productUrl} target="_blank" rel="noopener noreferrer">상품 보기 ↗</a>}
-      <button type="button" className="primary-button" disabled={disabled||total>conditions.budget} onClick={()=>onChoose(index,p.id)}>{total>conditions.budget?`예산보다 ${won(total-conditions.budget)} 많아요`:'이 메뉴로 바꾸기'}</button>
+      <button type="button" className="primary-button" disabled={disabled||total>shoppingBudgetLimit(conditions)} onClick={()=>onChoose(index,p.id)}>{total>shoppingBudgetLimit(conditions)?`예산보다 ${won(total-conditions.budget)} 많아요`:'이 메뉴로 바꾸기'}</button>
      </div>
      {open&&p.recipe&&<RecipeProductPreview product={p}/>}
     </article>;

@@ -11,7 +11,7 @@ import {foodReferencesByCodes} from '../../../../lib/food-reference';
 import westernPairings from '../../../../data/western-pairings.json';
 import {allowsExcludedFoods} from '../../../../lib/shopping-exclusions';
 import dishTraits from '../../../../data/dish-traits.json';
-import {alternativesFor, basketTotal, mealSchedule, parseConditions, recommendShopping, slotCandidates, slotLabels, swapMeal, swapReasons, validMealIds, type PlanConditions, type SwapReason} from '../../../../lib/shopping-plan';
+import {alternativesFor, shoppingBudgetLimit, basketTotal, mealSchedule, parseConditions, recommendShopping, slotCandidates, slotLabels, swapMeal, swapReasons, validMealIds, type PlanConditions, type SwapReason} from '../../../../lib/shopping-plan';
 
 // 추천 계산은 서버에서 한다. 휴대폰은 전체 메뉴(수 MB)를 받지 않고, 결과 식단과 지금 보는 후보만 받는다.
 export const runtime = 'nodejs';
@@ -104,7 +104,7 @@ export async function POST(request: NextRequest) {
     if (!validIds(ids, true)) return authFailure('메뉴를 확인해 주세요.', 400);
     const found = pickProducts(products, ids.filter(Boolean));
     // 저장해 둔 식단을 다시 열 때: 지금 메뉴·가격 기준으로도 그대로 쓸 수 있는지 함께 알려 준다.
-    const valid = conditions ? validMealIds(ids, products, conditions) && basketTotal(ids, products, conditions.owned, conditions.supply, conditions.people) <= conditions.budget : undefined;
+    const valid = conditions ? validMealIds(ids, products, conditions) && basketTotal(ids, products, conditions.owned, conditions.supply, conditions.people) <= shoppingBudgetLimit(conditions) : undefined;
     return json({products: found, valid});
    }
    default:

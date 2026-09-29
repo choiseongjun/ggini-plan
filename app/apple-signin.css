@@ -1,0 +1,21 @@
+.auth-card .apple-signin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 52px;
+  margin-top: 12px;
+  padding: 14px 20px;
+  border: 1px solid #000;
+  border-radius: 12px;
+  background: #000;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.apple-signin-logo { flex: 0 0 auto; }
+.auth-card .apple-signin:hover { background: #242424; }
+.auth-card .apple-signin:focus-visible { outline: 3px solid #739764; outline-offset: 3px; }
+.auth-card .apple-signin:disabled { opacity: .55; cursor: wait; }

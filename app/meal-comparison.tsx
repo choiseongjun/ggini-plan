@@ -1,4 +1,6 @@
 'use client';
+import {shoppingBudgetLimit} from '../lib/shopping-plan';
+
 import {useState} from 'react';
 import {ProductThumb} from './product-thumb';
 import {RecipeEstimate} from './recipe-estimate';
@@ -56,7 +58,7 @@ export function MealComparison({product,index,ids,products,conditions,onChoose,d
     {p.recipe&&<><small>레시피 영양 예상 · {n.calories===null?'칼로리 미확인':`${Math.round(n.calories)} kcal`} · 단백질 {n.protein===null?'미확인':`${Math.round(n.protein)}g`}</small><RecipeIngredients product={p} conditions={conditions}/></>}
     </div></details>
     <p>{total===current?'전체 구매 금액이 같아요':total<current?`전체 구매에서 ${won(current-total)} 줄어요`:`전체 구매에 ${won(total-current)} 더 필요해요`}</p>
-    <button type="button" disabled={disabled||total>conditions.budget} onClick={()=>{onChoose(index,p.id);setOpen(false);}}>{total>conditions.budget?`예산보다 ${won(total-conditions.budget)} 많아요`:p.recipe?'이 요리로 바꾸고 재료 담기':'이 메뉴로 바꾸기'}</button>
+    <button type="button" disabled={disabled||total>shoppingBudgetLimit(conditions)} onClick={()=>{onChoose(index,p.id);setOpen(false);}}>{total>shoppingBudgetLimit(conditions)?`예산보다 ${won(total-conditions.budget)} 많아요`:p.recipe?'이 요리로 바꾸고 재료 담기':'이 메뉴로 바꾸기'}</button>
    </article>;})}
    {options.length>0&&<small>등록 판매 묶음과 주문·보유 수량 기준 · 배송비 별도. 다른 끼니와 겹치는 재료는 전체 장보기에서 합쳐요.</small>}
   </section>}
