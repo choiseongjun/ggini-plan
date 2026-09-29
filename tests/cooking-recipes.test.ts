@@ -67,11 +67,17 @@ test('recipe mode, exclusions, breakfast and budget are respected',()=>{
  const c={...initialConditions,mealMode:'cook' as const,days:2,meals:2,budget:20000};
  const ids=recommendShopping(products,c)!;assert.equal(ids.length,2);assert.ok(basketTotal(ids,products,[])<=c.budget);
  assert.equal(recommendShopping(products,{...c,budget:1000}),null);
- const week={...c,days:7,meals:7,budget:50000};
- const weekly=recommendShopping(products,week)!;
+ const easyWeek={...c,days:7,meals:7,budget:50000};
+ assert.equal(candidates(products,easyWeek).length,4,'easy cooking excludes the three 20-minute dishes');
+ assert.equal(recommendShopping(products,easyWeek),null,'four eligible dishes cannot fill seven distinct meals');
+ const week={...easyWeek,cookingEffort:'everyday' as const};
+ const weekly=recommendShopping(products,week);
+ assert.ok(weekly,'allowing 20-minute cooking supplies seven eligible dishes');
  assert.equal(new Set(weekly).size,7);
  assert.ok(basketTotal(weekly,products,[])<=week.budget);
  assert.equal(purchaseBasket(weekly,products,[]).length,5,'seven dishes reuse five ingredients');
+ assert.equal(basketTotal(weekly,products,[]),44060,'weekly checkout uses whole selling packs');
+ assert.equal(recommendShopping(products,{...week,budget:44059}),null,'a seven-dish plan must fit the actual checkout budget');
 });
 test('changed selling units or incomplete ingredient catalog never invent a recipe',()=>{
  assert.equal(cookingProducts([]).length,0);
