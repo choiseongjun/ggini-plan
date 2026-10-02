@@ -1,7 +1,8 @@
 import {calorieEstimate,parseBodyProfile} from './body-profile';
+import {healthSources} from './health-sources';
 
 // 2025 KDRIs summary, pp. xi–xiii and xix (MOHW).
-export const nutritionReferenceSource='https://health.seoulmc.or.kr/uploadFiles/2025_%ED%95%9C%EA%B5%AD%EC%9D%B8%EC%98%81%EC%96%91%EC%86%8C%EC%84%AD%EC%B7%A8%EA%B8%B0%EC%A4%80_%ED%99%9C%EC%9A%A9.pdf';
+export const nutritionReferenceSource=healthSources.nutrition.url;
 export function dailyNutritionReference(raw:unknown){
  const p=parseBodyProfile(raw);
  if(!p||p.pregnancy)return null;

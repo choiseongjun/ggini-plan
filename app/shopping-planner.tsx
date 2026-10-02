@@ -2,6 +2,7 @@
 import {scrollToAppTop} from '../lib/scroll-to-top';
 import {HomeSetupDialog} from './home-setup-dialog';
 import {HomeWelcome} from './home-welcome';
+import {HealthSourcesNotice} from './health-sources-notice';
 import {sideCountFor} from '../lib/shopping-plan';
 import {MealCompositionPicker} from './meal-composition-picker';
 import {rememberProfileIntent} from '../lib/profile-intent';
@@ -361,6 +362,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    <button type="button" disabled={loading||busy||progress.busy} onClick={returnToSetup}><Icon name="edit" size={20}/><span>추천 조건 바꾸기</span><Icon name="chevron" size={18}/></button>
    <p>끼니 수·취향·못 먹는 재료를 바꾸고 새로 추천받아요.</p>
   </div>}
+  {mode==='plan'&&ids.length>0&&<HealthSourcesNotice/>}
   {mode==='plan'&&ids.length>0&&building&&!ids.every(Boolean)&&<PlanBuilder ids={ids} products={products} conditions={conditions} onChoose={chooseMeal} disabled={busy||progress.busy}/>}
   {mode==='plan'&&ids.length>0&&(!building||ids.every(Boolean))&&<TodayMeals onAllMeals={()=>void generate({...conditions,slots:['breakfast','lunch','dinner'],mealCountMode:false,meals:(conditions.days??7)*3})} onNextPlan={()=>void generate(conditions)} nextPlanBusy={busy||loading||progress.busy||!progress.ready} focusMeal={pushMeal?(()=>{const s=mealSchedule(conditions),today=locale.today();const i=ids.findIndex((id,index)=>id===pushMeal&&!!s[index]&&planDate(conditions.startDate??today,s[index].day)===today);return i<0?null:i;})():null} overviewOpen={overviewOpen} onOverviewOpen={setOverviewOpen} nutritionReference={personalization?.nutritionReference??null} shoppingTotal={purchases.reduce((sum,row)=>sum+row.cost,0)} intake={intake} userId={userId} onLogin={onLogin} ids={ids} products={products} conditions={conditions} startDate={conditions.startDate??locale.today()} onStartDate={date=>{const c=parseConditions({...conditions,startDate:date});if(c){setConditions(c);remember(c,ids);}}} onSwap={swap} onChoose={chooseMeal} progress={progress} perMealCalories={personalization?.perMealCalories??null} dailyCalories={personalization?.blocked?null:personalization?.dailyCalories??null} dashboard={dashboard}/>}
   {mode==='plan'&&ids.length>0&&idsComplete&&personalRecommendation}
@@ -381,6 +383,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
    <HomeSetupDialog key={String(quickSetup)} open={quickSetup} onClose={()=>setQuickSetup(false)} meals={mealTimesPicker} cooking={<CookingEffortPicker value={conditions.cookingEffort} onChange={cookingEffort=>updatePreferences({cookingEffort})} disabled={loading||busy}/>} >
    <details className="home-extra-settings"><summary>더 맞춰볼까요? <span>식사 구성 · 취향</span></summary>{compositionPicker}<button type="button" className="home-start-custom" disabled={loading||busy} onClick={()=>{setQuickSetup(false);setShowSetup(true);}}>취향·못 먹는 재료 설정 →</button>{personalRecommendation}</details>
 
+   <HealthSourcesNotice/>
    <div className="home-start-actions">
    <button type="button" className="primary-button home-start-cta" disabled={loading||busy||!progress.ready||!catalogReady} onClick={()=>{setQuickSetup(false);void generate();}}>{loading?'준비 중…':busy?'식단을 짜고 있어요…':'내 식단 추천받기'}</button>
    {!locale.isTaiwan&&<Link className="home-tutorial-link" href="/how-to">처음이라면? 사용법 살펴보기</Link>}
@@ -394,6 +397,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
   {progress.error&&!ids.length&&mode!=='cart'&&<p role="alert">{progress.error} <button type="button" onClick={progress.reload}>구매 상태 다시 불러오기</button></p>}
   {mode!=='cart'&&<form className="planner-form" onSubmit={e=>{e.preventDefault();if(waitingForBudget)return;if(mode==='settings')void savePreferences();else void generate();}}>
    {locale.isTaiwan&&<label className="planner-budget-input"><span>{locale.isTaiwan?'장보기 예산':`${conditions.people??1}명 전체 장보기 예산`}</span> <small>배송비 제외</small><input type="number" min={locale.isTaiwan?10:1000} max={locale.isTaiwan?10000:1000000} step={1} required value={conditions.budget/(locale.isTaiwan?100:1)||''} onChange={e=>update({budget:Math.round(Number(e.target.value)*(locale.isTaiwan?100:1))})}/></label>}
+   <HealthSourcesNotice/>
    {!locale.isTaiwan&&personalization&&<PersonalizationSummary personalization={personalization}/>}
    {!locale.isTaiwan&&ultra&&mealTimesPicker}
    {!locale.isTaiwan&&compositionPicker}
