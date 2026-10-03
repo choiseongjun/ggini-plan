@@ -6,6 +6,7 @@ export const basicPantryStaples=['소금','후추','식용유','간장'];
 export const isPantrySeasoning=(name:string)=>PANTRY.has(name)||pantryStaples.includes(name);
 // Only small aromatics in rice dishes can be skipped; never omit a named or primary ingredient.
 export function pantryOptionalIngredients(product:PlanProduct,owned:string[]){
+ if(product.sourceRecipe)return product.sourceRecipe.ingredients.filter(i=>i.optional).map(i=>canonicalIngredient(i.name)||i.name);
  if(!/볶음밥|덮밥/.test(product.name)||/양파|대파|쪽파|파덮밥|파볶음밥/.test(product.name))return [];
  const available=new Set(owned.map(canonicalIngredient));
  return [...new Set((product.recipe?.ingredients??[]).filter(item=>{
@@ -39,14 +40,15 @@ export function pantryCandidates(products:PlanProduct[],owned:string[],previous:
  // Keep alternatives close to the best match; never drift into recipes unrelated to the pantry.
  const available=new Set(owned.map(canonicalIngredient));
  const near=recipes.filter(p=>missing.get(p.id)!.main.length<=minimum+1&&p.recipe?.ingredients.some(i=>available.has(canonicalIngredient(i.product.name))&&!isPantrySeasoning(canonicalIngredient(i.product.name))));
- const unseen=near.filter(p=>!previous.includes(p.id));
- const fallback=recipes.filter(p=>!previous.includes(p.id));
- const pool=unseen.length?unseen:near.length?near:fallback.length?fallback:recipes;
+ // Avoid extra shopping just to offer an unseen dish. Variety breaks ties only.
+ const pool=near.length?near:recipes;
  const bestMain=Math.min(...pool.map(p=>missing.get(p.id)!.main.length));
  const closest=pool.filter(p=>missing.get(p.id)!.main.length===bestMain);
  const score=(p:PlanProduct)=>{const names=new Set(p.recipe?.ingredients.map(i=>canonicalIngredient(i.product.name)));return priority.reduce((sum,name,index)=>sum+(names.has(canonicalIngredient(name))?priority.length-index:0),0);};
  const best=Math.max(0,...closest.map(score));
  const preferred=closest.filter(p=>score(p)===best);
  const leastSeasonings=Math.min(...preferred.map(p=>missing.get(p.id)!.seasonings.length));
- return preferred.filter(p=>missing.get(p.id)!.seasonings.length===leastSeasonings);
+ const feasible=preferred.filter(p=>missing.get(p.id)!.seasonings.length===leastSeasonings);
+ const unseen=feasible.filter(p=>!previous.includes(p.id));
+ return unseen.length?unseen:feasible;
 }

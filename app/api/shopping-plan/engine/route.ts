@@ -1,3 +1,4 @@
+import {pantrySourceRecommendations} from '../../../../lib/pantry-source-recommendations';
 import {after, NextRequest, NextResponse} from 'next/server';
 import {sessionUser, sameOrigin, authFailure} from '../../../../lib/auth';
 import {loadPlanCatalog, pickProducts} from '../../../../lib/plan-service';
@@ -52,6 +53,12 @@ export async function POST(request: NextRequest) {
     if(pantry!==undefined&&(!Array.isArray(pantry)||pantry.length>100||pantry.some(n=>typeof n!=='string'||!n.trim()||n.length>50)||c.meals!==1))return authFailure('보유 재료를 확인해 주세요.',400);
     if(pantry!==undefined)c.excluded=[...new Set([...(c.excluded??[]),...catalog.excluded])];
     if (catalog.personalization.blocked) return authFailure('현재 신체 정보에서는 자동 맞춤 추천을 제공하지 않아요. 마이페이지 안내를 확인해 주세요.', 422);
+    if(input.pantrySourceRecipes===true){
+     if(pantry===undefined||c.meals!==1||c.avoid.trim())return authFailure('보유 재료와 추천 조건을 확인해 주세요.',400);
+     const sourced=pantrySourceRecommendations(pantry as string[],priority,validIds(input.previous)?input.previous:[],input.pantryAllowShopping!==false,c.excluded??[],c.cookingEffort==='easy');
+     if(!sourced.length)return authFailure('현재 조건에 맞고 재료·조리법을 함께 확인할 수 있는 레시피를 찾지 못했어요. 재료를 바꾸거나 추가 장보기를 허용해 주세요.',422);
+     return json({ids:sourced.map(p=>p.id),products:sourced,missing:missingPantryIngredients(sourced[0],pantry as string[])});
+    }
     const availability = shoppingAvailabilityMessage(products, c);
     if (availability) return authFailure(availability, 422);
     const missing = mealSchedule(c).find((_, i) => !slotCandidates(products, c, i).length);
@@ -71,7 +78,7 @@ export async function POST(request: NextRequest) {
       const remaining=slotCandidates(products,c,0).filter(p=>!choiceIds.includes(p.id)&&!choiceIds.some(id=>products.find(v=>v.id===id)?.name===p.name));
       const styles=new Set(pickProducts(products,choiceIds).map(pantryCookingStyle));
       const bestMissing=Math.min(...remaining.map(p=>pantryShortage(p,pantry as string[]).main.length));
-      const diverse=remaining.filter(p=>!styles.has(pantryCookingStyle(p))&&pantryShortage(p,pantry as string[]).main.length<=bestMissing+1);
+      const diverse=remaining.filter(p=>!styles.has(pantryCookingStyle(p))&&pantryShortage(p,pantry as string[]).main.length===bestMissing);
       const candidates=pantryCandidates(diverse,pantry as string[],[...previous,...choiceIds],priority,allowShopping);
       const pool=candidates.length?candidates:pantryCandidates(remaining,pantry as string[],[...previous,...choiceIds],priority,allowShopping);
       const next=recommendShopping(pool,c,false,[...previous,...choiceIds],seed,context);

@@ -1,5 +1,11 @@
 // Extract only published recipe text. Never invent steps from a title or a different recipe.
 export type RecipeVideoNotes={ingredients:string[];steps:string[];tips:string[]};
+// Bilingual descriptions often repeat the entire recipe. Keep the Korean text
+// when available, without translating or rewriting the author's instructions.
+export function koreanRecipeNotes(notes:RecipeVideoNotes):RecipeVideoNotes{
+ const prefer=(lines:string[])=>lines.some(line=>/[가-힣]/.test(line))?lines.filter(line=>/[가-힣]/.test(line)):lines;
+ return {ingredients:prefer(notes.ingredients),steps:prefer(notes.steps),tips:prefer(notes.tips)};
+}
 export function recipeVideoNotes(description:string):RecipeVideoNotes{
  const result:RecipeVideoNotes={ingredients:[],steps:[],tips:[]};
  let section:keyof RecipeVideoNotes|null=null;

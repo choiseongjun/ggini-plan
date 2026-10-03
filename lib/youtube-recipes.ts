@@ -16,7 +16,7 @@ export function relevantRecipeVideos(videos:RecipeVideo[],name:string){
  // A shared ingredient alone does not make a video a guide to this dish.
  const methods:[RegExp,RegExp][]=[
   [/찜/,/찜|쪄|찌기|steamed?/i],[/죽/,/죽|porridge/i],
-  [/볶음/,/볶음|볶기|볶는|stir.?fr/i],[/구이/,/구이|굽기|굽는|grill|roast/i],
+  [/볶음밥/,/볶음밥|fried.?rice/i],[/볶음(?!밥)/,/볶음|볶기|볶는|stir.?fr/i],[/구이/,/구이|굽기|굽는|grill|roast/i],
   [/부침/,/부침|부치기|전 만들기|전만들기|pancake/i],
   [/덮밥/,/덮밥|rice bowl/i],[/불고기/,/불고기|bulgogi/i],
  ];

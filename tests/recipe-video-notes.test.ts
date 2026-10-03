@@ -1,6 +1,13 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {recipeVideoNotes} from '../lib/recipe-video-notes';
+import {recipeVideoNotes,koreanRecipeNotes} from '../lib/recipe-video-notes';
+test('bilingual source keeps original Korean instructions and preserves English-only sources',()=>{
+ const mixed={ingredients:['닭다리살 100g','100g chicken'],steps:['닭고기를 자른다.','Cut the chicken.'],tips:[]};
+ assert.deepEqual(koreanRecipeNotes(mixed),{ingredients:['닭다리살 100g'],steps:['닭고기를 자른다.'],tips:[]});
+ assert.equal(mixed.steps.length,2);
+ const english={ingredients:['100g chicken'],steps:['Cook the chicken.'],tips:[]};
+ assert.deepEqual(koreanRecipeNotes(english),english);
+});
 test('extracts published ingredients and cooking steps without inventing missing quantities',()=>{
  const notes=recipeVideoNotes('[재료]\n두부 1모\n물 약간\n[만드는 법]\n1. 두부를 썰어 주세요.\n2. 팬에 넣고 구워 주세요.\n[팁]\n간은 취향에 맞춰 주세요.\n구독 좋아요 부탁드려요.');
  assert.deepEqual(notes,{ingredients:['두부 1모','물 약간'],steps:['두부를 썰어 주세요.','팬에 넣고 구워 주세요.'],tips:['간은 취향에 맞춰 주세요.']});

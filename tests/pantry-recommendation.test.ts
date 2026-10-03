@@ -19,13 +19,14 @@ test('cooking styles separate different methods and cleanup identifies all basic
  assert.equal(pantryCookingStyle({...recipe('b',[]),name:'두부간장덮밥'}),'덮밥');
  assert.equal(isPantrySeasoning('마요네즈'),true);assert.equal(isPantrySeasoning('두부'),false);
 });
-test('unseen close alternatives precede repeats; unrelated dishes do not replace feasible dishes',()=>{
+test('less shopping precedes novelty; unseen dishes break equally feasible ties',()=>{
  const a=recipe('a',['달걀']),b=recipe('b',['두부']),c=recipe('c',['두부','파']);
  assert.deepEqual(pantryCandidates([a,b,c],['계란'],['a']).map(p=>p.id),['a']);
  assert.deepEqual(pantryCandidates([a,b,c],[],['a']).map(p=>p.id),['b']);
  assert.deepEqual(pantryCandidates([],[]),[]);
  const d=recipe('d',['달걀','파']);
- assert.deepEqual(pantryCandidates([a,d],['달걀'],['a']).map(p=>p.id),['d']);
+ assert.deepEqual(pantryCandidates([a,d],['달걀'],['a']).map(p=>p.id),['a']);
+ assert.deepEqual(pantryCandidates([a,d],['달걀','파'],['a']).map(p=>p.id),['d']);
 });
 test('earlier expiry wins among equally feasible recipes without adding missing ingredients',()=>{
  const egg=recipe('egg',['달걀']),tofu=recipe('tofu',['두부']),costly=recipe('costly',['달걀','돼지고기']);

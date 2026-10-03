@@ -15,7 +15,8 @@ function RecipeVideosForDish({id,compact}:{id:string;compact:boolean}){
 }
 type VideoResponse={videos?:RecipeVideo[];error?:string;fallback?:string};
 const requests=new Map<string,Promise<VideoResponse>>();
-function getVideos(id:string):Promise<VideoResponse>{
+export function getVideos(id:string,refresh=false):Promise<VideoResponse>{
+ if(refresh)requests.delete(id);
  const existing=requests.get(id);if(existing)return existing;
  const promise=fetch(`/api/recipe-videos?v=4&dish=${encodeURIComponent(id)}`).then(r=>r.json()).catch(()=>({error:'영상을 불러오지 못했어요. 다시 시도해 주세요.'}));
  requests.set(id,promise);return promise;
