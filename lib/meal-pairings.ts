@@ -32,7 +32,7 @@ export function composePairing(main:PlanProduct,sides:PlanProduct[],relations:Pa
   price:Math.round(ingredients.reduce((n,i)=>n+i.product.price*i.packs,0)),servingGrams:(main.servingGrams??0)+sides.reduce((n,s)=>n+(s.servingGrams??0),0),
   avoidanceText:[main,...sides].every(p=>p.avoidanceText!==null)?[main,...sides].map(p=>p.avoidanceText).join(' '):null,
   allergens:[...new Set([main,...sides].flatMap(p=>p.allergens??[]))],
-  recipe:{...main.recipe,sideCount:sides.length,ingredients,nutrition:{calories:sum('calories'),protein:sum('protein')},minutes:main.recipe.minutes+sides.reduce((n,s)=>n+s.recipe!.minutes,0),
+  recipe:{...main.recipe,sideCount:sides.length,ingredients,nutrition:{calories:sum('calories'),protein:sum('protein')},minutes:main.recipe.minutes===null||sides.some(s=>s.recipe!.minutes===null)?null:main.recipe.minutes+sides.reduce((n,s)=>n+s.recipe!.minutes!,0),
    composition:{templateId:relations[0]?.template_id??'rice-meal',version:1,items:[{id:main.id,role:'main',reason:'메인과 기본 주식'},...sides.map(s=>({id:s.id,role:relations.find(r=>r.companion_id===s.id)?.slot??'side',reason:relations.find(r=>r.companion_id===s.id)?.reason??'조합 미리보기'}))]},
    sides:sides.map(s=>({name:s.name,productImageUrl:s.productImageUrl,productImageUrls:s.productImageUrls,steps:s.recipe!.steps,minutes:s.recipe!.minutes})),steps:[...main.recipe.steps,...sides.flatMap(s=>s.recipe!.steps.map(step=>`${s.name}: ${step}`))]}};
 }

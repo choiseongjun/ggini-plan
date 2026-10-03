@@ -6,6 +6,15 @@ const ingredient={id:'rice',name:'쌀',price:2000,servings:1,allergens:['rice'],
 function dish(id:string,name:string,side=false):PlanProduct{return {...ingredient,id,name,servings:1,price:side?400:1000,productUrl:null,recipe:{minutes:10,slots:['dinner'],family:'test',ingredients:[{product:ingredient,packs:side?.2:.5,label:side?'반찬 재료':'함께 먹는 밥: 쌀 50g'}],steps:['익혀요'],nutrition:{calories:side?40:500,protein:side?1:20}}};}
 const main=dish('recipe-opt-main','제육볶음'),side=dish('recipe-opt-side','오이무침',true);
 const r:Pairing={anchor_id:main.id,companion_id:side.id,template_id:'rice-meal',slot:'side',relation_type:'pairing',score:80,reason:'검수 이유',score_details:{role:80},source:'test',status:'approved'};
+test('pairing preserves unknown duration instead of treating it as zero',()=>{
+ const unknownMain={...main,recipe:{...main.recipe!,minutes:null}};
+ const unknownSide={...side,recipe:{...side.recipe!,minutes:null}};
+ for(const [anchor,companion] of [[unknownMain,side],[main,unknownSide],[unknownMain,unknownSide]]){
+  assert.equal(composePairing(anchor,[companion]).recipe!.minutes,null);
+ }
+ assert.equal(composePairing(main,[unknownSide]).recipe!.sides![0].minutes,null);
+ assert.equal(composePairing(main,[side]).recipe!.minutes,20);
+});
 test('only approved compatible pairings are used; avoid has priority; substitute is not an addition',()=>{
  assert.equal(applyPairings([main],[side],[{...r,status:'suggested'}]).length,1);
  assert.equal(applyPairings([main],[side],[{...r,relation_type:'substitute'}]).length,1);

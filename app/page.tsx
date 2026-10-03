@@ -19,6 +19,7 @@ import { Dashboard } from "./dashboard";
 import { ResetData } from "./reset-data";
 import { FoodIntake } from "./food-intake";
 import { ShoppingPlanner } from "./shopping-planner";
+import { PantryHome } from './pantry-home';
 import { emptyDashboard, type DashboardData } from "../lib/dashboard";
 const AuthScreen=dynamic(()=>import("./auth-screen").then(module=>module.AuthScreen));
 import { CommunityPanel, SharedBasket } from "./community";
@@ -190,7 +191,7 @@ export default function Home() {
         <InstallPrompt active={tab === 'home'}/>
         {tab === "record" && <FoodIntake key={`intake-${authUser?.id??"guest"}-${tab}`} userId={authUser?.id} onLogin={()=>setShowAuth(true)} history={tab==="record"} recordDate={recordDate} onDateChange={setRecordDate} expenseManagement={dashboard&&<Dashboard key={`${authUser?.id??"guest"}-${tab}-${recordDate}`} mode={tab} recordDate={recordDate} data={dashboard} userId={authUser?.id} products={products} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")} onCalendar={()=>setTab("calendar")} onBudget={editBudget} onRefresh={refreshDashboard} onCompare={openCompare}/>}/>}
         {tab==='profile'&&authUser&&<DailyReturnCard key={authUser.id} userId={authUser.id} onRecord={()=>{setRecordDate(emptyDashboard().today);setTab('record');}}/>}
-        {tab === "home" && <ShoppingPlanner key={`shopping-home-${authUser?.id??"guest"}`} dashboard={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/>}
+        {tab === "home" && <><PantryHome key={`pantry-${authUser?.id??'guest'}`} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/><details className="pantry-advanced-tools"><summary>며칠 치 식단·장보기도 계획하고 싶다면</summary><ShoppingPlanner key={`shopping-home-${authUser?.id??"guest"}`} dashboard={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/></details></>}
         {authError && <p className="auth-inline-error" role="alert">{authError}</p>}
         {dataError&&<p className="auth-error" role="alert">{dataError}</p>}
 

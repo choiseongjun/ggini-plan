@@ -10,15 +10,15 @@ import {allowsExcludedFoods} from './shopping-exclusions';
 import {mealRole} from './meal-role';
 import {SODIUM_DAILY,SODIUM_DAILY_PRESSURE,type TodayContext} from './today-context';
 export const swapReasons={taste:'취향 아님',effort:'조리 귀찮음',price:'너무 비쌈',repeat:'비슷한 걸 먹었음'} as const;
-// 조리 시간은 모든 레시피가 같은 고정값이라 '조리 귀찮음'으로는 가려낼 수 없다. 저장 형식은 호환을 위해 두고 화면에서만 뺀다.
+// 현재 추천 데이터에는 조리 시간이 없어 시간으로 교체 후보를 가릴 수 없다. 이전 피드백 형식은 호환을 위해 유지한다.
 export const visibleSwapReasons=(['taste','price','repeat'] as const);
 export type SwapReason=keyof typeof swapReasons;
-export type SwapPreference={id:string;family:string;reason:SwapReason;price:number;minutes:number};
+export type SwapPreference={id:string;family:string;reason:SwapReason;price:number;minutes:number|null};
 export function validSwapPreferences(value:unknown):value is SwapPreference[]{
- return Array.isArray(value)&&value.length<=50&&value.every(p=>p&&typeof p==='object'&&typeof p.id==='string'&&p.id.length>0&&p.id.length<=200&&typeof p.family==='string'&&p.family.length<=200&&typeof p.reason==='string'&&Object.hasOwn(swapReasons,p.reason)&&Number.isFinite(p.price)&&p.price>=0&&p.price<=10000000&&Number.isFinite(p.minutes)&&p.minutes>=0&&p.minutes<=1440);
+ return Array.isArray(value)&&value.length<=50&&value.every(p=>p&&typeof p==='object'&&typeof p.id==='string'&&p.id.length>0&&p.id.length<=200&&typeof p.family==='string'&&p.family.length<=200&&typeof p.reason==='string'&&Object.hasOwn(swapReasons,p.reason)&&Number.isFinite(p.price)&&p.price>=0&&p.price<=10000000&&(p.minutes===null||(Number.isFinite(p.minutes)&&p.minutes>=0&&p.minutes<=1440)));
 }
 
-export type PlanProduct = CatalogItem & { mealSlots?:MealSlot[]; servings: number; servingGrams?:number; servingNote: string; avoidanceText: string | null; personalizationScore?:number; servingCalories?:number|null; servingSodium?:number|null; servingCarbs?:number|null; recipe?: {composition?:{templateId:string;version:number;items:{id:string;role:string;reason:string}[]};sideCount?:number;sides?:{name:string;steps:string[];minutes:number;productImageUrl?:string|null;productImageUrls?:string[]|null}[];assembly?:boolean;minutes:number;slots:MealSlot[];family:string;steps:string[];ingredients:{product:PlanProduct;packs:number;label:string;group?:string}[];nutrition:{calories:number|null;protein:number|null}} };
+export type PlanProduct = CatalogItem & { mealSlots?:MealSlot[]; servings: number; servingGrams?:number; servingNote: string; avoidanceText: string | null; personalizationScore?:number; servingCalories?:number|null; servingSodium?:number|null; servingCarbs?:number|null; recipe?: {composition?:{templateId:string;version:number;items:{id:string;role:string;reason:string}[]};sideCount?:number;sides?:{name:string;steps:string[];minutes:number|null;productImageUrl?:string|null;productImageUrls?:string[]|null}[];assembly?:boolean;minutes:number|null;slots:MealSlot[];family:string;steps:string[];ingredients:{product:PlanProduct;packs:number;label:string;group?:string}[];nutrition:{calories:number|null;protein:number|null}} };
 export type MealSlot = 'breakfast'|'lunch'|'dinner';
 export const slotLabels={breakfast:'아침',lunch:'점심',dinner:'저녁'};
 export type MealSideCounts=Partial<Record<MealSlot,number>>;
@@ -248,7 +248,7 @@ function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,
   f.reason==='taste'?(p.id===f.id?1400:mealFamily(p)===f.family?250:0):
   f.reason==='repeat'?(mealFamily(p)===f.family?450:0):
   f.reason==='price'?(p.price/p.servings>=f.price?180:0):
-  (p.recipe?.minutes??(p.category==='meal_kit'?20:5))>=f.minutes?250:0),0);},0);
+  typeof p.recipe?.minutes==='number'&&f.minutes!==null&&p.recipe.minutes>=f.minutes?250:0),0);},0);
  // The govDB recipe pool's goalBonus values cluster much closer together than the old hand-picked
  // catalog did (every candidate is now a similarly-priced, similarly-"estimated" synthetic recipe),
  // so a raw ±150 cap left goal fit (e.g. 고단백) far too weak to compete with the flat family-diversity
@@ -338,7 +338,7 @@ export function swapMeal(ids:string[], index:number, products:PlanProduct[], c:P
  const others=ids.flatMap((id,i)=>{const q=i===index?null:productById(products,id);return q?[q]:[];});
  const options=slotCandidates(products,c,index).filter(p=>!ids.some(id=>cookingDishId(id)===cookingDishId(p.id))&&!others.some(q=>sameDish(q,p))&&!repeatsDailyMain(ids,products,c,index,p)).filter(p=>!old||!reason||(
   reason==='price'?basketTotal(ids.map((id,i)=>i===index?p.id:id),products,c.owned,c.supply,c.people)<basketTotal(ids,products,c.owned,c.supply,c.people):
-  reason==='effort'?(p.recipe?.minutes??(p.category==='meal_kit'?20:5))<(old.recipe?.minutes??(old.category==='meal_kit'?20:5)):
+  reason==='effort'?typeof p.recipe?.minutes==='number'&&typeof old.recipe?.minutes==='number'&&p.recipe.minutes<old.recipe.minutes:
   reason==='repeat'?mealFamily(p)!==mealFamily(old):true
  )).map(p=>ids.map((id,i)=>i===index?p.id:id)).filter(next=>basketTotal(next,products,c.owned,c.supply,c.people)<=shoppingBudgetLimit(c));
  const schedule=mealSchedule(c);

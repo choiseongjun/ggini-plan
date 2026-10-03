@@ -35,7 +35,7 @@ export function withCookingSides(meals:PlanProduct[],catalog:CatalogItem[]):Plan
     price:Math.round(ingredients.reduce((n,i)=>n+i.product.price*i.packs,0)),
     avoidanceText:ingredients.some(i=>i.product.avoidanceText===null)?null:ingredients.map(i=>`${i.product.name} ${i.product.avoidanceText}`).join(' '),
     allergens:[...new Set(ingredients.flatMap(i=>i.product.allergens??[]))],
-    recipe:{...recipe,sideCount:count,sides:selected.map(s=>({name:s.r.name,steps:s.r.steps,minutes:s.r.minutes})),minutes:recipe.minutes+selected.reduce((n,s)=>n+s.r.minutes,0),ingredients,nutrition:{calories:sum('calories'),protein:sum('protein')},steps:[...recipe.steps,...selected.flatMap(s=>s.r.steps.map(step=>`${s.r.name}: ${step}`))]}}];
+    recipe:{...recipe,sideCount:count,sides:selected.map(s=>({name:s.r.name,steps:s.r.steps,minutes:s.r.minutes})),minutes:recipe.minutes===null?null:recipe.minutes+selected.reduce((n,s)=>n+s.r.minutes,0),ingredients,nutrition:{calories:sum('calories'),protein:sum('protein')},steps:[...recipe.steps,...selected.flatMap(s=>s.r.steps.map(step=>`${s.r.name}: ${step}`))]}}];
   })];
  });
 }

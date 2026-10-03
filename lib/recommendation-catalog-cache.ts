@@ -4,7 +4,8 @@ import {buildRecommendationCatalog,encodeRecommendationCatalog,decodeRecommendat
 // This app has not enabled Cache Components; use the supported Data Cache API locally
 // without changing caching/rendering semantics for the rest of the application.
 const cachedCatalog=unstable_cache(async()=>encodeRecommendationCatalog(await buildRecommendationCatalog()),
- ['recommendation-catalog-v2',process.env.VERCEL_GIT_COMMIT_SHA??'local'],
+ // Rebuild old cached records that still contained the placeholder 15 minutes.
+ ['recommendation-catalog-v3',process.env.VERCEL_GIT_COMMIT_SHA??'local'],
  {revalidate:600,tags:[RECOMMENDATION_CATALOG_TAG]});
 
 let pending:ReturnType<typeof readCatalog>|null=null;

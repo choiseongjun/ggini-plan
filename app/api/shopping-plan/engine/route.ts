@@ -2,6 +2,7 @@ import {after, NextRequest, NextResponse} from 'next/server';
 import {sessionUser, sameOrigin, authFailure} from '../../../../lib/auth';
 import {loadPlanCatalog, pickProducts} from '../../../../lib/plan-service';
 import {cachedRecommendationProducts} from '../../../../lib/recommendation-catalog-cache';
+import {missingPantryIngredients,pantryCandidates,pantryShortage,pantryCookingStyle} from '../../../../lib/pantry-recommendation';
 import {hydrateRecommendationProducts} from '../../../../lib/recommendation-catalog';
 import {todayContext} from '../../../../lib/today-context-server';
 import {shoppingAvailabilityMessage} from '../../../../lib/shopping-availability';
@@ -45,6 +46,11 @@ export async function POST(request: NextRequest) {
    case 'recommend': {
     const c = conditions;
     if (!c) return authFailure('챙길 끼니와 조건을 확인해 주세요.', 400);
+    const pantry=input.pantry;
+    const priority=input.pantryPriority??[];
+    if(!Array.isArray(priority)||priority.length>100||priority.some(n=>typeof n!=='string'||!n.trim()||n.length>50))return authFailure('우선 사용할 재료를 확인해 주세요.',400);
+    if(pantry!==undefined&&(!Array.isArray(pantry)||pantry.length>100||pantry.some(n=>typeof n!=='string'||!n.trim()||n.length>50)||c.meals!==1))return authFailure('보유 재료를 확인해 주세요.',400);
+    if(pantry!==undefined)c.excluded=[...new Set([...(c.excluded??[]),...catalog.excluded])];
     if (catalog.personalization.blocked) return authFailure('현재 신체 정보에서는 자동 맞춤 추천을 제공하지 않아요. 마이페이지 안내를 확인해 주세요.', 422);
     const availability = shoppingAvailabilityMessage(products, c);
     if (availability) return authFailure(availability, 422);
@@ -54,10 +60,26 @@ export async function POST(request: NextRequest) {
     const previous = validIds(input.previous) ? input.previous : [];
     const seed = typeof input.seed === 'number' && Number.isFinite(input.seed) ? input.seed : undefined;
     const context = await today();
-    const ids = recommendShopping(products, c, false, previous, seed, context);
+    const allowShopping=input.pantryAllowShopping!==false;
+    const eligible=pantry===undefined?products:pantryCandidates(slotCandidates(products,c,0),pantry as string[],previous,priority.filter(n=>(pantry as string[]).includes(n)),allowShopping);
+    if(pantry!==undefined&&!eligible.length)return authFailure('지금 재료만으로 맞는 메뉴를 찾지 못했어요. 밥·기본 양념이 있는지 확인하거나, 추가 재료가 필요한 메뉴도 보기를 선택해 주세요.',422);
+    const ids = recommendShopping(eligible, c, false, previous, seed, context);
     if (!ids) return authFailure('현재 조건으로는 중복 없는 식단을 채울 수 없어요. 끼니 수를 줄이거나 요리 수준·식단 목표·제외 재료·재료비 상한을 조정해 주세요.', 422);
+    const choiceIds=[...ids];
+    if(pantry!==undefined&&input.pantryChoices===true){
+     for(let i=0;i<2;i++){
+      const remaining=slotCandidates(products,c,0).filter(p=>!choiceIds.includes(p.id)&&!choiceIds.some(id=>products.find(v=>v.id===id)?.name===p.name));
+      const styles=new Set(pickProducts(products,choiceIds).map(pantryCookingStyle));
+      const bestMissing=Math.min(...remaining.map(p=>pantryShortage(p,pantry as string[]).main.length));
+      const diverse=remaining.filter(p=>!styles.has(pantryCookingStyle(p))&&pantryShortage(p,pantry as string[]).main.length<=bestMissing+1);
+      const candidates=pantryCandidates(diverse,pantry as string[],[...previous,...choiceIds],priority,allowShopping);
+      const pool=candidates.length?candidates:pantryCandidates(remaining,pantry as string[],[...previous,...choiceIds],priority,allowShopping);
+      const next=recommendShopping(pool,c,false,[...previous,...choiceIds],seed,context);
+      if(!next?.length)break;choiceIds.push(...next);
+     }
+    }
     if (user) after(() => logRecommendations(user.id, c, ids, 'recommend'));
-    return json({ids, products: await hydrateRecommendationProducts(pickProducts(products, ids)), today: context, personalization: catalog.personalization});
+    return json({ids, products: await hydrateRecommendationProducts(pickProducts(products, choiceIds)), ...(pantry===undefined?{}:{missing:missingPantryIngredients(pickProducts(products,ids)[0],pantry as string[]),pantryChoices:choiceIds.map(id=>({id,...pantryShortage(pickProducts(products,[id])[0],pantry as string[])})),repeated:ids.every(id=>previous.includes(id))}),today: context, personalization: catalog.personalization});
    }
    case 'swap': {
     const c = conditions, ids = input.ids;

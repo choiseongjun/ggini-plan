@@ -294,7 +294,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard}:{userId?:
  }
  async function swap(index:number,reason?:SwapReason){
   const old=products.find(p=>p.id===ids[index]);if(!old)return;
-  const swapPreferences=reason?[...(conditions.swapPreferences??[]).filter(f=>!(f.id===old.id&&f.reason===reason)),{id:old.id,family:mealFamily(old),reason,price:old.price/old.servings,minutes:old.recipe?.minutes??(old.category==='meal_kit'?20:5)}].slice(-50):conditions.swapPreferences;
+  const swapPreferences=reason?[...(conditions.swapPreferences??[]).filter(f=>!(f.id===old.id&&f.reason===reason)),{id:old.id,family:mealFamily(old),reason,price:old.price/old.servings,minutes:old.recipe?.minutes??null}].slice(-50):conditions.swapPreferences;
   const c={...conditions,swapPreferences};
   let next:string[]|null;
   try{next=(await engine.swap(ids,index,c,reason)).ids;}catch(e){setError(e instanceof Error?e.message:'메뉴를 바꾸지 못했어요.');return;}

@@ -252,7 +252,8 @@ export function recipeProductsFromResults(source:StoredRecipeResult[],kind:'meal
    servings: 1, servingGrams: totalGrams, servingNote: `유사 레시피 1인분(${totalGrams}g 환산) · 재료 표준가·표준 영양 합산 추정`, avoidanceText,
    foodType: inferFoodType(result.targetName) ?? null,
    recipe: {
-    minutes: 15, slots, family: `govdb-${result.templateId}`,
+    // Nutrition/ingredient records have no sourced cooking duration.
+    minutes: null, slots, family: `govdb-${result.templateId}`,
     steps: ai
      ? [result.aiIngredients!.note, 'GPT가 이 요리에 실제로 쓰일 만한 재료로 구성한 참고용 조합입니다. 정식 레시피가 아니며, 조리법은 재료별로 통상적인 방식을 따르세요.']
      : ['정부 식품영양성분DB의 목표 영양값에 맞춰 자동으로 근사한 재료 조합을 실제 1인분 분량으로 환산했어요.', '실제 이 음식의 정식 레시피가 아니라 영양 구성만 비슷한 참고용 조합입니다. 조리법은 재료별로 통상적인 방식을 따르세요.'],

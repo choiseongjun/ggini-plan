@@ -1,0 +1,258 @@
+.pantry-home {--ink:#353e30;--muted:#656956;--line:#e6e4d6;--green:#587548;max-width:760px;margin:0 auto;padding:16px 0 20px;color:var(--ink);font-family:inherit;}
+.pantry-home * {box-sizing:border-box;}
+.pantry-hero {margin-bottom:28px;}
+.pantry-eyebrow {font-size:12px;font-weight:700;color:#55735e;letter-spacing:.02em;}
+.pantry-home h1 {font-size:clamp(27px,3.3vw,38px);line-height:1.3;letter-spacing:-1.4px;margin:10px 0;}
+.pantry-home h1:focus,.pantry-recipe:focus {outline:none;}
+.pantry-home h2 {font-size:19px;letter-spacing:-.6px;margin:0;line-height:1.4;}
+.pantry-home h3 {font-size:17px;margin:22px 0 12px;}
+.pantry-home p {line-height:1.65;margin:10px 0;word-break:keep-all;overflow-wrap:anywhere;}
+.pantry-hero p {color:var(--muted);font-size:14px;margin:0;}
+.pantry-home button {cursor:pointer;border:1px solid var(--line);border-radius:11px;padding:11px 14px;background:#fff;color:var(--ink);font:inherit;font-size:14px;min-height:44px;transition:background .15s,border-color .15s;}
+.pantry-home button:hover:not(:disabled) {border-color:#88a68e;background:#f2f6ee;}
+.pantry-home button:disabled {opacity:.48;cursor:default;}
+.pantry-home :is(button,input,summary,a):focus-visible {outline:3px solid #8cb79d;outline-offset:3px;}
+.pantry-home button[aria-pressed=true] {background:#eaf2e7;border-color:#6f977b;color:#285537;}
+.pantry-home input[type=checkbox],.pantry-home input[type=radio] {width:18px;height:18px;accent-color:var(--green);flex-shrink:0;}
+.pantry-home .pantry-primary {background:var(--green);border-color:var(--green);color:white;font-weight:700;width:100%;padding:15px 18px;min-height:54px;display:flex;align-items:center;justify-content:center;gap:9px;}
+.pantry-home .pantry-primary:hover:not(:disabled) {background:#405637;border-color:#405637;}
+.pantry-home .pantry-primary>svg:last-child {margin-left:auto;}
+.pantry-home .pantry-primary>svg:first-child {margin-left:0;}
+.pantry-section-heading {display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.pantry-home .pantry-text-button {display:inline-flex;align-items:center;gap:3px;border:0;padding:6px 0;background:transparent;font-size:12px;font-weight:600;white-space:nowrap;}
+.pantry-home .pantry-icon-button {padding:10px;display:grid;place-items:center;min-width:44px;border:0;background:transparent;}
+.pantry-home-grid {display:grid;grid-template-columns:minmax(0,1fr);align-items:start;gap:18px;}
+.pantry-kitchen,.pantry-meal-panel {border:1px solid var(--line);border-radius:22px;background:#fffdf7;padding:22px;min-width:0;}
+.pantry-meal-panel {background:#f0f3e9;border-color:#e2e7d9;}
+.pantry-count {display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;background:#edf2e9;color:#4a7051;font-size:12px;min-width:25px;height:25px;border-radius:8px;margin-left:5px;letter-spacing:0;}
+.pantry-owned-list {display:flex;gap:7px;flex-wrap:wrap;margin:16px 0 6px;}
+.pantry-owned-list button {border-color:#e5e9e1;background:#f7f8f3;padding:8px 12px;border-radius:22px;font-size:13px;min-height:40px;display:flex;gap:6px;align-items:center;}
+.pantry-home .pantry-hint {font-size:12px;color:var(--muted);margin:8px 0;}
+.pantry-empty {padding:25px 0;display:flex;align-items:center;gap:16px;color:#66816b;}
+.pantry-empty>svg {flex-shrink:0;}
+.pantry-empty strong {color:var(--ink);font-size:15px;}
+.pantry-empty p {font-size:13px;margin:5px 0 0;color:var(--muted);}
+.pantry-add {display:flex;gap:7px;margin:18px 0 0;border:1px solid #cfdccf;border-radius:12px;padding:5px;background:#fff;}
+.pantry-add:focus-within {border-color:#598569;box-shadow:0 0 0 2px #5985691a;}
+.pantry-add input {min-width:0;flex:1;border:0;background:transparent;font:inherit;font-size:15px;padding:8px 10px;color:var(--ink);outline:none!important;}
+.pantry-add input::placeholder {color:#8b958a;}
+.pantry-add button {background:#edf2e8;border:0;padding:8px 15px;font-size:13px;font-weight:700;flex-shrink:0;}
+.pantry-input-help {display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.pantry-home small {font-size:12px;line-height:1.6;color:var(--muted);}
+.pantry-muted {font-size:13px;color:var(--muted);}
+.pantry-photo-input {margin-top:13px;}
+.pantry-photo-drop {border:1px dashed #bacdb8;border-radius:13px;background:#f7f9f3;}
+.pantry-photo-drop.is-dragging {background:#e8f2e2;border:2px dashed #457657;}
+.pantry-home .pantry-photo-select {display:flex;align-items:center;gap:12px;text-align:left;width:100%;border:0;background:transparent;padding:16px 14px;}
+.pantry-photo-select>span:nth-child(2) {min-width:0;}
+.pantry-photo-select strong {display:block;font-size:14px;line-height:1.5;}
+.pantry-photo-select small {display:block;font-size:11px;margin-top:4px;word-break:keep-all;}
+.pantry-upload-icon {display:grid;place-items:center;color:#5a7957;background:#e9efdf;width:42px;height:42px;flex-shrink:0;border-radius:11px;}
+.pantry-upload-plus {font-size:24px;color:#6c8265;margin-left:auto;}
+.pantry-photo-login-note {display:block;margin-top:8px;text-align:center;}
+.pantry-photo-selected {display:flex;gap:8px;align-items:center;overflow-wrap:anywhere;font-size:13px;}
+.pantry-photo-selected button {margin-left:auto;flex-shrink:0;}
+.pantry-photo-input>small {display:block;margin:8px 0;}
+.pantry-photo-input>.pantry-primary {margin-top:12px;}
+.pantry-photo-row {display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:12px 0;}
+.pantry-photo-row input:not([type=checkbox]) {min-width:0;flex:1;border:1px solid var(--line);border-radius:8px;padding:12px;font:inherit;font-size:14px;color:var(--ink);}
+.pantry-photo-row small {width:100%;padding-left:28px;}
+.pantry-ownership {border:1px solid var(--line);border-radius:10px;padding:12px;margin:16px 0;}
+.pantry-ownership legend {font-size:13px;}
+.pantry-ownership label {display:inline-flex;gap:8px;align-items:center;padding:10px;font-size:13px;}
+.pantry-home details {margin:14px 0;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:white;}
+.pantry-home summary {cursor:pointer;font-weight:500;font-size:13px;min-height:28px;line-height:28px;}
+.pantry-home summary>span {float:right;color:var(--muted);font-size:12px;}
+.pantry-home .pantry-seasonings {margin:16px 0 0;padding:8px 0 0;border:0;border-top:1px solid var(--line);border-radius:0;}
+.pantry-chips {display:flex;flex-wrap:wrap;gap:7px;margin-top:12px;}
+.pantry-chips button {padding:8px 12px;border-radius:22px;font-size:12px;}
+.pantry-home .pantry-inventory-alert {display:flex;justify-content:space-between;align-items:center;border:0;background:#fbf2e3;width:100%;margin-top:14px;font-size:12px;color:#805e32;}
+.pantry-serving {font-size:11px;border:1px solid #d8e1cd;background:#ffffff8a;padding:5px 9px;border-radius:20px;color:#526a4b;white-space:nowrap;}
+.pantry-moods {display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:22px 0 20px;}
+.pantry-moods button {display:flex;flex-direction:column;align-items:flex-start;text-align:left;position:relative;gap:4px;min-height:83px;padding:14px 12px;background:#ffffffb3;border-color:#e1e6d9;}
+.pantry-moods strong {font-size:14px;}
+.pantry-moods small {font-size:11px;word-break:keep-all;}
+.pantry-moods button[aria-pressed=true] {border-color:#638769;background:white;box-shadow:inset 0 0 0 .5px #638769;}
+.pantry-moods svg {position:absolute;right:11px;top:13px;}
+.pantry-shopping-toggle {display:flex;align-items:flex-start;gap:10px;font-size:13px;cursor:pointer;margin:18px 0 23px;line-height:1.5;}
+.pantry-shopping-toggle input {margin:2px 0 0;}
+.pantry-shopping-toggle small {display:block;margin-top:4px;}
+.pantry-home .pantry-cta-caption {font-size:11px;color:#687c61;text-align:center;margin:10px 0 0;}
+.pantry-home .pantry-storage-note {text-align:center;color:var(--muted);font-size:11px;margin:24px 0 0;}
+.pantry-notice {display:flex;align-items:flex-start;gap:7px;font-size:12px;color:#356b49;padding:12px 0 0;}
+.pantry-notice svg {flex-shrink:0;margin-top:2px;}
+.pantry-error {border:1px solid #f0d4bc;background:#fff7ef;color:#7f4c2d;padding:16px;border-radius:12px;font-size:13px;margin-top:16px;}
+.pantry-error-actions {display:flex;flex-wrap:wrap;gap:7px;}
+.pantry-error-actions button {font-size:12px;flex:1 1 150px;}
+.pantry-loading {display:flex;gap:9px;align-items:center;font-size:12px;color:var(--green);}
+.pantry-spinner {width:16px;height:16px;border:2px solid #c6d9c8;border-top-color:var(--green);border-radius:50%;flex-shrink:0;animation:pantry-spin .8s linear infinite;}
+@keyframes pantry-spin {to {transform:rotate(360deg);}}
+.pantry-home .pantry-back {display:flex;align-items:center;gap:5px;border:0;background:transparent;font-size:13px;padding:0;}
+.pantry-result-toolbar {display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;font-size:13px;color:var(--muted);}
+.pantry-result-toolbar button {display:flex;align-items:center;gap:7px;font-size:13px;}
+.pantry-options>div {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:14px 0 26px;}
+.pantry-option {min-width:0;border-radius:17px;border:1px solid var(--line);background:white;}
+.pantry-home .pantry-option>button {display:flex;width:100%;align-items:stretch;text-align:left;padding:0;border:0;border-radius:17px;background:transparent;scroll-margin-top:20px;}
+.pantry-option>button[aria-expanded=true] .pantry-option-view svg {transform:rotate(90deg);}
+.pantry-option>button[aria-expanded=false] .pantry-option-view svg {transform:rotate(0deg);}
+.pantry-option[data-selected=true] {box-shadow:0 0 0 2px #638769;border-color:transparent;background:white;}
+.pantry-option-copy {display:flex;flex-direction:column;gap:7px;padding:18px;width:100%;}
+.pantry-option-title {display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.pantry-option-selected {display:inline-flex;align-items:center;gap:4px;flex-shrink:0;padding:4px 7px;border-radius:6px;background:#edf2e5;color:#526b42;font-size:10px;}
+.pantry-option-view {display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:5px;padding-top:10px;border-top:1px solid #eeeee6;color:#587548;font-weight:600;}
+.pantry-option-copy strong {font-size:18px;letter-spacing:-.6px;line-height:1.45;}
+.pantry-option-copy>span {font-size:12px;}
+.pantry-option-copy small {font-size:11px;}
+.pantry-match {color:#3f7955;font-size:13px;}
+.pantry-shortage {color:#946433;font-size:13px;}
+.pantry-result {border:1px solid var(--line);border-radius:20px;background:white;overflow:hidden;}
+.pantry-result-body {padding:28px;}
+.pantry-result h2 {font-size:25px;margin:8px 0;}
+.pantry-actions {display:flex;gap:10px;margin-top:20px;}
+.pantry-actions .pantry-primary {max-width:400px;flex:1;}
+.pantry-actions>button:not(.pantry-primary) {display:flex;align-items:center;justify-content:center;gap:7px;}
+.pantry-recipe {border-top:1px solid var(--line);margin-top:26px;padding-top:5px;scroll-margin-top:20px;}
+.pantry-recipe li {font-size:14px;line-height:1.9;padding:3px 0;}
+.pantry-recipe li strong {color:#95642d;}
+.pantry-step {white-space:pre-line;font-size:14px;}
+.pantry-cleanup {margin-top:20px;}
+.pantry-cleanup label {display:flex;align-items:center;gap:10px;min-height:44px;font-size:14px;}
+.pantry-cleanup .pantry-primary,.pantry-recipe>.pantry-primary {margin-top:20px;}
+.pantry-home .pantry-skip {display:flex;align-items:center;justify-content:center;gap:8px;border:0;background:transparent;color:var(--muted);margin:16px auto;font-size:13px;}
+.pantry-shopping summary {display:flex;gap:9px;align-items:center;}
+.pantry-shopping summary>span {margin-left:auto;}
+.pantry-shopping ul {list-style:none;padding:0;}
+.pantry-shopping li {display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px;font-size:14px;}
+.pantry-shopping li span {flex:1;}
+.pantry-shopping a {font-size:13px;color:var(--green);}
+.pantry-dialog {--ink:#353e30;--muted:#656956;--line:#e6e4d6;--green:#587548;color:var(--ink);width:min(600px,calc(100% - 32px));max-height:min(820px,90dvh);margin:auto;padding:0;border:1px solid var(--line);border-radius:22px;box-shadow:0 24px 100px #19342333;background:white;}
+.pantry-dialog[open] {display:flex;flex-direction:column;}
+.pantry-dialog::backdrop {background:#19312470;backdrop-filter:blur(3px);}
+.pantry-dialog-heading {padding:18px 24px 10px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-shrink:0;}
+.pantry-dialog-heading h2 {font-size:20px;}
+.pantry-dialog-body {overflow-y:auto;min-height:0;padding:0 24px 16px;overscroll-behavior:contain;}
+.pantry-dialog-footer {padding:16px 24px 20px;border-top:1px solid var(--line);background:white;flex-shrink:0;}
+.pantry-menu-details {padding:0 18px 18px;border-top:1px solid var(--line);}
+.pantry-menu-actions {display:flex;flex-wrap:wrap;gap:8px;padding-top:18px;}
+.pantry-menu-actions .pantry-primary {flex:1 1 180px;}
+.pantry-menu-actions>button:not(.pantry-primary) {font-size:12px;}
+.pantry-menu-section {padding:4px 0 18px;border-bottom:1px solid var(--line);}
+.pantry-menu-section>h3 {margin-top:20px;}
+.pantry-menu-section>p {font-size:13px;}
+.pantry-menu-source {border-bottom:0;}
+.pantry-menu-source p {font-size:12px;color:var(--muted);}
+.pantry-menu-sides {padding:18px 0;border-bottom:1px solid var(--line);}
+.pantry-menu-sides>summary {cursor:pointer;font-size:14px;font-weight:600;}
+.pantry-picker-search {display:flex;position:relative;margin:6px 24px 0;flex-shrink:0;}
+.pantry-search {width:100%;padding:14px 42px 14px 14px;border:1px solid #b7cbb9;border-radius:11px;font:inherit;font-size:16px;min-width:0;}
+.pantry-picker-search>button {position:absolute;right:1px;top:1px;border:0;background:transparent;padding:10px;}
+.pantry-group-tabs {margin:12px 24px 5px;flex-shrink:0;gap:5px;}
+.pantry-group-tabs button {font-size:12px;padding:7px 10px;}
+.pantry-picker-list {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
+.pantry-picker-list button {display:flex;align-items:center;justify-content:space-between;gap:5px;font-size:13px;padding:10px;overflow-wrap:anywhere;min-height:48px;}
+.pantry-picker-list button:disabled {opacity:.55;}
+.pantry-picker-list span {font-size:11px;flex-shrink:0;}
+.pantry-custom-add {width:100%;border-style:dashed!important;margin-top:15px;overflow-wrap:anywhere;}
+.pantry-selected-chips {display:flex;gap:6px;flex-wrap:wrap;max-height:88px;overflow:auto;margin-bottom:12px;}
+.pantry-selected-chips button {display:flex;align-items:center;gap:7px;border-radius:20px;font-size:12px;padding:5px 9px;min-height:32px;background:#edf2e8;}
+.pantry-inventory-item {border-bottom:1px solid var(--line);padding:14px 0;}
+.pantry-inventory-item header {display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.pantry-inventory-item header strong {font-size:15px;}
+.pantry-inventory-item header small {display:block;margin-top:4px;}
+.pantry-inventory-item details {padding:8px 12px;margin:8px 0;background:#f8faf5;}
+.pantry-inventory-item summary {font-size:12px;}
+.pantry-inventory-fields {display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;}
+.pantry-inventory-fields label {display:grid;gap:6px;font-size:12px;min-width:0;}
+.pantry-inventory-fields input:not([type=checkbox]) {border:1px solid var(--line);border-radius:8px;padding:10px;min-width:0;width:100%;font:inherit;background:white;}
+.pantry-inventory-fields .pantry-opened {display:flex;align-items:center;gap:8px;}
+.pantry-home .pantry-priority-button {font-size:12px;border-radius:20px;padding:7px 12px;margin-top:8px;}
+.pantry-undo {display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;background:#eef4e8;border-radius:10px;font-size:13px;position:sticky;top:0;z-index:1;}
+.pantry-advanced-tools>summary {font-size:12px;cursor:pointer;}
+
+@media(max-width:760px) {
+ .pantry-home {padding:24px 0 18px;}
+ .pantry-hero {margin-bottom:22px;}
+ .pantry-home h1 {font-size:28px;letter-spacing:-1px;}
+ .pantry-hero p {font-size:13px;}
+ .pantry-home-grid {grid-template-columns:1fr;gap:16px;}
+ .pantry-kitchen,.pantry-meal-panel {padding:20px;border-radius:18px;}
+ .pantry-meal-panel {padding-top:20px;}
+ .pantry-moods {grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:18px 0;}
+ .pantry-moods button {min-height:44px;padding:10px 3px;align-items:center;justify-content:center;text-align:center;border-radius:9px;}
+ .pantry-moods strong {font-size:12px;}
+ .pantry-moods small,.pantry-moods svg {display:none;}
+ .pantry-shopping-toggle {margin:15px 0 18px;font-size:12px;}
+ .pantry-shopping-toggle small {display:none;}
+ .pantry-upload-icon {width:34px;height:36px;border-radius:9px;}
+ .pantry-photo-select {gap:9px!important;padding:13px 10px!important;}
+ .pantry-photo-select strong {font-size:13px;}
+ .pantry-photo-select small {font-size:10px;}
+ .pantry-photo-login-note {font-size:10px!important;}
+ .pantry-options>div {gap:10px;grid-template-columns:1fr;}
+ .pantry-option-copy {padding:15px 13px;gap:5px;}
+ .pantry-option-copy strong {font-size:17px;}
+ .pantry-option-copy small {font-size:10px;}
+ .pantry-result-toolbar {font-size:11px;gap:6px;}
+ .pantry-result-toolbar button {font-size:12px;padding:8px;}
+ .pantry-result-body {padding:20px;}
+ .pantry-result h2 {font-size:22px;}
+ .pantry-actions {flex-wrap:wrap;}
+ .pantry-actions>button:not(.pantry-primary) {font-size:12px;}
+ .pantry-dialog {width:100%;max-height:92dvh;margin:auto 0 0;border-radius:22px 22px 0 0;border-bottom:0;}
+ .pantry-dialog-heading {padding:16px 20px 8px;}
+ .pantry-dialog-heading h2 {font-size:19px;}
+ .pantry-dialog-body {padding:0 20px 16px;}
+ .pantry-picker-search {margin:6px 20px 0;}
+ .pantry-group-tabs {margin:12px 20px 5px;gap:5px;}
+ .pantry-group-tabs button {padding:7px 9px;font-size:11px;}
+ .pantry-picker-list {grid-template-columns:repeat(2,minmax(0,1fr));}
+ .pantry-dialog-footer {padding:14px 20px max(20px,env(safe-area-inset-bottom));}
+}
+@media(max-width:360px) {
+ .pantry-kitchen,.pantry-meal-panel {padding:16px;}
+ .pantry-input-help small {font-size:10px;}
+ .pantry-upload-plus {display:none;}
+}
+@media(prefers-reduced-motion:reduce) {.pantry-home button {transition:none;}.pantry-spinner {animation:none;}}
+
+
+@media(max-width:760px) {
+ .pantry-dialog {max-width:100%;border-left:0;border-right:0;}
+ .pantry-group-tabs {flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding:4px 2px;}
+ .pantry-group-tabs button {flex-shrink:0;}
+}
+
+/* Fit the home inside the existing right-hand app panel. */
+.pantry-moods {grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:18px 0;}
+.pantry-moods button {min-height:44px;padding:10px 3px;align-items:center;justify-content:center;text-align:center;}
+.pantry-moods strong {font-size:13px;}
+.pantry-moods small,.pantry-moods svg {display:none;}
+.pantry-options>div {grid-template-columns:minmax(0,1fr);}
+.pantry-option-copy {padding:16px;}
+.pantry-advanced-tools {margin:0 0 20px;border-top:1px solid var(--line);padding:16px 0;color:var(--muted);}
+/* Shopping preference keeps native checkbox and keyboard behavior. */
+.pantry-shopping-toggle {position:relative;align-items:center;gap:11px;border:1px solid #dce2d1;border-radius:14px;background:#fffdf7;padding:14px;transition:border-color .15s,background .15s;}
+.pantry-shopping-toggle:has(input:checked) {border-color:#9aac82;background:#f3f6ea;}
+.pantry-shopping-toggle:hover:not(:has(input:disabled)) {border-color:#7c9267;}
+.pantry-shopping-toggle:has(input:focus-visible) {outline:3px solid #9aac82;outline-offset:3px;}
+.pantry-shopping-toggle:has(input:disabled) {opacity:.55;cursor:default;}
+.pantry-home .pantry-shopping-toggle input {position:absolute;opacity:0;width:1px;height:1px;margin:0;}
+.pantry-shopping-check {display:grid;place-items:center;flex-shrink:0;width:23px;height:23px;border:1.5px solid #bbc7ad;border-radius:7px;background:white;color:white;}
+.pantry-shopping-check svg {visibility:hidden;}
+.pantry-shopping-toggle input:checked+.pantry-shopping-check {background:var(--green);border-color:var(--green);box-shadow:0 2px 5px #5875481a;}
+.pantry-shopping-toggle input:checked+.pantry-shopping-check svg {visibility:visible;}
+.pantry-shopping-copy {min-width:0;}
+.pantry-shopping-copy strong {display:block;font-size:13px;font-weight:600;line-height:1.5;word-break:keep-all;}
+.pantry-shopping-toggle .pantry-shopping-copy small {display:block;font-size:11px;line-height:1.6;margin-top:3px;word-break:keep-all;}
+.pantry-option-copy {min-width:0;overflow-wrap:anywhere;}
+.pantry-option-copy .pantry-seasoning-shortage {color:#8b6c3c;}
+.pantry-needed {margin:18px 0;padding:17px;background:#fcf6e9;border:1px solid #eadfc7;border-radius:13px;}
+.pantry-needed-heading {display:flex;align-items:center;gap:7px;color:#765d37;font-size:14px;}
+.pantry-needed-heading>span {margin-left:auto;font-size:12px;white-space:nowrap;}
+.pantry-needed-group {margin-top:13px;}
+.pantry-needed-group>span {font-size:12px;color:#7c6b4e;}
+.pantry-needed-group ul {display:flex;gap:7px;flex-wrap:wrap;list-style:none;margin:7px 0 0;padding:0;}
+.pantry-needed-group li {font-size:13px;padding:6px 10px;border:1px solid #e9dfc9;border-radius:8px;background:#fffdf8;overflow-wrap:anywhere;}
+.pantry-home .pantry-needed>p {color:#7b715e;font-size:11px;margin:13px 0 0;}
+@media(max-width:360px) {.pantry-shopping-toggle {padding:12px;gap:9px;}.pantry-shopping-copy strong {font-size:12px;}.pantry-shopping-toggle .pantry-shopping-copy small {font-size:10px;}}
+@media(prefers-reduced-motion:reduce) {.pantry-shopping-toggle {transition:none;}}
