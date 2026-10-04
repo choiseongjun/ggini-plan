@@ -387,3 +387,11 @@
 .pantry-search-empty p{font-size:12px;line-height:1.7;}
 .pantry-menu-more>svg{transform:rotate(90deg);}
 @media(max-width:420px){.pantry-compact-nav{align-items:flex-start;flex-direction:column;gap:8px;}.pantry-compact-nav>button{align-self:flex-end;}.pantry-browser-count{flex-wrap:wrap;}}
+
+.pantry-saved-kitchen{padding:20px;margin:20px 0;border:1px solid #dce4d1;background:#f3f6ed;border-radius:20px;}
+.pantry-saved-kitchen p,.pantry-saved-kitchen>small{font-size:12px;line-height:1.7;color:#717c64;}
+.pantry-saved-ingredients{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0;}
+.pantry-saved-ingredients span{padding:7px 11px;border-radius:10px;background:#fff;color:#435639;font-size:13px;}
+.pantry-kitchen-actions{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0;}
+.pantry-home .pantry-kitchen-actions button{font-size:12px;min-height:42px;}
+.pantry-home .pantry-inventory-item .pantry-icon-button{width:auto;min-width:60px;padding:8px;font-size:12px;}
