@@ -31,3 +31,12 @@ test('a different dish returns its own estimated nutrition; unreadable photos ha
   }
  }finally{if(previous===undefined)delete process.env.OPENAI_API_KEY;else process.env.OPENAI_API_KEY=previous;}
 });
+
+ test('planning estimates the pictured meal without claiming it was eaten',async()=>{
+ const previous=process.env.OPENAI_API_KEY;process.env.OPENAI_API_KEY='test-key';
+ try{const image=await sharp({create:{width:16,height:16,channels:3,background:'#fff'}}).jpeg().toBuffer();
+ const result=await analyzeMealPhoto({images:[image],dishName:'지정 메뉴 없음',ingredients:[],purpose:'plan'},async(_url,init)=>{
+ const body=JSON.parse(String(init?.body));assert.match(body.instructions,/nobody has eaten this meal yet/);assert.equal(body.store,false);
+ return Response.json({output:[{type:'message',content:[{type:'output_text',text:JSON.stringify({match:'different',portion:1,extras:[],note:'추정',food:{name:'볶음밥',calories:500,protein:15,carbs:70,fat:15,sugar:4,sodium:800}})}]}]});});assert.equal(result.food?.name,'볶음밥');
+ }finally{if(previous===undefined)delete process.env.OPENAI_API_KEY;else process.env.OPENAI_API_KEY=previous;}
+ });

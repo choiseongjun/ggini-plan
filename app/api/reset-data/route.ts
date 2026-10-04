@@ -13,12 +13,13 @@ export async function POST(request:NextRequest){
    await db.query('BEGIN');
    // Keep stock versions advancing so a previously open tab cannot restore old stock.
    for(const scope of ['products','ingredients'])await db.query("INSERT INTO shopping_progress(user_id,scope,stock,version) VALUES($1,$2,'{}',1) ON CONFLICT(user_id,scope) DO UPDATE SET stock='{}',version=shopping_progress.version+1,updated_at=NOW()",[user.id,scope]);
-   for(const table of ['user_regions','market_workspaces','food_intake_logs','shopping_expenses','daily_expenses','weekly_budgets','monthly_budgets','meal_ingredient_baskets','monthly_meal_plans','shopping_plans','meal_plans','shopping_preferences','body_profiles','shared_shopping_plans']){
+   for(const table of ['user_regions','market_workspaces','food_intake_logs','shopping_expenses','daily_expenses','weekly_budgets','monthly_budgets','meal_ingredient_baskets','monthly_meal_plans','shopping_plans','manual_meal_plans','wellness_water','wellness_weight','meal_plans','shopping_preferences','body_profiles','shared_shopping_plans']){
     await db.query(`DELETE FROM ${table} WHERE user_id=$1`,[user.id]);
    }
    await db.query("INSERT INTO pantry_inventory(user_id,inventory,version) VALUES($1,'[]',1) ON CONFLICT(user_id) DO UPDATE SET inventory='[]',version=pantry_inventory.version+1,request_id=NULL,updated_at=NOW()",[user.id]);
    // Import receipts remain as replay protection, not as visible user records.
    await db.query('INSERT INTO user_data_resets(user_id) VALUES($1) ON CONFLICT(user_id) DO UPDATE SET reset_at=NOW()',[user.id]);
+   await db.query('UPDATE wellness_settings SET water_enabled=true,weight_enabled=true,cup_ml=200,goal_ml=NULL,version=version+1,request_id=NULL WHERE user_id=$1',[user.id]);
    await db.query('COMMIT');
    return NextResponse.json({reset:true},{headers:{'Cache-Control':'no-store'}});
   }catch(e){await db.query('ROLLBACK');throw e;}finally{db.release();}

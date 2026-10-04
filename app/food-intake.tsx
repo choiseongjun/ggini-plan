@@ -1,4 +1,5 @@
 'use client';
+import {WellnessTracker} from './wellness-tracker';
 import {DiaryPhotoImage} from './diary-photo-image';
 import {RecordWeekPhotos} from './record-week-photos';
 import {RecordTimeEditor} from './record-time-editor';
@@ -92,6 +93,7 @@ export function FoodIntake({userId,onLogin,history=false,recordDate,onDateChange
  const [editingLog,setEditingLog]=useState<string|null>(null),[logPortions,setLogPortions]=useState('1'),[editBusy,setEditBusy]=useState(false);
  async function saveAmount(id:string){setEditBusy(true);setError('');try{const r=await fetch('/api/food-intake',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,portions:Number(logPortions),version:current?.version})});const d=await r.json();if(!r.ok)throw new Error(d.error);setEditingLog(null);reload();window.dispatchEvent(new CustomEvent('shopping-progress-changed',{detail:{scope:'products',source:'intake'}}));}catch(e){setError(e instanceof Error?e.message:'수정하지 못했어요.');}finally{setEditBusy(false);}}
  return locale.render(<section className="food-intake" aria-label={history?'먹은 음식 기록':'오늘 먹은 음식'}>
+  {!locale.isTaiwan&&history&&<WellnessTracker key={`${userId??'guest'}:${recordDate??today}`} userId={userId} date={recordDate??today} onLogin={onLogin}/>}
   {!locale.isTaiwan&&<RecordEntry userId={userId} onLogin={onLogin} onLogged={date=>{setDate(date??today);onDateChange?.(date??today);reload();}}/>}
   {userId&&<header><span className="section-kicker">날짜별 식사 일기</span><h2>{selectedDate===today?'오늘의 식사 일기':`${selectedDate.slice(5).replace('-','월 ')}일의 식사 일기`}</h2><p>{current?.logs.length?`음식 기록 ${current.logs.length}개가 모였어요. 한 끼씩, 나를 챙긴 순간들이에요.`:'어떤 음식을 드셨나요? 작은 간식 하나부터 남겨도 좋아요.'}</p></header>}
   {!userId?null:<>

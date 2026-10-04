@@ -13,7 +13,7 @@ export function usePantryJourney(userId?:string){
  const revision=useRef(0);
  useEffect(()=>{
   const read=()=>{setJourney(parseJourney(localStorage.getItem(key)));setReady(true);};
-  const safelyRead=()=>{try{read();}catch{setError('브라우저 저장 공간을 사용할 수 없어요.');setReady(true);}};
+  const safelyRead=()=>{try{read();}catch{setError('기기의 저장 공간을 사용할 수 없어요.');setReady(true);}};
   const frame=requestAnimationFrame(safelyRead);
   window.addEventListener('storage',safelyRead);window.addEventListener('pantry-journey-changed',safelyRead);
   return()=>{cancelAnimationFrame(frame);window.removeEventListener('storage',safelyRead);window.removeEventListener('pantry-journey-changed',safelyRead);};

@@ -1,4 +1,5 @@
 'use client';
+import {ManualSlotMeals,useManualMeals} from './manual-meal-plans';
 import {MealActionFlow} from './meal-action-flow';
 import {MealTableIllustration} from './meal-composition-picker';
 import {trackAnalytics} from '../lib/analytics';
@@ -36,6 +37,7 @@ function MealSection({title,meta,open,onToggle,children}:{title:string;meta?:str
 const amount=(n:number)=>n.toLocaleString('ko-KR',{maximumFractionDigits:1});
 export function TodayMeals({onAllMeals,focusMeal=null,overviewOpen,onOverviewOpen,nutritionReference,shoppingTotal,intake,userId,onLogin,ids,products,conditions,startDate,onStartDate,onNextPlan,nextPlanBusy=false,onSwap,onChoose,progress,dailyCalories,dashboard,perMealCalories}:{onAllMeals?:()=>void;focusMeal?:number|null;nutritionReference?:DailyNutritionReference;shoppingTotal:number;intake:ReturnType<typeof useFoodIntake>;userId?:string;onLogin:()=>void;ids:string[];products:PlanProduct[];conditions:PlanConditions;startDate:string;onStartDate:(date:string)=>void;onNextPlan?:()=>void;nextPlanBusy?:boolean;onSwap:(index:number,reason?:SwapReason)=>void;onChoose:(index:number,id:string)=>void;progress:ReturnType<typeof useShoppingProgress>;dailyCalories:number|null;perMealCalories?:number|null;dashboard?:DashboardData|null;overviewOpen?:boolean;onOverviewOpen?:(open:boolean)=>void}){
  const locale=usePlannerLocale();
+ const manualMeals=useManualMeals();
  const mealNavId=useId();
  const [recordExpanded,setRecordExpanded]=useState(focusMeal!==null);
  const [detailPhotos,setDetailPhotos]=useState<Set<number>>(()=>new Set());
@@ -77,9 +79,10 @@ export function TodayMeals({onAllMeals,focusMeal=null,overviewOpen,onOverviewOpe
    {!active.active&&<div className="today-next-plan"><p>{today<startDate?'아직 시작 전인 식단이에요. 시작일을 바꿀 수 있어요.':'이 식단의 일정이 끝났어요. 오늘부터 먹을 메뉴를 준비해 볼까요?'}</p>{today>=startDate&&onNextPlan&&<><button type="button" className="primary-button" disabled={nextPlanBusy} onClick={onNextPlan}>{nextPlanBusy?'다음 식단 준비 중…':'같은 조건으로 다음 식단 만들기'}</button><small>인원·끼니·취향은 유지하고 오늘부터 새로 추천해요. 확인 후 식단을 저장해 주세요.</small></>}</div>}
    <nav className="today-days" aria-label="준비한 식단 날짜">{Array.from({length:days},(_,i)=>i+1).map(n=><button type="button" key={n} aria-pressed={n===day} onClick={()=>{setChosenDay(n);setBrowsing(null);}}><strong>{planDate(startDate,n)===today?'오늘':planDate(startDate,n)===addDays(today,1)?'내일':`${n}일차`}</strong><small>{planDate(startDate,n).slice(5).replace('-','/')}</small></button>)}</nav>
    <p className="meal-switch-hint">끼니를 눌러 메뉴를 확인하세요 · 영양·기록은 내 1인분 기준</p>
-   <nav className="meal-switch" aria-label="끼니 선택">{(['breakfast','lunch','dinner'] as const).map(slot=>{const entry=entries.find(e=>e.slot===slot);return <button type="button" key={slot} aria-pressed={selectedSlot===slot} aria-controls={`${mealNavId}-panel`} onClick={()=>{setChosenSlot(slot);setBrowsing(null);}}><strong>{slotLabels[slot]}</strong><small>{entry?(eatenToday.has(entry.index)&&isToday?'기록 완료':entry.product.name.replace(/_/g,' · ')):'추천 식단 없음'}</small></button>;})}</nav>
+   <nav className="meal-switch" aria-label="끼니 선택">{(['breakfast','lunch','dinner'] as const).map(slot=>{const entry=entries.find(e=>e.slot===slot);return <button type="button" key={slot} aria-pressed={selectedSlot===slot} aria-controls={`${mealNavId}-panel`} onClick={()=>{setChosenSlot(slot);setBrowsing(null);}}><strong>{slotLabels[slot]}</strong><small>{entry?(eatenToday.has(entry.index)&&isToday?'기록 완료':entry.product.name.replace(/_/g,' · ')):manualMeals.filter(m=>m.day===date&&m.slot===slot).map(m=>m.name).join(' · ')||'메뉴 추가'}</small></button>;})}</nav>
    <div id={`${mealNavId}-panel`} role="region" aria-label={`${slotLabels[selectedSlot]} 식사`}>
-   {!entries.some(e=>e.slot===selectedSlot)&&<div className="meal-slot-empty"><strong>{slotLabels[selectedSlot]}은 추천 식단에 없어요</strong><p>추천받을 때 선택한 끼니만 포함돼요. 먹은 음식은 따로 기록할 수 있어요.</p>{onAllMeals&&<button type="button" className="primary-button" disabled={nextPlanBusy} onClick={onAllMeals}>아침·점심·저녁 모두 추천받기</button>}<Link href="/record">먹은 음식 기록하기</Link></div>}
+   {!entries.some(e=>e.slot===selectedSlot)&&!manualMeals.some(m=>m.day===date&&m.slot===selectedSlot)&&<div className="meal-slot-empty"><strong>{slotLabels[selectedSlot]}은 추천 식단에 없어요</strong><p>추천받을 때 선택한 끼니만 포함돼요. 먹은 음식은 따로 기록할 수 있어요.</p>{onAllMeals&&<button type="button" className="primary-button" disabled={nextPlanBusy} onClick={onAllMeals}>아침·점심·저녁 모두 추천받기</button>}<Link href="/record">먹은 음식 기록하기</Link></div>}
+   <ManualSlotMeals day={date} slot={selectedSlot} allowAdd/>
    <div className="today-menu-list">{entries.map(({product:p,index,slot},entryIndex)=>{
     const owned=intake.products.find(i=>i.id===p.id);
     const parts=purchaseBasket([p.id],products,[],{});

@@ -10,7 +10,7 @@ import './meal-photo-log.css';
 export type PhotoLogResult={logged:true;mealSlot?:MealSlot;nutrition?:Record<string,number|null>;eatenAt?:string;food?:{name:string}|null;portion:number;extras:IntakeExtra[];note:string;ids:string[];calories:number}|{logged:false;match:string;note:string};
 // Phone photos are 3–8MB (HEIC on iPhone); uploading them over mobile data was the slow part.
 // Preserve a sharper diary image. AI input is resized independently on the server.
-async function shrink(file:File):Promise<Blob>{
+export async function shrink(file:File):Promise<Blob>{
  try{
   const bitmap=await createImageBitmap(file);
   const scale=Math.min(1,1600/Math.max(bitmap.width,bitmap.height));
