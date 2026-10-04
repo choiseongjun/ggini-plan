@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef } from "react";
+import {HealthSourcesNotice} from './health-sources-notice';
 import { activities, calorieEstimate, parseBodyProfile, profileYear, type BodyProfile } from "../lib/body-profile";
 import { dietStyles, excludedFoods, excludedFoodGroups, type DietPreferences } from "../lib/meal-plan";
 import { healthFlags, type HealthFlag } from "../lib/today-context";
@@ -217,8 +218,9 @@ export function ProfileWizardModal({ step, direction, fields, userId, saving, er
             {estimate && <div><dt>유지 칼로리</dt><dd>{n(estimate.daily)} kcal</dd></div>}
             {body && <div><dt>BMI</dt><dd>{body.value} · {body.label}</dd></div>}
           </dl>
-          <p className="wizard-note">{custom ? "직접 정한 목표로 추천해요. 기초대사량보다 크게 낮게 먹는 건 권하지 않아요." : "Mifflin–St Jeor 식과 활동량으로 계산한 참고값이에요. 감량은 하루 최대 500kcal만 줄이고 기초대사량 아래로는 내리지 않아요."}</p>
+          <p className="wizard-note">{custom ? "직접 입력한 목표로 추천해요. 개인에게 적절한 섭취량인지 의료적으로 검증된 값은 아니에요." : "Mifflin–St Jeor 식에 활동량과 앱의 목표 조정 규칙을 적용한 추정값이에요. 개인에게 안전한 최소 섭취량을 뜻하지 않아요."}</p>
         </>)}
+        {(current === 5 || current === 6 || current === 7) && <HealthSourcesNotice/>}
       </div>
 
       {error && <p className="auth-error" role="alert">{error}</p>}

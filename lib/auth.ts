@@ -19,7 +19,11 @@ export function sameOrigin(request: NextRequest): boolean {
 export async function createSession(user: PublicUser, response: NextResponse = NextResponse.json({ user })): Promise<NextResponse> {
   const token = randomBytes(32).toString("base64url");
   await getPool().query(
-    "INSERT INTO sessions (token_hash, user_id, expires_at) VALUES ($1, $2, NOW() + $3 * INTERVAL '1 second')",
+    `WITH new_session AS (
+       INSERT INTO sessions (token_hash, user_id, expires_at)
+       VALUES ($1, $2, NOW() + $3 * INTERVAL '1 second') RETURNING user_id
+     ) UPDATE users SET last_login_at = GREATEST(last_login_at, NOW())
+       FROM new_session WHERE users.id = new_session.user_id`,
     [tokenHash(token), user.id, SESSION_SECONDS],
   );
   response.cookies.set(SESSION_COOKIE, token, {

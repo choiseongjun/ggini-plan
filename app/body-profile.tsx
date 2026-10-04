@@ -1,5 +1,6 @@
 "use client";
 import {ProfileCalorieHistory} from './profile-calorie-history';
+import {HealthSourcesNotice} from './health-sources-notice';
 
 import { Checkbox } from "./components/checkbox";
 
@@ -217,6 +218,7 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
 
   return <>
     <div className="profile-quick-settings"><div><strong>내 몸과 식사 취향</strong><small>신체 정보·목표·못 먹는 재료</small>{!loading&&!loadError&&calories&&<strong className="profile-target-preview">하루 목표 {number(shownTarget?.calories??calories.daily)} kcal</strong>}</div><button type="button" disabled={loading||saving||loadError} onClick={focusProfile}>내 정보 수정</button></div>
+    <HealthSourcesNotice/>
     {userId&&<WeeklyFeedbackCard key={`weekly-feedback-${userId}`} userId={userId}/>}
     <ProfileCalorieHistory userId={userId} target={calories?shownTarget?.calories??calories.daily:null} onLogin={onLogin} weekly={<WeeklyReportCard stats={intakeStats}/>} analysis={hasInfo&&!loading&&!loadError?<WeekAnalysis userId={userId} profile={profile} target={shownTarget} onOpenInfo={focusProfile}/>:null}/>
     <details className="profile-target-details"><summary>하루 목표·탄단지 자세히 보기</summary>
