@@ -116,7 +116,7 @@ function WebMealReminderCard(){
  return <section className="mr-card" aria-label="식사 알림">
   <header><div><span className="mr-kicker">식사 알림</span><h3>밥 먹을 시간에 오늘 메뉴를 알려 드려요</h3></div>
    {support==='ok'&&<button type="button" role="switch" aria-checked={subscribed} className="mr-switch" disabled={busy} onClick={()=>void(subscribed?turnOff():save(times,true))}><span aria-hidden="true"/></button>}</header>
-  {support==='ios-install'&&<p className="mr-note">아이폰은 Safari에서 <b>공유 → 홈 화면에 추가</b>로 앱을 설치한 뒤 켤 수 있어요.</p>}
+  {support==='ios-install'&&<p className="mr-note">아이폰에서는 <a href="https://apps.apple.com/kr/app/id6816291997">App Store에서 끼니플랜 받기</a>로 앱을 설치한 뒤 식사 알림을 켜 주세요.</p>}
   {support==='unsupported'&&<p className="mr-note">이 브라우저에서는 알림을 받을 수 없어요. 크롬이나 홈 화면에 추가한 앱에서 켜 주세요.</p>}
   {support==='ok'&&<ul className={`mr-times${subscribed?'':' is-off'}`}>{SLOTS.map(([slot,label,fallback])=>{const on=Boolean(times[slot]);return <li key={slot}>
    <label className="mr-slot"><input type="checkbox" checked={on} disabled={busy} onChange={e=>{const next={...times};if(e.target.checked)next[slot]=fallback;else delete next[slot];if(subscribed)void save(next,false);else setTimes(next);}}/>{label}</label>

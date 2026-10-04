@@ -1,7 +1,7 @@
 'use client';
 
 import {MealTimePicker} from './meal-time-picker';
-import {mealTimeISO,validEatenAt,recordDestination,type MealSlot} from '../lib/meal-time';
+import {mealTimeISO,validEatenAt,recordDestination,mealSlotLabels,type MealSlot} from '../lib/meal-time';
 import {trackAnalytics} from '../lib/analytics';
 import {useEffect,useImperativeHandle,useRef,useState,type Ref} from 'react';
 import {intakeExtras,type IntakeExtra} from '../lib/intake-extras';
@@ -71,6 +71,7 @@ export function MealPhotoLog({productId,referenceCode,dishName,disabled,onLogged
   finally{submitting.current=false;window.clearTimeout(timer);setStage(null);if(input.current)input.current.value='';}
  }
  return <div className="photo-log">
+  <MealTimePicker value={mealTime} slot={mealSlot} onSlotChange={setMealSlot} onChange={setMealTime} disabled={disabled||!!stage}/>
   <input ref={input} type="file" accept="image/*" multiple hidden onChange={e=>{addFiles(e.target.files);e.target.value='';}}/>
   {stage?<div className="photo-log-busy" role="status"><span className="photo-log-spinner" aria-hidden="true"/><div><strong>{stageText[stage]}…</strong><small>보통 5초 안팎 걸려요</small></div></div>
   :result&&!result.logged?<div className="photo-log-mismatch" role="status"><strong>{result.match==='different'?`${dishName}와(과) 달라 보여요`:'사진을 잘 알아보지 못했어요'}</strong>{result.note&&<small>{result.note}</small>}<div><button type="button" onClick={()=>{setResult(null);clearPicked();input.current?.click();}}>다시 찍기</button><button type="button" onClick={()=>{setResult(null);clearPicked();onManual();}}>사진 없이 기록</button></div></div>
@@ -79,7 +80,6 @@ export function MealPhotoLog({productId,referenceCode,dishName,disabled,onLogged
     {/* eslint-disable-next-line @next/next/no-img-element -- local object URL preview, nothing to optimise */}
     <img src={p.url} alt={`먹은 사진 ${i+1}`}/><button type="button" aria-label={`사진 ${i+1} 빼기`} onClick={()=>removeAt(i)}>✕</button></li>)}
     {picked.length<MAX_PHOTOS&&<li><button type="button" className="photo-log-add" onClick={()=>input.current?.click()}><span aria-hidden="true">+</span>추가</button></li>}</ul>
-   <MealTimePicker value={mealTime} slot={mealSlot} onSlotChange={setMealSlot} onChange={setMealTime} disabled={disabled||!!stage}/>
    <small className="photo-log-hint">추천과 다른 음식도 사진 속 음식으로 분석해요. 영양정보는 추정치예요.</small>
    <small className="photo-log-hint">먹기 전·후 사진이나 반찬을 따로 찍은 사진을 함께 올리면 더 정확해요 (최대 {MAX_PHOTOS}장)</small>
    <p className="photo-log-hint">사진과 메뉴 정보를 AI로 분석해 먹은 양과 예상 영양정보를 기록해요. 사진과 분석 결과는 내 식사 일기에 저장돼요. 기록을 삭제하면 사진도 함께 삭제돼요. <a href="/privacy#meal-photos" target="_blank" rel="noreferrer">사진 처리 안내</a></p>
@@ -95,7 +95,7 @@ export function MealPhotoLog({productId,referenceCode,dishName,disabled,onLogged
 export function PhotoLogSummary({result,streak,onUndo,onEdit,busy}:{result:Extract<PhotoLogResult,{logged:true}>;streak:number|null;onUndo:()=>void;onEdit?:()=>void;busy:boolean}){
  return <div className="photo-log-done" role="status">
   <span className="photo-log-check" aria-hidden="true"/>
-  <div><strong>{result.food?result.food.name+' (사진 추정)':portionText(result.portion)}{result.extras.length?` + ${result.extras.map(k=>intakeExtras[k].label).join(', ')}`:''} · 약 {Math.round(result.calories).toLocaleString('ko-KR')}kcal 기록했어요</strong>{streak!==null&&<span className="photo-log-streak">{streak}일 연속 기록 중!</span>}{result.note&&<small>{result.note}</small>}</div>
+  <div>{result.mealSlot&&<small className="photo-log-meal-label">{mealSlotLabels[result.mealSlot]} 기록 완료</small>}<strong>{result.food?result.food.name+' (사진 추정)':portionText(result.portion)}{result.extras.length?` + ${result.extras.map(k=>intakeExtras[k].label).join(', ')}`:''} · 약 {Math.round(result.calories).toLocaleString('ko-KR')}kcal 기록했어요</strong>{streak!==null&&<span className="photo-log-streak">{streak}일 연속 기록 중!</span>}{result.note&&<small>{result.note}</small>}</div>
   <div className="photo-log-done-actions">{onEdit&&<button type="button" disabled={busy} onClick={onEdit}>수정</button>}<button type="button" disabled={busy} onClick={onUndo}>되돌리기</button></div>
  </div>;
 }
