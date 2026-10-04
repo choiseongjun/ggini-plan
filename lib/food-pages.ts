@@ -44,3 +44,39 @@ export async function searchFoodPages(q: string): Promise<RelatedFood[]> {
 export async function foodPageSlugs(): Promise<string[]> {
  return (await getPool().query<{slug: string}>('SELECT slug FROM food_pages ORDER BY (brand IS NULL) DESC, slug')).rows.map((r) => r.slug);
 }
+
+// ── 음식 비교(/kcal/vs/A-vs-B) ─────────────────────────────────────────────
+// "김치찌개 vs 된장찌개 칼로리"처럼 실제로 많이 찾는 비교를 같은 분류의 일반 음식끼리 만든다.
+const VS = '-vs-';
+// 비교 후보로 권하지 않는 음식.
+const COMPARE_EXCLUDED = ['보신탕', '영양탕', '개장국', '사철탕'];
+export const comparePath = (a: string, b: string) => {
+ const [x, y] = [a, b].sort((p, q) => p.localeCompare(q, 'ko'));
+ return `/kcal/vs/${encodeURIComponent(`${x}${VS}${y}`)}`;
+};
+export function parseComparePair(pair: string): [string, string] | null {
+ const parts = pair.split(VS);
+ return parts.length === 2 && parts[0] && parts[1] && parts[0] !== parts[1] ? [parts[0], parts[1]] : null;
+}
+export async function getFoodsBySlugs(slugs: string[]): Promise<{slug: string; food: FoodReference}[]> {
+ const {rows} = await getPool().query(`SELECT p.slug, ${COLUMNS} FROM food_pages p JOIN food_reference r ON r.food_code = p.food_code WHERE p.slug = ANY($1::text[])`, [slugs]);
+ return slugs.flatMap((slug) => { const row = rows.find((r) => r.slug === slug); return row ? [{slug, food: foodReferenceFromRow(row)}] : []; });
+}
+/** 이 음식과 비교할 만한 같은 분류의 일반 음식(칼로리가 가까운 순, 한 단어 이름만). */
+// 1인분 단위가 같고 양이 0.67~1.5배 안인 음식끼리만 비교한다(400g 찌개 vs 100mL 전골 같은 오해 방지).
+const SAME_SERVING = `rq.serving_unit IS NOT DISTINCT FROM rp.serving_unit AND rq.serving_amount BETWEEN rp.serving_amount / 1.5 AND rp.serving_amount * 1.5`;
+export async function compareCandidates(slug: string, category: string | null, kcal: number | null, limit = 4): Promise<RelatedFood[]> {
+ if (!category || kcal === null) return [];
+ const {rows} = await getPool().query<RelatedFood>(`SELECT q.slug, q.name, q.brand, q.kcal::float8 AS kcal FROM food_pages p JOIN food_reference rp ON rp.food_code = p.food_code
+  JOIN food_pages q ON q.category = p.category JOIN food_reference rq ON rq.food_code = q.food_code
+  WHERE p.slug = $2 AND q.category = $1 AND q.brand IS NULL AND q.slug <> p.slug AND q.kcal IS NOT NULL AND strpos(q.name, ' ') = 0 AND NOT (q.name = ANY($5)) AND ${SAME_SERVING}
+  ORDER BY abs(q.kcal - $3) LIMIT $4`, [category, slug, kcal, limit, COMPARE_EXCLUDED]);
+ return rows;
+}
+/** 사이트맵용: 많이 찾는 음식마다 같은 분류의 가까운 음식 3개와 비교. */
+export async function popularComparePaths(): Promise<string[]> {
+ const {rows} = await getPool().query<{a: string; b: string}>(`SELECT p.slug AS a, c.slug AS b FROM food_pages p JOIN food_reference rp ON rp.food_code = p.food_code
+  CROSS JOIN LATERAL (SELECT q.slug FROM food_pages q JOIN food_reference rq ON rq.food_code = q.food_code WHERE q.category = p.category AND q.brand IS NULL AND q.slug <> p.slug AND q.kcal IS NOT NULL AND strpos(q.name, ' ') = 0 AND NOT (q.name = ANY($2)) AND ${SAME_SERVING} ORDER BY abs(q.kcal - p.kcal) LIMIT 3) c
+  WHERE p.brand IS NULL AND p.name = ANY($1) AND p.kcal IS NOT NULL`, [POPULAR, COMPARE_EXCLUDED]);
+ return [...new Set(rows.map((r) => comparePath(r.a, r.b)))];
+}

@@ -32,3 +32,8 @@ body:has(.kcal-shell){background:#fbfcf6}
 .kcal-search input{flex:1;min-width:0;height:48px;padding:0 14px;border:1.5px solid #e1e6d6;border-radius:16px;font:inherit;font-size:16px;background:#fff}
 .kcal-search button{padding:0 18px;border:0;border-radius:16px;background:var(--primary);color:#fff;font:inherit;font-weight:800}
 .kcal-note{font-size:12px;color:var(--text-subtle)}
+.kcal-vs-table{width:100%;border-collapse:collapse}
+.kcal-vs-table th,.kcal-vs-table td{padding:10px 8px;border-bottom:1px solid var(--border);font-size:14px;text-align:right}
+.kcal-vs-table th[scope=row],.kcal-vs-table thead th:first-child{text-align:left;color:var(--text-subtle);font-weight:700}
+.kcal-vs-table td.is-better{color:var(--primary-strong);font-weight:800;background:var(--primary-soft)}
+.kcal-vs-table thead a{color:var(--text);font-weight:800}
