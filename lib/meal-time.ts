@@ -1,3 +1,4 @@
+import {josa} from './josa';
 // UI times are explicitly Korea time, independent of the device's timezone.
 export function mealTimeLocal(value:Date|string=new Date()){
  const time=new Date(value).getTime();
@@ -33,4 +34,6 @@ export const mealSlotLabels:Record<MealSlot,string>={breakfast:'아침',lunch:'�
 export function validMealSlot(value:unknown):value is MealSlot{return typeof value==='string'&&mealSlots.includes(value as MealSlot);}
 export function inferredMealSlot(time:string):MealSlot{const hour=Number(mealTimeLocal(time).slice(11,13));return hour<11?'breakfast':hour<16?'lunch':'dinner';}
 export function recordDestination(time:string,slot:MealSlot|null){const day=(time||mealTimeLocal()).slice(0,10),today=mealTimeLocal().slice(0,10);return `${day===today?'오늘':day} ${slot?mealSlotLabels[slot]:'식사'}`;}
+/** 버튼 문구용: '오늘 아침으로', '오늘 식사로' — 받침에 맞춘 조사까지 붙인다. */
+export function recordDestinationTo(time:string,slot:MealSlot|null){return josa(recordDestination(time,slot),'으로','로');}
 export function mealGroups<T extends {mealSlot?:MealSlot|null;eatenAt?:string|null;createdAt:string}>(logs:T[]){return mealSlots.map(slot=>({period:mealSlotLabels[slot],logs:logs.filter(log=>(log.mealSlot??inferredMealSlot(eatenTime(log)))===slot).sort((a,b)=>Date.parse(eatenTime(a))-Date.parse(eatenTime(b)))})).filter(group=>group.logs.length);}

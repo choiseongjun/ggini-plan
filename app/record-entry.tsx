@@ -27,8 +27,13 @@ export function RecordEntry({userId,onLogin,onLogged}:{userId?:string;onLogin:()
   if(fromLink){params.delete('log');window.history.replaceState(null,'',`${window.location.pathname}${params.size?`?${params}`:''}`);}
   const code=fromLink??(userId?takeRecordFood():null);
   if(!code)return;
-  if(!userId){rememberRecordFood(code);rememberRecordMode('search');onLogin();return;}
   let alive=true;
+  if(!userId){
+   // 이 화면은 로그인 확인이 끝나기 전에도 그려진다. 음식을 기억해 두고, 정말 비회원일 때만 로그인을 띄운다.
+   rememberRecordFood(code);
+   fetch('/api/auth/me',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(d=>{if(alive&&!d?.user)onLogin();}).catch(()=>{if(alive)onLogin();});
+   return()=>{alive=false;};
+  }
   fetch(`/api/food-reference?code=${encodeURIComponent(code)}`).then(r=>r.ok?r.json():null).then(d=>{if(!alive)return;const food=d?.items?.[0]??null;setInitialFood(food);setMode('search');}).catch(()=>{if(alive)setMode('search');});
   return()=>{alive=false;};
   // Runs once per login state; onLogin identity changes every render.

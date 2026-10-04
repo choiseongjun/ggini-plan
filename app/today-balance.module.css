@@ -1,4 +1,4 @@
-.card{margin:0 0 var(--space-4)}
+.card{justify-self:stretch;margin:0 18px var(--space-4);text-align:left}
 .kicker{margin:0;font-size:var(--fs-xs);font-weight:800;color:var(--text-subtle)}
 .headline{margin:var(--space-1) 0 var(--space-3);font-size:var(--fs-md);color:var(--text)}
 .headline strong{font-size:var(--fs-xl);letter-spacing:-.4px}

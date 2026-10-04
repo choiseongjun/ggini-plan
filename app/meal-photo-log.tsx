@@ -1,7 +1,7 @@
 'use client';
 
 import {MealTimePicker} from './meal-time-picker';
-import {mealTimeISO,validEatenAt,recordDestination,mealSlotLabels,inferredMealSlot,type MealSlot} from '../lib/meal-time';
+import {mealTimeISO,validEatenAt,recordDestinationTo,mealSlotLabels,inferredMealSlot,type MealSlot} from '../lib/meal-time';
 import {rememberedAiPhotoConsent,rememberAiPhotoConsent} from '../lib/ai-photo-consent';
 import {WaitHint} from './wait-hint';
 import {trackAnalytics} from '../lib/analytics';
@@ -87,7 +87,7 @@ export function MealPhotoLog({productId,referenceCode,dishName,disabled,onLogged
    <small className="photo-log-hint">먹기 전·후 사진이나 반찬을 따로 찍은 사진을 함께 올리면 더 정확해요 (최대 {MAX_PHOTOS}장)</small>
    <p className="photo-log-hint">사진과 메뉴 정보를 AI로 분석해 먹은 양과 예상 영양정보를 기록해요. 사진과 분석 결과는 내 식사 일기에 저장돼요. 기록을 삭제하면 사진도 함께 삭제돼요. <a href="/privacy#meal-photos" target="_blank" rel="noreferrer">사진 처리 안내</a></p>
    <label className="photo-log-hint"><input type="checkbox" checked={aiAcknowledged} onChange={e=>{setAiAcknowledged(e.target.checked);rememberAiPhotoConsent(undefined,e.target.checked);}}/> AI 식사 분석과 내 식사 일기 사진 저장에 동의해요.</label>
-   <div className="photo-log-staged-actions"><button type="button" onClick={()=>{clearPicked();requestId.current=null;setMealTime('');setMealSlot(inferredMealSlot(new Date().toISOString()));}}>취소</button><button type="button" className="photo-log-submit" disabled={disabled||!aiAcknowledged||!timeValid||!mealSlot} onClick={()=>void upload(picked.map(p=>p.file))}>{recordDestination(mealTime,mealSlot)}로 기록 ({picked.length}장)</button></div>
+   <div className="photo-log-staged-actions"><button type="button" onClick={()=>{clearPicked();requestId.current=null;setMealTime('');setMealSlot(inferredMealSlot(new Date().toISOString()));}}>취소</button><button type="button" className="photo-log-submit" disabled={disabled||!aiAcknowledged||!timeValid||!mealSlot} onClick={()=>void upload(picked.map(p=>p.file))}>{recordDestinationTo(mealTime,mealSlot)} 기록 ({picked.length}장)</button></div>
   </div>
   :hidePickerActions?null:<div className="photo-log-picker-actions"><button type="button" className="photo-log-button" disabled={disabled} onClick={()=>input.current?.click()}><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.3l1.4-2h5.6l1.4 2h1.3A2.5 2.5 0 0 1 20 8.5v8a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5Z"/><circle cx="12" cy="12.5" r="3.4"/></svg>{buttonLabel}</button>
    <button type="button" className="photo-log-manual" disabled={disabled} onClick={onManual}>{manualLabel}</button></div>}

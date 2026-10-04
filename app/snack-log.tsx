@@ -1,7 +1,7 @@
 'use client';
 
 import {MealTimePicker} from './meal-time-picker';
-import {mealTimeISO,validEatenAt,recordDestination,inferredMealSlot,type MealSlot} from '../lib/meal-time';
+import {mealTimeISO,validEatenAt,recordDestinationTo,inferredMealSlot,type MealSlot} from '../lib/meal-time';
 import {useEffect, useRef, useState} from 'react';
 import type {FoodReference} from '../lib/food-reference';
 import {trackPlanner} from '../lib/track-planner';
@@ -106,7 +106,7 @@ export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyC
    <div className="snack-log-portions" role="radiogroup" aria-label="먹은 양">{portionsList.map(([value, label]) => <button type="button" role="radio" key={value} aria-checked={portions === value} onClick={() => setPortions(value)}>{label}</button>)}</div>
    <label className="snack-log-custom">먹은 양 직접 입력<input type="number" min="0.25" max="10" step="0.25" aria-label="먹은 양 직접 입력" value={portions||''} disabled={busy} onChange={e=>setPortions(Number(e.target.value))}/>회</label>
    <p className="snack-log-total" aria-live="polite">{!validPortions(portions)?'먹은 양을 0.25~10회, 0.25 단위로 입력해 주세요.':<>{picked.kcal !== null ? <>약 <b>{n(picked.kcal * portions)}</b>kcal</> : '칼로리 정보 없음'}{picked.sugar !== null && ` · 당류 ${n(picked.sugar * portions)}g`}{picked.sodium !== null && ` · 나트륨 ${n(picked.sodium * portions)}mg`}</>}</p>
-   <div className="snack-log-actions"><button type="button" onClick={() => setPicked(null)}>다시 고르기</button><button type="button" className="snack-log-submit" disabled={busy||!validPortions(portions)||!timeValid||!mealSlot} onClick={() => void log()}>{busy ? '기록 중…' : `${recordDestination(mealTime,mealSlot)}로 기록`}</button></div>
+   <div className="snack-log-actions"><button type="button" onClick={() => setPicked(null)}>다시 고르기</button><button type="button" className="snack-log-submit" disabled={busy||!validPortions(portions)||!timeValid||!mealSlot} onClick={() => void log()}>{busy ? '기록 중…' : `${recordDestinationTo(mealTime,mealSlot)} 기록`}</button></div>
   </div>}
   {done&&<p className="snack-log-done" role="status">{done}</p>}
   {error && <p className="snack-log-error" role="alert">{error}</p>}

@@ -8,23 +8,27 @@ const kstDay = (date: Date) => new Date(date.getTime() + 9 * 3600000).toISOStrin
 
 // 먹은 기록에서 오늘 섭취량과 최근 메뉴를 계산한다. 기록에 남긴 영양값을 우선 쓰고, 예전 기록은 메뉴 영양값 × 먹은 양으로 추정한다.
 export async function todayContext(userId: string, products: PlanProduct[], personalization: {dailyCalories: number | null; perMealCalories: number | null; meals: number | null}, health: HealthFlag[]): Promise<TodayContext> {
-  const rows = (await getPool().query<{product_id: string; portions: number; calories: number | null; carbs: number | null; sugar: number | null; sodium: number | null; created_at: Date}>(
-    `SELECT product_id, portions::float8, calories::float8, carbs::float8, sugar::float8, sodium::float8, COALESCE(eaten_at,created_at) AS created_at FROM food_intake_logs
+  const rows = (await getPool().query<{product_id: string; portions: number; calories: number | null; carbs: number | null; sugar: number | null; sodium: number | null; meal_slot: string | null; created_at: Date}>(
+    `SELECT product_id, portions::float8, calories::float8, carbs::float8, sugar::float8, sodium::float8, meal_slot, COALESCE(eaten_at,created_at) AS created_at FROM food_intake_logs
      WHERE user_id = $1 AND undone_at IS NULL AND COALESCE(eaten_at,created_at) > NOW() - INTERVAL '3 days' ORDER BY COALESCE(eaten_at,created_at)`, [userId])).rows;
   const today = kstDay(new Date()), byId = new Map(products.map((p) => [p.id, p]));
   const eaten = {kcal: 0, sodium: 0, carbs: 0, sugar: 0, meals: 0};
+  // 끼니 수: 아침·점심·저녁으로 남긴 기록은 끼니 단위로 한 번씩(밥+국처럼 여러 음식이어도 한 끼), 시간대 없는 추천 메뉴 기록은 한 건씩 센다.
+  const mealSlots = new Set<string>();
   for (const row of rows) {
     if (kstDay(row.created_at) !== today) continue;
     eaten.kcal += row.calories ?? 0;
     eaten.sugar += row.sugar ?? 0;
     if (row.product_id.startsWith(EXTRA_PREFIX)) continue;
-    // 끼니 수는 추천 메뉴 기록만 센다(간식·음료는 끼니가 아니다). 영양은 기록에 남긴 값을 우선 쓴다.
+    // 간식·음료(간식 시간대·곁들임)는 끼니로 세지 않는다. 영양은 기록에 남긴 값을 우선 쓴다.
     const product = byId.get(row.product_id);
-    if (product) eaten.meals++;
+    if (row.meal_slot === 'breakfast' || row.meal_slot === 'lunch' || row.meal_slot === 'dinner') mealSlots.add(row.meal_slot);
+    else if (product) eaten.meals++;
     const n = product ? servingNutrients(product) : null;
     eaten.sodium += row.sodium ?? (n?.sodium ?? 0) * row.portions;
     eaten.carbs += row.carbs ?? (n?.carbs ?? 0) * row.portions;
   }
+  eaten.meals += mealSlots.size;
   const recent = [...new Set(rows.filter((r) => byId.has(r.product_id)).map((r) => r.product_id))];
   return {
     day: today,
