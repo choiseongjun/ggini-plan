@@ -1,4 +1,11 @@
 .photo-log{margin-top:16px}
+.photo-log .photo-log-picker-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:8px;margin-top:12px}
+.photo-log .photo-log-picker-actions>button{display:flex;align-items:center;justify-content:center;gap:6px;box-sizing:border-box;width:100%;min-width:0;min-height:52px;margin:0;padding:12px 8px;border:1px solid #ccd8c2;border-radius:14px;font:inherit;font-size:13px;font-weight:700;line-height:1.4;text-align:center;text-decoration:none;cursor:pointer;box-shadow:none}
+.photo-log .photo-log-picker-actions>.photo-log-button{background:#526c47;border-color:#526c47;color:#fff}
+.photo-log .photo-log-picker-actions>.photo-log-manual{background:#fffef9;color:#526c47}
+.photo-log-picker-actions svg{flex-shrink:0}
+.photo-log .photo-log-picker-actions>button:focus-visible{outline:3px solid #829a62;outline-offset:3px}
+.photo-log .photo-log-picker-actions>button:disabled{opacity:.5;cursor:default}
 .today-meals .photo-log-button{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:54px;border:0;border-radius:16px;background:linear-gradient(145deg,#6a8a5a,#46603c);color:#fff;font-size:15px;font-weight:800;box-shadow:0 8px 18px #46603c38;transition:transform .15s ease}
 .today-meals .photo-log-button:active:not(:disabled){transform:scale(.97)}
 .today-meals .photo-log-manual{display:block;min-height:0;margin:8px auto 0;padding:4px 8px;border:0;background:none;color:#7a8a6e;font-size:12px;text-decoration:underline;text-underline-offset:3px}

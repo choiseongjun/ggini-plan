@@ -86,8 +86,8 @@ export function MealPhotoLog({productId,referenceCode,dishName,disabled,onLogged
    <label className="photo-log-hint"><input type="checkbox" checked={aiAcknowledged} onChange={e=>setAiAcknowledged(e.target.checked)}/> AI 식사 분석과 내 식사 일기 사진 저장에 동의해요.</label>
    <div className="photo-log-staged-actions"><button type="button" onClick={()=>{clearPicked();requestId.current=null;setMealTime('');setMealSlot(null);setAiAcknowledged(false);}}>취소</button><button type="button" className="photo-log-submit" disabled={disabled||!aiAcknowledged||!timeValid||!mealSlot} onClick={()=>void upload(picked.map(p=>p.file))}>{recordDestination(mealTime,mealSlot)}로 기록 ({picked.length}장)</button></div>
   </div>
-  :hidePickerActions?null:<><button type="button" className="photo-log-button" disabled={disabled} onClick={()=>input.current?.click()}><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.3l1.4-2h5.6l1.4 2h1.3A2.5 2.5 0 0 1 20 8.5v8a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5Z"/><circle cx="12" cy="12.5" r="3.4"/></svg>{buttonLabel}</button>
-   <button type="button" className="photo-log-manual" disabled={disabled} onClick={onManual}>{manualLabel}</button></>}
+  :hidePickerActions?null:<div className="photo-log-picker-actions"><button type="button" className="photo-log-button" disabled={disabled} onClick={()=>input.current?.click()}><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.3l1.4-2h5.6l1.4 2h1.3A2.5 2.5 0 0 1 20 8.5v8a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5Z"/><circle cx="12" cy="12.5" r="3.4"/></svg>{buttonLabel}</button>
+   <button type="button" className="photo-log-manual" disabled={disabled} onClick={onManual}>{manualLabel}</button></div>}
   {error&&<p className="photo-log-error" role="alert">{error}</p>}
  </div>;
 }
