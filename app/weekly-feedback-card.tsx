@@ -19,7 +19,7 @@ export function WeeklyFeedbackCard({userId}:{userId:string}){
  return <section id="weekly-feedback" className="weekly-feedback" aria-label="주간 피드백과 다음 주 식단">
   <header><span>기록이 다음 식단으로 이어져요</span><h3>이번 주 돌아보기, 다음 주 준비하기</h3></header>
   {loading?<p role="status">최근 기록을 살펴보고 있어요…</p>:report&&<><p className="weekly-feedback-period">최근 7일 · {report.from} ~ {report.to}</p><ul>{report.points.map(point=><li key={point}>{point}</li>)}</ul><small>기록한 음식만 참고했어요. 미기록은 결식으로 보지 않으며, 세 끼 기록도 하루 전체 섭취를 보장하지 않아요. 사진·레시피 영양은 추정치예요.</small>
-  {!report.days?<Link href="/record">오늘 한 끼 기록하기 →</Link>:<button type="button" disabled={busy||saving} onClick={()=>proposal?setMenuOpen(true):void generate()}>{busy?'기록을 반영해 식단 만드는 중…':proposal?'다음 주 식단 다시 확인':'피드백으로 다음 주 식단 만들기'}</button>}</>}
+  {!report.days?<Link href="/record">한 끼 기록하기 →</Link>:<button type="button" disabled={busy||saving} onClick={()=>proposal?setMenuOpen(true):void generate()}>{busy?'기록을 반영해 식단 만드는 중…':proposal?'다음 주 식단 다시 확인':'피드백으로 다음 주 식단 만들기'}</button>}</>}
   {error&&<p role="alert">{error} {!report&&<button type="button" onClick={()=>setRetry(n=>n+1)}>다시 불러오기</button>}</p>}
   {proposal&&comparison&&<div className="weekly-feedback-proposal">
    <h4>{comparison.changed?'다음 주 식단, 이렇게 바꿨어요':'다음 주 식단, 이렇게 구성했어요'}</h4><p>{proposal.conditions.startDate}부터 7일 · {proposal.ids.length}끼</p>

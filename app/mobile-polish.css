@@ -1,0 +1,39 @@
+/* 모바일 손가락 사용성 보정. 여러 시기의 화면 스타일 위에 공통으로 덮는 최소 규칙만 둔다. */
+
+/* 한글은 어절 단위로 줄바꿈하고, 긴 영문·URL만 쪼갠다. */
+body{word-break:keep-all;overflow-wrap:break-word}
+
+@media (hover:none) and (pointer:coarse){
+ /* iOS는 16px보다 작은 입력칸에 포커스하면 화면을 확대한 채로 둔다. */
+ input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]),select,textarea{font-size:max(16px,1em)!important}
+
+ /* 동그란 아이콘 버튼은 모양은 그대로 두고 누르는 영역만 44px로 넓힌다. */
+ .snack-log header button,.combo-dialog header button,.mp-close,.wpm-close,.wizard-close,.eo-close,.wg-close,
+ .home-setup-dialog>header button,.mp-search button,.today-meals .eat-log-head button,.stepper button,.month-controls button{position:relative}
+ .snack-log header button::after,.combo-dialog header button::after,.mp-close::after,.wpm-close::after,.wizard-close::after,.eo-close::after,.wg-close::after,
+ .home-setup-dialog>header button::after,.mp-search button::after,.today-meals .eat-log-head button::after,.stepper button::after,.month-controls button::after,
+ .install-prompt-close::after,.today-meals .photo-log-thumbs li>button:not(.photo-log-add)::after{content:"";position:absolute;top:50%;left:50%;width:44px;height:44px;transform:translate(-50%,-50%)}
+
+ /* 글자가 든 작은 버튼은 높이만 맞춘다. */
+ .today-meals .eat-log-extras button,.pantry-selected-chips button{min-height:44px}
+}
+
+/* 짧은 화면에서도 하단 메뉴가 화면 맨 아래에 붙도록 본문이 남는 높이를 채운다. */
+@media(max-width:910px){
+ .site-shell .app-content{flex:1 0 auto}
+}
+
+/* 로그인 화면: 주요 버튼과 보조 글씨 대비를 4.5:1 이상으로. */
+.site-shell .auth-submit{background:var(--primary)}
+.site-shell .auth-switch button{color:#52654a}
+.site-shell .auth-switch button.active{color:#3f5a35}
+.site-shell .auth-explore,.site-shell .auth-explore-header{color:#55693f}
+
+/* 열린 창 뒤의 화면이 같이 스크롤되지 않게 한다(창 안 스크롤이 끝나도 뒤로 넘기지 않음). */
+html:has(dialog:modal){overflow:hidden}
+dialog:modal{overscroll-behavior:contain}
+@media (prefers-reduced-motion:no-preference){dialog:modal{transition:translate .2s ease}}
+
+/* 주요 버튼 녹색을 하나로 — 화면마다 다르던 6가지 녹색·코랄을 기준색으로 맞춘다. */
+.primary-button:not(:disabled){background:var(--primary)!important;color:#fff}
+.primary-button:not(:disabled):hover{background:var(--primary-strong)!important}

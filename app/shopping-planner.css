@@ -28,7 +28,7 @@
 .planner-card-schedule .day-tone-3{--day-bg:#efedf9;--day-ink:#776496}
 .planner-day-badge{display:grid;place-items:center;gap:0;flex:0 0 48px;min-height:53px;padding:5px;background:#ffffffcf;border-radius:15px;color:var(--day-ink);box-shadow:0 2px 0 #00000004}
 .planner-day-badge b{font-size:23px;line-height:1.1}
-.planner-day-badge span{font-size:10px;font-weight:700}
+.planner-day-badge span{font-size:11px;font-weight:700}
 .planner-day-meal{display:grid;gap:5px;flex:1;min-width:0}
 .planner-day-meal>strong{font-size:13px;color:#48513c}
 .planner-day-meal>span{font-size:11px;color:#6f725f;line-height:1.5}
@@ -42,7 +42,7 @@
 .purchase-recommended .purchase-tabs button{border:0;background:transparent;border-radius:13px;font-size:12px}
 .purchase-recommended .purchase-tabs button[aria-pressed=true]{background:#5a7950;color:white;box-shadow:0 2px 5px #43583d19}
 .purchase-recommended .purchase-select-all{font-size:13px;border-radius:15px}
-@media(max-width:420px){.purchase-recommended .purchase-items article{padding:13px}.planner-card-schedule .planner-day-card{gap:8px;padding:10px}.planner-day-badge{flex-basis:40px}.purchase-recommended .planner-day-card button{max-width:82px;padding:7px 8px}.planner-day-meal>span{font-size:10px}}
+@media(max-width:420px){.purchase-recommended .purchase-items article{padding:13px}.planner-card-schedule .planner-day-card{gap:8px;padding:10px}.planner-day-badge{flex-basis:40px}.purchase-recommended .planner-day-card button{max-width:82px;padding:7px 8px}.planner-day-meal>span{font-size:11px}}
 .cart-reset{margin:0 0 18px;text-align:right}.cart-reset>button{border:1px solid #dfcbbc;border-radius:10px;padding:10px 14px;background:#fffaf5;color:#976451;min-height:44px;font:inherit;cursor:pointer}.cart-reset button:disabled{opacity:.5;cursor:default}.cart-reset>div{text-align:left;margin-top:12px;padding:18px;border:1px solid #dfcbbc;border-radius:16px;background:#fff4e8}.cart-reset strong{font-size:14px;line-height:1.6}.cart-reset p{font-size:12px;line-height:1.8;color:#806859}.cart-reset>div button{font:inherit;min-height:44px;padding:10px 14px;margin-right:8px;border:1px solid #d8c4b6;border-radius:10px;background:white;color:#805442;cursor:pointer}
 .planner-budget-guide{padding:16px;border:1px solid #dce2ca;border-radius:16px;background:#f4f6e9;margin:12px 0 20px;color:#455a3d}.planner-budget-guide>strong{font-size:14px}.planner-budget-guide p{font-size:12px;line-height:1.8;margin:10px 0}.planner-budget-guide small{font-size:11px;line-height:1.8;color:#728064}.planner-budget-guide>small,.planner-budget-guide>a{display:block}.planner-budget-guide>a{font-size:12px;color:#455a3d;margin-top:12px}.planner-budget-guide .planner-presets{flex-wrap:wrap}
 .planner-form .planner-exclusions{min-width:0;margin:18px 0;padding:18px;border:1px solid #dce2ca;border-radius:20px;background:#fafbf5}
@@ -121,10 +121,10 @@
 .home-start p{max-width:300px;margin:0 0 8px;font-size:14px;line-height:1.7;color:#5c6e55}
 .home-start .home-start-cta{width:100%;max-width:340px;min-height:58px;margin:0;border:0;border-radius:18px;background:linear-gradient(145deg,#6a8a5a,#46603c);color:#fff;font-size:17px;font-weight:800;box-shadow:0 12px 26px #46603c40;transition:transform .15s ease}
 .home-start .home-start-cta:active:not(:disabled){transform:scale(.97)}
-.home-start-custom{margin-top:2px;padding:6px 10px;border:0;background:none;color:#7a8a6e;font:inherit;font-size:13px;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.home-start-custom{margin-top:2px;padding:6px 10px;border:0;background:none;color:var(--text-subtle);font:inherit;font-size:13px;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .planner-meal-cap{display:grid;gap:6px;margin:0 0 16px}
-.planner-meal-cap>span{font-size:13px;font-weight:700;color:#5c6e55}.planner-meal-cap>span small{font-weight:500;color:#98a28c}
+.planner-meal-cap>span{font-size:13px;font-weight:700;color:#5c6e55}.planner-meal-cap>span small{font-weight:500;color:var(--text-subtle)}
 .planner-meal-cap input{min-height:46px;padding:0 14px;border:1.5px solid #e1e6d6;border-radius:14px;background:#fffdf8;font:inherit;font-size:16px}
-.planner-meal-cap>small{font-size:11px;line-height:1.6;color:#7a8a6e}
+.planner-meal-cap>small{font-size:11px;line-height:1.6;color:var(--text-subtle)}
 @media(prefers-reduced-motion:reduce){.home-start{animation:none}}
-.plan-cost-line{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 6px;margin:-6px 0 16px;padding:0 4px;font-size:13px;color:#5c6e55}.plan-cost-line b{font-size:15px;color:#26321f}.plan-cost-line small{flex-basis:100%;font-size:11px;color:#98a28c}
+.plan-cost-line{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 6px;margin:-6px 0 16px;padding:0 4px;font-size:13px;color:#5c6e55}.plan-cost-line b{font-size:15px;color:#26321f}.plan-cost-line small{flex-basis:100%;font-size:11px;color:var(--text-subtle)}

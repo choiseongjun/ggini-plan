@@ -1,4 +1,4 @@
-import { getApps, initializeApp } from "firebase-admin/app";
+import { cert, getApps, initializeApp } from "firebase-admin/app";
 import { getAuth, type DecodedIdToken } from "firebase-admin/auth";
 
 export function firebaseAdminAuth() {
@@ -8,6 +8,30 @@ export function firebaseAdminAuth() {
   const app = getApps().find((entry) => entry.name === name) ?? initializeApp({ projectId }, name);
   // Signature verification fetches Google's public certificates; no private key is required.
   return getAuth(app);
+}
+
+// Uses the FCM service account so account deletion can remove the Firebase user
+// without a fresh popup token (popups are unavailable inside the iOS WebView).
+function firebaseCredentialedAuth() {
+  const raw = process.env.FCM_SERVICE_ACCOUNT_JSON?.trim();
+  if (!raw) return null;
+  const service = JSON.parse(raw);
+  if (service.project_id !== process.env.FIREBASE_PROJECT_ID) throw new Error("Firebase project mismatch");
+  const name = "ggini-admin-auth";
+  const app = getApps().find((entry) => entry.name === name) ?? initializeApp({ credential: cert(service), projectId: service.project_id }, name);
+  return getAuth(app);
+}
+
+export async function deleteFirebaseIdentity(provider: "google" | "apple", subject: string) {
+  const auth = firebaseCredentialedAuth();
+  if (!auth) return false;
+  try {
+    const user = await auth.getUserByProviderUid(provider === "apple" ? "apple.com" : "google.com", subject);
+    await auth.deleteUser(user.uid);
+  } catch (error) {
+    if ((error as { code?: string })?.code !== "auth/user-not-found") throw error;
+  }
+  return true;
 }
 
 export function firebaseGoogleIdentity(token: DecodedIdToken) {

@@ -1,5 +1,6 @@
 import {cert,getApps,initializeApp} from 'firebase-admin/app';
 import {getMessaging} from 'firebase-admin/messaging';
+import {fcmMessage} from './fcm-message';
 
 export function fcmConfigured(){return Boolean(process.env.FCM_SERVICE_ACCOUNT_JSON?.trim());}
 export function fcmMessaging(){
@@ -12,7 +13,6 @@ export function fcmMessaging(){
  return getMessaging(initializeApp({credential:cert(service),projectId:service.project_id},'ggini-fcm'));
 }
 export async function sendFcm(token:string,title:string,body:string,url:string,tag:string,dryRun=false){
- // Expo Android maps data.body JSON into notification.request.content.data.
- return fcmMessaging().send({token,notification:{title,body},data:{url,body:JSON.stringify({url})},android:{priority:'normal',ttl:3600000,collapseKey:tag,notification:{channelId:'meal-reminders',tag,color:'#234b36',sound:'default'}}},dryRun);
+ return fcmMessaging().send(fcmMessage(token,title,body,url,tag),dryRun);
 }
 export function invalidFcmToken(error:unknown){return ['messaging/registration-token-not-registered','messaging/invalid-registration-token'].includes(String((error as {code?:string})?.code));}

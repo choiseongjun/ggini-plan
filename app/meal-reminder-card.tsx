@@ -5,6 +5,7 @@ import {trackPlanner} from '../lib/track-planner';
 import './meal-reminder-card.css';
 import {nativePushPlatform} from '../lib/native-push-client';
 import {NativeMealReminderCard} from './native-meal-reminder-card';
+import {isNativeApp} from '../lib/native-environment';
 
 type Slot='breakfast'|'lunch'|'dinner';
 type Times=Partial<Record<Slot,string>>;
@@ -28,9 +29,11 @@ function keyBytes(base64:string){
 
 // 식사 시간 알림: 끼니마다 "오늘 저녁은 ○○" 알림을 받는다. 기기(브라우저)마다 따로 켠다.
 export function MealReminderCard(){
- const [platform,setPlatform]=useState<string|undefined>();
- useEffect(()=>{const update=()=>setPlatform(nativePushPlatform());update();window.addEventListener('ggini-native-ready',update);return()=>window.removeEventListener('ggini-native-ready',update);},[]);
- if(platform==='android')return <NativeMealReminderCard/>;
+ const [platform,setPlatform]=useState<string|undefined>(),[native,setNative]=useState<boolean|null>(null);
+ useEffect(()=>{const update=()=>{setPlatform(nativePushPlatform());setNative(isNativeApp(window,navigator.userAgent));};update();window.addEventListener('ggini-native-ready',update);return()=>window.removeEventListener('ggini-native-ready',update);},[]);
+ if(platform==='android'||platform==='ios')return <NativeMealReminderCard/>;
+ // Inside the app the push bridge can be injected late; never flash the browser/App Store guidance there.
+ if(native!==false)return <section className="mr-card" aria-busy="true"><p className="mr-note">알림 설정을 불러오는 중이에요…</p></section>;
  if(platform==='unsupported')return <section className="mr-card"><p>이 기기의 앱 알림은 아직 준비 중이에요.</p></section>;
  return <WebMealReminderCard/>;
 }
@@ -116,7 +119,7 @@ function WebMealReminderCard(){
  return <section className="mr-card" aria-label="식사 알림">
   <header><div><span className="mr-kicker">식사 알림</span><h3>밥 먹을 시간에 오늘 메뉴를 알려 드려요</h3></div>
    {support==='ok'&&<button type="button" role="switch" aria-checked={subscribed} className="mr-switch" disabled={busy} onClick={()=>void(subscribed?turnOff():save(times,true))}><span aria-hidden="true"/></button>}</header>
-  {support==='ios-install'&&<p className="mr-note">아이폰은 Safari에서 <b>공유 → 홈 화면에 추가</b>로 앱을 설치한 뒤 켤 수 있어요.</p>}
+  {support==='ios-install'&&<p className="mr-note">아이폰에서는 <a href="https://apps.apple.com/kr/app/id6816291997">App Store에서 끼니플랜 받기</a>로 앱을 설치한 뒤 식사 알림을 켜 주세요.</p>}
   {support==='unsupported'&&<p className="mr-note">이 브라우저에서는 알림을 받을 수 없어요. 크롬이나 홈 화면에 추가한 앱에서 켜 주세요.</p>}
   {support==='ok'&&<ul className={`mr-times${subscribed?'':' is-off'}`}>{SLOTS.map(([slot,label,fallback])=>{const on=Boolean(times[slot]);return <li key={slot}>
    <label className="mr-slot"><input type="checkbox" checked={on} disabled={busy} onChange={e=>{const next={...times};if(e.target.checked)next[slot]=fallback;else delete next[slot];if(subscribed)void save(next,false);else setTimes(next);}}/>{label}</label>

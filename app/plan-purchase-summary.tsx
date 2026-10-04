@@ -12,6 +12,6 @@ export function PlanPurchaseSummary({rows,budget,money}:{rows:ReturnType<typeof 
   {summary.packs===0&&<p className="purchase-ready">집에 있거나 주문한 재료로 준비할 수 있어요 🍚</p>}
   {summary.unknown>0&&<p className="purchase-ready">판매처가 확인되지 않은 상품이 있어요.</p>}
   {summary.groups.length>0&&<ul className="purchase-sellers">{summary.groups.map(g=><li key={g.seller}><span className={`purchase-store-icon${g.seller==='kurly.com'?' is-kurly':''}`} aria-hidden="true">{g.seller==='kurly.com'?'🧺':'🏪'}</span><div className="purchase-store-name"><b>{sellerNames[g.seller]??g.seller}</b><small>{g.items}종 · {g.packs}묶음</small></div><div className="purchase-store-cost"><strong>{money(g.cost)}</strong><small>배송비 확인 필요</small></div></li>)}</ul>}
-  <details className="purchase-notes"><summary>구매 금액은 이렇게 계산해요</summary><p>남은 식단에 필요한 판매 묶음 기준이에요. 최종 금액은 할인·옵션·배송비에 따라 달라질 수 있어요. 판매처별로 따로 주문하고, 배송비는 각 판매처에서 확인해 주세요.</p></details>
+  <details className="purchase-notes"><summary>구매 금액은 이렇게 계산해요</summary><p>남은 식단에 필요한 판매 단위 기준이에요. 최종 금액은 할인·옵션·배송비에 따라 달라질 수 있어요. 판매처별로 따로 주문하고, 배송비는 각 판매처에서 확인해 주세요.</p></details>
  </section>;
 }

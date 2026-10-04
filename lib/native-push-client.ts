@@ -27,7 +27,7 @@ export function useNativePush(userId:string|undefined){
   if(!userId)return;
   let inFlight=false,active=true;
   const sync=()=>{
-   if(!active||inFlight||nativePushPlatform()!=='android')return;
+   if(!active||inFlight||!['android','ios'].includes(nativePushPlatform()??''))return;
    inFlight=true;
    void nativePushRequest('sync',userId).catch(()=>{/* The reminder card offers retry and permission settings. */}).finally(()=>{inFlight=false;});
   };

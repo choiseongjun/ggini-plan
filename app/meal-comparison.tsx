@@ -27,7 +27,7 @@ function RecipeIngredients({product,conditions}:{product:PlanProduct;conditions:
    const available=conditions.owned.includes(p.id)?part.packs:conditions.supply?.[p.id]??0;
    return <li key={`${p.id}-${i}`}>
     <div className="recipe-product-title"><ProductThumb item={p}/><div><strong>{part.label}</strong>{p.productUrl?<a href={p.productUrl} target="_blank" rel="noopener noreferrer">{p.name} ↗</a>:<span>{p.name}</span>}</div></div>
-    <span>{p.detail} · 판매 1묶음 {won(p.price)}</span>
+    <span>{p.detail} · 판매 1개 {won(p.price)}</span>
     <dl><div><dt>이 한 끼에 쓰는 재료비</dt><dd>약 {won(p.price*part.packs)}</dd></div><div><dt>추가 구매</dt><dd>{row.packs?`${row.packs}묶음 · ${won(row.cost)}`:'0원 · 주문·보유 수량으로 준비'}</dd></div></dl>
     {available>0&&<small>주문·보유 수량을 먼저 반영했어요.</small>}
     {p.priceNote&&<small>{p.priceNote}</small>}
@@ -40,7 +40,7 @@ function RecipeIngredients({product,conditions}:{product:PlanProduct;conditions:
 }
 export function MealComparison({product,index,ids,products,conditions,onChoose,disabled}:{product:PlanProduct;index:number;ids:string[];products:PlanProduct[];conditions:PlanConditions;onChoose:(index:number,id:string)=>void;disabled:boolean}){
  const [open,setOpen]=useState(false);
- if(product.recipe?.assembly)return <details className="recipe-instructions"><summary>🍱 함께 먹는 상품 · 준비 방법</summary><RecipeIngredients product={product} conditions={conditions}/><ol>{product.recipe.steps.map(s=><li key={s}>{s}</li>)}</ol><small>구매는 판매 묶음 기준이며, 확인되지 않은 영양정보는 미확인으로 표시해요.</small></details>;
+ if(product.recipe?.assembly)return <details className="recipe-instructions"><summary>🍱 함께 먹는 상품 · 준비 방법</summary><RecipeIngredients product={product} conditions={conditions}/><ol>{product.recipe.steps.map(s=><li key={s}>{s}</li>)}</ol><small>구매는 판매 단위 기준이며, 확인되지 않은 영양정보는 미확인으로 표시해요.</small></details>;
  const options=slotCandidates(products,{...conditions,cooking:'all',mealMode:'mixed'},index).filter(p=>!!p.recipe!==!!product.recipe&&matchesCookingAlternative(product,p)).map(p=>{
   const next=ids.map((id,i)=>i===index?p.id:id);
   return {product:p,total:basketTotal(next,products,conditions.owned,conditions.supply,conditions.people),one:basketTotal([p.id],products,conditions.owned,conditions.supply,conditions.people)};
@@ -60,7 +60,7 @@ export function MealComparison({product,index,ids,products,conditions,onChoose,d
     <p>{total===current?'전체 구매 금액이 같아요':total<current?`전체 구매에서 ${won(current-total)} 줄어요`:`전체 구매에 ${won(total-current)} 더 필요해요`}</p>
     <button type="button" disabled={disabled||total>shoppingBudgetLimit(conditions)} onClick={()=>{onChoose(index,p.id);setOpen(false);}}>{total>shoppingBudgetLimit(conditions)?`예산보다 ${won(total-conditions.budget)} 많아요`:p.recipe?'이 요리로 바꾸고 재료 담기':'이 메뉴로 바꾸기'}</button>
    </article>;})}
-   {options.length>0&&<small>등록 판매 묶음과 주문·보유 수량 기준 · 배송비 별도. 다른 끼니와 겹치는 재료는 전체 장보기에서 합쳐요.</small>}
+   {options.length>0&&<small>등록 판매 단위과 주문·보유 수량 기준 · 배송비 별도. 다른 끼니와 겹치는 재료는 전체 장보기에서 합쳐요.</small>}
   </section>}
  </div>;
 }

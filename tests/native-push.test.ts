@@ -17,6 +17,9 @@ test('Korean meal time windows and untrusted registration input',()=>{
  assert.equal(parseNativeTimes({lunch:'24:00'}),null);
  assert.equal(parseNativeTimes({ad:'12:00'}),null);
  assert.equal(nativeInput({deviceId:'bad',action:'sync'}),null);
+ const device={deviceId:'a'.repeat(64),expectedUserId:'1'};
+ assert.deepEqual(nativeInput({...device,action:'enable',times:{breakfast:'08:00'}}),{...device,action:'settings',token:undefined,permissionGranted:undefined,times:{breakfast:'08:00'},enabled:true});
+ assert.deepEqual(nativeInput({...device,action:'enable',times:{}})?.times,{lunch:'12:00',dinner:'18:30'});
 });
 
 test('device/session lifecycle and atomic delivery claims in an isolated schema',async()=>{

@@ -10,8 +10,10 @@ export function nativeInput(value:unknown){
  if(!value||typeof value!=='object')return null;
  const v=value as Record<string,unknown>;
  if(typeof v.deviceId!=='string'||!/^[a-f0-9]{64}$/.test(v.deviceId)||typeof v.expectedUserId!=='string'||!/^\d+$/.test(v.expectedUserId))return null;
- if(!['sync','status','settings','disable','test'].includes(String(v.action)))return null;
+ if(!['sync','status','settings','enable','disable','test'].includes(String(v.action)))return null;
  if(v.action==='sync'&&(typeof v.permissionGranted!=='boolean'||(v.permissionGranted&&(typeof v.token!=='string'||!/^[-\w:]{80,4096}$/.test(v.token)))))return null;
+ // 'enable' is the switch in the in-app reminder card: it is saved as settings with enabled=true.
+ if(v.action==='enable'){const times=parseNativeTimes(v.times);return {deviceId:v.deviceId,expectedUserId:v.expectedUserId,action:'settings',token:undefined,permissionGranted:undefined,times:times&&Object.keys(times).length?times:DEFAULT_NATIVE_TIMES,enabled:true};}
  const times=v.action==='settings'?parseNativeTimes(v.times):undefined;
  if(v.action==='settings'&&(!times||typeof v.enabled!=='boolean'))return null;
  return {deviceId:v.deviceId,expectedUserId:v.expectedUserId,action:String(v.action),token:v.token as string|undefined,permissionGranted:v.permissionGranted as boolean|undefined,times,enabled:v.enabled as boolean|undefined};

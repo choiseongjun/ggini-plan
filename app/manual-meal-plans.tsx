@@ -1,0 +1,44 @@
+'use client';
+import './manual-meal-dialog.css';
+import {MealReusePicker,type MealHistoryItem} from './meal-reuse-picker';
+import {MealInputMethods} from './meal-input-methods';
+import {PlanPhotoInput} from './plan-photo-input';
+import type {PhotoFood} from '../lib/meal-photo-ai';
+import {createContext,useContext,useEffect,useRef,useState,type ReactNode} from 'react';
+import {pantryToday} from '../lib/pantry-inventory';
+import {mealSlotLabels,type MealSlot} from '../lib/meal-time';
+export type ManualMeal={id:string;name:string;day:string;slot:MealSlot;nutrition?:PhotoFood|null;eaten?:boolean};
+const ManualContext=createContext<{meals:ManualMeal[];busy:boolean;open:(day:string,slot:MealSlot)=>void;remove:(id:string)=>void;eat:(meal:ManualMeal)=>void}|null>(null);
+export function ManualMealPlans({userId,onLogin,children,enabled=true}:{userId?:string;onLogin:()=>void;children?:ReactNode;enabled?:boolean}){
+ const dialog=useRef<HTMLDialogElement>(null);
+ const [history,setHistory]=useState<MealHistoryItem[]>([]);
+ const [notice,setNotice]=useState('');
+ const [review,setReview]=useState(false);
+ const [photo,setPhoto]=useState(false),[analysisBusy,setAnalysisBusy]=useState(false),[nutrition,setNutrition]=useState<PhotoFood|null>(null);
+ const [open,setOpen]=useState(false),[name,setName]=useState(''),[day,setDay]=useState(pantryToday),[slot,setSlot]=useState<MealSlot>('dinner');
+ const [meals,setMeals]=useState<ManualMeal[]>([]),[error,setError]=useState(''),[busy,setBusy]=useState(false),[revision,setRevision]=useState(0);
+ useEffect(()=>{const handler=(event:Event)=>{if(busy||analysisBusy)return;const d=(event as CustomEvent).detail;if(!d||!['photo','manual'].includes(d.mode))return;setOpen(true);setPhoto(d.mode==='photo');setReview(false);setNutrition(null);setName('');setDay(d.day);setSlot(d.slot);};window.addEventListener('plan-menu-add',handler);return()=>window.removeEventListener('plan-menu-add',handler);},[busy,analysisBusy]);
+ useEffect(()=>{if(!open)return;const node=dialog.current;const previous=document.body.style.overflow;node?.showModal();document.body.style.overflow='hidden';return()=>{node?.close();document.body.style.overflow=previous;};},[open]);
+ useEffect(()=>{if(!userId)return;const frame=requestAnimationFrame(()=>{try{const d=JSON.parse(sessionStorage.getItem('pending-manual-meal')??'null');if(d&&typeof d.name==='string'&&typeof d.day==='string'&&d.slot in mealSlotLabels){setName(d.name);setDay(d.day);setSlot(d.slot);setOpen(true);}}catch{}});return()=>cancelAnimationFrame(frame);},[userId]);
+ const pending=useRef(false),requestId=useRef<string|null>(null);
+ useEffect(()=>{if(!userId||!enabled)return;const c=new AbortController();fetch('/api/manual-meal-plans',{cache:'no-store',signal:c.signal}).then(async r=>{const d=await r.json();if(!r.ok)throw Error(d.error);if(!c.signal.aborted){setMeals(d.meals);setHistory(d.history??[]);setError('');}}).catch(e=>{if(!c.signal.aborted)setError(e.message);});return()=>c.abort();},[userId,revision,enabled]);
+ async function save(e:React.FormEvent){e.preventDefault();if(analysisBusy)return;if(!userId){try{sessionStorage.setItem('pending-manual-meal',JSON.stringify({name,day,slot}));}catch{setError('입력한 메뉴를 보관하지 못했어요. 로그인 후 다시 입력해 주세요.');return;}onLogin();return;}if(pending.current)return;pending.current=true;setBusy(true);setError('');requestId.current??=crypto.randomUUID();
+  try{const r=await fetch('/api/manual-meal-plans',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:requestId.current,name,day,slot,nutrition})});const d=await r.json();if(!r.ok)throw Error(d.error);try{sessionStorage.removeItem('pending-manual-meal');}catch{}setMeals(rows=>[{id:requestId.current!,name,day,slot,nutrition,eaten:false},...rows.filter(m=>m.id!==requestId.current)]);setNotice(`${day} ${mealSlotLabels[slot]}에 ${name}을 추가했어요.`);setName('');setNutrition(null);requestId.current=null;setOpen(false);setRevision(n=>n+1);}catch(e){setError(e instanceof Error?e.message:'저장하지 못했어요.');}finally{pending.current=false;setBusy(false);}}
+ async function remove(id:string){if(pending.current)return;pending.current=true;setBusy(true);try{const r=await fetch(`/api/manual-meal-plans?id=${id}`,{method:'DELETE'});if(!r.ok)throw Error('삭제하지 못했어요. 다시 시도해 주세요.');setMeals(rows=>rows.filter(m=>m.id!==id));setError('');}catch(e){setError((e as Error).message);}finally{pending.current=false;setBusy(false);}}
+ async function eat(meal:ManualMeal){if(pending.current)return;pending.current=true;setBusy(true);setError('');try{const r=await fetch('/api/manual-meal-plans/eat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:meal.id})});const d=await r.json();if(!r.ok)throw Error(d.error);setMeals(rows=>rows.map(m=>m.id===meal.id?{...m,eaten:true}:m));setNotice(`${mealSlotLabels[meal.slot]} 먹은 기록에 저장했어요.`);window.dispatchEvent(new Event('intake-logged'));}catch(e){setError((e as Error).message);}finally{pending.current=false;setBusy(false);}}
+ function openSlot(day:string,slot:MealSlot){if(busy||analysisBusy)return;setDay(day);setSlot(slot);setName('');setNutrition(null);setReview(false);setPhoto(false);setOpen(true);}
+ return <ManualContext.Provider value={enabled?{meals,busy:busy||analysisBusy,open:openSlot,remove:id=>void remove(id),eat:meal=>void eat(meal)}:null}>
+ {notice&&<p className="manual-plan-feedback" role="status">{notice}</p>}
+ {error&&!open&&<p role="alert">{error} <button type="button" onClick={()=>setRevision(n=>n+1)}>다시 불러오기</button></p>}
+ {children}
+ <dialog ref={dialog} className="manual-meal-dialog" aria-labelledby="manual-meal-title" onCancel={e=>{if(busy||analysisBusy)e.preventDefault();else setOpen(false);}} onClose={()=>setOpen(false)}><section className="manual-meal-plans"><header className="manual-dialog-heading"><div><small>{day} · {mealSlotLabels[slot]}</small><h3 id="manual-meal-title">메뉴 추가</h3></div><button type="button" disabled={busy||analysisBusy} onClick={()=>setOpen(false)} aria-label="메뉴 추가 닫기">✕</button></header>
+ {open&&<>{!photo&&<MealReusePicker items={history} disabled={busy||analysisBusy} onChoose={value=>{setName(value);setNutrition(null);requestId.current=null;setError('');}}/>}<MealInputMethods selected={photo?'photo':'manual'} disabled={busy||analysisBusy} onSelect={mode=>setPhoto(mode==='photo')}/>{photo&&<PlanPhotoInput userId={userId} onLogin={onLogin} onBusy={setAnalysisBusy} onReset={()=>{setReview(false);setName('');setNutrition(null);requestId.current=null;}} onFood={food=>{setReview(true);setName(food.name.slice(0,80));setNutrition(food);requestId.current=null;}}/>}{(!photo||review)&&<form className="manual-meal-review" onSubmit={save}><h4>{photo?'2. 분석 결과 확인':'메뉴 이름을 적어주세요'}</h4><p>{photo?'음식 이름과 날짜·끼니를 확인해 주세요.':'집밥·외식·도시락도 이름만 적어두세요.'}</p><label>메뉴 이름<input required maxLength={80} value={name} disabled={busy||analysisBusy} placeholder="예: 엄마가 준 반찬과 밥" onChange={e=>{setName(e.target.value);setNutrition(null);requestId.current=null;}}/></label><div><label>날짜<input required type="date" value={day} disabled onChange={e=>{setDay(e.target.value);requestId.current=null;}}/></label><label>끼니<select value={slot} disabled onChange={e=>{setSlot(e.target.value as MealSlot);requestId.current=null;}}>{Object.entries(mealSlotLabels).map(([key,label])=><option key={key} value={key}>{label}</option>)}</select></label></div><small>{nutrition?`사진 분석 추정 · ${Math.round(nutrition.calories)} kcal · 단백질 ${nutrition.protein}g. 음식 이름을 바꾸면 추정치는 제외돼요.`:'이름만 저장해요. 영양정보·장보기 재료는 자동 계산하지 않아요.'} 먹은 기록에는 합산하지 않아요.</small><button type="submit" disabled={busy||analysisBusy||!name.trim()}>{busy?'저장 중…':userId?'식단에 저장':'로그인하고 저장'}</button></form>}</>}
+ {error&&<p role="alert">{error} <button type="button" disabled={busy||analysisBusy} onClick={()=>setRevision(n=>n+1)}>다시 불러오기</button></p>}
+ </section></dialog></ManualContext.Provider>;
+}
+export function useManualMeals(){return useContext(ManualContext)?.meals??[];}
+export function ManualSlotMeals({day,slot,allowAdd=false}:{day:string;slot:MealSlot;allowAdd?:boolean}){
+ const context=useContext(ManualContext);if(!context)return null;
+ const rows=context.meals.filter(m=>m.day===day&&m.slot===slot);
+ return <div className="manual-slot-meals">{rows.map(m=><article key={m.id}><strong>{m.name}</strong><small>{m.nutrition?`사진 추정 · ${Math.round(m.nutrition.calories)} kcal`:'직접 입력 · 영양정보 미등록'}</small><div><button type="button" disabled={context.busy||m.eaten||day>pantryToday()} onClick={()=>context.eat(m)}>{m.eaten?'기록 완료':'먹었어요'}</button>{m.eaten&&<a href={`/record?date=${day}`}>기록 보기</a>}<button type="button" disabled={context.busy} onClick={()=>context.remove(m.id)} aria-label={`${m.name} 계획에서 삭제`}>삭제</button></div></article>)}{allowAdd&&<button type="button" className="plan-builder-empty" disabled={context.busy} onClick={()=>context.open(day,slot)}>+ 메뉴 추가</button>}</div>;
+}

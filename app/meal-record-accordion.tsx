@@ -31,7 +31,7 @@ export function MealRecordAccordion({intake,userId,onLogin,initialOpen=false,exp
  }
  return <details id="meal-record-entry" tabIndex={-1} className="meal-record-accordion" open={open}>
   <summary onClick={event=>{event.preventDefault();setOpen(!open);}}>
-   <span className="meal-record-title">먹은 음식 기록하기 <span className="meal-record-chevron" aria-hidden="true">⌄</span></span>
+   <span className="meal-record-title">한 끼 기록하기 <span className="meal-record-chevron" aria-hidden="true">⌄</span></span>
    <span className="meal-record-permission">사진 또는 음식 검색</span>
   </summary>
   <div className="meal-record-body">

@@ -1,7 +1,7 @@
 'use client';
 
 import {MealTimePicker} from './meal-time-picker';
-import {mealTimeISO,validEatenAt,recordDestination,type MealSlot} from '../lib/meal-time';
+import {mealTimeISO,validEatenAt,recordDestination,inferredMealSlot,type MealSlot} from '../lib/meal-time';
 import {useEffect, useRef, useState} from 'react';
 import type {FoodReference} from '../lib/food-reference';
 import {trackPlanner} from '../lib/track-planner';
@@ -19,7 +19,7 @@ const serving = (f: FoodReference) => `${n(f.servingAmount)}${f.servingUnit}`;
 // 간식·디저트·음료·외식 기록: 이름으로 찾아 한 번에 남긴다. 기록이 쌓일수록 하루 섭취량(칼로리·당류)이 정확해진다.
 export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyChange}: {onLogged: (name:string,eatenAt?:string,result?:{ids:string[];nutrition?:Record<string,number|null>;mealSlot?:MealSlot}) => void;initialOpen?:boolean;photo?:boolean;onClose?:()=>void;onBusyChange?:(busy:boolean)=>void}) {
  const [mealTime,setMealTime]=useState('');
- const [mealSlot,setMealSlot]=useState<MealSlot|null>(null);
+ const [mealSlot,setMealSlot]=useState<MealSlot|null>(()=>inferredMealSlot(new Date().toISOString()));
  const timeISO=mealTime?mealTimeISO(mealTime):undefined;
  const timeValid=!mealTime||!!timeISO&&validEatenAt(timeISO);
  const [open, setOpen] = useState(initialOpen);
@@ -73,7 +73,7 @@ export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyC
    setPicked(null); setQuery(''); setResults(null); setPortions(1);
    trackPlanner('snack_logged');
    window.dispatchEvent(new CustomEvent(INTAKE_LOGGED_EVENT));
-   setMealTime('');setMealSlot(null);onLogged(picked.name,d.eatenAt,d);
+   setMealTime('');setMealSlot(inferredMealSlot(new Date().toISOString()));onLogged(picked.name,d.eatenAt,d);
   } catch (e) { setError(e instanceof Error ? e.message : '기록하지 못했어요.'); } finally { setBusy(false); }
  }
 

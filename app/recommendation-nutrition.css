@@ -10,7 +10,7 @@
 .daily-recommendation-nutrition table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:12px;margin:12px 0}
 .daily-recommendation-nutrition th,.daily-recommendation-nutrition td{text-align:left;padding:10px 4px;border-bottom:1px solid #e7ecdf;overflow-wrap:anywhere}
 .daily-recommendation-nutrition th:first-child{width:23%}
-.daily-recommendation-nutrition td small{display:block;font-size:10px;color:#816545;margin-top:4px}
+.daily-recommendation-nutrition td small{display:block;font-size:11px;color:#816545;margin-top:4px}
 .daily-recommendation-nutrition summary{cursor:pointer}
 .daily-recommendation-nutrition>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;list-style:none;cursor:pointer}
 .daily-recommendation-nutrition>summary::-webkit-details-marker{display:none}

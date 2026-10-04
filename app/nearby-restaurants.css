@@ -93,7 +93,7 @@
 .nearby-match-tabs{display:flex;flex:1;gap:5px;min-width:0}
 .nearby-match-tabs button{flex:1;white-space:nowrap;font-size:12px;padding:10px 7px;background:#f0f3e9;border-color:transparent}
 .nearby-match-tabs button[aria-pressed=true]{background:#526d41;color:#fff;border-color:#526d41}
-.nearby-match-tabs span{font-size:10px;opacity:.8}.nearby-body .nearby-map-toggle{font-size:11px;padding:8px;background:transparent;border:0}
+.nearby-match-tabs span{font-size:11px;opacity:.8}.nearby-body .nearby-map-toggle{font-size:11px;padding:8px;background:transparent;border:0}
 .nearby-match-note{font-size:11px;color:#7c826e;line-height:1.7;margin:0 0 14px}
 .nearby-match-badge{display:inline-block;margin-top:10px;padding:3px 9px;border-radius:7px;background:#edf4e5;color:#4f6f3c;font-size:11px;font-weight:700}
 .nearby-match-badge.similar{background:#f8efdf;color:#8d7044}

@@ -19,3 +19,4 @@
 .auth-card .apple-signin:hover { background: #242424; }
 .auth-card .apple-signin:focus-visible { outline: 3px solid #739764; outline-offset: 3px; }
 .auth-card .apple-signin:disabled { opacity: .55; cursor: wait; }
+.auth-review-link{display:block;width:max-content;margin:4px auto 0;padding:12px;min-height:44px;box-sizing:border-box;color:#68765e;font-size:11px;text-decoration:none}.auth-review-link:hover,.auth-review-link:focus-visible{color:#3f4a37;text-decoration:underline}

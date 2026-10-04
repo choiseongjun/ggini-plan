@@ -3,12 +3,15 @@ import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { KakaoBrowser } from './kakao-browser';
+import { DialogHistory } from './dialog-history';
 import { pageMetadata, siteUrl, indexable } from "../lib/seo";
+import "./tokens.css";
 import "./globals.css";
 import "./playful.css";
 import { AppLoadingProvider } from './app-loading';
 import './launch-polish.css';
 import './interaction-motion.css';
+import './mobile-polish.css';
 
 export const viewport:Viewport={width:'device-width',initialScale:1,viewportFit:'cover',interactiveWidget:'resizes-content',themeColor:'#f7f9fa'};
 
@@ -26,5 +29,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
-  return <html lang="ko"><body><AppLoadingProvider>{children}</AppLoadingProvider><KakaoBrowser /><ProductAnalytics /><Analytics /><SpeedInsights /></body></html>;
+  return <html lang="ko"><body><AppLoadingProvider>{children}</AppLoadingProvider><KakaoBrowser /><DialogHistory /><ProductAnalytics /><Analytics /><SpeedInsights /></body></html>;
 }

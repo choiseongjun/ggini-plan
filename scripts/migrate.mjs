@@ -38,6 +38,12 @@ try {
   await client.query(readFileSync(resolve(root, 'db/body-profile-birth-year.sql'), 'utf8'));
   await client.query(readFileSync(resolve(root, 'db/food-intake-meal-slot.sql'), 'utf8'));
   await client.query(readFileSync(resolve(root, 'db/apple-auth.sql'), 'utf8'));
+  await client.query(readFileSync(resolve(root, 'db/user-last-login.sql'), 'utf8'));
+  await client.query(readFileSync(resolve(root, 'db/pantry-inventory.sql'), 'utf8'));
+  await client.query(readFileSync(resolve(root, 'db/manual-meal-plans.sql'), 'utf8'));
+  await client.query(readFileSync(resolve(root, 'db/weight-logs.sql'), 'utf8'));
+  await client.query(readFileSync(resolve(root, 'db/wellness.sql'), 'utf8'));
+  await client.query(readFileSync(resolve(root, 'db/plan-photo-analysis.sql'), 'utf8'));
   await client.query('COMMIT');
   console.log("PostgreSQL schema is ready.");
 } catch (error) {

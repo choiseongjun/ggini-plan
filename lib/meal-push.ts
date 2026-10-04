@@ -60,18 +60,22 @@ export async function dispatchMealReminders() {
 
   let sent = 0, skipped = 0, removed = 0;
   for (const {row, slot} of due) {
-    const markSent = () => getPool().query(`UPDATE push_subscriptions SET sent = sent || jsonb_build_object($2::text, $3::text) WHERE endpoint = $1`, [row.endpoint, slot, today]);
+    // pg_cron과 GitHub Actions 백업이 겹쳐 돌아도 한 번만 보내도록, 보내기 전에 오늘 이 끼니를 먼저 선점한다.
+    const claimed = (await getPool().query(`UPDATE push_subscriptions SET sent = sent || jsonb_build_object($2::text, $3::text) WHERE endpoint = $1 AND COALESCE(sent->>$2, '') <> $3 RETURNING endpoint`, [row.endpoint, slot, today])).rowCount;
+    if (!claimed) continue;
+    const release = () => getPool().query(`UPDATE push_subscriptions SET sent = sent - $2::text WHERE endpoint = $1 AND sent->>$2 = $3`, [row.endpoint, slot, today]);
     // 방금 먹었다고 기록했으면 굳이 알리지 않는다.
-    if (ateRecently.has(row.user_id)) { skipped++; await markSent(); continue; }
+    if (ateRecently.has(row.user_id)) { skipped++; continue; }
     const payload = reminderPayload(todaysMenu(planByUser.get(row.user_id), slot, today, products), slot);
     try {
       await webpush.sendNotification({endpoint: row.endpoint, keys: row.keys}, JSON.stringify(payload), {TTL: 60 * 60});
-      sent++; await markSent();
+      sent++;
     } catch (e) {
       const status = (e as {statusCode?: number}).statusCode;
       // 404/410: 브라우저가 구독을 해지했다 — 지운다.
       if (status === 404 || status === 410) { await getPool().query('DELETE FROM push_subscriptions WHERE endpoint = $1', [row.endpoint]); removed++; }
-      else skipped++;
+      // 일시적 실패는 선점을 풀어 다음 실행(알림 시각 후 1시간 안)에 다시 보낸다.
+      else { skipped++; await release(); }
     }
   }
   return {sent, skipped, removed};

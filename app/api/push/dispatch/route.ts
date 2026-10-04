@@ -5,7 +5,7 @@ import {dispatchNativeMealReminders} from '../../../../lib/native-meal-push';
 export const runtime='nodejs';
 export const maxDuration=60;
 
-// GitHub Actions 예약 작업이 15분마다 부른다(.github/workflows/meal-reminders.yml). CRON_SECRET이 맞아야 한다.
+// Supabase pg_cron이 15분마다 부른다(db/push-cron.sql). GitHub Actions(.github/workflows/meal-reminders.yml)는 늦게 도는 백업. CRON_SECRET이 맞아야 한다.
 export async function POST(request:NextRequest){
  const secret=process.env.CRON_SECRET?.trim(),given=request.headers.get('x-cron-secret')??'';
  if(!secret||Buffer.byteLength(given)!==Buffer.byteLength(secret)||!timingSafeEqual(Buffer.from(given),Buffer.from(secret)))return new NextResponse(null,{status:401});

@@ -24,7 +24,7 @@
 .rp-freeze span{flex:0 0 22px;height:22px;border-radius:7px;background:#dfe5d6 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9'/%3E%3C/svg%3E") center/14px no-repeat}
 .rp-freeze span.is-on{background-color:#6fa8d6}
 .rp-next{margin-top:14px;display:grid;gap:6px}
-.rp-next span{font-size:12px;color:#5c6e55}.rp-next small{font-size:11px;color:#8a947e}
+.rp-next span{font-size:12px;color:#5c6e55}.rp-next small{font-size:11px;color:var(--text-subtle)}
 .rp-bar{height:8px;border-radius:8px;background:#eef1e6;overflow:hidden}
 .rp-bar i{display:block;height:100%;border-radius:8px;background:linear-gradient(90deg,#f3b58f,#e98a63);animation:rp-fill .9s cubic-bezier(.22,.9,.3,1) both}
 @keyframes rp-fill{from{width:0}}
@@ -33,10 +33,10 @@
 .rp-badges li:not(.is-earned) .rp-badge-icon{filter:grayscale(1);opacity:.4}
 .rp-badge-icon{position:relative;display:grid;place-items:center;width:64px;height:70px;color:var(--ink-tone)}
 .rp-badge-description{font-size:11px;line-height:1.5;color:#647568;word-break:keep-all}
-.rp-badge-icon i{position:absolute;right:-4px;bottom:-4px;width:18px;height:18px;border:2px solid #fff;border-radius:50%;background:#526c47 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 12.5 4 4 8-9'/%3E%3C/svg%3E") center/10px no-repeat}
+.rp-badge-icon i{position:absolute;right:-4px;bottom:-4px;width:18px;height:18px;border:2px solid #fff;border-radius:50%;background:var(--primary) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 12.5 4 4 8-9'/%3E%3C/svg%3E") center/10px no-repeat}
 .rp-badges strong{font-size:12px;line-height:1.3}
-.rp-badges small{font-size:10px;color:#8a947e}
-.rp-badges li.is-earned small{color:#526c47;font-weight:700}
+.rp-badges small{font-size:11px;color:var(--text-subtle)}
+.rp-badges li.is-earned small{color:var(--primary);font-weight:700}
 .rp-report header{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin-bottom:14px}
 .rp-report h3{margin:3px 0 0;font-size:19px}
 .rp-tabs{display:flex;gap:2px;padding:3px;border-radius:12px;background:#f0f3ea}
@@ -48,7 +48,7 @@
 .rp-stats dt{font-size:11px;color:#6d7a63}
 .rp-stats dd{margin:3px 0 0;font-size:20px;font-weight:800}
 .rp-stats dd small{margin-left:2px;font-size:11px;font-weight:600;color:#6d7a63}
-.rp-stats em{display:inline-block;margin-top:4px;padding:1px 7px;border-radius:999px;background:#fff;font-style:normal;font-size:10px;font-weight:700;color:#6d7a63}
+.rp-stats em{display:inline-block;margin-top:4px;padding:1px 7px;border-radius:999px;background:#fff;font-style:normal;font-size:11px;font-weight:700;color:#6d7a63}
 .rp-stats em.is-over{color:#a34f2d;background:#fde7dc}.rp-stats em.is-under{color:#35668f;background:#e1eefa}.rp-stats em.is-ok{color:#3f6a33;background:#e6f1df}
 .rp-facts{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:6px}
 .rp-facts li{display:flex;justify-content:space-between;gap:10px;font-size:12px;color:#6d7a63}

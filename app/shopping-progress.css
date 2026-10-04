@@ -8,10 +8,10 @@
 .purchase-payment>div{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
 .purchase-payment button{min-height:44px;padding:10px 16px;border-radius:12px;cursor:pointer}
 .purchase-product-links{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:10px}
-.purchase-product-links>a{display:inline-flex;flex-wrap:wrap;align-items:center;gap:5px;min-height:44px;padding:9px 12px;border:1px solid #dce4ce;border-radius:12px;background:#fffdf8;color:#526c47;font-size:12px;text-decoration:none;line-height:1.5;box-sizing:border-box;overflow-wrap:anywhere;max-width:100%}
-.purchase-product-links>a.purchase-seller-link{background:#edf3df;font-weight:600}.purchase-product-links>a>span{font-size:10px;font-weight:400;color:#728065}.purchase-product-links>a:hover{background:#e5edd7}.purchase-product-links>a:focus-visible{outline:2px solid #526c47;outline-offset:3px}
+.purchase-product-links>a{display:inline-flex;flex-wrap:wrap;align-items:center;gap:5px;min-height:44px;padding:9px 12px;border:1px solid #dce4ce;border-radius:12px;background:#fffdf8;color:var(--primary);font-size:12px;text-decoration:none;line-height:1.5;box-sizing:border-box;overflow-wrap:anywhere;max-width:100%}
+.purchase-product-links>a.purchase-seller-link{background:#edf3df;font-weight:600}.purchase-product-links>a>span{font-size:11px;font-weight:400;color:#728065}.purchase-product-links>a:hover{background:#e5edd7}.purchase-product-links>a:focus-visible{outline:2px solid var(--primary);outline-offset:3px}
 .purchase-items .purchase-item-details{margin:0;padding:0;border:0;min-width:0}
-.purchase-item-details>summary{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:44px;cursor:pointer;list-style:none;font-size:12px;color:#526c47}
+.purchase-item-details>summary{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:44px;cursor:pointer;list-style:none;font-size:12px;color:var(--primary)}
 .purchase-item-details>summary::-webkit-details-marker{display:none}
 .purchase-item-details>summary::after{content:'＋';font-size:18px}
 .purchase-item-details[open]>summary::after{content:'−'}

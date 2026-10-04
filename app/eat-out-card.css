@@ -15,7 +15,7 @@ dialog.eo-dialog::backdrop{background:#1d2a1a66;backdrop-filter:blur(4px);-webki
 .eo-close{flex-shrink:0;display:grid;place-items:center;width:36px;height:36px;border:0;border-radius:50%;background:#eef2e4;color:#5c6e55;cursor:pointer}
 .eo-tabs{display:flex;gap:6px;padding:0 18px 12px;background:#fff;border-bottom:1px solid #eceee4}
 .eo-tabs button{flex:1;min-height:38px;border:1.5px solid #e1e6d6;border-radius:12px;background:#fff;color:#5c6e55;font:inherit;font-size:13px;font-weight:700}
-.eo-tabs button[aria-selected=true]{background:#526c47;border-color:#526c47;color:#fff}
+.eo-tabs button[aria-selected=true]{background:var(--primary);border-color:var(--primary);color:#fff}
 .eo-scroll{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:14px 14px 20px;display:grid;gap:10px;align-content:start}
 .eo-kinds{display:flex;flex-wrap:wrap;gap:6px}
 .eo-kinds button{padding:8px 12px;border:1.5px solid #e1e6d6;border-radius:999px;background:#fff;color:#5c6e55;font:inherit;font-size:13px;font-weight:700}
@@ -25,8 +25,8 @@ dialog.eo-dialog::backdrop{background:#1d2a1a66;backdrop-filter:blur(4px);-webki
 .eo-matchups button{flex:none;padding:9px 12px;border:0;border-radius:14px;background:#fdeee4;color:#8a4326;font:inherit;font-size:13px;font-weight:800;white-space:nowrap}
 .eo-matchups i{font-style:normal;font-weight:600;opacity:.7}
 .eo-groups{display:flex;gap:14px;border-bottom:1px solid #eceee4;overflow-x:auto;scrollbar-width:none}
-.eo-groups button{flex:none;padding:6px 0 8px;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;background:none;color:#8a9583;font:inherit;font-size:13px;font-weight:700}
-.eo-groups button[aria-selected=true]{color:#33402c;border-color:#526c47}
+.eo-groups button{flex:none;padding:6px 0 8px;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;background:none;color:var(--text-subtle);font:inherit;font-size:13px;font-weight:700}
+.eo-groups button[aria-selected=true]{color:#33402c;border-color:var(--primary)}
 .eo-kinds button:disabled{opacity:.45}
 .eo-search{position:relative}
 .eo-search input{width:100%;height:42px;padding:0 12px;border:1.5px solid #e1e6d6;border-radius:12px;background:#fff;font:inherit;font-size:16px;box-sizing:border-box}
@@ -34,8 +34,8 @@ dialog.eo-dialog::backdrop{background:#1d2a1a66;backdrop-filter:blur(4px);-webki
 .eo-search li button{width:100%;padding:9px 10px;border:0;border-radius:8px;background:none;text-align:left;font:inherit;font-size:14px;color:#33402c}
 .eo-search li button:hover{background:#f3f6ec}
 .eo-picked{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:10px;border-radius:16px;background:#fff;border:1px dashed #d6ddc9}
-.eo-picked>span{flex:1;font-size:13px;color:#8a9583}
-.eo-picked>button:not(.eo-go){padding:6px 10px;border:0;border-radius:999px;background:#526c47;color:#fff;font:inherit;font-size:13px;font-weight:700}
+.eo-picked>span{flex:1;font-size:13px;color:var(--text-subtle)}
+.eo-picked>button:not(.eo-go){padding:6px 10px;border:0;border-radius:999px;background:var(--primary);color:#fff;font:inherit;font-size:13px;font-weight:700}
 .eo-go{margin-left:auto;min-height:38px;padding:0 14px;border:0;border-radius:12px;background:#e98a63;color:#fff;font:inherit;font-size:13px;font-weight:800}
 .eo-go:disabled{background:#e4d8cf}
 .eo-state{margin:0;font-size:12px;line-height:1.5;color:#6c7a64}
@@ -60,5 +60,5 @@ dialog.eo-dialog::backdrop{background:#1d2a1a66;backdrop-filter:blur(4px);-webki
 .eo-eat{width:100%;min-height:40px;margin-top:10px;border:1.5px solid #cfdcc2;border-radius:12px;background:#f6f9f1;color:#3f5e33;font:inherit;font-size:13px;font-weight:800}
 .eo-eat:disabled{opacity:.7}
 .eo-again{min-height:42px;border:1.5px solid #e1e6d6;border-radius:14px;background:#fff;color:#5c6e55;font:inherit;font-weight:700}
-.eo-foot{font-size:11px;line-height:1.5;color:#8a9583}
+.eo-foot{font-size:11px;line-height:1.5;color:var(--text-subtle)}
 @media (prefers-reduced-motion:reduce){dialog.eo-dialog[open]{animation:none}}

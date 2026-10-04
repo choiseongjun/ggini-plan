@@ -98,7 +98,7 @@
 .pantry-option[data-selected=true] {box-shadow:0 0 0 2px #638769;border-color:transparent;background:white;}
 .pantry-option-copy {display:flex;flex-direction:column;gap:7px;padding:18px;width:100%;}
 .pantry-option-title {display:flex;align-items:center;justify-content:space-between;gap:12px;}
-.pantry-option-selected {display:inline-flex;align-items:center;gap:4px;flex-shrink:0;padding:4px 7px;border-radius:6px;background:#edf2e5;color:#526b42;font-size:10px;}
+.pantry-option-selected {display:inline-flex;align-items:center;gap:4px;flex-shrink:0;padding:4px 7px;border-radius:6px;background:#edf2e5;color:#526b42;font-size:11px;}
 .pantry-option-view {display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:5px;padding-top:10px;border-top:1px solid #eeeee6;color:#587548;font-weight:600;}
 .pantry-option-copy strong {font-size:18px;letter-spacing:-.6px;line-height:1.45;}
 .pantry-option-copy>span {font-size:12px;}
@@ -186,12 +186,12 @@
  .pantry-upload-icon {width:34px;height:36px;border-radius:9px;}
  .pantry-photo-select {gap:9px!important;padding:13px 10px!important;}
  .pantry-photo-select strong {font-size:13px;}
- .pantry-photo-select small {font-size:10px;}
- .pantry-photo-login-note {font-size:10px!important;}
+ .pantry-photo-select small {font-size:11px;}
+ .pantry-photo-login-note {font-size:11px!important;}
  .pantry-options>div {gap:10px;grid-template-columns:1fr;}
  .pantry-option-copy {padding:15px 13px;gap:5px;}
  .pantry-option-copy strong {font-size:17px;}
- .pantry-option-copy small {font-size:10px;}
+ .pantry-option-copy small {font-size:11px;}
  .pantry-result-toolbar {font-size:11px;gap:6px;}
  .pantry-result-toolbar button {font-size:12px;padding:8px;}
  .pantry-result-body {padding:20px;}
@@ -210,7 +210,7 @@
 }
 @media(max-width:360px) {
  .pantry-kitchen,.pantry-meal-panel {padding:16px;}
- .pantry-input-help small {font-size:10px;}
+ .pantry-input-help small {font-size:11px;}
  .pantry-upload-plus {display:none;}
 }
 @media(prefers-reduced-motion:reduce) {.pantry-home button {transition:none;}.pantry-spinner {animation:none;}}
@@ -254,7 +254,7 @@
 .pantry-needed-group ul {display:flex;gap:7px;flex-wrap:wrap;list-style:none;margin:7px 0 0;padding:0;}
 .pantry-needed-group li {font-size:13px;padding:6px 10px;border:1px solid #e9dfc9;border-radius:8px;background:#fffdf8;overflow-wrap:anywhere;}
 .pantry-home .pantry-needed>p {color:#7b715e;font-size:11px;margin:13px 0 0;}
-@media(max-width:360px) {.pantry-shopping-toggle {padding:12px;gap:9px;}.pantry-shopping-copy strong {font-size:12px;}.pantry-shopping-toggle .pantry-shopping-copy small {font-size:10px;}}
+@media(max-width:360px) {.pantry-shopping-toggle {padding:12px;gap:9px;}.pantry-shopping-copy strong {font-size:12px;}.pantry-shopping-toggle .pantry-shopping-copy small {font-size:11px;}}
 @media(prefers-reduced-motion:reduce) {.pantry-shopping-toggle {transition:none;}}
 
 .pantry-cooking-guide {padding:8px 0 16px;line-height:1.8;}
@@ -387,3 +387,11 @@
 .pantry-search-empty p{font-size:12px;line-height:1.7;}
 .pantry-menu-more>svg{transform:rotate(90deg);}
 @media(max-width:420px){.pantry-compact-nav{align-items:flex-start;flex-direction:column;gap:8px;}.pantry-compact-nav>button{align-self:flex-end;}.pantry-browser-count{flex-wrap:wrap;}}
+
+.pantry-saved-kitchen{padding:20px;margin:20px 0;border:1px solid #dce4d1;background:#f3f6ed;border-radius:20px;}
+.pantry-saved-kitchen p,.pantry-saved-kitchen>small{font-size:12px;line-height:1.7;color:#717c64;}
+.pantry-saved-ingredients{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0;}
+.pantry-saved-ingredients span{padding:7px 11px;border-radius:10px;background:#fff;color:#435639;font-size:13px;}
+.pantry-kitchen-actions{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0;}
+.pantry-home .pantry-kitchen-actions button{font-size:12px;min-height:42px;}
+.pantry-home .pantry-inventory-item .pantry-icon-button{width:auto;min-width:60px;padding:8px;font-size:12px;}

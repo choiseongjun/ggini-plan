@@ -73,11 +73,11 @@
 .fresh-shell .mobile-buddy-circle { position: absolute; inset: 4px 0 0; background: #d9e1bf; border-radius: 50%; transform: none; display: grid; place-items: center; }
 .fresh-shell .mobile-buddy-circle .rice-buddy { width: 145px; height: 145px; transform: rotate(5deg); }
 .fresh-shell .mobile-buddy-spark { position: absolute; top: 14px; left: 2px; color: #55ac94; font-size: 21px; }
-.fresh-shell .buddy-hello { position: absolute; right: 0; bottom: -6px; padding: 7px 11px; background: #fffdf7; border-radius: 12px 12px 12px 3px; font-size: 10px; font-weight: 700; color: #467e6a; transform: rotate(-5deg); }
+.fresh-shell .buddy-hello { position: absolute; right: 0; bottom: -6px; padding: 7px 11px; background: #fffdf7; border-radius: 12px 12px 12px 3px; font-size:11px; font-weight: 700; color: #467e6a; transform: rotate(-5deg); }
 
 .fresh-shell.site-shell .home-planner { margin-bottom: 18px; }
 .fresh-shell.site-shell .home-start { display: block; text-align: left; padding: 28px; margin: 0; background: #fffdf7; border: 1px solid var(--line); border-radius: 26px; box-shadow: 0 5px 24px #353e3004; }
-.fresh-shell.site-shell .home-start-kicker { display: inline-block; padding: 0; background: none; color: #278c78; font-size: 10px; font-weight: 800; letter-spacing: .12em; }
+.fresh-shell.site-shell .home-start-kicker { display: inline-block; padding: 0; background: none; color: #278c78; font-size:11px; font-weight: 800; letter-spacing: .12em; }
 .fresh-shell.site-shell .home-start h2 { margin: 12px 0; font-size: 28px; line-height: 1.42; }
 .fresh-shell.site-shell .home-start p { color: #7a8783; font-size: 13px; line-height: 1.8; margin: 0; max-width: none; }
 .fresh-shell .home-start-benefits { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0; }
@@ -149,7 +149,7 @@
 .fresh-shell.site-shell .promo-sticker { font-family: inherit; font-size: 13px; font-weight: 700; padding: 12px 16px; background: #fffdf7; color: #518371; box-shadow: 0 5px 20px #4d856509; }
 .fresh-shell.site-shell .promo-veggie { font-size: 32px; }
 .fresh-shell.site-shell .promo-character-caption { display: none; }
-.fresh-shell.site-shell .promo-footer { position: static; margin-top: auto; padding-top: 30px; font-size: 10px; }
+.fresh-shell.site-shell .promo-footer { position: static; margin-top: auto; padding-top: 30px; font-size:11px; }
 
 /* Rounded titles carry the personality; reading and action text stay crisp. */
 .fresh-shell.site-shell :is(h1, h2, h3, p, summary, .eo-entry span) {

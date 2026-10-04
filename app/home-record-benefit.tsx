@@ -10,7 +10,7 @@ export function HomeRecordBenefit({compact=false}:{compact?:boolean}){
    <li><strong>이번 주 식사</strong><span>사진과 영양 모아보기</span></li>
   </ul>}
   <p>추천과 다른 음식·간식도 기록해요.</p>
-  <Link href="/record">오늘 한 끼 기록하기 <span aria-hidden="true">→</span></Link>
+  <Link href="/record">한 끼 기록하기 <span aria-hidden="true">→</span></Link>
   {!compact&&<small>영양정보는 기록한 음식 기준이며, 사진 분석은 추정치예요.</small>}
  </aside>;
 }

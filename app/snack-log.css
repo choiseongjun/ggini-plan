@@ -25,10 +25,10 @@
 .snack-log-total{margin:10px 2px;font-size:13px;color:#4d5c47}
 .snack-log-actions{display:flex;gap:8px}
 .snack-log-actions button{flex:1;min-height:44px;border:1px solid #dbe3d2;border-radius:12px;background:#fff;font-weight:700}
-.snack-log-actions .snack-log-submit{flex:2;border:0;background:#526c47;color:#fff}
+.snack-log-actions .snack-log-submit{flex:2;border:0;background:var(--primary);color:#fff}
 .snack-log-actions .snack-log-submit:disabled{opacity:.6}
 .snack-log-error{margin:8px 2px 0;font-size:13px;color:#b24a2e}
-.snack-log-foot{display:block;margin-top:10px;font-size:11px;line-height:1.5;color:#8a9583}
+.snack-log-foot{display:block;margin-top:10px;font-size:11px;line-height:1.5;color:var(--text-subtle)}
 .snack-log-custom{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-top:12px;font-size:12px;color:#5c6e55}
 .snack-log-custom input{width:68px;min-height:40px;padding:8px;border:1px solid #cdd8c4;border-radius:10px;background:#fff;color:#33402c;font-size:16px;text-align:center}
 

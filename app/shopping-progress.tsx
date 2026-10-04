@@ -110,7 +110,7 @@ export function ShoppingProgress({items,progress,guest=false,recommended=false,s
       <summary aria-label={`${i.name} 상품·재료 상세 보기`}><span>상품·재료 상세 보기</span></summary>
       <div className="purchase-item-detail-body">
      {i.detail&&<small>{i.detail}</small>}
-     {!recommended&&buying&&quantity(i)>0&&i.packSize&&<small>판매 묶음에 맞춰 {defaultQuantity(i).toLocaleString('ko-KR')}{i.unit} 구매 기준이에요.</small>}
+     {!recommended&&buying&&quantity(i)>0&&i.packSize&&<small>판매 단위에 맞춰 {defaultQuantity(i).toLocaleString('ko-KR')}{i.unit} 구매 기준이에요.</small>}
      {i.recommendation}
      {buying&&<div className="purchase-product-links">
       {i.url&&<a className="purchase-seller-link" href={i.url} target="_blank" rel="noopener noreferrer" aria-label={`${i.name} 판매 상품 보기 (새 창)`}>판매 상품 보기 ↗ <span>{seller(i.url)}</span></a>}

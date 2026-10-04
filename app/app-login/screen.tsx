@@ -15,5 +15,5 @@ export default function AppLogin(){
    setRedirect(data.redirect);
   }catch(e){setError(e instanceof Error?e.message:'앱 연결에 실패했어요.');}
  }
- return <>{redirect?<main className="legal-page"><h1>로그인했어요</h1><p>아래 버튼으로 끼니플랜 앱에 돌아가세요. 연결은 2분 동안 유효합니다.</p><a href={redirect}>끼니플랜 앱으로 돌아가기</a></main>:<AuthScreen onSuccess={()=>void finish()} onExplore={()=>router.replace('/')} initialError={error}/>}<p role="status">{error}</p></>;
+ return <>{redirect?<main className="legal-page"><h1>로그인했어요</h1><p>아래 버튼으로 끼니플랜 앱에 돌아가세요. 연결은 2분 동안 유효해요.</p><a href={redirect}>끼니플랜 앱으로 돌아가기</a></main>:<AuthScreen onSuccess={()=>void finish()} onExplore={()=>router.replace('/')} initialError={error}/>}<p role="status">{error}</p></>;
 }
