@@ -1,5 +1,6 @@
 'use client';
 import {Button} from './components/ui';
+import {TodayBalance} from './today-balance';
 import {scrollToAppTop} from '../lib/scroll-to-top';
 import {ManualMealPlans} from './manual-meal-plans';
 import {HomeSetupDialog} from './home-setup-dialog';
@@ -100,8 +101,9 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
  const startLoading=useLoadingTask();
  const won=locale.money;
  useEffect(()=>{if(!locale.isTaiwan&&mode!=='settings'){trackPlanner('visit');
-  // 식사 알림이 가리킨 메뉴(?meal=)는 읽어 두었으니 주소에서 지운다.
-  if(new URLSearchParams(window.location.search).has('meal'))window.history.replaceState(null,'',window.location.pathname);}},[locale.isTaiwan,mode]);
+  // 식사 알림이 가리킨 메뉴(?meal=)와 칼로리 페이지 유입(?from=kcal)은 읽어 두었으니 주소에서 지운다.
+  const q=new URLSearchParams(window.location.search);
+  if(q.has('meal')||q.get('from')==='kcal')window.history.replaceState(null,'',window.location.pathname);}},[locale.isTaiwan,mode]);
  const endpoint=locale.isTaiwan?'/api/taiwan/catalog':'/api/shopping-plan';
  const planKey=`${endpoint}|${userId??'guest'}`;
  // Writes invalidate the cached GET so the next mount sees them.
@@ -127,6 +129,9 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
  const [profileExcluded,setProfileExcluded]=useState<ExcludedFood[]>([]);
  const progress=useShoppingProgress(userId,'products');
  const intake=useFoodIntake(mode==='settings'?undefined:userId);
+ const eatenToday=Boolean(userId&&(intake.current?.logs.length??0)>0);
+ // 오늘 이미 기록한 끼니는 빼고 남은 끼니만 미리 골라 둔다(창에서 바꿀 수 있음).
+ const remainingSlots=(()=>{if(!eatenToday)return null;const done=new Set(intake.current?.logs.map(l=>l.mealSlot).filter(Boolean));const left=(['breakfast','lunch','dinner'] as const).filter(s=>!done.has(s));return left.length&&left.length<3?[...left]:null;})();
  const [products,setProducts]=useState<PlanProduct[]>([]),[baseConditions,setConditions]=useState<PlanConditions>(defaultConditions);
  // 한국판: products는 '지금 화면이 알고 있는 메뉴'(식단·후보)뿐이고 추천 계산은 서버 엔진이 한다.
  // 대만판: 전체 목록을 받아 기기에서 계산한다.
@@ -358,7 +363,8 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
   // eslint-disable-next-line react-hooks/exhaustive-deps
  },[loading,progress.ready,catalogReady,userId,mode,locale.isTaiwan]);
 
- const [quickSetup,setQuickSetup]=useState(initialSetup);
+ // 칼로리 페이지의 '남은 끼니 추천받기'로 왔다면 추천 창을 바로 연다.
+ const [quickSetup,setQuickSetup]=useState(()=>initialSetup||(simpleHome&&typeof window!=='undefined'&&new URLSearchParams(window.location.search).get('from')==='kcal'));
  const simpleEffortPicker=(conditions.slots??['dinner']).some(slot=>sideCountFor(conditions,slot)===0)&&<details className="meal-composition-effort"><summary>간단하게 고른 끼니 · {cookingEfforts[conditions.cookingEffort??'easy'].label}</summary><CookingEffortPicker value={conditions.cookingEffort} onChange={cookingEffort=>updatePreferences({cookingEffort})} disabled={loading||busy}/></details>;
  const compositionPicker=<MealCompositionPicker conditions={conditions} disabled={loading||busy} onChange={mealSideCounts=>updatePreferences({mealSideCounts})}/>;
  return locale.render(<PlanEngineContext.Provider value={engine}><ManualMealPlans key={userId??'guest'} userId={userId} onLogin={onLogin} enabled={simpleHome&&mode==='plan'}><section onClickCapture={e=>{if(locale.isTaiwan)return;const a=(e.target as Element).closest('a');if(a&&products.some(p=>p.productUrl===a.href||p.recipe?.ingredients.some(i=>i.product.productUrl===a.href)))trackPlanner('seller');}} ref={plannerRef} id={mode==='settings'?'shopping-settings':undefined} className={`shopping-planner${mode==='plan'?' home-planner':''}${!ids.length?' planner-empty':''}`} aria-labelledby="planner-title">
@@ -393,7 +399,8 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
   {mode==='plan'&&!ids.length&&!locale.isTaiwan&&!showSetup&&<section ref={startRef} tabIndex={-1} className="home-start" aria-labelledby="planner-title">
    {simpleHome?<><header className="simple-plan-heading"><h2 id="planner-title">오늘의 식단</h2><p>뭘 먹을지 고민된다면 추천부터 받아 보세요.</p></header>
    {/* 처음 온 사람의 첫 행동은 추천 하나로 — 직접 담기는 그 아래 보조 경로로 둔다. */}
-   <div className="simple-plan-hero"><Button size="lg" block className="home-recommend-cta" disabled={loading||busy} onClick={()=>setQuickSetup(true)}><Icon name="spark" size={20}/>오늘 식단 추천받기</Button><small>아침·점심·저녁을 취향과 요리 난이도에 맞춰 채워 드려요</small></div>
+   {userId&&intake.totals&&<TodayBalance totals={intake.totals} meals={intake.current?.logs.length??0} reference={personalization?.nutritionReference??null}/>}
+   <div className="simple-plan-hero"><Button size="lg" block className="home-recommend-cta" disabled={loading||busy} onClick={()=>{if(remainingSlots)setConditions(c=>({...c,slots:remainingSlots,meals:remainingSlots.length*(c.days??1)}));setQuickSetup(true);}}><Icon name="spark" size={20}/>{eatenToday?'남은 끼니 추천받기':'오늘 식단 추천받기'}</Button><small>{eatenToday?'오늘 먹은 양을 빼고 남은 끼니를 골라 드려요':'아침·점심·저녁을 취향과 요리 난이도에 맞춰 채워 드려요'}</small></div>
    <div className="simple-plan-or"><span>또는 끼니별로 직접 골라 담기</span><label>날짜<input type="date" aria-label="식단 날짜" value={simpleDate} onChange={e=>{if(e.target.value)setSimpleDate(e.target.value);}}/></label></div>
    {loading?<p role="status">식단을 불러오고 있어요…</p>:<PlanBuilder compact ids={['','','']} products={products} conditions={{...conditions,...SIMPLE_HOME_CONDITIONS,excluded:conditions.excluded,startDate:simpleDate}} onChoose={chooseMeal} disabled={busy||!catalogReady}/>}</>:<HomeWelcome onRecommend={()=>setQuickSetup(true)}/>}
    <HomeSetupDialog key={String(quickSetup)} open={quickSetup} onClose={()=>setQuickSetup(false)} meals={mealTimesPicker} cooking={<CookingEffortPicker value={conditions.cookingEffort} onChange={cookingEffort=>updatePreferences({cookingEffort})} disabled={loading||busy}/>} >
