@@ -29,3 +29,7 @@ export function trackAnalytics(event:AnalyticsEvent,properties:AnalyticsProperti
  // Never await analytics in a user action; blocked analytics cannot block a meal log.
  void getClient().then(ph=>{try{ph?.capture(event,{...properties,screen});}catch{/* optional telemetry */}}).catch(()=>{});
 }
+
+export function trackPantrySelection(startedAt:number|null){
+ trackAnalytics('pantry_menu_selected',startedAt===null?{}:{duration_ms:Math.min(300000,performance.now()-startedAt)});
+}

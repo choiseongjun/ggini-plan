@@ -1,3 +1,4 @@
+import {sourceMealRole} from '../lib/source-recipe';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {pantrySourceProducts,pantrySourceRecommendations} from '../lib/pantry-source-recommendations';
@@ -10,7 +11,7 @@ test('shopping, cooking quantities and video share one source without old nutrit
   assert.ok(source.ingredients.length>0&&source.steps.length>0);
   assert.deepEqual(p.recipe!.ingredients.map(i=>i.label),source.ingredients.map(i=>i.label));
   assert.deepEqual(p.recipe!.steps,source.steps);
-  assert.equal(p.id,'source-'+source.video.id);
+  assert.equal(p.id,'source-'+source.video.id+(source.key?'-'+source.key:''));
   assert.equal(source.video.url,'https://www.youtube.com/watch?v='+source.video.id);
   assert.deepEqual(p.recipe!.nutrition,{calories:null,protein:null});
   assert.equal(p.recipe!.minutes,null);
@@ -44,4 +45,37 @@ test('fried rice does not accept mushroom side dish videos',()=>{
  const video={id:'abcdefghijk',title:'',channel:'출처',url:'',thumbnail:''};
  const list=['새송이버섯볶음밥 만들기','새송이버섯볶음 반찬'].map(title=>({...video,title}));
  assert.deepEqual(relevantRecipeVideos(list,'새송이버섯볶음밥').map(v=>v.title),['새송이버섯볶음밥 만들기']);
+});
+
+test('reviewed catalogue has 30 distinct menus and preserves split recipe variants',()=>{
+ const all=pantrySourceProducts();assert.equal(all.length,30);assert.equal(new Set(all.map(p=>p.id)).size,30);
+ assert.equal(new Set(all.map(p=>p.name)).size,30);
+ assert.ok(all.every(p=>p.sourceRecipe!.steps.every(s=>!s.includes('[Ingredients]')&&!s.includes('Music provided'))));
+ const a=all.find(p=>p.name==='배추전')!,b=all.find(p=>p.name==='새우전')!;
+ assert.notEqual(a.id,b.id);assert.equal(a.sourceRecipe!.video.id,b.sourceRecipe!.video.id);
+ assert.ok(a.sourceRecipe!.ingredients.some(i=>i.name==='알배기 배추'));
+ assert.ok(!a.sourceRecipe!.ingredients.some(i=>i.name==='자숙 새우'));
+});
+test('recent meals step back among dishes with comparable shopping needs',()=>{
+ const owned=['밥','달걀','파','간장','소금','식용유','당근','설탕'];
+ const first=pantrySourceRecommendations(owned,[],[],false,[],true)[0];
+ const next=pantrySourceRecommendations(owned,[],[],false,[],true,[first.id]);
+ assert.ok(next.length>1);assert.notEqual(next[0].id,first.id);
+});
+
+test('discovery pool keeps shopping and exclusion constraints beyond the first three',()=>{
+ const all=pantrySourceRecommendations([],[],[],true,[],true,[],[],30);
+ assert.equal(all.length,30);
+ const filtered=pantrySourceRecommendations([],[],[],true,['egg'],true,[],[],30);
+ assert.ok(filtered.length<all.length);
+ assert.ok(filtered.every(p=>!p.recipe!.ingredients.some(i=>/달걀|계란/.test(i.product.name))));
+ assert.deepEqual(pantrySourceRecommendations([],[],[],false,[],true,[],[],30),[]);
+ assert.deepEqual(pantrySourceRecommendations([],[],[],true,[],true).map(p=>p.id),all.slice(0,3).map(p=>p.id));
+});
+
+
+test('menu roles distinguish a rice dish from sides and soup without inventing portions',()=>{
+ assert.equal(sourceMealRole('달걀볶음밥'),'밥·면 요리');
+ assert.equal(sourceMealRole('달걀말이'),'반찬·곁들임');
+ assert.equal(sourceMealRole('소고기 미역국'),'국·찌개 · 밥 별도');
 });

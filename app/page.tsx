@@ -20,6 +20,7 @@ import { ResetData } from "./reset-data";
 import { FoodIntake } from "./food-intake";
 import { ShoppingPlanner } from "./shopping-planner";
 import { PantryHome } from './pantry-home';
+import { PantryMealHistory } from './pantry-meal-history';
 import { emptyDashboard, type DashboardData } from "../lib/dashboard";
 const AuthScreen=dynamic(()=>import("./auth-screen").then(module=>module.AuthScreen));
 import { CommunityPanel, SharedBasket } from "./community";
@@ -39,7 +40,7 @@ import {ServiceFeedback} from './service-feedback';
 import {DailyReturnCard} from './daily-return-card';
 import {useNativePush,nativePushLogout} from '../lib/native-push-client';
 
-type Tab = "community" | "home" | "calendar" | "cart" | "compare" | "record" | "profile";
+type Tab = "plan" | "community" | "home" | "calendar" | "cart" | "compare" | "record" | "profile";
 const formatWon=(value:number)=>new Intl.NumberFormat('ko-KR').format(value)+'원';
 export default function Home() {
   const [recordDate,setRecordDate]=useState(()=>emptyDashboard().today);
@@ -51,7 +52,7 @@ export default function Home() {
   },[pathname]);
   const router = useRouter();
   const section = pathname.split("/")[1];
-  const tab: Tab = (["calendar", "cart", "record", "community", "profile", "compare"] as string[]).includes(section) ? section as Tab : "home";
+  const tab: Tab = (["plan", "calendar", "cart", "record", "community", "profile", "compare"] as string[]).includes(section) ? section as Tab : "home";
   const setTab = (next: Tab) => router.push(next === "home" ? "/" : `/${next}`);
   const contentRef=useRef<HTMLDivElement>(null);
   const startLoading = useLoadingTask();
@@ -189,9 +190,11 @@ export default function Home() {
       <header className="app-header"><Brand/><div className="app-header-actions">{authUser ? <button className="logout-link" type="button" onClick={signOut}>로그아웃</button> : <button className="logout-link" type="button" onClick={() => { setAuthError(""); setShowAuth(true); }}>로그인</button>}</div></header>
       <div className={`app-content app-content-${tab}`} ref={contentRef}>
         <InstallPrompt active={tab === 'home'}/>
+        {tab === "record" && <PantryMealHistory userId={authUser?.id}/>}
         {tab === "record" && <FoodIntake key={`intake-${authUser?.id??"guest"}-${tab}`} userId={authUser?.id} onLogin={()=>setShowAuth(true)} history={tab==="record"} recordDate={recordDate} onDateChange={setRecordDate} expenseManagement={dashboard&&<Dashboard key={`${authUser?.id??"guest"}-${tab}-${recordDate}`} mode={tab} recordDate={recordDate} data={dashboard} userId={authUser?.id} products={products} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")} onCalendar={()=>setTab("calendar")} onBudget={editBudget} onRefresh={refreshDashboard} onCompare={openCompare}/>}/>}
         {tab==='profile'&&authUser&&<DailyReturnCard key={authUser.id} userId={authUser.id} onRecord={()=>{setRecordDate(emptyDashboard().today);setTab('record');}}/>}
-        {tab === "home" && <><PantryHome key={`pantry-${authUser?.id??'guest'}`} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/><details className="pantry-advanced-tools"><summary>며칠 치 식단·장보기도 계획하고 싶다면</summary><ShoppingPlanner key={`shopping-home-${authUser?.id??"guest"}`} dashboard={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/></details></>}
+        {tab === "home" && <PantryHome key={`pantry-${authUser?.id??'guest'}`} userId={authUser?.id} onLogin={()=>setShowAuth(true)} onPlan={()=>setTab('plan')}/>}
+        {tab === "plan" && <><button className="compare-back" onClick={()=>setTab('home')}><Icon name="left" size={17}/> 홈으로</button><ShoppingPlanner initialSetup key={`plan-${authUser?.id??'guest'}`} dashboard={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/></>}
         {authError && <p className="auth-inline-error" role="alert">{authError}</p>}
         {dataError&&<p className="auth-error" role="alert">{dataError}</p>}
 
@@ -229,7 +232,7 @@ export default function Home() {
           <p className="compare-disclaimer">비교 결과의 상품 용량, 배송비, 할인 조건은 판매처마다 달라질 수 있습니다. 결제 전 상품 상세 정보를 확인하세요.</p>
         </>}
         {tab === "community" && <CommunityPanel key={authUser?.id ?? "guest"} userId={authUser?.id} products={products} budget={budget} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")}/>}
-        {tab === "profile" && <><div className="page-intro"><div className="week-label">마이페이지</div><h2>{authUser?`${displayName}님의`:'나의'} <span>식사 취향</span></h2><p>내 몸과 생활에 맞게, 한 번만 설정해요.</p>{authUser&&<p className="profile-account-email">로그인 계정 · <strong>{authUser.email}</strong><br/><small>다른 기기에서도 이 이메일로 로그인하면 같은 기록을 볼 수 있어요.</small></p>}<Link className="profile-guide-link" href="/how-to">처음 오셨나요? 끼니플랜 소개·사용 가이드</Link></div><BodyProfilePanel key={authUser?.id ?? "guest"} userId={authUser?.id} name={displayName} onLogin={() => setShowAuth(true)}/><h3 className="profile-group-title">식비 관리</h3><details className="profile-extra"><summary>한 달 식비 예산</summary><BudgetSettings monthlyOnly key={`budget-${authUser?.id ?? "guest"}`} data={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)} onRefresh={refreshDashboard}/></details><h3 className="profile-group-title">도움이 필요할 때</h3><nav className="profile-menu" aria-label="도움말 및 관리"><Link href="/how-to"><span>처음이라면 · 끼니플랜 사용법</span><Icon name="chevron" size={16}/></Link><Link href="/submissions#mine"><span>내 제보와 검토 결과</span><Icon name="chevron" size={16}/></Link><a href="mailto:choisj2702@gmail.com"><span>문의·협업</span><Icon name="chevron" size={16}/></a></nav></> }
+        {tab === "profile" && <><div className="page-intro"><div className="week-label">마이페이지</div><h2>{authUser?`${displayName}님의`:'나의'} <span>식사 취향</span></h2><p>내 몸과 생활에 맞게, 한 번만 설정해요.</p>{authUser&&<p className="profile-account-email">로그인 계정 · <strong>{authUser.email}</strong><br/><small>다른 기기에서도 이 이메일로 로그인하면 같은 기록을 볼 수 있어요.</small></p>}<Link className="profile-guide-link" href="/how-to">처음 오셨나요? 끼니플랜 소개·사용 가이드</Link></div><section aria-labelledby="profile-account-heading"><h3 id="profile-account-heading" className="profile-group-title">계정 관리</h3><nav className="profile-menu" aria-label="계정 관리"><Link href="/delete-account"><span>회원 탈퇴 · 계정 및 데이터 삭제</span><Icon name="chevron" size={16}/></Link></nav></section><BodyProfilePanel key={authUser?.id ?? "guest"} userId={authUser?.id} name={displayName} onLogin={() => setShowAuth(true)}/><h3 className="profile-group-title">식비 관리</h3><details className="profile-extra"><summary>한 달 식비 예산</summary><BudgetSettings monthlyOnly key={`budget-${authUser?.id ?? "guest"}`} data={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)} onRefresh={refreshDashboard}/></details><h3 className="profile-group-title">도움이 필요할 때</h3><nav className="profile-menu" aria-label="도움말 및 관리"><Link href="/how-to"><span>처음이라면 · 끼니플랜 사용법</span><Icon name="chevron" size={16}/></Link><Link href="/submissions#mine"><span>내 제보와 검토 결과</span><Icon name="chevron" size={16}/></Link><a href="mailto:choisj2702@gmail.com"><span>문의·협업</span><Icon name="chevron" size={16}/></a></nav></> }
         {tab==='cart'&&<section className="home-guide-entry"><strong>상품·영양정보 제보</strong><Link href="/submissions">상품 정보 보완하기 →</Link></section>}
         {tab!=='home'&&<ServiceFeedback page={`/${tab}`}/>}
         {tab==='profile'&&<details className="home-explore"><summary>상품 비교·이용 안내</summary><ComparisonTrends/><nav aria-label="더 알아보기"><Link href="/products">상품 가격·영양 비교 <span>→</span></Link><Link href="/guides">식단·식비 가이드 <span>→</span></Link><Link href="/submissions">상품·영양정보 제보 <span>→</span></Link><a href="mailto:choisj2702@gmail.com">문의·협업 <span>↗</span></a></nav></details>}

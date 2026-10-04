@@ -269,3 +269,121 @@
 .pantry-cooking-step>p {font-size:16px;min-height:54px;}
 .pantry-cooking-step>div {display:flex;justify-content:space-between;gap:8px;}
 .pantry-cooking-guide ol {padding-left:22px;font-size:14px;}
+
+.pantry-entry-tabs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0;}
+.pantry-entry-tabs button{text-align:left;padding:18px;font-weight:700;}
+.pantry-entry-tabs small{display:block;margin-top:7px;font-weight:400;}
+.pantry-discovery>input{width:100%;padding:14px;border:1px solid var(--line);border-radius:12px;background:white;font:inherit;margin-top:12px;}
+.pantry-discovery-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0 28px;}
+.pantry-discovery-grid article,.pantry-history-list article{border:1px solid var(--line);background:#fffdf7;padding:18px;border-radius:16px;min-width:0;}
+.pantry-discovery-grid article>strong,.pantry-discovery-grid article>small{display:block;margin-bottom:10px;}
+.pantry-discovery-grid article>div{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.pantry-home a{color:var(--green);text-underline-offset:3px;}
+.pantry-return,.pantry-recorded{padding:18px;background:#f0f4e8;border-radius:16px;margin:20px 0;}
+.pantry-return>div{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;}
+.pantry-history-list{display:grid;gap:10px;margin:16px 0 24px;}
+.pantry-history-list article>a,.pantry-history-list article>small{display:block;margin-bottom:8px;}
+.pantry-history-list article>div{display:flex;gap:8px;flex-wrap:wrap;}
+.pantry-home .pantry-public-cta{display:block;background:var(--green);color:white;padding:16px;text-align:center;border-radius:12px;text-decoration:none;font-weight:700;margin:20px 0;}
+.pantry-public-recipe ol li{margin-bottom:14px;}
+@media(max-width:420px){.pantry-entry-tabs{gap:8px;}.pantry-entry-tabs button{padding:14px 10px;}.pantry-discovery-grid{grid-template-columns:1fr;}}
+.pantry-discovery .pantry-shopping-toggle{display:flex;margin:18px 0;cursor:pointer;}
+.pantry-discovery-picks{grid-template-columns:1fr;gap:9px;margin-bottom:14px;}
+.pantry-discovery-picks article{padding:14px 16px;}
+.pantry-discovery-picks article>strong{font-size:16px;margin-bottom:5px;}
+.pantry-discovery-picks article>small{font-size:12px;line-height:1.6;}
+.pantry-discovery-actions{display:flex;gap:10px;flex-wrap:wrap;}
+.pantry-discovery-actions>button{flex:1;min-height:46px;}
+.pantry-home .pantry-roulette-hint{font-size:12px;margin:10px 0 22px;}
+.pantry-roulette{border:1px solid #c9d6bc;border-radius:16px;background:#eef3e6;padding:18px;margin:16px 0;}
+.pantry-roulette>div[role=status]{display:flex;gap:12px;align-items:center;min-height:35px;}
+.pantry-roulette .pantry-discovery-grid{grid-template-columns:1fr;margin-bottom:0;}
+.pantry-roulette-dice{font-size:28px;animation:pantry-dice-roll .35s linear infinite;}
+@keyframes pantry-dice-roll{to{transform:rotate(360deg);}}
+.pantry-discovery-all{border-top:1px solid var(--line);padding:18px 0;}
+.pantry-discovery-all summary{cursor:pointer;font-weight:600;color:var(--green);}
+.pantry-discovery-all input{width:100%;padding:14px;border:1px solid var(--line);border-radius:12px;background:white;font:inherit;}
+@media(prefers-reduced-motion:reduce){.pantry-roulette-dice{animation:none;}}
+.pantry-welcome{display:grid;grid-template-columns:1.4fr 1fr;align-items:center;padding:28px;border-radius:24px;background:#e7edcf;gap:12px;color:#344b2c;}
+.pantry-welcome-copy span{font-size:12px;color:#6d8054;}
+.pantry-home .pantry-welcome h2{font-size:28px;line-height:1.4;margin:12px 0;letter-spacing:-1px;}
+.pantry-welcome-copy p{font-size:13px;line-height:1.7;}
+.pantry-welcome-art{min-width:0;}.pantry-welcome-art .rice-buddy{width:100%;height:auto;}
+.pantry-welcome>.pantry-primary{grid-column:1/-1;min-height:58px;justify-content:center;font-size:17px;}
+.pantry-welcome>.pantry-welcome-secondary{grid-column:1/-1;background:transparent;border:0;justify-self:center;text-decoration:underline;text-underline-offset:4px;}
+.pantry-compact-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 18px;font-size:12px;color:var(--muted);}
+.pantry-compact-nav button{display:flex;align-items:center;gap:5px;}
+.pantry-discovery-settings{margin:14px 0;font-size:12px;color:var(--muted);}
+.pantry-discovery-settings summary{cursor:pointer;}
+.pantry-home .pantry-meal-role{display:inline-block;color:#5a7149;background:#eef2e6;padding:3px 8px;border-radius:6px;font-size:11px;}
+.pantry-quick-links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:24px 0;}
+.pantry-quick-links>a,.pantry-quick-links>button{padding:15px 12px;background:#f0f2e5;border:0;border-radius:14px;text-decoration:none;text-align:left;}
+.pantry-quick-links>a:first-child{background:#f5ecda;}
+.pantry-quick-links strong,.pantry-quick-links small{display:block;line-height:1.6;word-break:keep-all;}
+.pantry-quick-links strong{font-size:13px;}.pantry-quick-links small{font-size:11px;margin-top:5px;color:var(--muted);}
+.pantry-saved-menus{margin:18px 0;color:var(--green);}.pantry-saved-menus summary{cursor:pointer;}.pantry-saved-menus>div{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+@media(max-width:480px){.pantry-welcome{padding:22px 18px;gap:8px;}.pantry-home .pantry-welcome h2{font-size:23px;}.pantry-quick-links{grid-template-columns:1fr 1fr;}.pantry-quick-links>:last-child{grid-column:1/-1;}.pantry-welcome-copy p{font-size:12px;}}
+.welcome-meal-paths{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;}
+.welcome-meal-paths>button{text-align:left;border:1px solid var(--line);border-radius:16px;background:#fffdf7;padding:17px;}
+.welcome-meal-paths strong,.welcome-meal-paths small{display:block;line-height:1.6;word-break:keep-all;}
+.welcome-meal-paths strong{font-size:14px;color:#40573a;}.welcome-meal-paths small{font-size:12px;color:var(--muted);margin-top:5px;}
+.pantry-home>.welcome-home,.pantry-home .welcome-home{padding-top:0;}
+.pantry-discovery-picks article>div>button{min-height:42px;}
+@media(max-width:400px){.welcome-meal-paths{gap:8px;}.welcome-meal-paths>button{padding:13px 11px;}.welcome-meal-paths small{font-size:11px;}}
+.pantry-home .welcome-meal-paths{display:block;text-align:center;}
+.pantry-home .welcome-meal-paths>button{border:0;background:transparent;text-align:center;padding:10px;}
+.pantry-home .welcome-meal-paths small{display:none;}
+.pantry-home .welcome-plan-link{display:block;width:100%;margin-top:16px;padding:14px;background:transparent;border:1px solid var(--line);font-size:13px;}
+.pantry-discovery-grid article.pantry-discovery-card{padding:0;overflow:hidden;}
+.pantry-home .pantry-discovery-card-toggle{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;padding:18px;text-align:left;border:0;border-radius:15px;background:transparent;}
+.pantry-discovery-card-toggle>span{min-width:0;}.pantry-discovery-card-toggle strong{display:block;font-size:16px;margin-bottom:7px;}.pantry-discovery-card-toggle small{display:block;line-height:1.6;font-size:12px;color:var(--muted);overflow-wrap:anywhere;}
+.pantry-discovery-card-toggle[aria-expanded=true]>svg{transform:rotate(90deg);}
+.pantry-discovery-card .pantry-menu-details{padding:0 18px 18px;border-top:1px solid var(--line);}
+.pantry-discovery-actions{align-items:flex-start;}.pantry-roulette-tools{flex:1;font-size:13px;}.pantry-roulette-tools summary{cursor:pointer;padding:14px;text-align:center;}.pantry-roulette-tools>button{width:100%;margin-top:8px;}.pantry-roulette-tools p{font-size:11px;text-align:center;}
+
+.pantry-menu-search{width:100%;box-sizing:border-box;padding:14px 16px;border:1px solid var(--line,#dedfd5);border-radius:14px;background:#fff;font:inherit;margin:8px 0 16px}.pantry-menu-more{display:block;width:100%;padding:14px;border:1px solid #d8dfd1;border-radius:14px;background:#f6f8f2;color:#36533d;font:inherit;font-weight:600;margin-top:16px}.pantry-menu-more:disabled{opacity:.55}
+
+/* The menu browser keeps its search and loaded pages when folded. */
+.pantry-menu-browser{margin:24px 0;padding:24px;border:1px solid #e0e5d7;border-radius:24px;background:#fffef9;box-shadow:0 5px 22px #344b2c05;}
+.pantry-home .pantry-browser-heading{margin:0;}
+.pantry-home .pantry-browser-toggle{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;padding:0;border:0;border-radius:8px;background:transparent;text-align:left;color:#344b2c;}
+.pantry-browser-title{display:grid;gap:6px;font-size:21px;line-height:1.4;letter-spacing:-.6px;}
+.pantry-browser-eyebrow{font-size:11px;font-weight:600;letter-spacing:.7px;color:#7b896b;}
+.pantry-browser-toggle-label{display:flex;align-items:center;gap:5px;flex-shrink:0;font-size:12px;font-weight:500;color:#6f7c63;}
+.pantry-browser-toggle-label svg{transform:rotate(90deg);}
+.pantry-browser-toggle[aria-expanded=true] .pantry-browser-toggle-label svg{transform:rotate(-90deg);}
+.pantry-home .pantry-browser-caption{font-size:12px;line-height:1.7;color:#7b806f;margin:12px 0 0;}
+.pantry-browser-body{padding-top:16px;}
+.pantry-browser-body[hidden],.pantry-menu-browser .pantry-discovery-card>div[hidden]{display:none;}
+.pantry-menu-browser .pantry-menu-search{margin:0 0 16px;background:#f6f7f0;border-color:#e4e7dc;min-height:48px;font-size:14px;}
+.pantry-menu-browser :is(button,input):focus-visible{outline:2px solid #638447;outline-offset:3px;}
+.pantry-home .pantry-browser-count{display:flex;justify-content:space-between;gap:12px;margin:4px 0 12px;font-size:12px;color:#858976;}
+.pantry-browser-count strong{color:#496238;font-size:14px;margin-left:3px;}
+.pantry-menu-browser .pantry-discovery-grid{gap:10px;margin:0 0 18px;align-items:start;}
+.pantry-menu-browser article.pantry-discovery-card{background:#fff;border-color:#e7e9df;border-radius:14px;}
+.pantry-menu-browser .pantry-discovery-card-toggle{padding:17px 15px;min-height:100px;gap:10px;}
+.pantry-menu-browser .pantry-discovery-card-toggle strong{font-size:15px;color:#374431;line-height:1.5;word-break:keep-all;}
+.pantry-menu-browser .pantry-discovery-card-toggle small{font-size:12px;color:#818475;}
+.pantry-menu-browser .pantry-discovery-card-toggle>svg{flex-shrink:0;color:#8b987b;}
+.pantry-menu-browser .pantry-discovery-card.is-expanded{grid-column:1/-1;border-color:#b9c9a6;background:#fcfdf8;}
+.pantry-menu-browser .pantry-discovery-card.is-expanded .pantry-discovery-card-toggle{min-height:0;}
+.pantry-menu-browser .pantry-discovery-card>div:not([hidden]){display:block;}
+.pantry-menu-browser .pantry-menu-more{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px;min-height:48px;background:#edf2e5;border:0;font-size:14px;}
+.pantry-menu-more span{font-size:11px;font-weight:400;color:#7b866e;}
+.pantry-home .pantry-browser-collapse{display:flex;align-items:center;justify-content:center;gap:5px;margin:12px auto 0;padding:9px 14px;min-height:40px;border:0;background:transparent;font-size:12px;color:#7b806f;}
+.pantry-browser-collapse svg{transform:rotate(-90deg);}
+@media(hover:hover){.pantry-menu-browser .pantry-discovery-card-toggle:hover{background:#f4f7ed;}.pantry-menu-browser .pantry-menu-more:hover{background:#e4edd8;}}
+@media(max-width:560px){.pantry-menu-browser{padding:18px 14px;border-radius:20px;}.pantry-browser-title{font-size:19px;}.pantry-menu-browser .pantry-discovery-grid{grid-template-columns:1fr;gap:8px;}.pantry-menu-browser .pantry-discovery-card-toggle{min-height:82px;padding:15px;}}
+
+.pantry-search-label{display:block;font-size:13px;font-weight:600;color:#4d5c43;margin:0 0 9px;}
+.pantry-search-field{position:relative;}
+.pantry-menu-browser .pantry-search-field input{padding-right:65px;margin-bottom:0;}
+.pantry-home .pantry-search-field>button{position:absolute;right:7px;top:5px;min-height:38px;border:0;background:transparent;color:#6f7867;font-size:12px;padding:8px;}
+.pantry-search-suggestions{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0 22px;}
+.pantry-home .pantry-search-suggestions button{border:1px solid #e3e8da;border-radius:100px;background:#fff;padding:8px 13px;min-height:36px;font-size:12px;color:#667659;}
+.pantry-home .pantry-search-suggestions button[aria-pressed=true]{background:#eaf1df;border-color:#a9bf93;color:#36532a;}
+.pantry-search-empty{text-align:center;padding:25px 12px;background:#f6f7f1;border-radius:14px;}
+.pantry-search-empty strong{font-size:14px;color:#4d5c43;}
+.pantry-search-empty p{font-size:12px;line-height:1.7;}
+.pantry-menu-more>svg{transform:rotate(90deg);}
+@media(max-width:420px){.pantry-compact-nav{align-items:flex-start;flex-direction:column;gap:8px;}.pantry-compact-nav>button{align-self:flex-end;}.pantry-browser-count{flex-wrap:wrap;}}

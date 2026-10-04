@@ -15,6 +15,9 @@ export function ResetData({userId}:{userId?:string}){
     invalidateJson();if(userId){const r=await fetch('/api/reset-data',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userId,confirmation})});const data=await r.json();if(!r.ok)throw new Error(data.error);}
     for(const storage of [localStorage,sessionStorage])for(const owner of new Set([userId??'guest','guest'])){
      storage.removeItem(`kkiniplan-shopping-draft-v2-${owner}`);
+     storage.removeItem(`kkiniplan-pantry-journey-v1-${owner}`);
+     storage.removeItem(`kkiniplan-pantry-preview-${owner}`);
+     storage.removeItem(`kkiniplan-pantry-preview-${owner}-seen`);
      for(const scope of ['products','ingredients'])storage.removeItem(`kkiniplan-progress-${scope}-${owner}`);
     }
     localStorage.setItem('kkiniplan-data-reset',JSON.stringify({userId:userId??'guest',at:Date.now()}));

@@ -1,3 +1,5 @@
+import {browsePantryMenus} from '../../../../lib/pantry-browse';
+import {getPool} from '../../../../lib/db';
 import {pantrySourceRecommendations} from '../../../../lib/pantry-source-recommendations';
 import {after, NextRequest, NextResponse} from 'next/server';
 import {sessionUser, sameOrigin, authFailure} from '../../../../lib/auth';
@@ -38,12 +40,20 @@ export async function POST(request: NextRequest) {
   if (input.conditions !== undefined && !conditions) return authFailure('챙길 끼니와 조건을 확인해 주세요.', 400);
   if (input.action === 'products' && !validIds(input.ids, true)) return authFailure('메뉴를 확인해 주세요.', 400);
   // Restoring a plan only needs its chosen meals, not scores for every recipe.
-  const catalog = await loadPlanCatalog(user?.id, input.action === 'products' ? input.ids as string[] : undefined,input.action==='recommend'?cachedRecommendationProducts:undefined);
+  const catalog = await loadPlanCatalog(user?.id, input.action === 'products' ? input.ids as string[] : undefined,(input.action==='recommend'||input.action==='browse')?cachedRecommendationProducts:undefined);
   const {products} = catalog;
   const today = async () => user ? await todayContext(user.id, products, catalog.personalization, catalog.health).catch(() => null) : null;
   const slotIndex = (c: PlanConditions) => typeof input.index === 'number' && Number.isInteger(input.index) && input.index >= 0 && input.index < c.meals ? input.index : null;
 
   switch (input.action) {
+   case 'browse': {
+    const owned=input.pantry??[];
+    if(!Array.isArray(owned)||owned.length>100||owned.some(n=>typeof n!=='string'||n.length>50))return authFailure('재료를 확인해 주세요.',400);
+    const query=typeof input.query==='string'?input.query.trim().slice(0,100).replaceAll('계란','달걀'):'';
+    const offset=typeof input.offset==='number'&&Number.isInteger(input.offset)?Math.max(0,input.offset):0;
+    const excluded=[...new Set([...catalog.excluded,...(conditions?.excluded??[])])];
+    return json(browsePantryMenus(products,{owned,excluded,query,offset,allowShopping:input.pantryAllowShopping!==false}));
+   }
    case 'recommend': {
     const c = conditions;
     if (!c) return authFailure('챙길 끼니와 조건을 확인해 주세요.', 400);
@@ -55,7 +65,9 @@ export async function POST(request: NextRequest) {
     if (catalog.personalization.blocked) return authFailure('현재 신체 정보에서는 자동 맞춤 추천을 제공하지 않아요. 마이페이지 안내를 확인해 주세요.', 422);
     if(input.pantrySourceRecipes===true){
      if(pantry===undefined||c.meals!==1||c.avoid.trim())return authFailure('보유 재료와 추천 조건을 확인해 주세요.',400);
-     const sourced=pantrySourceRecommendations(pantry as string[],priority,validIds(input.previous)?input.previous:[],input.pantryAllowShopping!==false,c.excluded??[],c.cookingEffort==='easy');
+     if((input.recentMeals!==undefined&&!validIds(input.recentMeals))||(input.favoriteMeals!==undefined&&!validIds(input.favoriteMeals)))return authFailure('식사 이력을 확인해 주세요.',400);
+     const recent=user?(await getPool().query("SELECT DISTINCT product_id FROM food_intake_logs WHERE user_id=$1 AND undone_at IS NULL AND COALESCE(eaten_at,created_at)>now()-interval '3 days'",[user.id])).rows.map(r=>r.product_id):input.recentMeals as string[]??[];
+     const sourced=pantrySourceRecommendations(pantry as string[],priority,validIds(input.previous)?input.previous:[],input.pantryAllowShopping!==false,c.excluded??[],c.cookingEffort==='easy',recent,input.favoriteMeals as string[]??[],input.pantryDiscovery===true?30:3);
      if(!sourced.length)return authFailure('현재 조건에 맞고 재료·조리법을 함께 확인할 수 있는 레시피를 찾지 못했어요. 재료를 바꾸거나 추가 장보기를 허용해 주세요.',422);
      return json({ids:sourced.map(p=>p.id),products:sourced,missing:missingPantryIngredients(sourced[0],pantry as string[])});
     }

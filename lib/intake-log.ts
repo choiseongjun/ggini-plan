@@ -1,3 +1,4 @@
+import {pantrySourceProducts} from './pantry-source-recommendations';
 import {validEatenAt,validMealSlot} from './meal-time';
 import {NextResponse} from 'next/server';
 import {authFailure} from './auth';
@@ -21,11 +22,11 @@ export async function logMeal(userId:string|number,input:{id:string;productId?:u
  const hasMain=input.productId!==undefined&&input.productId!==null;
  if(hasMain&&(typeof input.productId!=='string'||input.productId.length>100||!validPortions(input.portions)))return authFailure('메뉴와 먹은 양을 확인해 주세요.',400);
  if(!hasMain&&!extras.length)return authFailure('기록할 음식을 골라 주세요.',400);
- const main=hasMain?(await planProducts()).find(p=>p.id===input.productId):null;
+ const main=hasMain?(typeof input.productId==='string'&&input.productId.startsWith('source-')?pantrySourceProducts():(await planProducts())).find(p=>p.id===input.productId):null;
  if(hasMain&&!main)return authFailure('메뉴 정보를 확인할 수 없어요.',422);
  const portions=hasMain?input.portions as number:1;
  const rows:Entry[]=[];
- if(main){const n=servingNutrition(main),m=servingNutrients(main),x=(v:number|null)=>v===null?null:v*portions;rows.push({id:input.id,productId:main.id,name:main.name,portions,calories:x(n.calories),protein:x(n.protein),cost:main.price/main.servings*portions,carbs:x(m.carbs),sugar:null,sodium:x(m.sodium),fat:x(m.fat)});}
+ if(main){const n=servingNutrition(main),m=servingNutrients(main),x=(v:number|null)=>v===null?null:v*portions;rows.push({id:input.id,productId:main.id,name:main.name,portions,calories:x(n.calories),protein:x(n.protein),cost:main.sourceRecipe?null:main.price/main.servings*portions,carbs:x(m.carbs),sugar:null,sodium:x(m.sodium),fat:x(m.fat)});}
  for(const extra of extras){
   const id=rows.length?crypto.randomUUID():input.id;
   if(typeof extra==='string'){const e=intakeExtras[extra];rows.push({id,productId:`${EXTRA_PREFIX}${extra}`,name:e.label,portions:1,calories:e.calories,protein:e.protein,cost:null,carbs:null,sugar:null,sodium:null,fat:null});}

@@ -1,4 +1,5 @@
 'use client';
+import {sourceMealRole} from '../lib/source-recipe';
 import {useState} from 'react';
 import type {PlanProduct} from '../lib/shopping-plan';
 import './recipe-videos.css';
@@ -9,6 +10,7 @@ export function PantryCookingGuide({product}:{product:PlanProduct}){
  if(!source)return <p>이 메뉴는 재료와 조리법이 연결된 출처가 아직 없어요. 내 주방에서 다시 추천받아 주세요.</p>;
  return <section className="pantry-cooking-guide" aria-label="따라 할 레시피">
   <h3>재료 확인하고 바로 만들어요</h3>
+  <p className="pantry-meal-role">{sourceMealRole(product.name)}{sourceMealRole(product.name)==='반찬·곁들임'?' · 밥 등 함께 먹을 음식을 준비해 주세요.':''}</p>
   <a href={source.video.url} target="_blank" rel="noopener noreferrer">{source.video.title} · {source.video.channel} ↗</a>
   <p className="pantry-muted">{source.servingLabel}. 필요한 재료와 만드는 법은 모두 이 영상 설명란 기준이에요. 양은 자동 환산하지 않았어요.</p>
   <h4>이 레시피의 재료·분량</h4><ul>{source.ingredients.map((i,index)=><li key={index}>{i.label}{i.optional ? ' · 선택' : ''}</li>)}</ul>
