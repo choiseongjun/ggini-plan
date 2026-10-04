@@ -21,10 +21,10 @@ body:has(.kcal-shell){background:#fbfcf6}
 .kcal-box{margin:18px 0;padding:16px 18px;border-radius:20px;background:#fff;box-shadow:0 2px 10px #3a4a2a0d}
 .kcal-box h2{margin:0 0 8px;font-size:17px}
 .kcal-box ul{margin:0;padding-left:18px}
-.kcal-cta{margin:22px 0;padding:18px;border-radius:22px;background:#fff7ee;border:1px solid #f1e0cc}
-.kcal-cta h2{margin:0 0 6px;font-size:17px;color:#4a3320}
-.kcal-cta p{margin:0 0 12px;font-size:14px;color:#7d6450}
-.kcal-cta a{display:inline-block;padding:11px 18px;border-radius:14px;background:#e98a63;color:#fff;font-weight:800;text-decoration:none}
+.kcal-cta{margin:22px 0;padding:18px;border-radius:22px;background:var(--surface-soft);border:1px solid var(--border)}
+.kcal-cta h2{margin:0 0 6px;font-size:17px;color:var(--text)}
+.kcal-cta p{margin:0 0 12px;font-size:14px;color:var(--text-subtle)}
+.kcal-actions{display:grid;gap:8px}
 .kcal-links{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
 .kcal-links a{display:inline-block;padding:7px 12px;border-radius:999px;background:#fff;border:1px solid #e1e6d6;color:#3f5e33;font-size:13px;font-weight:700;text-decoration:none}
 .kcal-links small{margin-left:4px;color:var(--text-subtle);font-weight:500}

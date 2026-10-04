@@ -17,7 +17,7 @@ const n = (v: number) => Math.round(v).toLocaleString('ko-KR');
 const serving = (f: FoodReference) => `${n(f.servingAmount)}${f.servingUnit}`;
 
 // 간식·디저트·음료·외식 기록: 이름으로 찾아 한 번에 남긴다. 기록이 쌓일수록 하루 섭취량(칼로리·당류)이 정확해진다.
-export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyChange}: {onLogged: (name:string,eatenAt?:string,result?:{ids:string[];nutrition?:Record<string,number|null>;mealSlot?:MealSlot}) => void;initialOpen?:boolean;photo?:boolean;onClose?:()=>void;onBusyChange?:(busy:boolean)=>void}) {
+export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyChange,initialFood=null}: {initialFood?:FoodReference|null;onLogged: (name:string,eatenAt?:string,result?:{ids:string[];nutrition?:Record<string,number|null>;mealSlot?:MealSlot}) => void;initialOpen?:boolean;photo?:boolean;onClose?:()=>void;onBusyChange?:(busy:boolean)=>void}) {
  const [mealTime,setMealTime]=useState('');
  const [mealSlot,setMealSlot]=useState<MealSlot|null>(()=>inferredMealSlot(new Date().toISOString()));
  const timeISO=mealTime?mealTimeISO(mealTime):undefined;
@@ -26,7 +26,7 @@ export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyC
  const [query, setQuery] = useState('');
  const [results, setResults] = useState<{q: string; items: FoodReference[]} | null>(null);
  const [recent, setRecent] = useState<FoodReference[]>([]);
- const [picked, setPicked] = useState<FoodReference | null>(null);
+ const [picked, setPicked] = useState<FoodReference | null>(initialFood);
  const [portions, setPortions] = useState(1);
  const [busy, setBusy] = useState(false), [error, setError] = useState(''), [done, setDone] = useState('');
  useEffect(()=>{onBusyChange?.(busy);},[busy,onBusyChange]);

@@ -8,19 +8,22 @@ export const foodPagePath = (slug: string) => `/kcal/${encodeURIComponent(slug)}
 const COLUMNS = 'r.food_code,r.name,r.brand,r.category,r.basis_amount,r.basis_unit,r.serving_amount,r.serving_unit,r.calories_kcal,r.protein_g,r.carbohydrates_g,r.sugar_g,r.fat_g,r.sodium_mg';
 export type RelatedFood = {slug: string; name: string; brand: string | null; kcal: number | null};
 
-export async function getFoodPage(slug: string): Promise<{food: FoodReference; slug: string; related: RelatedFood[]; sameBrand: RelatedFood[]} | null> {
+export async function getFoodPage(slug: string): Promise<{food: FoodReference; slug: string; related: RelatedFood[]; sameBrand: RelatedFood[]; lighter: RelatedFood[]} | null> {
  const db = getPool();
  const row = (await db.query(`SELECT p.slug, ${COLUMNS} FROM food_pages p JOIN food_reference r ON r.food_code = p.food_code WHERE p.slug = $1`, [slug])).rows[0];
  if (!row) return null;
  const food = foodReferenceFromRow(row);
  const first = food.name.split(' ')[0];
- const [related, sameBrand] = await Promise.all([
+ const [related, sameBrand, lighter] = await Promise.all([
   // 같은 분류에서 이름이 비슷한 것 먼저, 그다음 칼로리가 비슷한 것.
   db.query<RelatedFood>(`SELECT slug, name, brand, kcal::float8 AS kcal FROM food_pages WHERE category IS NOT DISTINCT FROM $1 AND slug <> $2 AND brand IS NULL
    ORDER BY (name LIKE $3 || '%') DESC, abs(coalesce(kcal, 0) - $4) LIMIT 12`, [food.category, slug, first, food.kcal ?? 0]).then((r) => r.rows),
   food.brand ? db.query<RelatedFood>(`SELECT slug, name, brand, kcal::float8 AS kcal FROM food_pages WHERE brand = $1 AND slug <> $2 ORDER BY (name LIKE $3 || '%') DESC, name LIMIT 12`, [food.brand, slug, first]).then((r) => r.rows) : Promise.resolve([]),
+  // 같은 분류의 일반 음식 중 15% 이상 가벼운 것 — "이것 대신 먹을 만한" 선택지.
+  food.kcal !== null && food.category ? db.query<RelatedFood>(`SELECT slug, name, brand, kcal::float8 AS kcal FROM food_pages WHERE category = $1 AND brand IS NULL AND slug <> $2 AND kcal IS NOT NULL AND kcal <= $3 * 0.85
+   ORDER BY kcal DESC LIMIT 6`, [food.category, slug, food.kcal]).then((r) => r.rows) : Promise.resolve([] as RelatedFood[]),
  ]);
- return {food, slug, related, sameBrand};
+ return {food, slug, related, sameBrand, lighter};
 }
 
 // 색인 페이지: 많이 찾는 음식(이름이 정확히 같은 일반 음식이 있을 때만).

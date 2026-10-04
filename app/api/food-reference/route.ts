@@ -17,6 +17,9 @@ export async function GET(request: NextRequest) {
      GROUP BY product_id ORDER BY max(COALESCE(eaten_at,created_at)) DESC LIMIT 8`, [user.id, `${REFERENCE_PREFIX}%`]);
    return json({items: await foodReferencesByCodes(rows.map((r) => r.product_id.slice(REFERENCE_PREFIX.length)))});
   }
+  // ?code=... → 칼로리 페이지에서 '먹었어요'로 들어온 음식 한 개.
+  const code = params.get('code');
+  if (code !== null) return json({items: code.length > 0 && code.length <= 80 ? await foodReferencesByCodes([code]) : []});
   const q = (params.get('q') ?? '').slice(0, 40);
   return NextResponse.json({items: await searchFoodReference(q)}, {headers:{'Cache-Control':'public, max-age=300, s-maxage=1800'}});
  } catch {

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import {notFound} from 'next/navigation';
 import {DAILY_VALUE, foodPagePath, getFoodPage} from '../../../lib/food-pages';
 import {pageMetadata, siteUrl} from '../../../lib/seo';
+import {KcalActions} from './kcal-actions';
 export const revalidate = 86400;
 
 type Props = {params: Promise<{slug: string}>};
@@ -26,7 +27,7 @@ export async function generateMetadata(props: Props) {
 }
 
 export default async function FoodKcalPage(props: Props) {
- const {food, slug, related, sameBrand} = await load(props);
+ const {food, slug, related, sameBrand, lighter} = await load(props);
  const name = title(food.name, food.brand), serving = `${n(food.servingAmount)}${food.servingUnit}`;
  const cells: [string, number | null, string, number][] = [
   ['탄수화물', food.carbs, 'g', DAILY_VALUE.carbs], ['단백질', food.protein, 'g', DAILY_VALUE.protein], ['지방', food.fat, 'g', DAILY_VALUE.fat],
@@ -59,10 +60,11 @@ export default async function FoodKcalPage(props: Props) {
   </div>)}</div>
   {notes.length > 0 && <section className="kcal-box"><h2>한눈에 보기</h2><ul>{notes.map((t) => <li key={t}>{t}</li>)}</ul></section>}
   <section className="kcal-cta">
-   <h2>오늘 먹은 것까지 따져서 골라 드려요</h2>
-   <p>{name}, 지금 먹어도 괜찮을까요? 끼니플랜은 오늘 먹은 칼로리·나트륨과 내 목표를 보고 지금 먹기 좋은 메뉴를 골라 주고, 먹은 걸 한 번에 기록해 줘요.</p>
-   <Link href="/?from=kcal">지금 뭐 먹지? 골라 보기</Link>
+   <h2>{name}, 오늘 먹었나요?</h2>
+   <p>기록하면 오늘 남은 칼로리·단백질을 계산해서 다음 끼니로 먹기 좋은 메뉴를 골라 드려요.</p>
+   <KcalActions code={food.code} name={food.name}/>
   </section>
+  {lighter.length > 0 && <section className="kcal-box"><h2>{food.name}보다 가벼운 메뉴</h2><ul className="kcal-links">{lighter.map((r) => <li key={r.slug}><Link href={foodPagePath(r.slug)}>{r.name}{r.kcal !== null && <small>{Math.round(r.kcal)}kcal</small>}</Link></li>)}</ul></section>}
   {sameBrand.length > 0 && <section className="kcal-box"><h2>{food.brand} 다른 메뉴</h2><ul className="kcal-links">{sameBrand.map((r) => <li key={r.slug}><Link href={foodPagePath(r.slug)}>{r.name}{r.kcal !== null && <small>{Math.round(r.kcal)}kcal</small>}</Link></li>)}</ul></section>}
   {related.length > 0 && <section className="kcal-box"><h2>비슷한 음식 칼로리</h2><ul className="kcal-links">{related.map((r) => <li key={r.slug}><Link href={foodPagePath(r.slug)}>{r.name}{r.kcal !== null && <small>{Math.round(r.kcal)}kcal</small>}</Link></li>)}</ul></section>}
   <p className="kcal-note">출처: 식품의약품안전처 식품영양성분 데이터베이스(전국통합식품영양성분정보). 1인분 참고값이며 조리법·식당·양에 따라 달라요. 하루 기준치는 식품 표시용 1일 영양성분 기준치예요.</p>

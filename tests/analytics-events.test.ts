@@ -10,3 +10,10 @@ test('only named events, supported screens and bounded metrics are accepted',()=
  assert.equal(analyticsScreen('/admin'),null);assert.equal(analyticsScreen('/share/private'),null);assert.equal(analyticsScreen('/record'),'record');
  assert.deepEqual(sanitizeAnalytics('photo_analysis_failed',{failure:'raw secret error',duration_ms:Infinity,photo_count:99,screen:'secret',method:'food name'}),{$process_person_profile:false,$geoip_disable:true});
 });
+
+test('kcal pages are a tracked screen and entry source is allowlisted',()=>{
+ assert.equal(analyticsScreen('/kcal/김치찌개'),'kcal');
+ assert.equal(analyticsScreen('/kcal'),'kcal');
+ assert.deepEqual(sanitizeAnalytics('landing_cta_clicked',{screen:'kcal',source:'kcal'}),{$process_person_profile:false,$geoip_disable:true,screen:'kcal',source:'kcal'});
+ assert.equal(sanitizeAnalytics('landing_cta_clicked',{source:'https://evil.example'})?.source,undefined);
+});
