@@ -1,0 +1,14 @@
+.site-shell .cart-offers{margin-top:var(--space-4);padding-top:var(--space-4);border-top:thin solid var(--border)}
+.site-shell .cart-offers h4{margin:0 0 var(--space-3);font-size:var(--fs-md);color:var(--text)}
+.site-shell .cart-offers>p{margin:var(--space-2) 0;font-size:var(--fs-xs);line-height:1.7;color:var(--text-subtle)}
+.site-shell .cart-offers ul{list-style:none;margin:0;padding:0;display:grid;gap:var(--space-4)}
+.site-shell .cart-offers li{display:flex;align-items:flex-start;gap:var(--space-3);padding:var(--space-3);background:var(--surface-soft);border-radius:var(--radius-md)}
+.site-shell .cart-offer-photo{width:calc(var(--touch) + var(--space-3));height:calc(var(--touch) + var(--space-3));flex:none;display:grid;place-items:center;border-radius:var(--radius-sm);overflow:hidden;background:var(--surface);color:var(--primary)}
+.site-shell .cart-offer-photo img{width:100%;height:100%;object-fit:contain}
+.site-shell .cart-offer-info{min-width:0;flex:1;display:grid;gap:var(--space-1)}
+.site-shell .cart-offer-info strong{font-size:var(--fs-sm);line-height:1.5;overflow-wrap:anywhere;color:var(--text)}
+.site-shell .cart-offer-info span,.site-shell .cart-offer-info small{font-size:var(--fs-xs);line-height:1.6;color:var(--text-subtle)}
+.site-shell .cart-offer-info b{font-size:var(--fs-lg);color:var(--primary-strong)}
+.site-shell .cart-offer-info a,.site-shell .cart-offers button{display:flex;align-items:center;justify-content:center;gap:var(--space-2);min-height:var(--touch);padding:var(--space-2);margin-top:var(--space-2);border:thin solid var(--primary-line);border-radius:var(--radius-sm);background:var(--surface);color:var(--primary-strong);font-size:var(--fs-sm);font-weight:700;text-decoration:none;cursor:pointer}
+.site-shell .cart-offer-info a:focus-visible,.site-shell .cart-offers button:focus-visible{outline:solid var(--focus);outline-offset:var(--space-1)}
+.site-shell .purchase-required-amount{font-size:var(--fs-sm);line-height:1.6;color:var(--text-muted);margin:var(--space-2) 0}

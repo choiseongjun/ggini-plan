@@ -11,6 +11,7 @@ import type {PlanConditions} from '../lib/shopping-plan';
 import {validStockQuantity} from '../lib/food-intake';
 import {emptyDashboard} from '../lib/dashboard';
 import {parseShoppingExpense,type ShoppingExpense} from '../lib/shopping-expense';
+import {ShoppingProducts,useShoppingProducts} from './shopping-products';
 
 export function useShoppingProgress(accountId:string|undefined,scope:'products'|'ingredients'){
  const locale=usePlannerLocale(),userId=locale.isTaiwan?undefined:accountId;
@@ -44,11 +45,11 @@ export function useShoppingProgress(accountId:string|undefined,scope:'products'|
  }
  return {scope,stock,ready,busy,error,update:(changes:StockChange[],action:StockAction,expense?:ShoppingExpense)=>persist(()=>changeStock(stock,changes,action),undefined,expense),recordExpense:(expense:ShoppingExpense)=>persist(()=>stock,undefined,expense),reset:(conditions:PlanConditions)=>persist(()=>({}),conditions),reload:()=>{setReady(false);setError('');setRevision(n=>n+1);}};
 }
-export type PurchaseItem={id:string;name:string;unit:string;required:number;url:string|null;price:number|null;packSize?:number;detail?:string;thumbnail?:ReactNode;recommendation?:ReactNode};
+export type PurchaseItem={id:string;name:string;unit:string;required:number;url:string|null;price:number|null;priceEstimated?:boolean;amountLabel?:string;packSize?:number;detail?:string;thumbnail?:ReactNode;recommendation?:ReactNode};
 type Progress=ReturnType<typeof useShoppingProgress>;
 const labels={plan:'추천 메뉴',buy:'살 것',ordered:'주문한 것',owned:'보유 재료'};
 function seller(url:string|null){try{return url?new URL(url).hostname.replace(/^www\./,''):'판매처 미연결';}catch{return '판매처 미연결';}}
-export function ShoppingProgress({items,progress,guest=false,recommended=false,single=false,restrictToItems=false,summary,heading}:{items:PurchaseItem[];progress:Progress;guest?:boolean;recommended?:boolean;single?:boolean;restrictToItems?:boolean;summary?:ReactNode;heading?:ReactNode}){
+export function ShoppingProgress({items,progress,guest=false,recommended=false,single=false,restrictToItems=false,showProducts=false,summary,heading}:{items:PurchaseItem[];progress:Progress;guest?:boolean;recommended?:boolean;single?:boolean;restrictToItems?:boolean;showProducts?:boolean;summary?:ReactNode;heading?:ReactNode}){
  const locale=usePlannerLocale();
  const [tab,setTab]=useState<keyof typeof labels>(recommended?'plan':'buy'),[selected,setSelected]=useState<string[]>(()=>single?items.map(i=>i.id):[]),[checkout,setCheckout]=useState(false),[message,setMessage]=useState('');
  const checkoutRef=useRef<HTMLDivElement>(null);
@@ -62,6 +63,7 @@ export function ShoppingProgress({items,progress,guest=false,recommended=false,s
  for(const i of items){const prev=merged.get(i.id);merged.set(i.id,prev?{...prev,required:prev.required+i.required}:i);}
  const all:PurchaseItem[]=[...merged.values(),...Object.values(stock).filter(i=>!merged.has(i.id)&&(i.ordered||i.owned)).map(i=>({...i,required:0,price:null}))].filter(i=>!(single||restrictToItems)||merged.has(i.id));
  const buying=tab==='buy'||tab==='plan';
+ const sales=useShoppingProducts(items.map(i=>i.name),showProducts&&buying&&!locale.isTaiwan&&items.length>0);
  const tabs: (keyof typeof labels)[]=recommended?['plan','ordered','owned']:['buy','ordered','owned'];
  const quantity=(i:PurchaseItem,t=tab)=>(t==='buy'||t==='plan')?remainingQuantity(i.required,stock[i.id]):t==='ordered'?(stock[i.id]?.ordered??0):(stock[i.id]?.owned??0);
  const rows=tab==='plan'?[...merged.values()]:all.filter(i=>quantity(i)>0),selectable=rows.filter(i=>quantity(i)>0),chosen=selectable.filter(i=>selected.includes(i.id));
@@ -74,7 +76,7 @@ export function ShoppingProgress({items,progress,guest=false,recommended=false,s
  const unknown=all.some(i=>remainingQuantity(i.required,stock[i.id])>0&&i.price===null);
  const groups=new Map<string,PurchaseItem[]>();for(const i of chosen){const name=seller(i.url);groups.set(name,[...(groups.get(name)??[]),i]);}
  function preparePayment(action:ShoppingExpense['action']){
-  setCheckout(false);setMessage('');setPaymentAmount(chosen.some(i=>i.price===null)?'':String(chosen.reduce((sum,i)=>sum+cost(i,chosenQuantity(i)),0)));setPaymentDate(emptyDashboard().today);
+  setCheckout(false);setMessage('');setPaymentAmount(chosen.some(i=>i.price===null||i.priceEstimated)?'':String(chosen.reduce((sum,i)=>sum+cost(i,chosenQuantity(i)),0)));setPaymentDate(emptyDashboard().today);
   setPayment({expense:{id:crypto.randomUUID(),date:emptyDashboard().today,amount:0,action,itemIds:chosen.map(i=>i.id)},changes:chosen.map(i=>({item:{id:i.id,name:i.name,unit:i.unit,url:i.url},quantity:chosenQuantity(i)})),names:chosen.map(i=>`${i.name} · ${chosenQuantity(i)}${i.unit}`)});
  }
  async function savePayment(){
@@ -104,8 +106,11 @@ export function ShoppingProgress({items,progress,guest=false,recommended=false,s
      <div className="purchase-stock-summary">
      <p className="purchase-item-status">{buying&&quantity(i)===0?'추가 구매할 수량이 없어요':recommended&&buying?`추가 구매 ${defaultQuantity(i).toLocaleString('ko-KR')}${i.unit}${i.price!==null?' · '+locale.money(cost(i,quantity(i))):''}`:`${quantity(i).toLocaleString('ko-KR')}${i.unit}${buying?' 더 필요해요':tab==='ordered'?' 주문했어요':' 있어요'}`}</p>
      {tab==='plan'&&((stock[i.id]?.ordered??0)>0||(stock[i.id]?.owned??0)>0)&&<small>주문 {stock[i.id]?.ordered??0}{i.unit} · 보유 {stock[i.id]?.owned??0}{i.unit}</small>}
+     {i.priceEstimated&&<small>위 금액은 추정 재료비이며 실제 상품 가격과 달라요.</small>}
      {!recommended&&buying&&i.price!==null&&<b>추가 구매 {locale.money(cost(i,quantity(i)))}</b>}
      </div>
+     {i.amountLabel&&<p className="purchase-required-amount">{i.amountLabel}</p>}
+     {showProducts&&buying&&!locale.isTaiwan&&<ShoppingProducts name={i.name} products={sales.groups.find(g=>g.name===i.name)?.products??[]} loading={sales.loading} error={sales.error} onRetry={sales.retry}/>}
      <details className="purchase-item-details">
       <summary aria-label={`${i.name} 상품·재료 상세 보기`}><span>상품·재료 상세 보기</span></summary>
       <div className="purchase-item-detail-body">
