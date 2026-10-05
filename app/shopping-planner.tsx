@@ -401,7 +401,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
    <button type="button" className="primary-button" disabled={busy||loading||total>shoppingBudgetLimit(conditions)} onClick={()=>void save()}>{busy?'저장 중…':userId?'이 식단 저장':'로그인하고 저장'}</button>
   </section>}
   {mode!=='settings'&&idsComplete&&ids.length>1&&new Set(ids).size===1&&<p className="body-note" role="status">현재 조건에서는 한 가지 메뉴로만 구성됐어요. 예산·조리 방식·제외 재료 설정을 확인해 주세요. 다른 메뉴를 원하면 조건을 조정하고 다시 추천받아 주세요.</p>}
-  {!locale.isTaiwan&&mode!=='settings'&&ids.length>0&&idsComplete&&<details className="home-secondary"><summary>이 식단 공유하기</summary><SharePlanButton key={JSON.stringify([ids,conditions.days,conditions.slots])} userId={userId} onLogin={onLogin} conditions={conditions} mealIds={ids}/></details>}
+  {!locale.isTaiwan&&mode!=='settings'&&ids.length>0&&idsComplete&&<SharePlanButton key={JSON.stringify([ids,conditions])} userId={userId} onLogin={onLogin} conditions={conditions} mealIds={ids} disabled={busy||loading}/>}
   {/* 커뮤니티에 올리기는 잠시 숨김 (커뮤니티 기능 정리 전) */}
   {!locale.isTaiwan&&mode!=='settings'&&ids.length>0&&idsComplete&&<p className="body-note">식사 목표 · {shoppingGoals[conditions.goal??'maintain'].label}{conditions.cookingEffort&&` · ${cookingEfforts[conditions.cookingEffort].label}`}</p>}
   {mode==='plan'&&ids.length>0&&idsComplete&&<div className="planner-reroll-actions">
