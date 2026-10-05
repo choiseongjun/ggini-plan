@@ -3,6 +3,8 @@ import {mealTimeLocal,mealTimeISO,validEatenAt,mealSlots,mealSlotLabels,type Mea
 import './meal-time-picker.css';
 
 
+export type MealTimeSelection={value:string;slot:MealSlot|null;onChange:(value:string)=>void;onSlotChange:(slot:MealSlot|null)=>void};
+
 export function MealTimePicker({value,onChange,slot,onSlotChange,disabled=false}:{slot:MealSlot|null;onSlotChange:(slot:MealSlot)=>void;value:string;onChange:(value:string)=>void;disabled?:boolean}){
  const now=mealTimeLocal(),today=now.slice(0,10),yesterday=mealTimeLocal(new Date(Date.parse(`${now}:00+09:00`)-86400000)).slice(0,10);
  const date=value?value.slice(0,10):today;

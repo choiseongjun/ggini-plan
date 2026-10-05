@@ -1,6 +1,6 @@
 'use client';
 
-import {MealTimePicker} from './meal-time-picker';
+import {MealTimePicker,type MealTimeSelection} from './meal-time-picker';
 import {mealTimeISO,validEatenAt,recordDestinationTo,inferredMealSlot,type MealSlot} from '../lib/meal-time';
 import {useEffect, useRef, useState} from 'react';
 import type {FoodReference} from '../lib/food-reference';
@@ -17,9 +17,11 @@ const n = (v: number) => Math.round(v).toLocaleString('ko-KR');
 const serving = (f: FoodReference) => `${n(f.servingAmount)}${f.servingUnit}`;
 
 // 간식·디저트·음료·외식 기록: 이름으로 찾아 한 번에 남긴다. 기록이 쌓일수록 하루 섭취량(칼로리·당류)이 정확해진다.
-export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyChange,initialFood=null}: {initialFood?:FoodReference|null;onLogged: (name:string,eatenAt?:string,result?:{ids:string[];nutrition?:Record<string,number|null>;mealSlot?:MealSlot}) => void;initialOpen?:boolean;photo?:boolean;onClose?:()=>void;onBusyChange?:(busy:boolean)=>void}) {
- const [mealTime,setMealTime]=useState('');
- const [mealSlot,setMealSlot]=useState<MealSlot|null>(()=>inferredMealSlot(new Date().toISOString()));
+export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyChange,initialFood=null,timeSelection}: {timeSelection?:MealTimeSelection;initialFood?:FoodReference|null;onLogged: (name:string,eatenAt?:string,result?:{ids:string[];nutrition?:Record<string,number|null>;mealSlot?:MealSlot}) => void;initialOpen?:boolean;photo?:boolean;onClose?:()=>void;onBusyChange?:(busy:boolean)=>void}) {
+ const [localMealTime,setLocalMealTime]=useState('');
+ const [localMealSlot,setLocalMealSlot]=useState<MealSlot|null>(()=>inferredMealSlot(new Date().toISOString()));
+ const mealTime=timeSelection?.value??localMealTime,mealSlot=timeSelection?timeSelection.slot:localMealSlot;
+ const setMealTime=timeSelection?.onChange??setLocalMealTime,setMealSlot=timeSelection?.onSlotChange??setLocalMealSlot;
  const timeISO=mealTime?mealTimeISO(mealTime):undefined;
  const timeValid=!mealTime||!!timeISO&&validEatenAt(timeISO);
  const [open, setOpen] = useState(initialOpen);
@@ -86,7 +88,7 @@ export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyC
  return <section className="snack-log" aria-label="간식·음료·외식 기록">
   <header><strong>무엇을 먹었어요?</strong><button type="button" aria-label="닫기" disabled={busy} onClick={() => { setOpen(false); setPicked(null); setQuery(''); onClose?.(); }}>
    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></header>
-  <MealTimePicker value={mealTime} slot={mealSlot} onSlotChange={setMealSlot} onChange={setMealTime} disabled={busy}/>
+  {!timeSelection&&<MealTimePicker value={mealTime} slot={mealSlot} onSlotChange={setMealSlot} onChange={setMealTime} disabled={busy}/>}
   {photo&&<p className="snack-log-note">음식을 고른 뒤 사진을 올리면 먹은 양을 추정해요. 올린 사진은 식사 기록에 함께 보관돼요.</p>}
   <input ref={input} type="search" value={query} placeholder="예: 카페라떼, 치즈케이크, 스타벅스, 순대국밥" aria-label="음식 이름 검색" maxLength={40} disabled={busy} onChange={(e) => { setQuery(e.target.value); setPicked(null);setSearchError('');setDone(''); }}/>
   {!q&&recentLoading&&!recent.length&&<p className="snack-log-note" role="status">최근 기록을 불러오는 중이에요. 음식 이름을 바로 검색할 수 있어요.</p>}

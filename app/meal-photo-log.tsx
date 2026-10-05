@@ -1,6 +1,6 @@
 'use client';
 
-import {MealTimePicker} from './meal-time-picker';
+import {MealTimePicker,type MealTimeSelection} from './meal-time-picker';
 import {mealTimeISO,validEatenAt,recordDestinationTo,mealSlotLabels,inferredMealSlot,type MealSlot} from '../lib/meal-time';
 import {rememberedAiPhotoConsent,rememberAiPhotoConsent} from '../lib/ai-photo-consent';
 import {WaitHint} from './wait-hint';
@@ -31,12 +31,14 @@ const portionText=(p:number)=>p===1?'1인분':p===0.5?'반 인분':`${p}인분`;
 
 // 📷 먹었어요: pick or take a photo, the server judges portion + visible sides against the planned dish and logs it.
 export type MealPhotoPickerHandle={open:()=>void};
-export function MealPhotoLog({productId,referenceCode,dishName,disabled,onLogged,onManual,pickerRef,hidePickerActions=false,buttonLabel='먹었어요 · 사진 올리기',manualLabel='사진 없이 기록'}:{pickerRef?:Ref<MealPhotoPickerHandle>;hidePickerActions?:boolean;productId?:string;referenceCode?:string;buttonLabel?:string;manualLabel?:string;dishName:string;disabled:boolean;onLogged:(result:Extract<PhotoLogResult,{logged:true}>)=>void;onFallback:()=>void;onManual:()=>void}){
- const [mealTime,setMealTime]=useState('');
+export function MealPhotoLog({productId,referenceCode,dishName,disabled,onLogged,onManual,pickerRef,hidePickerActions=false,timeSelection,buttonLabel='먹었어요 · 사진 올리기',manualLabel='사진 없이 기록'}:{pickerRef?:Ref<MealPhotoPickerHandle>;hidePickerActions?:boolean;timeSelection?:MealTimeSelection;productId?:string;referenceCode?:string;buttonLabel?:string;manualLabel?:string;dishName:string;disabled:boolean;onLogged:(result:Extract<PhotoLogResult,{logged:true}>)=>void;onFallback:()=>void;onManual:()=>void}){
+ const [localMealTime,setLocalMealTime]=useState('');
  // 지금 시각으로 끼니를 미리 골라 두고(아래 문구로 보이며 바꿀 수 있음), 탭 한 번을 줄인다.
- const [mealSlot,setMealSlot]=useState<MealSlot|null>(()=>inferredMealSlot(new Date().toISOString()));
+ const [localMealSlot,setLocalMealSlot]=useState<MealSlot|null>(()=>inferredMealSlot(new Date().toISOString()));
  const requestId=useRef<string|null>(null);
  const submitting=useRef(false);
+ const mealTime=timeSelection?.value??localMealTime,mealSlot=timeSelection?timeSelection.slot:localMealSlot;
+ const setMealTime=timeSelection?.onChange??setLocalMealTime,setMealSlot=timeSelection?.onSlotChange??setLocalMealSlot;
  const timeISO=mealTime?mealTimeISO(mealTime):undefined;
  const timeValid=!mealTime||!!timeISO&&validEatenAt(timeISO);
  const input=useRef<HTMLInputElement>(null);
