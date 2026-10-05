@@ -1,3 +1,4 @@
+import {TASTE_BONUS,validMealTastes,type MealTaste} from './meal-tastes';
 import {allowsCookingEffort,isCookingEffort,type CookingEffort} from './cooking-effort';
 import {validStockId} from './stock-id';
 import {mealSimilarity} from './meal-similarity';
@@ -18,7 +19,7 @@ export function validSwapPreferences(value:unknown):value is SwapPreference[]{
  return Array.isArray(value)&&value.length<=50&&value.every(p=>p&&typeof p==='object'&&typeof p.id==='string'&&p.id.length>0&&p.id.length<=200&&typeof p.family==='string'&&p.family.length<=200&&typeof p.reason==='string'&&Object.hasOwn(swapReasons,p.reason)&&Number.isFinite(p.price)&&p.price>=0&&p.price<=10000000&&(p.minutes===null||(Number.isFinite(p.minutes)&&p.minutes>=0&&p.minutes<=1440)));
 }
 
-export type PlanProduct = CatalogItem & { sourceRecipe?: import("./source-recipe").SourceRecipe; mealSlots?:MealSlot[]; servings: number; servingGrams?:number; servingNote: string; avoidanceText: string | null; personalizationScore?:number; servingCalories?:number|null; servingSodium?:number|null; servingCarbs?:number|null; recipe?: {composition?:{templateId:string;version:number;items:{id:string;role:string;reason:string}[]};sideCount?:number;sides?:{name:string;steps:string[];minutes:number|null;productImageUrl?:string|null;productImageUrls?:string[]|null}[];assembly?:boolean;minutes:number|null;slots:MealSlot[];family:string;steps:string[];ingredients:{product:PlanProduct;packs:number;label:string;group?:string}[];nutrition:{calories:number|null;protein:number|null}} };
+export type PlanProduct = CatalogItem & { /** 서버가 '탭으로 다듬기' 요청 때만 붙인다. */ tasteTags?:MealTaste[]; sourceRecipe?: import("./source-recipe").SourceRecipe; mealSlots?:MealSlot[]; servings: number; servingGrams?:number; servingNote: string; avoidanceText: string | null; personalizationScore?:number; servingCalories?:number|null; servingSodium?:number|null; servingCarbs?:number|null; recipe?: {composition?:{templateId:string;version:number;items:{id:string;role:string;reason:string}[]};sideCount?:number;sides?:{name:string;steps:string[];minutes:number|null;productImageUrl?:string|null;productImageUrls?:string[]|null}[];assembly?:boolean;minutes:number|null;slots:MealSlot[];family:string;steps:string[];ingredients:{product:PlanProduct;packs:number;label:string;group?:string}[];nutrition:{calories:number|null;protein:number|null}} };
 export type MealSlot = 'breakfast'|'lunch'|'dinner';
 export const slotLabels={breakfast:'아침',lunch:'점심',dinner:'저녁'};
 export type MealSideCounts=Partial<Record<MealSlot,number>>;
@@ -28,7 +29,7 @@ export function validMealSideCounts(value:unknown):value is MealSideCounts{
 export function sideCountFor(c:Pick<PlanConditions,'sideCount'|'mealSideCounts'>,slot:MealSlot){return c.mealSideCounts?.[slot]??c.sideCount??0;}
 export const MAX_PLAN_DAYS=15;
 export const MAX_PLAN_MEALS=MAX_PLAN_DAYS*3;
-export type PlanConditions = { budgetUnlimited?:boolean; mealCostCap?:number; cookingEffort?:CookingEffort; people?:number; sideCount?:number; mealSideCounts?:MealSideCounts; mealCountMode?:boolean; swapPreferences?:SwapPreference[]; budgetMode?:BudgetMode; mealKinds?:MealKind[]; goal?:ShoppingGoal; mealMode?:'ready'|'cook'|'mixed'; excluded?:ExcludedFood[]; startDate?:string; budget: number; meals: number; cooking: 'quick' | 'kit' | 'all'; avoid: string; owned: string[]; supply?:Record<string,number>; days?:number; slots?:MealSlot[] };
+export type PlanConditions = { tastes?:MealTaste[]; budgetUnlimited?:boolean; mealCostCap?:number; cookingEffort?:CookingEffort; people?:number; sideCount?:number; mealSideCounts?:MealSideCounts; mealCountMode?:boolean; swapPreferences?:SwapPreference[]; budgetMode?:BudgetMode; mealKinds?:MealKind[]; goal?:ShoppingGoal; mealMode?:'ready'|'cook'|'mixed'; excluded?:ExcludedFood[]; startDate?:string; budget: number; meals: number; cooking: 'quick' | 'kit' | 'all'; avoid: string; owned: string[]; supply?:Record<string,number>; days?:number; slots?:MealSlot[] };
 export const shoppingBudgetLimit=(c:PlanConditions)=>c.budgetUnlimited?Infinity:c.budget;
 export const initialConditions: PlanConditions = {cookingEffort:'easy',people:1,sideCount:0,mealMode:'mixed',budget:50000,meals:7,cooking:'all',avoid:'',owned:[],days:7,slots:['dinner']};
 // New Korean home recommendations cover every meal; legacy saved plans keep their schedule.
@@ -52,6 +53,7 @@ export function parseConditions(value: unknown): PlanConditions | null {
  if(p.budgetUnlimited!==undefined&&typeof p.budgetUnlimited!=='boolean')return null;
  if(p.budgetMode!==undefined&&!isBudgetMode(p.budgetMode))return null;
  if(p.goal!==undefined&&!isShoppingGoal(p.goal))return null;
+ if(p.tastes!==undefined&&!validMealTastes(p.tastes))return null;
  if(p.mealMode!==undefined&&!['ready','cook','mixed'].includes(p.mealMode))return null;
  if(p.excluded!==undefined&&(!Array.isArray(p.excluded)||p.excluded.length>Object.keys(excludedFoods).length||p.excluded.some(key=>typeof key!=='string'||!Object.hasOwn(excludedFoods,key))))return null;
  if(p.startDate!==undefined&&!validPlanDate(p.startDate))return null;
@@ -263,7 +265,9 @@ function planScore(ids:string[],rows:ReturnType<typeof basket>,c:PlanConditions,
  // when the two are otherwise close on fit/variety/budget — nudges plans toward recipes rather
  // than defaulting to whichever pre-made item happens to be in the catalog.
  const cooked=ids.filter(id=>products.get(id)?.recipe).length*120;
- return cooked+reuse+rows.length*300-feedback-ids.filter(id=>previous.has(id)).length*900-ids.filter(id=>previousFamilies.has(mealFamily(products.get(id)!))).length*200+families.size*150-repeats*350-familyRepeats*40-baseRepeats*900-instant*400-light*300-sideLike*450-seafoodRepeats*500-batterOnly*500-meatOverflow*600-breakfastMix*350-repetition
+ // 탭으로 다듬기: 고른 맛(매운·국물·고기)이 맞는 메뉴를 우선한다.
+ const taste=c.tastes?.length?ids.reduce((n,id)=>n+(products.get(id)?.tasteTags??[]).filter(t=>c.tastes!.includes(t)).length*TASTE_BONUS,0):0;
+ return taste+cooked+reuse+rows.length*300-feedback-ids.filter(id=>previous.has(id)).length*900-ids.filter(id=>previousFamilies.has(mealFamily(products.get(id)!))).length*200+families.size*150-repeats*350-familyRepeats*40-baseRepeats*900-instant*400-light*300-sideLike*450-seafoodRepeats*500-batterOnly*500-meatOverflow*600-breakfastMix*350-repetition
   -rows.reduce((n,r)=>n+r.left,0)*100-waste/300-rows.reduce((n,r)=>n+r.cost,0)/shoppingBudgetLimit(c)*(c.budgetMode==='save'?2000:c.budgetMode==='full'?-100:100)+fit+(context?contextScore(ids,products,schedule,context):0);
 }
 // costCache: 메뉴 한 개의 장보기 금액은 끼니와 무관하다 — 끼니마다 다시 계산하면 메뉴가 많을 때 느려진다(21끼 8.6초).

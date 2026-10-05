@@ -17,3 +17,8 @@ test('kcal pages are a tracked screen and entry source is allowlisted',()=>{
  assert.deepEqual(sanitizeAnalytics('landing_cta_clicked',{screen:'kcal',source:'kcal'}),{$process_person_profile:false,$geoip_disable:true,screen:'kcal',source:'kcal'});
  assert.equal(sanitizeAnalytics('landing_cta_clicked',{source:'https://evil.example'})?.source,undefined);
 });
+
+test('refine chips are an allowlisted event property',()=>{
+ assert.equal(sanitizeAnalytics('recommendation_refined',{screen:'home',refine:'spicy'})?.refine,'spicy');
+ assert.equal(sanitizeAnalytics('recommendation_refined',{refine:'anything'})?.refine,undefined);
+});
