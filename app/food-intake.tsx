@@ -20,8 +20,11 @@ import {recordMealPeriod} from '../lib/intake-calendar';
 import {RecordCalendar} from './record-calendar';
 import {ProductThumb} from './product-thumb';
 import type {LoggedExtra} from '../lib/intake-extras';
+import {addGuestLog,guestIntakeData,undoGuestLog,type GuestSnapshot} from '../lib/guest-intake';
+import type {MealSlot} from '../lib/meal-time';
 
-type Command={action:'eat'|'undo'|'log';id:string;version:number;productId?:string;portions?:number;extras?:LoggedExtra[]};
+type Command={action:'eat'|'undo'|'log';id:string;version:number;productId?:string;portions?:number;extras?:LoggedExtra[];mealSlot?:MealSlot;
+ /** 비회원 기록용 영양 스냅숏(서버는 메뉴 id로 다시 계산하므로 보내지 않는다). */ guest?:GuestSnapshot};
 const recordNutrients=[['calories','칼로리',' kcal'],['carbs','탄수화물',' g'],['protein','단백질',' g'],['fat','지방',' g'],['sugar','당류',' g'],['sodium','나트륨',' mg']] as const;
 const number=(n:number)=>n.toLocaleString('ko-KR',{maximumFractionDigits:1});
 const nutrition=(n:number|null|undefined,unit:string)=>n==null?'미확인':`${number(n)}${unit}`;
@@ -36,7 +39,8 @@ export function useFoodIntake(userId?:string,history=false,externalDate?:string)
  const locked=useRef(false),pendingRef=useRef<Command|null>(null);
  const selectedDate=history?(externalDate??date):today;
  useEffect(()=>{
-  if(!userId)return;
+  // 비회원: 이 기기에 남긴 '먹었어요' 기록을 보여 준다(로그인하면 계정으로 옮긴다).
+  if(!userId){if(locale.isTaiwan)return;const frame=requestAnimationFrame(()=>setData(guestIntakeData(selectedDate)));return()=>cancelAnimationFrame(frame);}
   const controller=new AbortController();
   (locale.isTaiwan?fetch('/api/taiwan/catalog',{signal:controller.signal}).then(async r=>{const d=await r.json();if(!r.ok)throw new Error(d.error);regionalProducts.current=d.products;return Response.json(taiwanIntakeData(d.products,selectedDate));}):fetch(`/api/food-intake?date=${selectedDate}`,{cache:'no-store',signal:controller.signal})).then(async r=>{const d=await r.json();if(!r.ok)throw new Error(d.error);return d as IntakeData;}).then(d=>{if(!controller.signal.aborted){setData(d);setLoading(false);}}).catch(e=>{if(!controller.signal.aborted){setLoading(false);setError(e instanceof Error?e.message:'기록을 불러오지 못했어요.');}});
   return()=>controller.abort();
@@ -49,9 +53,18 @@ export function useFoodIntake(userId?:string,history=false,externalDate?:string)
  },[locale]);
  function reload(){setError('');setLoading(true);setRevision(n=>n+1);}
  async function send(command:Command):Promise<boolean>{
-  if(locked.current)return false;locked.current=true;pendingRef.current=command;setPending(command);setBusy(true);setError('');setMessage('');
+  if(locked.current)return false;
+  if(!userId&&!locale.isTaiwan){
+   if(command.action==='log'&&command.productId&&command.guest)addGuestLog({id:command.id,date:selectedDate,productId:command.productId,portions:command.portions??1,mealSlot:command.mealSlot,snapshot:command.guest});
+   else if(command.action==='undo')undoGuestLog(command.id);
+   else return false;
+   if(command.action==='log')trackAnalytics('meal_recorded',{method:'manual'});
+   setRevision(n=>n+1);window.dispatchEvent(new CustomEvent('intake-logged'));
+   return true;
+  }
+  locked.current=true;pendingRef.current=command;setPending(command);setBusy(true);setError('');setMessage('');
   try{
-   const r=locale.isTaiwan?await updateTaiwanIntake(command as Command&{action:'eat'|'undo'},regionalProducts.current,locale.today()).then(()=>Response.json({ok:true})).catch(error=>Response.json({error:error instanceof Error?error.message:'無法儲存紀錄。'},{status:409})):await fetch('/api/food-intake',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(command)});
+   const r=locale.isTaiwan?await updateTaiwanIntake(command as Command&{action:'eat'|'undo'},regionalProducts.current,locale.today()).then(()=>Response.json({ok:true})).catch(error=>Response.json({error:error instanceof Error?error.message:'無法儲存紀錄。'},{status:409})):await fetch('/api/food-intake',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...command,guest:undefined})});
    const d=await r.json();
    if(!r.ok){
     if(r.status<500){pendingRef.current=null;setPending(null);setLoading(true);setRevision(n=>n+1);}

@@ -133,3 +133,5 @@
 .meal-more>.meal-sections{padding:0 14px 12px;background:#fffdf8}
 @media(max-width:420px){.meal-more>summary{gap:9px;padding:14px 12px;flex-wrap:wrap}.meal-more>summary>.meal-more-icon{flex-basis:34px;height:34px}.meal-more-copy>strong{font-size:15px}.meal-more>summary>.meal-more-action{margin-left:auto}.meal-more-copy>small{font-size:11px}}
 @media(min-width:900px){.meal-switch-photo{aspect-ratio:1.65;border-radius:13px}.meal-more>summary{padding:20px 18px}.meal-more-copy>strong{font-size:18px}.meal-more-copy>small{font-size:13px}.meal-more>.meal-sections{padding:0 18px 16px}}
+.today-menu .meal-eat-row{display:flex;align-items:center;gap:var(--space-3);margin:var(--space-3) 0 0;flex-wrap:wrap}
+.today-menu .meal-eat-row small{font-size:var(--fs-xs);color:var(--text-subtle)}

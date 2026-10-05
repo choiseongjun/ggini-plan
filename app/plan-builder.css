@@ -35,3 +35,5 @@
 .site-shell .home-start>.simple-plan-hero small{text-align:center}
 .site-shell .home-start>.plan-builder .plan-builder-day h3{text-align:left}
 .site-shell .home-start>.simple-plan-heading{padding-top:6px}
+.simple-plan-hero .simple-plan-adjust{justify-self:center;min-height:var(--touch);padding:0 12px;border:0;background:none;color:var(--primary-strong);font:inherit;font-size:var(--fs-sm);font-weight:700;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.simple-plan-hero .simple-plan-adjust:disabled{opacity:.5;cursor:wait}

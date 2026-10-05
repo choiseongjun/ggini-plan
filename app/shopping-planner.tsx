@@ -1,6 +1,7 @@
 'use client';
 import {Button} from './components/ui';
 import {TodayBalance} from './today-balance';
+import {kstClock,mealsFromNow} from '../lib/meal-now';
 import {scrollToAppTop} from '../lib/scroll-to-top';
 import {ManualMealPlans} from './manual-meal-plans';
 import {HomeSetupDialog} from './home-setup-dialog';
@@ -129,9 +130,12 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
  const [profileExcluded,setProfileExcluded]=useState<ExcludedFood[]>([]);
  const progress=useShoppingProgress(userId,'products');
  const intake=useFoodIntake(mode==='settings'?undefined:userId);
- const eatenToday=Boolean(userId&&(intake.current?.logs.length??0)>0);
+ const eatenToday=(intake.current?.logs.length??0)>0;
  // 오늘 이미 기록한 끼니는 빼고 남은 끼니만 미리 골라 둔다(창에서 바꿀 수 있음).
- const remainingSlots=(()=>{if(!eatenToday)return null;const done=new Set(intake.current?.logs.map(l=>l.mealSlot).filter(Boolean));const left=(['breakfast','lunch','dinner'] as const).filter(s=>!done.has(s));return left.length&&left.length<3?[...left]:null;})();
+ // 지금 시각과 오늘 기록한 끼니로 바로 추천할 끼니를 정한다(저녁 7시면 저녁만, 밤이면 내일).
+ const [clock,setClock]=useState(()=>kstClock());
+ useEffect(()=>{const timer=window.setInterval(()=>setClock(kstClock()),5*60_000);return()=>window.clearInterval(timer);},[]);
+ const nowPlan=mealsFromNow(clock,intake.current?.logs.map(l=>l.mealSlot)??[]);
  const [products,setProducts]=useState<PlanProduct[]>([]),[baseConditions,setConditions]=useState<PlanConditions>(defaultConditions);
  // 한국판: products는 '지금 화면이 알고 있는 메뉴'(식단·후보)뿐이고 추천 계산은 서버 엔진이 한다.
  // 대만판: 전체 목록을 받아 기기에서 계산한다.
@@ -246,7 +250,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
   scrollToAppTop(plannerRef.current);
   setMessage('');setError('');if(!progress.ready){setError('구매 상태를 먼저 불러와 주세요.');return;}
   // 예산 활용 방식은 예산을 입력받는 대만판에서만 고른다. 한국판은 세 모드 모두 같은 기준(balanced)으로 계산한다.
-  const c=parseConditions({...input,...(!locale.isTaiwan?{cookingEffort:input.cookingEffort??'easy'}:{}),budgetMode:locale.isTaiwan?input.budgetMode:'balanced',startDate:locale.today(),supply:conditions.supply});
+  const c=parseConditions({...input,...(!locale.isTaiwan?{cookingEffort:input.cookingEffort??'easy'}:{}),budgetMode:locale.isTaiwan?input.budgetMode:'balanced',startDate:input.startDate&&input.startDate>locale.today()?input.startDate:locale.today(),supply:conditions.supply});
   if(!c){setError(locale.isTaiwan?'챙길 끼니와 장보기 예산을 확인해 주세요.':'챙길 끼니를 선택하고, 한 끼 재료비 상한은 비워 두거나 500~50,000원으로 입력해 주세요.');return;}
   trackAnalytics('recommendation_started');
   setBusy(true);setIds([]);remember(c,[]);
@@ -278,8 +282,13 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
    }
    if(guide&&!guide.approximate&&guide.minimum!==null&&shoppingBudgetLimit(c)<guide.minimum)throw new Error(`선택한 ${c.meals}끼를 준비하려면 최소 ${won(guide.minimum)}이 필요해요. 배송비는 별도예요.`);
    if(!next)throw new Error('현재 조건과 예산으로는 중복 없는 식단을 채울 수 없어요. 기간·끼니 수를 줄이거나 음식 종류·예산·조리 방식을 조정해 주세요.');
-   if(!locale.isTaiwan&&mode!=='settings')trackPlanner('generated');setConditions(c);setIds(next);remember(c,next);setMessage(todayReason(freshToday)??`${next.length}끼를 서로 다른 ${next.length}종 메뉴로 구성했어요. 같은 음식은 중복으로 넣지 않았어요.`);setResultFocus(n=>n+1);
+   if(!locale.isTaiwan&&mode!=='settings')trackPlanner('generated');setConditions(c);setIds(next);remember(c,next);setMessage(todayReason(freshToday)??(simpleHome&&c.days===1?`${c.startDate&&c.startDate>locale.today()?'내일':'오늘'} ${(c.slots??[]).map(slot=>slotLabels[slot]).join('·')} 메뉴를 골랐어요. 마음에 안 들면 ‘다른 메뉴’를 눌러 보세요.`:`${next.length}끼를 서로 다른 ${next.length}종 메뉴로 구성했어요. 같은 음식은 중복으로 넣지 않았어요.`));setResultFocus(n=>n+1);
   }catch(e){trackAnalytics('recommendation_failed');setError(e instanceof Error?e.message:'추천을 불러오지 못했어요.');}finally{setBusy(false);finishLoading();}
+ }
+ // 홈 버튼: 지금 시각에 맞는 끼니를 설정 창 없이 바로 추천한다.
+ function recommendNow(){
+  const c={...conditions,days:1,startDate:nowPlan.date,slots:nowPlan.slots,meals:nowPlan.slots.length};
+  setConditions(c);setQuickSetup(false);void generate(c);
  }
  function startBuilding(){
   const c=parseConditions({...conditions,startDate:locale.today(),supply:conditions.supply});
@@ -382,6 +391,8 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
   {mode==='plan'&&ids.length>0&&!simpleHome&&<HealthSourcesNotice/>}
   {mode==='plan'&&ids.length>0&&building&&!ids.every(Boolean)&&<PlanBuilder compact={simpleHome} ids={ids} products={products} conditions={conditions} onChoose={chooseMeal} disabled={busy||progress.busy}/>}
   {simpleHome&&mode==='plan'&&building&&ids.some(Boolean)&&!ids.every(Boolean)&&conditions.days===1&&<button type="button" className="simple-plan-recommend" disabled={loading||busy} onClick={()=>{const selected=mealSchedule(conditions).filter((_,i)=>ids[i]);const next=ids.filter(Boolean);const c={...conditions,slots:selected.map(s=>s.slot),meals:next.length,days:1};setConditions(c);setIds(next);setBuilding(false);remember(c,next);}}>고른 {ids.filter(Boolean).length}끼로 시작하기</button>}
+  {/* 먹었어요를 누른 뒤: 오늘 먹은 양과 남은 끼니 추천을 결과 위에 보여 준다. */}
+  {simpleHome&&mode==='plan'&&ids.length>0&&eatenToday&&intake.totals&&<TodayBalance totals={intake.totals} meals={intake.current?.logs.length??0} reference={personalization?.nutritionReference??null} action={<Button size="sm" variant="secondary" disabled={loading||busy||!progress.ready||!catalogReady} onClick={recommendNow}>{nowPlan.tomorrow?'내일 식단 추천받기':'남은 끼니 추천받기'}</Button>}/>}
   {mode==='plan'&&ids.length>0&&(!building||ids.every(Boolean))&&<TodayMeals onAllMeals={()=>void generate({...conditions,slots:['breakfast','lunch','dinner'],mealCountMode:false,meals:(conditions.days??7)*3})} onNextPlan={()=>void generate(conditions)} nextPlanBusy={busy||loading||progress.busy||!progress.ready} focusMeal={pushMeal?(()=>{const s=mealSchedule(conditions),today=locale.today();const i=ids.findIndex((id,index)=>id===pushMeal&&!!s[index]&&planDate(conditions.startDate??today,s[index].day)===today);return i<0?null:i;})():null} overviewOpen={overviewOpen} onOverviewOpen={setOverviewOpen} nutritionReference={personalization?.nutritionReference??null} shoppingTotal={purchases.reduce((sum,row)=>sum+row.cost,0)} intake={intake} userId={userId} onLogin={onLogin} ids={ids} products={products} conditions={conditions} startDate={conditions.startDate??locale.today()} onStartDate={date=>{const c=parseConditions({...conditions,startDate:date});if(c){setConditions(c);remember(c,ids);}}} onSwap={swap} onChoose={chooseMeal} progress={progress} perMealCalories={personalization?.perMealCalories??null} dailyCalories={personalization?.blocked?null:personalization?.dailyCalories??null} dashboard={dashboard}/>}
   {mode==='plan'&&ids.length>0&&idsComplete&&personalRecommendation}
   {mode==='plan'&&!locale.isTaiwan&&ids.length>0&&idsComplete&&<section className={adoptionStyles.card} aria-label="선택한 식단 저장">
@@ -399,8 +410,8 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
   {mode==='plan'&&!ids.length&&!locale.isTaiwan&&!showSetup&&<section ref={startRef} tabIndex={-1} className="home-start" aria-labelledby="planner-title">
    {simpleHome?<><header className="simple-plan-heading"><h2 id="planner-title">오늘의 식단</h2><p>뭘 먹을지 고민된다면 추천부터 받아 보세요.</p></header>
    {/* 처음 온 사람의 첫 행동은 추천 하나로 — 직접 담기는 그 아래 보조 경로로 둔다. */}
-   {userId&&intake.totals&&<TodayBalance totals={intake.totals} meals={intake.current?.logs.length??0} reference={personalization?.nutritionReference??null}/>}
-   <div className="simple-plan-hero"><Button size="lg" block className="home-recommend-cta" disabled={loading||busy} onClick={()=>{if(remainingSlots)setConditions(c=>({...c,days:1,startDate:locale.today(),slots:remainingSlots,meals:remainingSlots.length}));setQuickSetup(true);}}><Icon name="spark" size={20}/>{eatenToday?'남은 끼니 추천받기':'오늘 식단 추천받기'}</Button><small>{eatenToday?'오늘 먹은 양을 빼고 남은 끼니를 골라 드려요':'아침·점심·저녁을 취향과 요리 난이도에 맞춰 채워 드려요'}</small></div>
+   {intake.totals&&<TodayBalance totals={intake.totals} meals={intake.current?.logs.length??0} reference={personalization?.nutritionReference??null}/>}
+   <div className="simple-plan-hero"><Button size="lg" block className="home-recommend-cta" disabled={loading||busy||!progress.ready||!catalogReady} onClick={recommendNow}><Icon name="spark" size={20}/>{busy?'고르는 중…':`${nowPlan.label} 추천받기`}</Button><small>{eatenToday&&!nowPlan.tomorrow?'오늘 먹은 양을 빼고 남은 끼니를 골라 드려요':nowPlan.tomorrow?'오늘은 마무리하고, 내일 먹을 끼니를 미리 골라 드려요':'지금 시간에 맞춰 바로 골라 드려요 · 간편한 요리 위주'}</small><button type="button" className="simple-plan-adjust" disabled={loading||busy} onClick={()=>{setConditions(c=>({...c,days:1,startDate:nowPlan.date,slots:nowPlan.slots,meals:nowPlan.slots.length}));setQuickSetup(true);}}>끼니·요리 난이도 바꾸기</button></div>
    <div className="simple-plan-or"><span>또는 끼니별로 직접 골라 담기</span><label>날짜<input type="date" aria-label="식단 날짜" value={simpleDate} onChange={e=>{if(e.target.value)setSimpleDate(e.target.value);}}/></label></div>
    {loading?<p role="status">식단을 불러오고 있어요…</p>:<PlanBuilder compact ids={['','','']} products={products} conditions={{...conditions,...SIMPLE_HOME_CONDITIONS,excluded:conditions.excluded,startDate:simpleDate}} onChoose={chooseMeal} disabled={busy||!catalogReady}/>}</>:<HomeWelcome onRecommend={()=>setQuickSetup(true)}/>}
    <HomeSetupDialog key={String(quickSetup)} open={quickSetup} onClose={()=>setQuickSetup(false)} meals={mealTimesPicker} cooking={<CookingEffortPicker value={conditions.cookingEffort} onChange={cookingEffort=>updatePreferences({cookingEffort})} disabled={loading||busy}/>} >
@@ -516,7 +527,8 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
 
   {mode==='plan'&&!locale.isTaiwan&&<details className="home-secondary"><summary>밖에서 먹을 메뉴 찾기</summary><EatOutCard userId={userId} onLogin={onLogin}/></details>}
   {mode==='plan'&&!locale.isTaiwan&&userId&&<details className="home-secondary"><summary>이번 주 식단 가이드</summary><WeeklyGuideCard userId={userId}/></details>}
-  {mode==='plan'&&!locale.isTaiwan&&ids.length>0&&idsComplete&&(!building||ids.every(Boolean))&&<PlannerFab actions={[
+  {/* 홈에서는 같은 동작이 화면 아래에 모두 있어 떠 있는 버튼이 카드를 가리기만 한다 — 여러 날 식단에서만 쓴다. */}
+  {mode==='plan'&&!simpleHome&&!locale.isTaiwan&&ids.length>0&&idsComplete&&(!building||ids.every(Boolean))&&<PlannerFab actions={[
    {key:'overview',icon:fabIcons.overview,label:'전체 식단 한눈에',onClick:()=>setOverviewOpen(true)},
    {key:'reroll',icon:fabIcons.reroll,label:'다른 조합으로 다시 추천',disabled:busy||loading||progress.busy||!progress.ready,onClick:()=>void generate(conditions)},
    {key:'setup',icon:fabIcons.setup,label:'조건 바꾸기',disabled:busy||progress.busy,onClick:returnToSetup},

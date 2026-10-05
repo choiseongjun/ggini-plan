@@ -9,3 +9,4 @@
 .bars small{font-size:var(--fs-xs);color:var(--text-subtle);font-variant-numeric:tabular-nums}
 .hint{margin:var(--space-3) 0 0;font-size:var(--fs-sm);line-height:1.6;color:var(--text-muted)}
 .hint a{color:var(--primary-strong);font-weight:800}
+.action{margin-top:var(--space-3)}

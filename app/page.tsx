@@ -41,6 +41,7 @@ import {ServiceFeedback} from './service-feedback';
 import {DailyReturnCard} from './daily-return-card';
 import {useNativePush,nativePushLogout} from '../lib/native-push-client';
 import {MealReminderCard} from './meal-reminder-card';
+import {hasGuestIntake,importGuestIntake} from '../lib/guest-intake';
 import {BackButton,PageHeader} from './components/ui';
 import {trackPlanner} from '../lib/track-planner';
 
@@ -72,6 +73,8 @@ export default function Home() {
   const [authUser, setAuthUser] = useState<PublicUser | null>(null);
   const [authChecked, setAuthChecked] = useState(false);
   useNativePush(authUser?.id);
+  // 로그인 전에 이 기기에서 '먹었어요'로 남긴 기록을 계정의 식사 일기로 옮긴다.
+  useEffect(()=>{if(!authUser||!hasGuestIntake())return;void importGuestIntake().then(moved=>{if(moved)window.dispatchEvent(new CustomEvent('intake-logged'));});},[authUser]);
   // 식사 알림을 눌러 들어온 방문(홈·기록 어디로 와도): 측정 후 주소에서 from 표시만 지운다.
   // ?meal= stays for the home screen, which mounts after the login check and clears it itself.
   useEffect(()=>{const q=new URLSearchParams(window.location.search);if(q.get('from')!=='push')return;trackPlanner('push_opened');q.delete('from');window.history.replaceState(null,'',`${window.location.pathname}${q.size?`?${q}`:''}`);},[]);
