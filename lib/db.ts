@@ -12,10 +12,15 @@ export function getPool(): Pool {
     if (process.env.VERCEL && databaseUrl.hostname.endsWith(".pooler.supabase.com") && databaseUrl.port === "5432") {
       databaseUrl.port = "6543";
     }
+    // Vercel: few, short-lived connections per instance. A long-running local server instead keeps
+    // connections warm — reconnecting to the remote pooler per request takes seconds and queued
+    // requests (dashboard runs six queries at once) hit the connect timeout.
+    // `next build` runs many workers at once, so it keeps the small pool too.
+    const serverless = Boolean(process.env.VERCEL) || process.env.NEXT_PHASE === 'phase-production-build';
     globalForDb.kkiniplanPool = new Pool({
       connectionString: databaseUrl.toString(),
-      max: 2,
-      idleTimeoutMillis: 1000,
+      max: serverless ? 2 : 6,
+      idleTimeoutMillis: serverless ? 1000 : 30000,
       connectionTimeoutMillis: 15000,
     });
     // Release idle sessions before a Vercel instance is suspended.
