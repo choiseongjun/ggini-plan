@@ -22,7 +22,7 @@ export async function POST(request:NextRequest){
    const hash=createHash('sha256').update(request.cookies.get(SESSION_COOKIE)!.value).digest('hex');
    await db.query(`INSERT INTO native_push_devices(device_id,user_id,session_hash,token,permission_granted)
     VALUES($1,$2,$3,$4,$5) ON CONFLICT(device_id) DO UPDATE SET
-    times=CASE WHEN native_push_devices.user_id IS NOT DISTINCT FROM EXCLUDED.user_id THEN native_push_devices.times ELSE '{"lunch":"12:00","dinner":"18:30"}'::jsonb END,
+    times=CASE WHEN native_push_devices.user_id IS NOT DISTINCT FROM EXCLUDED.user_id THEN native_push_devices.times ELSE '{"breakfast":"08:00","lunch":"12:00","dinner":"18:30"}'::jsonb END,
     enabled=CASE WHEN native_push_devices.user_id IS NOT DISTINCT FROM EXCLUDED.user_id THEN native_push_devices.enabled ELSE TRUE END,
     user_id=EXCLUDED.user_id,session_hash=EXCLUDED.session_hash,token=EXCLUDED.token,permission_granted=EXCLUDED.permission_granted,updated_at=NOW()`,
     [deviceId,user.id,hash,input.permissionGranted?input.token:null,input.permissionGranted]);

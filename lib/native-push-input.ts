@@ -1,8 +1,8 @@
 export type MealTimes = Partial<Record<'breakfast'|'lunch'|'dinner',string>>;
-export const DEFAULT_NATIVE_TIMES:MealTimes={lunch:'12:00',dinner:'18:30'};
-// 비회원 설치자: 앱이 숫자 id만 받으므로 '0'으로 표시하고, 하루 한 번 저녁에만 알린다.
+export const DEFAULT_NATIVE_TIMES:MealTimes={breakfast:'08:00',lunch:'12:00',dinner:'18:30'};
+// 비회원 설치자: 앱이 숫자 id만 받으므로 '0'으로 표시한다. 회원과 같이 아침·점심·저녁에 알린다.
 export const GUEST_ID='0';
-export const GUEST_NATIVE_TIMES:MealTimes={dinner:'18:30'};
+export const GUEST_NATIVE_TIMES:MealTimes=DEFAULT_NATIVE_TIMES;
 export function parseNativeTimes(value:unknown):MealTimes|null{
  if(!value||typeof value!=='object'||Array.isArray(value))return null;
  const entries=Object.entries(value);

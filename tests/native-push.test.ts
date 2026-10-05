@@ -19,7 +19,7 @@ test('Korean meal time windows and untrusted registration input',()=>{
  assert.equal(nativeInput({deviceId:'bad',action:'sync'}),null);
  const device={deviceId:'a'.repeat(64),expectedUserId:'1'};
  assert.deepEqual(nativeInput({...device,action:'enable',times:{breakfast:'08:00'}}),{...device,action:'settings',token:undefined,permissionGranted:undefined,times:{breakfast:'08:00'},enabled:true});
- assert.deepEqual(nativeInput({...device,action:'enable',times:{}})?.times,{lunch:'12:00',dinner:'18:30'});
+ assert.deepEqual(nativeInput({...device,action:'enable',times:{}})?.times,{breakfast:'08:00',lunch:'12:00',dinner:'18:30'});
 });
 
 test('device/session lifecycle and atomic delivery claims in an isolated schema',async()=>{
@@ -63,7 +63,7 @@ test('device/session lifecycle and atomic delivery claims in an isolated schema'
   // 비회원 설치자: 세션 없이 '0'으로 등록하고, 회원 기기와 섞이지 않는다.
   const guestDevice='b'.repeat(64),guestSync={deviceId:guestDevice,expectedUserId:'0',action:'sync',permissionGranted:true,token:'guest-token:'.padEnd(160,'g')};
   response=await POST(request(guestSync,'https://gginiplan.kr',''));assert.equal(response.status,200);
-  const guestState=await response.json();assert.equal(guestState.subscribed,true);assert.deepEqual(guestState.times,{dinner:'18:30'});
+  const guestState=await response.json();assert.equal(guestState.subscribed,true);assert.deepEqual(guestState.times,{breakfast:'08:00',lunch:'12:00',dinner:'18:30'});
   assert.equal((await pool.query('SELECT user_id FROM native_push_devices WHERE device_id=$1',[guestDevice])).rows[0].user_id,null);
   assert.equal((await POST(request({...guestSync,action:'test'},'https://gginiplan.kr',''))).status,401);
   assert.equal((await POST(request({...guestSync,expectedUserId:'1'},'https://gginiplan.kr',''))).status,401);

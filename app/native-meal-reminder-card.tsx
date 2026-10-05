@@ -28,7 +28,7 @@ export function NativeMealReminderCard(){
  return <section className="mr-card" aria-label="앱 식사 알림">
   <header><div><span className="mr-kicker">앱 식사 알림</span><h3>밥 먹을 시간을 알려 드려요</h3></div>
    <button type="button" role="switch" aria-label="앱 식사 알림 켜기" aria-checked={Boolean(status?.subscribed)} className="mr-switch" disabled={busy||!userId} onClick={()=>void run(status?.subscribed?'disable':'enable',Object.keys(times).length?times:DEFAULT_NATIVE_TIMES)}><span aria-hidden="true"/></button></header>
-  <p className="mr-note">알림을 허용하면 기본 점심 12시·저녁 6시 30분에 알려 드려요. 앱을 닫아도 받을 수 있고, 시간은 한국 시간 기준이에요.</p>
+  <p className="mr-note">알림을 허용하면 기본 아침 8시·점심 12시·저녁 6시 30분에 알려 드려요. 앱을 닫아도 받을 수 있고, 시간은 한국 시간 기준이에요.</p>
   <ul className={`mr-times${status?.subscribed?'':' is-off'}`}>{slots.map(([slot,label,fallback])=><li key={slot}>
    <label className="mr-slot"><input type="checkbox" checked={Boolean(times[slot])} disabled={busy} onChange={e=>{const next={...times};if(e.target.checked)next[slot]=fallback;else delete next[slot];setTimes(next);if(status?.subscribed)void run('settings',next);}}/>{label}</label>
    <input type="time" aria-label={`${label} 알림 시간`} value={times[slot]??fallback} disabled={busy||!times[slot]} onChange={e=>{const next={...times,[slot]:e.target.value};setTimes(next);if(status?.subscribed)void run('settings',next);}}/>
