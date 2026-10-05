@@ -1,0 +1,14 @@
+.site-shell .section-navigation{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--space-1);padding:var(--space-1);margin-bottom:var(--space-5);border-radius:var(--radius-md);background:var(--surface-soft)}
+.site-shell .section-navigation a{display:flex;align-items:center;justify-content:center;min-height:var(--touch);padding:var(--space-2) var(--space-1);border-radius:var(--radius-sm);color:var(--text-subtle);font-size:var(--fs-sm);font-weight:700;text-decoration:none;text-align:center}
+.site-shell .section-navigation a[aria-current=page]{background:var(--surface);color:var(--primary-strong);box-shadow:var(--shadow-sm)}
+.site-shell .section-navigation a:focus-visible,.site-shell .home-manual-entry>summary:focus-visible{outline:solid var(--focus);outline-offset:var(--space-1)}
+.site-shell .home-manual-entry{margin:var(--space-4) var(--space-5);border-top:solid var(--border)}
+.site-shell .home-manual-entry>summary{min-height:var(--touch);padding:var(--space-4) 0;cursor:pointer;color:var(--text-muted);font-size:var(--fs-md);font-weight:700}
+.site-shell .outside-shortcut{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);min-height:var(--touch);padding:var(--space-4);margin-bottom:var(--space-5);background:var(--surface-soft);border-radius:var(--radius-md);color:var(--primary-strong);text-decoration:none}
+.site-shell .outside-shortcut strong,.site-shell .outside-shortcut small{display:block}.site-shell .outside-shortcut small{font-size:var(--fs-sm);color:var(--text-subtle);margin-top:var(--space-1)}
+.site-shell .shopping-navigation{grid-template-columns:repeat(2,minmax(0,1fr))}
+.site-shell .shopping-navigation button{min-height:var(--touch);padding:var(--space-2);border:0;border-radius:var(--radius-sm);background:transparent;color:var(--text-subtle);font-size:var(--fs-sm);font-weight:700;cursor:pointer}
+.site-shell .shopping-navigation button[aria-pressed=true]{background:var(--surface);color:var(--primary-strong);box-shadow:var(--shadow-sm)}
+.site-shell .shopping-navigation button:focus-visible{outline:solid var(--focus);outline-offset:var(--space-1)}
+.site-shell .planning-weekly-guide{margin-top:var(--space-5);padding:var(--space-4);border-radius:var(--radius-md);background:var(--surface-soft)}
+.site-shell .planning-weekly-guide>summary{min-height:var(--touch);align-content:center;cursor:pointer;color:var(--text-muted);font-size:var(--fs-md);font-weight:700}
