@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
   if (input.conditions !== undefined && !conditions) return authFailure('챙길 끼니와 조건을 확인해 주세요.', 400);
   if (input.action === 'products' && !validIds(input.ids, true)) return authFailure('메뉴를 확인해 주세요.', 400);
   // Restoring a plan only needs its chosen meals, not scores for every recipe.
-  const catalog = await loadPlanCatalog(user?.id, input.action === 'products' ? input.ids as string[] : undefined,(input.action==='recommend'||input.action==='browse')?cachedRecommendationProducts:undefined);
+  const catalog = await loadPlanCatalog(user?.id, input.action === 'products' ? input.ids as string[] : undefined,(input.action==='recommend'||input.action==='browse'||input.action==='products')?cachedRecommendationProducts:undefined);
   const {products} = catalog;
   const today = async () => user ? await todayContext(user.id, products, catalog.personalization, catalog.health).catch(() => null) : null;
   const slotIndex = (c: PlanConditions) => typeof input.index === 'number' && Number.isInteger(input.index) && input.index >= 0 && input.index < c.meals ? input.index : null;
@@ -148,7 +148,8 @@ export async function POST(request: NextRequest) {
     const found = pickProducts(products, ids.filter(Boolean));
     // 저장해 둔 식단을 다시 열 때: 지금 메뉴·가격 기준으로도 그대로 쓸 수 있는지 함께 알려 준다.
     const valid = conditions ? validMealIds(ids, products, conditions) && basketTotal(ids, products, conditions.owned, conditions.supply, conditions.people) <= shoppingBudgetLimit(conditions) : undefined;
-    return json({products: found, valid});
+    // 공유 캐시의 가벼운 카탈로그에서 고른 메뉴만 사진·조리 메모를 채운다(전체 레시피를 다시 읽지 않는다).
+    return json({products: await hydrateRecommendationProducts(found), valid});
    }
    default:
     return authFailure('요청을 확인해 주세요.', 400);

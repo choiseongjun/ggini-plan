@@ -70,6 +70,7 @@ export default function Home() {
   const [products, setProducts] = useState<CatalogItem[]>([]);
   const [showAuth, setShowAuth] = useState(false);
   const [authUser, setAuthUser] = useState<PublicUser | null>(null);
+  const [authChecked, setAuthChecked] = useState(false);
   useNativePush(authUser?.id);
   // 식사 알림을 눌러 들어온 방문(홈·기록 어디로 와도): 측정 후 주소에서 from 표시만 지운다.
   // ?meal= stays for the home screen, which mounts after the login check and clears it itself.
@@ -160,6 +161,7 @@ export default function Home() {
       .finally(() => {
         finish();
         if (controller.signal.aborted) return;
+        setAuthChecked(true);
         const url = new URL(window.location.href);
         const code = url.searchParams.get("auth_error");
         if (code && Object.hasOwn(googleAuthErrors, code)) {
@@ -203,6 +205,8 @@ export default function Home() {
       {showAuth ? <AuthScreen initialError={authError} onExplore={() => { clearRecordMode();clearProfileIntent();setShowAuth(false); setAuthError(""); }} onSuccess={(user) => { setDashboard(null); setAuthUser(user); setAuthError(""); setShowAuth(false); if(takeProfileIntent())router.push("/profile?personalize=1#profile-settings");else setTab(pendingRecordMode()?"record":"home"); }}/> : <>
       <header className="app-header"><Brand/><div className="app-header-actions">{authUser ? <button className="logout-link" type="button" onClick={signOut}>로그아웃</button> : <button className="logout-link" type="button" onClick={() => { setAuthError(""); setShowAuth(true); }}>로그인</button>}</div></header>
       <div className={`app-content app-content-${tab}`} ref={contentRef}>
+        {/* 로그인 확인이 끝난 뒤에 그린다 — 비회원 화면을 먼저 그렸다가 회원 화면으로 다시 마운트하면 요청이 두 번씩 나간다. */}
+        {authChecked&&<>
         <InstallPrompt active={tab === 'home'}/>
         {tab === "record" && <FoodIntake key={`intake-${authUser?.id??"guest"}-${tab}`} userId={authUser?.id} onLogin={()=>setShowAuth(true)} history={tab==="record"} recordDate={recordDate} onDateChange={setRecordDate} expenseManagement={dashboard&&<Dashboard key={`${authUser?.id??"guest"}-${tab}-${recordDate}`} mode={tab} recordDate={recordDate} data={dashboard} userId={authUser?.id} products={products} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")} onCalendar={()=>setTab("calendar")} onBudget={editBudget} onRefresh={refreshDashboard} onCompare={openCompare}/>}/>}
         {tab === "record" && <PantryMealHistory userId={authUser?.id}/>}
@@ -254,6 +258,7 @@ export default function Home() {
         {tab==='profile'&&<details className="home-explore"><summary>상품 비교·이용 안내</summary><ComparisonTrends/><nav aria-label="더 알아보기"><Link href="/products">상품 가격·영양 비교 <span>→</span></Link><Link href="/guides">식단·식비 가이드 <span>→</span></Link><Link href="/submissions">상품·영양정보 제보 <span>→</span></Link><a href="mailto:choisj2702@gmail.com">문의·협업 <span>↗</span></a></nav></details>}
         {tab==='profile'&&<details className="profile-extra profile-data"><summary>데이터 관리</summary><ResetData key={`reset-${authUser?.id??"guest"}`} userId={authUser?.id}/></details>}
         {(tab === 'home' || tab === 'profile') && <PolicyLinks/>}
+        </>}
       </div>
       {/* 식단공유(커뮤니티) 탭은 준비 중이라 메뉴에서 숨김 — /community 라우트 자체는 그대로 동작해요. */}
       <nav className="bottom-nav launch-nav" aria-label="앱 메뉴">{([ ["home","식단","calendar"], ["record","기록","edit"], ["profile","마이","user"] ] as [Tab,string,IconName][]).map(([key,label,icon]) => <button key={key} type="button" className={navSection === key ? "active" : ""} onClick={() => setTab(key)} aria-current={tab === key ? "page" : navSection === key ? "true" : undefined}><Icon name={icon} size={21}/><span>{label}</span></button>)}</nav>

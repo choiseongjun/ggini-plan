@@ -25,12 +25,13 @@ export async function GET(request:NextRequest){
   }
   const date=request.nextUrl.searchParams.get('date')??emptyDashboard().today;
   if(!validDate(date))return authFailure('날짜를 확인해 주세요.',400);
-  const [progress,logs,products]=await Promise.all([
+  const [progress,logs]=await Promise.all([
    getPool().query("SELECT stock,version FROM shopping_progress WHERE user_id=$1 AND scope='products'",[user.id]),
    getPool().query(`SELECT id::text,product_id AS "productId",product_name AS name,portions::float8,packs::float8,calories::float8,protein::float8,carbs::float8,fat::float8,sugar::float8,sodium::float8,cost::float8,created_at AS "createdAt",meal_slot AS "mealSlot",COALESCE(eaten_at,created_at) AS "eatenAt",(SELECT count(*)::int FROM food_intake_photos p WHERE p.user_id=food_intake_logs.user_id AND p.log_id=food_intake_logs.id) AS "photoCount" FROM food_intake_logs WHERE user_id=$1 AND undone_at IS NULL AND COALESCE(eaten_at,created_at)>=($2::date::timestamp AT TIME ZONE 'Asia/Seoul') AND COALESCE(eaten_at,created_at)<(($2::date+1)::timestamp AT TIME ZONE 'Asia/Seoul') ORDER BY COALESCE(eaten_at,created_at),id`,[user.id,date]),
-   planProducts(),
   ]);
   const stock=parseStock(progress.rows[0]?.stock??{});if(!stock)throw new Error('Invalid stock');
+  // 집에 둔 음식이 없으면(대부분) 전체 레시피 목록을 읽지 않는다.
+  const products=Object.keys(stock).length?await planProducts():[];
   return json({date,version:progress.rows[0]?.version??0,logs:logs.rows,products:products.filter(p=>availablePortions(stock,p)>0).map(p=>({id:p.id,name:p.name,servingNote:p.servingNote,servings:p.servings,available:availablePortions(stock,p),...servingNutrition(p),image:p.productImageUrl}))});
  }catch{return authFailure('먹은 기록을 불러오지 못했어요. 다시 시도해 주세요.',503);}
 }

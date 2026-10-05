@@ -6,7 +6,8 @@ function getClient(){
  const token=process.env.NEXT_PUBLIC_POSTHOG_KEY;
  const host=process.env.NEXT_PUBLIC_POSTHOG_HOST;
  if(typeof window==='undefined'||!token||!host||!['gginiplan.kr','www.gginiplan.kr'].includes(window.location.hostname)||navigator.doNotTrack==='1')return Promise.resolve(null);
- if(!client)client=import('posthog-js').then(({default:posthog})=>{
+ // 첫 화면을 그리는 동안 분석 SDK(~90KB)를 받지 않는다. 브라우저가 한가해지면 불러오고, 그 사이 이벤트는 기다렸다 보낸다.
+ if(!client)client=new Promise<void>(resolve=>{const w=window as Window&{requestIdleCallback?:(cb:()=>void,o?:{timeout:number})=>number};if(w.requestIdleCallback)w.requestIdleCallback(()=>resolve(),{timeout:4000});else setTimeout(resolve,2000);}).then(()=>import('posthog-js')).then(({default:posthog})=>{
   posthog.init(token,{
    api_host:host,persistence:'localStorage',person_profiles:'never',
    autocapture:false,capture_pageview:false,capture_pageleave:false,

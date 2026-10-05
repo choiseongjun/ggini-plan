@@ -10,3 +10,6 @@ CREATE TABLE IF NOT EXISTS food_pages (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 CREATE INDEX IF NOT EXISTS food_pages_category_idx ON food_pages(category);
+-- 칼로리 페이지의 '같은 브랜드 메뉴'·'같은 분류 일반 음식' 목록(크롤러가 계속 연다).
+CREATE INDEX IF NOT EXISTS food_pages_brand_idx ON food_pages(brand) WHERE brand IS NOT NULL;
+CREATE INDEX IF NOT EXISTS food_pages_category_generic_idx ON food_pages(category, kcal) WHERE brand IS NULL;
