@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   robots: { index: indexable, follow: indexable },
   verification: {
     google: process.env.GOOGLE_SITE_VERIFICATION || "odBJGV5ju_G4snodV81Swxv7cLRrZdXJqDkATCFDUIE",
-    other: process.env.NAVER_SITE_VERIFICATION ? { "naver-site-verification": process.env.NAVER_SITE_VERIFICATION } : undefined,
+    other: { "naver-site-verification": process.env.NAVER_SITE_VERIFICATION || "103eba589a930e153779b94ae150cc9e156fc09b" },
   },
 };
 
