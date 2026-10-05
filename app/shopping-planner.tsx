@@ -1,6 +1,7 @@
 'use client';
 import {Button} from './components/ui';
 import {TodayBalance} from './today-balance';
+import {RefineChips} from './refine-chips';
 import {kstClock,mealsFromNow} from '../lib/meal-now';
 import {scrollToAppTop} from '../lib/scroll-to-top';
 import {ManualMealPlans} from './manual-meal-plans';
@@ -285,7 +286,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
  }
  // 홈 버튼: 지금 시각에 맞는 끼니를 설정 창 없이 바로 추천한다.
  function recommendNow(){
-  const c={...conditions,days:1,startDate:nowPlan.date,slots:nowPlan.slots,meals:nowPlan.slots.length};
+  const c={...conditions,tastes:undefined,days:1,startDate:nowPlan.date,slots:nowPlan.slots,meals:nowPlan.slots.length};
   setConditions(c);setQuickSetup(false);void generate(c);
  }
  function startBuilding(){
@@ -389,6 +390,8 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
   {mode==='plan'&&ids.length>0&&!simpleHome&&<HealthSourcesNotice/>}
   {mode==='plan'&&ids.length>0&&building&&!ids.every(Boolean)&&<PlanBuilder compact={simpleHome} ids={ids} products={products} conditions={conditions} onChoose={chooseMeal} disabled={busy||progress.busy}/>}
   {simpleHome&&mode==='plan'&&building&&ids.some(Boolean)&&!ids.every(Boolean)&&conditions.days===1&&<button type="button" className="simple-plan-recommend" disabled={loading||busy} onClick={()=>{const selected=mealSchedule(conditions).filter((_,i)=>ids[i]);const next=ids.filter(Boolean);const c={...conditions,slots:selected.map(s=>s.slot),meals:next.length,days:1};setConditions(c);setIds(next);setBuilding(false);remember(c,next);}}>고른 {ids.filter(Boolean).length}끼로 시작하기</button>}
+  {/* 말 대신 탭으로 다듬기: 누르면 그 조건으로 바로 다시 추천한다. */}
+  {simpleHome&&!locale.isTaiwan&&mode==='plan'&&ids.length>0&&idsComplete&&<RefineChips conditions={conditions} disabled={loading||busy||!progress.ready||!catalogReady} onRefine={next=>{setConditions(next);void generate(next);}}/>}
   {/* 먹었어요를 누른 뒤: 오늘 먹은 양과 남은 끼니 추천을 결과 위에 보여 준다. */}
   {simpleHome&&mode==='plan'&&ids.length>0&&eatenToday&&intake.totals&&<TodayBalance totals={intake.totals} meals={intake.current?.logs.length??0} reference={personalization?.nutritionReference??null} action={<Button size="sm" variant="secondary" disabled={loading||busy||!progress.ready||!catalogReady} onClick={recommendNow}>{nowPlan.tomorrow?'내일 식단 추천받기':'남은 끼니 추천받기'}</Button>}/>}
   {mode==='plan'&&ids.length>0&&(!building||ids.every(Boolean))&&<TodayMeals onAllMeals={()=>void generate({...conditions,slots:['breakfast','lunch','dinner'],mealCountMode:false,meals:(conditions.days??7)*3})} onNextPlan={()=>void generate(conditions)} nextPlanBusy={busy||loading||progress.busy||!progress.ready} focusMeal={pushMeal?(()=>{const s=mealSchedule(conditions),today=locale.today();const i=ids.findIndex((id,index)=>id===pushMeal&&!!s[index]&&planDate(conditions.startDate??today,s[index].day)===today);return i<0?null:i;})():null} overviewOpen={overviewOpen} onOverviewOpen={setOverviewOpen} nutritionReference={personalization?.nutritionReference??null} shoppingTotal={purchases.reduce((sum,row)=>sum+row.cost,0)} intake={intake} userId={userId} onLogin={onLogin} ids={ids} products={products} conditions={conditions} startDate={conditions.startDate??locale.today()} onStartDate={date=>{const c=parseConditions({...conditions,startDate:date});if(c){setConditions(c);remember(c,ids);}}} onSwap={swap} onChoose={chooseMeal} progress={progress} perMealCalories={personalization?.perMealCalories??null} dailyCalories={personalization?.blocked?null:personalization?.dailyCalories??null} dashboard={dashboard}/>}

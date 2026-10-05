@@ -17,6 +17,7 @@ import {foodReferencesByCodes} from '../../../../lib/food-reference';
 import westernPairings from '../../../../data/western-pairings.json';
 import {allowsExcludedFoods} from '../../../../lib/shopping-exclusions';
 import dishTraits from '../../../../data/dish-traits.json';
+import {tasteTagsFor} from '../../../../lib/meal-tastes';
 import {alternativesFor, shoppingBudgetLimit, basketTotal, mealSchedule, parseConditions, recommendShopping, slotCandidates, slotLabels, swapMeal, swapReasons, validMealIds, type PlanConditions, type SwapReason} from '../../../../lib/shopping-plan';
 
 // 추천 계산은 서버에서 한다. 휴대폰은 전체 메뉴(수 MB)를 받지 않고, 결과 식단과 지금 보는 후보만 받는다.
@@ -41,7 +42,9 @@ export async function POST(request: NextRequest) {
   if (input.action === 'products' && !validIds(input.ids, true)) return authFailure('메뉴를 확인해 주세요.', 400);
   // Restoring a plan only needs its chosen meals, not scores for every recipe.
   const catalog = await loadPlanCatalog(user?.id, input.action === 'products' ? input.ids as string[] : undefined,(input.action==='recommend'||input.action==='browse'||input.action==='products')?cachedRecommendationProducts:undefined);
-  const {products} = catalog;
+  // 탭으로 다듬기(매운·국물·고기): 메뉴 특성을 태그로 붙여 점수에 반영한다. 요청이 있을 때만.
+  const traitOf=(p:{id:string;recipe?:{composition?:{items:{id:string;role:string}[]}}})=>(dishTraits as Record<string,DishTraits>)[p.recipe?.composition?.items.find(item=>item.role==='main')?.id??p.id];
+  const products = conditions?.tastes?.length ? catalog.products.map(p=>({...p,tasteTags:tasteTagsFor(traitOf(p))})) : catalog.products;
   const today = async () => user ? await todayContext(user.id, products, catalog.personalization, catalog.health).catch(() => null) : null;
   const slotIndex = (c: PlanConditions) => typeof input.index === 'number' && Number.isInteger(input.index) && input.index >= 0 && input.index < c.meals ? input.index : null;
 
