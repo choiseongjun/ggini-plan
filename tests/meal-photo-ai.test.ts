@@ -20,6 +20,7 @@ test('a different dish returns its own estimated nutrition; unreadable photos ha
    const fetcher:typeof fetch=async(_url,init)=>{
     const request=JSON.parse(String(init?.body));
     assert.equal(request.store,false);
+    assert.equal(request.input[0].content.find((c:{type:string})=>c.type==='input_image').detail,'high');
     assert.ok(request.text.format.schema.properties.food.required.includes('sugar'));
     assert.ok(request.text.format.schema.properties.food.required.includes('sodium'));
     assert.equal(request.input[0].content.filter((c:{type:string})=>c.type==='input_image').length,1);
