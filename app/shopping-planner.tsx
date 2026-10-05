@@ -281,7 +281,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
    }
    if(guide&&!guide.approximate&&guide.minimum!==null&&shoppingBudgetLimit(c)<guide.minimum)throw new Error(`선택한 ${c.meals}끼를 준비하려면 최소 ${won(guide.minimum)}이 필요해요. 배송비는 별도예요.`);
    if(!next)throw new Error('현재 조건과 예산으로는 중복 없는 식단을 채울 수 없어요. 기간·끼니 수를 줄이거나 음식 종류·예산·조리 방식을 조정해 주세요.');
-   if(!locale.isTaiwan&&mode!=='settings')trackPlanner('generated');setConditions(c);setIds(next);remember(c,next);setMessage(todayReason(freshToday)??(simpleHome&&c.days===1?`${c.startDate&&c.startDate>locale.today()?'내일':'오늘'} ${(c.slots??[]).map(slot=>slotLabels[slot]).join('·')} 메뉴를 골랐어요. 마음에 안 들면 ‘다른 메뉴’를 눌러 보세요.`:`${next.length}끼를 서로 다른 ${next.length}종 메뉴로 구성했어요. 같은 음식은 중복으로 넣지 않았어요.`));setResultFocus(n=>n+1);
+   if(!locale.isTaiwan&&mode!=='settings')trackPlanner('generated');setConditions(c);setIds(next);remember(c,next);if(!userId)window.dispatchEvent(new CustomEvent('ggini-guest-push-ready'));setMessage(todayReason(freshToday)??(simpleHome&&c.days===1?`${c.startDate&&c.startDate>locale.today()?'내일':'오늘'} ${(c.slots??[]).map(slot=>slotLabels[slot]).join('·')} 메뉴를 골랐어요. 마음에 안 들면 ‘다른 메뉴’를 눌러 보세요.`:`${next.length}끼를 서로 다른 ${next.length}종 메뉴로 구성했어요. 같은 음식은 중복으로 넣지 않았어요.`));setResultFocus(n=>n+1);
   }catch(e){trackAnalytics('recommendation_failed');setError(e instanceof Error?e.message:'추천을 불러오지 못했어요.');}finally{setBusy(false);finishLoading();}
  }
  // 홈 버튼: 지금 시각에 맞는 끼니를 설정 창 없이 바로 추천한다.

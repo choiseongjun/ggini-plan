@@ -33,6 +33,7 @@ test('device/session lifecycle and atomic delivery claims in an isolated schema'
   await admin.query(`SET search_path TO "${schema}"`);
   await admin.query('CREATE TABLE users(id BIGINT PRIMARY KEY,name TEXT,email TEXT);CREATE TABLE sessions(token_hash CHAR(64) PRIMARY KEY,user_id BIGINT REFERENCES users(id) ON DELETE CASCADE,expires_at TIMESTAMPTZ)');
   await admin.query(await readFile(new URL('../db/native-push.sql',import.meta.url),'utf8'));
+  await admin.query(await readFile(new URL('../db/native-push-guest.sql',import.meta.url),'utf8'));
   await admin.query("INSERT INTO users VALUES(1,'test one','one@example.test'),(2,'test two','two@example.test')");
   const session='test-session',hash=createHash('sha256').update(session).digest('hex');
   await admin.query("INSERT INTO sessions VALUES($1,1,NOW()+INTERVAL '1 day')",[hash]);
@@ -59,6 +60,18 @@ test('device/session lifecycle and atomic delivery claims in an isolated schema'
   await deleteSession(request({}));
   assert.equal((await pool.query('SELECT session_hash FROM native_push_devices')).rows[0].session_hash,null);
   assert.equal((await POST(request(sync))).status,401);
+  // 비회원 설치자: 세션 없이 '0'으로 등록하고, 회원 기기와 섞이지 않는다.
+  const guestDevice='b'.repeat(64),guestSync={deviceId:guestDevice,expectedUserId:'0',action:'sync',permissionGranted:true,token:'guest-token:'.padEnd(160,'g')};
+  response=await POST(request(guestSync,'https://gginiplan.kr',''));assert.equal(response.status,200);
+  const guestState=await response.json();assert.equal(guestState.subscribed,true);assert.deepEqual(guestState.times,{dinner:'18:30'});
+  assert.equal((await pool.query('SELECT user_id FROM native_push_devices WHERE device_id=$1',[guestDevice])).rows[0].user_id,null);
+  assert.equal((await POST(request({...guestSync,action:'test'},'https://gginiplan.kr',''))).status,401);
+  assert.equal((await POST(request({...guestSync,expectedUserId:'1'},'https://gginiplan.kr',''))).status,401);
+  await POST(request({...guestSync,action:'disable'},'https://gginiplan.kr',''));
+  assert.equal((await pool.query('SELECT enabled FROM native_push_devices WHERE device_id=$1',[guestDevice])).rows[0].enabled,false);
+  // 같은 기기에서 다시 등록해도 비회원이 끈 설정은 유지된다.
+  assert.equal((await (await POST(request(guestSync,'https://gginiplan.kr',''))).json()).subscribed,false);
+  await pool.query('DELETE FROM native_push_devices WHERE device_id=$1',[guestDevice]);
   await pool.query('DELETE FROM users WHERE id=1');
   assert.equal((await pool.query('SELECT * FROM native_push_devices')).rowCount,0);
   assert.equal((await pool.query('SELECT * FROM native_push_deliveries')).rowCount,0);

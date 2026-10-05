@@ -40,6 +40,8 @@ const catalogTtl=10*60_000,dashboardTtl=60_000;
 import {ServiceFeedback} from './service-feedback';
 import {DailyReturnCard} from './daily-return-card';
 import {useNativePush,nativePushLogout} from '../lib/native-push-client';
+import {GUEST_ID} from '../lib/native-push-input';
+const GUEST_PUSH_KEY='kkiniplan-guest-push-v1';
 import {MealReminderCard} from './meal-reminder-card';
 import {hasGuestIntake,importGuestIntake} from '../lib/guest-intake';
 import {PageHeader} from './components/ui';
@@ -77,7 +79,10 @@ export default function Home() {
   const [showAuth, setShowAuth] = useState(false);
   const [authUser, setAuthUser] = useState<PublicUser | null>(null);
   const [authChecked, setAuthChecked] = useState(false);
-  useNativePush(authUser?.id);
+  // 앱 알림 등록: 회원은 로그인하면, 비회원은 첫 추천을 받은 뒤부터(그때 iOS 권한을 한 번 묻는다) 이 기기를 등록한다.
+  const [guestPush,setGuestPush]=useState(()=>{try{return typeof window!=='undefined'&&localStorage.getItem(GUEST_PUSH_KEY)==='1';}catch{return false;}});
+  useEffect(()=>{const ready=()=>{try{localStorage.setItem(GUEST_PUSH_KEY,'1');}catch{}setGuestPush(true);};window.addEventListener('ggini-guest-push-ready',ready);return()=>window.removeEventListener('ggini-guest-push-ready',ready);},[]);
+  useNativePush(authChecked?authUser?.id??(guestPush?GUEST_ID:undefined):undefined);
   // 로그인 전에 이 기기에서 '먹었어요'로 남긴 기록을 계정의 식사 일기로 옮긴다.
   useEffect(()=>{if(!authUser||!hasGuestIntake())return;void importGuestIntake().then(moved=>{if(moved)window.dispatchEvent(new CustomEvent('intake-logged'));});},[authUser]);
   // 식사 알림을 눌러 들어온 방문(홈·기록 어디로 와도): 측정 후 주소에서 from 표시만 지운다.
