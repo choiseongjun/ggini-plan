@@ -30,7 +30,8 @@
 @media(max-width:380px){.simple-plan-or{flex-direction:column;align-items:stretch}.simple-plan-or>span{padding-bottom:0}}
 @media(prefers-reduced-motion:reduce){}
 /* .home-start는 가운데 정렬 그리드라 블록이 내용 폭으로 줄어든다 — 단순 홈 블록은 전체 폭을 쓴다. */
-.site-shell .home-start>.simple-plan-heading,.site-shell .home-start>.simple-plan-hero,.site-shell .home-start>.simple-plan-or,.site-shell .home-start>.plan-builder{justify-self:stretch;width:auto;margin-left:18px;margin-right:18px;box-sizing:border-box;text-align:left}
+.site-shell .home-start>.simple-plan-heading,.site-shell .home-start>.simple-plan-hero,.site-shell .home-start>.simple-plan-or,.site-shell .home-start>.plan-builder,.site-shell .home-start>.simple-plan-loading{justify-self:stretch;width:auto;margin-left:18px;margin-right:18px;box-sizing:border-box;text-align:left}
+.site-shell .home-start>.simple-plan-loading{min-width:0;max-width:none;margin-top:12px;margin-bottom:20px;line-height:1.7;white-space:normal;overflow-wrap:anywhere}
 .site-shell .home-start>.simple-plan-heading p{max-width:none}
 .site-shell .home-start>.simple-plan-hero small{text-align:center}
 .site-shell .home-start>.plan-builder .plan-builder-day h3{text-align:left}
