@@ -55,6 +55,7 @@ import {trackPlanner} from '../lib/track-planner';
 type Tab = "ingredients" | "plan" | "eat-out" | "convenience" | "community" | "home" | "calendar" | "cart" | "compare" | "record" | "profile";
 const formatWon=(value:number)=>new Intl.NumberFormat('ko-KR').format(value)+'원';
 export default function Home() {
+  const [todayView,setTodayView]=useState<'home'|'eat-out'|'convenience'>('home');
   const [recordDate,setRecordDate]=useState(()=>emptyDashboard().today);
   const pathname = usePathname();
   useEffect(()=>{
@@ -236,10 +237,14 @@ export default function Home() {
         {tab === "record" && <FoodIntake key={`intake-${authUser?.id??"guest"}-${tab}`} userId={authUser?.id} onLogin={()=>setShowAuth(true)} history={tab==="record"} recordDate={recordDate} onDateChange={setRecordDate} expenseManagement={dashboard&&<Dashboard key={`${authUser?.id??"guest"}-${tab}-${recordDate}`} mode={tab} recordDate={recordDate} data={dashboard} userId={authUser?.id} products={products} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")} onCalendar={()=>setTab("calendar")} onBudget={editBudget} onRefresh={refreshDashboard} onCompare={openCompare}/>}/>}
         {tab === "record" && <details className="information-detail"><summary>내 재료로 만든 식사 이력</summary><PantryMealHistory userId={authUser?.id}/></details>}
         {tab === "ingredients" && <PantryHome initialEntry="pantry" userId={authUser?.id} onLogin={()=>setShowAuth(true)} onPlan={()=>setTab("plan")}/>}
-        {tab === "home" && <ShoppingPlanner simpleHome key={`home-plan-${authUser?.id??'guest'}`} dashboard={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/>}
-        {tab==='home'&&<>
-          <Card tone="soft" className="today-next" aria-labelledby="today-next-title"><h3 id="today-next-title">이미 드셨나요?</h3><p>먹은 한 끼를 식사 일기에 남겨요.</p><LinkButton href="/record" block><Icon name="edit"/>한 끼 기록하기</LinkButton></Card>
-          <section className="today-alternatives" aria-labelledby="today-alternatives-title"><h3 id="today-alternatives-title">요리 쉬는 날에는</h3><nav aria-label="밖에서 먹을 메뉴"><Link href="/eat-out"><span><strong>외식 메뉴</strong><small>밖에서 먹을 한 끼 비교</small></span><Icon name="chevron"/></Link><Link href="/convenience"><span><strong>편의점 한 끼</strong><small>예산에 맞는 간편한 조합</small></span><Icon name="chevron"/></Link></nav></section>
+        {tab === "home" && <>
+          <header className="today-choice-heading"><h2>오늘의 식단</h2><p>뭘 먹을지 고민된다면 끼니플랜이 추천해 드려요.</p></header>
+          <nav className="section-navigation today-navigation today-choice-tabs" aria-label="오늘의 메뉴 선택" role="tablist">{(['home','eat-out','convenience'] as const).map((view,i)=><button key={view} id={`today-tab-${view}`} type="button" role="tab" aria-selected={todayView===view} aria-controls={`today-panel-${view}`} onClick={()=>setTodayView(view)}>{['집에서','외식','편의점'][i]}</button>)}</nav>
+          <div id="today-panel-home" role="tabpanel" aria-labelledby="today-tab-home" hidden={todayView!=='home'}><ShoppingPlanner simpleHome key={`home-plan-${authUser?.id??'guest'}`} dashboard={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/></div>
+          {todayView==='eat-out'&&<div id="today-panel-eat-out" role="tabpanel" aria-labelledby="today-tab-eat-out"><EatOutCard inline userId={authUser?.id} onLogin={()=>setShowAuth(true)}/></div>}
+          {todayView==='convenience'&&<div id="today-panel-convenience" role="tabpanel" aria-labelledby="today-tab-convenience"><HomeMealChoice initialOpen/></div>}
+          <Card tone="soft" className="today-next" aria-labelledby="today-next-title"><h3 id="today-next-title">이미 드셨나요?</h3><LinkButton href="/record" block><Icon name="edit"/>한 끼 기록하기</LinkButton></Card>
+          <LinkButton href="/plan" block>미리 식단 짜기</LinkButton>
           {authUser&&<details className="information-detail"><summary>나의 기록 습관·주간 피드백</summary><DailyReturnCard key={authUser.id} userId={authUser.id} onRecord={()=>{setRecordDate(emptyDashboard().today);setTab('record');}}/></details>}
           <InstallPrompt active/>
         </>}

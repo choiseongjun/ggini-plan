@@ -68,7 +68,7 @@ export default function ServicePlanPage(){
       <p className={styles.kicker}>서비스 구조와 화면 개편</p>
       <h1>끼니플랜 서비스 기획서</h1>
       <p className={styles.heroDescription}>메뉴 선택부터 장보기와 식사 일기까지.<br/>사용자가 하려는 일을 중심으로 서비스의 가지를 정리했어요.</p>
-      <div className={styles.meta}><time dateTime="2026-10-06">2026년 10월 6일</time><span>버전 1.1</span><span>한국 서비스 중심</span></div>
+      <div className={styles.meta}><time dateTime="2026-10-06">2026년 10월 6일</time><span>버전 1.2</span><span>한국 서비스 중심</span></div>
       <div className={styles.actions}><a href="#document">기획서 읽기<Icon name="arrow" size={17}/></a><a href="#section-3">전체 구조도 바로 보기<Icon name="arrow" size={17}/></a></div>
       <UxOverview/>
     </div>

@@ -299,14 +299,14 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
   let choice=products.find(p=>p.id===id);
   if(!choice||(choice.recipe&&!choice.recipe.ingredients.length)){try{choice=(await engine.products([id])).products.find(p=>p.id===id);}catch{choice=undefined;}}
   if(!choice){setError('메뉴 정보를 불러오지 못했어요. 다시 시도해 주세요.');return;}
-  const target=ids.length?conditions:{...conditions,...(simpleHome?SIMPLE_HOME_CONDITIONS:{}),excluded:conditions.excluded,startDate:simpleHome?simpleDate:locale.today()};
+  const target=ids.length?conditions:{...conditions,...(simpleHome?SIMPLE_HOME_CONDITIONS:{}),excluded:conditions.excluded,startDate:simpleHome?simpleDate:conditions.startDate??locale.today()};
   const c=slotCandidates([choice],target,index).length?target:{...target,mealMode:'mixed' as const,cooking:'all' as const};
   const known=[...products.filter(p=>p.id!==id),choice];
   if(!slotCandidates([choice],c,index).length)return;
   if(ids.some((existing,i)=>i!==index&&cookingDishId(existing)===cookingDishId(id))){setError('이미 다른 끼니에 있는 메뉴예요. 다른 음식을 골라 주세요.');return;}
   if(repeatsDailyMain(ids,known,c,index,choice)){setError('같은 날 다른 끼니와 주재료가 겹쳐요. 다른 주재료의 메뉴를 골라 주세요.');return;}
   const next=(ids.length?ids:Array(c.meals).fill('')).map((previous,i)=>i===index?id:previous);
-  if(simpleHome)setBuilding(true);
+  if(mode==='plan')setBuilding(true);
   if(basketTotal(next.filter(Boolean),known,c.owned,c.supply,c.people)>shoppingBudgetLimit(c)){setError('장보기 예산을 초과해요. 예산을 조정해 주세요.');return;}
   if(next[index]!==ids[index]&&!locale.isTaiwan)trackPlanner('swapped');setConditions(c);setIds(next);remember(c,next);setMessage('이 끼니를 바꾸고 겹치는 재료를 합쳐 구매 목록을 다시 계산했어요.');
  }
@@ -375,8 +375,8 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
  const [quickSetup,setQuickSetup]=useState(()=>initialSetup||(simpleHome&&typeof window!=='undefined'&&new URLSearchParams(window.location.search).get('from')==='kcal'));
  const simpleEffortPicker=(conditions.slots??['dinner']).some(slot=>sideCountFor(conditions,slot)===0)&&<details className="meal-composition-effort"><summary>간단하게 고른 끼니 · {cookingEfforts[conditions.cookingEffort??'easy'].label}</summary><CookingEffortPicker value={conditions.cookingEffort} onChange={cookingEffort=>updatePreferences({cookingEffort})} disabled={loading||busy}/></details>;
  const compositionPicker=<MealCompositionPicker conditions={conditions} disabled={loading||busy} onChange={mealSideCounts=>updatePreferences({mealSideCounts})}/>;
- return locale.render(<PlanEngineContext.Provider value={engine}><ManualMealPlans key={userId??'guest'} userId={userId} onLogin={onLogin} enabled={simpleHome&&mode==='plan'}><section onClickCapture={e=>{if(locale.isTaiwan)return;const a=(e.target as Element).closest('a');if(a&&products.some(p=>p.productUrl===a.href||p.recipe?.ingredients.some(i=>i.product.productUrl===a.href)))trackPlanner('seller');}} ref={plannerRef} id={mode==='settings'?'shopping-settings':undefined} className={`shopping-planner${mode==='plan'?' home-planner':''}${!ids.length?' planner-empty':''}`} aria-labelledby="planner-title">
-  {simpleHome&&mode==='plan'&&<nav className="simple-plan-tools" aria-label="식단 관리"><Link href="/plan">미리 식단 짜기</Link>{ids.length>0&&<button type="button" disabled={loading||busy} onClick={()=>setConfirmRestart(true)}>처음부터 다시</button>}</nav>}
+ return locale.render(<PlanEngineContext.Provider value={engine}><ManualMealPlans key={userId??'guest'} userId={userId} onLogin={onLogin} enabled={!locale.isTaiwan&&mode==='plan'}><section onClickCapture={e=>{if(locale.isTaiwan)return;const a=(e.target as Element).closest('a');if(a&&products.some(p=>p.productUrl===a.href||p.recipe?.ingredients.some(i=>i.product.productUrl===a.href)))trackPlanner('seller');}} ref={plannerRef} id={mode==='settings'?'shopping-settings':undefined} className={`shopping-planner${mode==='plan'?' home-planner':''}${!ids.length?' planner-empty':''}`} aria-labelledby="planner-title">
+  {simpleHome&&mode==='plan'&&ids.length>0&&<nav className="simple-plan-tools" aria-label="식단 관리">{ids.length>0&&<button type="button" disabled={loading||busy} onClick={()=>setConfirmRestart(true)}>처음부터 다시</button>}</nav>}
   {simpleHome&&confirmRestart&&<section className="simple-plan-restart" aria-label="새 식단 시작 확인"><strong>빈 식단으로 다시 시작할까요?</strong><p>현재 이 기기에서 편집 중인 식단을 비워요. 계정에 저장한 식단과 먹은 기록, 내 재료는 유지돼요.</p><div><button type="button" onClick={()=>setConfirmRestart(false)}>계속 편집</button><button type="button" disabled={loading||busy} onClick={()=>{setConfirmRestart(false);setQuickSetup(false);const c={...SIMPLE_HOME_CONDITIONS,excluded:conditions.excluded,startDate:locale.today()};setConditions(c);returnToSetup();remember(c,[]);}}>새로 시작</button></div></section>}
   {mode==='cart'&&<section className="cart-reset" aria-label="장바구니 초기화">
    <button type="button" disabled={loading||busy||progress.busy||!progress.ready||(!ids.length&&!Object.values(progress.stock).some(i=>i.owned||i.ordered))} onClick={()=>setConfirmReset(true)}>모두 초기화</button>
@@ -388,7 +388,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
    <p>끼니 수·취향·못 먹는 재료를 바꾸고 새로 추천받아요.</p>
   </div>}
   {mode==='plan'&&ids.length>0&&!simpleHome&&<HealthSourcesNotice/>}
-  {mode==='plan'&&ids.length>0&&building&&!ids.every(Boolean)&&<PlanBuilder compact={simpleHome} ids={ids} products={products} conditions={conditions} onChoose={chooseMeal} disabled={busy||progress.busy}/>}
+  {mode==='plan'&&ids.length>0&&building&&!ids.every(Boolean)&&<PlanBuilder compact={!locale.isTaiwan} ids={ids} products={products} conditions={conditions} onChoose={chooseMeal} disabled={busy||progress.busy}/>}
   {simpleHome&&mode==='plan'&&building&&ids.some(Boolean)&&!ids.every(Boolean)&&conditions.days===1&&<button type="button" className="simple-plan-recommend" disabled={loading||busy} onClick={()=>{const selected=mealSchedule(conditions).filter((_,i)=>ids[i]);const next=ids.filter(Boolean);const c={...conditions,slots:selected.map(s=>s.slot),meals:next.length,days:1};setConditions(c);setIds(next);setBuilding(false);remember(c,next);}}>고른 {ids.filter(Boolean).length}끼로 시작하기</button>}
   {/* 말 대신 탭으로 다듬기: 누르면 그 조건으로 바로 다시 추천한다. */}
   {simpleHome&&!locale.isTaiwan&&mode==='plan'&&ids.length>0&&idsComplete&&<RefineChips conditions={conditions} disabled={loading||busy||!progress.ready||!catalogReady} onRefine={next=>{setConditions(next);void generate(next);}}/>}
@@ -409,12 +409,13 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
    <button type="button" className="planner-restart" disabled={busy||progress.busy} onClick={returnToSetup}>추천 조건 바꾸기</button>
   </div>}
   {mode==='plan'&&!ids.length&&!locale.isTaiwan&&!showSetup&&<section ref={startRef} tabIndex={-1} className="home-start" aria-labelledby="planner-title">
-   {simpleHome?<><header className="simple-plan-heading"><h2 id="planner-title">오늘의 식단</h2><p>뭘 먹을지 고민된다면 추천부터 받아 보세요.</p></header>
+   {simpleHome?<><h3 id="planner-title" className="today-home-label">집에서 먹을 한 끼</h3>
    {/* 처음 온 사람의 첫 행동은 추천 하나로 — 직접 담기는 그 아래 보조 경로로 둔다. */}
    {intake.totals&&<TodayBalance totals={intake.totals} meals={intake.current?.logs.length??0} reference={personalization?.nutritionReference??null}/>}
-   <div className="simple-plan-hero"><Button size="lg" block className="home-recommend-cta" disabled={loading||busy||!progress.ready||!catalogReady} onClick={recommendNow}><Icon name="spark" size={20}/>{busy?'고르는 중…':`${nowPlan.label} 추천받기`}</Button><small>{eatenToday&&!nowPlan.tomorrow?'오늘 먹은 양을 빼고 남은 끼니를 골라 드려요':nowPlan.tomorrow?'오늘은 마무리하고, 내일 먹을 끼니를 미리 골라 드려요':'지금 시간에 맞춰 바로 골라 드려요 · 간편한 요리 위주'}</small><button type="button" className="simple-plan-adjust" disabled={loading||busy} onClick={()=>{setConditions(c=>({...c,days:1,startDate:nowPlan.date,slots:nowPlan.slots,meals:nowPlan.slots.length}));setQuickSetup(true);}}>끼니·요리 난이도 바꾸기</button></div>
-   <details className="home-manual-entry"><summary>끼니별로 직접 골라 담기</summary><div className="simple-plan-or"><span>먹고 싶은 메뉴가 있나요?</span><label>날짜<input type="date" aria-label="식단 날짜" value={simpleDate} onChange={e=>{if(e.target.value)setSimpleDate(e.target.value);}}/></label></div>
-   {loading?<p className="simple-plan-loading" role="status">식단을 불러오고 있어요…</p>:<PlanBuilder compact ids={['','','']} products={products} conditions={{...conditions,...SIMPLE_HOME_CONDITIONS,excluded:conditions.excluded,startDate:simpleDate}} onChoose={chooseMeal} disabled={busy||!catalogReady}/>}</details></>:<HomeWelcome focused onRecommend={()=>setShowSetup(true)}/>}
+   <div className="simple-plan-hero"><Button size="lg" block className="home-recommend-cta" disabled={loading||busy||!progress.ready||!catalogReady} onClick={recommendNow}><Icon name="spark" size={20}/>{busy?'고르는 중…':`${nowPlan.label} 추천받기`}</Button><small>{eatenToday&&!nowPlan.tomorrow?'오늘 먹은 양을 빼고 남은 끼니를 골라 드려요':nowPlan.tomorrow?'오늘은 마무리하고, 내일 먹을 끼니를 미리 골라 드려요':'간편한 요리 위주'}</small><button type="button" className="simple-plan-adjust" disabled={loading||busy} onClick={()=>{setConditions(c=>({...c,days:1,startDate:nowPlan.date,slots:nowPlan.slots,meals:nowPlan.slots.length}));setQuickSetup(true);}}>끼니·요리 난이도 바꾸기</button></div>
+</>:<HomeWelcome focused onRecommend={()=>setShowSetup(true)}/>}
+   {mode==='plan'&&!simpleHome&&!locale.isTaiwan&&!ids.length&&<details className="home-manual-entry"><summary>끼니별로 직접 골라 담기</summary><div className="simple-plan-or"><span>먹고 싶은 메뉴가 있나요?</span><label>날짜<input type="date" aria-label="식단 날짜" value={simpleDate} onChange={e=>{if(e.target.value){setSimpleDate(e.target.value);setConditions(c=>({...c,startDate:e.target.value}));}}}/></label></div>
+   {loading?<p className="simple-plan-loading" role="status">식단을 불러오고 있어요…</p>:<PlanBuilder compact ids={Array(conditions.meals).fill('')} products={products} conditions={{...conditions,startDate:simpleDate}} onChoose={chooseMeal} disabled={busy||!catalogReady}/>}</details>}
    <HomeSetupDialog key={String(quickSetup)} open={quickSetup} onClose={()=>setQuickSetup(false)} meals={mealTimesPicker} cooking={<CookingEffortPicker value={conditions.cookingEffort} onChange={cookingEffort=>updatePreferences({cookingEffort})} disabled={loading||busy}/>} >
    <details className="home-extra-settings"><summary>더 맞춰볼까요? <span>식사 구성 · 취향</span></summary>{compositionPicker}<button type="button" className="home-start-custom" disabled={loading||busy} onClick={()=>{setQuickSetup(false);setShowSetup(true);}}>취향·못 먹는 재료 설정 →</button>{personalRecommendation}</details>
 
@@ -497,7 +498,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
   {mode!=='settings'&&!loading&&!catalogReady&&<p>현재 추천할 수 있는 상품이 없어요. 판매 구성과 출처가 확인된 상품을 준비하고 있어요.</p>}
   {error&&<p className="auth-error" role="alert">{error}</p>}
   {mode!=='settings'&&!loading&&!catalogReady&&<button type="button" onClick={()=>{setLoading(true);setRetry(n=>n+1);}}>상품 다시 불러오기</button>}
-  {!locale.isTaiwan&&mode!=='settings'&&userId&&<button type="button" className="text-link" disabled={loading||busy||!progress.ready} onClick={restore}>저장한 식단 불러오기 →</button>}
+  {!locale.isTaiwan&&mode==='plan'&&!simpleHome&&userId&&<button type="button" className="text-link" disabled={loading||busy||!progress.ready} onClick={restore}>저장한 식단 불러오기 →</button>}
   {/* 홈에서는 숨김: 식단 카드·장보기 가이드와 겹쳐 스크롤만 길어져요. 장보기 탭에서는 그대로 보여요. */}
   {mode!=='plan'&&!!ids.length&&idsComplete&&<details className="planner-result" open><summary>준비한 식단 전체 · 구매 목록 ({ids.length}끼)</summary>
    {hasRecipes&&<details className="recipe-plan-list"><summary>🍳 요리별 재료·준비 방법 보기</summary><RecipePurchaseNote ids={ids} products={products} conditions={conditions}/>{ids.map((id,i)=>{const p=products.find(p=>p.id===id)!;return p.recipe?<article key={i}><small>{schedule[i].day}일차 · {slotLabels[schedule[i].slot]}</small><div><MealSourceBadge product={p}/></div><h4>{p.name}</h4><strong>한 끼 재료비 약 {won(p.price)}</strong><RecipeProductPreview product={p}/><MealComparison key={p.id.split('--with--')[0]} product={p} index={i} ids={ids} products={products} conditions={conditions} onChoose={chooseMeal} disabled={busy||progress.busy}/></article>:null;})}</details>}

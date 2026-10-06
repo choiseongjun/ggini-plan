@@ -9,6 +9,7 @@ import type {EatOutOption, EatOutState} from '../lib/eat-out';
 import {trackPlanner} from '../lib/track-planner';
 import {INTAKE_LOGGED_EVENT} from './record-progress';
 import './eat-out-card.css';
+import {Button} from './components/ui';
 
 const KINDS: [string, string][] = [['', '아무거나'], ['korean', '한식'], ['snack', '분식'], ['chinese', '중식'], ['japanese', '일식'], ['western', '양식'], ['light', '가볍게']];
 const VERDICT = {good: '잘 맞아요', ok: '괜찮아요', avoid: '오늘은 비추'} as const;
@@ -73,7 +74,7 @@ function ComparePicker({busy, onCompare}: {busy: boolean; onCompare: (names: str
 }
 
 // "지금 뭐 먹지?": 밖에서 먹는 한 끼를 오늘 먹은 양 기준으로 골라 주거나(추천) 고민 중인 메뉴를 비교한다.
-export function EatOutCard({userId, onLogin}: {userId?: string; onLogin: () => void}) {
+export function EatOutCard({userId, onLogin, inline=false}: {userId?: string; onLogin: () => void; inline?:boolean}) {
  const [open, setOpen] = useState(false);
  const [tab, setTab] = useState<'suggest' | 'compare'>('suggest');
  const [kind, setKind] = useState('');
@@ -109,21 +110,18 @@ export function EatOutCard({userId, onLogin}: {userId?: string; onLogin: () => v
  }
 
  const s = result?.state;
- return <section className="eo-entry" aria-label="지금 뭐 먹지">
-  <div><strong>오늘은 밖에서 먹나요?</strong><span>지금 먹기 좋은 메뉴를 골라드려요.</span></div>
-  <button type="button" onClick={() => { setOpen(true); if (!result) suggest(''); }}>메뉴 찾기</button>
-
-  {open && <dialog ref={dialog} className="eo-dialog" aria-labelledby="eo-title" onCancel={(e) => { e.preventDefault(); setOpen(false); }} onClick={(e) => { if (e.target === e.currentTarget) setOpen(false); }}>
+ const sheet = (
    <div className="eo-sheet">
     <header className="eo-head">
      <div><span className="eo-kicker">{s ? `${s.slot} · 이번 끼니 약 ${n(s.budget.kcal)}kcal` : '지금 뭐 먹지?'}</span><h2 id="eo-title">지금 뭐 먹지?</h2></div>
-     <button type="button" className="eo-close" aria-label="닫기" onClick={() => setOpen(false)}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+     {!inline&&<button type="button" className="eo-close" aria-label="닫기" onClick={() => setOpen(false)}><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>}
     </header>
     <div className="eo-tabs" role="tablist">
      <button type="button" role="tab" aria-selected={tab === 'suggest'} onClick={() => { setTab('suggest'); setResult(null); suggest(); }}>추천받기</button>
      <button type="button" role="tab" aria-selected={tab === 'compare'} onClick={() => { setTab('compare'); setResult(null); setError(''); }}>고민 중인 메뉴 비교</button>
     </div>
     <div className="eo-scroll">
+     {inline&&tab==='suggest'&&!result&&<Button block size="lg" disabled={busy} onClick={()=>suggest()}>{busy?'고르는 중…':'외식 메뉴 추천받기'}</Button>}
      {tab === 'suggest' ? <div className="eo-kinds" role="group" aria-label="음식 종류">{KINDS.map(([k, label]) => <button type="button" key={k} aria-pressed={kind === k} disabled={busy} onClick={() => { setKind(k); suggest(k); }}>{label}</button>)}</div>
       : <ComparePicker busy={busy} onCompare={compare}/>}
      {s && <p className="eo-state">{s.personal ? '내 목표' : '일반 성인 기준'} · 오늘 먹은 양 {n(s.eaten.kcal)}kcal{s.eaten.sodium > 0 ? `, 나트륨 ${n(s.eaten.sodium)}mg` : ''}{s.health.length ? ` · ${s.health.join('·')}` : ''}{!s.personal && !userId ? ' · 로그인하면 내 기록에 맞춰 골라요' : ''}</p>}
@@ -147,7 +145,7 @@ export function EatOutCard({userId, onLogin}: {userId?: string; onLogin: () => v
      {result&&<Link href="/record" className="eo-photo-record" onClick={()=>{rememberRecordMode('photo');setOpen(false);}}>먹고 난 뒤, 사진으로 기록하기</Link>}
      <small className="eo-foot">식품의약품안전처 식품영양성분 DB의 1인분 참고값이에요. 식당·양에 따라 달라요.</small>
     </div>
-   </div>
-  </dialog>}
- </section>;
+   </div>);
+ if(inline)return <section className="eo-inline" aria-label="외식 메뉴 추천과 비교">{sheet}</section>;
+ return <section className="eo-entry" aria-label="지금 뭐 먹지"><div><strong>오늘은 밖에서 먹나요?</strong><span>지금 먹기 좋은 메뉴를 골라드려요.</span></div><button type="button" onClick={()=>{setOpen(true);if(!result)suggest('');}}>메뉴 찾기</button>{open&&<dialog ref={dialog} className="eo-dialog" aria-labelledby="eo-title" onCancel={e=>{e.preventDefault();setOpen(false);}} onClick={e=>{if(e.target===e.currentTarget)setOpen(false);}}>{sheet}</dialog>}</section>;
 }
