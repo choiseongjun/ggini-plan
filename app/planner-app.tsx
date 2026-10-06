@@ -47,8 +47,8 @@ import {hasGuestIntake,importGuestIntake} from '../lib/guest-intake';
 import {PageHeader,Card,LinkButton,BackButton} from './components/ui';
 import {PlanningNavigation,TodayNavigation,ShoppingNavigation} from './section-navigation';
 import './information-layout.css';
-const HomeMealChoice=dynamic(()=>import('./home-meal-choice').then(module=>module.HomeMealChoice));
-const EatOutCard=dynamic(()=>import('./eat-out-card').then(module=>module.EatOutCard));
+import {HomeMealChoice} from './home-meal-choice';
+import {EatOutCard} from './eat-out-card';
 const WeeklyGuideCard=dynamic(()=>import('./weekly-guide-card').then(module=>module.WeeklyGuideCard));
 import {trackPlanner} from '../lib/track-planner';
 
