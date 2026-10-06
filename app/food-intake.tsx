@@ -108,7 +108,6 @@ export function FoodIntake({userId,onLogin,history=false,recordDate,onDateChange
  return locale.render(<section className="food-intake" aria-label={history?'먹은 음식 기록':'오늘 먹은 음식'}>
   {/* 기록 탭의 첫 행동은 한 끼 기록 — 물·체중은 그 아래 보조 기록으로 둔다. */}
   {!locale.isTaiwan&&<RecordEntry userId={userId} onLogin={onLogin} onLogged={date=>{setDate(date??today);onDateChange?.(date??today);reload();}}/>}
-  {!locale.isTaiwan&&history&&<WellnessTracker key={`${userId??'guest'}:${recordDate??today}`} userId={userId} date={recordDate??today} onLogin={onLogin}/>}
   {userId&&<header><span className="section-kicker">날짜별 식사 일기</span><h2>{selectedDate===today?'오늘의 식사 일기':`${selectedDate.slice(5).replace('-','월 ')}일의 식사 일기`}</h2><p>{current?.logs.length?`음식 기록 ${current.logs.length}개가 모였어요. 한 끼씩, 나를 챙긴 순간들이에요.`:'어떤 음식을 드셨나요? 작은 간식 하나부터 남겨도 좋아요.'}</p></header>}
   {!userId?null:<>
    {history&&<details className="journal-calendar"><summary>날짜 선택 <span>{selectedDate.replaceAll('-','.')} ⌄</span></summary><RecordCalendar date={selectedDate} today={today} disabled={busy||Boolean(pending)||editBusy} onChange={value=>{if(value===selectedDate)return;setDate(value);onDateChange?.(value);setEditingLog(null);setLoading(true);setError('');}}/></details>}
@@ -139,7 +138,8 @@ export function FoodIntake({userId,onLogin,history=false,recordDate,onDateChange
     <p className="intake-note">{current!.logs.length?'직접 먹었다고 기록한 음식의 합계예요.':'아직 먹은 기록이 없어요.'} 간편식은 상품 표시, 직접 요리는 재료 영양의 합산 예상치예요. 미확인 수치는 합계에 포함하지 않아요.</p>
     <ul className="record-calorie-list">{current!.logs.map(log=><li key={log.id}><div className="record-food-summary"><span>{log.name}</span><strong>{nutrition(log.calories,' kcal')}</strong></div><dl className="record-food-nutrients" aria-label={`${log.name} 영양소`}>{recordNutrients.filter(([key])=>key!=='calories').map(([key,label,unit])=><div key={key}><dt>{label}</dt><dd>{nutrition(log[key],unit)}</dd></div>)}</dl></li>)}</ul></details>
    </>}
-   {!locale.isTaiwan&&<EstimatedFoodCost date={selectedDate}/>}
+   {!locale.isTaiwan&&<details className="information-detail"><summary>이날의 식비</summary><EstimatedFoodCost date={selectedDate}/></details>}
   </>}
+  {!locale.isTaiwan&&history&&<details className="information-detail"><summary>생활 기록 · 물·체중</summary><WellnessTracker key={`${userId??'guest'}:${recordDate??today}`} userId={userId} date={recordDate??today} onLogin={onLogin}/></details>}
  </section>);
 }

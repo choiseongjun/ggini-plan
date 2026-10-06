@@ -60,7 +60,11 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
         return;
       }
       if (id === 'weekly-feedback' || id === 'weekly-report' || id === 'meal-reminders' || id === 'buddy-companion') {
-        document.getElementById(id)?.scrollIntoView({block: 'start'});
+        const target=document.getElementById(id);
+        for(let parent=target?.parentElement;parent;parent=parent.parentElement){
+          if(parent instanceof HTMLDetailsElement)parent.open=true;
+        }
+        target?.scrollIntoView({block: 'start'});
       }
     };
     const frame = requestAnimationFrame(followLink);
@@ -219,8 +223,6 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
   return <>
     <div className="profile-quick-settings"><div><strong>내 몸과 식사 취향</strong><small>신체 정보·목표·못 먹는 재료</small>{!loading&&!loadError&&calories&&<strong className="profile-target-preview">하루 목표 {number(shownTarget?.calories??calories.daily)} kcal</strong>}</div><button type="button" disabled={loading||saving||loadError} onClick={focusProfile}>내 정보 수정</button></div>
     <HealthSourcesNotice/>
-    {userId&&<WeeklyFeedbackCard key={`weekly-feedback-${userId}`} userId={userId}/>}
-    <ProfileCalorieHistory userId={userId} target={calories?shownTarget?.calories??calories.daily:null} onLogin={onLogin} weekly={<WeeklyReportCard stats={intakeStats}/>} analysis={hasInfo&&!loading&&!loadError?<WeekAnalysis userId={userId} profile={profile} target={shownTarget} onOpenInfo={focusProfile}/>:null}/>
     <details className="profile-target-details"><summary>하루 목표·탄단지 자세히 보기</summary>
     {loading ? <AppLoading message="저장된 정보를 불러오는 중이에요"/> : loadError ? <section className="energy-card is-empty"><div><strong>정보를 불러오지 못했어요</strong><p>잠시 후 다시 시도해 주세요.</p><button type="button" className="wizard-next" onClick={()=>window.location.reload()}>다시 불러오기</button></div></section>
     : calories ? <section className="energy-card" aria-label="하루 에너지">
@@ -233,6 +235,11 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
     </section>
     : <section className="energy-card is-empty" aria-label="하루 에너지"><div className="energy-buddy" aria-hidden="true"><RiceBuddy/></div><div><strong>{pregnancy ? "임신·수유 중에는 자동 계산을 쉬어요" : "내 하루 칼로리를 알아볼까요?"}</strong><p>{pregnancy ? "개인별 영양 상담을 권해요. 취향은 메뉴 추천에 반영돼요." : "키·체중·활동량을 알려주면 칼로리와 탄단지를 바로 계산해요."}</p>{!pregnancy && <button type="button" className="wizard-next" onClick={focusProfile}>1분 만에 입력하기</button>}</div></section>}
     </details>
+    <details className="information-detail"><summary>식사 습관 돌아보기 · 주간 피드백·영양 변화</summary>
+      {userId&&<WeeklyFeedbackCard key={`weekly-feedback-${userId}`} userId={userId}/>}
+      <ProfileCalorieHistory userId={userId} target={calories?shownTarget?.calories??calories.daily:null} onLogin={onLogin} weekly={<WeeklyReportCard stats={intakeStats}/>} analysis={hasInfo&&!loading&&!loadError?<WeekAnalysis userId={userId} profile={profile} target={shownTarget} onOpenInfo={focusProfile}/>:null}/>
+    </details>
+    <h3 className="profile-group-title">나의 끼니·성장 선물</h3>
     <BuddyCompanion key={userId??'guest'} userId={userId} recordCount={intakeStats?.week.meals} weekStart={intakeStats?.week.start} growth={intakeStats?.buddy} loggedToday={intakeStats?.streak.loggedToday} guest={!userId} onLogin={onLogin}/>
     {/* 정보가 없을 땐 위의 '1분 만에 입력하기' 카드 하나만 — 선택지를 늘리지 않는다. */}
     {hasInfo && userId && <WeightCard userId={userId} fallbackWeight={Number(weight)||null} onLogged={kg=>setWeight(String(kg))}/>}

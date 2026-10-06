@@ -1,10 +1,11 @@
 // 끼니플랜 선 아이콘. 이모지 대신 이 아이콘을 쓴다(docs/design-guide.md).
 import type {ReactNode} from 'react';
-export type IconName = "home" | "bag" | "chart" | "user" | "users" | "chevron" | "arrow" | "check" | "spark" | "calendar" | "wallet" | "fire" | "close" | "edit" | "left";
+export type IconName = "home" | "bag" | "chart" | "user" | "users" | "chevron" | "arrow" | "check" | "spark" | "calendar" | "wallet" | "fire" | "close" | "edit" | "left" | "download";
 
 
 export function Icon({ name, size = 20, strokeWidth = 1.8 }: { name: IconName; size?: number; strokeWidth?: number }) {
   const paths: Record<IconName, ReactNode> = {
+    download: <><path d="M12 3v12m-5-5 5 5 5-5M4 16v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/></>,
     home: <><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M9 21v-7h6v7"/></>,
     bag: <><path d="M4 8h16l-1.3 12H5.3L4 8Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></>,
     chart: <><path d="M4 20V10m6 10V4m6 16v-7m4 7H2"/></>,

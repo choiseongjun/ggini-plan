@@ -44,8 +44,9 @@ import {GUEST_ID} from '../lib/native-push-input';
 const GUEST_PUSH_KEY='kkiniplan-guest-push-v1';
 import {MealReminderCard} from './meal-reminder-card';
 import {hasGuestIntake,importGuestIntake} from '../lib/guest-intake';
-import {PageHeader} from './components/ui';
-import {PlanningNavigation} from './section-navigation';
+import {PageHeader,Card,LinkButton,BackButton} from './components/ui';
+import {PlanningNavigation,TodayNavigation,ShoppingNavigation} from './section-navigation';
+import './information-layout.css';
 const HomeMealChoice=dynamic(()=>import('./home-meal-choice').then(module=>module.HomeMealChoice));
 const EatOutCard=dynamic(()=>import('./eat-out-card').then(module=>module.EatOutCard));
 const WeeklyGuideCard=dynamic(()=>import('./weekly-guide-card').then(module=>module.WeeklyGuideCard));
@@ -71,8 +72,8 @@ export default function Home() {
   const tab: Tab = (["ingredients", "plan", "eat-out", "convenience", "calendar", "cart", "record", "community", "profile", "compare"] as string[]).includes(section) ? section as Tab : "home";
   const setTab = (next: Tab) => router.push(next === "home" ? "/" : `/${next}`);
   // 하단 탭에 없는 화면도 어느 영역에 있는지 보이도록 상위 탭을 켠다.
-  const isPlanning = tab === "plan" || tab === "ingredients" || tab === "calendar" || tab === "eat-out" || tab === "convenience";
-  const navSection: Tab = isPlanning ? "plan" : tab === "compare" ? "cart" : tab === "community" ? "profile" : tab;
+  const isPlanning = tab === "plan" || tab === "calendar";
+  const navSection: Tab = isPlanning ? "plan" : tab === "compare" || tab === "ingredients" ? "cart" : tab === "eat-out" || tab === "convenience" ? "home" : tab === "community" ? "profile" : tab;
   const contentRef=useRef<HTMLDivElement>(null);
   const startLoading = useLoadingTask();
   const [products, setProducts] = useState<CatalogItem[]>([]);
@@ -114,6 +115,14 @@ export default function Home() {
   const [catalogCategory, setCatalogCategory] = useState("all");
   const [catalogShown, setCatalogShown] = useState(24);
   const [cartView, setCartView] = useState<'list'|'products'>('list');
+  useEffect(()=>{
+    if(pathname!=='/cart')return;
+    const view=new URLSearchParams(window.location.search).get('view');
+    if(view==='list'||view==='products'){
+      const frame=requestAnimationFrame(()=>setCartView(view));
+      return()=>cancelAnimationFrame(frame);
+    }
+  },[pathname]);
   const filteredProducts = products.filter((product) => (catalogCategory === "all" || product.category === catalogCategory) && `${product.name} ${product.detail}`.toLocaleLowerCase().includes(catalogQuery.trim().toLocaleLowerCase()));
   const visibleProducts = filteredProducts.slice(0, catalogShown);
   const compareProduct = products.find((product) => product.id === compareProductId);
@@ -221,16 +230,22 @@ export default function Home() {
       <div className={`app-content app-content-${tab}`} ref={contentRef}>
         {/* 로그인 확인이 끝난 뒤에 그린다 — 비회원 화면을 먼저 그렸다가 회원 화면으로 다시 마운트하면 요청이 두 번씩 나간다. */}
         {authChecked&&<>
-        <InstallPrompt active={tab === 'home'}/>
-        {isPlanning&&<PlanningNavigation section={tab==='convenience'?'eat-out':tab}/>}
+        {isPlanning&&<PlanningNavigation section={tab}/>}
+        {(tab==='eat-out'||tab==='convenience')&&<TodayNavigation section={tab}/>}
+        {tab==='ingredients'&&<ShoppingNavigation section="ingredients"/>}
         {tab === "record" && <FoodIntake key={`intake-${authUser?.id??"guest"}-${tab}`} userId={authUser?.id} onLogin={()=>setShowAuth(true)} history={tab==="record"} recordDate={recordDate} onDateChange={setRecordDate} expenseManagement={dashboard&&<Dashboard key={`${authUser?.id??"guest"}-${tab}-${recordDate}`} mode={tab} recordDate={recordDate} data={dashboard} userId={authUser?.id} products={products} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")} onCalendar={()=>setTab("calendar")} onBudget={editBudget} onRefresh={refreshDashboard} onCompare={openCompare}/>}/>}
-        {tab === "record" && <PantryMealHistory userId={authUser?.id}/>}
-        {tab==='home'&&authUser&&<DailyReturnCard key={authUser.id} userId={authUser.id} onRecord={()=>{setRecordDate(emptyDashboard().today);setTab('record');}}/>}
+        {tab === "record" && <details className="information-detail"><summary>내 재료로 만든 식사 이력</summary><PantryMealHistory userId={authUser?.id}/></details>}
         {tab === "ingredients" && <PantryHome initialEntry="pantry" userId={authUser?.id} onLogin={()=>setShowAuth(true)} onPlan={()=>setTab("plan")}/>}
         {tab === "home" && <ShoppingPlanner simpleHome key={`home-plan-${authUser?.id??'guest'}`} dashboard={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/>}
+        {tab==='home'&&<>
+          <Card tone="soft" className="today-next" aria-labelledby="today-next-title"><h3 id="today-next-title">이미 드셨나요?</h3><p>먹은 한 끼를 식사 일기에 남겨요.</p><LinkButton href="/record" block><Icon name="edit"/>한 끼 기록하기</LinkButton></Card>
+          <section className="today-alternatives" aria-labelledby="today-alternatives-title"><h3 id="today-alternatives-title">요리 쉬는 날에는</h3><nav aria-label="밖에서 먹을 메뉴"><Link href="/eat-out"><span><strong>외식 메뉴</strong><small>밖에서 먹을 한 끼 비교</small></span><Icon name="chevron"/></Link><Link href="/convenience"><span><strong>편의점 한 끼</strong><small>예산에 맞는 간편한 조합</small></span><Icon name="chevron"/></Link></nav></section>
+          {authUser&&<details className="information-detail"><summary>나의 기록 습관·주간 피드백</summary><DailyReturnCard key={authUser.id} userId={authUser.id} onRecord={()=>{setRecordDate(emptyDashboard().today);setTab('record');}}/></details>}
+          <InstallPrompt active/>
+        </>}
         {tab === "plan" && <><ShoppingPlanner key={`plan-${authUser?.id??'guest'}`} dashboard={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/>{authUser&&<details className="planning-weekly-guide"><summary>이번 주 식단 가이드</summary><WeeklyGuideCard userId={authUser.id}/></details>}</>}
-        {tab === "eat-out" && <><PageHeader kicker="요리 쉬는 날" icon="spark" title={<>밖에서도 <em>맛있는 한 끼</em></>} description="외식 메뉴를 비교하거나 편의점에서 한 끼를 찾아요."/><Link className="outside-shortcut" href="/convenience"><span><strong>편의점에서 한 끼 찾기</strong><small>간편하게 먹을 메뉴를 골라요.</small></span><Icon name="chevron"/></Link><EatOutCard userId={authUser?.id} onLogin={()=>setShowAuth(true)}/></>}
-        {tab === "convenience" && <><Link className="outside-shortcut" href="/eat-out">외식 메뉴 비교하기 <Icon name="chevron"/></Link><HomeMealChoice initialOpen/></>}
+        {tab === "eat-out" && <><PageHeader kicker="요리 쉬는 날" icon="spark" title={<>밖에서도 <em>맛있는 한 끼</em></>} description="외식 메뉴를 비교하고 오늘 먹을 한 끼를 골라요."/><EatOutCard userId={authUser?.id} onLogin={()=>setShowAuth(true)}/></>}
+        {tab === "convenience" && <HomeMealChoice initialOpen/>}
         {authError && <p className="auth-inline-error" role="alert">{authError}</p>}
         {dataError&&<p className="auth-error" role="alert">{dataError}</p>}
 
@@ -241,14 +256,13 @@ export default function Home() {
 
         {tab === "calendar" && <><PlanCalendar key={`plan-calendar-${authUser?.id??"guest"}`} userId={authUser?.id}/>{dashboard&&<details><summary>지출 기록·기존 하루 식단 보기</summary><Dashboard key={`${authUser?.id??"guest"}-calendar`} mode="calendar" data={dashboard} userId={authUser?.id} products={products} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")} onCalendar={()=>setTab("calendar")} onBudget={editBudget} onRefresh={refreshDashboard} onCompare={openCompare}/></details>}</>}
         {tab === "cart" && <>
-          <PageHeader kicker="장보기" icon="bag" title={<>이번에 <em>살 것</em></>} description="식단에 필요한 재료를 모아 판매처별로 비교해요."/>
-          <div className="section-navigation shopping-navigation" role="group" aria-label="장보기 보기 선택"><button type="button" aria-pressed={cartView==='list'} onClick={()=>setCartView('list')}>장보기 목록</button><button type="button" aria-pressed={cartView==='products'} onClick={()=>setCartView('products')}>상품 찾기</button></div>
+          <PageHeader kicker="장보기" icon="bag" title={cartView==='list'?<>이번에 <em>살 것</em></>:<>필요한 <em>상품 찾기</em></>} description={cartView==='list'?"식단에 필요한 재료를 확인하고 구매 상태를 관리해요.":"식재료·간편식의 가격과 영양 정보를 비교해요."}/>
+          <ShoppingNavigation section={cartView} onView={setCartView}/>
           {cartView==='list'&&<>
           <ShoppingPlanner key={`shopping-${authUser?.id??"guest"}`} mode="cart" userId={authUser?.id} onLogin={()=>setShowAuth(true)}/><details><summary>직접 요리할 식단의 재료 보기</summary><MonthlyPlanner key={`ingredients-${authUser?.id??"guest"}`} mode="cart" userId={authUser?.id} onLogin={()=>setShowAuth(true)}/></details>
-          <SharedBasket key={authUser?.id ?? "guest"} userId={authUser?.id} onCompare={openCompare}/>
+          <details className="information-detail"><summary>공유받은 장보기 목록</summary><SharedBasket key={authUser?.id ?? "guest"} userId={authUser?.id} onCompare={openCompare}/></details>
           </>}
           {cartView==='products'&&<>
-          <div className="page-intro"><div className="week-label"><Icon name="spark" size={15}/> 더 둘러보기</div><h2>필요한 상품 <span>찾아보기</span></h2><p>식재료와 밀키트, 냉동식품을 눌러 가격과 영양 정보를 확인해 보세요.</p></div>
           <div className="list-heading"><h3>전체 상품 <span>{products.length}</span></h3><small>눌러서 판매처 비교</small></div>
           <CatalogFilter query={catalogQuery} category={catalogCategory} onQuery={(value) => { setCatalogQuery(value); setCatalogShown(24); }} onCategory={(value) => { setCatalogCategory(value); setCatalogShown(24); }}/>
           {catalogLoaded && !catalogError && products.length > 0 && filteredProducts.length === 0 && <p className="body-note">검색 결과가 없습니다.</p>}
@@ -260,7 +274,7 @@ export default function Home() {
         </>}
 
         {tab === "compare" && compareProduct && <>
-          <button className="compare-back" type="button" onClick={() => setTab("cart")}><Icon name="left" size={17}/> 장바구니로 돌아가기</button>
+          <BackButton href="/cart">장보기로</BackButton>
           <div className="page-intro compare-intro"><div className="week-label"><Icon name="bag" size={15}/> 상품 온라인 가격 비교</div><h2>{compareProduct.name} <span>비교</span></h2><p>상품별 가격과 용량을 같은 기준으로 살펴봐요.</p></div>
           <div className="compare-product"><ProductThumb item={compareProduct}/><div><strong>{compareProduct.name}</strong><span>판매 구성 {compareProduct.detail}</span></div></div>
           {(compareProduct.productUrl || compareProduct.nutritionSourceUrl || compareProduct.nutritionPhotoUrl) && <div className="catalog-sources">{compareProduct.productUrl && <a href={compareProduct.productUrl} target="_blank" rel="noopener noreferrer">등록된 상품 페이지 ↗</a>}{compareProduct.nutritionSourceUrl && <a href={compareProduct.nutritionSourceUrl} target="_blank" rel="noopener noreferrer">영양 정보 원문 · {compareProduct.nutritionSourceName} ↗</a>}{compareProduct.nutritionPhotoUrl && <a href={compareProduct.nutritionPhotoUrl} target="_blank" rel="noopener noreferrer">영양표 사진 ↗</a>}</div>}
