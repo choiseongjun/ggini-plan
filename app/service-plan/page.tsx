@@ -3,6 +3,7 @@ import Link from 'next/link';
 import {Icon} from '../components/icons';
 import sections from './content.json';
 import styles from './plan.module.css';
+import {UxOverview,UserJourney,ScreenMap,UserFlows,Wireframes} from './ux-diagrams';
 
 export const metadata:Metadata={
   title:'끼니플랜 서비스 기획서',
@@ -67,8 +68,9 @@ export default function ServicePlanPage(){
       <p className={styles.kicker}>서비스 구조와 화면 개편</p>
       <h1>끼니플랜 서비스 기획서</h1>
       <p className={styles.heroDescription}>메뉴 선택부터 장보기와 식사 일기까지.<br/>사용자가 하려는 일을 중심으로 서비스의 가지를 정리했어요.</p>
-      <div className={styles.meta}><time dateTime="2026-10-06">2026년 10월 6일</time><span>버전 1.0</span><span>한국 서비스 중심</span></div>
+      <div className={styles.meta}><time dateTime="2026-10-06">2026년 10월 6일</time><span>버전 1.1</span><span>한국 서비스 중심</span></div>
       <div className={styles.actions}><a href="#document">기획서 읽기<Icon name="arrow" size={17}/></a><a href="#section-3">전체 구조도 바로 보기<Icon name="arrow" size={17}/></a></div>
+      <UxOverview/>
     </div>
     <div className={styles.layout}>
       <aside className={styles.sidebar}><p>목차</p><Contents/></aside>
@@ -77,7 +79,11 @@ export default function ServicePlanPage(){
         {sections.map(section=><section key={section.id} id={section.id} className={styles.chapter}>
           <div className={styles.chapterHeading}><span>{String(section.number).padStart(2,'0')}</span><h2>{section.number===1?'서비스 개요':section.title}</h2></div>
           <p className={styles.intro}>{section.intro}</p>
-          {section.blocks.filter(block=>!(section.number===1&&'text' in block&&block.text?.startsWith('작성일'))).map((block,index)=><ContentBlock key={index} block={block as Block}/>)}
+          {section.number===2&&<UserJourney/>}
+          {section.number===3&&<><StructureTree/><ScreenMap/></>}
+          {section.number===4&&<Wireframes/>}
+          {section.number===7&&<UserFlows/>}
+          <details className={styles.explanation} open={![2,3,4,7].includes(section.number)}><summary>상세 기획과 기준 읽기</summary>{section.blocks.filter(block=>block.type!=='tree'&&!(section.number===1&&'text' in block&&block.text?.startsWith('작성일'))).map((block,index)=><ContentBlock key={index} block={block as Block}/>)}</details>
         </section>)}
       </article>
     </div>

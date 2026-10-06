@@ -20,6 +20,7 @@
 .contents a:hover{background:var(--primary-soft);color:var(--primary-strong)}
 .contents span{color:var(--primary-strong);font-size:var(--fs-xs);font-weight:700}
 .document{max-width:var(--document-reading-width);min-width:0}
+.explanation>summary{min-height:var(--touch);align-content:center;cursor:pointer;color:var(--primary-strong);font-size:var(--fs-sm);font-weight:700;margin-bottom:var(--space-4)}
 .chapter{scroll-margin-top:var(--space-5);padding:var(--space-6);margin-bottom:var(--space-5);background:var(--surface);border:thin solid var(--border);border-radius:var(--radius-lg)}
 .chapterHeading{display:flex;align-items:flex-start;gap:var(--space-3);margin-bottom:var(--space-5)}
 .chapterHeading>span{display:grid;place-items:center;flex-shrink:0;min-height:var(--touch);min-width:var(--touch);background:var(--primary-soft);color:var(--primary-strong);border-radius:var(--radius-sm);font-size:var(--fs-sm);font-weight:700}
