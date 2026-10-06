@@ -1,6 +1,10 @@
 import { type CatalogCategory, type CatalogItem } from "./catalog";
 import { getPool } from "./db";
 import {korea,type MarketContext} from './regional';
+import {unstable_cache, revalidateTag} from 'next/cache';
+import {encodeCacheValue, decodeCacheValue} from './compressed-cache';
+
+export const PRODUCT_CATALOG_TAG = 'product-catalog-v1';
 
 type CatalogRow = {
   nutrition_estimate: CatalogItem['nutritionEstimate'];
@@ -19,27 +23,24 @@ type CatalogRow = {
   sodium_mg: string | null; created_at: Date | null; updated_at: Date;
 };
 
-// Cached so every home-page load and the comparison-trends widget don't each
-// re-run the full catalog query against Supabase; admin writes bust this via invalidateCatalogCache().
-// The catalog serializes to several MB, past Next's unstable_cache 2MB per-entry limit
-// (writes fail there silently), so this uses a plain warm-instance cache instead, same
-// pattern as the pg Pool singleton in lib/db.ts.
-const TTL_MS = 5 * 60 * 1000;
-type CacheEntry = { data: CatalogItem[]; expires: number };
-const globalForCatalog = globalThis as typeof globalThis & { kkiniplanCatalogCache?: Map<string, CacheEntry> };
-const cache = globalForCatalog.kkiniplanCatalogCache ??= new Map();
+// Shared across server instances. Store compressed JSON to stay below the entry limit.
+const cachedCatalog = unstable_cache(async (context: MarketContext) => encodeCacheValue(await loadCatalogItems(context)),
+  ['product-catalog-compressed-v1'], {revalidate: 300, tags: [PRODUCT_CATALOG_TAG]});
+const pending = new Map<string, Promise<CatalogItem[]>>();
 
 export async function catalogItems(context: MarketContext = korea): Promise<CatalogItem[]> {
-  const key = `${context.market}:${context.currency}:${context.locale}`;
-  const cached = cache.get(key);
-  if (cached && cached.expires > Date.now()) return cached.data;
-  const data = await loadCatalogItems(context);
-  cache.set(key, { data, expires: Date.now() + TTL_MS });
-  return data;
+  const key = JSON.stringify(context);
+  const current = pending.get(key);
+  if (current) return current;
+  const request = cachedCatalog(context).then(value => decodeCacheValue<CatalogItem[]>(value));
+  pending.set(key, request);
+  try { return await request; }
+  finally { if (pending.get(key) === request) pending.delete(key); }
 }
 
 export function invalidateCatalogCache() {
-  cache.clear();
+  pending.clear();
+  revalidateTag(PRODUCT_CATALOG_TAG, {expire: 0});
 }
 
 async function loadCatalogItems(context:MarketContext=korea): Promise<CatalogItem[]> {

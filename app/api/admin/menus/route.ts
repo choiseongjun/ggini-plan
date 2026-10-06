@@ -2,7 +2,7 @@ import {qualityAllowsRecommendation} from '../../../../lib/menu-quality';
 import {NextRequest} from 'next/server';
 import {adminUser} from '../../../../lib/admin';
 import {listRecipeOptimizerResults} from '../../../../lib/recipe-optimizer-store';
-import {governmentOptimizedRecipeProducts} from '../../../../lib/recipe-optimizer-plan';
+import {recipeProductsFromResults} from '../../../../lib/recipe-optimizer-plan';
 import {servingNutrients} from '../../../../lib/serving-nutrients';
 import dishRoles from '../../../../data/dish-roles.json';
 import breakfastDishes from '../../../../data/breakfast-dishes.json';
@@ -13,7 +13,8 @@ export const maxDuration = 60;
 export async function GET(request: NextRequest) {
  if (!await adminUser(request)) return Response.json({error: '관리자 권한이 필요해요.'}, {status: 403});
  try {
-  const [results, catalog] = await Promise.all([listRecipeOptimizerResults(), governmentOptimizedRecipeProducts()]);
+  const results = await listRecipeOptimizerResults();
+  const catalog = recipeProductsFromResults(results);
   const byCode = new Map(catalog.map((p) => [p.id.replace(/^recipe-opt-/, ''), p]));
   const roles = dishRoles as Record<string, string>, breakfast = new Set<string>(breakfastDishes), noRice = new Set<string>(noRiceDishes);
   const menus = results.map((r) => {

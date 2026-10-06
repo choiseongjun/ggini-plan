@@ -1,5 +1,7 @@
 import {getPool} from './db';
 import {foodReferenceFromRow, type FoodReference} from './food-reference';
+import {cache} from 'react';
+import {unstable_cache} from 'next/cache';
 
 // 음식 영양 검색 페이지(/kcal/[slug]) 데이터. 기준: 식약처 1일 영양성분 기준치(식품 표시 기준).
 export const DAILY_VALUE = {kcal: 2000, carbs: 324, sugar: 100, protein: 55, fat: 54, sodium: 2000};
@@ -10,7 +12,9 @@ export const foodPagePath = (slug: string) => `/kcal/${encodeURIComponent(slug)}
 const COLUMNS = 'r.food_code,r.name,r.brand,r.category,r.basis_amount,r.basis_unit,r.serving_amount,r.serving_unit,r.calories_kcal,r.protein_g,r.carbohydrates_g,r.sugar_g,r.fat_g,r.sodium_mg';
 export type RelatedFood = {slug: string; name: string; brand: string | null; kcal: number | null};
 
-export async function getFoodPage(slug: string): Promise<{food: FoodReference; slug: string; related: RelatedFood[]; sameBrand: RelatedFood[]; lighter: RelatedFood[]} | null> {
+// Public reference data only. React cache also deduplicates metadata/page reads.
+export const getFoodPage = cache(unstable_cache(loadFoodPage, ['food-page-v1'], {revalidate: 86400, tags: ['food-reference']}));
+async function loadFoodPage(slug: string): Promise<{food: FoodReference; slug: string; related: RelatedFood[]; sameBrand: RelatedFood[]; lighter: RelatedFood[]} | null> {
  const db = getPool();
  const row = (await db.query(`SELECT p.slug, ${COLUMNS} FROM food_pages p JOIN food_reference r ON r.food_code = p.food_code WHERE p.slug = $1`, [slug])).rows[0];
  if (!row) return null;
@@ -43,9 +47,9 @@ export async function searchFoodPages(q: string): Promise<RelatedFood[]> {
  return rows;
 }
 
-export async function foodPageSlugs(): Promise<string[]> {
+export const foodPageSlugs = unstable_cache(async (): Promise<string[]> => {
  return (await getPool().query<{slug: string}>('SELECT slug FROM food_pages ORDER BY (brand IS NULL) DESC, slug')).rows.map((r) => r.slug);
-}
+}, ['food-page-slugs-v1'], {revalidate: 86400, tags: ['food-reference']});
 
 // ── 음식 비교(/kcal/vs/A-vs-B) ─────────────────────────────────────────────
 // "김치찌개 vs 된장찌개 칼로리"처럼 실제로 많이 찾는 비교를 같은 분류의 일반 음식끼리 만든다.
