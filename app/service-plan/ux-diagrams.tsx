@@ -18,8 +18,8 @@ const flows=[
 const screens:{name:string;icon:IconName;question:string;primary:string;blocks:string[];fold:string;tab:string}[]=[
  {name:'오늘',icon:'home',question:'오늘 무엇을 먹을까요?',primary:'오늘 식단 추천받기',blocks:['집에서 · 외식 · 편의점 탭','선택한 메뉴 · 재료와 조리법','미리 식단 짜기 바로가기'],fold:'추천 반영 내용 · 식단 공유',tab:'오늘'},
  {name:'식단',icon:'calendar',question:'앞으로 먹을 식단을 준비해요',primary:'내 식단 추천받기',blocks:['미리 짜기 · 식단 달력','기간 · 끼니 · 예산','직접 메뉴 선택 · 저장 식단 불러오기'],fold:'이번 주 식단 가이드',tab:'식단'},
- {name:'장보기',icon:'bag',question:'이번에 필요한 재료를 챙겨요',primary:'살 재료 확인',blocks:['살 재료 · 상품 찾기 · 내 재료','필요량과 구매 상태','판매처와 가격 확인'],fold:'공유받은 장보기 목록',tab:'장보기'},
  {name:'기록',icon:'edit',question:'오늘 무엇을 드셨나요?',primary:'사진 또는 검색으로 기록',blocks:['날짜와 끼니 선택','식사 일기와 사진','기록 수정과 삭제'],fold:'영양 합계 · 식비 · 물과 체중',tab:'기록'},
+ {name:'장보기',icon:'bag',question:'이번에 필요한 재료를 챙겨요',primary:'살 재료 확인',blocks:['살 재료 · 상품 찾기 · 내 재료','필요량과 구매 상태','판매처와 가격 확인'],fold:'공유받은 장보기 목록',tab:'장보기'},
  {name:'마이',icon:'user',question:'내 몸과 식사 취향을 맞춰요',primary:'내 정보 수정',blocks:['계정 관리와 회원 탈퇴','내 정보 · 목표 · 식사 알림','끼니 성장과 배지'],fold:'주간 피드백 · 예산 · 데이터 관리',tab:'마이'},
 ];
 
