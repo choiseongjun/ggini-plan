@@ -74,7 +74,7 @@ function ComparePicker({busy, onCompare}: {busy: boolean; onCompare: (names: str
 }
 
 // "지금 뭐 먹지?": 밖에서 먹는 한 끼를 오늘 먹은 양 기준으로 골라 주거나(추천) 고민 중인 메뉴를 비교한다.
-export function EatOutCard({userId, onLogin, inline=false}: {userId?: string; onLogin: () => void; inline?:boolean}) {
+export function EatOutCard({userId, onLogin, inline=false,showRecording=true}: {userId?: string; onLogin: () => void; inline?:boolean;showRecording?:boolean}) {
  const [open, setOpen] = useState(false);
  const [tab, setTab] = useState<'suggest' | 'compare'>('suggest');
  const [kind, setKind] = useState('');
@@ -124,7 +124,7 @@ export function EatOutCard({userId, onLogin, inline=false}: {userId?: string; on
      {inline&&tab==='suggest'&&!result&&<Button block size="lg" disabled={busy} onClick={()=>suggest()}>{busy?'고르는 중…':'외식 메뉴 추천받기'}</Button>}
      {tab === 'suggest' ? <div className="eo-kinds" role="group" aria-label="음식 종류">{KINDS.map(([k, label]) => <button type="button" key={k} aria-pressed={kind === k} disabled={busy} onClick={() => { setKind(k); suggest(k); }}>{label}</button>)}</div>
       : <ComparePicker busy={busy} onCompare={compare}/>}
-     {s && <p className="eo-state">{s.personal ? '내 목표' : '일반 성인 기준'} · 오늘 먹은 양 {n(s.eaten.kcal)}kcal{s.eaten.sodium > 0 ? `, 나트륨 ${n(s.eaten.sodium)}mg` : ''}{s.health.length ? ` · ${s.health.join('·')}` : ''}{!s.personal && !userId ? ' · 로그인하면 내 기록에 맞춰 골라요' : ''}</p>}
+     {showRecording&&s && <p className="eo-state">{s.personal ? '내 목표' : '일반 성인 기준'} · 오늘 먹은 양 {n(s.eaten.kcal)}kcal{s.eaten.sodium > 0 ? `, 나트륨 ${n(s.eaten.sodium)}mg` : ''}{s.health.length ? ` · ${s.health.join('·')}` : ''}{!s.personal && !userId ? ' · 로그인하면 내 기록에 맞춰 골라요' : ''}</p>}
      {busy && !result && <p className="eo-note">고르는 중…</p>}
      {error && <p className="eo-error" role="alert">{error}</p>}
      {result && tab === 'compare' && result.options.length >= 2 && <p ref={winner} className="eo-winner"><b>{result.options[0].name}</b>{iga(result.options[0].name)}{` ${result.options[1].name}보다`} 지금 먹기 더 좋아요.{whyBetter(result.options[0], result.options[1], result.state.budget.kcal) && ` ${whyBetter(result.options[0], result.options[1], result.state.budget.kcal)}.`}</p>}
@@ -139,10 +139,10 @@ export function EatOutCard({userId, onLogin, inline=false}: {userId?: string; on
       </div>
       {o.reasons.length > 0 && <ul className="eo-reasons">{o.reasons.map((r) => <li key={r}>{r}</li>)}</ul>}
       <NearbyRestaurants menu={o.name}/>
-      <button type="button" className="eo-eat" disabled={busy || logged === o.code} onClick={() => void eat(o)}>{logged === o.code ? '기록했어요' : userId ? '먹었어요' : '로그인하고 기록하기'}</button>
+      {showRecording&&<button type="button" className="eo-eat" disabled={busy || logged === o.code} onClick={() => void eat(o)}>{logged === o.code ? '기록했어요' : userId ? '먹었어요' : '로그인하고 기록하기'}</button>}
      </li>)}</ul>}
      {result && tab === 'suggest' && <button type="button" className="eo-again" disabled={busy} onClick={() => suggest()}>다른 메뉴 보기</button>}
-     {result&&<Link href="/record" className="eo-photo-record" onClick={()=>{rememberRecordMode('photo');setOpen(false);}}>먹고 난 뒤, 사진으로 기록하기</Link>}
+     {showRecording&&result&&<Link href="/record" className="eo-photo-record" onClick={()=>{rememberRecordMode('photo');setOpen(false);}}>먹고 난 뒤, 사진으로 기록하기</Link>}
      <small className="eo-foot">식품의약품안전처 식품영양성분 DB의 1인분 참고값이에요. 식당·양에 따라 달라요.</small>
     </div>
    </div>);

@@ -44,7 +44,7 @@ import {GUEST_ID} from '../lib/native-push-input';
 const GUEST_PUSH_KEY='kkiniplan-guest-push-v1';
 import {MealReminderCard} from './meal-reminder-card';
 import {hasGuestIntake,importGuestIntake} from '../lib/guest-intake';
-import {PageHeader,Card,LinkButton,BackButton} from './components/ui';
+import {PageHeader,LinkButton,BackButton} from './components/ui';
 import {PlanningNavigation,TodayNavigation,ShoppingNavigation} from './section-navigation';
 import './information-layout.css';
 import {HomeMealChoice} from './home-meal-choice';
@@ -235,22 +235,22 @@ export default function Home() {
         {(tab==='eat-out'||tab==='convenience')&&<TodayNavigation section={tab}/>}
         {tab==='ingredients'&&<ShoppingNavigation section="ingredients"/>}
         {tab === "record" && <FoodIntake key={`intake-${authUser?.id??"guest"}-${tab}`} userId={authUser?.id} onLogin={()=>setShowAuth(true)} history={tab==="record"} recordDate={recordDate} onDateChange={setRecordDate} expenseManagement={dashboard&&<Dashboard key={`${authUser?.id??"guest"}-${tab}-${recordDate}`} mode={tab} recordDate={recordDate} data={dashboard} userId={authUser?.id} products={products} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")} onCalendar={()=>setTab("calendar")} onBudget={editBudget} onRefresh={refreshDashboard} onCompare={openCompare}/>}/>}
+        {tab==='record'&&authUser&&<details className="information-detail"><summary>나의 기록 습관·주간 피드백</summary><DailyReturnCard key={authUser.id} userId={authUser.id} onRecord={()=>{setRecordDate(emptyDashboard().today);setTab('record');}}/></details>}
         {tab === "record" && <details className="information-detail"><summary>내 재료로 만든 식사 이력</summary><PantryMealHistory userId={authUser?.id}/></details>}
         {tab === "ingredients" && <PantryHome initialEntry="pantry" userId={authUser?.id} onLogin={()=>setShowAuth(true)} onPlan={()=>setTab("plan")}/>}
         {tab === "home" && <>
           <header className="today-choice-heading"><h2>오늘의 식단</h2><p>뭘 먹을지 고민된다면 끼니플랜이 추천해 드려요.</p></header>
           <nav className="section-navigation today-navigation today-choice-tabs" aria-label="오늘의 메뉴 선택" role="tablist">{(['home','eat-out','convenience'] as const).map((view,i)=><button key={view} id={`today-tab-${view}`} type="button" role="tab" aria-selected={todayView===view} aria-controls={`today-panel-${view}`} onClick={()=>setTodayView(view)}>{['집에서','외식','편의점'][i]}</button>)}</nav>
           <div id="today-panel-home" role="tabpanel" aria-labelledby="today-tab-home" hidden={todayView!=='home'}><ShoppingPlanner simpleHome key={`home-plan-${authUser?.id??'guest'}`} dashboard={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/></div>
-          {todayView==='eat-out'&&<div id="today-panel-eat-out" role="tabpanel" aria-labelledby="today-tab-eat-out"><EatOutCard inline userId={authUser?.id} onLogin={()=>setShowAuth(true)}/></div>}
-          {todayView==='convenience'&&<div id="today-panel-convenience" role="tabpanel" aria-labelledby="today-tab-convenience"><HomeMealChoice initialOpen/></div>}
-          <Card tone="soft" className="today-next" aria-labelledby="today-next-title"><h3 id="today-next-title">이미 드셨나요?</h3><LinkButton href="/record" block><Icon name="edit"/>한 끼 기록하기</LinkButton></Card>
+          {todayView==='eat-out'&&<div id="today-panel-eat-out" role="tabpanel" aria-labelledby="today-tab-eat-out"><EatOutCard inline showRecording={false} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/></div>}
+          {todayView==='convenience'&&<div id="today-panel-convenience" role="tabpanel" aria-labelledby="today-tab-convenience"><HomeMealChoice initialOpen showRecording={false}/></div>}
           <LinkButton href="/plan" block>미리 식단 짜기</LinkButton>
-          {authUser&&<details className="information-detail"><summary>나의 기록 습관·주간 피드백</summary><DailyReturnCard key={authUser.id} userId={authUser.id} onRecord={()=>{setRecordDate(emptyDashboard().today);setTab('record');}}/></details>}
+
           <InstallPrompt active/>
         </>}
         {tab === "plan" && <><ShoppingPlanner key={`plan-${authUser?.id??'guest'}`} dashboard={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/>{authUser&&<details className="planning-weekly-guide"><summary>이번 주 식단 가이드</summary><WeeklyGuideCard userId={authUser.id}/></details>}</>}
-        {tab === "eat-out" && <><PageHeader kicker="요리 쉬는 날" icon="spark" title={<>밖에서도 <em>맛있는 한 끼</em></>} description="외식 메뉴를 비교하고 오늘 먹을 한 끼를 골라요."/><EatOutCard userId={authUser?.id} onLogin={()=>setShowAuth(true)}/></>}
-        {tab === "convenience" && <HomeMealChoice initialOpen/>}
+        {tab === "eat-out" && <><PageHeader kicker="요리 쉬는 날" icon="spark" title={<>밖에서도 <em>맛있는 한 끼</em></>} description="외식 메뉴를 비교하고 오늘 먹을 한 끼를 골라요."/><EatOutCard showRecording={false} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/></>}
+        {tab === "convenience" && <HomeMealChoice initialOpen showRecording={false}/>}
         {authError && <p className="auth-inline-error" role="alert">{authError}</p>}
         {dataError&&<p className="auth-error" role="alert">{dataError}</p>}
 
