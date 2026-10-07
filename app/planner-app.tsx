@@ -51,6 +51,8 @@ import {HomeMealChoice} from './home-meal-choice';
 import {EatOutCard} from './eat-out-card';
 const WeeklyGuideCard=dynamic(()=>import('./weekly-guide-card').then(module=>module.WeeklyGuideCard));
 import {trackPlanner} from '../lib/track-planner';
+import {trackAnalytics} from '../lib/analytics';
+import {pendingTasteReturn} from '../lib/pending-taste-save';
 import TasteHomeArrival from './taste-home-arrival';
 
 type Tab = "ingredients" | "plan" | "eat-out" | "convenience" | "community" | "home" | "calendar" | "cart" | "compare" | "record" | "profile";
@@ -80,6 +82,13 @@ export default function Home() {
   const startLoading = useLoadingTask();
   const [products, setProducts] = useState<CatalogItem[]>([]);
   const [showAuth, setShowAuth] = useState(false);
+  const [authPurpose,setAuthPurpose]=useState<string|undefined>();
+  function openPlanLogin(){
+   let saving=false;try{saving=!!sessionStorage.getItem('ggini-pending-adoption');}catch{}
+   setAuthPurpose(undefined);
+   if(saving){setAuthPurpose('방금 고른 식단을 계정에 저장해요. 로그인하면 선택한 메뉴 그대로 저장돼요.');trackAnalytics('save_login_viewed');}
+   setShowAuth(true);
+  }
   const [authUser, setAuthUser] = useState<PublicUser | null>(null);
   const [authChecked, setAuthChecked] = useState(false);
   // 앱 알림 등록: 회원은 로그인하면, 비회원은 첫 추천을 받은 뒤부터(그때 iOS 권한을 한 번 묻는다) 이 기기를 등록한다.
@@ -176,7 +185,8 @@ export default function Home() {
         const data = await response.json() as { user: PublicUser | null; error?: string };
         if (!response.ok) throw new Error(data.error ?? "로그인 상태를 확인할 수 없습니다.");
         setAuthUser(data.user);
-        if(data.user&&takeProfileIntent())router.replace("/profile?personalize=1#profile-settings");
+        if(data.user&&pendingTasteReturn())router.replace(pendingTasteReturn()!);
+        else if(data.user&&takeProfileIntent())router.replace("/profile?personalize=1#profile-settings");
         else if(data.user&&pendingRecordMode())router.replace("/record");
       })
       .catch((error: unknown) => {
@@ -227,7 +237,7 @@ export default function Home() {
 
   return <AppShell>
     {savingBudget && <AppLoading message="이번 주 예산을 저장하고 있어요"/>}
-      {showAuth ? <AuthScreen initialError={authError} onExplore={() => { clearRecordMode();clearProfileIntent();setShowAuth(false); setAuthError(""); }} onSuccess={(user) => { setDashboard(null); setAuthUser(user); setAuthError(""); setShowAuth(false); if(takeProfileIntent())router.push("/profile?personalize=1#profile-settings");else setTab(pendingRecordMode()?"record":"home"); }}/> : <>
+      {showAuth ? <AuthScreen purpose={authPurpose} onAuthEvent={authPurpose?event=>trackAnalytics(event==='started'?'save_login_started':event==='failed'?'save_login_failed':event==='consent_required'?'save_consent_required':'save_login_succeeded'):undefined} initialError={authError} onExplore={() => { if(authPurpose){try{sessionStorage.removeItem('ggini-pending-adoption');}catch{}trackAnalytics('save_login_cancelled');}setAuthPurpose(undefined);clearRecordMode();clearProfileIntent();setShowAuth(false); setAuthError(""); }} onSuccess={(user) => { setAuthPurpose(undefined);setDashboard(null); setAuthUser(user); setAuthError(""); setShowAuth(false); if(pendingTasteReturn())router.push(pendingTasteReturn()!);else if(takeProfileIntent())router.push("/profile?personalize=1#profile-settings");else setTab(pendingRecordMode()?"record":"home"); }}/> : <>
       <header className="app-header"><Brand/><div className="app-header-actions">{authUser ? <button className="logout-link" type="button" onClick={signOut}>로그아웃</button> : <button className="logout-link" type="button" onClick={() => { setAuthError(""); setShowAuth(true); }}>로그인</button>}</div></header>
       <div className={`app-content app-content-${tab}`} ref={contentRef}>
         {/* 로그인 확인이 끝난 뒤에 그린다 — 비회원 화면을 먼저 그렸다가 회원 화면으로 다시 마운트하면 요청이 두 번씩 나간다. */}
@@ -242,7 +252,7 @@ export default function Home() {
         {tab === "home" && <>
           <TasteHomeArrival/><header id="today-meals" className="today-choice-heading"><div className="today-heading-row"><h2>오늘의 식단</h2><span id="today-plan-tools" hidden={todayView!=='home'}/></div><p>뭘 먹을지 고민된다면 끼니플랜이 추천해 드려요.</p></header>
           <nav className="section-navigation today-navigation today-choice-tabs" aria-label="오늘의 메뉴 선택" role="tablist">{(['home','eat-out','convenience'] as const).map((view,i)=><button key={view} id={`today-tab-${view}`} type="button" role="tab" aria-selected={todayView===view} aria-controls={`today-panel-${view}`} onClick={()=>setTodayView(view)}><span className="today-tab-check" aria-hidden="true"><Icon name="check" size={16}/></span><span>{['집에서','외식','편의점'][i]}</span></button>)}</nav>
-          <div id="today-panel-home" role="tabpanel" aria-labelledby="today-tab-home" hidden={todayView!=='home'}><ShoppingPlanner simpleHome key={`home-plan-${authUser?.id??'guest'}`} dashboard={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/></div>
+          <div id="today-panel-home" role="tabpanel" aria-labelledby="today-tab-home" hidden={todayView!=='home'}><ShoppingPlanner simpleHome key={`home-plan-${authUser?.id??'guest'}`} dashboard={dashboard} userId={authUser?.id} onLogin={openPlanLogin}/></div>
           {todayView==='eat-out'&&<div id="today-panel-eat-out" role="tabpanel" aria-labelledby="today-tab-eat-out"><EatOutCard inline showRecording={false} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/></div>}
           {todayView==='convenience'&&<div id="today-panel-convenience" role="tabpanel" aria-labelledby="today-tab-convenience"><HomeMealChoice initialOpen showRecording={false}/></div>}
           <LinkButton href="/plan" block>미리 식단 짜기</LinkButton>
@@ -250,7 +260,7 @@ export default function Home() {
 
           <InstallPrompt active/>
         </>}
-        {tab === "plan" && <><ShoppingPlanner key={`plan-${authUser?.id??'guest'}`} dashboard={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/>{authUser&&<details className="planning-weekly-guide"><summary>이번 주 식단 가이드</summary><WeeklyGuideCard userId={authUser.id}/></details>}</>}
+        {tab === "plan" && <><ShoppingPlanner key={`plan-${authUser?.id??'guest'}`} dashboard={dashboard} userId={authUser?.id} onLogin={openPlanLogin}/>{authUser&&<details className="planning-weekly-guide"><summary>이번 주 식단 가이드</summary><WeeklyGuideCard userId={authUser.id}/></details>}</>}
         {tab === "eat-out" && <><PageHeader kicker="요리 쉬는 날" icon="spark" title={<>밖에서도 <em>맛있는 한 끼</em></>} description="외식 메뉴를 비교하고 오늘 먹을 한 끼를 골라요."/><EatOutCard showRecording={false} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/></>}
         {tab === "convenience" && <HomeMealChoice initialOpen showRecording={false}/>}
         {authError && <p className="auth-inline-error" role="alert">{authError}</p>}
@@ -266,7 +276,7 @@ export default function Home() {
           <PageHeader kicker="장보기" icon="bag" title={cartView==='list'?<>이번에 <em>살 것</em></>:<>필요한 <em>상품 찾기</em></>} description={cartView==='list'?"식단에 필요한 재료를 확인하고 구매 상태를 관리해요.":"식재료·간편식의 가격과 영양 정보를 비교해요."}/>
           <ShoppingNavigation section={cartView} onView={setCartView}/>
           {cartView==='list'&&<>
-          <ShoppingPlanner key={`shopping-${authUser?.id??"guest"}`} mode="cart" userId={authUser?.id} onLogin={()=>setShowAuth(true)}/><details><summary>직접 요리할 식단의 재료 보기</summary><MonthlyPlanner key={`ingredients-${authUser?.id??"guest"}`} mode="cart" userId={authUser?.id} onLogin={()=>setShowAuth(true)}/></details>
+          <ShoppingPlanner key={`shopping-${authUser?.id??"guest"}`} mode="cart" userId={authUser?.id} onLogin={openPlanLogin}/><details><summary>직접 요리할 식단의 재료 보기</summary><MonthlyPlanner key={`ingredients-${authUser?.id??"guest"}`} mode="cart" userId={authUser?.id} onLogin={openPlanLogin}/></details>
           <details className="information-detail"><summary>공유받은 장보기 목록</summary><SharedBasket key={authUser?.id ?? "guest"} userId={authUser?.id} onCompare={openCompare}/></details>
           </>}
           {cartView==='products'&&<>

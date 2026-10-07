@@ -25,3 +25,9 @@ Create one production-ready photographic food sprite sheet for a Korean meal pre
 분석 이벤트는 기존 PostHog 경로와 최종 전송 허용 목록을 따른다. 진입/초대 진입/퀴즈 작성/추측 완료/친구 작성/공유 클릭/공유 API 완료/링크 복사/이미지 출력/룰렛/식단 저장을 각각 구분한다. 답안·음식명·공유 URL·개인 정보는 전송하지 않는다. 공유 API 완료나 복사는 실제 수신 또는 SNS 게시 완료를 보장하지 않는다. 공유별 초대자 식별은 하지 않으므로 초기 지표는 단계별 집계이며 개인별 초대 전환 추적은 아니다. 환경 설정이 없는 로컬에서는 분석이 전송되지 않는다.
 
 검증: `tests/taste-quiz.test.ts`에서 64개 링크와 4096개 조합의 채점·교집합, 분석 필터링을 검사한다.
+
+## 로그인 후 저장 이어가기
+
+퀴즈의 저장 버튼은 로그인 화면을 같은 페이지에서 연다. `ggini-pending-taste-save-v1`에는 음식명·날짜·저장 UUID·원래 퀴즈 경로만 sessionStorage에 30분간 보관한다. 로그인 성공, 페이지 복원 및 앱 복귀 시 세션을 확인해 동일 UUID로 기존 manual-meal-plans API를 재시도한다. API의 ON CONFLICT(user_id,id)로 같은 저장 요청이 중복 기록되지 않는다. 성공/취소 시 대기를 지우고, 실패 시 다시 저장할 수 있다. 원래 날짜를 그대로 안내하며 임의로 다른 날짜에 저장하지 않는다. 홈에는 이미 있던 ggini-pending-adoption 자동 저장을 유지하고, 저장 목적 안내와 명시적인 취소 처리를 보완했다.
+
+계정 정보나 음식 선택을 측정에 보내지 않고 save_clicked → save_login_viewed → save_login_started → save_login_succeeded/failed → save_after_login_completed를 집계한다. 필수 가입 동의는 그대로 유지한다. 실제 소셜 계정 인증 및 네이티브 앱 복귀는 실기기 추가 검증 대상이다.

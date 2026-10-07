@@ -7,23 +7,25 @@ import {commonQuizMenus,quizMask,quizMenuIndices,quizScore,quizSelections,quizVe
 import {trackAnalytics} from '../../lib/analytics';
 import TasteRoulette from './roulette';
 import TasteHomeCta from './home-cta';
+import {useMealSave} from './use-meal-save';
 import {createQuizCard} from './share-card';
 import s from './taste.module.css';
 const sheet=getImageProps({src:'/taste/food-sheet.png',alt:'음식 사진',width:768,height:512}).props.src;
 function FoodPhoto({index}:{index:number}){return <div className={s.foodPhoto} aria-hidden="true" style={{backgroundImage:`url("${sheet}")`,backgroundPosition:`${index%3*50}% ${index<3?0:100}%`}}/>;}
 type Mode='create'|'guess'|'self'|'result';
 export default function TasteQuiz({target,initial,initialGuess,invalid=false}:{target:number|null;initial:number|null;initialGuess:number|null;invalid?:boolean}){
+ const mealSave=useMealSave();
  const [mine,setMine]=useState<number|null>(initial),[guess,setGuess]=useState<number|null>(initialGuess);
  const [mode,setMode]=useState<Mode>(target!==null?(initialGuess===null?'guess':'result'):(initial===null?'create':'result'));
  const [answers,setAnswers]=useState<number[]>([]),[notice,setNotice]=useState(''),[shareLink,setShareLink]=useState('');
  const [cardPreview,setCardPreview]=useState('');
- const [spinning,setSpinning]=useState(false),[pick,setPick]=useState(0),[saving,setSaving]=useState(false),[saved,setSaved]=useState(false),[login,setLogin]=useState(false),[exporting,setExporting]=useState(false);
+ const [spinning,setSpinning]=useState(false),[pick,setPick]=useState(0),[exporting,setExporting]=useState(false);
  const cardFile=useRef<File|null>(null);
- const heading=useRef<HTMLHeadingElement>(null),saveLock=useRef(false),shareLock=useRef(false),saveId=useRef<string|null>(null),entered=useRef(false);
+ const heading=useRef<HTMLHeadingElement>(null),shareLock=useRef(false),entered=useRef(false);
  const quizDone=target!==null&&guess!==null,ownDone=mine!==null;
  const score=quizDone?quizScore(target,guess):0;
  const menus=mine===null?[]:target===null?quizMenuIndices(mine):commonQuizMenus(target,mine);
- const chosen=menus.length?tasteFoods[menus[pick%menus.length]]:null;
+ const chosen=mealSave.savedName?tasteFoods.find(f=>f.name===mealSave.savedName)??null:menus.length?tasteFoods[menus[pick%menus.length]]:null;
  const active=mode!=='result',question=tasteQuestions[answers.length];
  useEffect(()=>{if(!entered.current){entered.current=true;trackAnalytics(target===null?'taste_quiz_opened':'taste_invite_opened');}},[target]);
  useEffect(()=>()=>{if(cardPreview)URL.revokeObjectURL(cardPreview);},[cardPreview]);
@@ -39,7 +41,7 @@ export default function TasteQuiz({target,initial,initialGuess,invalid=false}:{t
   focusHeading();
  }
  function startOwn(){setAnswers([]);setMode('self');setNotice('');focusHeading();}
- function resetOwn(){setAnswers([]);setMine(null);setMode(target===null?'create':'self');setSaved(false);setPick(0);setNotice('');setShareLink('');setCardPreview('');saveId.current=null;const url=new URL(window.location.href);url.searchParams.delete('me');window.history.replaceState(null,'',url);focusHeading();}
+ function resetOwn(){setAnswers([]);setMine(null);setMode(target===null?'create':'self');mealSave.resetSaved();setPick(0);setNotice('');setShareLink('');setCardPreview('');const url=new URL(window.location.href);url.searchParams.delete('me');window.history.replaceState(null,'',url);focusHeading();}
  function invitation(){const url=new URL('/taste',window.location.origin);url.searchParams.set('v','2');url.searchParams.set('q',String(mine));return url.toString();}
  async function share(){
   if(mine===null||shareLock.current)return;shareLock.current=true;
@@ -62,16 +64,10 @@ export default function TasteQuiz({target,initial,initialGuess,invalid=false}:{t
   try{if(navigator.canShare?.({files:[file]}))await navigator.share({files:[file],title:'내 입맛 맞혀봐'});else setNotice('이 브라우저에서는 PNG 이미지 저장을 눌러 저장한 뒤 공유해 주세요.');}
   catch(error){if(!(error instanceof Error&&error.name==='AbortError'))setNotice('PNG 이미지 저장을 눌러 저장한 뒤 공유해 주세요.');}
  }
- async function save(){
-  if(!chosen||saveLock.current||spinning||saved)return;saveLock.current=true;setSaving(true);setNotice('');
-  try{const day=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
-   saveId.current??=crypto.randomUUID();const res=await fetch('/api/manual-meal-plans',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:saveId.current,name:chosen.name,day,slot:'dinner'})});
-   if(res.status===401){setLogin(true);setNotice('식단에 담으려면 로그인이 필요해요. 로그인 후 이 화면에서 다시 담아 주세요.');return;}
-   if(!res.ok)throw Error();setSaved(true);setNotice('오늘 저녁 식단에 담았어요.');trackAnalytics('taste_meal_saved');
-  }catch{setNotice('담지 못했어요. 다시 시도해 주세요.');}finally{setSaving(false);saveLock.current=false;}
- }
+ function save(){if(chosen)mealSave.save(chosen.name);}
+ if(mealSave.authView)return mealSave.authView;
  return <main className={s.page}>
-  <nav className={s.nav}><BackButton href="/">오늘로</BackButton><span>끼니플랜 <b>입맛 퀴즈</b></span></nav>
+  <nav className={s.nav}><BackButton href="/">오늘로</BackButton><span>끼니플랜 <b>입맛 퀴즈</b></span></nav>{mealSave.feedback}
   {invalid&&<Notice>링크를 확인하지 못했어요. 새 입맛 퀴즈를 만들어 친구에게 보내 봐요.</Notice>}
   {active?<>
    <header className={s.intro}><span className={s.eyebrow}>{mode==='guess'?'친구가 보낸 입맛 도전장':mode==='self'?'이번엔 내 진짜 입맛':'같이 먹은 짬바 테스트'}</span>
@@ -96,12 +92,12 @@ export default function TasteQuiz({target,initial,initialGuess,invalid=false}:{t
    </section>
    {ownDone&&<>
     <section className={s.match}><span className={s.eyebrow}>그래서, 다음 한 끼는?</span><h2>{target===null?'내가 고른 메뉴로 한 끼 정해요':menus.length?`둘 다 선택한 메뉴 ${menus.length}개`:'이번엔 선택한 메뉴가 달랐어요'}</h2><p>{menus.length?menus.map(i=>tasteFoods[i].name).join(' · '):'공통 메뉴는 없어요. 서로의 선택을 보며 다음 한 끼를 이야기해 봐요.'}</p>{target!==null&&<small>나는 {quizMenuIndices(mine).map(i=>tasteFoods[i].name).join(' · ')} 선택</small>}</section>
-    {menus.length>1&&<TasteRoulette key={`${target}-${mine}`} names={menus.map(i=>tasteFoods[i].name)} disabled={saving} onStart={()=>{setSpinning(true);setSaved(false);setNotice('');saveId.current=null;trackAnalytics('taste_roulette_started');}} onPick={index=>{setPick(index);setSpinning(false);}}/>}
-    {chosen&&<section className={s.meal}><div className={s.mealImage}><FoodPhoto index={menus[pick%menus.length]}/></div><div><span className={s.eyebrow}>{menus.length===1?'공통 메뉴는 이 한 가지':'오늘의 한 끼'}</span><h2>{chosen.name}</h2><p>{chosen.tag}</p></div><Button block variant="secondary" disabled={saving||saved||spinning} onClick={save}>{saved?'오늘 저녁에 담았어요':saving?'담고 있어요…':'오늘 저녁으로 담기'}</Button></section>}
+    {menus.length>1&&<TasteRoulette key={`${target}-${mine}`} names={menus.map(i=>tasteFoods[i].name)} disabled={mealSave.busy||mealSave.pending} onStart={()=>{setSpinning(true);mealSave.resetSaved();setNotice('');trackAnalytics('taste_roulette_started');}} onPick={index=>{setPick(index);setSpinning(false);}}/>}
+    {chosen&&<section className={s.meal}><div className={s.mealImage}><FoodPhoto index={tasteFoods.indexOf(chosen)}/></div><div><span className={s.eyebrow}>{menus.length===1?'공통 메뉴는 이 한 가지':'오늘의 한 끼'}</span><h2>{chosen.name}</h2><p>{chosen.tag}</p></div><Button block variant="secondary" disabled={mealSave.busy||mealSave.saved||spinning||mealSave.pending} onClick={save}>{mealSave.saved?'식단에 저장했어요':mealSave.busy?'저장하고 있어요…':'이 메뉴 저장하고 다시 보기'}</Button></section>}
     {menus.length===0&&<LinkButton href="/" block>다른 식단 추천받기</LinkButton>}
-    <Button variant="ghost" disabled={saving||spinning} onClick={resetOwn}>내 취향 다시 고르기</Button>
+    <Button variant="ghost" disabled={mealSave.busy||mealSave.pending||spinning} onClick={resetOwn}>내 취향 다시 고르기</Button>
    </>}
-   {notice&&<Notice>{notice}</Notice>}{login&&<LinkButton href="/profile">로그인하러 가기</LinkButton>}{saved&&<LinkButton href="/plan">내 식단 보기</LinkButton>}
+   {notice&&<Notice>{notice}</Notice>}
    {shareLink&&<div className={s.challengeLink}><small>친구에게 보낼 도전 링크</small><a className={s.shareLink} href={shareLink}>{shareLink}</a></div>}
   </>}
  </main>;
