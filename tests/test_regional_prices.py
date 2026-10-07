@@ -20,6 +20,18 @@ class PricesTest(unittest.TestCase):
         self.assertIsNone(changed['previous'])
         self.assertEqual(changed['comparisonStatus'],'missing-or-changed-markets')
 
+    def test_national_fill_uses_regional_median_and_keeps_official_rows(self):
+        def row(region,name,price,previous):
+            return dict(region=region,name=name,variety='v',grade='상품',unit='1kg',price=price,previous=previous,date='2026-10-06',previousDate='2026-09-29')
+        kamis=[row('전국','돼지',2000,1900),row('서울','돼지',2500,2400),row('서울','양파',2000,2200),row('부산','양파',2100,2000),row('대구','양파',1800,2000),row('광주','양파',3000,None)]
+        filled=prices.fill_national(kamis)
+        self.assertEqual([r['name'] for r in filled],['양파'])
+        onion=filled[0]
+        # Comparable regions only (광주 lacks last week), so the change compares the same three regions.
+        self.assertEqual((onion['price'],onion['previous'],onion['regionCount'],onion['source']),(2000,2000,3,'kamis-computed'))
+        too_few=prices.fill_national([row('서울','감자',300,280),row('부산','감자',320,None)])[0]
+        self.assertEqual((too_few['price'],too_few['previous'],too_few['comparisonStatus']),(310,None,'too-few-comparable-regions'))
+
     def test_connections_exclude_processed_food_and_wrong_variety(self):
         config=json.loads((prices.DATA/'connections.json').read_text(encoding='utf8'))
         products=[dict(id='tofu',name='행복한콩 부침두부(300g)',offers=[]),dict(id='baby',name='아이꼬야 맘스쿠킹 소고기와두부진밥(100g)',offers=[])]

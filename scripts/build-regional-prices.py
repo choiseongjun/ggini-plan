@@ -126,6 +126,35 @@ def build_api_kamis(snapshot):
     return result, latest, before
 
 
+NATIONAL = '전국'
+MIN_COMPARABLE_REGIONS = 3
+
+
+def median(values):
+    ordered = sorted(values)
+    middle = len(ordered) // 2
+    return ordered[middle] if len(ordered) % 2 else (ordered[middle-1] + ordered[middle]) / 2
+
+
+def fill_national(kamis):
+    # The API publishes 전국 only for livestock; derive the rest from regional rows and label it as computed.
+    series = lambda r: (r['name'], r['variety'], r['grade'], r['unit'])
+    official = {series(r) for r in kamis if r['region'] == NATIONAL}
+    groups = defaultdict(list)
+    for r in kamis:
+        if r['region'] != NATIONAL and series(r) not in official and r['price']:
+            groups[series(r)].append(r)
+    result = []
+    for (name, variety, grade, unit), rows in groups.items():
+        comparable = [r for r in rows if r['previous']]
+        # Change is computed only within the same set of regions on both dates.
+        basis = comparable if len(comparable) >= MIN_COMPARABLE_REGIONS else rows
+        price = median([r['price'] for r in basis])
+        previous = median([r['previous'] for r in comparable]) if basis is comparable else None
+        result.append(dict(source='kamis-computed', region=NATIONAL, name=name, variety=variety, grade=grade, unit=unit, price=round(price), previous=round(previous) if previous else None, change=round((price/previous-1)*100,1) if previous else None, date=rows[0]['date'], previousDate=rows[0]['previousDate'], regionCount=len(basis), regions=sorted(r['region'] for r in basis), comparisonStatus='same-regions' if previous else 'too-few-comparable-regions', aggregation='median of regional surveyed-market means (computed, not an official national average)'))
+    return result
+
+
 def connect_data(kamis, products, config):
     ingredients = config['ingredients']
     ids = {i['id'] for i in ingredients}
@@ -155,6 +184,7 @@ def main():
     if api_path.exists():
         api=json.loads(api_path.read_text(encoding='utf-8'))
         kamis,latest,before=build_api_kamis(api)
+        kamis+=fill_national(kamis)
         regions=sorted({r['region'] for r in kamis})
         missing=[]
     else:
