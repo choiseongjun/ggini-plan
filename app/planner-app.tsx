@@ -19,6 +19,7 @@ import { Dashboard } from "./dashboard";
 import { ResetData } from "./reset-data";
 import {WellnessTracker} from "./wellness-tracker";
 import { FoodIntake } from "./food-intake";
+import {HomeEntry} from "./home-entry";
 import { PantryHome } from "./pantry-home";
 import {PendingRecommendationPantry} from './recommendation-pantry';
 import {pendingPantryKey,pendingPantrySelection} from '../lib/recommendation-pantry';
@@ -60,6 +61,7 @@ import TasteHomeArrival from './taste-home-arrival';
 type Tab = "ingredients" | "plan" | "eat-out" | "convenience" | "community" | "home" | "calendar" | "cart" | "compare" | "record" | "profile";
 const formatWon=(value:number)=>new Intl.NumberFormat('ko-KR').format(value)+'원';
 export default function Home() {
+  const [homeEntry,setHomeEntry]=useState<'choose'|'pantry'|'recommend'>('choose');
   const [todayView,setTodayView]=useState<'home'|'eat-out'|'convenience'>('home');
   const [recordDate,setRecordDate]=useState(()=>emptyDashboard().today);
   const pathname = usePathname();
@@ -256,14 +258,21 @@ export default function Home() {
         {tab === "record" && <details className="information-detail"><summary>내 재료로 만든 식사 이력</summary><PantryMealHistory userId={authUser?.id}/></details>}
         {tab === "ingredients" && <PantryHome initialEntry="pantry" userId={authUser?.id} onLogin={()=>setShowAuth(true)} onPlan={()=>setTab("plan")}/>}
         {tab === "home" && <>
-          <TasteHomeArrival/><header id="today-meals" className="today-choice-heading"><div className="today-heading-row"><h2>오늘의 식단</h2><span id="today-plan-tools" hidden={todayView!=='home'}/></div><p>뭘 먹을지 고민된다면 끼니플랜이 추천해 드려요.</p></header>
+          <TasteHomeArrival/>
+          {homeEntry==='choose'?<HomeEntry onChoose={entry=>{setHomeEntry(entry);trackAnalytics('home_entry_selected',{entry});}}/>:<>
+          <button className="home-entry-back" onClick={()=>setHomeEntry('choose')}>← 다른 방법으로 시작하기</button>
+          {homeEntry==='pantry'?<PantryHome initialEntry="pantry" userId={authUser?.id} onLogin={()=>setShowAuth(true)} onPlan={()=>setTab('plan')}/>:<>
+          <header id="today-meals" className="today-choice-heading"><div className="today-heading-row"><h2>오늘의 식단</h2><span id="today-plan-tools" hidden={todayView!=='home'}/></div><p>뭘 먹을지 고민된다면 끼니플랜이 추천해 드려요.</p></header>
           <nav className="section-navigation today-navigation today-choice-tabs" aria-label="오늘의 메뉴 선택" role="tablist">{(['home','eat-out','convenience'] as const).map((view,i)=><button key={view} id={`today-tab-${view}`} type="button" role="tab" aria-selected={todayView===view} aria-controls={`today-panel-${view}`} onClick={()=>setTodayView(view)}><span className="today-tab-check" aria-hidden="true"><Icon name="check" size={16}/></span><span>{['집에서','외식','편의점'][i]}</span></button>)}</nav>
           <div id="today-panel-home" role="tabpanel" aria-labelledby="today-tab-home" hidden={todayView!=='home'}><ShoppingPlanner simpleHome key={`home-plan-${authUser?.id??'guest'}`} dashboard={dashboard} userId={authUser?.id} onLogin={openPlanLogin}/></div>
           {todayView==='eat-out'&&<div id="today-panel-eat-out" role="tabpanel" aria-labelledby="today-tab-eat-out"><EatOutCard inline showRecording={false} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/></div>}
           {todayView==='convenience'&&<div id="today-panel-convenience" role="tabpanel" aria-labelledby="today-tab-convenience"><HomeMealChoice initialOpen showRecording={false}/></div>}
+          </>}</>}
+          <details className="home-entry-more"><summary>식단 계획 · 기록 · 다른 기능</summary>
           <LinkButton href="/plan" block>미리 식단 짜기</LinkButton>
           <LinkButton href="/taste" block>너, 내 입맛 얼마나 알아? 친구 퀴즈</LinkButton>
 
+          </details>
           <InstallPrompt active/>
         </>}
         {tab === "plan" && <><ShoppingPlanner key={`plan-${authUser?.id??'guest'}`} dashboard={dashboard} userId={authUser?.id} onLogin={openPlanLogin}/>{authUser&&<details className="planning-weekly-guide"><summary>이번 주 식단 가이드</summary><WeeklyGuideCard userId={authUser.id}/></details>}</>}

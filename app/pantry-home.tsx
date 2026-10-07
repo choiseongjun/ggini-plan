@@ -103,7 +103,7 @@ export function PantryHome({userId, onLogin, onPlan, initialEntry='welcome'}: {i
         }catch(e){if(!cancelled)setStorageError(e instanceof Error?e.message:'내 주방을 불러오지 못했어요.');return;}
       }
       if(cancelled)return;
-      setEntry(pantryForRecommendation(restored,today).owned.some(name=>!isPantrySeasoning(name))?'browse':'welcome');
+      setEntry(initialEntry!=='welcome'?initialEntry:pantryForRecommendation(restored,today).owned.some(name=>!isPantrySeasoning(name))?'browse':'welcome');
       setInventory(restored); setBasket(savedBasket); setSeen(savedSeen); setReady(true);
       setResult(null); setError(''); setNotice(''); setRemoved(null); setDialog(null); setDetailProduct(null);
       const linkedId=new URLSearchParams(window.location.search).get('recipe');
@@ -112,7 +112,7 @@ export function PantryHome({userId, onLogin, onPlan, initialEntry='welcome'}: {i
 
     });
     return () => {cancelled=true;cancelAnimationFrame(frame); request.current?.abort();};
-  }, [storageKey,today,userId,reload]);
+  }, [storageKey,today,userId,reload,initialEntry]);
 
   async function syncInventory(){
     const pending=pendingSave.current;if(!userId||!pending||syncInFlight.current)return;
