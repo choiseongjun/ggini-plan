@@ -1,6 +1,7 @@
 import {getPool} from './db';
 import type {PriceContext,RegionalPrice} from './regional-price-recommendations';
 import {applyMarketPrices} from './market-ingredient-prices';
+import {offerPattern} from './nearby-marts';
 import type {PlanProduct} from './shopping-plan';
 
 // Functions run far from the database, so read one region's rows (~60KB) instead of the whole
@@ -45,13 +46,18 @@ export async function withMarketPrices(products:PlanProduct[]):Promise<PlanProdu
  return result;
 }
 
+// 매장 이름 비교 키: 공백·(주)·주식회사를 빼고 소문자로(lib/nearby-marts storeKey와 같은 규칙).
+const STORE_KEY_SQL="lower(regexp_replace(o->>'store','\\(주\\)|주식회사|\\s','','g'))";
 // 참가격 조사 매장 가격 중 찾은 마트·메뉴 재료에 맞는 것만 DB 안에서 골라 온다(스냅숏 전체는 2.5MB).
+// 조사 매장인지도 함께 돌려준다 — 조사 매장이어도 이 메뉴 재료가 조사 품목에 없을 수 있다.
 export async function surveyedOffers(storeKeys:string[],keywords:string[]){
- if(!storeKeys.length||!keywords.length)return [];
+ if(!storeKeys.length)return {stores:new Set<string>(),rows:[]};
  let timer:ReturnType<typeof setTimeout>|undefined;
- const result=await Promise.race([getPool().query<{store:string;product:string;price:number;date:string}>(`SELECT lower(regexp_replace(o->>'store','\\(주\\)|주식회사|\\s','','g')) AS store,p->>'name' AS product,(o->>'price')::float8 AS price,o->>'date' AS date
-  FROM regional_price_snapshots s,jsonb_array_elements(s.payload) p,jsonb_array_elements(p->'offers') o
-  WHERE s.source='tprice' AND p->>'name' LIKE ANY($2::text[]) AND lower(regexp_replace(o->>'store','\\(주\\)|주식회사|\\s','','g'))=ANY($1::text[])
-  ORDER BY 1,3 LIMIT 300`,[storeKeys,keywords.map(k=>`%${k}%`)]),new Promise<never>((_,reject)=>{timer=setTimeout(()=>reject(new Error('Offer lookup timed out')),4000);})]).finally(()=>clearTimeout(timer));
- return result.rows;
+ const result=await Promise.race([getPool().query<{store:string;product:string|null;price:number|null;date:string|null}>(`WITH offers AS MATERIALIZED (
+   SELECT ${STORE_KEY_SQL} AS store,p->>'name' AS product,(o->>'price')::float8 AS price,o->>'date' AS date
+   FROM regional_price_snapshots s,jsonb_array_elements(s.payload) p,jsonb_array_elements(p->'offers') o
+   WHERE s.source='tprice' AND ${STORE_KEY_SQL}=ANY($1::text[]))
+  (SELECT store,product,price,date FROM offers WHERE product ~ ANY($2::text[]) ORDER BY 1,3 LIMIT 300)
+  UNION ALL SELECT DISTINCT store,NULL::text,NULL::float8,NULL::text FROM offers`,[storeKeys,keywords.map(offerPattern)]),new Promise<never>((_,reject)=>{timer=setTimeout(()=>reject(new Error('Offer lookup timed out')),4000);})]).finally(()=>clearTimeout(timer));
+ return {stores:new Set(result.rows.map(r=>r.store)),rows:result.rows.flatMap(r=>r.product!==null&&r.price!==null&&r.date!==null?[{store:r.store,product:r.product,price:r.price,date:r.date}]:[])};
 }

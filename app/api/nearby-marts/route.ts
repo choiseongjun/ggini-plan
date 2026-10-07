@@ -1,6 +1,6 @@
 import {NextRequest} from 'next/server';
 import {sameOrigin} from '../../../lib/auth';
-import {martSearchUrls,parseMartSearch,parseMarts,storeKey} from '../../../lib/nearby-marts';
+import {martSearchUrls,parseMartSearch,parseMarts,pickOffers,storeKey} from '../../../lib/nearby-marts';
 import {surveyedOffers} from '../../../lib/regional-prices-db';
 export const runtime='nodejs';
 const json=(data:unknown,status=200)=>Response.json(data,{status,headers:{'Cache-Control':'no-store'}});
@@ -21,9 +21,10 @@ export async function POST(request:NextRequest){
   if(searches.every(s=>s.status==='rejected'))throw new Error();
   const marts=[...new Map(searches.flatMap(s=>s.status==='fulfilled'?s.value:[]).map(m=>[m.id,m])).values()];
   // 조사 가격은 덤이다: 조회가 늦거나 실패해도 마트 목록은 그대로 보여 준다.
-  const offers=await surveyedOffers(marts.map(m=>storeKey(m.name)),input.keywords).catch(()=>[]);
-  const priced=marts.map(m=>{const key=storeKey(m.name);const seen=new Set<string>();return {...m,offers:offers.filter(o=>o.store===key&&!seen.has(o.product)&&seen.add(o.product)).slice(0,4).map(({product,price,date})=>({product,price,date}))};});
-  // 조사 가격이 있는 매장을 먼저, 나머지는 검색 순서대로 다섯 곳까지.
-  return json({marts:[...priced.filter(m=>m.offers.length),...priced.filter(m=>!m.offers.length)].slice(0,5)});
+  const survey=await surveyedOffers(marts.map(m=>storeKey(m.name)),input.keywords).catch(()=>({stores:new Set<string>(),rows:[]}));
+  const priced=marts.map(m=>{const key=storeKey(m.name);return {...m,surveyed:survey.stores.has(key),offers:pickOffers(survey.rows.filter(o=>o.store===key),input.keywords)};});
+  // 이 메뉴 재료의 조사 가격이 있는 매장 → 다른 참가격 조사 매장 → 나머지(검색 순서) 순으로 다섯 곳까지.
+  const rank=(m:typeof priced[number])=>m.offers.length?0:m.surveyed?1:2;
+  return json({marts:priced.map((m,i)=>({m,i})).sort((a,b)=>rank(a.m)-rank(b.m)||a.i-b.i).map(({m})=>m).slice(0,5)});
  }catch{return json({error:'마트 정보를 불러오지 못했어요. 잠시 후 다시 시도해 주세요.'},503);}
 }
