@@ -5,6 +5,7 @@ import {todaysMenu} from './meal-push';
 import {planProducts} from './shopping-plan-catalog';
 import {slotLabels} from './shopping-plan';
 import {claimNativeDelivery} from './native-push-claim';
+import {pushMenuFor,pushMenuMessage} from './push-menu';
 type Device={device_id:string;user_id:string|null;token:string;times:MealTimes};
 // 비회원 설치자에게 보내는 문구: 기록이 없으니 '지금 고르기'로 부른다. 누르면 홈에서 바로 추천받는다.
 const guestCopy:Record<string,[string,string]>={breakfast:['아침 뭐 먹지?','버튼 하나로 오늘 아침을 골라 드려요.'],lunch:['점심 뭐 먹지?','버튼 하나로 오늘 점심을 골라 드려요.'],dinner:['오늘 저녁 뭐 먹지?','1인분 재료비까지 버튼 하나로 골라 드려요.']};
@@ -23,7 +24,7 @@ export async function dispatchNativeMealReminders(){
  const [plans,recent,products]=await Promise.all([
   db.query('SELECT DISTINCT ON(user_id) user_id::text,conditions,meal_ids AS "mealIds" FROM shopping_plans WHERE user_id=ANY($1::bigint[]) ORDER BY user_id,id DESC',[ids]),
   db.query("SELECT DISTINCT user_id::text FROM food_intake_logs WHERE user_id=ANY($1::bigint[]) AND undone_at IS NULL AND COALESCE(eaten_at,created_at)>NOW()-INTERVAL '2 hours' AND product_id NOT LIKE 'ref:%' AND product_id NOT LIKE 'extra:%'",[ids]),
-  ids.length?planProducts():Promise.resolve([]),
+  planProducts(),
  ]);
  const byUser=new Map(plans.rows.map(p=>[p.user_id,p])),ate=new Set(recent.rows.map(r=>r.user_id));
  let sent=0,skipped=0,failed=0;
@@ -39,8 +40,11 @@ export async function dispatchNativeMealReminders(){
    WHERE d.device_id=$1 AND d.user_id=$2 AND d.token=$3 AND d.enabled AND d.permission_granted AND s.expires_at>NOW()`,[device.device_id,device.user_id,device.token])).rowCount;
   if(!active||(device.user_id&&ate.has(device.user_id))){skipped++;await finish('skipped');continue;}
   const menu=guest?null:todaysMenu(byUser.get(device.user_id!),slot,day,products);
+  // 저장한 식단이 없으면(비회원 포함) 질문 대신 이번 끼니 메뉴 하나를 담아 보낸다. 후보가 없을 때만 일반 문구.
+  const suggestion=menu?null:pushMenuFor(products,slot,day,device.device_id);
   try{
-   if(guest)await sendFcm(device.token,guestCopy[slot][0],guestCopy[slot][1],'/?from=push',`meal-${slot}`);
+   if(suggestion){const message=pushMenuMessage(suggestion,slot);await sendFcm(device.token,message.title,message.body,message.url,`meal-${slot}`);}
+   else if(guest)await sendFcm(device.token,guestCopy[slot][0],guestCopy[slot][1],'/?from=push',`meal-${slot}`);
    else await sendFcm(device.token,menu?`오늘 ${slotLabels[slot]}은 ${menu.name}`:`${slotLabels[slot]} 챙길 시간이에요`,menu?'식사를 마쳤다면 끼니플랜에 기록해 주세요.':'끼니플랜에서 오늘 먹을 메뉴를 골라 보세요.',menu?'/record?from=push':'/?from=push',`meal-${slot}`);
   }catch(error){
    failed++;

@@ -151,6 +151,9 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
  const [catalogReady,setCatalogReady]=useState(false);
  // 식사 알림을 누르고 들어온 경우: 알림의 메뉴(오늘 끼니) 기록을 바로 열어 준다.
  const [pushMeal]=useState(()=>{if(typeof window==='undefined')return null;return new URLSearchParams(window.location.search).get('meal');});
+ // 알림이 골라 보낸 끼니(?slot=). 메뉴(?meal=)와 함께 와야 오늘 그 끼니를 이 메뉴로 채운다.
+ const [pushSlot]=useState<'breakfast'|'lunch'|'dinner'|null>(()=>{if(typeof window==='undefined')return null;const slot=new URLSearchParams(window.location.search).get('slot');return slot==='breakfast'||slot==='lunch'||slot==='dinner'?slot:null;});
+ const pushApplied=useRef(false);
  const learn=useCallback((list:PlanProduct[])=>{if(list.length)setProducts(prev=>{const byId=new Map(prev.map(p=>[p.id,p]));for(const p of list)byId.set(p.id,p);return [...byId.values()];});},[]);
  // 시세 참고 지역: 기본은 전국 평균(지역 시세로 계산한 값). 고른 지역은 이 기기에 남긴다.
  const [priceRegion,setPriceRegionState]=useState(DEFAULT_PRICE_REGION);
@@ -345,6 +348,22 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
   if(basketTotal(next.filter(Boolean),known,c.owned,c.supply,c.people)>shoppingBudgetLimit(c)){setError('장보기 예산을 초과해요. 예산을 조정해 주세요.');return;}
   if(next[index]!==ids[index]&&!locale.isTaiwan)trackPlanner('swapped');setConditions(c);setIds(next);remember(c,next);setMessage('이 끼니를 바꾸고 겹치는 재료를 합쳐 구매 목록을 다시 계산했어요.');
  }
+ // 알림의 "오늘 저녁 ○○ 어때요?"를 누르고 들어왔을 때: 오늘 그 끼니가 식단에 있으면 그 칸을, 없으면 이 메뉴 하나로 오늘 끼니를 채운다.
+ useEffect(()=>{
+  if(!simpleHome||locale.isTaiwan||!pushMeal||!pushSlot||pushApplied.current||loading||!catalogReady||!progress.ready)return;
+  pushApplied.current=true;
+  const today=locale.today(),start=conditions.startDate;
+  const index=ids.length&&start?mealSchedule(conditions).findIndex(s=>s.slot===pushSlot&&planDate(start,s.day)===today):-1;
+  if(index>=0){if(ids[index]!==pushMeal)void Promise.resolve().then(()=>chooseMeal(index,pushMeal)).then(()=>setMessage(`알림에서 고른 메뉴로 오늘 ${slotLabels[pushSlot]}을 바꿨어요. 마음에 안 들면 ‘다른 메뉴’를 눌러 보세요.`));return;}
+  const c={...conditions,tastes:undefined,days:1,startDate:today,slots:[pushSlot],meals:1};
+  void engine.products([pushMeal]).then(({products:found})=>{
+   if(!found.some(p=>p.id===pushMeal))return;
+   setConditions(c);setIds([pushMeal]);remember(c,[pushMeal]);
+   setMessage(`알림에서 고른 오늘 ${slotLabels[pushSlot]} 메뉴예요. 마음에 안 들면 ‘다른 메뉴’를 눌러 보세요.`);
+  }).catch(()=>{});
+  // Runs once when the planner is ready; the helpers it calls change identity every render.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+ },[simpleHome,pushMeal,pushSlot,loading,catalogReady,progress.ready]);
  async function resetCart(){
   const clean={...conditions,owned:[],supply:{}};
   const ok=await progress.reset(clean);
