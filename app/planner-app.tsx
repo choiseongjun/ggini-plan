@@ -19,7 +19,9 @@ import { Dashboard } from "./dashboard";
 import { ResetData } from "./reset-data";
 import {WellnessTracker} from "./wellness-tracker";
 import { FoodIntake } from "./food-intake";
-import {HomeEntry} from "./home-entry";
+import {FridgePick} from "./fridge-pick";
+// 홈 화면 공통 스타일(다른 기능 펼침 등). 예전 두 갈래 선택 화면은 FridgePick으로 바뀌었다.
+import "./home-entry.css";
 import { PantryHome } from "./pantry-home";
 import {PendingRecommendationPantry} from './recommendation-pantry';
 import {pendingPantryKey,pendingPantrySelection} from '../lib/recommendation-pantry';
@@ -259,7 +261,7 @@ export default function Home() {
         {tab === "ingredients" && <PantryHome initialEntry="pantry" userId={authUser?.id} onLogin={()=>setShowAuth(true)} onPlan={()=>setTab("plan")}/>}
         {tab === "home" && <>
           <TasteHomeArrival/>
-          {homeEntry==='choose'?<HomeEntry onChoose={entry=>{setHomeEntry(entry);trackAnalytics('home_entry_selected',{entry});}}/>:<>
+          {homeEntry==='choose'?<FridgePick userId={authUser?.id} onPantry={()=>setHomeEntry('pantry')} onRecommend={()=>setHomeEntry('recommend')}/>:<>
           {homeEntry!=='pantry'&&<BackButton onClick={()=>setHomeEntry('choose')}>홈으로</BackButton>}
           {homeEntry==='pantry'?<PantryHome standardResults onHome={()=>setHomeEntry('choose')} initialEntry="pantry" userId={authUser?.id} onLogin={()=>setShowAuth(true)} onPlan={()=>setTab('plan')}/>:<>
           <header id="today-meals" className="today-choice-heading"><div className="today-heading-row"><h2>오늘의 식단</h2><span id="today-plan-tools" hidden={todayView!=='home'}/></div><p>뭘 먹을지 고민된다면 끼니플랜이 추천해 드려요.</p></header>
