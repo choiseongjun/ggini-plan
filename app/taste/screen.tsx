@@ -6,6 +6,7 @@ import {tasteFoods} from '../../lib/taste-atlas';
 import {commonQuizMenus,quizMask,quizMenuIndices,quizScore,quizSelections,quizVerdict,tasteQuestions} from '../../lib/taste-quiz';
 import {trackAnalytics} from '../../lib/analytics';
 import TasteRoulette from './roulette';
+import TasteHomeCta from './home-cta';
 import {createQuizCard} from './share-card';
 import s from './taste.module.css';
 const sheet=getImageProps({src:'/taste/food-sheet.png',alt:'음식 사진',width:768,height:512}).props.src;
@@ -82,11 +83,12 @@ export default function TasteQuiz({target,initial,initialGuess,invalid=false}:{t
     <div className={s.pair} key={`${mode}-${answers.length}`}>{question.foods.map((index,side)=><button className={s.foodChoice} key={index} onClick={()=>answer(side)} aria-label={`${tasteFoods[index].name} 선택`}><div className={s.choicePhoto}><FoodPhoto index={index}/></div><span className={s.choiceName}>{tasteFoods[index].name}</span><small>{tasteFoods[index].tag}</small></button>)}</div>
    </section>
    <footer className={s.footer}>{answers.length>0?<Button variant="ghost" onClick={()=>{setAnswers(answers.slice(0,-1));focusHeading();}}>이전 질문</Button>:<span>가입도 입력도 없이 · 6번만 고르면 끝</span>}</footer>
-   <small className={s.imageNote}>음식 사진은 AI로 만든 예시예요.</small>
+   <TasteHomeCta compact/><small className={s.imageNote}>음식 사진은 AI로 만든 예시예요.</small>
   </>:<>
    <header className={s.intro}><span className={s.eyebrow}>{quizDone?'친구 입맛 채점표':'내 입맛 도전장 완성'}</span><h1 ref={heading} tabIndex={-1}>{quizDone?<>{score}개 맞혔어요.<br/><em>{quizVerdict(score)}</em></>:<>내 입맛 퀴즈,<br/><em>누가 다 맞힐까?</em></>}</h1><p>{quizDone?'맞힌 개수는 친구의 선택을 얼마나 잘 예상했는지예요.':'밥을 자주 먹는 그 친구에게 보내 봐요.'}</p></header>
-   {mine!==null&&<section className={s.challenge}><span className={s.eyebrow}>친구에게 이렇게 보내요</span><p>“우리 그렇게 같이 먹었는데,<br/>6개 다 맞힐 수 있어?”</p><Button block size="lg" onClick={share}>{quizDone?'이번엔 내 퀴즈 보내기':'친구에게 도전장 보내기'}</Button><small>링크에는 음식 선택만 담겨요. 이름과 계정은 필요 없어요.</small></section>}
-   {quizDone&&mine===null&&<section className={s.challenge}><h2>그럼 우리는 입맛도 통할까?</h2><p>이번엔 내 취향을 고르고,<br/>둘 다 선택한 메뉴로 룰렛을 돌려요.</p><Button block size="lg" onClick={startOwn}>내 취향 고르고 같이 먹을 메뉴 찾기</Button></section>}
+   <TasteHomeCta/>
+   {mine!==null&&<section className={s.challenge}><span className={s.eyebrow}>친구에게 이렇게 보내요</span><p>“우리 그렇게 같이 먹었는데,<br/>6개 다 맞힐 수 있어?”</p><Button block size="lg" variant="secondary" onClick={share}>{quizDone?'이번엔 내 퀴즈 보내기':'친구에게 도전장 보내기'}</Button><small>링크에는 음식 선택만 담겨요. 이름과 계정은 필요 없어요.</small></section>}
+   {quizDone&&mine===null&&<section className={s.challenge}><h2>그럼 우리는 입맛도 통할까?</h2><p>이번엔 내 취향을 고르고,<br/>둘 다 선택한 메뉴로 룰렛을 돌려요.</p><Button block size="lg" variant="secondary" onClick={startOwn}>내 취향 고르고 같이 먹을 메뉴 찾기</Button></section>}
    <Button variant="secondary" block disabled={exporting} onClick={exportCard}>{exporting?'이미지를 만들고 있어요…':quizDone?'채점표 이미지 저장·공유':'도전장 이미지 저장·공유'}</Button>
    {cardPreview&&<section className={s.cardPreview}><Image src={cardPreview} width={1080} height={1350} unoptimized alt={quizDone?'친구 입맛 퀴즈 채점표':'정답이 숨겨진 입맛 퀴즈 도전장'}/><LinkButton href={cardPreview} download="끼니플랜-입맛퀴즈.png" block>PNG 이미지 저장</LinkButton><Button block variant="secondary" onClick={shareImage}>이미지 공유하기</Button><small>인스타·쓰레드에 올릴 때 도전 링크도 함께 보내 주세요.</small></section>}
    <section className={s.scoreCard}><div className={s.resultTop}><b>{quizDone?'예상과 실제, 얼마나 달랐을까?':'내가 고른 여섯 끼'}</b><span>{quizDone?`${score} / 6`:'MY SIX PICKS'}</span></div>
