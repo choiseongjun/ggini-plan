@@ -2,8 +2,9 @@
 import {shoppingBudgetLimit} from '../lib/shopping-plan';
 
 import {useEffect,useState} from 'react';
-import {ProductThumb} from './product-thumb';
-import {MealSourceBadge,RecipeProductPreview} from './meal-source';
+import {MealPhotoGallery} from './meal-photo-gallery';
+import {Button} from './components/ui';
+import {RecipeProductPreview} from './meal-source';
 import {usePlannerLocale} from './planner-locale';
 import {basketTotal,type PlanProduct,type PlanConditions} from '../lib/shopping-plan';
 import {usePlanEngine} from './plan-engine';
@@ -33,23 +34,28 @@ export function MealAlternatives({index,ids,products,conditions,onChoose,disable
  const original=products.find(p=>p.id===ids[index]);
  if(!alternatives.length)return <p className="meal-alternatives-empty">현재 조건에서 재료나 음식 종류가 비슷한 메뉴를 찾지 못했어요. 아래 ‘메뉴 직접 검색하기’에서 다른 음식을 골라보세요.</p>;
  return <div className="meal-alternatives">
-  <p className="meal-alternatives-lead">🍽️ {original?'비슷한 메뉴를 골라 이 끼니만 바꿔요':'입맛에 맞는 메뉴를 골라보세요'}</p>
+  <p className="meal-alternatives-lead">{original?'비슷한 메뉴를 골라 이 끼니만 바꿔요':'입맛에 맞는 메뉴를 골라보세요'}</p>
   <div className="meal-alternatives-list" aria-label="이 끼니의 다른 메뉴 후보">
    {alternatives.map(p=>{
     const next=ids.map((id,idx)=>idx===index?p.id:id);
     const total=basketTotal(next.filter(Boolean),known,conditions.owned,conditions.supply,conditions.people);
     const open=openId===p.id;
     const cheaper=total<current,pricier=total>current;
+    const name=p.name.replace(/_/g,' · ');
     return <article key={p.id} className="meal-alternative-card">
-     {original&&<div className="meal-alternative-reasons">{mealSimilarity(original,p).reasons.map(reason=><span key={reason}>{reason}</span>)}</div>}
-     <div className="meal-alternative-head"><ProductThumb item={p} zoomable/><div><MealSourceBadge product={p}/><strong>{p.name}</strong><span>한 끼 {p.recipe?'재료비 ':''}약 {won(p.price/p.servings)}</span></div></div>
-     <p className={`meal-alternative-diff${cheaper?' is-cheaper':pricier?' is-pricier':''}`}>{total===current?'💬 전체 구매 금액이 같아요':cheaper?`💚 전체 구매에서 ${won(current-total)} 줄어요`:`🧡 전체 구매에 ${won(total-current)} 더 필요해요`}</p>
+     <div className="meal-alternative-head"><div><strong>{name}</strong><span>1인분 {p.recipe?'재료비 ':''}약 {won(p.price/p.servings)}</span></div></div>
+     <p className={`meal-alternative-diff${cheaper?' is-cheaper':pricier?' is-pricier':''}`}>{total===current?'장보기 금액 동일':`장보기 ${cheaper?'−':'+'}${won(Math.abs(total-current))}`}</p>
      <div className="meal-alternative-actions">
-      {p.recipe?<button type="button" aria-expanded={open} onClick={()=>setOpenId(open?null:p.id)}>{open?'레시피·영상 접기':'🎬 레시피·영상 보기'}</button>
-       :p.productUrl&&<a href={p.productUrl} target="_blank" rel="noopener noreferrer">상품 보기 ↗</a>}
-      <button type="button" className="primary-button" disabled={disabled||total>shoppingBudgetLimit(conditions)} onClick={()=>onChoose(index,p.id)}>{total>shoppingBudgetLimit(conditions)?`예산보다 ${won(total-conditions.budget)} 많아요`:'이 메뉴로 바꾸기'}</button>
+      <Button variant="secondary" size="sm" aria-expanded={open} aria-label={`${name} 상세 ${open?'접기':'보기'}`} onClick={()=>setOpenId(open?null:p.id)}>{open?'상세 접기':'사진·상세 보기'}</Button>
+      <Button size="sm" disabled={disabled||total>shoppingBudgetLimit(conditions)} onClick={()=>onChoose(index,p.id)}>{total>shoppingBudgetLimit(conditions)?'예산 초과':'이 메뉴로 변경'}</Button>
      </div>
-     {open&&p.recipe&&<RecipeProductPreview product={p}/>}
+     {open&&<div className="meal-alternative-detail">
+      <MealPhotoGallery product={p}/>
+      {original&&<p className="meal-alternative-detail-note">{mealSimilarity(original,p).reasons.join(' · ')}</p>}
+      <p className="meal-alternative-detail-note">장보기 차액은 이 메뉴로 바꿨을 때 전체 식단의 추가 구매 예상금액 차이예요.</p>
+      {p.recipe?<details><summary>재료·레시피·영상 보기</summary><RecipeProductPreview product={p}/></details>:p.productUrl&&<a href={p.productUrl} target="_blank" rel="noopener noreferrer">상품 상세 보기</a>}
+     </div>}
+
     </article>;
    })}
   </div>
