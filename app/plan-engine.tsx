@@ -7,6 +7,8 @@ import type {TodayContext} from '../lib/today-context';
 import type {SideExtra} from '../lib/side-pairing';
 import type {personalizeProducts} from '../lib/shopping-personalization';
 
+export type PantryRequest = {pantry:string[];pantryPriority:string[];pantryAllowShopping:boolean;cookingEffort?:'easy'|'everyday'};
+
 type Personalization = ReturnType<typeof personalizeProducts>['personalization'];
 export type RecommendResult = {ids: string[]; products: PlanProduct[]; today: TodayContext | null; personalization?: Personalization};
 
@@ -30,12 +32,12 @@ async function call<T>(body: Record<string, unknown>): Promise<T> {
 }
 
 // learn: 서버에서 받은 메뉴(전체 정보)를 화면이 알고 있는 목록에 합친다.
-export function remoteEngine(learn: (products: PlanProduct[]) => void,priceRegion=''): PlanEngine {
+export function remoteEngine(learn: (products: PlanProduct[]) => void,priceRegion='',pantryRequest?:PantryRequest): PlanEngine {
  const withLearn = <T extends {products: PlanProduct[]}>(d: T) => { learn(d.products); return d; };
  return {
   remote: true,
-  recommend: (conditions, previous, seed) => call<RecommendResult>({action: 'recommend', conditions, previous, seed,priceRegion}).then(withLearn),
-  swap: (ids, index, conditions, reason) => call<{ids: string[] | null; products: PlanProduct[]}>({action: 'swap', ids, index, conditions, reason}).then(withLearn),
+  recommend: (conditions, previous, seed) => call<RecommendResult>({action: 'recommend', conditions, previous, seed,priceRegion,...pantryRequest}).then(withLearn),
+  swap: (ids, index, conditions, reason) => pantryRequest&&ids.length===1?call<RecommendResult>({action:'recommend',conditions,previous:ids,priceRegion,...pantryRequest}).then(withLearn):call<{ids: string[] | null; products: PlanProduct[]}>({action: 'swap', ids, index, conditions, reason}).then(withLearn),
   alternatives: (ids, index, conditions, limit) => call<{alternativeIds:string[];products: PlanProduct[]}>({action: 'alternatives', ids, index, conditions, limit}).then(withLearn).then((d) => d.alternativeIds.flatMap(id=>{const p=d.products.find(p=>p.id===id);return p?[p]:[];})),
   picker: (ids, index, conditions) => call<{items: PickerItem[]; current: number}>({action: 'picker', ids, index, conditions}),
   products: (ids, conditions) => call<{products: PlanProduct[]; valid?: boolean}>({action: 'products', ids, conditions}).then(withLearn),

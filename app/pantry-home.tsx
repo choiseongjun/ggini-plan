@@ -3,6 +3,8 @@
 import {useEffect, useRef, useState} from 'react';
 import Link from 'next/link';
 import {priceReasonText} from '../lib/regional-price-recommendations';
+import {ShoppingPlanner} from './shopping-planner';
+import type {PantryRequest} from './plan-engine';
 import {HomeWelcome} from './home-welcome';
 import {PantryDiscovery} from './pantry-discovery';
 import {usePantryJourney} from './use-pantry-journey';
@@ -30,8 +32,9 @@ type Mood = typeof mealMoods[number]['id'];
 type RecommendationOverride = {owned?: string[]; shopping?: boolean; mood?: Mood};
 const label = (name: string) => name === '달걀' ? '계란' : name;
 
-export function PantryHome({userId, onLogin, onPlan, initialEntry='welcome'}: {initialEntry?:'welcome'|'pantry'|'browse';userId?: string; onLogin: () => void; onPlan: () => void}) {
+export function PantryHome({userId, onLogin, onPlan, initialEntry='welcome',standardResults=false}: {standardResults?:boolean;initialEntry?:'welcome'|'pantry'|'browse';userId?: string; onLogin: () => void; onPlan: () => void}) {
   const journey=usePantryJourney(userId);
+  const [standardRequest,setStandardRequest]=useState<PantryRequest|null>(null);
   const [entry,setEntry]=useState<'welcome'|'pantry'|'browse'>(initialEntry);
   const storageKey = `kkiniplan-pantry-preview-${userId ?? 'guest'}`;
   const [inventory, setInventory] = useState<PantryItem[]>([]);
@@ -164,6 +167,7 @@ export function PantryHome({userId, onLogin, onPlan, initialEntry='welcome'}: {i
 
   async function recommend(skip = false, override?: RecommendationOverride) {
     if (locked) return;
+    if(standardResults){setStandardRequest({pantry:skip?[]:override?.owned??owned,pantryPriority:priority,cookingEffort:override?.mood??mood,pantryAllowShopping:skip||(override?.shopping??allowShopping)});return;}
     const controller = new AbortController(); request.current = controller;
     const choice = mealMoods.find(item => item.id === (override?.mood ?? mood))!;
     setBusy(true); setDetailProduct(null); setError(''); setNotice(''); setCleanup(false); setUsedUp([]);
@@ -199,6 +203,7 @@ export function PantryHome({userId, onLogin, onPlan, initialEntry='welcome'}: {i
     {notice && <p className="pantry-notice" role="status"><Icon name="check" size={16}/>{notice}</p>}
   </>;
 
+  if(standardRequest)return <section><button className="home-entry-back" onClick={()=>setStandardRequest(null)}>← 재료 수정하기</button><p>{standardRequest.pantry.length?`내 재료 ${standardRequest.pantry.length}가지로 추천해요`:'새로운 메뉴를 추천해요'}</p><ShoppingPlanner simpleHome userId={userId} onLogin={onLogin} pantryRequest={standardRequest}/></section>;
   return <section className="pantry-home">
     {storageError&&<div className="pantry-error" role="alert"><p>{storageError}</p>{userId&&<>{hasPendingSave&&<button disabled={syncing} onClick={()=>void syncInventory()}>저장 다시 시도</button>}<button disabled={syncing} onClick={()=>{pendingSave.current=null;setHasPendingSave(false);setReload(v=>v+1);}}>서버 재료 다시 불러오기</button></>}</div>}
     {syncing&&<p role="status">내 주방을 서버에 저장하고 있어요…</p>}

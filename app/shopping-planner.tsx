@@ -45,7 +45,7 @@ import { Checkbox } from "./components/checkbox";
 import { useLoadingTask } from "./app-loading";
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {priceReasonText,priceRegionLabel} from '../lib/regional-price-recommendations';
-import {PlanEngineContext,localEngine,remoteEngine} from './plan-engine';
+import {PlanEngineContext,localEngine,remoteEngine,type PantryRequest} from './plan-engine';
 import Link from 'next/link';
 import type {personalizeProducts} from '../lib/shopping-personalization';
 import {healthFlags,type TodayContext} from '../lib/today-context';
@@ -100,7 +100,7 @@ function todayReason(today:TodayContext|null){
 // 추천마다 조합을 조금씩 바꾸는 seed.
 const newSeed=()=>Math.floor(Math.random()*2**31);
 function encodeDraft(conditions:PlanConditions,mealIds:string[]){return JSON.stringify({conditions,mealIds,savedAt:Date.now()});}
-export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSetup=false,simpleHome=false}:{userId?:string;onLogin:()=>void;mode?:'plan'|'cart'|'settings';dashboard?:DashboardData|null;initialSetup?:boolean;simpleHome?:boolean}){
+export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSetup=false,simpleHome=false,pantryRequest}:{userId?:string;onLogin:()=>void;mode?:'plan'|'cart'|'settings';dashboard?:DashboardData|null;initialSetup?:boolean;simpleHome?:boolean;pantryRequest?:PantryRequest}){
  const locale=usePlannerLocale();
  const [simpleDate,setSimpleDate]=useState(()=>locale.today());
  const startLoading=useLoadingTask();
@@ -151,7 +151,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
  const [priceRegion,setPriceRegionState]=useState(DEFAULT_PRICE_REGION);
  useEffect(()=>{try{const saved=localStorage.getItem(PRICE_REGION_KEY);if(saved!==null&&saved!==DEFAULT_PRICE_REGION){const frame=requestAnimationFrame(()=>setPriceRegionState(saved));return()=>cancelAnimationFrame(frame);}}catch{/* 기본 지역 사용 */}},[]);
  const setPriceRegion=(region:string)=>{setPriceRegionState(region);try{localStorage.setItem(PRICE_REGION_KEY,region);}catch{/* 이번 방문에만 적용 */}};
- const remote=useMemo(()=>remoteEngine(learn,priceRegion),[learn,priceRegion]);
+ const remote=useMemo(()=>remoteEngine(learn,priceRegion,pantryRequest),[learn,priceRegion,pantryRequest]);
  const local=useMemo(()=>localEngine(products),[products]);
  const engine=locale.isTaiwan?local:remote;
  const [automaticBudget,setAutomaticBudget]=useState(false);
@@ -270,7 +270,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
   scrollToAppTop(plannerRef.current);
   setMessage('');setError('');if(!progress.ready){setError('구매 상태를 먼저 불러와 주세요.');return;}
   // 예산 활용 방식은 예산을 입력받는 대만판에서만 고른다. 한국판은 세 모드 모두 같은 기준(balanced)으로 계산한다.
-  const c=parseConditions({...input,...(!locale.isTaiwan?{cookingEffort:input.cookingEffort??'easy'}:{}),budgetMode:locale.isTaiwan?input.budgetMode:'balanced',startDate:input.startDate&&input.startDate>locale.today()?input.startDate:locale.today(),supply:conditions.supply});
+  const c=parseConditions({...input,...(pantryRequest?{days:1,meals:1,slots:[input.slots?.[0]??'dinner'],mealMode:'cook',sideCount:0,mealSideCounts:undefined}:{}),...(!locale.isTaiwan?{cookingEffort:pantryRequest?.cookingEffort??input.cookingEffort??'easy'}:{}),budgetMode:locale.isTaiwan?input.budgetMode:'balanced',startDate:input.startDate&&input.startDate>locale.today()?input.startDate:locale.today(),supply:conditions.supply});
   if(!c){setError(locale.isTaiwan?'챙길 끼니와 장보기 예산을 확인해 주세요.':'챙길 끼니를 선택하고, 한 끼 재료비 상한은 비워 두거나 500~50,000원으로 입력해 주세요.');return;}
   trackAnalytics('recommendation_started',auto?{source:'auto'}:{});
   setBusy(true);setIds([]);remember(c,[]);
@@ -399,9 +399,9 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
  // 처음 온 사람은 버튼을 누르기 전에 떠나는 경우가 많다 — 이 기기에서 한 번만, 지금 끼니를 바로 골라 보여 준다.
  const autoTried=useRef(false);
  useEffect(()=>{
-  if(!simpleHome||locale.isTaiwan||mode!=='plan'||loading||busy||ids.length||!progress.ready||!catalogReady||quickSetup||pushMeal||autoTried.current)return;
+  if(!simpleHome||locale.isTaiwan||mode!=='plan'||loading||busy||(!pantryRequest&&ids.length>0)||!progress.ready||!catalogReady||quickSetup||pushMeal||autoTried.current)return;
   autoTried.current=true;
-  try{if(localStorage.getItem(AUTO_RECOMMEND_KEY))return;localStorage.setItem(AUTO_RECOMMEND_KEY,'1');}catch{return;}
+  if(!pantryRequest){try{if(localStorage.getItem(AUTO_RECOMMEND_KEY))return;localStorage.setItem(AUTO_RECOMMEND_KEY,'1');}catch{return;}}
   const frame=requestAnimationFrame(()=>recommendNow(true));
   return()=>cancelAnimationFrame(frame);
   // Runs once after bootstrap; recommendNow reads the latest conditions.
