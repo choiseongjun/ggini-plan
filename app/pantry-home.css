@@ -397,3 +397,22 @@
 .pantry-home .pantry-inventory-item .pantry-icon-button{width:auto;min-width:60px;padding:8px;font-size:12px;}
 
 .pantry-price-region{display:grid;gap:8px;margin:16px 0;font-size:14px}.pantry-price-region select{max-width:100%;padding:12px;border:1px solid #ccd3c2;border-radius:12px;background:#fff;color:inherit;font:inherit}.pantry-price-region small{color:#68725f}
+
+/* Keep ingredient entry and its recommendation action distinct from browsing. */
+.pantry-input-label{display:block;margin-top:18px;font-size:14px;font-weight:700;}
+.pantry-input-label+.pantry-add{margin-top:8px;}
+.pantry-home .pantry-pick-ingredients{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;margin:14px 0;background:#f3f6ed;text-align:left;border-color:#dce4d1;}
+.pantry-pick-ingredients strong,.pantry-pick-ingredients small{display:block;}
+.pantry-pick-ingredients strong{font-size:13px;font-weight:400;}
+.pantry-home .pantry-pick-ingredients small{font-size:14px;font-weight:700;color:var(--ink);margin-top:3px;}
+.pantry-pick-ingredients>svg{flex-shrink:0;}
+.pantry-without-ingredients{border-top:1px solid var(--line);padding-top:16px;margin:16px 0;display:grid;gap:8px;}
+.pantry-without-ingredients>span{font-size:13px;color:var(--muted);}
+.pantry-without-ingredients>button{display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;}
+.pantry-meal-panel>details{margin-top:16px;}
+
+
+
+.pantry-kitchen .pantry-photo-drop{border:1px solid #9db78b;background:#eaf2df;box-shadow:0 2px 6px #4056370a;}
+.pantry-kitchen .pantry-photo-select strong{font-size:15px;color:#36532a;}
+.pantry-kitchen .pantry-upload-icon{background:#d8e7c9;color:#36532a;}

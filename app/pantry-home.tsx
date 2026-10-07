@@ -77,6 +77,7 @@ export function PantryHome({userId, onLogin, onPlan, initialEntry='welcome',stan
   const {owned, priority} = pantryForRecommendation(inventory, today);
   const mainIngredients = owned.filter(name => !isPantrySeasoning(name));
   const seasonings = owned.filter(isPantrySeasoning);
+  const hasRecommendationIngredients = mainIngredients.length > 0 || !!extra.trim();
   const locked = busy || photoBusy || !ready || syncing || (!!userId&&!!storageError);
 
   useEffect(() => {
@@ -168,16 +169,18 @@ export function PantryHome({userId, onLogin, onPlan, initialEntry='welcome',stan
 
   async function recommend(skip = false, override?: RecommendationOverride) {
     if (locked) return;
+    let selected=override?.owned??owned;
+    let selectedPriority=priority;
+    if(!skip&&extra.trim()){
+      const entries=parsePantryEntry(extra);
+      if(!entries.length){setError('재료 이름을 확인해 주세요. 예: 계란, 김치, 두부');return;}
+      const next=mergePantryEntries(inventory,entries,false,today);
+      if(!updateInventory(next))return;
+      const nextPantry=pantryForRecommendation(next,today);
+      selected=nextPantry.owned;selectedPriority=nextPantry.priority;setExtra('');
+    }
     if(standardResults){
-      let selected=override?.owned??owned;
-      if(extra.trim()){
-        const entries=parsePantryEntry(extra);
-        if(!entries.length){setError('재료 이름을 확인해 주세요. 여러 재료는 쉼표로 나눠주세요.');return;}
-        const next=mergePantryEntries(inventory,entries,false,today);
-        if(!updateInventory(next))return;
-        selected=pantryForRecommendation(next,today).owned;setExtra('');
-      }
-      setStandardRequest({pantryDaily:true,pantry:extra.trim()?selected:skip?[]:selected,pantryPriority:priority,cookingEffort:override?.mood??mood,pantryAllowShopping:skip||(override?.shopping??allowShopping)});return;
+      setStandardRequest({pantryDaily:true,pantry:skip?[]:selected,pantryPriority:skip?[]:selectedPriority,cookingEffort:override?.mood??mood,pantryAllowShopping:skip||(override?.shopping??allowShopping)});return;
     }
     const controller = new AbortController(); request.current = controller;
     const choice = mealMoods.find(item => item.id === (override?.mood ?? mood))!;
@@ -185,7 +188,7 @@ export function PantryHome({userId, onLogin, onPlan, initialEntry='welcome',stan
     try {
       const response = await fetch('/api/shopping-plan/engine', {
         method: 'POST', headers: {'Content-Type': 'application/json'}, signal: controller.signal,
-        body: JSON.stringify({action: 'recommend', pantrySourceRecipes:true,priceRegion, recentMeals:recentRecipeIds(journey.journey.meals),favoriteMeals:journey.journey.favorites, pantry: skip ? [] : override?.owned ?? owned, pantryPriority: priority, pantryChoices: true, pantryAllowShopping: skip || (override?.shopping ?? allowShopping), previous: seen.slice(-60), conditions: {budget: 1000000, budgetUnlimited: true, meals: 1, days: 1, slots: ['dinner'], people: 1, sideCount: 0, mealMode: 'cook', cookingEffort: choice.effort, cooking: 'all', avoid: '', owned: [], goal: choice.goal}}),
+        body: JSON.stringify({action: 'recommend', pantrySourceRecipes:true,priceRegion, recentMeals:recentRecipeIds(journey.journey.meals),favoriteMeals:journey.journey.favorites, pantry: skip ? [] : selected, pantryPriority: skip ? [] : selectedPriority, pantryChoices: true, pantryAllowShopping: skip || (override?.shopping ?? allowShopping), previous: seen.slice(-60), conditions: {budget: 1000000, budgetUnlimited: true, meals: 1, days: 1, slots: ['dinner'], people: 1, sideCount: 0, mealMode: 'cook', cookingEffort: choice.effort, cooking: 'all', avoid: '', owned: [], goal: choice.goal}}),
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error ?? '추천을 불러오지 못했어요.');
@@ -221,12 +224,12 @@ export function PantryHome({userId, onLogin, onPlan, initialEntry='welcome',stan
     {syncing&&<p role="status">내 주방을 서버에 저장하고 있어요…</p>}
     {(result||entry!=='welcome')&&<header className="pantry-hero">
       {result ? <button className="pantry-back" disabled={locked} onClick={returnHome}><Icon name="left" size={16}/>내 주방으로</button> : <span className="pantry-eyebrow">있는 재료로, 나를 위한 한 끼</span>}
-      <h1 ref={heading} tabIndex={-1}>{result ? cooking?'이제 만들어볼까요?':'오늘은 이거 어때요?' : '오늘 뭐 해 먹을까요?'}</h1>
-      <p>{result ? cooking?'순서대로 만들고, 먹은 뒤 한 번만 기록해 주세요.':'메뉴를 골라 재료와 만드는 법을 확인해 보세요.' : mainIngredients.length?'저장한 재료로 만들기 좋은 메뉴를 골라요.':entry==='pantry'?'전부 적지 않아도 돼요. 생각나는 재료부터 알려주세요.':'재료 없이 먼저 골라도 괜찮아요.'}</p>
+      <h1 ref={heading} tabIndex={-1}>{result ? cooking?'이제 만들어볼까요?':'오늘은 이거 어때요?' : entry==='pantry'?'집에 뭐가 있나요?':'오늘 뭐 해 먹을까요?'}</h1>
+      <p>{result ? cooking?'순서대로 만들고, 먹은 뒤 한 번만 기록해 주세요.':'메뉴를 골라 재료와 만드는 법을 확인해 보세요.' : entry==='pantry'?'계란, 김치처럼 집에 있는 것만 알려주세요. 그 재료를 활용할 메뉴를 추천해요.':mainIngredients.length?'저장한 재료로 만들기 좋은 메뉴를 골라요.':'재료 없이 먼저 골라도 괜찮아요.'}</p>
     </header>}
 
     {!result&&<>
-      {!ready?<p role="status">내 주방을 준비하고 있어요…</p>:entry==='welcome'?<HomeWelcome userId={userId} onRecommend={()=>{setEntry('browse');trackAnalytics('pantry_browse_started');}} onPantry={()=>setEntry('pantry')} onPlan={onPlan}/>:<div className="pantry-compact-nav"><span>{mainIngredients.length?`내 주방 · 주재료 ${mainIngredients.length}가지`:'재료 등록은 나중에 해도 돼요'}</span><button onClick={()=>setEntry(entry==='pantry'?'browse':'pantry')}>{entry==='pantry'?'메뉴 바로 보기':mainIngredients.length?'재료 수정':'집에 있는 재료로 찾기'}<Icon name="chevron" size={14}/></button></div>}
+      {!ready?<p role="status">내 주방을 준비하고 있어요…</p>:entry==='welcome'?<HomeWelcome userId={userId} onRecommend={()=>{setEntry('browse');trackAnalytics('pantry_browse_started');}} onPantry={()=>setEntry('pantry')} onPlan={onPlan}/>:entry!=='pantry'&&<div className="pantry-compact-nav"><span>{mainIngredients.length?`집에 있는 재료 ${mainIngredients.length}가지`:'집에 있는 재료로도 추천받을 수 있어요'}</span><button onClick={()=>setEntry('pantry')}>집에 있는 재료 알려주기<Icon name="chevron" size={14}/></button></div>}
       {ready&&entry!=='pantry'&&<section className="pantry-saved-kitchen" aria-label="저장한 내 재료"><div className="pantry-section-heading"><h2>내 주방 <span className="pantry-count">{inventory.filter(i=>!i.planned).length}</span></h2><button type="button" onClick={()=>setEntry('pantry')}>재료 추가<Icon name="chevron" size={14}/></button></div><p>{inventory.length?'사진으로 확인하거나 직접 추가한 재료가 여기에 남아요.':'사진이나 직접 입력으로 재료를 한 번만 담아두세요.'}</p>{inventory.length>0&&<div className="pantry-saved-ingredients">{inventory.filter(i=>!i.planned).slice(0,8).map(i=><span key={i.id}>{label(i.name)}</span>)}{inventory.filter(i=>!i.planned).length>8&&<span>외 {inventory.filter(i=>!i.planned).length-8}가지</span>}</div>}<div className="pantry-kitchen-actions">{inventory.length>0&&<button type="button" onClick={()=>setDialog('manage')}>다 쓴 재료 정리{inventory.some(i=>i.planned)&&` · 구매 예정 ${inventory.filter(i=>i.planned).length}개`}</button>}{owned.length>0&&<button type="button" onClick={()=>{setEntry('pantry');void recommend(false);}} disabled={locked}>내 재료로 추천받기</button>}</div><small>{userId?'계정에 저장돼요 · 다른 기기에서도 이어서 사용하세요.':'이 기기에 저장돼요 · 로그인하면 계정에 재료를 저장할 수 있어요.'}</small></section>}
       {ready&&journey.ready&&entry==='browse'&&<PantryDiscovery key={userId??'guest'} owned={owned} favorites={journey.journey.favorites} recent={recentRecipeIds(journey.journey.meals)} priority={priority} simple={mood==='easy'} allowShopping={allowShopping} onShoppingChange={setAllowShopping} onSelect={product=>selectProduct(product,true)}/>}
     </>}
@@ -234,22 +237,25 @@ export function PantryHome({userId, onLogin, onPlan, initialEntry='welcome',stan
     {!result&&entry!=='welcome'&&entry!=='pantry'&&<nav className="pantry-quick-links" aria-label="다른 방법으로 한 끼 챙기기"><Link href="/convenience"><strong>요리 쉬는 날</strong><small>편의점에서 한 끼 찾기 ↗</small></Link><button onClick={onPlan}><strong>며칠 치 식단 계획</strong><small>식단부터 장보기까지 ↗</small></button><Link href="/record"><strong>먹은 음식 기록</strong><small>내 식사 돌아보기 ↗</small></Link></nav>}
     {!result && entry==='pantry' && <div className="pantry-home-grid">
       <section className="pantry-kitchen" aria-labelledby="pantry-kitchen-title">
-        <div className="pantry-section-heading"><h2 id="pantry-kitchen-title">내 주방 <span className="pantry-count">{ready ? owned.length : '…'}</span></h2><button className="pantry-text-button" disabled={locked} onClick={() => setDialog('manage')}>재료 관리<Icon name="chevron" size={14}/></button></div>
+        <div className="pantry-section-heading"><h2 id="pantry-kitchen-title">집에 있는 재료 <span className="pantry-count">{ready ? owned.length : '…'}</span></h2><button className="pantry-text-button" disabled={locked} onClick={() => setDialog('manage')}>수정·삭제<Icon name="chevron" size={14}/></button></div>
         {!ready ? <div className="pantry-empty" role="status">내 재료를 불러오는 중…</div> : mainIngredients.length ? <>
           <div className="pantry-owned-list" aria-label="먼저 쓸 재료 선택">{mainIngredients.slice(0, 8).map(name => <button key={name} aria-pressed={inventory.some(item => item.name === name && !item.planned && item.useSoon)} disabled={locked} onClick={() => togglePriority(name)}>{label(name)}{inventory.some(item => item.name === name && !item.planned && item.useSoon) && <Icon name="check" size={13}/>}</button>)}{mainIngredients.length > 8 && <button disabled={locked} onClick={() => setDialog('manage')}>+{mainIngredients.length - 8}가지</button>}</div>
           <p className="pantry-hint">먼저 쓰고 싶은 재료가 있다면 눌러주세요.</p>
-        </> : <div className="pantry-empty"><Icon name="bag" size={28}/><div><strong>지금 있는 재료부터 담아볼까요?</strong><p>전부 적지 않아도 돼요. 생각나는 것부터!</p></div></div>}
-        <form className="pantry-add" onSubmit={event => {event.preventDefault(); addText();}}><input ref={input} aria-label="집에 있는 재료" placeholder="계란, 김치, 두부 반 모…" maxLength={1000} value={extra} onChange={event => setExtra(event.target.value)} disabled={locked}/><button type="submit" disabled={locked || !extra.trim()}>추가</button></form>
-        <div className="pantry-input-help"><small>여러 재료는 쉼표로 나눠주세요.</small><button className="pantry-text-button" disabled={locked} onClick={() => setDialog('picker')}>목록에서 고르기<Icon name="chevron" size={14}/></button></div>
-        <p className="pantry-hint">{userId?'추가한 재료는 내 계정에 저장돼요.':'추가한 재료는 이 기기에 저장돼요.'} 수량·날짜는 선택이에요.</p>
-        <PantryPhotoInput disabled={busy || !ready || syncing || !!storageError} userId={userId} onLogin={onLogin} onConfirm={addIngredients} onBusyChange={setPhotoBusy}/>
-        <details className="pantry-seasonings"><summary>기본 양념 {seasonings.length ? `${seasonings.length}가지 보유` : '있다면 함께 알려주세요'}<span>선택</span></summary><div className="pantry-chips">{[...new Set([...basicPantryStaples, ...seasonings])].map(name => <button key={name} aria-pressed={seasonings.includes(name)} disabled={locked} onClick={() => seasonings.includes(name) ? updateInventory(inventory.filter(item => item.planned || item.name !== name)) : addIngredients([name])}>{label(name)}{seasonings.includes(name) && ' ✓'}</button>)}<button disabled={locked} onClick={() => setDialog('picker')}>다른 양념 찾기</button></div></details>
+        </> : <p className="pantry-hint">생각나는 재료 1개만 알려주셔도 돼요.</p>}
+        <label className="pantry-input-label" htmlFor="pantry-ingredient-entry">재료 이름 적기</label><form className="pantry-add" onSubmit={event => {event.preventDefault(); addText();}}><input id="pantry-ingredient-entry" ref={input} aria-label="집에 있는 재료" placeholder="예: 계란, 김치, 두부" maxLength={1000} value={extra} onChange={event => setExtra(event.target.value)} disabled={locked}/><button type="submit" disabled={locked || !extra.trim()}>추가</button></form>
+        <p className="pantry-hint">여러 개라면 쉼표로 나눠 적어주세요.</p><PantryPhotoInput disabled={busy || !ready || syncing || !!storageError} userId={userId} onLogin={onLogin} onConfirm={addIngredients} onBusyChange={setPhotoBusy}/><button className="pantry-pick-ingredients" disabled={locked} onClick={() => setDialog('picker')}><span><strong>이름을 쓰기 번거롭다면</strong><small>채소·고기 등을 눌러서 고르기</small></span><Icon name="chevron" size={18}/></button>
+        <p className="pantry-hint">{userId?'추가한 재료는 내 계정에 저장돼요.':'추가한 재료는 이 기기에 저장돼요.'}</p>
+
+        <details className="pantry-seasonings"><summary>소금·간장 같은 양념도 있나요? {seasonings.length ? `${seasonings.length}가지` : ''}<span>선택</span></summary><div className="pantry-chips">{[...new Set([...basicPantryStaples, ...seasonings])].map(name => <button key={name} aria-pressed={seasonings.includes(name)} disabled={locked} onClick={() => seasonings.includes(name) ? updateInventory(inventory.filter(item => item.planned || item.name !== name)) : addIngredients([name])}>{label(name)}{seasonings.includes(name) && ' ✓'}</button>)}<button disabled={locked} onClick={() => setDialog('picker')}>다른 양념 찾기</button></div></details>
         {inventory.some(item => item.planned || (item.expiresOn && item.expiresOn < today)) && <button className="pantry-inventory-alert" disabled={locked} onClick={() => setDialog('manage')}>구매 예정·소비기한 지난 재료 확인<Icon name="chevron" size={16}/></button>}
       </section>
 
       <section className="pantry-meal-panel" aria-labelledby="pantry-meal-title">
-        <div className="pantry-section-heading"><h2 id="pantry-meal-title">오늘은 어떤 한 끼?</h2><span className="pantry-serving">원문 분량</span></div>
-        <details><summary>추천 조건 더 설정하기</summary>
+        <div className="pantry-section-heading"><h2 id="pantry-meal-title">이제 메뉴를 골라볼까요?</h2></div>
+        <div className="pantry-recommend-action"><button className="pantry-primary" disabled={locked||!hasRecommendationIngredients} onClick={() => recommend(false)}><Icon name="spark" size={18}/>{busy ? '메뉴 찾는 중…' : '이 재료로 메뉴 추천받기'}<Icon name="arrow" size={18}/></button>
+        <p className="pantry-cta-caption">{hasRecommendationIngredients ? `${standardResults?'아침·점심·저녁 메뉴를 골라드려요.':'적어주신 재료를 활용할 메뉴를 찾아요.'} ${allowShopping?'더 필요한 재료도 함께 알려드려요.':'추가 장보기 없이 만들 메뉴를 찾아요.'}` : '위에서 집에 있는 재료를 1개 이상 알려주세요.'}</p></div>
+        {!hasRecommendationIngredients&&<div className="pantry-without-ingredients"><span>재료가 없거나, 먼저 메뉴를 보고 싶다면</span><button disabled={locked} onClick={()=>recommend(true)}>재료 없이 메뉴 추천받기<Icon name="chevron" size={16}/></button><small>집에 있는 재료와 관계없이 추천해요.</small></div>}
+        <details><summary>요리 취향 바꾸기 (선택)</summary>
         <label className="pantry-price-region">장보기 시세 참고 지역<select value={priceRegion} disabled={locked} onChange={e=>setPriceRegion(e.target.value)}><option value="">선택 안 함</option>{['서울','부산','대구','인천','광주','대전','울산','세종','수원','성남','고양','용인','춘천','강릉','청주','천안','전주','순천','포항','안동','창원','제주'].map(region=><option key={region}>{region}</option>)}</select><small>비슷한 메뉴라면 가격이 내려간 재료를 먼저 추천해요.</small></label>
         <div className="pantry-moods" aria-label="오늘의 식사 취향">{mealMoods.map(item => <button key={item.id} aria-pressed={mood === item.id} disabled={locked} onClick={() => setMood(item.id)}><strong>{item.label}</strong><small>{item.description}</small>{mood === item.id && <Icon name="check" size={16}/>}</button>)}</div>
         <label className="pantry-shopping-toggle">
@@ -258,8 +264,6 @@ export function PantryHome({userId, onLogin, onPlan, initialEntry='welcome',stan
           <span className="pantry-shopping-copy"><strong>재료를 조금 더 사도 괜찮아요</strong><small id="pantry-shopping-description">{allowShopping ? '메뉴마다 더 필요한 재료를 알려드려요.' : '등록한 재료로 만들 수 있는 메뉴만 찾아요.'}</small></span>
         </label>
         </details>
-        <div className="pantry-recommend-action"><button className="pantry-primary" disabled={locked} onClick={() => recommend(!mainIngredients.length)}><Icon name="spark" size={18}/>{busy ? '메뉴 찾는 중…' : (mainIngredients.length||(standardResults&&extra.trim())) ? standardResults?'이 재료로 아침·점심·저녁 추천받기':'이 재료로 메뉴 추천받기' : '메뉴 먼저 둘러보기'}<Icon name="arrow" size={18}/></button>
-        <p className="pantry-cta-caption">{mainIngredients.length ? `${mainIngredients.length}가지 주재료${priority.length ? ' · 먼저 쓸 재료 우선' : ''}로 찾아요` : '재료를 추가하면 내 주방에 맞춰 추천해요.'}</p></div>
         {feedback}
       </section>
     </div>}
@@ -307,7 +311,7 @@ export function PantryHome({userId, onLogin, onPlan, initialEntry='welcome',stan
     {basket.length > 0 && <details className="pantry-shopping"><summary><Icon name="bag" size={17}/>다음 장보기 <span>{basket.length}가지</span></summary><ul>{basket.map(name => <li key={name}><span>{label(name)}</span><a href={`https://search.shopping.naver.com/search/all?query=${encodeURIComponent(name)}`} target="_blank" rel="noopener noreferrer">상품 찾기 ↗</a><button aria-label={`${name} 장보기에서 삭제`} onClick={() => {const next = basket.filter(value => value !== name); setBasket(next); save(inventory, next);}}><Icon name="close" size={16}/></button></li>)}</ul></details>}
     {!result && <p className="pantry-storage-note">재료와 조리법을 대조한 레시피부터 추천해요. {userId?'내 재료는 계정에 저장돼요.':'내 재료는 이 기기에 저장돼요.'}</p>}
 
-    {dialog === 'picker' && <PantryDialog title="집에 있는 재료 고르기" onClose={() => setDialog(null)}><PantryIngredientPicker owned={owned} onAdd={addIngredients} onClose={() => setDialog(null)}/></PantryDialog>}
+    {dialog === 'picker' && <PantryDialog title="집에 있는 것만 눌러주세요" onClose={() => setDialog(null)}><PantryIngredientPicker owned={owned} onAdd={addIngredients} onClose={() => setDialog(null)}/></PantryDialog>}
     {dialog === 'manage' && <PantryDialog title="내 재료 관리" onClose={() => {setDialog(null); setRemoved(null);}}><div className="pantry-dialog-body"><p className="pantry-muted">다 쓴 재료는 빼고, 남은 재료는 먼저 쓰도록 표시해요.</p>
       {removed && <div className="pantry-undo" role="status">{label(removed.name)} 삭제됨<button onClick={() => {updateInventory([...inventory, removed]); setRemoved(null);}}>되돌리기</button></div>}
       {!inventory.length && <p className="pantry-empty">아직 등록한 재료가 없어요.</p>}
