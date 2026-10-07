@@ -5,6 +5,7 @@ import {ProductThumb} from './product-thumb';
 import './meal-source.css';
 import {RecipeVideos} from './recipe-videos';
 import {RecipeIngredientProducts} from './recipe-ingredient-products';
+import {priceRegionLabel} from '../lib/regional-price-recommendations';
 
 export function MealSourceBadge({product}:{product:PlanProduct}){
  const locale=usePlannerLocale();
@@ -16,6 +17,8 @@ const won=(n:number)=>`${Math.round(n).toLocaleString('ko-KR')}원`;
 export function RecipeProductPreview({product,videos=true}:{product:PlanProduct;videos?:boolean}){
  if(!product.recipe)return null;
  const ungrouped=product.recipe.ingredients.filter(i=>!i.group);
+ const market=product.recipe.ingredients.find(i=>i.product.marketPrice)?.product.marketPrice;
+ const marketCount=new Set(product.recipe.ingredients.filter(i=>i.product.marketPrice).map(i=>i.product.id)).size;
  // Side-dish ingredients (밑반찬) come from a separately-generated recipe of their own — showing
  // each raw ingredient reads as more precise than it needs to be. Collapsed to just the side dish's
  // name; its price/nutrition still flow through the real ingredient products underneath.
@@ -26,12 +29,12 @@ export function RecipeProductPreview({product,videos=true}:{product:PlanProduct;
   {/* 재료마다 쓰는 양과 그만큼의 예상 가격. 통째로 산 포장값이 아니라 g당 가격 × 사용량이에요. */}
   <ul className="ingredient-cost-list">{ungrouped.map(({product:p,label,packs},i)=>{
    const name=label.replace(/\s*\(기본 양념\)$/,'');const pantry=p.price===0;
-   const body=<><ProductThumb item={p}/><span className="ingredient-cost-name">{name}</span><b className={pantry?'is-pantry':undefined}>{pantry?'기본 양념':`약 ${won(p.price*packs)}`}</b></>;
+   const body=<><ProductThumb item={p}/><span className="ingredient-cost-name">{name}</span><b className={pantry?'is-pantry':undefined}>{pantry?'기본 양념':<>{p.marketPrice&&<span className="ingredient-cost-market">시세</span>}약 {won(p.price*packs)}</>}</b></>;
    return <li key={`${p.id}-${i}`}>{p.productUrl?<a href={p.productUrl} target="_blank" rel="noopener noreferrer" aria-label={`${name} · ${p.name} 상품 보기 (새 창)`}>{body}</a>:<span>{body}</span>}</li>;})}
   {[...groups].map(([name,price])=><li key={name}><span><span className="food-thumb sand" aria-hidden="true">🥗</span><span className="ingredient-cost-name">{name} 밑반찬</span><b>약 {won(price)}</b></span></li>)}
   </ul>
-  <p className="ingredient-cost-total"><span>재료비 합계</span><b>약 {won(product.price)}</b></p>
-  <small className="ingredient-cost-note">g당 예상 소매가 × 쓰는 양으로 계산했어요. 간장·된장·식용유 같은 기본 양념은 집에 있다고 보고 빼요.</small>
+  <p className="ingredient-cost-total"><span>재료비 합계{market&&' · 시세 기반'}</span><b>약 {won(product.price)}</b></p>
+  <small className="ingredient-cost-note">{market?`‘시세’ 재료 ${marketCount}가지는 KAMIS 소매가격(${priceRegionLabel(market.region,market.computed)} ${market.date.slice(5).replace('-','/')} 조사) 기준, 나머지는 g당 예상 소매가로 쓰는 양만큼 계산했어요.`:'g당 예상 소매가 × 쓰는 양으로 계산했어요.'} 간장·된장·식용유 같은 기본 양념은 집에 있다고 보고 빼요.</small>
   {videos&&!product.recipe.assembly&&<RecipeVideos key={product.id} dishId={product.id}/>}
   {!product.recipe.assembly&&<RecipeIngredientProducts key={`ing-products-${product.id}`} ingredientNames={[...new Set(product.recipe.ingredients.map(({product:p})=>p.name))].slice(0,8)}/>}
  </div>;

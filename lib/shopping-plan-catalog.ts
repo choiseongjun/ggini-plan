@@ -1,4 +1,5 @@
 import {applyPairings} from './meal-pairings';
+import {withMarketPrices} from './regional-prices-db';
 import {listPairings} from './meal-pairing-store';
 import type { PlanProduct } from './shopping-plan';
 import {recipeProductsFromResults} from './recipe-optimizer-plan';
@@ -32,11 +33,11 @@ export async function sideProducts(): Promise<PlanProduct[]> {
 }
 
 export async function planProducts():Promise<PlanProduct[]> {
- if (cached && Date.now() - cached.at < TTL) return cached.products;
+ if (cached && Date.now() - cached.at < TTL) return cached.products.then(withMarketPrices);
  const products = Promise.all([recipeResults(),listPairings()]).then(([results,relations]) => applyPairings(recipeProductsFromResults(results),recipeProductsFromResults(results,'side'),relations).map(slimRecipe));
  cached = {at: Date.now(), products};
  products.catch(() => { if (cached?.products === products) cached = null; });
- return products;
+ return products.then(withMarketPrices);
 }
 
 // 재료마다 붙어 있던, 화면·계산에서 쓰지 않는 필드(AI 메모·검색어·갱신 시각 등)를 뺀다. 같은 재료가
