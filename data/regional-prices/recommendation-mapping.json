@@ -86,7 +86,8 @@
   {
     "name": "대파",
     "recipeNames": [
-      "대파"
+      "대파",
+      "파"
     ],
     "kamisNames": [
       "파"
@@ -279,5 +280,47 @@
       "멸치액젓"
     ],
     "varieties": []
+  },
+  {
+    "name": "무",
+    "recipeNames": [
+      "무"
+    ],
+    "kamisNames": [
+      "무"
+    ],
+    "varieties": []
+  },
+  {
+    "name": "오이",
+    "recipeNames": [
+      "오이"
+    ],
+    "kamisNames": [
+      "오이"
+    ],
+    "varieties": []
+  },
+  {
+    "name": "파프리카",
+    "recipeNames": [
+      "파프리카"
+    ],
+    "kamisNames": [
+      "파프리카"
+    ],
+    "varieties": []
+  },
+  {
+    "name": "청양고추",
+    "recipeNames": [
+      "청양고추"
+    ],
+    "kamisNames": [
+      "풋고추"
+    ],
+    "varieties": [
+      "청양고추"
+    ]
   }
 ]

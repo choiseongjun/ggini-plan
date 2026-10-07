@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {priceSignal,type RegionalPrice} from '../lib/regional-price-recommendations';
+import {priceSignal,priceReasonText,type RegionalPrice} from '../lib/regional-price-recommendations';
 import {pantrySourceProducts,pantrySourceRecommendations} from '../lib/pantry-source-recommendations';
 import type {PlanProduct} from '../lib/shopping-plan';
 const row:RegionalPrice={region:'서울',name:'호박',variety:'애호박',grade:'상품',unit:'1개',price:880,previous:1000,date:'2026-10-07',previousDate:'2026-09-30'};
@@ -34,4 +34,13 @@ test('home catalogue ingredients match exact raw names, not prepared products',(
  const home=(name:string)=>({recipe:{ingredients:[{product:{name}}]}} as PlanProduct);
  assert.equal(priceSignal(home('애호박'),context).bonus,0.6);
  assert.equal(priceSignal(home('애호박 볶음'),context).bonus,0);
+});
+test('home recipes match canonical names, skip basic seasonings and label computed national rows',()=>{
+ const home=(names:string[])=>({recipe:{ingredients:names.map(name=>({product:{name}}))}} as PlanProduct);
+ const scallion:RegionalPrice={...row,region:'전국',source:'kamis-computed',name:'파',variety:'대파',unit:'1kg',price:900,previous:1000};
+ const national={region:'전국',rows:[scallion,{...scallion,name:'간장',variety:'간장'}],today:'2026-10-07'};
+ const result=priceSignal(home(['파','간장']),national);
+ assert.deepEqual(result.reasons.map(r=>r.ingredient),['대파']);
+ assert.equal(result.reasons[0].computed,true);
+ assert.match(priceReasonText(result.reasons[0]),/^대파 지난주보다 10% 저렴 · 전국 평균\(계산값\) 10\/07 조사/);
 });
