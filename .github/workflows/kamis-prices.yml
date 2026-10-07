@@ -1,0 +1,33 @@
+name: Collect regional retail prices
+on:
+  schedule:
+    - cron: '30 11 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: regional-price-collection
+  cancel-in-progress: false
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm ci --ignore-scripts
+      - run: node scripts/collect-kamis.mjs
+        env:
+          KAMIS_SERVICE_KEY: ${{ secrets.KAMIS_SERVICE_KEY }}
+      - run: python scripts/collect-tprice.py
+      - run: python scripts/build-regional-prices.py
+      - run: python -m unittest discover -s tests -p 'test_*price*.py'
+      - run: node scripts/publish-regional-prices.mjs
+        env:
+          DATABASE_URL: ${{ secrets.FOOD_DEALS_DATABASE_URL }}

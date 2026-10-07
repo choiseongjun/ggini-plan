@@ -12,6 +12,7 @@ const client = new pg.Client({ connectionString: databaseUrl });
 try {
   await client.connect();
   await client.query('BEGIN');
+  await client.query(readFileSync(resolve(root, 'db/regional-prices.sql'), 'utf8'));
   await client.query(readFileSync(resolve(root, "db/schema.sql"), "utf8"));
   await client.query(readFileSync(resolve(root, "db/internationalization.sql"), "utf8"));
   await client.query(readFileSync(resolve(root, "db/taiwan.sql"), "utf8"));

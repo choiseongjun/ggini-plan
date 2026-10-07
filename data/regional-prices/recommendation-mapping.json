@@ -1,0 +1,283 @@
+[
+  {
+    "name": "두부",
+    "recipeNames": [
+      "두부"
+    ],
+    "kamisNames": [
+      "두부"
+    ],
+    "varieties": []
+  },
+  {
+    "name": "애호박",
+    "recipeNames": [
+      "애호박"
+    ],
+    "kamisNames": [
+      "호박"
+    ],
+    "varieties": [
+      "애호박"
+    ]
+  },
+  {
+    "name": "양파",
+    "recipeNames": [
+      "양파"
+    ],
+    "kamisNames": [
+      "양파"
+    ],
+    "varieties": []
+  },
+  {
+    "name": "감자",
+    "recipeNames": [
+      "감자"
+    ],
+    "kamisNames": [
+      "감자"
+    ],
+    "varieties": []
+  },
+  {
+    "name": "된장",
+    "recipeNames": [
+      "된장"
+    ],
+    "kamisNames": [
+      "된장"
+    ],
+    "varieties": []
+  },
+  {
+    "name": "간장",
+    "recipeNames": [
+      "진간장",
+      "국간장",
+      "간장"
+    ],
+    "kamisNames": [
+      "간장"
+    ],
+    "varieties": []
+  },
+  {
+    "name": "시금치",
+    "recipeNames": [
+      "시금치"
+    ],
+    "kamisNames": [
+      "시금치"
+    ],
+    "varieties": []
+  },
+  {
+    "name": "양배추",
+    "recipeNames": [
+      "양배추"
+    ],
+    "kamisNames": [
+      "양배추"
+    ],
+    "varieties": []
+  },
+  {
+    "name": "대파",
+    "recipeNames": [
+      "대파"
+    ],
+    "kamisNames": [
+      "파"
+    ],
+    "varieties": [
+      "대파"
+    ]
+  },
+  {
+    "name": "마늘",
+    "recipeNames": [
+      "마늘",
+      "다진마늘"
+    ],
+    "kamisNames": [
+      "깐마늘(국산)"
+    ],
+    "varieties": []
+  },
+  {
+    "name": "고춧가루",
+    "recipeNames": [
+      "고춧가루"
+    ],
+    "kamisNames": [
+      "고춧가루"
+    ],
+    "varieties": []
+  },
+  {
+    "name": "당근",
+    "recipeNames": [
+      "당근"
+    ],
+    "kamisNames": [
+      "당근"
+    ],
+    "varieties": []
+  },
+  {
+    "name": "고추장",
+    "recipeNames": [
+      "고추장"
+    ],
+    "kamisNames": [
+      "고추장"
+    ],
+    "varieties": []
+  },
+  {
+    "name": "생강",
+    "recipeNames": [
+      "생강"
+    ],
+    "kamisNames": [
+      "생강"
+    ],
+    "varieties": []
+  },
+  {
+    "name": "홍고추",
+    "recipeNames": [
+      "홍고추"
+    ],
+    "kamisNames": [
+      "붉은고추"
+    ],
+    "varieties": []
+  },
+  {
+    "name": "느타리버섯",
+    "recipeNames": [
+      "느타리버섯"
+    ],
+    "kamisNames": [
+      "느타리버섯"
+    ],
+    "varieties": [
+      "느타리버섯"
+    ]
+  },
+  {
+    "name": "콩나물",
+    "recipeNames": [
+      "콩나물"
+    ],
+    "kamisNames": [
+      "콩나물"
+    ],
+    "varieties": []
+  },
+  {
+    "name": "바지락",
+    "recipeNames": [
+      "바지락"
+    ],
+    "kamisNames": [
+      "바지락"
+    ],
+    "varieties": []
+  },
+  {
+    "name": "꽈리고추",
+    "recipeNames": [
+      "꽈리고추"
+    ],
+    "kamisNames": [
+      "풋고추"
+    ],
+    "varieties": [
+      "꽈리고추"
+    ]
+  },
+  {
+    "name": "토마토",
+    "recipeNames": [
+      "토마토"
+    ],
+    "kamisNames": [
+      "토마토"
+    ],
+    "varieties": []
+  },
+  {
+    "name": "알배기배추",
+    "recipeNames": [
+      "알배기 배추"
+    ],
+    "kamisNames": [
+      "알배기배추"
+    ],
+    "varieties": []
+  },
+  {
+    "name": "팽이버섯",
+    "recipeNames": [
+      "팽이버섯"
+    ],
+    "kamisNames": [
+      "팽이버섯"
+    ],
+    "varieties": []
+  },
+  {
+    "name": "새송이버섯",
+    "recipeNames": [
+      "새송이버섯"
+    ],
+    "kamisNames": [
+      "새송이버섯"
+    ],
+    "varieties": []
+  },
+  {
+    "name": "김치",
+    "recipeNames": [
+      "김치"
+    ],
+    "kamisNames": [
+      "김치"
+    ],
+    "varieties": []
+  },
+  {
+    "name": "새우젓",
+    "recipeNames": [
+      "새우젓"
+    ],
+    "kamisNames": [
+      "새우젓"
+    ],
+    "varieties": []
+  },
+  {
+    "name": "미역",
+    "recipeNames": [
+      "미역"
+    ],
+    "kamisNames": [
+      "마른미역"
+    ],
+    "varieties": []
+  },
+  {
+    "name": "멸치액젓",
+    "recipeNames": [
+      "멸치액젓"
+    ],
+    "kamisNames": [
+      "멸치액젓"
+    ],
+    "varieties": []
+  }
+]

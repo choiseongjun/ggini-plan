@@ -62,5 +62,9 @@ next-env.d.ts
 
 # Local build verification, caches, and generated review artifacts
 /.cache/
+/data/regional-prices/raw/
+/data/regional-prices/preview.json
+/data/regional-prices/preview.json.tmp
+__pycache__/
 /artifacts/
 /output/
