@@ -3,6 +3,7 @@
 import {useEffect, useRef, useState} from 'react';
 import Link from 'next/link';
 import {priceReasonText} from '../lib/regional-price-recommendations';
+import {BackButton,Button} from './components/ui';
 import {ShoppingPlanner} from './shopping-planner';
 import type {PantryRequest} from './plan-engine';
 import {HomeWelcome} from './home-welcome';
@@ -32,7 +33,7 @@ type Mood = typeof mealMoods[number]['id'];
 type RecommendationOverride = {owned?: string[]; shopping?: boolean; mood?: Mood};
 const label = (name: string) => name === '달걀' ? '계란' : name;
 
-export function PantryHome({userId, onLogin, onPlan, initialEntry='welcome',standardResults=false}: {standardResults?:boolean;initialEntry?:'welcome'|'pantry'|'browse';userId?: string; onLogin: () => void; onPlan: () => void}) {
+export function PantryHome({userId, onLogin, onPlan, initialEntry='welcome',standardResults=false,onHome}: {onHome?:()=>void;standardResults?:boolean;initialEntry?:'welcome'|'pantry'|'browse';userId?: string; onLogin: () => void; onPlan: () => void}) {
   const journey=usePantryJourney(userId);
   const [standardRequest,setStandardRequest]=useState<PantryRequest|null>(null);
   const [entry,setEntry]=useState<'welcome'|'pantry'|'browse'>(initialEntry);
@@ -213,8 +214,9 @@ export function PantryHome({userId, onLogin, onPlan, initialEntry='welcome',stan
     {notice && <p className="pantry-notice" role="status"><Icon name="check" size={16}/>{notice}</p>}
   </>;
 
-  if(standardRequest)return <section><button className="home-entry-back" onClick={()=>setStandardRequest(null)}>← 재료 수정하기</button><p>{standardRequest.pantry.length?`내 재료 ${standardRequest.pantry.length}가지로 추천해요`:'새로운 메뉴를 추천해요'}</p><ShoppingPlanner simpleHome userId={userId} onLogin={onLogin} pantryRequest={standardRequest}/></section>;
+  if(standardRequest)return <section><div className="pantry-result-nav"><BackButton onClick={onHome??(()=>setStandardRequest(null))}>홈으로</BackButton><Button variant="secondary" size="sm" onClick={()=>setStandardRequest(null)}>재료 수정</Button></div><p>{standardRequest.pantry.length?`내 재료 ${standardRequest.pantry.length}가지로 추천해요`:'새로운 메뉴를 추천해요'}</p><ShoppingPlanner simpleHome userId={userId} onLogin={onLogin} pantryRequest={standardRequest}/></section>;
   return <section className="pantry-home">
+    {onHome&&<BackButton onClick={onHome}>홈으로</BackButton>}
     {storageError&&<div className="pantry-error" role="alert"><p>{storageError}</p>{userId&&<>{hasPendingSave&&<button disabled={syncing} onClick={()=>void syncInventory()}>저장 다시 시도</button>}<button disabled={syncing} onClick={()=>{pendingSave.current=null;setHasPendingSave(false);setReload(v=>v+1);}}>서버 재료 다시 불러오기</button></>}</div>}
     {syncing&&<p role="status">내 주방을 서버에 저장하고 있어요…</p>}
     {(result||entry!=='welcome')&&<header className="pantry-hero">
