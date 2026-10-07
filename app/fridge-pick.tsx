@@ -2,7 +2,7 @@
 import {useEffect,useRef,useState} from 'react';
 import {Button,LinkButton,Notice} from './components/ui';
 import {RiceBuddy} from './rice-buddy';
-import {FRIDGE_CHIPS,shoppingLine,type FridgeChip,type FridgePick} from '../lib/fridge-pick';
+import {FRIDGE_CHIPS,FRIDGE_COMMON,shoppingLine,type FridgeChip,type FridgePick} from '../lib/fridge-pick';
 import {kstClock,mealsFromNow} from '../lib/meal-now';
 import {trackAnalytics} from '../lib/analytics';
 import {useFoodIntake} from './food-intake';
@@ -21,17 +21,18 @@ export function FridgePick({userId,onPantry,onRecommend}:{userId?:string;onPantr
  const [chips,setChips]=useState<FridgeChip[]>(()=>{try{const saved=JSON.parse(localStorage.getItem(CHIPS_KEY)??'[]');return Array.isArray(saved)?saved.filter((key:unknown)=>FRIDGE_CHIPS.some(chip=>chip.key===key)):[];}catch{return [];}});
  const [picks,setPicks]=useState<FridgePick[]|null>(null),[index,setIndex]=useState(0),[busy,setBusy]=useState(false),[error,setError]=useState('');
  const [logged,setLogged]=useState<string|null>(null);
+ const [allChips,setAllChips]=useState(false);
  const seen=useRef<string[]>([]);
  const resultRef=useRef<HTMLElement>(null);
  const intake=useFoodIntake(userId);
  useEffect(()=>{try{localStorage.setItem(CHIPS_KEY,JSON.stringify(chips));}catch{}},[chips]);
 
  const toggle=(key:FridgeChip)=>{setChips(current=>current.includes(key)?current.filter(k=>k!==key):[...current,key]);setPicks(null);};
- async function decide(){
+ async function decide(empty=false){
   setBusy(true);setError('');setLogged(null);
   trackAnalytics('fridge_pick_requested');
   try{
-   const r=await fetch('/api/fridge-pick',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chips,skip:seen.current.slice(-20)})});
+   const r=await fetch('/api/fridge-pick',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chips:empty?[]:chips,skip:seen.current.slice(-20)})});
    const d=await r.json();if(!r.ok)throw new Error(d.error);
    if(!d.picks?.length)throw new Error('지금 고른 재료로 만들 메뉴를 찾지 못했어요. 재료를 하나 더 눌러 보세요.');
    seen.current=[...seen.current,d.picks[0].id];
@@ -50,18 +51,23 @@ export function FridgePick({userId,onPantry,onRecommend}:{userId?:string;onPantr
  }
  const pick=picks?.[index];
 
+ // 고른 재료는 '더 보기'를 접어도 보이게 한다.
+ const shown=FRIDGE_CHIPS.filter((chip,i)=>allChips||i<FRIDGE_COMMON||chips.includes(chip.key));
  return <section className={styles.fridge} aria-labelledby="fridge-title">
-  <div className={styles.talk}>
-   <div className={styles.buddy} aria-hidden="true"><RiceBuddy stage={4}/></div>
-   <div className={styles.bubble}>
-    <h2 id="fridge-title">{when}, 냉장고에 뭐 있어?</h2>
-    <p>있는 거 다 눌러 줘. 바로 해 먹을 한 끼 정해 줄게.</p>
+  <div className={styles.hero}>
+   <div className={styles.heroText}>
+    <span className={styles.when}>{when}</span>
+    <h2 id="fridge-title" className={styles.title}>냉장고에<br/>뭐 있어?</h2>
+    <p className={styles.lead}>있는 거 누르면 바로 해 먹을<br/>한 끼를 정해 줄게요.</p>
    </div>
+   <div className={styles.art} aria-hidden="true"><RiceBuddy stage={4}/></div>
+   <div className={styles.chips} role="group" aria-label="냉장고에 있는 재료">
+    {shown.map(chip=>{const on=chips.includes(chip.key);return <button key={chip.key} type="button" className={styles.chip} aria-pressed={on} onClick={()=>toggle(chip.key)}><span aria-hidden="true">{chip.emoji}</span>{chip.label}</button>;})}
+    {!allChips&&<button type="button" className={styles.moreChip} onClick={()=>setAllChips(true)}>+ 더 보기</button>}
+   </div>
+   <Button size="lg" block disabled={busy||!chips.length} onClick={()=>void decide()}>{busy?'고르는 중…':chips.length?`${chips.length}가지로 정해 줘`:'재료를 눌러 주세요'}</Button>
+   <button type="button" className={styles.empty} disabled={busy} onClick={()=>void decide(true)}>냉장고가 텅 비었어요 · 하나만 사면 되는 메뉴 보기</button>
   </div>
-  <div className={styles.chips} role="group" aria-label="냉장고에 있는 재료">
-   {FRIDGE_CHIPS.map(chip=>{const on=chips.includes(chip.key);return <button key={chip.key} type="button" className={styles.chip} aria-pressed={on} onClick={()=>toggle(chip.key)}>{on&&<span aria-hidden="true">✓ </span>}{chip.label}</button>;})}
-  </div>
-  <Button size="lg" block disabled={busy} onClick={()=>void decide()}>{busy?'고르는 중…':chips.length?'이걸로 정해 줘':'냉장고 텅 비었어 · 하나만 사면 되는 걸로'}</Button>
   {error&&<Notice tone="error">{error}</Notice>}
 
   {pick&&<article ref={resultRef} className={styles.result} aria-live="polite" tabIndex={-1}>

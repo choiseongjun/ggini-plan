@@ -9,25 +9,27 @@ import {servingNutrients} from './serving-nutrients';
 
 // 칩 하나가 레시피의 여러 표기와 맞도록 묶는다(햄 ↔ 통조림햄, 참치캔 ↔ 참치통조림 …).
 export const FRIDGE_CHIPS=[
- {key:'egg',label:'달걀',aliases:['달걀']},
- {key:'kimchi',label:'김치',aliases:['김치']},
- {key:'rice',label:'밥',aliases:['밥']},
- {key:'scallion',label:'대파',aliases:['대파','쪽파']},
- {key:'onion',label:'양파',aliases:['양파']},
- {key:'tofu',label:'두부',aliases:['두부','순두부']},
- {key:'potato',label:'감자',aliases:['감자']},
- {key:'ham',label:'햄·스팸',aliases:['햄','통조림햄','스팸']},
- {key:'sausage',label:'소시지',aliases:['소시지']},
- {key:'tuna',label:'참치캔',aliases:['참치','참치통조림','참치캔']},
- {key:'ramen',label:'라면',aliases:['라면']},
- {key:'fishcake',label:'어묵',aliases:['어묵','사각어묵','봉어묵']},
- {key:'zucchini',label:'애호박',aliases:['애호박']},
- {key:'pork',label:'돼지고기',aliases:['돼지고기','삼겹살','간돼지고기']},
- {key:'beef',label:'소고기',aliases:['소고기']},
- {key:'mushroom',label:'버섯',aliases:['버섯','느타리버섯','팽이버섯','새송이버섯']},
- {key:'carrot',label:'당근',aliases:['당근']},
- {key:'tomato',label:'토마토',aliases:['토마토']},
+ {key:'egg',label:'달걀',emoji:'🥚',aliases:['달걀']},
+ {key:'kimchi',label:'김치',emoji:'🥬',aliases:['김치']},
+ {key:'rice',label:'밥',emoji:'🍚',aliases:['밥']},
+ {key:'scallion',label:'대파',emoji:'🌿',aliases:['대파','쪽파']},
+ {key:'onion',label:'양파',emoji:'🧅',aliases:['양파']},
+ {key:'tofu',label:'두부',emoji:'🧈',aliases:['두부','순두부']},
+ {key:'ham',label:'햄·스팸',emoji:'🥓',aliases:['햄','통조림햄','스팸']},
+ {key:'tuna',label:'참치캔',emoji:'🥫',aliases:['참치','참치통조림','참치캔']},
+ {key:'potato',label:'감자',emoji:'🥔',aliases:['감자']},
+ {key:'sausage',label:'소시지',emoji:'🌭',aliases:['소시지']},
+ {key:'ramen',label:'라면',emoji:'🍜',aliases:['라면']},
+ {key:'fishcake',label:'어묵',emoji:'🍢',aliases:['어묵','사각어묵','봉어묵']},
+ {key:'zucchini',label:'애호박',emoji:'🥒',aliases:['애호박']},
+ {key:'pork',label:'돼지고기',emoji:'🥩',aliases:['돼지고기','삼겹살','간돼지고기']},
+ {key:'beef',label:'소고기',emoji:'🥩',aliases:['소고기']},
+ {key:'mushroom',label:'버섯',emoji:'🍄',aliases:['버섯','느타리버섯','팽이버섯','새송이버섯']},
+ {key:'carrot',label:'당근',emoji:'🥕',aliases:['당근']},
+ {key:'tomato',label:'토마토',emoji:'🍅',aliases:['토마토']},
 ] as const;
+// 처음에는 자취 냉장고에 가장 흔한 것만 보여 주고 나머지는 '더 보기'로 연다.
+export const FRIDGE_COMMON=8;
 export type FridgeChip=typeof FRIDGE_CHIPS[number]['key'];
 export const isFridgeChip=(value:unknown):value is FridgeChip=>FRIDGE_CHIPS.some(chip=>chip.key===value);
 
