@@ -1,5 +1,6 @@
 /* 끼니플랜 디자인 기준값 — 규칙은 docs/design-guide.md. 새 스타일은 hex·px 대신 이 변수를 쓴다. */
 :root{
+ --taste-scrim:rgba(17,24,14,.88);--taste-on-photo:#fffdf7;
  /* 색 */
  --primary:#526c47;          /* 주요 버튼·강조 녹색 (흰 글씨 5.8:1) */
  --primary-strong:#46603c;   /* 눌림·hover */
