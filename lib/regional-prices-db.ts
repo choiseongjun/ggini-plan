@@ -44,3 +44,14 @@ export async function withMarketPrices(products:PlanProduct[]):Promise<PlanProdu
  lastPriced={products,rows,result};
  return result;
 }
+
+// 참가격 조사 매장 가격 중 찾은 마트·메뉴 재료에 맞는 것만 DB 안에서 골라 온다(스냅숏 전체는 2.5MB).
+export async function surveyedOffers(storeKeys:string[],keywords:string[]){
+ if(!storeKeys.length||!keywords.length)return [];
+ let timer:ReturnType<typeof setTimeout>|undefined;
+ const result=await Promise.race([getPool().query<{store:string;product:string;price:number;date:string}>(`SELECT lower(regexp_replace(o->>'store','\\(주\\)|주식회사|\\s','','g')) AS store,p->>'name' AS product,(o->>'price')::float8 AS price,o->>'date' AS date
+  FROM regional_price_snapshots s,jsonb_array_elements(s.payload) p,jsonb_array_elements(p->'offers') o
+  WHERE s.source='tprice' AND p->>'name' LIKE ANY($2::text[]) AND lower(regexp_replace(o->>'store','\\(주\\)|주식회사|\\s','','g'))=ANY($1::text[])
+  ORDER BY 1,3 LIMIT 300`,[storeKeys,keywords.map(k=>`%${k}%`)]),new Promise<never>((_,reject)=>{timer=setTimeout(()=>reject(new Error('Offer lookup timed out')),4000);})]).finally(()=>clearTimeout(timer));
+ return result.rows;
+}

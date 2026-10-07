@@ -1,0 +1,14 @@
+.nearby-marts{margin:var(--space-3) 0;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--surface);padding:0 var(--space-3)}
+.nearby-marts>summary{display:flex;align-items:center;min-height:var(--touch);font-size:var(--fs-md);font-weight:700;color:var(--text);cursor:pointer}
+.nearby-marts-form{display:flex;align-items:flex-end;gap:var(--space-2);margin-bottom:var(--space-3)}
+.nearby-marts-form button{flex:none;white-space:nowrap}
+.nearby-marts-form label{display:grid;flex:1;gap:var(--space-1);font-size:var(--fs-sm);color:var(--text-muted)}
+.nearby-marts-form input{min-height:var(--touch);padding:0 var(--space-3);border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);font-size:16px;color:var(--text)}
+.nearby-marts .nearby-marts-list{display:grid;grid-template-columns:1fr;gap:var(--space-2);margin:0 0 var(--space-3);padding:0;list-style:none}
+.nearby-marts .nearby-marts-list li{text-align:left;padding:var(--space-2) var(--space-3);border-radius:var(--radius-sm);background:var(--surface-soft)}
+.nearby-marts .nearby-marts-list li>a{display:grid;justify-items:start;gap:2px;min-height:var(--touch);align-content:center;padding:0;border:0;background:none;text-align:left;color:var(--text);text-decoration:none}
+.nearby-marts-list strong{font-size:var(--fs-md)}
+.nearby-marts-list small,.nearby-marts-empty,.nearby-marts-note{font-size:var(--fs-xs);color:var(--text-subtle)}
+.nearby-marts-offers{margin:var(--space-1) 0 0;font-size:var(--fs-sm);color:var(--text-muted)}
+.nearby-marts-offers span{margin-right:var(--space-1);font-weight:700;color:var(--primary-strong)}
+.nearby-marts-note{display:block;margin-bottom:var(--space-3)}

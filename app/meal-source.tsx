@@ -5,6 +5,7 @@ import {ProductThumb} from './product-thumb';
 import './meal-source.css';
 import {RecipeVideos} from './recipe-videos';
 import {RecipeIngredientProducts} from './recipe-ingredient-products';
+import {NearbyMarts} from './nearby-marts';
 import {priceRegionLabel} from '../lib/regional-price-recommendations';
 
 export function MealSourceBadge({product}:{product:PlanProduct}){
@@ -35,6 +36,7 @@ export function RecipeProductPreview({product,videos=true}:{product:PlanProduct;
   </ul>
   <p className="ingredient-cost-total"><span>재료비 합계{market&&' · 시세 기반'}</span><b>약 {won(product.price)}</b></p>
   <small className="ingredient-cost-note">{market?`‘시세’ 재료 ${marketCount}가지는 KAMIS 소매가격(${priceRegionLabel(market.region,market.computed)} ${market.date.slice(5).replace('-','/')} 조사) 기준, 나머지는 g당 예상 소매가로 쓰는 양만큼 계산했어요.`:'g당 예상 소매가 × 쓰는 양으로 계산했어요.'} 간장·된장·식용유 같은 기본 양념은 집에 있다고 보고 빼요.</small>
+  {!product.recipe.assembly&&<NearbyMarts ingredientNames={product.recipe.ingredients.map(({product:p})=>p.name)}/>}
   {videos&&!product.recipe.assembly&&<RecipeVideos key={product.id} dishId={product.id}/>}
   {!product.recipe.assembly&&<RecipeIngredientProducts key={`ing-products-${product.id}`} ingredientNames={[...new Set(product.recipe.ingredients.map(({product:p})=>p.name))].slice(0,8)}/>}
  </div>;

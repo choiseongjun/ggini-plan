@@ -152,8 +152,16 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
  const learn=useCallback((list:PlanProduct[])=>{if(list.length)setProducts(prev=>{const byId=new Map(prev.map(p=>[p.id,p]));for(const p of list)byId.set(p.id,p);return [...byId.values()];});},[]);
  // 시세 참고 지역: 기본은 전국 평균(지역 시세로 계산한 값). 고른 지역은 이 기기에 남긴다.
  const [priceRegion,setPriceRegionState]=useState(DEFAULT_PRICE_REGION);
- useEffect(()=>{try{const saved=localStorage.getItem(PRICE_REGION_KEY);if(saved!==null&&saved!==DEFAULT_PRICE_REGION){const frame=requestAnimationFrame(()=>setPriceRegionState(saved));return()=>cancelAnimationFrame(frame);}}catch{/* 기본 지역 사용 */}},[]);
- const setPriceRegion=(region:string)=>{setPriceRegionState(region);try{localStorage.setItem(PRICE_REGION_KEY,region);}catch{/* 이번 방문에만 적용 */}};
+ // 직접 고른 지역이 없으면 접속 IP로 추정한 시·도를 쓴다(GPS·위치 권한 없음). 자동 첫 추천은 이 확인을 기다린다.
+ const [autoRegion,setAutoRegion]=useState(false),[regionReady,setRegionReady]=useState(false);
+ useEffect(()=>{
+  let saved:string|null=null;try{saved=localStorage.getItem(PRICE_REGION_KEY);}catch{/* 기본 지역 사용 */}
+  if(saved!==null||locale.isTaiwan){const value=saved;const frame=requestAnimationFrame(()=>{if(value!==null)setPriceRegionState(value);setRegionReady(true);});return()=>cancelAnimationFrame(frame);}
+  let alive=true;const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),1500);
+  fetch('/api/price-region',{cache:'no-store',signal:controller.signal}).then(r=>r.ok?r.json():null).then(d=>{if(alive&&typeof d?.region==='string'){setPriceRegionState(d.region);setAutoRegion(true);}}).catch(()=>{}).finally(()=>{clearTimeout(timer);if(alive)setRegionReady(true);});
+  return()=>{alive=false;clearTimeout(timer);controller.abort();};
+ },[locale.isTaiwan]);
+ const setPriceRegion=(region:string)=>{setPriceRegionState(region);setAutoRegion(false);try{localStorage.setItem(PRICE_REGION_KEY,region);}catch{/* 이번 방문에만 적용 */}};
  const remote=useMemo(()=>remoteEngine(learn,priceRegion,pantryRequest),[learn,priceRegion,pantryRequest]);
  const local=useMemo(()=>localEngine(products),[products]);
  const engine=locale.isTaiwan?local:remote;
@@ -402,18 +410,18 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
  // 처음 온 사람은 버튼을 누르기 전에 떠나는 경우가 많다 — 이 기기에서 한 번만, 지금 끼니를 바로 골라 보여 준다.
  const autoTried=useRef(false);
  useEffect(()=>{
-  if(!simpleHome||locale.isTaiwan||mode!=='plan'||loading||busy||(!pantryRequest&&ids.length>0)||!progress.ready||!catalogReady||quickSetup||pushMeal||autoTried.current)return;
+  if(!simpleHome||locale.isTaiwan||mode!=='plan'||loading||busy||(!pantryRequest&&ids.length>0)||!progress.ready||!catalogReady||quickSetup||pushMeal||!regionReady||autoTried.current)return;
   autoTried.current=true;
   if(!pantryRequest){try{if(localStorage.getItem(AUTO_RECOMMEND_KEY))return;localStorage.setItem(AUTO_RECOMMEND_KEY,'1');}catch{return;}}
   const frame=requestAnimationFrame(()=>recommendNow(true));
   return()=>cancelAnimationFrame(frame);
   // Runs once after bootstrap; recommendNow reads the latest conditions.
   // eslint-disable-next-line react-hooks/exhaustive-deps
- },[simpleHome,locale.isTaiwan,mode,loading,busy,ids.length,progress.ready,catalogReady,quickSetup,pushMeal]);
+ },[simpleHome,locale.isTaiwan,mode,loading,busy,ids.length,progress.ready,catalogReady,quickSetup,pushMeal,regionReady]);
  const simpleEffortPicker=(conditions.slots??['dinner']).some(slot=>sideCountFor(conditions,slot)===0)&&<details className="meal-composition-effort"><summary>간단하게 고른 끼니 · {cookingEfforts[conditions.cookingEffort??'easy'].label}</summary><CookingEffortPicker value={conditions.cookingEffort} onChange={cookingEffort=>updatePreferences({cookingEffort})} disabled={loading||busy}/></details>;
  const compositionPicker=<MealCompositionPicker conditions={conditions} disabled={loading||busy} onChange={mealSideCounts=>updatePreferences({mealSideCounts})}/>;
  return locale.render(<PlanEngineContext.Provider value={engine}><ManualMealPlans key={userId??'guest'} userId={userId} onLogin={onLogin} enabled={!locale.isTaiwan&&mode==='plan'}><section onClickCapture={e=>{if(locale.isTaiwan)return;const a=(e.target as Element).closest('a');if(a&&products.some(p=>p.productUrl===a.href||p.recipe?.ingredients.some(i=>i.product.productUrl===a.href)))trackPlanner('seller');}} ref={plannerRef} id={mode==='settings'?'shopping-settings':undefined} className={`shopping-planner${pantryRequest?' pantry-results-layout':''}${mode==='plan'?' home-planner':''}${!ids.length?' planner-empty':''}`} aria-labelledby="planner-title">
-  {simpleHome&&!locale.isTaiwan&&<details className="price-settings"><summary>시세 참고 지역 · {priceRegionLabel(priceRegion||'선택 안 함',true)}</summary><label className="planner-price-region">장보기 시세 참고 지역<select value={priceRegion} disabled={busy} onChange={e=>setPriceRegion(e.target.value)}><option value={DEFAULT_PRICE_REGION}>{priceRegionLabel(DEFAULT_PRICE_REGION,true)}</option><option value="">참고 안 함</option>{['서울','부산','대구','인천','광주','대전','울산','세종','수원','성남','고양','용인','춘천','강릉','청주','천안','전주','순천','포항','안동','창원','제주'].map(r=><option key={r}>{r}</option>)}</select><small>다음 추천부터 지역 시세를 함께 참고해요.</small></label></details>}
+  {simpleHome&&!locale.isTaiwan&&<details className="price-settings"><summary>시세 참고 지역 · {priceRegion?priceRegionLabel(priceRegion,priceRegion===DEFAULT_PRICE_REGION):'참고 안 함'}{autoRegion&&' (접속 지역)'}</summary><label className="planner-price-region">장보기 시세 참고 지역<select value={priceRegion} disabled={busy} onChange={e=>setPriceRegion(e.target.value)}><option value={DEFAULT_PRICE_REGION}>{priceRegionLabel(DEFAULT_PRICE_REGION,true)}</option><option value="">참고 안 함</option>{['서울','부산','대구','인천','광주','대전','울산','세종','경기','강원','충북','충남','전북','전남','경북','경남','제주','수원','성남','고양','용인','춘천','강릉','청주','천안','전주','순천','포항','안동','창원'].map(r=><option key={r}>{r}</option>)}</select><small>{autoRegion?'접속한 곳의 시·도로 골랐어요. 정확한 위치는 쓰지 않아요.':'다음 추천부터 지역 시세를 함께 참고해요.'}</small></label></details>}
   {simpleHome&&ids.length>0&&<PriceSignalSummary products={products.filter(p=>ids.includes(p.id))}/>}
   {simpleHome&&mode==='plan'&&ids.length>0&&typeof document!=='undefined'&&document.getElementById('today-plan-tools')&&createPortal(<Button variant="ghost" size="sm" disabled={loading||busy} onClick={()=>setConfirmRestart(true)}>처음부터</Button>,document.getElementById('today-plan-tools')!)}
   {simpleHome&&confirmRestart&&<section className="simple-plan-restart" aria-label="새 식단 시작 확인"><strong>빈 식단으로 다시 시작할까요?</strong><p>현재 이 기기에서 편집 중인 식단을 비워요. 계정에 저장한 식단과 먹은 기록, 내 재료는 유지돼요.</p><div><button type="button" onClick={()=>setConfirmRestart(false)}>계속 편집</button><button type="button" disabled={loading||busy} onClick={()=>{setConfirmRestart(false);setQuickSetup(false);const c={...SIMPLE_HOME_CONDITIONS,excluded:conditions.excluded,startDate:locale.today()};setConditions(c);returnToSetup();remember(c,[]);}}>새로 시작</button></div></section>}
