@@ -11,11 +11,11 @@ export function hasFreshJson(key: string, ttl: number) {
   return Boolean(entry && Date.now() - entry.at < ttl);
 }
 
-export function cachedJson<T = Json>(url: string, { key = url, ttl = 5 * 60_000 }: { key?: string; ttl?: number } = {}): Promise<T> {
+export function cachedJson<T = Json>(url: string, { key = url, ttl = 5 * 60_000, timeoutMs }: { key?: string; ttl?: number; timeoutMs?: number } = {}): Promise<T> {
   const entry = store.get(key);
   if (entry && Date.now() - entry.at < ttl) return entry.promise as Promise<T>;
   // Deliberately not tied to a caller's AbortSignal: several mounts share one request.
-  const promise = fetch(url, { cache: "no-store" }).then(async r => {
+  const promise = fetch(url, { cache: "no-store", ...(timeoutMs ? {signal: AbortSignal.timeout(timeoutMs)} : {}) }).then(async r => {
     const data = await r.json();
     if (!r.ok) throw new Error(data?.error ?? "불러오지 못했어요.");
     return data as T;

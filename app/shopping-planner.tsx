@@ -15,7 +15,7 @@ import {MealCompositionPicker} from './meal-composition-picker';
 import {rememberProfileIntent} from '../lib/profile-intent';
 import {clearRecordMode} from '../lib/record-intent';
 import {trackAnalytics} from '../lib/analytics';
-import {cachedJson,hasFreshJson,invalidateJson,primeJson} from '../lib/client-cache';
+import {cachedJson,invalidateJson,primeJson} from '../lib/client-cache';
 import {Icon} from './app-shell';
 import {RiceBuddy} from './rice-buddy';
 import adoptionStyles from './plan-adoption.module.css';
@@ -23,6 +23,7 @@ import {shoppingAvailabilityMessage} from '../lib/shopping-availability';
 import {cookingDishId,repeatsDailyMain} from '../lib/shopping-plan';
 import {trackPlanner} from '../lib/track-planner';
 import {chooseShoppingDraft} from '../lib/shopping-draft';
+import {encodePlanPreview,readPlanPreview} from '../lib/plan-preview';
 import {recommendationReasons} from '../lib/plan-explanation';
 import {usePlannerLocale} from './planner-locale';
 import {servingNutrients,nutritionIsEstimated} from '../lib/serving-nutrients';
@@ -193,14 +194,13 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
  },[userId,locale.isTaiwan,loading,endpoint,draftKey,remote]);
  useEffect(()=>{
   const controller=new AbortController();
-  // Revisiting 홈 reuses this session's copy instead of re-downloading the catalog behind a loader.
-  // 저장된 식단이 있을 때만 전체 화면 로딩을 띄운다. 첫 화면(버튼 하나)은 데이터 없이도 보이므로 뒤에서 받는다.
-  const hasDraft=(()=>{try{const d=JSON.parse(localStorage.getItem(draftKey)??sessionStorage.getItem(draftKey)??'null');return Array.isArray(d?.mealIds)&&d.mealIds.some(Boolean);}catch{return false;}})();
-  const finishLoading=hasFreshJson(planKey,planTtl)||(mode==='plan'&&!hasDraft)?()=>{}:startLoading('나에게 맞는 장보기를 준비하고 있어요');
-  cachedJson(endpoint,{key:planKey,ttl:planTtl}).then(async d=>{
+  // Paint a matching account-scoped snapshot before waiting for either request.
+  const preview=(()=>{try{return !locale.isTaiwan&&mode!=='settings'?readPlanPreview(localStorage.getItem(draftKey+'-preview'),localStorage.getItem(draftKey)??sessionStorage.getItem(draftKey)):null;}catch{return null;}})();
+  if(preview)Promise.resolve().then(()=>{if(controller.signal.aborted)return;setProducts(preview.products);setConditions(preview.conditions);setMealCap(preview.conditions.mealCostCap??null);setIds(preview.mealIds);setBuilding(false);});
+  cachedJson(endpoint,{key:planKey,ttl:planTtl,timeoutMs:12000}).then(async d=>{
    if(controller.signal.aborted)return;
    const catalog:PlanProduct[]=d.baseProducts??d.products??[],defaults=d.excluded??[];
-   if(locale.isTaiwan)setProducts(catalog);setCatalogReady(locale.isTaiwan?catalog.length>0:true);setProfileExcluded(defaults);setPersonalization(d.personalization);setError('');setIds([]);
+   if(locale.isTaiwan)setProducts(catalog);setCatalogReady(locale.isTaiwan?catalog.length>0:true);setProfileExcluded(defaults);setPersonalization(d.personalization);setError('');if(!preview)setIds([]);
    const saved=parseConditions(d.preferences);setMealCap(saved?.mealCostCap??null);setAutomaticBudget(!saved);setConditions(resolveShoppingExclusions({... (saved??defaultConditions),goal:saved?.goal??'maintain'},defaults));
    try{
     const guestKey='kkiniplan-shopping-draft-v2-guest'+locale.storageSuffix;
@@ -214,6 +214,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
      d.resetAt,
     );
     const draft=selected.draft??d.plan;const c=parseConditions(draft?.conditions);
+    if(preview&&(!c||JSON.stringify(draft?.mealIds)!==JSON.stringify(preview.mealIds))){setIds([]);localStorage.removeItem(draftKey+'-preview');}
     if(c){
      setAutomaticBudget(false);
      const resolved:PlanConditions=resolveShoppingExclusions(selected.fromGuest ? c : {...c,cookingEffort:saved?.cookingEffort??c.cookingEffort,swapPreferences:saved?.swapPreferences??c.swapPreferences,mealKinds:saved?.mealKinds??c.mealKinds,budgetMode:saved?.budgetMode??c.budgetMode,goal:saved?.goal??c.goal??'maintain'},defaults);
@@ -230,13 +231,24 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
         localStorage.removeItem(guestKey);sessionStorage.removeItem(guestKey);
         setMessage('로그인 전에 고른 식단을 그대로 이어왔어요. 이대로 먹기를 누르면 계정에 저장돼요.');
        }
-      }else if(!controller.signal.aborted&&selected.fromGuest){setError('고른 식단은 보관되어 있지만 현재 메뉴 정보를 확인하지 못했어요. 다시 불러와 주세요.');}
+      }else if(!controller.signal.aborted){setIds([]);localStorage.removeItem(draftKey+'-preview');if(selected.fromGuest)setError('고른 식단은 보관되어 있지만 현재 메뉴 정보를 확인하지 못했어요. 다시 불러와 주세요.');}
      }
     }
-   }catch{/* An expired draft should not stop browsing. */}
-  }).catch(e=>{if(!controller.signal.aborted)setError(e.message);}).finally(()=>{if(!controller.signal.aborted)setLoading(false);finishLoading();});
-  return()=>{controller.abort();finishLoading();};
- },[retry,draftKey,locale,endpoint,planKey,defaultConditions,startLoading,mode,remote]);
+   }catch{if(!controller.signal.aborted){setIds([]);setError('저장된 식단의 최신 정보를 확인하지 못했어요. 다시 불러와 주세요.');setCatalogReady(false);}}
+  }).catch(()=>{if(!controller.signal.aborted){setIds([]);setError('식단 정보를 불러오지 못했어요. 연결을 확인하고 다시 불러와 주세요.');setCatalogReady(false);}}).finally(()=>{if(!controller.signal.aborted)setLoading(false);});
+  return()=>{controller.abort();};
+ },[retry,draftKey,locale,endpoint,planKey,defaultConditions,mode,remote]);
+ useEffect(()=>{
+  if(loading||locale.isTaiwan)return;
+  try{
+   const raw=localStorage.getItem(draftKey)??sessionStorage.getItem(draftKey);
+   const savedIds=JSON.parse(raw??'null')?.mealIds;
+   if(JSON.stringify(savedIds)!==JSON.stringify(ids))return;
+   const preview=encodePlanPreview(raw,products);
+   if(preview)localStorage.setItem(draftKey+'-preview',preview);
+   else localStorage.removeItem(draftKey+'-preview');
+  }catch{/* Storage may be unavailable; live loading still works. */}
+ },[loading,ids,products,draftKey,locale.isTaiwan]);
  function remember(c:PlanConditions,mealIds:string[]){try{localStorage.setItem(draftKey,encodeDraft(c,mealIds));window.dispatchEvent(new CustomEvent('home-plan-changed',{detail:{key:draftKey}}));}catch{/* Saving to an account remains available. */}}
  function updatePreferences(patch:Partial<Pick<PlanConditions,'mealKinds'|'goal'|'budgetMode'|'swapPreferences'|'cookingEffort'|'sideCount'|'mealSideCounts'>>){
   update(patch);remember({...conditions,...patch},[]);
@@ -384,6 +396,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
    <button type="button" disabled={loading||busy||progress.busy||!progress.ready||(!ids.length&&!Object.values(progress.stock).some(i=>i.owned||i.ordered))} onClick={()=>setConfirmReset(true)}>모두 초기화</button>
    {confirmReset&&<div role="group" aria-label="장바구니 초기화 확인"><strong>추천 메뉴와 주문·보유 목록을 모두 비울까요?</strong><p>홈의 현재 추천 식단도 함께 비워요. 먹은 기록·식비 기록·예산과 취향·공유 링크는 유지돼요. 판매처의 실제 주문은 취소되지 않아요. 이 추천 밖에서 따로 관리하는 재료 목록과 함께 담은 장바구니는 별도예요.</p><button type="button" disabled={progress.busy} onClick={()=>setConfirmReset(false)}>취소</button><button type="button" disabled={progress.busy||!progress.ready} onClick={()=>void resetCart()}>{progress.busy?'초기화 중…':'확인, 모두 초기화'}</button></div>}
   </section>}
+  {loading&&<p className="planner-status-note" role="status">{ids.length?'저장된 식단이에요 · 최신 가격과 메뉴를 확인 중…':'식단 정보를 불러오는 중…'}</p>}
   {message&&<p role="status" className="planner-status-note"><Icon name="check" size={18}/><span>{message}</span></p>}
   {mode==='plan'&&ids.length>0&&!simpleHome&&<div className="planner-change-top">
    <button type="button" disabled={loading||busy||progress.busy} onClick={returnToSetup}><Icon name="edit" size={20}/><span>추천 조건 바꾸기</span><Icon name="chevron" size={18}/></button>
@@ -396,7 +409,7 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
   {simpleHome&&!locale.isTaiwan&&mode==='plan'&&ids.length>0&&idsComplete&&<RefineChips conditions={conditions} disabled={loading||busy||!progress.ready||!catalogReady} onRefine={next=>{setConditions(next);void generate(next);}}/>}
   {/* 먹었어요를 누른 뒤: 오늘 먹은 양과 남은 끼니 추천을 결과 위에 보여 준다. */}
   {!simpleHome&&mode==='plan'&&ids.length>0&&eatenToday&&intake.totals&&<TodayBalance totals={intake.totals} meals={intake.current?.logs.length??0} reference={personalization?.nutritionReference??null} action={<Button size="sm" variant="secondary" disabled={loading||busy||!progress.ready||!catalogReady} onClick={recommendNow}>{nowPlan.tomorrow?'내일 식단 추천받기':'남은 끼니 추천받기'}</Button>}/>}
-  {mode==='plan'&&ids.length>0&&(!building||ids.every(Boolean))&&<TodayMeals compact={simpleHome} overviewActions={!locale.isTaiwan&&idsComplete?<div className="overview-plan-actions"><Button variant="secondary" size="sm" disabled={busy||loading||total>shoppingBudgetLimit(conditions)} onClick={()=>{if(!userId)setOverviewOpen(false);void save();}}><Icon name="check" size={18}/>{busy?'저장 중…':userId?'식단 저장':'로그인하고 저장'}</Button><details><summary>식단 공유</summary><SharePlanButton key={JSON.stringify([ids,conditions])} userId={userId} onLogin={()=>{setOverviewOpen(false);onLogin();}} conditions={conditions} mealIds={ids} disabled={busy||loading}/></details>{message&&<p role="status">{message}</p>}{error&&<p role="alert">{error}</p>}</div>:undefined} showRecording={!simpleHome} onAllMeals={()=>void generate({...conditions,slots:['breakfast','lunch','dinner'],mealCountMode:false,meals:(conditions.days??7)*3})} onNextPlan={()=>void generate(conditions)} nextPlanBusy={busy||loading||progress.busy||!progress.ready} focusMeal={pushMeal?(()=>{const s=mealSchedule(conditions),today=locale.today();const i=ids.findIndex((id,index)=>id===pushMeal&&!!s[index]&&planDate(conditions.startDate??today,s[index].day)===today);return i<0?null:i;})():null} overviewOpen={overviewOpen} onOverviewOpen={setOverviewOpen} nutritionReference={personalization?.nutritionReference??null} shoppingTotal={purchases.reduce((sum,row)=>sum+row.cost,0)} intake={intake} userId={userId} onLogin={onLogin} ids={ids} products={products} conditions={conditions} startDate={conditions.startDate??locale.today()} onStartDate={date=>{const c=parseConditions({...conditions,startDate:date});if(c){setConditions(c);remember(c,ids);}}} onSwap={swap} onChoose={chooseMeal} progress={progress} perMealCalories={personalization?.perMealCalories??null} dailyCalories={personalization?.blocked?null:personalization?.dailyCalories??null} dashboard={dashboard}/>}
+  {mode==='plan'&&ids.length>0&&(!building||ids.every(Boolean))&&<TodayMeals compact={simpleHome} overviewActions={!locale.isTaiwan&&idsComplete?<div className="overview-plan-actions"><Button variant="secondary" size="sm" disabled={busy||loading||total>shoppingBudgetLimit(conditions)} onClick={()=>{if(!userId)setOverviewOpen(false);void save();}}><Icon name="check" size={18}/>{busy?'저장 중…':userId?'식단 저장':'로그인하고 저장'}</Button><details><summary>식단 공유</summary><SharePlanButton key={JSON.stringify([ids,conditions])} userId={userId} onLogin={()=>{setOverviewOpen(false);onLogin();}} conditions={conditions} mealIds={ids} disabled={busy||loading}/></details>{message&&<p role="status">{message}</p>}{error&&<p role="alert">{error}</p>}</div>:undefined} showRecording={!simpleHome} onAllMeals={()=>void generate({...conditions,slots:['breakfast','lunch','dinner'],mealCountMode:false,meals:(conditions.days??7)*3})} onNextPlan={()=>void generate(conditions)} nextPlanBusy={busy||loading||progress.busy||!progress.ready} focusMeal={pushMeal?(()=>{const s=mealSchedule(conditions),today=locale.today();const i=ids.findIndex((id,index)=>id===pushMeal&&!!s[index]&&planDate(conditions.startDate??today,s[index].day)===today);return i<0?null:i;})():null} overviewOpen={overviewOpen} onOverviewOpen={setOverviewOpen} nutritionReference={personalization?.nutritionReference??null} shoppingTotal={purchases.reduce((sum,row)=>sum+row.cost,0)} intake={intake} userId={userId} onLogin={onLogin} ids={ids} products={products} conditions={conditions} startDate={conditions.startDate??locale.today()} onStartDate={date=>{const c=parseConditions({...conditions,startDate:date});if(c){setConditions(c);remember(c,ids);}}} onSwap={(index,reason)=>{if(!loading)void swap(index,reason);}} onChoose={(index,id)=>{if(!loading)chooseMeal(index,id);}} progress={progress} perMealCalories={personalization?.perMealCalories??null} dailyCalories={personalization?.blocked?null:personalization?.dailyCalories??null} dashboard={dashboard}/>}
   {simpleHome&&mode==='plan'&&!locale.isTaiwan&&<details className={profileStyles.card}><summary className={profileStyles.summary}><span className={profileStyles.buddy}><RiceBuddy stage={1}/></span><span><small>끼니가 챙겨봤어요</small><strong>내 정보가 추천에 반영된 내용</strong></span><Icon name="chevron" size={18}/></summary><div className={profileStyles.body}>{personalization?<><p className={profileStyles.intro}>{personalization.blocked?'현재 신체 정보에서는 자동 맞춤 추천을 제공하지 않아요.':personalization.hasProfile?'내 몸과 취향을 참고해 메뉴를 골라요.':'내 정보를 알려주면 더 잘 맞춰드려요.'}</p>{personalization.hasProfile&&!personalization.blocked&&<dl className={profileStyles.metrics}><div><dt>하루 참고량</dt><dd>{personalization.dailyCalories?.toLocaleString()??'—'}<span>kcal</span></dd></div><div><dt>한 끼 참고량</dt><dd>{personalization.perMealCalories?.toLocaleString()??'—'}<span>kcal</span></dd></div></dl>}<dl className={profileStyles.preferences}><div><dt><Icon name="spark" size={16}/>식단 취향</dt><dd>{personalization.style||'기본 설정'}</dd></div><div><dt><Icon name="check" size={16}/>피할 재료</dt><dd>{(conditions.excluded??[]).map(key=>excludedFoods[key]).join(' · ')||'설정 없음'}</dd></div></dl><Link className={profileStyles.edit} href="/profile#profile-settings"><Icon name="edit" size={16}/>내 정보와 취향 수정하기<Icon name="chevron" size={16}/></Link></>:<p className={profileStyles.intro}>{loading?'추천 기준을 확인하고 있어요…':'추천 기준을 아직 확인하지 못했어요. 다시 추천할 때 설정을 확인해요.'}</p>}{!userId&&<p className={profileStyles.note}>로그인하면 내 정보를 저장하고 다음 추천에도 반영할 수 있어요.</p>}</div></details>}
   {mode==='plan'&&!simpleHome&&ids.length>0&&idsComplete&&personalRecommendation}
   {mode==='plan'&&!simpleHome&&!locale.isTaiwan&&ids.length>0&&idsComplete&&<section className={adoptionStyles.card} aria-label="선택한 식단 저장">

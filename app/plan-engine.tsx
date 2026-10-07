@@ -23,7 +23,7 @@ export type PlanEngine = {
 };
 
 async function call<T>(body: Record<string, unknown>): Promise<T> {
- const r = await fetch('/api/shopping-plan/engine', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)});
+ const r = await fetch('/api/shopping-plan/engine', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body), ...(body.action==='products'?{signal:AbortSignal.timeout(12000)}:{})});
  const d = await r.json().catch(() => ({error: '추천을 계산하지 못했어요. 다시 시도해 주세요.'}));
  if (!r.ok) throw new Error(d.error ?? '추천을 계산하지 못했어요. 다시 시도해 주세요.');
  return d as T;

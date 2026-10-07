@@ -65,7 +65,7 @@ export function TodayMeals({compact=false,overviewActions,showRecording=true,onA
  const weeklySpent=dashboard?.expenses.filter(e=>e.category==='food'&&e.date>=dashboard.week&&e.date<addDays(dashboard.week,7)).reduce((sum,e)=>sum+e.amount,0);
  const mealCost=current?.logs.reduce((sum,log)=>sum+(log.cost??0),0)??0;
  const missingCost=current?.logs.some(log=>log.cost==null);
- const disabled=intake.disabled||progress.busy||!progress.ready;
+ const disabled=nextPlanBusy||intake.disabled||progress.busy||!progress.ready;
  const todayDay=planDate(startDate,active.day)===today?active.day:null;
  const todayIds=todayDay===null?[]:ids.flatMap((id,index)=>schedule[index]?.day===todayDay?[{id,index}]:[]);
  const eatenToday=new Set(todayIds.flatMap(({id,index},entryIndex)=>{const portions=current?.logs.filter(l=>l.productId===id).reduce((sum,l)=>sum+l.portions,0)??0;return recordedForSlot(todayIds.map(e=>e.id),entryIndex,portions)>=1?[index]:[];}));
