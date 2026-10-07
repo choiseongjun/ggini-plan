@@ -245,7 +245,7 @@ export default function Home() {
           {todayView==='eat-out'&&<div id="today-panel-eat-out" role="tabpanel" aria-labelledby="today-tab-eat-out"><EatOutCard inline showRecording={false} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/></div>}
           {todayView==='convenience'&&<div id="today-panel-convenience" role="tabpanel" aria-labelledby="today-tab-convenience"><HomeMealChoice initialOpen showRecording={false}/></div>}
           <LinkButton href="/plan" block>미리 식단 짜기</LinkButton>
-          <LinkButton href="/taste" block>사진 6장으로 찾는 내 입맛 도감</LinkButton>
+          <LinkButton href="/taste" block>너, 내 입맛 얼마나 알아? 친구 퀴즈</LinkButton>
 
           <InstallPrompt active/>
         </>}
