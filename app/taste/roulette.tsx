@@ -1,34 +1,39 @@
 'use client';
 import {useEffect,useRef,useState} from 'react';
 import {Button} from '../components/ui';
+import {rouletteCandidates,rouletteRotation} from '../../lib/taste-roulette';
 import s from './taste.module.css';
 
 export default function TasteRoulette({names,disabled,onStart,onPick}:{names:string[];disabled:boolean;onStart:()=>void;onPick:(index:number)=>void}){
  const wheel=useRef<SVGSVGElement>(null);
  const animation=useRef<Animation|null>(null);
  const rotation=useRef(0),busy=useRef(false);
+ const previous=useRef<number|null>(null);
  const [spinning,setSpinning]=useState(false),[winner,setWinner]=useState<number|null>(null);
  useEffect(()=>()=>{animation.current?.cancel();},[]);
  async function spin(){
   if(busy.current||disabled||!wheel.current)return;
   busy.current=true;setSpinning(true);setWinner(null);onStart();
-  // Rejection sampling keeps every wedge equally likely.
-  const values=new Uint32Array(1),limit=2**32-(2**32%names.length);
+  // Equal odds among eligible menus; a reroll excludes the last winner.
+  const candidates=rouletteCandidates(names.length,previous.current);
+  const values=new Uint32Array(1),limit=2**32-(2**32%candidates.length);
   do{crypto.getRandomValues(values);}while(values[0]>=limit);
-  const index=values[0]%names.length,step=360/names.length;
+  const index=candidates[values[0]%candidates.length];
   crypto.getRandomValues(values);
-  const jitter=(values[0]/2**32-.5)*step*.55;
-  const landing=(360-(index+.5)*step+jitter+360)%360;
-  const from=rotation.current,to=from+360*6+((landing-from%360+360)%360);
+  const from=rotation.current,to=rouletteRotation(from,index,names.length,values[0]/2**32-.5);
+  animation.current?.cancel();
+  wheel.current.style.transform=`rotate(${from}deg)`;
   const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const run=wheel.current.animate([{transform:`rotate(${from}deg)`},{transform:`rotate(${to}deg)`}],{duration:reduced?0:4600,easing:'cubic-bezier(.12,.72,.12,1)',fill:'forwards'});
   animation.current=run;
   try{await run.finished;}catch{return;}
-  rotation.current=to;busy.current=false;setSpinning(false);setWinner(index);onPick(index);
+  wheel.current!.style.transform=`rotate(${to%360}deg)`;
+  run.cancel();animation.current=null;
+  rotation.current=to%360;previous.current=index;busy.current=false;setSpinning(false);setWinner(index);onPick(index);
  }
  const point=(angle:number,r=146)=>{const a=(angle-90)*Math.PI/180;return [160+r*Math.cos(a),160+r*Math.sin(a)];};
  return <section className={s.roulette} aria-labelledby="roulette-title">
-  <span className={s.eyebrow}>ONE SPIN, ONE MEAL</span><h2 id="roulette-title">오늘 한 끼, 돌려서 정해요</h2><p>마음에 든 {names.length}가지 중에서 똑같은 확률로 골라요.</p>
+  <span className={s.eyebrow}>ONE SPIN, ONE MEAL</span><h2 id="roulette-title">오늘 한 끼, 돌려서 정해요</h2><p>처음엔 {names.length}가지 중에서, 다시 돌릴 땐 직전 메뉴를 빼고 골라요.</p>
   <div className={s.wheelStage} data-spinning={spinning}>
    <div className={s.pointer} aria-hidden="true"/>
    <svg ref={wheel} className={s.wheel} viewBox="0 0 320 320" role="img" aria-label={`메뉴 룰렛: ${names.join(', ')}`}>
