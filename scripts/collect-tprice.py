@@ -9,12 +9,13 @@ DATA=ROOT/'data/regional-prices'
 BASE='https://www.price.go.kr/tprice/portal/dailynecessitypriceinfo/priceiteminfo/'
 def request(endpoint, params=None):
     for attempt in range(3):
-        args=['curl','-f','-sS','--max-time','45',BASE+endpoint]
+        args=['curl','-f','-sS','--max-time','45','--cacert',str(ROOT/'certs/price-go-kr-ca.pem'),BASE+endpoint]
         if params is not None: args += ['--data',urlencode(params)]
         p=subprocess.run(args,capture_output=True)
         if p.returncode==0: return p.stdout.decode('utf-8')
         time.sleep(1+attempt)
-    raise RuntimeError('Official price source request failed; previous snapshot preserved')
+    detail=p.stderr.decode('utf-8',errors='replace').strip()[:500]
+    raise RuntimeError(f'Official price source failed (curl {p.returncode}): {detail}; previous snapshot preserved')
 def codes(endpoint,params):
     return sorted([str(x['CODE']) for x in json.loads(request(endpoint,params))['json']],reverse=True)
 def parse_page(html,date):
