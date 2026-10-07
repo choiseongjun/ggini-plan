@@ -6,7 +6,7 @@ import {planDate} from '../lib/daily-plan';
 import {usePlannerLocale} from './planner-locale';
 import './meal-plan-overview.css';
 
-export function MealPlanOverview({ids,products,conditions,startDate,shoppingTotal,onMeal,onSwap,locked,disabled,open:controlled,onOpenChange}:{ids:string[];products:PlanProduct[];conditions:PlanConditions;startDate:string;shoppingTotal:number;onMeal:(day:number,index:number)=>void;onSwap:(index:number)=>void;locked:Set<number>;disabled:boolean;open?:boolean;onOpenChange?:(open:boolean)=>void}){
+export function MealPlanOverview({actions,ids,products,conditions,startDate,shoppingTotal,onMeal,onSwap,locked,disabled,open:controlled,onOpenChange}:{actions?:React.ReactNode;ids:string[];products:PlanProduct[];conditions:PlanConditions;startDate:string;shoppingTotal:number;onMeal:(day:number,index:number)=>void;onSwap:(index:number)=>void;locked:Set<number>;disabled:boolean;open?:boolean;onOpenChange?:(open:boolean)=>void}){
  const [uncontrolled,setUncontrolled]=useState(false);
  const open=controlled??uncontrolled;
  const setOpen=(value:boolean)=>{if(onOpenChange)onOpenChange(value);else setUncontrolled(value);};
@@ -15,6 +15,8 @@ export function MealPlanOverview({ids,products,conditions,startDate,shoppingTota
  const locale=usePlannerLocale();
  const schedule=mealSchedule(conditions);
  const days=conditions.days??Math.max(1,...schedule.map(s=>s.day));
+ const label=days===1?(startDate===locale.today()?'오늘':`${startDate.slice(5).replace('-','/')} 하루`):`${days}일`;
+ const title=`${label} 식단 한눈에 보기`;
  useEffect(()=>{
   if(!open)return;
   const node=dialog.current;
@@ -24,15 +26,16 @@ export function MealPlanOverview({ids,products,conditions,startDate,shoppingTota
  },[open]);
  return <><button type="button" className="meal-overview-trigger" aria-haspopup="dialog" onClick={()=>setOpen(true)}>
   <span className="meal-overview-trigger-icon" aria-hidden="true">🗓️<i>✦</i></span>
-  <span className="meal-overview-trigger-copy"><strong>전체 식단 한눈에 보기</strong><small>{days}일 · {ids.length}끼를 한 장에 모았어요</small></span>
+  <span className="meal-overview-trigger-copy"><strong>{title}</strong><small>{days}일 · {ids.length}끼를 한 장에 모았어요</small></span>
   <span className="meal-overview-trigger-arrow" aria-hidden="true">↗</span>
  </button>
  <dialog ref={dialog} className="meal-overview" aria-labelledby={titleId} onCancel={()=>setOpen(false)} onClose={()=>setOpen(false)} onClick={e=>{if(e.target===e.currentTarget){const r=e.currentTarget.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)setOpen(false);}}}>
-  <header className="meal-overview-header"><div><small>🧺 차곡차곡 준비한 끼니</small><h2 id={titleId}>전체 식단 한눈에 보기</h2></div><button type="button" aria-label="전체 식단 닫기" onClick={()=>setOpen(false)}>✕</button></header>
-  <div className="meal-overview-scroll"><div className="meal-overview-summary"><span>{days}일 · {ids.length}끼</span><strong>추가 장보기 약 {locale.money(shoppingTotal)}</strong><small>재료 쓰는 양 기준 · 기본 양념 제외</small></div>
+  <header className="meal-overview-header"><div><small>🧺 차곡차곡 준비한 끼니</small><h2 id={titleId}>{title}</h2></div><button type="button" aria-label="전체 식단 닫기" onClick={()=>setOpen(false)}>✕</button></header>
+  <div className="meal-overview-scroll"><div className="meal-overview-summary"><span>{days}일 · {ids.length}끼</span><strong>추가 장보기 약 {locale.money(shoppingTotal)}</strong><small>판매 단위 기준 · 기본 양념·배송비 제외</small></div>
    <p className="meal-overview-hint">바꾸고 싶은 끼니는 여기서 바로 ↻ 바꿀 수 있어요. 메뉴를 누르면 그 끼니의 자세한 카드로 이동해요.</p>
-   <div className="meal-overview-days">{Array.from({length:days},(_,i)=>i+1).map(day=><section key={day} className="meal-overview-day"><h3><span>{day}일차</span><time dateTime={planDate(startDate,day)}>{planDate(startDate,day).slice(5).replace('-','/')}</time></h3>{ids.flatMap((id,index)=>{if(schedule[index]?.day!==day)return [];const p=products.find(p=>p.id===id);return [<div key={index} className="meal-overview-row"><button type="button" className="meal-overview-item" onClick={()=>{setOpen(false);onMeal(day,index);}}><span><small>{slotLabels[schedule[index].slot]}</small><b>{p?.name??'상품 정보 확인 중'}</b><em>{p?`한 끼 약 ${locale.money(p.price/p.servings)}`:'가격 미확인'}</em></span><span aria-hidden="true">›</span></button>{locked.has(index)?<span className="meal-overview-done">먹었어요 ✓</span>:<button type="button" className="meal-overview-swap" disabled={disabled} onClick={()=>onSwap(index)} aria-label={`${day}일차 ${slotLabels[schedule[index].slot]} 메뉴 바꾸기`}>↻ 바꾸기</button>}</div>];})}</section>)}</div>
-   <p className="meal-overview-hint">한 끼 가격은 먹는 양 기준의 예상 비용이에요. 추가 장보기 금액은 주문·보유 수량과 판매 단위을 반영해 달라질 수 있어요.</p>
+   <div className="meal-overview-days">{Array.from({length:days},(_,i)=>i+1).map(day=><section key={day} className="meal-overview-day"><h3><span>{day}일차</span><time dateTime={planDate(startDate,day)}>{planDate(startDate,day).slice(5).replace('-','/')}</time></h3>{ids.flatMap((id,index)=>{if(schedule[index]?.day!==day)return [];const p=products.find(p=>p.id===id);return [<div key={index} className="meal-overview-row"><button type="button" className="meal-overview-item" onClick={()=>{setOpen(false);onMeal(day,index);}}><span><small>{slotLabels[schedule[index].slot]}</small><b>{p?.name.replace(/_/g,' · ')??'상품 정보 확인 중'}</b><em>{p?`한 끼 약 ${locale.money(p.price/p.servings)}`:'가격 미확인'}</em></span><span aria-hidden="true">›</span></button>{locked.has(index)?<span className="meal-overview-done">먹었어요 ✓</span>:<button type="button" className="meal-overview-swap" disabled={disabled} onClick={()=>onSwap(index)} aria-label={`${day}일차 ${slotLabels[schedule[index].slot]} 메뉴 바꾸기`}>↻ 바꾸기</button>}</div>];})}</section>)}</div>
+   {actions}
+   <p className="meal-overview-hint">한 끼 가격은 먹는 양 기준의 예상 비용이에요. 추가 장보기 금액은 주문·보유 수량과 판매 단위를 반영해 달라질 수 있어요.</p>
   </div><footer className="meal-overview-footer"><Link href="/cart" onClick={()=>setOpen(false)}>🛍️ 장보기 목록 보기 →</Link></footer>
  </dialog></>;
 }

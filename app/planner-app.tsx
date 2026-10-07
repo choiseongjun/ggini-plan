@@ -239,7 +239,7 @@ export default function Home() {
         {tab === "record" && <details className="information-detail"><summary>내 재료로 만든 식사 이력</summary><PantryMealHistory userId={authUser?.id}/></details>}
         {tab === "ingredients" && <PantryHome initialEntry="pantry" userId={authUser?.id} onLogin={()=>setShowAuth(true)} onPlan={()=>setTab("plan")}/>}
         {tab === "home" && <>
-          <header className="today-choice-heading"><h2>오늘의 식단</h2><p>뭘 먹을지 고민된다면 끼니플랜이 추천해 드려요.</p></header>
+          <header className="today-choice-heading"><div className="today-heading-row"><h2>오늘의 식단</h2><span id="today-plan-tools" hidden={todayView!=='home'}/></div><p>뭘 먹을지 고민된다면 끼니플랜이 추천해 드려요.</p></header>
           <nav className="section-navigation today-navigation today-choice-tabs" aria-label="오늘의 메뉴 선택" role="tablist">{(['home','eat-out','convenience'] as const).map((view,i)=><button key={view} id={`today-tab-${view}`} type="button" role="tab" aria-selected={todayView===view} aria-controls={`today-panel-${view}`} onClick={()=>setTodayView(view)}>{['집에서','외식','편의점'][i]}</button>)}</nav>
           <div id="today-panel-home" role="tabpanel" aria-labelledby="today-tab-home" hidden={todayView!=='home'}><ShoppingPlanner simpleHome key={`home-plan-${authUser?.id??'guest'}`} dashboard={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/></div>
           {todayView==='eat-out'&&<div id="today-panel-eat-out" role="tabpanel" aria-labelledby="today-tab-eat-out"><EatOutCard inline showRecording={false} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/></div>}

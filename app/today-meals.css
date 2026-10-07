@@ -136,3 +136,15 @@
 @media(min-width:900px){.meal-switch-photo{aspect-ratio:1.65;border-radius:13px}.meal-more>summary{padding:20px 18px}.meal-more-copy>strong{font-size:18px}.meal-more-copy>small{font-size:13px}.meal-more>.meal-sections{padding:0 18px 16px}}
 .today-menu .meal-eat-row{display:flex;align-items:center;gap:var(--space-3);margin:var(--space-3) 0 0;flex-wrap:wrap}
 .today-menu .meal-eat-row small{font-size:var(--fs-xs);color:var(--text-subtle)}
+
+/* Keep the decision and its cost together on narrow screens. */
+.today-heading-row{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3)}
+.today-heading-row h2{margin:0}
+.today-heading-row>span{flex-shrink:0}
+.today-menu-title-row{display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-3);margin-top:var(--space-2)}
+.today-menu-title-row .today-menu-name{min-width:0;font-size:var(--fs-lg);line-height:1.5;overflow-wrap:anywhere}
+.today-menu-calories{flex-shrink:0;font-size:var(--fs-md);font-weight:700;color:var(--primary-strong);white-space:nowrap}
+.today-menu-calories small{font-size:var(--fs-xs);font-weight:400}
+.today-menu-meta{margin:var(--space-2) 0 var(--space-4);color:var(--text-subtle);font-size:var(--fs-sm);line-height:1.6}
+.today-menu-meta b{color:var(--text)}
+.today-menu .meal-price-basis{font-size:var(--fs-xs);color:var(--text-subtle)}
