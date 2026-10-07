@@ -12,3 +12,17 @@ Retention uses an anonymous browser identifier persisted in localStorage. It can
 Only a small allowlist survives before_send: anonymous IDs, named screen/method/outcome/failure, duration_ms and photo_count. No photos, food names, nutrition, body data, email, account ID, free-text errors, query strings or referrers. No autocapture, replay, heatmaps, surveys, automatic exception capture, feature flags or performance/network capture. Respects Do Not Track. IP-based geolocation is disabled; the vendor still receives network traffic.
 
 Validation: node --import tsx --test tests/analytics-events.test.ts
+
+Recommendation ingredient follow-through (home, October 2026):
+`recommendation_pantry_viewed` fires when the ingredient card enters the viewport;
+`recommendation_pantry_selected` counts toggles (not unique ingredients or final selections).
+The ordered conversion funnel is `recommendation_completed` → `recommendation_pantry_viewed`
+→ `recommendation_pantry_save_clicked` → `recommendation_pantry_login_viewed`
+→ `recommendation_pantry_login_started` → `recommendation_pantry_login_succeeded`
+→ `recommendation_pantry_saved`. Existing members skip login steps.
+Failures, consent and cancellation have separate `recommendation_pantry_login_failed`,
+`recommendation_pantry_consent_required`, `recommendation_pantry_login_cancelled`,
+and `recommendation_pantry_save_failed` events. These measure this save flow only,
+not every site login. No ingredient names or account identifiers are sent.
+The explicit save intent expires after 30 minutes; selected ingredient chips stay in
+this tab when login is cancelled. Successful saves merge into the latest account inventory.

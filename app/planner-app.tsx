@@ -20,6 +20,8 @@ import { ResetData } from "./reset-data";
 import {WellnessTracker} from "./wellness-tracker";
 import { FoodIntake } from "./food-intake";
 import { PantryHome } from "./pantry-home";
+import {PendingRecommendationPantry} from './recommendation-pantry';
+import {pendingPantryKey,pendingPantrySelection} from '../lib/recommendation-pantry';
 import { ShoppingPlanner } from "./shopping-planner";
 import { PantryMealHistory } from './pantry-meal-history';
 import { emptyDashboard, type DashboardData } from "../lib/dashboard";
@@ -83,7 +85,10 @@ export default function Home() {
   const [products, setProducts] = useState<CatalogItem[]>([]);
   const [showAuth, setShowAuth] = useState(false);
   const [authPurpose,setAuthPurpose]=useState<string|undefined>();
+  const [pantryAuth,setPantryAuth]=useState(false);
   function openPlanLogin(){
+   const pantry=pendingPantrySelection();setPantryAuth(!!pantry);
+   if(pantry){setAuthPurpose('선택한 재료를 기억해 둘게요. 로그인하면 내 재료에 추가하고, 다음에도 재료에 맞춰 추천받을 수 있어요.');trackAnalytics('recommendation_pantry_login_viewed');setShowAuth(true);return;}
    let saving=false;try{saving=!!sessionStorage.getItem('ggini-pending-adoption');}catch{}
    setAuthPurpose(undefined);
    if(saving){setAuthPurpose('방금 고른 식단을 계정에 저장해요. 로그인하면 선택한 메뉴 그대로 저장돼요.');trackAnalytics('save_login_viewed');}
@@ -237,11 +242,12 @@ export default function Home() {
 
   return <AppShell>
     {savingBudget && <AppLoading message="이번 주 예산을 저장하고 있어요"/>}
-      {showAuth ? <AuthScreen purpose={authPurpose} onAuthEvent={authPurpose?event=>trackAnalytics(event==='started'?'save_login_started':event==='failed'?'save_login_failed':event==='consent_required'?'save_consent_required':'save_login_succeeded'):undefined} initialError={authError} onExplore={() => { if(authPurpose){try{sessionStorage.removeItem('ggini-pending-adoption');}catch{}trackAnalytics('save_login_cancelled');}setAuthPurpose(undefined);clearRecordMode();clearProfileIntent();setShowAuth(false); setAuthError(""); }} onSuccess={(user) => { setAuthPurpose(undefined);setDashboard(null); setAuthUser(user); setAuthError(""); setShowAuth(false); if(pendingTasteReturn())router.push(pendingTasteReturn()!);else if(takeProfileIntent())router.push("/profile?personalize=1#profile-settings");else setTab(pendingRecordMode()?"record":"home"); }}/> : <>
+      {showAuth ? <AuthScreen purpose={authPurpose} purposeTitle={pantryAuth?"집에 있는 재료를 기억해 둘까요?":undefined} onAuthEvent={authPurpose?event=>trackAnalytics(pantryAuth?(event==='started'?'recommendation_pantry_login_started':event==='failed'?'recommendation_pantry_login_failed':event==='consent_required'?'recommendation_pantry_consent_required':'recommendation_pantry_login_succeeded'):(event==='started'?'save_login_started':event==='failed'?'save_login_failed':event==='consent_required'?'save_consent_required':'save_login_succeeded')):undefined} initialError={authError} onExplore={() => { if(authPurpose){try{sessionStorage.removeItem(pantryAuth?pendingPantryKey:'ggini-pending-adoption');}catch{}trackAnalytics(pantryAuth?'recommendation_pantry_login_cancelled':'save_login_cancelled');}setPantryAuth(false);setAuthPurpose(undefined);clearRecordMode();clearProfileIntent();setShowAuth(false); setAuthError(""); }} onSuccess={(user) => { setPantryAuth(false);setAuthPurpose(undefined);setDashboard(null); setAuthUser(user); setAuthError(""); setShowAuth(false); if(pendingTasteReturn())router.push(pendingTasteReturn()!);else if(takeProfileIntent())router.push("/profile?personalize=1#profile-settings");else setTab(pendingRecordMode()?"record":"home"); }}/> : <>
       <header className="app-header"><Brand/><div className="app-header-actions">{authUser ? <button className="logout-link" type="button" onClick={signOut}>로그아웃</button> : <button className="logout-link" type="button" onClick={() => { setAuthError(""); setShowAuth(true); }}>로그인</button>}</div></header>
       <div className={`app-content app-content-${tab}`} ref={contentRef}>
         {/* 로그인 확인이 끝난 뒤에 그린다 — 비회원 화면을 먼저 그렸다가 회원 화면으로 다시 마운트하면 요청이 두 번씩 나간다. */}
         {authChecked&&<>
+        <PendingRecommendationPantry key={authUser?.id??'guest'} userId={authUser?.id}/>
         {isPlanning&&<PlanningNavigation section={tab}/>}
         {(tab==='eat-out'||tab==='convenience')&&<TodayNavigation section={tab}/>}
         {tab==='ingredients'&&<ShoppingNavigation section="ingredients"/>}

@@ -1,0 +1,14 @@
+.card{margin:16px 0;padding:22px;border:1px solid #dce4d1;border-radius:22px;background:#f3f6ec;color:#35442d;min-width:0;overflow-wrap:anywhere}
+.eyebrow{font-size:12px;font-weight:700;color:#64784e}
+.card h3{font-size:20px;line-height:1.4;margin:7px 0}
+.card p{font-size:14px;line-height:1.65;margin:6px 0 14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:9px 14px;border:1px solid #ccd7bf;border-radius:14px;background:#fff;color:#425236;font:inherit;font-size:14px;cursor:pointer;max-width:100%}
+.chips button[aria-pressed=true]{background:#536b40;border-color:#536b40;color:#fff}
+.chips button:focus-visible,.save:focus-visible{outline:3px solid #b08530;outline-offset:3px}
+.chips button:disabled,.save:disabled{opacity:.55;cursor:wait}
+.seasonings{margin:14px 0}.seasonings summary{font-size:13px;cursor:pointer;padding:8px 0}.seasonings .chips{margin-top:8px}
+.result{background:#fffdf6;border-radius:14px;padding:14px;margin-top:14px}.result p{margin:6px 0}.result small,.note{font-size:12px;line-height:1.6;color:#66705e}
+.card .save{display:block;width:100%;min-height:48px;background:#536b40;border:0;border-radius:14px;color:#fff;padding:12px;font:inherit;font-size:14px;font-weight:700;margin-top:16px;cursor:pointer}
+.note{display:block;margin-top:8px}.success a,.card a{color:#405c2b;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:400px){.card{padding:16px}.card h3{font-size:18px}.chips{gap:6px}.chips button{padding:8px 11px}}

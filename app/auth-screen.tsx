@@ -12,7 +12,7 @@ import { PolicyLinks } from './policy-links';
 
 type AuthResponse = { user?: PublicUser; error?: string; code?: string };
 
-export function AuthScreen({ onSuccess, onExplore, initialError = "", admin = false, review = false, purpose, onAuthEvent }: { onSuccess: (user: PublicUser) => void; onExplore: () => void; initialError?: string; admin?: boolean; review?: boolean; purpose?:string; onAuthEvent?:(event:'started'|'failed'|'succeeded'|'consent_required')=>void }) {
+export function AuthScreen({ onSuccess, onExplore, initialError = "", admin = false, review = false, purpose, purposeTitle, onAuthEvent }: { onSuccess: (user: PublicUser) => void; onExplore: () => void; initialError?: string; admin?: boolean; review?: boolean; purpose?:string; purposeTitle?:string; onAuthEvent?:(event:'started'|'failed'|'succeeded'|'consent_required')=>void }) {
   const [mode, setMode] = useState<"login" | "register">("login");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -103,7 +103,7 @@ export function AuthScreen({ onSuccess, onExplore, initialError = "", admin = fa
     {(pending||socialPending)&&<AppLoading message={socialPending?`${socialName} 로그인을 기다리고 있어요`:mode==="register"?"나만의 식탁을 만들고 있어요":"로그인하고 있어요"}/>}
     <div className="auth-header"><span className="brand"><span className="brand-mark"><span/><span/><span/><span/></span><span>끼니플랜<span className="brand-dot">.</span></span></span><button className="auth-explore-header" type="button" onClick={onExplore}>{purpose?'저장 취소':'둘러보기'}</button></div>
     <div className="auth-content">
-      <div className="auth-intro"><span>{admin ? "끼니플랜 관리자" : "내 식사에서 건강을 찾다"}</span><h2>{admin ? <>관리자<br/><em>로그인</em></> : purpose ? <>고른 식단을<br/><em>저장해 둘까요?</em></> : mode === "login" ? <>다시 만나서<br/><em>반가워요.</em></> : <>우리의 첫 주를<br/><em>시작해 볼까요?</em></>}</h2><p>{admin ? "관리자로 등록된 계정으로 로그인해 주세요." : purpose ? purpose : mode === "login" ? "내 계정으로 끼니플랜을 시작해요." : "계정을 만들고 내게 필요한 영양과 한 끼를 찾아봐요."}</p></div>
+      <div className="auth-intro"><span>{admin ? "끼니플랜 관리자" : "내 식사에서 건강을 찾다"}</span><h2>{admin ? <>관리자<br/><em>로그인</em></> : purpose ? (purposeTitle??<>고른 식단을<br/><em>저장해 둘까요?</em></>) : mode === "login" ? <>다시 만나서<br/><em>반가워요.</em></> : <>우리의 첫 주를<br/><em>시작해 볼까요?</em></>}</h2><p>{admin ? "관리자로 등록된 계정으로 로그인해 주세요." : purpose ? purpose : mode === "login" ? "내 계정으로 끼니플랜을 시작해요." : "계정을 만들고 내게 필요한 영양과 한 끼를 찾아봐요."}</p></div>
       <div className="auth-card">
         {review && <p>App review / 심사용 로그인<br/>스토어 콘솔에 제공된 테스트 계정을 입력하세요. 일반 사용자와 같은 기능을 이용하며 테스트용 기록만 사용해 주세요.</p>}
         {!admin && !review && mode === 'register' && <MemberConsentFields value={consent} onChange={setConsent} disabled={pending || socialPending}/>}
