@@ -15,6 +15,7 @@ import './record-journal.css';
 import {taiwanIntakeData,updateTaiwanIntake} from '../lib/taiwan-intake';
 import type {PlanProduct} from '../lib/shopping-plan';
 import {RecordEntry} from './record-entry';
+import {PlannedMealsRecord} from './planned-meals-record';
 import {EstimatedFoodCost} from './estimated-food-cost';
 import {recordMealPeriod} from '../lib/intake-calendar';
 import {RecordCalendar} from './record-calendar';
@@ -108,6 +109,7 @@ export function FoodIntake({userId,onLogin,history=false,recordDate,onDateChange
  return locale.render(<section className="food-intake" aria-label={history?'먹은 음식 기록':'오늘 먹은 음식'}>
   {/* 기록 탭의 첫 행동은 한 끼 기록 — 물·체중은 그 아래 보조 기록으로 둔다. */}
   {!locale.isTaiwan&&<RecordEntry userId={userId} onLogin={onLogin} onLogged={date=>{setDate(date??today);onDateChange?.(date??today);reload();}}/>}
+  {!locale.isTaiwan&&selectedDate===today&&<PlannedMealsRecord userId={userId} intake={{current,send,disabled,today}}/>}
   {userId&&<header><span className="section-kicker">날짜별 식사 일기</span><h2>{selectedDate===today?'오늘의 식사 일기':`${selectedDate.slice(5).replace('-','월 ')}일의 식사 일기`}</h2><p>{current?.logs.length?`음식 기록 ${current.logs.length}개가 모였어요. 한 끼씩, 나를 챙긴 순간들이에요.`:'어떤 음식을 드셨나요? 작은 간식 하나부터 남겨도 좋아요.'}</p></header>}
   {!userId?null:<>
    {history&&<details className="journal-calendar"><summary>날짜 선택 <span>{selectedDate.replaceAll('-','.')} ⌄</span></summary><RecordCalendar date={selectedDate} today={today} disabled={busy||Boolean(pending)||editBusy} onChange={value=>{if(value===selectedDate)return;setDate(value);onDateChange?.(value);setEditingLog(null);setLoading(true);setError('');}}/></details>}

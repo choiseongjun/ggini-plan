@@ -1,0 +1,12 @@
+.planned-meals-record{display:grid;gap:var(--space-3);margin:0 0 var(--space-5)}
+.planned-meals-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--space-2)}
+.planned-meals-head h3{margin:0;font-size:var(--fs-lg);color:var(--text)}
+.planned-meals-head span{font-size:var(--fs-xs);color:var(--text-subtle)}
+.planned-meals-intro,.planned-meals-note{margin:0;font-size:var(--fs-sm);line-height:1.6;color:var(--text-muted)}
+.planned-meals-list{display:grid;gap:var(--space-2);margin:0;padding:0;list-style:none}
+.planned-meals-list li{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:var(--space-2) var(--space-3);min-height:var(--touch);padding:var(--space-2) var(--space-3);border:1px solid var(--border);border-radius:var(--radius-md);background:var(--surface)}
+.planned-meals-list li.is-done{background:var(--surface-soft)}
+.planned-meals-slot{font-size:var(--fs-xs);color:var(--text-subtle);white-space:nowrap}
+.planned-meals-list strong{min-width:0;font-size:var(--fs-md);color:var(--text)}
+.planned-meals-status{font-size:var(--fs-xs);color:var(--primary-strong);white-space:nowrap}
+.planned-meals-link{justify-self:start;display:inline-flex;align-items:center;min-height:var(--touch);font-size:var(--fs-sm);color:var(--primary-strong)}
