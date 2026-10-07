@@ -13,7 +13,18 @@ function tokenHash(token: string): string {
 
 export function sameOrigin(request: NextRequest): boolean {
   const origin = request.headers.get("origin");
-  return !origin || origin === new URL(request.url).origin;
+  const target = new URL(request.url);
+  if (!origin || origin === target.origin) return true;
+  // Next dev normalizes the request URL to localhost even when opened at 127.0.0.1.
+  // Require the browser's exact Host and port, and keep production checks unchanged.
+  if (process.env.NODE_ENV !== 'development') return false;
+  try {
+    const source = new URL(origin);
+    const loopback = (host: string) => ['localhost', '127.0.0.1', '[::1]'].includes(host);
+    return source.origin === origin && loopback(source.hostname) && loopback(target.hostname)
+      && source.protocol === target.protocol && source.port === target.port
+      && source.host === request.headers.get('host');
+  } catch { return false; }
 }
 
 export async function createSession(user: PublicUser, response: NextResponse = NextResponse.json({ user })): Promise<NextResponse> {
