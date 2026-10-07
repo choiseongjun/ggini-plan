@@ -11,11 +11,11 @@ let loading:Promise<Maps>|null=null;
 function loadMaps():Promise<Maps>{
  if(loading)return loading;
  const key=process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID;
- if(!key)return Promise.reject(new Error('지도 연결을 준비 중이에요. 아래 식당 목록과 상세 링크는 이용할 수 있어요.'));
+ if(!key)return Promise.reject(new Error('지도 연결을 준비 중이에요. 아래 장소 목록과 상세 링크는 이용할 수 있어요.'));
  loading=new Promise<Maps>((resolve,reject)=>{
   const script=document.createElement('script');let settled=false;
   const timeout=setTimeout(()=>fail(),12000);
-  function fail(){if(settled)return;settled=true;clearTimeout(timeout);script.remove();reject(new Error('지도를 불러오지 못했어요. 아래 목록에서 식당을 확인해 주세요.'));}
+  function fail(){if(settled)return;settled=true;clearTimeout(timeout);script.remove();reject(new Error('지도를 불러오지 못했어요. 아래 목록에서 장소를 확인해 주세요.'));}
   script.src=`https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${encodeURIComponent(key)}`;script.async=true;script.onerror=fail;
   script.onload=()=>{
    const maps=(window as Window&{naver?:{maps:Maps}}).naver?.maps;
@@ -25,7 +25,7 @@ function loadMaps():Promise<Maps>{
  }).catch(error=>{loading=null;throw error;});
  return loading;
 }
-export function RestaurantMap({origin,places,onSelect}:{origin:MapPoint|null;places:NearbyRestaurant[];onSelect:(id:string)=>void}){
+export function RestaurantMap({origin,places,onSelect,placeLabel="식당"}:{origin:MapPoint|null;places:NearbyRestaurant[];onSelect:(id:string)=>void;placeLabel?:string}){
  const container=useRef<HTMLDivElement>(null),mapRef=useRef<{map:MapInstance;maps:Maps}|null>(null);
  const [error,setError]=useState(''),[ready,setReady]=useState(false);
  useEffect(()=>{
@@ -43,6 +43,6 @@ export function RestaurantMap({origin,places,onSelect}:{origin:MapPoint|null;pla
   }).catch(e=>{if(active)setError(e instanceof Error?e.message:'지도를 불러오지 못했어요.');});
   return()=>{active=false;observer?.disconnect();overlays.forEach(o=>o.setMap(null));instance?.destroy();mapRef.current=null;node?.replaceChildren();};
  },[origin,places,onSelect]);
- return <div className="restaurant-map"><div ref={container} className="restaurant-map-canvas" role="region" aria-label={origin?'내 위치와 주변 식당 지도':'검색된 식당 지도'}/>{error?<p role="status">{error}</p>:!ready?<p role="status">지도를 불러오고 있어요…</p>:<p>{origin&&'파란 표시: 내 위치(추정) · '}{places.length===1?'선택한 식당 위치':'번호: 식당 목록'}{origin&&<button type="button" onClick={()=>{const current=mapRef.current;if(current)current.map.setCenter(new current.maps.LatLng(origin.latitude,origin.longitude));}}>내 위치로</button>}</p>}</div>;
+ return <div className="restaurant-map"><div ref={container} className="restaurant-map-canvas" role="region" aria-label={origin?`내 위치와 주변 ${placeLabel} 지도`:`검색된 ${placeLabel} 지도`}/>{error?<p role="status">{error}</p>:!ready?<p role="status">지도를 불러오고 있어요…</p>:<p>{origin&&'파란 표시: 내 위치(추정) · '}{places.length===1?`선택한 ${placeLabel} 위치`:`번호: ${placeLabel} 목록`}{origin&&<button type="button" onClick={()=>{const current=mapRef.current;if(current)current.map.setCenter(new current.maps.LatLng(origin.latitude,origin.longitude));}}>내 위치로</button>}</p>}</div>;
 }
 

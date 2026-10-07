@@ -44,6 +44,7 @@ import {type DashboardData} from '../lib/dashboard';
 import { Checkbox } from "./components/checkbox";
 import { useLoadingTask } from "./app-loading";
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {priceReasonText} from '../lib/regional-price-recommendations';
 import {PlanEngineContext,localEngine,remoteEngine} from './plan-engine';
 import Link from 'next/link';
 import type {personalizeProducts} from '../lib/shopping-personalization';
@@ -145,7 +146,8 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
  // 식사 알림을 누르고 들어온 경우: 알림의 메뉴(오늘 끼니) 기록을 바로 열어 준다.
  const [pushMeal]=useState(()=>{if(typeof window==='undefined')return null;return new URLSearchParams(window.location.search).get('meal');});
  const learn=useCallback((list:PlanProduct[])=>{if(list.length)setProducts(prev=>{const byId=new Map(prev.map(p=>[p.id,p]));for(const p of list)byId.set(p.id,p);return [...byId.values()];});},[]);
- const remote=useMemo(()=>remoteEngine(learn),[learn]);
+ const [priceRegion,setPriceRegion]=useState('');
+ const remote=useMemo(()=>remoteEngine(learn,priceRegion),[learn,priceRegion]);
  const local=useMemo(()=>localEngine(products),[products]);
  const engine=locale.isTaiwan?local:remote;
  const [automaticBudget,setAutomaticBudget]=useState(false);
@@ -427,7 +429,9 @@ export function ShoppingPlanner({userId,onLogin,mode='plan',dashboard,initialSet
    <button type="button" className="planner-restart" disabled={busy||progress.busy} onClick={returnToSetup}>추천 조건 바꾸기</button>
   </div>}
   {mode==='plan'&&!ids.length&&!locale.isTaiwan&&!showSetup&&<section ref={startRef} tabIndex={-1} className="home-start" aria-labelledby="planner-title">
-   {simpleHome?<><h3 id="planner-title" className="today-home-label">집에서 먹을 한 끼</h3>
+   {simpleHome&&!locale.isTaiwan&&<label className="planner-price-region">장보기 시세 참고 지역<select value={priceRegion} disabled={busy} onChange={e=>setPriceRegion(e.target.value)}><option value="">선택 안 함</option>{['서울','부산','대구','인천','광주','대전','울산','세종','수원','성남','고양','용인','춘천','강릉','청주','천안','전주','순천','포항','안동','창원','제주'].map(r=><option key={r}>{r}</option>)}</select><small>다음 추천부터 지역 시세를 함께 참고해요.</small></label>}
+  {simpleHome&&ids.length>0&&<div>{ids.flatMap(id=>{const p=products.find(p=>p.id===id);return p?.priceRecommendation?.reasons.slice(0,1).map(r=><p key={id+r.ingredient}>{p.name} · {priceReasonText(r)}</p>)??[];})}</div>}
+  {simpleHome?<><h3 id="planner-title" className="today-home-label">집에서 먹을 한 끼</h3>
    {/* 처음 온 사람의 첫 행동은 추천 하나로 — 직접 담기는 그 아래 보조 경로로 둔다. */}
    {!simpleHome&&intake.totals&&<TodayBalance totals={intake.totals} meals={intake.current?.logs.length??0} reference={personalization?.nutritionReference??null}/>}
    <div className="simple-plan-hero"><Button size="lg" block className="home-recommend-cta" disabled={loading||busy||!progress.ready||!catalogReady} onClick={recommendNow}><Icon name="spark" size={20}/>{busy?'고르는 중…':`${nowPlan.label} 추천받기`}</Button><small>{eatenToday&&!nowPlan.tomorrow?'오늘 먹은 양을 빼고 남은 끼니를 골라 드려요':nowPlan.tomorrow?'오늘은 마무리하고, 내일 먹을 끼니를 미리 골라 드려요':'간편한 요리 위주'}</small><button type="button" className="simple-plan-adjust" disabled={loading||busy} onClick={()=>{setConditions(c=>({...c,days:1,startDate:nowPlan.date,slots:nowPlan.slots,meals:nowPlan.slots.length}));setQuickSetup(true);}}>끼니·요리 난이도 바꾸기</button></div>

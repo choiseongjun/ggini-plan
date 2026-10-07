@@ -2,6 +2,7 @@
 
 import {useEffect, useRef, useState} from 'react';
 import Link from 'next/link';
+import {priceReasonText} from '../lib/regional-price-recommendations';
 import {HomeWelcome} from './home-welcome';
 import {PantryDiscovery} from './pantry-discovery';
 import {usePantryJourney} from './use-pantry-journey';
@@ -36,6 +37,7 @@ export function PantryHome({userId, onLogin, onPlan, initialEntry='welcome'}: {i
   const [inventory, setInventory] = useState<PantryItem[]>([]);
   const [ready, setReady] = useState(false);
   const [extra, setExtra] = useState('');
+  const [priceRegion,setPriceRegion]=useState('');
   const [mood, setMood] = useState<Mood>('easy');
   const [allowShopping, setAllowShopping] = useState(true);
   const [result, setResult] = useState<PlanProduct | null>(null);
@@ -168,7 +170,7 @@ export function PantryHome({userId, onLogin, onPlan, initialEntry='welcome'}: {i
     try {
       const response = await fetch('/api/shopping-plan/engine', {
         method: 'POST', headers: {'Content-Type': 'application/json'}, signal: controller.signal,
-        body: JSON.stringify({action: 'recommend', pantrySourceRecipes:true, recentMeals:recentRecipeIds(journey.journey.meals),favoriteMeals:journey.journey.favorites, pantry: skip ? [] : override?.owned ?? owned, pantryPriority: priority, pantryChoices: true, pantryAllowShopping: skip || (override?.shopping ?? allowShopping), previous: seen.slice(-60), conditions: {budget: 1000000, budgetUnlimited: true, meals: 1, days: 1, slots: ['dinner'], people: 1, sideCount: 0, mealMode: 'cook', cookingEffort: choice.effort, cooking: 'all', avoid: '', owned: [], goal: choice.goal}}),
+        body: JSON.stringify({action: 'recommend', pantrySourceRecipes:true,priceRegion, recentMeals:recentRecipeIds(journey.journey.meals),favoriteMeals:journey.journey.favorites, pantry: skip ? [] : override?.owned ?? owned, pantryPriority: priority, pantryChoices: true, pantryAllowShopping: skip || (override?.shopping ?? allowShopping), previous: seen.slice(-60), conditions: {budget: 1000000, budgetUnlimited: true, meals: 1, days: 1, slots: ['dinner'], people: 1, sideCount: 0, mealMode: 'cook', cookingEffort: choice.effort, cooking: 'all', avoid: '', owned: [], goal: choice.goal}}),
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error ?? '추천을 불러오지 못했어요.');
@@ -230,6 +232,7 @@ export function PantryHome({userId, onLogin, onPlan, initialEntry='welcome'}: {i
 
       <section className="pantry-meal-panel" aria-labelledby="pantry-meal-title">
         <div className="pantry-section-heading"><h2 id="pantry-meal-title">오늘은 어떤 한 끼?</h2><span className="pantry-serving">원문 분량</span></div>
+        <label className="pantry-price-region">장보기 시세 참고 지역<select value={priceRegion} disabled={locked} onChange={e=>setPriceRegion(e.target.value)}><option value="">선택 안 함</option>{['서울','부산','대구','인천','광주','대전','울산','세종','수원','성남','고양','용인','춘천','강릉','청주','천안','전주','순천','포항','안동','창원','제주'].map(region=><option key={region}>{region}</option>)}</select><small>비슷한 메뉴라면 가격이 내려간 재료를 먼저 추천해요.</small></label>
         <div className="pantry-moods" aria-label="오늘의 식사 취향">{mealMoods.map(item => <button key={item.id} aria-pressed={mood === item.id} disabled={locked} onClick={() => setMood(item.id)}><strong>{item.label}</strong><small>{item.description}</small>{mood === item.id && <Icon name="check" size={16}/>}</button>)}</div>
         <label className="pantry-shopping-toggle">
           <input type="checkbox" aria-label="재료를 조금 더 사도 괜찮아요" aria-describedby="pantry-shopping-description" checked={allowShopping} disabled={locked} onChange={event => setAllowShopping(event.target.checked)}/>
@@ -253,7 +256,7 @@ export function PantryHome({userId, onLogin, onPlan, initialEntry='welcome'}: {i
         const closeDetails = () => {setDetailProduct(null); requestAnimationFrame(() => document.getElementById(toggleId)?.focus());};
         return <article key={product.id} className="pantry-option" data-selected={result.id === product.id}>
         <button id={toggleId} type="button" disabled={locked} aria-expanded={expanded} aria-controls={panelId} aria-label={`${product.name.replaceAll('_', ' ')} 재료·조리법 ${expanded ? '접기' : '펼치기'}`} onClick={() => setDetailProduct(expanded ? null : product)}>
-          <span className="pantry-option-copy"><span className="pantry-option-title"><strong>{product.name.replaceAll('_', ' ')}</strong>{result.id === product.id && <span className="pantry-option-selected"><Icon name="check" size={13}/>선택한 메뉴</span>}</span><span className={shortage.main.length ? 'pantry-shortage' : 'pantry-match'}>{skipped ? '재료 확인하고 만들기' : shortage.main.length ? `${shortage.main.length===1&&shortage.seasonings.length===0?'이것만 더 준비해요':'더 필요해요'}: ${shortage.main.map(label).join(' · ')}` : shortage.seasonings.length ? '주재료 준비됨 · 양념 확인' : '재료 종류 일치 · 분량 확인'}</span>{!skipped && shortage.seasonings.length > 0 && <small className="pantry-seasoning-shortage">양념 확인: {shortage.seasonings.map(label).join(' · ')}</small>}{!skipped && usedPriority.length > 0 && <span className="pantry-match">먼저 쓸 {usedPriority.map(label).join('·')} 활용</span>}<small>{journey.journey.favorites.includes(product.id)?'♥ 또 먹고 싶은 메뉴':product.sourceRecipe?.video.channel} · 출처 레시피 기준</small><span className="pantry-option-view">{expanded ? '상세정보 접기' : '재료·조리법 펼치기'}<Icon name="chevron" size={15}/></span></span>
+          <span className="pantry-option-copy">{product.priceRecommendation?.reasons.slice(0,1).map(reason=><small key={reason.ingredient}>{priceReasonText(reason)}</small>)}<span className="pantry-option-title"><strong>{product.name.replaceAll('_', ' ')}</strong>{result.id === product.id && <span className="pantry-option-selected"><Icon name="check" size={13}/>선택한 메뉴</span>}</span><span className={shortage.main.length ? 'pantry-shortage' : 'pantry-match'}>{skipped ? '재료 확인하고 만들기' : shortage.main.length ? `${shortage.main.length===1&&shortage.seasonings.length===0?'이것만 더 준비해요':'더 필요해요'}: ${shortage.main.map(label).join(' · ')}` : shortage.seasonings.length ? '주재료 준비됨 · 양념 확인' : '재료 종류 일치 · 분량 확인'}</span>{!skipped && shortage.seasonings.length > 0 && <small className="pantry-seasoning-shortage">양념 확인: {shortage.seasonings.map(label).join(' · ')}</small>}{!skipped && usedPriority.length > 0 && <span className="pantry-match">먼저 쓸 {usedPriority.map(label).join('·')} 활용</span>}<small>{journey.journey.favorites.includes(product.id)?'♥ 또 먹고 싶은 메뉴':product.sourceRecipe?.video.channel} · 출처 레시피 기준</small><span className="pantry-option-view">{expanded ? '상세정보 접기' : '재료·조리법 펼치기'}<Icon name="chevron" size={15}/></span></span>
         </button>
         <div id={panelId} role="region" aria-labelledby={toggleId} hidden={!expanded}>{expanded && <PantryMenuDetails product={product} owned={owned} onClose={closeDetails} onSelect={() => {setResult(product); setMissing(missingPantryIngredients(product, owned)); setCooking(true); trackAnalytics('pantry_cooking_started'); setCleanup(false); setUsedUp([]); setDetailProduct(null); requestAnimationFrame(() => {recipe.current?.focus({preventScroll:true}); recipe.current?.scrollIntoView({block:'start'});});}}/>}</div>
         </article>;

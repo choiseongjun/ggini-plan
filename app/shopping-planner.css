@@ -128,3 +128,5 @@
 .planner-meal-cap>small{font-size:11px;line-height:1.6;color:var(--text-subtle)}
 @media(prefers-reduced-motion:reduce){.home-start{animation:none}}
 .plan-cost-line{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 6px;margin:-6px 0 16px;padding:0 4px;font-size:13px;color:#5c6e55}.plan-cost-line b{font-size:15px;color:#26321f}.plan-cost-line small{flex-basis:100%;font-size:11px;color:var(--text-subtle)}
+
+.planner-price-region{display:grid;gap:8px;margin:12px 0;font-size:14px}.planner-price-region select{padding:10px;border:1px solid #ccd3c2;border-radius:12px;background:#fff;color:inherit;font:inherit}.planner-price-region small{color:#68725f}

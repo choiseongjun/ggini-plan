@@ -1,3 +1,5 @@
+import {priceSignal} from '../../../../lib/regional-price-recommendations';
+import {regionalPriceContext} from '../../../../lib/regional-prices-db';
 import {browsePantryMenus} from '../../../../lib/pantry-browse';
 import {getPool} from '../../../../lib/db';
 import {pantrySourceRecommendations} from '../../../../lib/pantry-source-recommendations';
@@ -44,7 +46,9 @@ export async function POST(request: NextRequest) {
   const catalog = await loadPlanCatalog(user?.id, input.action === 'products' ? input.ids as string[] : undefined,(input.action==='recommend'||input.action==='browse'||input.action==='products')?cachedRecommendationProducts:undefined);
   // 탭으로 다듬기(매운·국물·고기): 메뉴 특성을 태그로 붙여 점수에 반영한다. 요청이 있을 때만.
   const traitOf=(p:{id:string;recipe?:{composition?:{items:{id:string;role:string}[]}}})=>(dishTraits as Record<string,DishTraits>)[p.recipe?.composition?.items.find(item=>item.role==='main')?.id??p.id];
-  const products = conditions?.tastes?.length ? catalog.products.map(p=>({...p,tasteTags:tasteTagsFor(traitOf(p))})) : catalog.products;
+  const baseProducts = conditions?.tastes?.length ? catalog.products.map(p=>({...p,tasteTags:tasteTagsFor(traitOf(p))})) : catalog.products;
+  const priceContext=input.action==='recommend'?await regionalPriceContext(input.priceRegion):undefined;
+  const products=priceContext?baseProducts.map(p=>{const signal=priceSignal(p,priceContext);return {...p,priceRecommendation:signal,personalizationScore:(p.personalizationScore??0)+signal.bonus};}):baseProducts;
   const today = async () => user ? await todayContext(user.id, products, catalog.personalization, catalog.health).catch(() => null) : null;
   const slotIndex = (c: PlanConditions) => typeof input.index === 'number' && Number.isInteger(input.index) && input.index >= 0 && input.index < c.meals ? input.index : null;
 
@@ -70,7 +74,7 @@ export async function POST(request: NextRequest) {
      if(pantry===undefined||c.meals!==1||c.avoid.trim())return authFailure('보유 재료와 추천 조건을 확인해 주세요.',400);
      if((input.recentMeals!==undefined&&!validIds(input.recentMeals))||(input.favoriteMeals!==undefined&&!validIds(input.favoriteMeals)))return authFailure('식사 이력을 확인해 주세요.',400);
      const recent=user?(await getPool().query("SELECT DISTINCT product_id FROM food_intake_logs WHERE user_id=$1 AND undone_at IS NULL AND COALESCE(eaten_at,created_at)>now()-interval '3 days'",[user.id])).rows.map(r=>r.product_id):input.recentMeals as string[]??[];
-     const sourced=pantrySourceRecommendations(pantry as string[],priority,validIds(input.previous)?input.previous:[],input.pantryAllowShopping!==false,c.excluded??[],c.cookingEffort==='easy',recent,input.favoriteMeals as string[]??[],input.pantryDiscovery===true?30:3);
+     const sourced=pantrySourceRecommendations(pantry as string[],priority,validIds(input.previous)?input.previous:[],input.pantryAllowShopping!==false,c.excluded??[],c.cookingEffort==='easy',recent,input.favoriteMeals as string[]??[],input.pantryDiscovery===true?30:3,priceContext);
      if(!sourced.length)return authFailure('현재 조건에 맞고 재료·조리법을 함께 확인할 수 있는 레시피를 찾지 못했어요. 재료를 바꾸거나 추가 장보기를 허용해 주세요.',422);
      return json({ids:sourced.map(p=>p.id),products:sourced,missing:missingPantryIngredients(sourced[0],pantry as string[])});
     }

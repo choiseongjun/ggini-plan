@@ -1,0 +1,217 @@
+{
+  "version": 1,
+  "method": "Reviewed exact source-name mapping; ingredient relation, not identical SKU or guaranteed recipe suitability.",
+  "ingredients": [
+    {
+      "id": "tofu",
+      "name": "두부",
+      "aliases": [
+        "두부"
+      ],
+      "kamisNames": [
+        "두부"
+      ],
+      "kamisVarieties": [],
+      "productNames": [
+        "국산콩두부 부침용(380g)",
+        "국산콩두부 찌개용(380g)",
+        "행복한콩 부침두부(300g)",
+        "행복한콩 찌개두부(300g)"
+      ]
+    },
+    {
+      "id": "zucchini",
+      "name": "애호박",
+      "aliases": [
+        "애호박"
+      ],
+      "kamisNames": [
+        "호박"
+      ],
+      "kamisVarieties": [
+        "애호박"
+      ],
+      "productNames": [
+        "애호박"
+      ]
+    },
+    {
+      "id": "onion",
+      "name": "양파",
+      "aliases": [
+        "양파"
+      ],
+      "kamisNames": [
+        "양파"
+      ],
+      "kamisVarieties": [],
+      "productNames": [
+        "양파(껍질 있는 망포장, 1.5kg)"
+      ]
+    },
+    {
+      "id": "potato",
+      "name": "감자",
+      "aliases": [
+        "감자"
+      ],
+      "kamisNames": [
+        "감자"
+      ],
+      "kamisVarieties": [],
+      "productNames": [
+        "감자(껍질 있는 감자, 100g)"
+      ]
+    },
+    {
+      "id": "soy-paste",
+      "name": "된장",
+      "aliases": [
+        "된장"
+      ],
+      "kamisNames": [
+        "된장"
+      ],
+      "kamisVarieties": [],
+      "productNames": [
+        "순창 재래식안심생된장(1kg)",
+        "해찬들 재래식 된장(1kg)"
+      ]
+    },
+    {
+      "id": "soy-sauce",
+      "name": "간장",
+      "aliases": [
+        "간장"
+      ],
+      "kamisNames": [
+        "간장"
+      ],
+      "kamisVarieties": [],
+      "productNames": [
+        "양조간장 501(500ml)",
+        "진간장 금F3(860ml)"
+      ]
+    },
+    {
+      "id": "spinach",
+      "name": "시금치",
+      "aliases": [
+        "시금치"
+      ],
+      "kamisNames": [
+        "시금치"
+      ],
+      "kamisVarieties": [],
+      "productNames": [
+        "시금치(250~400g)"
+      ]
+    },
+    {
+      "id": "egg",
+      "name": "계란",
+      "aliases": [
+        "계란",
+        "달걀"
+      ],
+      "kamisNames": [
+        "계란"
+      ],
+      "kamisVarieties": [],
+      "productNames": [
+        "CJ 1등급 깨끗한 계란(10개)",
+        "CJ 1등급 깨끗한 계란(15개)"
+      ]
+    },
+    {
+      "id": "cabbage",
+      "name": "양배추",
+      "aliases": [
+        "양배추"
+      ],
+      "kamisNames": [
+        "양배추"
+      ],
+      "kamisVarieties": [],
+      "productNames": [
+        "양배추"
+      ]
+    },
+    {
+      "id": "mushroom",
+      "name": "버섯",
+      "aliases": [
+        "버섯"
+      ],
+      "kamisNames": [
+        "느타리버섯",
+        "양송이버섯",
+        "새송이버섯",
+        "팽이버섯",
+        "표고버섯"
+      ],
+      "kamisVarieties": [],
+      "productNames": [
+        "느타리버섯(100g)",
+        "양송이버섯(100g)"
+      ]
+    }
+  ],
+  "recipes": [
+    {
+      "id": "soy-stew",
+      "name": "된장찌개",
+      "ingredientIds": [
+        "zucchini",
+        "onion",
+        "potato",
+        "tofu",
+        "soy-paste"
+      ],
+      "kind": "menu-idea",
+      "note": "주요 재료 연결 예시이며 완전한 조리법·분량이 아닙니다."
+    },
+    {
+      "id": "cabbage-egg",
+      "name": "양배추 달걀볶음",
+      "ingredientIds": [
+        "cabbage",
+        "egg"
+      ],
+      "kind": "menu-idea",
+      "note": "주요 재료 연결 예시이며 완전한 조리법·분량이 아닙니다."
+    },
+    {
+      "id": "potato-braise",
+      "name": "감자조림",
+      "ingredientIds": [
+        "potato",
+        "onion",
+        "soy-sauce"
+      ],
+      "kind": "menu-idea",
+      "note": "주요 재료 연결 예시이며 완전한 조리법·분량이 아닙니다."
+    },
+    {
+      "id": "spinach-soup",
+      "name": "시금치 달걀국",
+      "ingredientIds": [
+        "spinach",
+        "egg"
+      ],
+      "kind": "menu-idea",
+      "note": "주요 재료 연결 예시이며 완전한 조리법·분량이 아닙니다."
+    },
+    {
+      "id": "mushroom-tofu",
+      "name": "버섯 두부볶음",
+      "ingredientIds": [
+        "mushroom",
+        "tofu",
+        "onion"
+      ],
+      "kind": "menu-idea",
+      "note": "주요 재료 연결 예시이며 완전한 조리법·분량이 아닙니다."
+    }
+  ]
+}
