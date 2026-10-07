@@ -21,3 +21,11 @@
 .pantry-compact-status{display:flex;gap:var(--space-2);align-items:flex-start;font-size:var(--fs-xs);color:var(--text-subtle);margin:var(--space-2) 0}.pantry-compact-status svg{flex-shrink:0}
 
 .pantry-results-layout{display:flex;flex-direction:column}.pantry-results-layout>.pantry-daily-results{order:-1}
+
+.pantry-daily-results{scroll-margin-top:16px}
+.pantry-daily-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-2);margin:var(--space-3) 0}
+.pantry-daily-tabs button{min-width:0;min-height:76px;padding:var(--space-3) var(--space-2);border:1px solid var(--border);border-radius:var(--radius-md);background:var(--surface-soft);color:var(--text);text-align:left;font:inherit}
+.pantry-daily-tabs button[aria-pressed="true"]{background:var(--primary);border-color:var(--primary);color:#fff}
+.pantry-daily-tabs span{display:block;font-weight:700}.pantry-daily-tabs small{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere;margin-top:var(--space-1);font-size:var(--fs-xs);line-height:1.5}
+.pantry-selected-meal{padding:var(--space-3);border:1px solid var(--border);border-radius:var(--radius-md);background:var(--surface)}
+.pantry-selected-meal>h3{margin:var(--space-1) 0;font-size:var(--fs-lg)}.pantry-selected-meal>small{color:var(--text-subtle)}
