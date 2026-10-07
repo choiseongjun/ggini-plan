@@ -261,7 +261,7 @@ export default function Home() {
         {tab === "ingredients" && <PantryHome initialEntry="pantry" userId={authUser?.id} onLogin={()=>setShowAuth(true)} onPlan={()=>setTab("plan")}/>}
         {tab === "home" && <>
           <TasteHomeArrival/>
-          {homeEntry==='choose'?<FridgePick userId={authUser?.id} onPantry={()=>setHomeEntry('pantry')} onRecommend={()=>setHomeEntry('recommend')}/>:<>
+          {homeEntry==='choose'?<FridgePick userId={authUser?.id}/>:<>
           {homeEntry!=='pantry'&&<BackButton onClick={()=>setHomeEntry('choose')}>홈으로</BackButton>}
           {homeEntry==='pantry'?<PantryHome standardResults onHome={()=>setHomeEntry('choose')} initialEntry="pantry" userId={authUser?.id} onLogin={()=>setShowAuth(true)} onPlan={()=>setTab('plan')}/>:<>
           <header id="today-meals" className="today-choice-heading"><div className="today-heading-row"><h2>오늘의 식단</h2><span id="today-plan-tools" hidden={todayView!=='home'}/></div><p>뭘 먹을지 고민된다면 끼니플랜이 추천해 드려요.</p></header>

@@ -13,7 +13,7 @@ const SLOT_LABEL={breakfast:'아침',lunch:'점심',dinner:'저녁'} as const;
 const CHIPS_KEY='kkiniplan-fridge-chips-v1';
 
 // 홈 첫 화면 한 가지 행동: "냉장고에 있는 거 누르면, 오늘 해 먹을 한 끼를 정해 줘요."
-export function FridgePick({userId,onPantry,onRecommend}:{userId?:string;onPantry:()=>void;onRecommend:()=>void}){
+export function FridgePick({userId}:{userId?:string}){
  const [clock]=useState(()=>kstClock());
  const plan=mealsFromNow(clock),slot=plan.slots[0];
  const when=`${plan.tomorrow?'내일':'오늘'} ${SLOT_LABEL[slot]}`;
@@ -85,10 +85,5 @@ export function FridgePick({userId,onPantry,onRecommend}:{userId?:string;onPantr
    </div>
    <p className={styles.note}>간장·설탕·식용유 같은 기본 양념은 집에 있다고 봤어요.</p>
   </article>}
-
-  <nav className={styles.more} aria-label="다른 방법">
-   <button type="button" onClick={()=>{trackAnalytics('home_entry_selected',{entry:'pantry'});onPantry();}}>사진으로 재료 찾기·자세히 입력</button>
-   <button type="button" onClick={()=>{trackAnalytics('home_entry_selected',{entry:'recommend'});onRecommend();}}>재료 없이 메뉴부터 추천받기</button>
-  </nav>
  </section>;
 }
