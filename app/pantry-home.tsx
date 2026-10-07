@@ -167,7 +167,17 @@ export function PantryHome({userId, onLogin, onPlan, initialEntry='welcome',stan
 
   async function recommend(skip = false, override?: RecommendationOverride) {
     if (locked) return;
-    if(standardResults){setStandardRequest({pantry:skip?[]:override?.owned??owned,pantryPriority:priority,cookingEffort:override?.mood??mood,pantryAllowShopping:skip||(override?.shopping??allowShopping)});return;}
+    if(standardResults){
+      let selected=override?.owned??owned;
+      if(extra.trim()){
+        const entries=parsePantryEntry(extra);
+        if(!entries.length){setError('재료 이름을 확인해 주세요. 여러 재료는 쉼표로 나눠주세요.');return;}
+        const next=mergePantryEntries(inventory,entries,false,today);
+        if(!updateInventory(next))return;
+        selected=pantryForRecommendation(next,today).owned;setExtra('');
+      }
+      setStandardRequest({pantryDaily:true,pantry:extra.trim()?selected:skip?[]:selected,pantryPriority:priority,cookingEffort:override?.mood??mood,pantryAllowShopping:skip||(override?.shopping??allowShopping)});return;
+    }
     const controller = new AbortController(); request.current = controller;
     const choice = mealMoods.find(item => item.id === (override?.mood ?? mood))!;
     setBusy(true); setDetailProduct(null); setError(''); setNotice(''); setCleanup(false); setUsedUp([]);
@@ -237,6 +247,7 @@ export function PantryHome({userId, onLogin, onPlan, initialEntry='welcome',stan
 
       <section className="pantry-meal-panel" aria-labelledby="pantry-meal-title">
         <div className="pantry-section-heading"><h2 id="pantry-meal-title">오늘은 어떤 한 끼?</h2><span className="pantry-serving">원문 분량</span></div>
+        <details><summary>추천 조건 더 설정하기</summary>
         <label className="pantry-price-region">장보기 시세 참고 지역<select value={priceRegion} disabled={locked} onChange={e=>setPriceRegion(e.target.value)}><option value="">선택 안 함</option>{['서울','부산','대구','인천','광주','대전','울산','세종','수원','성남','고양','용인','춘천','강릉','청주','천안','전주','순천','포항','안동','창원','제주'].map(region=><option key={region}>{region}</option>)}</select><small>비슷한 메뉴라면 가격이 내려간 재료를 먼저 추천해요.</small></label>
         <div className="pantry-moods" aria-label="오늘의 식사 취향">{mealMoods.map(item => <button key={item.id} aria-pressed={mood === item.id} disabled={locked} onClick={() => setMood(item.id)}><strong>{item.label}</strong><small>{item.description}</small>{mood === item.id && <Icon name="check" size={16}/>}</button>)}</div>
         <label className="pantry-shopping-toggle">
@@ -244,7 +255,8 @@ export function PantryHome({userId, onLogin, onPlan, initialEntry='welcome',stan
           <span className="pantry-shopping-check" aria-hidden="true"><Icon name="check" size={15} strokeWidth={2.5}/></span>
           <span className="pantry-shopping-copy"><strong>재료를 조금 더 사도 괜찮아요</strong><small id="pantry-shopping-description">{allowShopping ? '메뉴마다 더 필요한 재료를 알려드려요.' : '등록한 재료로 만들 수 있는 메뉴만 찾아요.'}</small></span>
         </label>
-        <div className="pantry-recommend-action"><button className="pantry-primary" disabled={locked} onClick={() => recommend(!mainIngredients.length)}><Icon name="spark" size={18}/>{busy ? '메뉴 찾는 중…' : mainIngredients.length ? '이 재료로 메뉴 추천받기' : '메뉴 먼저 둘러보기'}<Icon name="arrow" size={18}/></button>
+        </details>
+        <div className="pantry-recommend-action"><button className="pantry-primary" disabled={locked} onClick={() => recommend(!mainIngredients.length)}><Icon name="spark" size={18}/>{busy ? '메뉴 찾는 중…' : (mainIngredients.length||(standardResults&&extra.trim())) ? standardResults?'이 재료로 아침·점심·저녁 추천받기':'이 재료로 메뉴 추천받기' : '메뉴 먼저 둘러보기'}<Icon name="arrow" size={18}/></button>
         <p className="pantry-cta-caption">{mainIngredients.length ? `${mainIngredients.length}가지 주재료${priority.length ? ' · 먼저 쓸 재료 우선' : ''}로 찾아요` : '재료를 추가하면 내 주방에 맞춰 추천해요.'}</p></div>
         {feedback}
       </section>

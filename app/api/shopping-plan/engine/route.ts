@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
     const pantry=input.pantry;
     const priority=input.pantryPriority??[];
     if(!Array.isArray(priority)||priority.length>100||priority.some(n=>typeof n!=='string'||!n.trim()||n.length>50))return authFailure('우선 사용할 재료를 확인해 주세요.',400);
-    if(pantry!==undefined&&(!Array.isArray(pantry)||pantry.length>100||pantry.some(n=>typeof n!=='string'||!n.trim()||n.length>50)||c.meals!==1))return authFailure('보유 재료를 확인해 주세요.',400);
+    if(pantry!==undefined&&(!Array.isArray(pantry)||pantry.length>100||pantry.some(n=>typeof n!=='string'||!n.trim()||n.length>50)||(c.meals!==1&&!(input.pantryDaily===true&&c.meals===3&&c.days===1))))return authFailure('보유 재료를 확인해 주세요.',400);
     if(pantry!==undefined)c.excluded=[...new Set([...(c.excluded??[]),...catalog.excluded])];
     if (catalog.personalization.blocked) return authFailure('현재 신체 정보에서는 자동 맞춤 추천을 제공하지 않아요. 마이페이지 안내를 확인해 주세요.', 422);
     if(input.pantrySourceRecipes===true){
@@ -87,11 +87,13 @@ export async function POST(request: NextRequest) {
     const seed = typeof input.seed === 'number' && Number.isFinite(input.seed) ? input.seed : undefined;
     const context = await today();
     const allowShopping=input.pantryAllowShopping!==false;
-    const eligible=pantry===undefined?products:pantryCandidates(slotCandidates(products,c,0),pantry as string[],previous,priority.filter(n=>(pantry as string[]).includes(n)),allowShopping);
+    const dailyPool=input.pantryDaily===true&&Array.isArray(pantry)?products.filter(p=>p.recipe?.ingredients.length&&(allowShopping||missingPantryIngredients(p,pantry as string[]).length===0)).map(p=>({...p,personalizationScore:(p.personalizationScore??0)+Math.max(0,12-pantryShortage(p,pantry as string[]).main.length*2)})):null;
+    const eligible=dailyPool??(pantry===undefined?products:pantryCandidates(slotCandidates(products,c,0),pantry as string[],previous,priority.filter(n=>(pantry as string[]).includes(n)),allowShopping));
     if(pantry!==undefined&&!eligible.length)return authFailure('지금 재료만으로 맞는 메뉴를 찾지 못했어요. 밥·기본 양념이 있는지 확인하거나, 추가 재료가 필요한 메뉴도 보기를 선택해 주세요.',422);
     const ids = recommendShopping(eligible, c, false, previous, seed, context);
     if (!ids) return authFailure('현재 조건으로는 중복 없는 식단을 채울 수 없어요. 끼니 수를 줄이거나 요리 수준·식단 목표·제외 재료·재료비 상한을 조정해 주세요.', 422);
-    const choiceIds=[...ids];
+    const candidateIds=dailyPool?[...dailyPool].sort((a,b)=>pantryShortage(a,pantry as string[]).main.length-pantryShortage(b,pantry as string[]).main.length).filter(p=>[0,1,2].some(i=>slotCandidates([p],c,i).length)).slice(0,18).map(p=>p.id):[];
+    const choiceIds=[...new Set([...ids,...candidateIds])];
     if(pantry!==undefined&&input.pantryChoices===true){
      for(let i=0;i<2;i++){
       const remaining=slotCandidates(products,c,0).filter(p=>!choiceIds.includes(p.id)&&!choiceIds.some(id=>products.find(v=>v.id===id)?.name===p.name));
@@ -105,7 +107,7 @@ export async function POST(request: NextRequest) {
      }
     }
     if (user) after(() => logRecommendations(user.id, c, ids, 'recommend'));
-    return json({ids, products: await hydrateRecommendationProducts(pickProducts(products, choiceIds)), ...(pantry===undefined?{}:{missing:missingPantryIngredients(pickProducts(products,ids)[0],pantry as string[]),pantryChoices:choiceIds.map(id=>({id,...pantryShortage(pickProducts(products,[id])[0],pantry as string[])})),repeated:ids.every(id=>previous.includes(id))}),today: context, personalization: catalog.personalization});
+    return json({ids,candidateIds, products: await hydrateRecommendationProducts(pickProducts(products, choiceIds)), ...(pantry===undefined?{}:{missing:missingPantryIngredients(pickProducts(products,ids)[0],pantry as string[]),pantryChoices:choiceIds.map(id=>({id,...pantryShortage(pickProducts(products,[id])[0],pantry as string[])})),repeated:ids.every(id=>previous.includes(id))}),today: context, personalization: catalog.personalization});
    }
    case 'swap': {
     const c = conditions, ids = input.ids;
