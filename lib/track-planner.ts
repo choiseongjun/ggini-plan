@@ -1,7 +1,9 @@
 'use client';
 import {trackAnalytics} from './analytics';
 import type {PlannerEvent} from './planner-events';
+import {isInternalDevice} from './internal-traffic';
 export function trackPlanner(event:PlannerEvent){
+ if(isInternalDevice())return;
  if(event==='generated')trackAnalytics('recommendation_completed');
  if(event==='swapped')trackAnalytics('menu_swapped');
  if(event==='snack_logged')trackAnalytics('meal_recorded',{method:'search'});

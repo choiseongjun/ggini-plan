@@ -26,3 +26,7 @@ and `recommendation_pantry_save_failed` events. These measure this save flow onl
 not every site login. No ingredient names or account identifiers are sent.
 The explicit save intent expires after 30 minutes; selected ingredient chips stay in
 this tab when login is cancelled. Successful saves merge into the latest account inventory.
+
+## 내부 기기 제외
+
+운영자·테스트 기기는 `/admin/metrics`의 "이 기기를 지표에서 제외"를 켜거나, 주소 끝에 `?internal=1`을 붙여 한 번 열면 된다(`?internal=0`은 해제). 표시는 그 브라우저의 localStorage(`ggini-internal-device`)에만 저장되고, 표시된 브라우저는 PostHog, GA4, 자체 지표(`planner_events`), Vercel 방문 집계를 보내지 않는다. 기기·브라우저·앱마다 따로 켜야 하며, 사이트 저장 데이터를 지우면 다시 켜야 한다.
