@@ -4,6 +4,7 @@ import {restaurantKeywords,type RestaurantMatch} from '../lib/restaurant-discove
 import type {RestaurantSearch} from '../lib/nearby-restaurants';
 import {RestaurantMap} from './restaurant-map';
 import {RestaurantContent} from './restaurant-content';
+import {trackAnalytics} from '../lib/analytics';
 import './nearby-restaurants.css';
 
 type Results={places:RestaurantMatch[];city:string;partial:boolean};
@@ -59,7 +60,7 @@ export function NearbyRestaurants({menu,embedded=false}:{menu:string;embedded?:b
     {filtered.length?<ul className="nearby-list">{filtered.slice(0,limit).map((p,index)=><li key={p.id} className={selected===p.id?'is-selected':undefined}>
      <button type="button" className="nearby-place-select" aria-expanded={selected===p.id} aria-controls={`${id}-map-${p.id}`} onClick={()=>setSelected(selected===p.id?null:p.id)}><span><strong><span className="nearby-number">{index+1}</span>{p.name}</strong><small>{p.category}{p.distance!==null&&<b className="nearby-distance"> · 내 위치에서 {p.distance<1000?`${Math.round(p.distance)}m`:`${(p.distance/1000).toFixed(1)}km`}</b>}</small><span className="nearby-place-address">{p.address}</span></span><span className="nearby-place-pin">{selected===p.id?'지도 접기':'위치 보기'}<span aria-hidden="true"> {selected===p.id?'−':'⌖'}</span></span></button>
      {p.match!=='nearby'&&<span className={`nearby-match-badge ${p.match}`}>{p.match==='menu'?'메뉴 검색':'비슷한 음식'} · {p.keyword}</span>}
-     {selected===p.id&&<div id={`${id}-map-${p.id}`} className="nearby-selected-map"><strong>{p.name} 위치</strong>{p.position?<RestaurantMap origin={null} places={selectedPlaces} onSelect={selectRestaurant}/>:<p>지도 좌표가 없어요. 아래 식당 정보에서 위치를 확인해 주세요.</p>}<div className="nearby-links"><a href={p.url} target="_blank" rel="noopener noreferrer">식당 정보·길찾기 ↗</a>{p.phone&&<a href={`tel:${p.phone.replace(/[^\d+]/g,'')}`}>전화</a>}</div><RestaurantContent name={p.name} address={p.address}/></div>}
+     {selected===p.id&&<div id={`${id}-map-${p.id}`} className="nearby-selected-map"><strong>{p.name} 위치</strong>{p.position?<RestaurantMap origin={null} places={selectedPlaces} onSelect={selectRestaurant}/>:<p>지도 좌표가 없어요. 아래 식당 정보에서 위치를 확인해 주세요.</p>}<div className="nearby-links"><a href={p.url} target="_blank" rel="noopener noreferrer" onClick={()=>trackAnalytics('restaurant_opened',{channel:'map'})}>식당 정보·길찾기 ↗</a>{p.phone&&<a href={`tel:${p.phone.replace(/[^\d+]/g,'')}`} onClick={()=>trackAnalytics('restaurant_opened',{channel:'call'})}>전화</a>}</div><RestaurantContent name={p.name} address={p.address}/></div>}
     </li>)}</ul>:<p>{filter==='all'?'이 범위에서 식당을 찾지 못했어요. 시 이름으로도 검색해 보세요.':filter==='menu'?'이 메뉴로 검색된 식당이 없어요. 비슷한 음식 탭에서 다른 후보를 확인해 보세요.':'비슷한 음식으로 검색된 식당이 없어요. 식당 목록 탭에서 주변 식당을 확인해 보세요.'}</p>}
     {filtered.length>limit&&<button className="nearby-more" type="button" onClick={()=>setLimit(n=>n+5)}>식당 더 보기 · {filtered.length-limit}곳 남음</button>}
     <small className="nearby-source">장소 정보 · 카카오맵 / 지도 · 네이버. 검색 가능한 일부 식당을 보여줘요. 메뉴·가격·영업 여부는 방문 전 확인해 주세요.</small>

@@ -22,3 +22,15 @@ test('refine chips are an allowlisted event property',()=>{
  assert.equal(sanitizeAnalytics('recommendation_refined',{screen:'home',refine:'spicy'})?.refine,'spicy');
  assert.equal(sanitizeAnalytics('recommendation_refined',{refine:'anything'})?.refine,undefined);
 });
+
+test('planner sections are tracked by name without ids',()=>{
+ for(const [path,screen] of [['/eat-out','eat_out'],['/convenience','convenience'],['/ingredients','ingredients'],['/calendar/week','calendar'],['/compare/rice-1','compare'],['/deals','deals']])assert.equal(analyticsScreen(path),screen);
+ assert.equal(analyticsScreen('/together'),null);assert.equal(analyticsScreen('/battle/abc'),null);
+ assert.equal(sanitizeAnalytics('page_viewed',{screen:'eat_out'})?.screen,'eat_out');
+});
+
+test('post-recommendation actions carry only an allowlisted channel',()=>{
+ assert.deepEqual(sanitizeAnalytics('restaurant_opened',{screen:'eat_out',channel:'map',name:'private restaurant'}),{$process_person_profile:false,$geoip_disable:true,screen:'eat_out',channel:'map'});
+ assert.equal(sanitizeAnalytics('plan_shared',{channel:'https://share.example'})?.channel,undefined);
+ assert.equal(sanitizeAnalytics('push_opened',{source:'push'})?.source,'push');
+});

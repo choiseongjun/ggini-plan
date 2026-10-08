@@ -2,6 +2,7 @@
 import {useState,useRef} from 'react';
 import Script from 'next/script';
 import {publicPlanShareUrl} from '../lib/plan-share-link';
+import {trackAnalytics} from '../lib/analytics';
 import type {PlanConditions} from '../lib/shopping-plan';
 import './shared-plan.css';
 const kakaoKey=process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY;
@@ -16,12 +17,14 @@ export function SharePlanButton({userId,onLogin,conditions,mealIds,disabled=fals
   try{
    if(!navigator.share){setMessage('이 브라우저에서는 앱 공유를 지원하지 않아요. 링크를 복사해 카카오톡이나 문자에 붙여 넣어 주세요.');return;}
    await navigator.share({title:'같이 먹어요 · 끼니플랜',text:shareText,url});
+   trackAnalytics('plan_shared',{channel:'other'});
   }catch(e){if(!(e instanceof Error&&e.name==='AbortError'))setMessage('공유 창을 열지 못했어요. 링크를 복사해 보내 주세요.');}
  }
  function shareKakao(){
   try{
    const sdk=kakaoSdk();if(!sdk||!kakaoReady)throw new Error('not ready');
    sdk.Share.sendDefault({objectType:'text',text:shareText,link:{webUrl:url,mobileWebUrl:url},buttonTitle:'식단 보기'});
+   trackAnalytics('plan_shared',{channel:'kakao'});
    setMessage('카카오톡에서 보낼 친구나 채팅방을 선택해 주세요.');
   }catch{setMessage('카카오톡 공유를 열지 못했어요. 다른 앱으로 보내기나 링크 복사를 이용해 주세요.');}
  }
@@ -41,7 +44,7 @@ export function SharePlanButton({userId,onLogin,conditions,mealIds,disabled=fals
    <p>{kakaoKey?'문자나 다른 메신저로도 보낼 수 있어요.':'공유창에서 카카오톡·문자 등 보낼 앱을 선택해 주세요.'}</p>
    {kakaoFailed&&<p role="status">카카오톡에 연결하지 못했어요. 다른 앱으로 보내기나 링크 복사를 이용해 주세요.</p>}
    <label>공유 링크<input readOnly value={url} onFocus={e=>e.target.select()}/></label>
-   <div><button type="button" onClick={async()=>{try{await navigator.clipboard.writeText(url);setMessage('링크를 복사했어요. 카카오톡이나 문자에 붙여 넣어 주세요.');}catch{setMessage('자동 복사가 안 돼요. 위 링크를 선택해서 직접 복사해 주세요.');}}}>링크 복사</button><a href={url} target="_blank" rel="noopener noreferrer">공유 화면 보기 ↗</a></div>
+   <div><button type="button" onClick={async()=>{try{await navigator.clipboard.writeText(url);trackAnalytics('plan_shared',{channel:'link'});setMessage('링크를 복사했어요. 카카오톡이나 문자에 붙여 넣어 주세요.');}catch{setMessage('자동 복사가 안 돼요. 위 링크를 선택해서 직접 복사해 주세요.');}}}>링크 복사</button><a href={url} target="_blank" rel="noopener noreferrer">공유 화면 보기 ↗</a></div>
    <small>이 링크에는 지금 식단이 저장돼요. 이후 내 식단을 바꿔도 공유한 내용은 유지돼요.</small>
   </>}{message&&<p role="status">{message}</p>}
  </section>;
