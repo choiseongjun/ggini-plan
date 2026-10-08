@@ -1,0 +1,26 @@
+.home-video-picks{max-width:760px;margin:8px auto 28px;color:#303b2e}.home-video-picks>header{display:flex;align-items:center;justify-content:space-between;gap:12px}.home-video-picks>header span{font-size:12px;color:#647653}.home-video-picks h2{font-size:22px;letter-spacing:-.04em;margin:6px 0}.home-video-picks>p{font-size:14px;color:#6b7365;line-height:1.6;margin:8px 0 16px}.home-video-picks>header button{flex-shrink:0;border:1px solid #dce2d5;border-radius:20px;background:#fffdf7;padding:10px 14px;color:#465e38;font:inherit;font-size:13px}.home-video-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.home-video-list article{min-width:0;overflow:hidden;border:1px solid #dde3d5;border-radius:18px;background:#fffef9}.home-video-cover{position:relative;display:block;width:100%;padding:0;border:0;background:#e7ebdf;aspect-ratio:16/9;cursor:pointer;overflow:hidden}.home-video-cover img{width:100%;height:100%;object-fit:cover}.home-video-cover>span{position:absolute;bottom:8px;left:8px;background:#152013dc;color:white;border-radius:16px;padding:6px 10px;font-size:12px}.home-video-copy{padding:14px}.home-video-copy>small{color:#718064;font-size:12px}.home-video-copy h3{margin:6px 0;font-size:18px}.home-video-copy>a{display:block;color:#6b7365;font-size:11px;line-height:1.6}.home-video-actions{display:grid;gap:8px;margin-top:14px}.home-video-actions>a,.home-video-actions>button{display:block;text-align:center;box-sizing:border-box;min-height:42px;padding:11px 7px;border-radius:10px;font:inherit;font-size:12px;font-weight:700;text-decoration:none;border:1px solid #dce3d2;background:#f1f5e9;color:#425f36}.home-video-actions>button{background:#48613c;color:white;border-color:#48613c;cursor:pointer}.home-video-actions>button:disabled{opacity:.55;cursor:default}.home-video-player iframe{display:block;width:100%;aspect-ratio:16/9;border:0}.home-video-player>button{width:100%;padding:8px;border:0;background:#edf1e6;color:#425f36}.home-video-picks .home-video-note{font-size:12px}.home-video-picks button:focus-visible,.home-video-picks a:focus-visible{outline:3px solid #8a9d6f;outline-offset:3px}@media(max-width:600px){.home-video-list{display:flex;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:10px}.home-video-list article{flex:0 0 78%;scroll-snap-align:start}.home-video-picks h2{font-size:21px}.home-video-copy h3{font-size:20px}.home-video-actions>a,.home-video-actions>button{font-size:14px}.home-video-copy>a{font-size:12px}}
+
+.home-video-date{display:block;margin-top:5px;font-size:11px;color:#777f70}
+
+/* Reserve the same text rows and keep actions anchored across all cards. */
+.home-video-list article{display:flex;flex-direction:column;align-self:stretch}
+.home-video-cover,.home-video-player{flex-shrink:0}
+.home-video-copy{display:flex;flex-direction:column;flex:1;min-width:0}
+.home-video-copy>small{display:block;line-height:1.5;min-height:1.5em}
+.home-video-copy h3{line-height:1.4;min-height:2.8em;overflow-wrap:anywhere}
+.home-video-copy>a{line-height:1.6;min-height:3.2em;overflow-wrap:anywhere}
+.home-video-date{line-height:1.5;margin-bottom:14px}
+.home-video-actions{margin-top:auto;grid-template-rows:repeat(2,48px);gap:8px}
+.home-video-actions>a,.home-video-actions>button{display:flex;align-items:center;justify-content:center;width:100%;height:48px;min-height:48px;margin:0;padding:8px;font-size:13px;line-height:1.3;white-space:nowrap}
+.home-video-player{position:relative;aspect-ratio:16/9}
+.home-video-player iframe{height:100%}
+.home-video-player>button{position:absolute;right:8px;top:8px;width:auto;min-height:32px;padding:6px 10px;border-radius:16px;background:#152013e6;color:#fff;font-size:12px;cursor:pointer}
+@media(max-width:600px){.home-video-actions>a,.home-video-actions>button{font-size:14px}}
+
+.home-video-list{display:flex;overflow-x:auto;scroll-snap-type:none;gap:12px;padding:4px 2px 12px;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:#b8c4a7 transparent}
+.home-video-list article{flex:0 0 260px;scroll-snap-align:none}
+.home-video-controls{display:flex;align-items:center;gap:5px;flex-shrink:0}
+.home-video-picks>header .home-video-controls button{min-width:36px;min-height:40px;padding:8px;font-size:12px}
+.home-video-controls button:disabled{opacity:.5;cursor:default}
+.home-video-list:focus-visible{outline:2px solid #8a9d6f;outline-offset:3px}
+@media(max-width:600px){.home-video-list article{flex-basis:78%}.home-video-picks>header{flex-wrap:wrap}.home-video-picks>header .home-video-controls{margin-left:auto}}

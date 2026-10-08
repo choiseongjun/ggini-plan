@@ -6,7 +6,7 @@ import {parseTasteSave,tasteSaveKey,type TasteSave} from '../../lib/pending-tast
 import {trackAnalytics} from '../../lib/analytics';
 import {invalidateJson} from '../../lib/client-cache';
 
-export function useMealSave(){
+export function useMealSave(origin:'taste'|'video'='taste'){
  const [pending,setPending]=useState<TasteSave|null>(null),[auth,setAuth]=useState(false),[busy,setBusy]=useState(false),[saved,setSaved]=useState(false),[message,setMessage]=useState('');
  const current=useRef<TasteSave|null>(null),lock=useRef(false),restored=useRef(false);
  const [savedName,setSavedName]=useState<string|null>(null);
@@ -17,10 +17,10 @@ export function useMealSave(){
    const r=await fetch('/api/manual-meal-plans',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:draft.id,name:draft.name,day:draft.day,slot:draft.slot})});
    if(r.status===401){setAuth(true);trackAnalytics('save_login_viewed');return;}
    if(!r.ok)throw Error();
-   clear();setAuth(false);setSaved(true);setSavedName(draft.name);setMessage(`식단에 저장했어요: ${draft.name} · ${draft.day} 저녁`);invalidateJson();trackAnalytics('taste_meal_saved');trackAnalytics(afterLogin?'save_after_login_completed':'save_completed');
+   clear();setAuth(false);setSaved(true);setSavedName(draft.name);setMessage(`식단에 저장했어요: ${draft.name} · ${draft.day} 저녁`);invalidateJson();trackAnalytics(origin==='video'?'home_video_saved':'taste_meal_saved');trackAnalytics(afterLogin?'save_after_login_completed':'save_completed');
   }catch{setAuth(false);setMessage('저장하지 못했어요. 선택한 메뉴는 유지돼요. 아래에서 다시 저장해 주세요.');trackAnalytics('save_failed');}
   finally{lock.current=false;setBusy(false);}
- },[clear]);
+ },[clear,origin]);
  useEffect(()=>{
   let active=true;
   async function resume(){

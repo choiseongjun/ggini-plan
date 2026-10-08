@@ -8,7 +8,7 @@ import {relevantRecipeVideos} from '../lib/youtube-recipes';
 test('shopping, cooking quantities and video share one source without old nutrition',()=>{
  for(const p of pantrySourceProducts()){
   const source=p.sourceRecipe!;
-  assert.ok(source.ingredients.length>0&&source.steps.length>0);
+  assert.ok(source.ingredients.length>0&&(source.steps.length>0||source.videoInstructionsOnly===true));
   assert.deepEqual(p.recipe!.ingredients.map(i=>i.label),source.ingredients.map(i=>i.label));
   assert.deepEqual(p.recipe!.steps,source.steps);
   assert.equal(p.id,'source-'+source.video.id+(source.key?'-'+source.key:''));
@@ -47,9 +47,9 @@ test('fried rice does not accept mushroom side dish videos',()=>{
  assert.deepEqual(relevantRecipeVideos(list,'새송이버섯볶음밥').map(v=>v.title),['새송이버섯볶음밥 만들기']);
 });
 
-test('reviewed catalogue has 30 distinct menus and preserves split recipe variants',()=>{
- const all=pantrySourceProducts();assert.equal(all.length,30);assert.equal(new Set(all.map(p=>p.id)).size,30);
- assert.equal(new Set(all.map(p=>p.name)).size,30);
+test('reviewed catalogue has 36 distinct menus and preserves split recipe variants',()=>{
+ const all=pantrySourceProducts();assert.equal(all.length,36);assert.equal(new Set(all.map(p=>p.id)).size,36);
+ assert.equal(new Set(all.map(p=>p.name)).size,36);
  assert.ok(all.every(p=>p.sourceRecipe!.steps.every(s=>!s.includes('[Ingredients]')&&!s.includes('Music provided'))));
  const a=all.find(p=>p.name==='배추전')!,b=all.find(p=>p.name==='새우전')!;
  assert.notEqual(a.id,b.id);assert.equal(a.sourceRecipe!.video.id,b.sourceRecipe!.video.id);

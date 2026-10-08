@@ -1,4 +1,5 @@
 import recipes from '../data/pantry-source-recipes.json';
+import videoRecipes from '../data/home-video-recipes.json';
 import {withSourceRecipe} from './source-recipe';
 import {missingPantryIngredients,pantryShortage} from './pantry-recommendation';
 import {canonicalIngredient} from './ingredient-canonical';
@@ -8,7 +9,7 @@ import type {PlanProduct} from './shopping-plan';
 import {priceSignal,type PriceContext} from './regional-price-recommendations';
 
 // Reviewed source snapshots: never fill gaps with inferred catalog recipes.
-export const pantrySourceProducts=()=>recipes.map(source=>withSourceRecipe({name:source.name,emoji:'🍳',family:source.family},source));
+export const pantrySourceProducts=()=>[...recipes,...videoRecipes].map(source=>withSourceRecipe({name:source.name,emoji:'🍳',family:source.family},source));
 export function pantrySourceRecommendations(owned:string[],priority:string[],previous:string[],allowShopping:boolean,excluded:ExcludedFood[],simple:boolean,recent:string[]=[],favorites:string[]=[],limit=3,prices?:PriceContext){
  const available=new Set(owned.map(canonicalIngredient));
  const products=pantrySourceProducts().filter(p=>allowsExcludedFoods(p,excluded)&&(allowShopping||!missingPantryIngredients(p,owned).length));
