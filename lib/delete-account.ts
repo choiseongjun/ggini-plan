@@ -3,7 +3,8 @@ import {getPool} from './db';
 import {isStoredImage} from './catalog-storage';
 import {invalidateCatalogCache} from './catalog-db';
 
-export async function deleteAccount(userId:string,deleteIdentity:()=>Promise<void>){
+export type DeletionPlatform='ios'|'android'|'web';
+export async function deleteAccount(userId:string,deleteIdentity:()=>Promise<void>,platform:DeletionPlatform='web'){
  const db=await getPool().connect();
  try{
   await db.query('BEGIN');
@@ -40,6 +41,12 @@ export async function deleteAccount(userId:string,deleteIdentity:()=>Promise<voi
   }
   await deleteIdentity();
   await db.query('UPDATE catalog_items SET product_image_url=NULL WHERE id=ANY($1::text[])',[catalogIds]);
+  // 탈퇴 기록(연락처 없이): 같은 트랜잭션에서 남겨, 기록 없이 지워지거나 지우지 못하고 기록만 남는 일이 없게 한다.
+  await db.query(`INSERT INTO account_deletions(user_id,login_method,platform,account_created_at,meal_logs,saved_plans)
+   SELECT u.id,COALESCE((SELECT provider FROM oauth_accounts o WHERE o.user_id=u.id AND provider IN ('apple','google') ORDER BY provider='apple' DESC LIMIT 1),'password'),$2,u.created_at,
+    (SELECT count(*)::int FROM food_intake_logs f WHERE f.user_id=u.id AND f.undone_at IS NULL),(SELECT count(*)::int FROM shopping_plans s WHERE s.user_id=u.id)
+   FROM users u WHERE u.id=$1`,[userId,platform]);
+  await db.query('DELETE FROM account_deletions WHERE purge_after<NOW()');
   await db.query('DELETE FROM users WHERE id=$1',[userId]);
   await db.query('COMMIT');
   invalidateCatalogCache();

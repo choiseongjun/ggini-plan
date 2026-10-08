@@ -46,7 +46,10 @@ export async function DELETE(request:NextRequest){
    const account=(await getPool().query('SELECT password_hash FROM users WHERE id=$1',[user.id])).rows[0];
    if(!account?.password_hash||!await compare(input.password,account.password_hash))return authFailure('비밀번호가 일치하지 않아요.',401);
   }
-  await deleteAccount(user.id,removeIdentity);
+  // 탈퇴 기록용: 앱(WebView)은 사용자 에이전트에 GginiPlanNative/와 기기 종류를 담는다.
+  const agent=request.headers.get('user-agent')??'';
+  const platform=!/GginiPlanNative\//i.test(agent)?'web':/android/i.test(agent)?'android':'ios';
+  await deleteAccount(user.id,removeIdentity,platform);
   const response=NextResponse.json({deleted:true},{headers:{'Cache-Control':'no-store','Clear-Site-Data':'"cache", "storage"'}});
   response.cookies.set(SESSION_COOKIE,'',{httpOnly:true,secure:process.env.NODE_ENV==='production',sameSite:'lax',path:'/',maxAge:0});
   return response;
