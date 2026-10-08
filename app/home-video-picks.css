@@ -24,3 +24,9 @@
 .home-video-controls button:disabled{opacity:.5;cursor:default}
 .home-video-list:focus-visible{outline:2px solid #8a9d6f;outline-offset:3px}
 @media(max-width:600px){.home-video-list article{flex-basis:78%}.home-video-picks>header{flex-wrap:wrap}.home-video-picks>header .home-video-controls{margin-left:auto}}
+
+/* A fractional transform fills the gaps between native scroll pixels. */
+.home-video-list{display:block}
+.home-video-track{display:flex;gap:12px;width:max-content;will-change:transform}
+.home-video-track article{width:260px;flex:0 0 260px}
+@media(max-width:600px){.home-video-list{container-type:inline-size}.home-video-track article{width:78cqw;flex-basis:78cqw}}

@@ -6,8 +6,8 @@ import {sanitizeAnalytics} from '../lib/analytics-events';
 
 test('every editorial video has the matching recipe and a unique playable YouTube id',()=>{
  const picks=homeVideoPicks();
- assert.equal(picks.length,6);
- assert.equal(new Set(picks.map(p=>p.video.id)).size,6);
+ assert.equal(picks.length,20);
+ assert.equal(new Set(picks.map(p=>p.video.id)).size,20);
  assert.equal(new Set(picks.map(p=>p.channelId)).size,6);
  assert.ok(picks.every(p=>!p.video.channel.includes('백종원')));
  assert.ok(picks.every(p=>p.publishedAt>='2026-01-01'));

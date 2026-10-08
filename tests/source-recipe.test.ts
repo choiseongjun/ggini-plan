@@ -47,9 +47,9 @@ test('fried rice does not accept mushroom side dish videos',()=>{
  assert.deepEqual(relevantRecipeVideos(list,'새송이버섯볶음밥').map(v=>v.title),['새송이버섯볶음밥 만들기']);
 });
 
-test('reviewed catalogue has 36 distinct menus and preserves split recipe variants',()=>{
- const all=pantrySourceProducts();assert.equal(all.length,36);assert.equal(new Set(all.map(p=>p.id)).size,36);
- assert.equal(new Set(all.map(p=>p.name)).size,36);
+test('reviewed catalogue has 50 distinct menus and preserves split recipe variants',()=>{
+ const all=pantrySourceProducts();assert.equal(all.length,50);assert.equal(new Set(all.map(p=>p.id)).size,50);
+ assert.equal(new Set(all.map(p=>p.name)).size,50);
  assert.ok(all.every(p=>p.sourceRecipe!.steps.every(s=>!s.includes('[Ingredients]')&&!s.includes('Music provided'))));
  const a=all.find(p=>p.name==='배추전')!,b=all.find(p=>p.name==='새우전')!;
  assert.notEqual(a.id,b.id);assert.equal(a.sourceRecipe!.video.id,b.sourceRecipe!.video.id);
@@ -67,7 +67,8 @@ test('discovery pool keeps shopping and exclusion constraints beyond the first t
  const all=pantrySourceRecommendations([],[],[],true,[],true,[],[],30);
  assert.equal(all.length,30);
  const filtered=pantrySourceRecommendations([],[],[],true,['egg'],true,[],[],30);
- assert.ok(filtered.length<all.length);
+ assert.ok(filtered.length<=30);
+ assert.ok(all.some(p=>p.recipe!.ingredients.some(i=>/달걀|계란/.test(i.product.name))));
  assert.ok(filtered.every(p=>!p.recipe!.ingredients.some(i=>/달걀|계란/.test(i.product.name))));
  assert.deepEqual(pantrySourceRecommendations([],[],[],false,[],true,[],[],30),[]);
  assert.deepEqual(pantrySourceRecommendations([],[],[],true,[],true).map(p=>p.id),all.slice(0,3).map(p=>p.id));

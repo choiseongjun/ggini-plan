@@ -13,7 +13,7 @@ export function withSourceRecipe(base:Pick<PlanProduct,'name'|'emoji'> & {family
 
 // Editorial meal roles for the reviewed catalogue; these do not imply nutritional completeness.
 export function sourceMealRole(name:string){
- if(['닭고기 달걀밥','양배추 간장 계란밥','계란말이 김밥','달걀볶음밥','김치볶음밥','닭고기덮밥','라볶이','떡볶이','고추장 비빔국수'].includes(name))return '밥·면 요리';
- if(['콩나물국','돼지고기 김치찌개','순두부찌개','된장찌개','참치김치찌개','소고기 미역국'].includes(name))return '국·찌개 · 밥 별도';
+ if(['우삼겹 파스타','크림 뇨끼','소고기 애호박 솥밥','묵은지 참치김밥','닭고기 달걀밥','양배추 간장 계란밥','계란말이 김밥','달걀볶음밥','김치볶음밥','닭고기덮밥','라볶이','떡볶이','고추장 비빔국수'].includes(name))return '밥·면 요리';
+ if(['우삼겹 갈비탕','소고기 무국','콩나물국','돼지고기 김치찌개','순두부찌개','된장찌개','참치김치찌개','소고기 미역국'].includes(name))return '국·찌개 · 밥 별도';
  return '반찬·곁들임';
 }

@@ -411,5 +411,892 @@
     ],
     "servingLabel": "원문 분량 · 김밥 1줄",
     "videoInstructionsOnly": false
+  },
+  {
+    "name": "간장치킨",
+    "family": "닭요리",
+    "reason": "팬으로 노릇하게",
+    "checkedAt": "2026-10-08",
+    "publishedAt": "2026-10-02",
+    "channelId": "UCY6bM5wCwlTQK6sL5jEAW0A",
+    "video": {
+      "id": "sKtz7fRVnk0",
+      "title": "흔들어 굽기만 하면 되는 평생쓰는 레시피! 초간단#만능간장치킨",
+      "channel": "윤맘레시피(yunmom85)",
+      "url": "https://www.youtube.com/watch?v=sKtz7fRVnk0",
+      "thumbnail": "https://i.ytimg.com/vi/sKtz7fRVnk0/mqdefault.jpg"
+    },
+    "ingredients": [
+      {
+        "name": "닭다리살",
+        "label": "닭다리살 350g"
+      },
+      {
+        "name": "전분가루",
+        "label": "전분가루 2T"
+      },
+      {
+        "name": "간장",
+        "label": "간장 1T"
+      },
+      {
+        "name": "맛술",
+        "label": "맛술 0.5T"
+      },
+      {
+        "name": "마요네즈",
+        "label": "마요네즈 0.5T"
+      },
+      {
+        "name": "생강청",
+        "label": "생강청 0.5T"
+      },
+      {
+        "name": "다진마늘",
+        "label": "다진마늘 0.5T"
+      },
+      {
+        "name": "식용유",
+        "label": "식용유 양 미표기"
+      }
+    ],
+    "steps": [],
+    "tips": [],
+    "servingLabel": "원문 분량 · 인분 미표기",
+    "videoInstructionsOnly": true
+  },
+  {
+    "name": "우삼겹 파스타",
+    "family": "파스타",
+    "reason": "고기와 면을 한 접시에",
+    "checkedAt": "2026-10-08",
+    "publishedAt": "2026-10-06",
+    "channelId": "UCIBx-Lw5VumtIaPeFbXlsUA",
+    "video": {
+      "id": "rx2cu9NTwrQ",
+      "title": "15분만에 만드는 집밥🍳 | 우삼겹 파스타 레시피!",
+      "channel": "유하이 Yuhi",
+      "url": "https://www.youtube.com/watch?v=rx2cu9NTwrQ",
+      "thumbnail": "https://i.ytimg.com/vi/rx2cu9NTwrQ/mqdefault.jpg"
+    },
+    "ingredients": [
+      {
+        "name": "스파게티",
+        "label": "스파게티 1인분"
+      },
+      {
+        "name": "우삼겹",
+        "label": "우삼겹 두 주먹"
+      },
+      {
+        "name": "다진마늘",
+        "label": "다진마늘 1T"
+      },
+      {
+        "name": "페페론치노",
+        "label": "페페론치노 3개"
+      },
+      {
+        "name": "대파",
+        "label": "대파 한 주먹"
+      },
+      {
+        "name": "달걀",
+        "label": "달걀 노른자 1개"
+      },
+      {
+        "name": "간장",
+        "label": "간장 1T"
+      },
+      {
+        "name": "굴소스",
+        "label": "굴소스 1T"
+      },
+      {
+        "name": "알룰로스",
+        "label": "알룰로스 2T (설탕 1T로 대체 가능)"
+      }
+    ],
+    "steps": [],
+    "tips": [],
+    "servingLabel": "원문 분량 · 인분 미표기",
+    "videoInstructionsOnly": true
+  },
+  {
+    "name": "무수분 카레",
+    "family": "카레",
+    "reason": "채소를 넉넉히 넣어요",
+    "checkedAt": "2026-10-08",
+    "publishedAt": "2026-09-04",
+    "channelId": "UCl-wgyEFQlSV5zx5TXT-PXg",
+    "video": {
+      "id": "CT4oCgLte3k",
+      "title": "물 한방울 없이 진한 무수분 카레 진짜 맛있는 비법",
+      "channel": "간단해요리 Gandanhae_Yori",
+      "url": "https://www.youtube.com/watch?v=CT4oCgLte3k",
+      "thumbnail": "https://i.ytimg.com/vi/CT4oCgLte3k/mqdefault.jpg"
+    },
+    "ingredients": [
+      {
+        "name": "토마토",
+        "label": "토마토 6~7개"
+      },
+      {
+        "name": "양파",
+        "label": "양파 큰 것 5개"
+      },
+      {
+        "name": "감자",
+        "label": "감자 3개"
+      },
+      {
+        "name": "당근",
+        "label": "당근 1개"
+      },
+      {
+        "name": "애호박",
+        "label": "애호박 1/2개"
+      },
+      {
+        "name": "소고기",
+        "label": "소고기 다짐육 600g"
+      },
+      {
+        "name": "고체카레",
+        "label": "고체카레 6조각"
+      },
+      {
+        "name": "버터",
+        "label": "버터 60g"
+      },
+      {
+        "name": "카카오매스",
+        "label": "카카오매스 50g (초콜릿으로 대체 가능)"
+      },
+      {
+        "name": "크러쉬드 레드페퍼",
+        "label": "크러쉬드 레드페퍼 1/2~1T"
+      },
+      {
+        "name": "치킨스톡",
+        "label": "치킨스톡 1T"
+      }
+    ],
+    "steps": [
+      "손질한 양파를 냄비 바닥에 깔고 나머지 채소, 소고기와 카레를 올립니다.",
+      "원본에서 사용하는 저압냄비로 압이 오른 뒤 약불에서 50분 익힙니다. 냄비별 사용 방법은 원본을 확인하세요.",
+      "버터와 카카오매스, 레드페퍼, 치킨스톡을 섞어 마무리합니다."
+    ],
+    "tips": [],
+    "servingLabel": "원문 분량 · 인분 미표기",
+    "videoInstructionsOnly": false
+  },
+  {
+    "name": "크림 뇨끼",
+    "family": "파스타",
+    "reason": "우유와 치즈로 고소하게",
+    "checkedAt": "2026-10-08",
+    "publishedAt": "2026-10-06",
+    "channelId": "UCjeFmKMYYd1L9Glf-itT-Fg",
+    "video": {
+      "id": "pPL-o6N63R0",
+      "title": "초간단 뇨끼 만들기 10분 컷! 브런치메뉴 크림 파스타 레시피",
+      "channel": "일등감의 쉬운 레시피",
+      "url": "https://www.youtube.com/watch?v=pPL-o6N63R0",
+      "thumbnail": "https://i.ytimg.com/vi/pPL-o6N63R0/mqdefault.jpg"
+    },
+    "ingredients": [
+      {
+        "name": "뇨끼",
+        "label": "뇨끼 2인분"
+      },
+      {
+        "name": "버터",
+        "label": "버터 굽기 20g + 소스 15g"
+      },
+      {
+        "name": "다진마늘",
+        "label": "다진마늘 1/2스푼"
+      },
+      {
+        "name": "우유",
+        "label": "우유 300ml"
+      },
+      {
+        "name": "체다치즈",
+        "label": "체다치즈 3~4장"
+      },
+      {
+        "name": "파마산치즈",
+        "label": "파마산치즈 듬뿍 2스푼"
+      },
+      {
+        "name": "소금",
+        "label": "소금 약간"
+      },
+      {
+        "name": "후추",
+        "label": "후추 약간"
+      }
+    ],
+    "steps": [
+      "뇨끼를 삶아 떠오른 뒤 30초~1분 더 익혀 건집니다.",
+      "버터 20g에 뇨끼를 노릇하게 굽습니다.",
+      "소스용 버터에 마늘을 볶고 우유와 치즈, 소금, 후추를 넣어 녹입니다.",
+      "구운 뇨끼를 소스와 1~2분 섞어 익힙니다. 농도는 삶은 물로 조절합니다."
+    ],
+    "tips": [],
+    "servingLabel": "2인분",
+    "videoInstructionsOnly": false
+  },
+  {
+    "name": "폭탄 계란찜",
+    "family": "찜",
+    "reason": "뚝배기에 봉긋하게",
+    "checkedAt": "2026-10-08",
+    "publishedAt": "2026-10-05",
+    "channelId": "UC7kL_BjLwKUawdsKlRgNv-w",
+    "video": {
+      "id": "qqla3EMlb9M",
+      "title": "식당에서 파는 것처럼 대 폭발! 100% 성공 보장 폭탄 계란찜 대박 비법",
+      "channel": "신나는셰프 김선영",
+      "url": "https://www.youtube.com/watch?v=qqla3EMlb9M",
+      "thumbnail": "https://i.ytimg.com/vi/qqla3EMlb9M/mqdefault.jpg"
+    },
+    "ingredients": [
+      {
+        "name": "달걀",
+        "label": "달걀 5개"
+      },
+      {
+        "name": "물",
+        "label": "물 200ml"
+      },
+      {
+        "name": "소금",
+        "label": "소금 1작은술"
+      },
+      {
+        "name": "꽃게액",
+        "label": "꽃게액 2작은술 (참치액으로 대체 가능)"
+      },
+      {
+        "name": "맛술",
+        "label": "맛술 1큰술"
+      },
+      {
+        "name": "쪽파",
+        "label": "쪽파 약간"
+      },
+      {
+        "name": "통깨",
+        "label": "통깨 약간"
+      },
+      {
+        "name": "고춧가루",
+        "label": "고춧가루 약간"
+      }
+    ],
+    "steps": [],
+    "tips": [],
+    "servingLabel": "원문 분량 · 인분 미표기",
+    "videoInstructionsOnly": true
+  },
+  {
+    "name": "감자스틱 피자",
+    "family": "피자",
+    "reason": "감자와 고기를 함께",
+    "checkedAt": "2026-10-08",
+    "publishedAt": "2026-09-19",
+    "channelId": "UCY6bM5wCwlTQK6sL5jEAW0A",
+    "video": {
+      "id": "zz-aVjEZ52s",
+      "title": "감자만 썰면 거의 완성입니다?! 도우없는#감자스틱피자",
+      "channel": "윤맘레시피(yunmom85)",
+      "url": "https://www.youtube.com/watch?v=zz-aVjEZ52s",
+      "thumbnail": "https://i.ytimg.com/vi/zz-aVjEZ52s/mqdefault.jpg"
+    },
+    "ingredients": [
+      {
+        "name": "돼지고기",
+        "label": "돼지고기 불고기용 200g"
+      },
+      {
+        "name": "감자",
+        "label": "감자 200g"
+      },
+      {
+        "name": "피자치즈",
+        "label": "피자치즈 양 미표기"
+      },
+      {
+        "name": "감자전분",
+        "label": "감자전분 1T"
+      },
+      {
+        "name": "간장",
+        "label": "간장 1T"
+      },
+      {
+        "name": "원당",
+        "label": "원당 1t"
+      },
+      {
+        "name": "맛술",
+        "label": "맛술 1t (선택)"
+      },
+      {
+        "name": "식용유",
+        "label": "식용유 양 미표기"
+      }
+    ],
+    "steps": [],
+    "tips": [],
+    "servingLabel": "원문 분량 · 인분 미표기",
+    "videoInstructionsOnly": true
+  },
+  {
+    "name": "우삼겹 갈비탕",
+    "family": "국",
+    "reason": "뜨끈한 국물 한 그릇",
+    "checkedAt": "2026-10-08",
+    "publishedAt": "2026-10-01",
+    "channelId": "UCIBx-Lw5VumtIaPeFbXlsUA",
+    "video": {
+      "id": "pgujz-WclyU",
+      "title": "15분만에 만드는 집밥🍳 | 정호영 갈비탕 레시피!",
+      "channel": "유하이 Yuhi",
+      "url": "https://www.youtube.com/watch?v=pgujz-WclyU",
+      "thumbnail": "https://i.ytimg.com/vi/pgujz-WclyU/mqdefault.jpg"
+    },
+    "ingredients": [
+      {
+        "name": "우삼겹",
+        "label": "우삼겹 두 주먹"
+      },
+      {
+        "name": "대파",
+        "label": "대파 한 주먹"
+      },
+      {
+        "name": "다진마늘",
+        "label": "다진마늘 1T"
+      },
+      {
+        "name": "맛술",
+        "label": "맛술 1T"
+      },
+      {
+        "name": "참치액젓",
+        "label": "참치액젓 1T"
+      },
+      {
+        "name": "굴소스",
+        "label": "굴소스 1T"
+      },
+      {
+        "name": "물",
+        "label": "물 500ml"
+      },
+      {
+        "name": "당면",
+        "label": "당면 선택, 양 미표기"
+      },
+      {
+        "name": "소금",
+        "label": "소금 약간"
+      },
+      {
+        "name": "후추",
+        "label": "후추 약간"
+      }
+    ],
+    "steps": [],
+    "tips": [],
+    "servingLabel": "원문 분량 · 인분 미표기",
+    "videoInstructionsOnly": true
+  },
+  {
+    "name": "소고기 애호박 솥밥",
+    "family": "솥밥",
+    "reason": "밥에 채소와 고기를 담아요",
+    "checkedAt": "2026-10-08",
+    "publishedAt": "2026-09-03",
+    "channelId": "UCl-wgyEFQlSV5zx5TXT-PXg",
+    "video": {
+      "id": "s9kadS3rFFg",
+      "title": "반찬없을 때❌ 냄비 하나로 끝내세요! 영양가득 소고기 애호박 솥밥",
+      "channel": "간단해요리 Gandanhae_Yori",
+      "url": "https://www.youtube.com/watch?v=s9kadS3rFFg",
+      "thumbnail": "https://i.ytimg.com/vi/s9kadS3rFFg/mqdefault.jpg"
+    },
+    "ingredients": [
+      {
+        "name": "쌀",
+        "label": "쌀 2컵"
+      },
+      {
+        "name": "물",
+        "label": "물 2컵"
+      },
+      {
+        "name": "애호박",
+        "label": "애호박 2/3개"
+      },
+      {
+        "name": "소고기",
+        "label": "소고기 다짐육 300g"
+      },
+      {
+        "name": "표고버섯",
+        "label": "표고버섯 4개"
+      },
+      {
+        "name": "진간장",
+        "label": "진간장 3T"
+      },
+      {
+        "name": "쯔유",
+        "label": "쯔유 2T"
+      },
+      {
+        "name": "미림",
+        "label": "미림 2T"
+      },
+      {
+        "name": "알룰로스",
+        "label": "알룰로스 2T"
+      },
+      {
+        "name": "다진마늘",
+        "label": "다진마늘 1T"
+      },
+      {
+        "name": "소금",
+        "label": "소금 간 조절용 약간"
+      }
+    ],
+    "steps": [
+      "소고기에 양념을 넣고 물기가 줄 때까지 볶은 뒤 표고버섯도 함께 볶습니다.",
+      "불린 쌀과 물을 넣고 끓으면 채 썬 애호박을 올립니다.",
+      "뚜껑을 덮고 약불에서 12분 익힌 뒤 10분간 뜸을 들입니다."
+    ],
+    "tips": [],
+    "servingLabel": "원문 분량 · 인분 미표기",
+    "videoInstructionsOnly": false
+  },
+  {
+    "name": "양배추 순두부 계란찜",
+    "family": "찜",
+    "reason": "전자레인지로 간편하게",
+    "checkedAt": "2026-10-08",
+    "publishedAt": "2026-10-03",
+    "channelId": "UCjeFmKMYYd1L9Glf-itT-Fg",
+    "video": {
+      "id": "pjkbbQCLl98",
+      "title": "원팬 전자레인지 계란찜 만들기! 양배추 순두부 계란찜 레시피",
+      "channel": "일등감의 쉬운 레시피",
+      "url": "https://www.youtube.com/watch?v=pjkbbQCLl98",
+      "thumbnail": "https://i.ytimg.com/vi/pjkbbQCLl98/mqdefault.jpg"
+    },
+    "ingredients": [
+      {
+        "name": "달걀",
+        "label": "달걀 3개"
+      },
+      {
+        "name": "양배추",
+        "label": "양배추 채 썬 것 2줌"
+      },
+      {
+        "name": "가루육수",
+        "label": "가루육수 1포"
+      },
+      {
+        "name": "순두부",
+        "label": "순두부 1개"
+      },
+      {
+        "name": "통깨",
+        "label": "통깨 적당량"
+      },
+      {
+        "name": "들깨가루",
+        "label": "들깨가루 2스푼"
+      },
+      {
+        "name": "맛간장",
+        "label": "맛간장 저당 1스푼"
+      },
+      {
+        "name": "식초",
+        "label": "식초 1스푼"
+      },
+      {
+        "name": "알룰로스",
+        "label": "알룰로스 1스푼"
+      },
+      {
+        "name": "물",
+        "label": "물 2스푼"
+      },
+      {
+        "name": "다진마늘",
+        "label": "다진마늘 1/2스푼"
+      },
+      {
+        "name": "참기름",
+        "label": "참기름 1/2스푼"
+      }
+    ],
+    "steps": [
+      "전자레인지용 용기에 달걀, 양배추와 가루육수를 섞습니다.",
+      "순두부를 올려 잘라주고 전자레인지에서 6~7분 익힙니다. 기기 출력에 따라 익힘을 확인하세요.",
+      "들깨 맛간장 소스 재료를 섞어 곁들입니다."
+    ],
+    "tips": [],
+    "servingLabel": "약 1~2인분",
+    "videoInstructionsOnly": false
+  },
+  {
+    "name": "소고기 무국",
+    "family": "국",
+    "reason": "무와 소고기로 끓여요",
+    "checkedAt": "2026-10-08",
+    "publishedAt": "2026-09-26",
+    "channelId": "UC7kL_BjLwKUawdsKlRgNv-w",
+    "video": {
+      "id": "Y39Lf7SfawI",
+      "title": "맛없고 매운 무도 맛있게 변신?! 가성비 소고기 무국 #shorts",
+      "channel": "신나는셰프 김선영",
+      "url": "https://www.youtube.com/watch?v=Y39Lf7SfawI",
+      "thumbnail": "https://i.ytimg.com/vi/Y39Lf7SfawI/mqdefault.jpg"
+    },
+    "ingredients": [
+      {
+        "name": "소고기",
+        "label": "소고기 목심 300g"
+      },
+      {
+        "name": "무",
+        "label": "무 600g"
+      },
+      {
+        "name": "대파",
+        "label": "대파 1/3대"
+      },
+      {
+        "name": "생강",
+        "label": "생강 1쪽"
+      },
+      {
+        "name": "분말육수",
+        "label": "분말육수 2~3개"
+      },
+      {
+        "name": "물",
+        "label": "물 국물 6컵 + 무 절임 2컵"
+      },
+      {
+        "name": "소금",
+        "label": "소금 1/2큰술"
+      },
+      {
+        "name": "국간장",
+        "label": "국간장 2큰술 (참치액으로 대체 가능)"
+      },
+      {
+        "name": "다진마늘",
+        "label": "다진마늘 1큰술"
+      },
+      {
+        "name": "참기름",
+        "label": "참기름 1큰술"
+      },
+      {
+        "name": "후추",
+        "label": "후추 약간"
+      },
+      {
+        "name": "맛술",
+        "label": "맛술 무 절임용 1/2컵"
+      }
+    ],
+    "steps": [],
+    "tips": [],
+    "servingLabel": "원문 분량 · 인분 미표기",
+    "videoInstructionsOnly": true
+  },
+  {
+    "name": "양배추 삼계죽",
+    "family": "닭요리",
+    "reason": "양배추로 부드럽게",
+    "checkedAt": "2026-10-08",
+    "publishedAt": "2026-09-15",
+    "channelId": "UCY6bM5wCwlTQK6sL5jEAW0A",
+    "video": {
+      "id": "WRTuanGNPyE",
+      "title": "소금만으로 깊고 진한맛나는 초간단레시피! 밥알없는 양배추삼계죽",
+      "channel": "윤맘레시피(yunmom85)",
+      "url": "https://www.youtube.com/watch?v=WRTuanGNPyE",
+      "thumbnail": "https://i.ytimg.com/vi/WRTuanGNPyE/mqdefault.jpg"
+    },
+    "ingredients": [
+      {
+        "name": "닭다리살",
+        "label": "닭다리살 500g"
+      },
+      {
+        "name": "양배추",
+        "label": "양배추 250g"
+      },
+      {
+        "name": "대파",
+        "label": "대파 1대"
+      },
+      {
+        "name": "팽이버섯",
+        "label": "팽이버섯 1봉"
+      },
+      {
+        "name": "다진마늘",
+        "label": "다진마늘 1T"
+      },
+      {
+        "name": "물",
+        "label": "물 500ml"
+      },
+      {
+        "name": "소금",
+        "label": "소금 양 미표기"
+      },
+      {
+        "name": "후추",
+        "label": "후추 양 미표기"
+      },
+      {
+        "name": "식용유",
+        "label": "식용유 양 미표기"
+      },
+      {
+        "name": "참기름",
+        "label": "참기름 양 미표기"
+      }
+    ],
+    "steps": [],
+    "tips": [],
+    "servingLabel": "3인분",
+    "videoInstructionsOnly": true
+  },
+  {
+    "name": "원팬 불항정",
+    "family": "돼지고기요리",
+    "reason": "매콤하게 볶아 먹어요",
+    "checkedAt": "2026-10-08",
+    "publishedAt": "2026-09-29",
+    "channelId": "UCIBx-Lw5VumtIaPeFbXlsUA",
+    "video": {
+      "id": "jHC3S36u6L0",
+      "title": "15분만에 만드는 집밥🍳 | 원팬 불항정 레시피!",
+      "channel": "유하이 Yuhi",
+      "url": "https://www.youtube.com/watch?v=jHC3S36u6L0",
+      "thumbnail": "https://i.ytimg.com/vi/jHC3S36u6L0/mqdefault.jpg"
+    },
+    "ingredients": [
+      {
+        "name": "항정살",
+        "label": "항정살 150g"
+      },
+      {
+        "name": "다진마늘",
+        "label": "다진마늘 1T"
+      },
+      {
+        "name": "고추장",
+        "label": "고추장 0.5T"
+      },
+      {
+        "name": "간장",
+        "label": "간장 1T"
+      },
+      {
+        "name": "올리고당",
+        "label": "올리고당 1T"
+      },
+      {
+        "name": "설탕",
+        "label": "설탕 1T"
+      },
+      {
+        "name": "굴소스",
+        "label": "굴소스 0.5T"
+      },
+      {
+        "name": "고춧가루",
+        "label": "고춧가루 1T"
+      },
+      {
+        "name": "물",
+        "label": "물 3T"
+      },
+      {
+        "name": "대파",
+        "label": "대파 한 주먹"
+      },
+      {
+        "name": "후추",
+        "label": "후추 양 미표기"
+      }
+    ],
+    "steps": [],
+    "tips": [],
+    "servingLabel": "원문 분량 · 인분 미표기",
+    "videoInstructionsOnly": true
+  },
+  {
+    "name": "매운 등갈비찜",
+    "family": "찜",
+    "reason": "자작한 양념에 푹 익혀요",
+    "checkedAt": "2026-10-08",
+    "publishedAt": "2026-08-27",
+    "channelId": "UCl-wgyEFQlSV5zx5TXT-PXg",
+    "video": {
+      "id": "GjhMPQcykEA",
+      "title": "불금엔 국물 자작한 매운등갈비찜 #등갈비찜맛있게하는법",
+      "channel": "간단해요리 Gandanhae_Yori",
+      "url": "https://www.youtube.com/watch?v=GjhMPQcykEA",
+      "thumbnail": "https://i.ytimg.com/vi/GjhMPQcykEA/mqdefault.jpg"
+    },
+    "ingredients": [
+      {
+        "name": "등갈비",
+        "label": "등갈비 1.5kg"
+      },
+      {
+        "name": "월계수잎",
+        "label": "월계수잎 데치기용, 양 미표기"
+      },
+      {
+        "name": "통후추",
+        "label": "통후추 데치기용, 양 미표기"
+      },
+      {
+        "name": "소주",
+        "label": "소주 데치기용, 양 미표기"
+      },
+      {
+        "name": "양파",
+        "label": "양파 다진 것 1개"
+      },
+      {
+        "name": "물",
+        "label": "물 양념 500ml, 핏물 빼기·데치기 별도"
+      },
+      {
+        "name": "배주스",
+        "label": "배주스 300ml"
+      },
+      {
+        "name": "진간장",
+        "label": "진간장 11T"
+      },
+      {
+        "name": "고춧가루",
+        "label": "고춧가루 6T"
+      },
+      {
+        "name": "맛술",
+        "label": "맛술 4T"
+      },
+      {
+        "name": "설탕",
+        "label": "설탕 양념 1~2T + 핏물 빼기 2T"
+      },
+      {
+        "name": "올리고당",
+        "label": "올리고당 1~2T"
+      },
+      {
+        "name": "후추",
+        "label": "후추 양 미표기"
+      },
+      {
+        "name": "대파",
+        "label": "대파 1개"
+      },
+      {
+        "name": "청양고추",
+        "label": "청양고추 2개 (선택)"
+      }
+    ],
+    "steps": [],
+    "tips": [],
+    "servingLabel": "원문 분량 · 인분 미표기",
+    "videoInstructionsOnly": true
+  },
+  {
+    "name": "묵은지 참치김밥",
+    "family": "김밥",
+    "reason": "도시락으로도 좋아요",
+    "checkedAt": "2026-10-08",
+    "publishedAt": "2026-10-02",
+    "channelId": "UCjeFmKMYYd1L9Glf-itT-Fg",
+    "video": {
+      "id": "4NKaOLqqrqc",
+      "title": "불 없이 완성되는 초간단 묵은지 참치김밥 만들기 🍙",
+      "channel": "일등감의 쉬운 레시피",
+      "url": "https://www.youtube.com/watch?v=4NKaOLqqrqc",
+      "thumbnail": "https://i.ytimg.com/vi/4NKaOLqqrqc/mqdefault.jpg"
+    },
+    "ingredients": [
+      {
+        "name": "김",
+        "label": "김 김밥김 3장"
+      },
+      {
+        "name": "오이",
+        "label": "오이 2개"
+      },
+      {
+        "name": "참기름",
+        "label": "참기름 밥 1스푼 + 마무리 약간"
+      },
+      {
+        "name": "통깨",
+        "label": "통깨 묵은지 1~2스푼 + 마무리 약간"
+      },
+      {
+        "name": "밥",
+        "label": "밥 저당 밥 1.5~2공기"
+      },
+      {
+        "name": "소금",
+        "label": "소금 적당량"
+      },
+      {
+        "name": "묵은지",
+        "label": "묵은지 4~5장"
+      },
+      {
+        "name": "들기름",
+        "label": "들기름 적당량"
+      },
+      {
+        "name": "참치캔",
+        "label": "참치캔 1개 200~250g"
+      },
+      {
+        "name": "마요네즈",
+        "label": "마요네즈 저당 3스푼"
+      }
+    ],
+    "steps": [
+      "씻어 물기를 짠 묵은지를 썰어 들기름과 통깨에 버무립니다.",
+      "참치는 기름을 빼고 마요네즈와 섞습니다. 오이는 채 썰고 밥은 소금과 참기름으로 양념합니다.",
+      "김에 밥과 준비한 재료를 올려 말고 끝에 물을 살짝 묻혀 붙입니다."
+    ],
+    "tips": [],
+    "servingLabel": "김밥 3줄",
+    "videoInstructionsOnly": false
   }
 ]
