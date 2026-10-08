@@ -4,7 +4,7 @@ export type AnalyticsSource='kcal'|'push'|'auto';
 export const analyticsRefines=['lighter','protein','spicy','soup','meat'] as const;
 export type AnalyticsRefine=typeof analyticsRefines[number];
 export type AnalyticsProperties={screen?:string;entry?:'pantry'|'recommend';source?:AnalyticsSource;refine?:AnalyticsRefine;method?:'photo'|'search'|'manual';duration_ms?:number;photo_count?:number;outcome?:'recorded'|'unrecognized';failure?:'timeout'|'network'|'server'|'rejected';};
-const screens:Record<string,string>={'/taste':'taste','/plan':'plan','/recipes':'recipes','/intro':'intro','/':'home','/record':'record','/profile':'profile','/how-to':'guide','/cart':'cart'};
+const screens:Record<string,string>={'/ingredients':'ingredients','/taste':'taste','/plan':'plan','/recipes':'recipes','/intro':'intro','/':'home','/record':'record','/profile':'profile','/how-to':'guide','/cart':'cart'};
 export function analyticsScreen(path:string){return path.startsWith('/recipes/')?'recipes':path==='/kcal'||path.startsWith('/kcal/')?'kcal':screens[path]??null;}
 // An allowlist at the final transport boundary also removes SDK-added URLs/referrers.
 export function sanitizeAnalytics(event:string,raw:Record<string,unknown>){

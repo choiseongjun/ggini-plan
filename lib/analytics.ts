@@ -1,5 +1,6 @@
 'use client';
 import {analyticsScreen,sanitizeAnalytics,type AnalyticsEvent,type AnalyticsProperties} from './analytics-events';
+import {trackGoogleAnalytics} from './google-analytics';
 import type {PostHog} from 'posthog-js';
 let client:Promise<PostHog|null>|undefined;
 function getClient(){
@@ -27,6 +28,7 @@ function getClient(){
 export function trackAnalytics(event:AnalyticsEvent,properties:AnalyticsProperties={}){
  if(typeof window==='undefined')return;
  const screen=analyticsScreen(window.location.pathname);if(!screen)return;
+ try{trackGoogleAnalytics(event,{...properties,screen});}catch{/* optional telemetry */}
  // Never await analytics in a user action; blocked analytics cannot block a meal log.
  void getClient().then(ph=>{try{ph?.capture(event,{...properties,screen});}catch{/* optional telemetry */}}).catch(()=>{});
 }
