@@ -1,5 +1,4 @@
 'use client';
-import {MealCostComparison} from './meal-cost-comparison';
 import {ManualSlotMeals,useManualMeals} from './manual-meal-plans';
 import {MealActionFlow} from './meal-action-flow';
 import {MealTableIllustration} from './meal-composition-picker';
@@ -100,7 +99,6 @@ export function TodayMeals({compact=false,overviewActions,recommendationActions,
      <div className="today-menu-label"><span className="meal-slot">{slot==='breakfast'?'☀️':slot==='lunch'?'🌤️':'🌙'} {slotLabels[slot]}</span>{(()=>{const status=showRecording&&done?'먹었어요 ✓':availablePortions(progress.stock,p)>=1?'집에 있어요':orderedParts.length?'배송 기다리는 중':null;return status&&<b className={`meal-status${done?' is-done':''}`}>{status}</b>;})()}</div>
      <div className="today-menu-title-row"><span className="today-menu-name">{p.name.split('_').join(' · ')}</span>{kcal!==null&&<span className="today-menu-calories">{Math.round(kcal).toLocaleString('ko-KR')} <small>kcal</small></span>}</div>
      <p className="today-menu-meta"><span>1인분 {p.recipe?(p.recipe.ingredients.some(i=>i.product.marketPrice)?'시세 기반 재료비':'예상 재료비'):'예상 가격'} 약 <b>{won(p.price/p.servings)}</b></span>{p.recipe&&<span> · 재료 {p.recipe.ingredients.length}가지</span>}</p>
-     {compact&&!locale.isTaiwan&&slot===selectedSlot&&<MealCostComparison cost={p.price/p.servings} isRecipe={!!p.recipe}/>}
      {slot===selectedSlot&&recommendationActions}
      {compact&&!locale.isTaiwan&&slot===selectedSlot&&<RecommendationPantry key={`${p.id}-${userId??'guest'}`} product={p} userId={userId} onLogin={onLogin}/>}
      {/* 먹었으면 한 번에 기록: 회원은 식사 일기에, 비회원은 이 기기에 남기고 로그인하면 옮긴다. */}
