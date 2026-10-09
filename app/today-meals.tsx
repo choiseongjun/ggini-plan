@@ -1,4 +1,5 @@
 'use client';
+import {MealCostComparison} from './meal-cost-comparison';
 import {ManualSlotMeals,useManualMeals} from './manual-meal-plans';
 import {MealActionFlow} from './meal-action-flow';
 import {MealTableIllustration} from './meal-composition-picker';
@@ -38,7 +39,7 @@ function MealSection({title,meta,open,onToggle,children}:{title:string;meta?:str
 }
 const amount=(n:number)=>n.toLocaleString('ko-KR',{maximumFractionDigits:1});
 const tomorrowOf=(day:string)=>new Date(Date.parse(`${day}T00:00:00Z`)+86400000).toISOString().slice(0,10);
-export function TodayMeals({compact=false,overviewActions,showRecording=true,onAllMeals,focusMeal=null,overviewOpen,onOverviewOpen,nutritionReference,shoppingTotal,intake,userId,onLogin,ids,products,conditions,startDate,onStartDate,onNextPlan,nextPlanBusy=false,onSwap,onChoose,progress,dailyCalories,dashboard,perMealCalories}:{compact?:boolean;overviewActions?:React.ReactNode;showRecording?:boolean;onAllMeals?:()=>void;focusMeal?:number|null;nutritionReference?:DailyNutritionReference;shoppingTotal:number;intake:ReturnType<typeof useFoodIntake>;userId?:string;onLogin:()=>void;ids:string[];products:PlanProduct[];conditions:PlanConditions;startDate:string;onStartDate:(date:string)=>void;onNextPlan?:()=>void;nextPlanBusy?:boolean;onSwap:(index:number,reason?:SwapReason)=>void;onChoose:(index:number,id:string)=>void;progress:ReturnType<typeof useShoppingProgress>;dailyCalories:number|null;perMealCalories?:number|null;dashboard?:DashboardData|null;overviewOpen?:boolean;onOverviewOpen?:(open:boolean)=>void}){
+export function TodayMeals({compact=false,overviewActions,recommendationActions,showRecording=true,onAllMeals,focusMeal=null,overviewOpen,onOverviewOpen,nutritionReference,shoppingTotal,intake,userId,onLogin,ids,products,conditions,startDate,onStartDate,onNextPlan,nextPlanBusy=false,onSwap,onChoose,progress,dailyCalories,dashboard,perMealCalories}:{compact?:boolean;overviewActions?:React.ReactNode;recommendationActions?:React.ReactNode;showRecording?:boolean;onAllMeals?:()=>void;focusMeal?:number|null;nutritionReference?:DailyNutritionReference;shoppingTotal:number;intake:ReturnType<typeof useFoodIntake>;userId?:string;onLogin:()=>void;ids:string[];products:PlanProduct[];conditions:PlanConditions;startDate:string;onStartDate:(date:string)=>void;onNextPlan?:()=>void;nextPlanBusy?:boolean;onSwap:(index:number,reason?:SwapReason)=>void;onChoose:(index:number,id:string)=>void;progress:ReturnType<typeof useShoppingProgress>;dailyCalories:number|null;perMealCalories?:number|null;dashboard?:DashboardData|null;overviewOpen?:boolean;onOverviewOpen?:(open:boolean)=>void}){
  const locale=usePlannerLocale();
  const manualMeals=useManualMeals();
  const mealNavId=useId();
@@ -99,6 +100,8 @@ export function TodayMeals({compact=false,overviewActions,showRecording=true,onA
      <div className="today-menu-label"><span className="meal-slot">{slot==='breakfast'?'☀️':slot==='lunch'?'🌤️':'🌙'} {slotLabels[slot]}</span>{(()=>{const status=showRecording&&done?'먹었어요 ✓':availablePortions(progress.stock,p)>=1?'집에 있어요':orderedParts.length?'배송 기다리는 중':null;return status&&<b className={`meal-status${done?' is-done':''}`}>{status}</b>;})()}</div>
      <div className="today-menu-title-row"><span className="today-menu-name">{p.name.split('_').join(' · ')}</span>{kcal!==null&&<span className="today-menu-calories">{Math.round(kcal).toLocaleString('ko-KR')} <small>kcal</small></span>}</div>
      <p className="today-menu-meta"><span>1인분 {p.recipe?(p.recipe.ingredients.some(i=>i.product.marketPrice)?'시세 기반 재료비':'예상 재료비'):'예상 가격'} 약 <b>{won(p.price/p.servings)}</b></span>{p.recipe&&<span> · 재료 {p.recipe.ingredients.length}가지</span>}</p>
+     {compact&&!locale.isTaiwan&&slot===selectedSlot&&<MealCostComparison cost={p.price/p.servings} isRecipe={!!p.recipe}/>}
+     {slot===selectedSlot&&recommendationActions}
      {compact&&!locale.isTaiwan&&slot===selectedSlot&&<RecommendationPantry key={`${p.id}-${userId??'guest'}`} product={p} userId={userId} onLogin={onLogin}/>}
      {/* 먹었으면 한 번에 기록: 회원은 식사 일기에, 비회원은 이 기기에 남기고 로그인하면 옮긴다. */}
      {showRecording&&isToday&&!done&&<div className="meal-eat-row"><Button size="sm" disabled={disabled||intake.busy} onClick={()=>{const n=servingNutrition(p),m=servingNutrients(p);void intake.send({action:'log',id:crypto.randomUUID(),version:intake.current?.version??0,productId:p.id,portions:1,extras:[],mealSlot:slot,guest:{name:p.name.split('_').join(' · '),calories:n.calories,protein:n.protein,carbs:m.carbs,fat:m.fat,sugar:null,sodium:m.sodium}});}}>먹었어요</Button><small>{userId?'한 번 누르면 오늘 식사 일기에 남아요':'로그인 없이 먼저 기록해 볼 수 있어요'}</small></div>}
