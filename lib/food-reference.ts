@@ -66,9 +66,10 @@ async function loadFoodReference(rawQuery: string, limit = 30): Promise<FoodRefe
  if (!key) return [];
  const words = query.trim().split(/\s+/).map(normalizeFoodQuery).filter(Boolean).slice(0, 4);
  // 여러 단어("스타벅스 라떼")는 모두 포함해야 한다. 이름이 검색어로 시작·일치하는 것, 칼로리가 있는 것, 짧은 이름 순.
+ // Literal substring search avoids wildcard interpretation and costly multibyte LIKE scans on the full K-FIND catalog.
  const [regular,raw] = await Promise.all([getPool().query<Row>(
   `SELECT DISTINCT ON (name, brand, serving_amount) ${COLUMNS}, length(name) AS len FROM food_reference
-   WHERE ${words.map((_, i) => `search_text LIKE '%'||$${i + 1}||'%'`).join(' AND ')} AND calories_kcal IS NOT NULL
+   WHERE ${words.map((_, i) => `position($${i + 1} in search_text)>0`).join(' AND ')} AND calories_kcal IS NOT NULL
    ORDER BY name, brand, serving_amount, food_code LIMIT 500`,
   words),
  getPool().query<RawFoodRow>(`SELECT food_code,item_name,category_large,basis_amount,calories_kcal,protein_g,carbohydrates_g,sugar_g,fat_g,sodium_mg FROM foodsafety_processed_nutrition WHERE food_type='RAW' AND ${words.map((_,i)=>`replace(lower(item_name),'_','') LIKE '%'||$${i+1}||'%'`).join(' AND ')} AND calories_kcal IS NOT NULL ORDER BY length(item_name),item_name LIMIT 100`,words)]);

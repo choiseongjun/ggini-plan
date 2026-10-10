@@ -1,5 +1,6 @@
 "use client";
 import {useState} from 'react';
+import {DetailedNutrition} from './detailed-nutrition';
 
 type Reference = {foodCode: string; name: string; caloriesKcal: number | null; carbohydratesG: number | null; proteinG: number | null; fatG: number | null; sodiumMg: number | null};
 type Product = {id: string; name: string; price: number; productUrl: string | null};
@@ -28,6 +29,7 @@ export function DishNutritionInsight({productId, productName}: {productId: strin
   {data?.reference && <div className="dish-nutrition-insight-body">
    <p>정부 식품영양성분DB · <strong>{data.reference.name}</strong> 참고 · 100g/100ml 기준 · 실제 상품과 다를 수 있어요</p>
    <small>열량 {data.reference.caloriesKcal ?? '-'}kcal · 탄수 {data.reference.carbohydratesG ?? '-'}g · 단백 {data.reference.proteinG ?? '-'}g · 지방 {data.reference.fatG ?? '-'}g · 나트륨 {data.reference.sodiumMg ?? '-'}mg</small>
+   <DetailedNutrition code={data.reference.foodCode}/>
    {data.products.length > 0 && <div className="dish-nutrition-insight-products">
     <p>🛍️ 비슷한 실제 상품</p>
     <ul>{data.products.map((p) => <li key={p.id}>{p.productUrl ? <a href={p.productUrl} target="_blank" rel="noopener noreferrer">{p.name} ↗</a> : <span>{p.name}</span>} · {p.price.toLocaleString('ko-KR')}원</li>)}</ul>

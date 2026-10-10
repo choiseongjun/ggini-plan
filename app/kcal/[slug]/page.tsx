@@ -3,6 +3,7 @@ import {notFound} from 'next/navigation';
 import {DAILY_VALUE, compareCandidates, comparePath, foodPagePath, getFoodPage} from '../../../lib/food-pages';
 import {pageMetadata, siteUrl} from '../../../lib/seo';
 import {KcalActions} from './kcal-actions';
+import {DetailedNutrition} from '../../detailed-nutrition';
 import {josa} from '../../../lib/josa';
 export const revalidate = 86400;
 
@@ -63,6 +64,7 @@ export default async function FoodKcalPage(props: Props) {
    <small>{label}</small><b>{v === null ? '-' : `${n(v)}${unit}`}</b>
    {v !== null && <><div className="kcal-bar" aria-hidden="true"><i style={{width: `${Math.min(100, v / dv * 100)}%`}}/></div><em>하루 기준치의 {pct(v, dv)}%</em></>}
   </div>)}</div>
+  <DetailedNutrition code={food.code} amount={food.servingAmount} unit={food.servingUnit}/>
   {notes.length > 0 && <section className="kcal-box"><h2>한눈에 보기</h2><ul>{notes.map((t) => <li key={t}>{t}</li>)}</ul></section>}
   <section className="kcal-cta">
    <h2>{name}, 오늘 먹었나요?</h2>
@@ -73,6 +75,6 @@ export default async function FoodKcalPage(props: Props) {
   {compare.length > 0 && <section className="kcal-box"><h2>{josa(food.name,'과','와')} 비교해 보기</h2><ul className="kcal-links">{compare.map((r) => <li key={r.slug}><Link href={comparePath(slug, r.slug)}>{food.name} vs {r.name}</Link></li>)}</ul></section>}
   {sameBrand.length > 0 && <section className="kcal-box"><h2>{food.brand} 다른 메뉴</h2><ul className="kcal-links">{sameBrand.map((r) => <li key={r.slug}><Link href={foodPagePath(r.slug)}>{r.name}{r.kcal !== null && <small>{Math.round(r.kcal)}kcal</small>}</Link></li>)}</ul></section>}
   {related.length > 0 && <section className="kcal-box"><h2>비슷한 음식 칼로리</h2><ul className="kcal-links">{related.map((r) => <li key={r.slug}><Link href={foodPagePath(r.slug)}>{r.name}{r.kcal !== null && <small>{Math.round(r.kcal)}kcal</small>}</Link></li>)}</ul></section>}
-  <p className="kcal-note">출처: 식품의약품안전처 식품영양성분 데이터베이스(전국통합식품영양성분정보). 1인분 참고값이며 조리법·식당·양에 따라 달라요. 하루 기준치는 식품 표시용 1일 영양성분 기준치예요.</p>
+  <p className="kcal-note">출처: 식품영양성분 데이터베이스 · Korean Food Composition Database system(K-FCDB). 1인분 참고값이며 조리법·식당·양에 따라 달라요. 하루 기준치는 식품 표시용 1일 영양성분 기준치예요.</p>
  </>;
 }

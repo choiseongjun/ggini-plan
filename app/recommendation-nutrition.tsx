@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import {DetailedNutrition} from './detailed-nutrition';
 import {nutritionReferenceSource,type DailyNutritionReference} from '../lib/daily-nutrition-reference';
 import type {PlanProduct} from '../lib/shopping-plan';
 import {nutritionIsEstimated,servingNutrients} from '../lib/serving-nutrients';
@@ -9,7 +10,7 @@ const format=(n:number)=>n.toLocaleString('ko-KR',{maximumFractionDigits:1});
 
 export function ProductNutrition({product}:{product:PlanProduct}){
  const n=servingNutrients(product);
- return <div className="recommendation-nutrition"><small>1회분 영양정보{nutritionIsEstimated(product)?' · AI 추정 포함':product.recipe?' · 재료 합산 예상':''}</small><dl>{fields.map(([key,label,unit])=><div key={key}><dt>{label}</dt><dd>{n[key]===null?'미확인':`${format(n[key])} ${unit}`}</dd></div>)}</dl></div>;
+ return <div className="recommendation-nutrition"><small>1회분 영양정보{nutritionIsEstimated(product)?' · AI 추정 포함':product.recipe?' · 재료 합산 예상':''}</small><dl>{fields.map(([key,label,unit])=><div key={key}><dt>{label}</dt><dd>{n[key]===null?'미확인':`${format(n[key])} ${unit}`}</dd></div>)}</dl>{product.id.startsWith('recipe-opt-') && <DetailedNutrition code={product.id.slice('recipe-opt-'.length)} referenceOnly/>}</div>;
 }
 
 export function DailyRecommendationNutrition({products,reference}:{products:PlanProduct[];reference:DailyNutritionReference}){
@@ -28,6 +29,6 @@ export function DailyRecommendationNutrition({products,reference}:{products:Plan
    return <tr key={key}><th scope="row">{label}</th><td>{known.length?`${format(known.reduce((sum,n)=>sum+n,0))} ${unit}`:'미확인'}{missing>0&&<small>{known.length?'부분 합계 · ':''}미확인 {missing}끼</small>}</td><td>{references[key]}</td></tr>;
   })}</tbody></table>
   {!reference&&<p>개인별 참고량을 계산할 신체 정보가 없거나 자동 계산 대상이 아니에요. <Link href="/profile#profile-settings">내 정보 확인 →</Link></p>}
-  <details><summary>하루 참고량은 어떻게 계산하나요?</summary><p>2025 한국인 영양소 섭취기준의 성별·연령별 단백질 권장섭취량과 나트륨 기준을 적용해요. 열량은 나이·성별·키·체중·활동량으로 계산한 유지 필요량 추정치이며, 탄수화물 50–65%, 지방 15–30%를 그램으로 환산해요.</p><p>나트륨의 충분섭취량은 반드시 채워야 할 목표가 아니에요. 만성질환위험감소섭취량을 넘게 먹고 있다면 줄이는 기준이며, 안전한 상한을 뜻하지 않아요. 현재 자동 계산은 만 19–78세를 지원하며, 임신·수유로 등록한 경우 제공하지 않아요. 운동·질환에 따른 개인별 목표와는 다를 수 있어요.</p><p>당류·식이섬유·포화지방 등은 현재 수집 항목에 없어 계산하지 않아요.</p><a href={nutritionReferenceSource} target="_blank" rel="noopener noreferrer">2025 한국인 영양소 섭취기준 원문 ↗</a></details>
+  <details><summary>하루 참고량은 어떻게 계산하나요?</summary><p>2025 한국인 영양소 섭취기준의 성별·연령별 단백질 권장섭취량과 나트륨 기준을 적용해요. 열량은 나이·성별·키·체중·활동량으로 계산한 유지 필요량 추정치이며, 탄수화물 50–65%, 지방 15–30%를 그램으로 환산해요.</p><p>나트륨의 충분섭취량은 반드시 채워야 할 목표가 아니에요. 만성질환위험감소섭취량을 넘게 먹고 있다면 줄이는 기준이며, 안전한 상한을 뜻하지 않아요. 현재 자동 계산은 만 19–78세를 지원하며, 임신·수유로 등록한 경우 제공하지 않아요. 운동·질환에 따른 개인별 목표와는 다를 수 있어요.</p><p>이 합계는 열량·단백질·탄수화물·지방·나트륨을 계산해요. 식이섬유·비타민 등 상세 성분은 음식별 원본 자료에서 확인할 수 있어요.</p><a href={nutritionReferenceSource} target="_blank" rel="noopener noreferrer">2025 한국인 영양소 섭취기준 원문 ↗</a></details>
  </details>;
 }

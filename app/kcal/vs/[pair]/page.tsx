@@ -84,6 +84,6 @@ export default async function ComparePage(props: Props) {
     <LinkButton variant="secondary" block href="/?from=kcal">오늘 남은 끼니 추천받기</LinkButton>
    </div>
   </section>
-  <p className="kcal-note">출처: 식품의약품안전처 식품영양성분 데이터베이스. 1인분 참고값이며 조리법·식당·양에 따라 달라요. 초록색 칸은 더 가벼운 쪽(단백질은 더 많은 쪽)이에요.</p>
+  <p className="kcal-note">출처: 식품영양성분 데이터베이스 · Korean Food Composition Database system(K-FCDB). 1인분 참고값이며 조리법·식당·양에 따라 달라요. 초록색 칸은 더 가벼운 쪽(단백질은 더 많은 쪽)이에요.</p>
  </>;
 }

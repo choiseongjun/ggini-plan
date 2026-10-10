@@ -31,7 +31,9 @@
     "db:catalog": "node --env-file=.env.local scripts/seed-verified-catalog.mjs",
     "test:dashboard": "node --env-file=.env.local --import tsx --test tests/dashboard.test.ts",
     "recipes:review-images": "node --env-file=.env.local --import tsx scripts/review-recipe-images.mjs --apply",
-    "prices:collect": "node --env-file=.env.local scripts/collect-kamis.mjs && python scripts/collect-tprice.py && python scripts/build-regional-prices.py"
+    "prices:collect": "node --env-file=.env.local scripts/collect-kamis.mjs && python scripts/collect-tprice.py && python scripts/build-regional-prices.py",
+    "foodsafety:validate-kfind": "node scripts/import-kfind.mjs",
+    "foodsafety:import-kfind": "node --env-file=.env.local scripts/import-kfind.mjs --apply"
   },
   "dependencies": {
     "@huggingface/transformers": "^4.3.0",
