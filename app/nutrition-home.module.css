@@ -1,0 +1,87 @@
+.home{display:grid;gap:var(--space-5);padding-block:var(--space-3) var(--space-5);color:var(--text)}
+.heading span{font-size:var(--fs-sm);color:var(--text-subtle)}
+.heading h1{font-size:var(--fs-2xl);line-height:1.35;letter-spacing:-.04em;margin:var(--space-3) 0}
+.heading p{font-size:var(--fs-md);color:var(--text-muted);margin:0}
+.nutrition{padding:var(--space-5)!important}
+.sectionTitle{display:flex;align-items:center;justify-content:space-between;gap:var(--space-2)}
+.sectionTitle h2{font-size:var(--fs-lg);margin:0}
+.sectionTitle>span,.sectionTitle a{font-size:var(--fs-xs);color:var(--text-subtle)}
+.sectionTitle a{display:inline-flex;align-items:center;min-height:var(--touch)}
+.energy{display:flex;align-items:baseline;gap:var(--space-2);margin:var(--space-5) 0}
+.energy strong{font-size:calc(var(--fs-2xl) * 1.5);letter-spacing:-.04em;line-height:1}
+.energy span{font-size:var(--fs-sm);color:var(--text-muted)}
+.macros{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0;border-top:1px solid var(--border);padding-top:var(--space-4)}
+.macros div+div{border-left:1px solid var(--border);padding-left:var(--space-3)}
+.macros dt{font-size:var(--fs-xs);color:var(--text-subtle)}
+.macros dd{margin:var(--space-2) 0 0;font-size:var(--fs-lg);font-weight:700}
+.macros small{display:block;font-size:var(--fs-xs);font-weight:400}
+.note,.photoFlow small{display:block;font-size:var(--fs-xs);line-height:1.65;color:var(--text-subtle)}
+.note{margin:var(--space-4) 0 0}
+.empty{display:grid;justify-items:center;text-align:center;gap:var(--space-3);padding:var(--space-6) var(--space-4);background:var(--surface-soft);border-radius:var(--radius-lg);margin-top:var(--space-3)}
+.empty strong{font-size:var(--fs-md)}
+.empty p{margin:0;font-size:var(--fs-sm);line-height:1.7;color:var(--text-subtle)}
+.logList{list-style:none;padding:0;margin:var(--space-2) 0}
+.logList li{display:flex;justify-content:space-between;gap:var(--space-3);padding-block:var(--space-4);border-bottom:1px solid var(--border);font-size:var(--fs-sm)}
+.logList small{display:block;color:var(--text-subtle);margin-top:var(--space-1)}
+.logList b{white-space:nowrap;font-weight:500}
+.secondaryLink{display:flex;justify-content:space-between;align-items:center;gap:var(--space-3);min-height:var(--touch);font-size:var(--fs-sm);color:var(--text-muted)}
+.secondaryLink span{display:inline-flex;align-items:center;gap:var(--space-1)}
+.photoFlow{display:grid;gap:var(--space-3);margin-top:var(--space-4);padding:var(--space-4);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md)}
+.photoFlow h3{font-size:var(--fs-lg);margin:0}
+.photoFlow p{font-size:var(--fs-sm);line-height:1.6;margin:0}
+.preview{width:100%;max-height:calc(var(--touch) * 5);object-fit:contain;border-radius:var(--radius-md);background:var(--surface-soft)}
+.chips{display:flex;flex-wrap:wrap;gap:var(--space-2)}
+.matches{display:grid;gap:var(--space-2)}
+.matches button{white-space:normal;text-align:left;justify-content:flex-start}
+.foodReviewList{list-style:none;padding:0;margin:0;display:grid;gap:var(--space-3)}
+.foodReviewItem{display:grid;gap:var(--space-2);min-width:0;padding:var(--space-3);border:1px solid var(--border);border-radius:var(--radius-md);background:var(--surface-soft)}
+.foodReviewItem label{font-size:var(--fs-sm);font-weight:700}
+.foodReviewItem input{width:100%;min-width:0;box-sizing:border-box;min-height:var(--touch);padding:var(--space-3);font:inherit;font-size:16px;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm)}
+.foodReviewItem input:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+.foodReviewItem select{width:100%;min-width:0;min-height:var(--touch);font:inherit;font-size:16px;padding:var(--space-2);background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:var(--radius-sm)}
+.mealReviewTime{border:0;padding:0;margin:0;min-width:0}
+.reviewDetails{font-size:var(--fs-sm);min-width:0}
+.reviewDetails>summary{cursor:pointer;min-height:var(--touch);align-content:center;color:var(--text-muted);line-height:1.5;overflow-wrap:anywhere}
+.reviewDetails[open]>summary{margin-bottom:var(--space-2)}
+.reviewDetails label{display:block;margin-bottom:var(--space-2)}
+.reviewSave{display:grid;gap:var(--space-2);padding:var(--space-4);border:1px solid var(--primary-line);background:var(--primary-soft);border-radius:var(--radius-md);margin-top:var(--space-3)}
+.reviewSave button{justify-content:center;text-align:center}
+.entry.entry{margin:0;background:var(--primary-soft);border:1px solid var(--primary-line);padding:var(--space-5);border-radius:var(--radius-lg);box-shadow:none}
+.entry :global(.record-entry-buddy),.entry :global(.record-entry-help),.entry :global(.record-entry-kicker){display:none}
+.entry :global(.record-entry-heading h2){font-size:var(--fs-xl);margin:0}
+.entry :global(.record-entry-intro){font-size:var(--fs-sm);margin:var(--space-3) 0 var(--space-4);color:var(--text-muted)}
+.entry :global(.record-entry-actions){display:grid;grid-template-columns:1fr;gap:var(--space-2)}
+.entry :global(.record-entry-actions .record-method){min-height:calc(var(--touch) + var(--space-5));padding:var(--space-3);border-radius:var(--radius-md);box-shadow:none;transform:none}
+.entry :global(.record-entry-actions .record-method-photo){background:var(--primary);color:var(--surface);border-color:var(--primary)}
+.entry :global(.record-entry-actions .record-method-photo .record-method-copy span){color:var(--surface)}
+.entry :global(.record-entry-actions .record-method-photo[aria-pressed=true]){background:var(--surface);color:var(--text);border-color:var(--primary)}
+.entry :global(.record-entry-actions .record-method-photo[aria-pressed=true] .record-method-copy span){color:var(--text-subtle)}
+.entry :global(.record-entry-actions .record-method-search){background:transparent;border-color:var(--primary-line)}
+.entry :global(.record-method-copy strong){font-size:var(--fs-md)}
+.entry :global(.record-method-copy span){font-size:var(--fs-xs)}
+.entry :global(.record-entry-login-note){font-size:var(--fs-xs);color:var(--text-subtle);padding-top:var(--space-3);margin-top:var(--space-3)}
+.entry :global(.record-entry-reward){display:none}
+.heading{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3)}
+.heading h1{font-size:var(--fs-xl);margin:0}
+.home{gap:var(--space-4)}
+.nutrition{padding:var(--space-4)!important}
+.energy{margin:var(--space-3) 0 var(--space-4)}
+.fold{border:1px solid var(--border);border-radius:var(--radius-md);padding:var(--space-3) var(--space-4);background:var(--surface)}
+.fold>summary{min-height:var(--touch);display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);cursor:pointer;font-size:var(--fs-md);font-weight:600;list-style:none}
+.fold>summary::-webkit-details-marker{display:none}
+.fold>summary span{font-size:var(--fs-xs);font-weight:400;color:var(--text-subtle)}
+.fold>summary::after{content:'+';color:var(--primary)}
+.fold[open]>summary::after{content:'−'}
+.shortcuts{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3)}
+.shortcuts a{display:grid;gap:var(--space-2);padding:var(--space-4);border-radius:var(--radius-md);background:var(--surface-soft);color:var(--text);text-decoration:none;min-height:var(--touch)}
+.shortcuts strong{font-size:var(--fs-md)}
+.shortcuts span{font-size:var(--fs-xs);color:var(--text-subtle)}
+.entry.entry[data-compact]{padding:0;border:0;background:none}
+.entry[data-compact] :global(.record-entry-heading),.entry[data-compact] :global(.record-entry-intro),.entry[data-compact] :global(.record-method-copy>span),.entry[data-compact] :global(.record-method-check),.entry[data-compact] :global(.record-entry-login-note){display:none}
+.entry[data-compact] :global(.record-entry-actions){grid-template-columns:minmax(0,1.6fr) minmax(0,1fr)}
+.entry[data-compact] :global(.record-entry-actions .record-method){min-height:calc(var(--touch) + var(--space-3));padding:var(--space-3);gap:var(--space-2)}
+.entry[data-compact] :global(.record-method-icon){width:var(--space-5);height:var(--space-5);background:none;padding:0;border:0;border-radius:0}
+.entry[data-compact] :global(.record-method-icon svg){width:100%;height:100%}
+.entry[data-compact] .photoFlow{margin:0 0 var(--space-3);padding:var(--space-3);gap:var(--space-1)}
+.entry[data-compact] .photoFlow>strong,.entry[data-compact] .photoFlow>p{display:none}
+.entry[data-compact] .photoFlow>small{font-size:var(--fs-xs)}

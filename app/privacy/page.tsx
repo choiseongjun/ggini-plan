@@ -6,12 +6,12 @@ export const metadata: Metadata = { title: '개인정보처리방침 | 끼니플
 
 export default function PrivacyPage() {
   return <LegalLayout title="개인정보처리방침">
-    <p>끼니플랜 운영자 {POLICY_OPERATOR}은 개인정보 보호법 등 관계 법령에 따라 개인정보를 처리하고 이용자의 권리를 보호합니다. 이 방침은 끼니플랜 웹사이트, 웹앱 및 Android·iOS 앱에 적용됩니다. 신규 회원가입은 Google 또는 Apple 로그인을 사용하며, 기존 이메일 계정과 심사 계정에는 비밀번호 로그인을 제공합니다.</p>
+    <p>끼니플랜 운영자 {POLICY_OPERATOR}은 개인정보 보호법 등 관계 법령에 따라 개인정보를 처리하고 이용자의 권리를 보호합니다. 이 방침은 끼니플랜 웹사이트, 웹앱 및 Android·iOS 앱에 적용됩니다. 신규 회원가입은 Google, Apple 또는 카카오 로그인을 사용하며, 기존 이메일 계정과 심사 계정에는 비밀번호 로그인을 제공합니다.</p>
     <h2 id="membership">1. 회원가입 시 수집·이용하는 정보</h2>
     <div className="legal-table" role="region" aria-label="필수 회원정보 수집 항목" tabIndex={0}><table><thead><tr><th>구분</th><th>수집 항목</th><th>목적</th><th>보유 기간</th></tr></thead><tbody>
       <tr><td>기존 이메일·심사 계정</td><td>이름, 이메일, 비밀번호의 단방향 해시</td><td>회원 식별, 로그인, 계정 관리</td><td>회원 탈퇴 처리 시까지</td></tr>
       <tr><td>구글 가입</td><td>이름, 이메일, 구글 계정 식별자</td><td>구글 인증과 서비스 계정 연결</td><td>회원 탈퇴 처리 시까지</td></tr>
-      <tr><td>Apple 가입</td><td>Apple 계정 식별자, 이메일(이메일 가리기 선택 시 중계 주소), 제공된 이름</td><td>Apple 인증과 서비스 계정 연결</td><td>회원 탈퇴 처리 시까지</td></tr>
+      <tr><td>카카오 가입</td><td>카카오 회원번호, 제공된 닉네임(있는 경우)</td><td>카카오 인증과 서비스 계정 연결. 이메일은 요청하지 않음</td><td>회원 탈퇴 처리 시까지</td></tr><tr><td>Apple 가입</td><td>Apple 계정 식별자, 이메일(이메일 가리기 선택 시 중계 주소), 제공된 이름</td><td>Apple 인증과 서비스 계정 연결</td><td>회원 탈퇴 처리 시까지</td></tr>
       <tr><td>가입 동의</td><td>약관·수집이용 동의 버전과 시각, 만 14세 이상 확인 시각</td><td>가입 의사·동의 내용 확인</td><td>회원 탈퇴 처리 시까지</td></tr>
     </tbody></table></div>
     <p>위 정보는 회원가입에 필요한 필수 정보입니다. 수집·이용에 동의하지 않을 수 있으며, 동의하지 않으면 회원가입이 제한되지만 비회원 둘러보기는 가능합니다. 구글 비밀번호는 끼니플랜 서버가 수집하지 않습니다. 만 14세 미만의 회원가입은 받지 않으며, 해당 정보 수집이 확인되면 확인 절차를 거쳐 삭제합니다.</p>
@@ -23,7 +23,7 @@ export default function PrivacyPage() {
     <p>‘근처 식당 찾기’를 열거나 ‘내 위치로 다시 찾기’를 선택하면 브라우저 또는 운영체제의 위치 권한을 요청합니다. Android 앱은 대략적인 위치 권한을 사용하며 웹·iOS의 위치 정확도는 기기 설정에 따라 달라질 수 있습니다. 허용한 경우 한 번 확인한 위도·경도를 소수점 세 자리로 반올림한 검색 위치, 메뉴 검색어와 검색 반경을 끼니플랜 서버를 거쳐 카카오 로컬 API에 전달하여 가까운 음식점을 검색합니다. 지도 표시에는 네이버 클라우드의 네이버 지도 서비스를 사용하며 검색 위치와 식당 위치가 지도 서비스에서 처리됩니다. 지도에 표시되는 내 위치와 거리는 기기 정확도 및 반올림에 따른 오차가 있습니다.</p>
     <p>위치 권한은 선택이며 거절하거나 기기 설정에서 철회할 수 있습니다. 거절한 경우 동네·역 이름을 직접 입력해 같은 검색 기능을 이용할 수 있고, 식단 추천·식사 기록 등 다른 기능은 계속 사용할 수 있습니다. 백그라운드 위치 추적은 하지 않습니다. 검색 좌표·검색어를 계정 기록이나 끼니플랜 데이터베이스에 저장하지 않으며 검색·지도 화면과 요청 처리 중에만 사용합니다.</p>
     <p>장소 검색을 위한 위치 또는 동네·메뉴 검색어는 카카오에 전달됩니다. 지도 표시를 위한 위치는 네이버 클라우드의 지도 서비스에서 처리됩니다. 카카오 서비스의 접속 정보·이용 기록 처리와 보관은 <a href="https://www.kakao.com/policy/privacy" target="_blank" rel="noreferrer">카카오 개인정보처리방침</a>을 따릅니다. 네이버 지도 서비스의 정보 처리는 <a href="https://www.ncloud.com/policy/infou" target="_blank" rel="noreferrer">네이버 클라우드 개인정보처리방침</a>을 따릅니다. 끼니플랜에서 좌표를 저장하지 않는다는 안내가 카카오·네이버 클라우드·호스팅 제공업체의 모든 서비스 이용 기록이 즉시 삭제된다는 뜻은 아닙니다.</p>
-    <h3 id="meal-photos">식사 사진 분석</h3><p>식단의 ‘사진으로 추가’에서는 동의 후 음식 사진을 OpenAI API로 전송해 음식 이름과 영양을 추정합니다. 사진 원본은 끼니플랜 DB에 저장하지 않으며, 확인 후 저장한 메뉴 이름·날짜·끼니·영양 추정치만 식단에 보관합니다. 이 과정은 먹은 기록을 생성하지 않습니다.</p>
+    <h3 id="meal-photos">식사 사진 분석</h3><p>홈의 사진 기록에서는 사진과 선택한 음식·분량·시각을 브라우저 임시 보관함(IndexedDB)에 저장합니다. 임시 사진 삭제 또는 사이트 데이터 삭제로 제거할 수 있으며 다른 기기에 동기화되지 않습니다. 로그인 후 사진 전송에 동의하고 분석을 요청하면 서버에서 위치 등 EXIF 정보를 제거하고 축소한 사진을 Groq API로 전송해 음식 이름을 추정합니다. 계정 이름·이메일·체중은 분석 요청에 포함하지 않습니다. 분석 요청만으로 사진을 일기에 저장하지 않으며, 최종 저장 시 계정의 비공개 식사 일기에 보관합니다. 무료 분석 한도 관리를 위해 계정 ID와 요청 시각을 저장하고 30일이 지난 요청 이력은 다음 분석 요청 시 정리합니다. Groq의 데이터 처리 조건은 https://console.groq.com/docs/your-data 에서 확인할 수 있습니다. 사진을 전송하지 않고 음식 이름으로 기록할 수도 있습니다.</p><p>식단의 ‘사진으로 추가’에서는 동의 후 음식 사진을 OpenAI API로 전송해 음식 이름과 영양을 추정합니다. 사진 원본은 끼니플랜 DB에 저장하지 않으며, 확인 후 저장한 메뉴 이름·날짜·끼니·영양 추정치만 식단에 보관합니다. 이 과정은 먹은 기록을 생성하지 않습니다.</p>
     <p>‘먹었어요 · 사진 올리기’에서 이용자가 전송·분석에 동의하고 기록하기를 누르면 사진과 추천 메뉴 이름·재료 정보가 OpenAI API로 전송되어 음식·식사량과 예상 영양정보를 분석합니다. 서버에서 사진의 위치 등 EXIF 정보를 제거하고 크기를 줄여 전송합니다. 기록이 완료되면 위치 등 EXIF 정보를 제거하고 크기를 줄인 사진(최대 4장)과 음식·식사량·영양정보를 계정의 비공개 식사 일기에 저장합니다. 사진은 로그인한 본인만 조회할 수 있으며, 해당 기록 삭제·기록 초기화·회원 탈퇴 시 함께 삭제됩니다. 분석하지 못한 사진은 일기에 저장하지 않습니다. 사진 없이 직접 기록하는 방법도 제공합니다.</p>
     <p>기록 화면에서 AI 예상 식비 계산을 요청하면 가격이 없는 음식의 이름·먹은 양·기록된 칼로리를 OpenAI API로 전송해 비용 범위를 추정합니다. 사진·계정 이름·이메일은 이 요청에 포함하지 않습니다. 추정 결과는 계정별로 저장해 같은 기록에 재사용하며 실제 결제 내역으로 처리하지 않습니다.</p>
     <p>API 응답 저장을 사용하지 않지만 이는 OpenAI의 모든 보관을 중지한다는 뜻은 아닙니다. OpenAI의 기본 API 정책상 남용 감시 로그는 최대 30일 보관될 수 있으며, 법률·안전상 예외가 적용될 수 있습니다. <a href="https://developers.openai.com/api/docs/guides/your-data" target="_blank" rel="noreferrer">OpenAI 데이터 처리 안내</a>를 참고하세요. 커뮤니티·상품 제보의 첨부 사진은 각 서비스의 별도 처리 방식이 적용됩니다.</p>
@@ -41,6 +41,7 @@ export default function PrivacyPage() {
     <h2>5. 처리위탁·국외 처리</h2>
     <div className="legal-table" role="region" aria-label="개인정보 처리업체" tabIndex={0}><table><thead><tr><th>업체</th><th>업무·정보 범위</th><th>확인 자료</th></tr></thead><tbody>
       <tr><td>Vercel Inc.</td><td>웹사이트·API 호스팅, 접속·성능 분석. 요청에 포함된 서비스 정보와 접속·기기·성능 정보</td><td><a href="https://vercel.com/legal/dpa" target="_blank" rel="noreferrer">데이터 처리 조건</a> · <a href="https://vercel.com/docs/analytics/privacy-policy" target="_blank" rel="noreferrer">분석 개인정보 안내</a></td></tr>
+      <tr><td>Groq</td><td>동의 후 음식 사진의 AI 분석. 위치 등 메타데이터를 제거한 사진을 전송하며 계정 이름·이메일·체중은 포함하지 않음</td><td><a href="https://console.groq.com/docs/your-data" target="_blank" rel="noreferrer">API 데이터 처리 안내</a></td></tr>
       <tr><td>PostHog</td><td>미국 리전의 기본 사용·재방문 분석. 임의 브라우저 식별자와 제한된 기능 사용 이벤트</td><td><a href="https://posthog.com/privacy" target="_blank" rel="noreferrer">개인정보 안내</a></td></tr>
       <tr><td>Supabase</td><td>회원 및 서비스 데이터베이스, 제보·상품 사진 저장</td><td><a href="https://supabase.com/privacy" target="_blank" rel="noreferrer">개인정보 안내</a></td></tr>
       <tr><td>OpenAI</td><td>식사 사진과 추천 메뉴·재료 정보의 AI 분석, 요청 시 음식 이름·섭취량·칼로리를 이용한 식비 추정. 분석용 사진의 메타데이터를 제거하여 전송</td><td><a href="https://developers.openai.com/api/docs/guides/your-data" target="_blank" rel="noreferrer">API 데이터 처리·보관 안내</a></td></tr>

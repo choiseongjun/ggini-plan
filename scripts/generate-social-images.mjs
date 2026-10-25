@@ -5,13 +5,15 @@ import sharp from 'sharp';
 // Reuse the site's mascot. Run on a machine with Korean/Traditional Chinese fonts.
 const source = await readFile(new URL('../app/rice-buddy.tsx', import.meta.url), 'utf8');
 const mascot = source.slice(source.indexOf('<ellipse'), source.indexOf('</svg>'))
-  .replaceAll('strokeWidth=', 'stroke-width=').replaceAll('strokeLinecap=', 'stroke-linecap=');
+  .replace(/^\s*\{stage[^\n]+\}\s*$/gm,'')
+  .replaceAll('className=', 'class=').replaceAll('strokeWidth=', 'stroke-width=').replaceAll('strokeLinecap=', 'stroke-linecap=');
 const directory = new URL('../public/og/', import.meta.url);
 await mkdir(directory, { recursive: true });
 for (const [market, brand, first, second, description, tags, font] of [
-  ['ko', '끼니플랜', '내 예산에 맞게,', '오늘도 잘 먹어요.', '뭘 먹을지부터 장보기까지 한 번에', '식단 추천   ·   장보기   ·   식비 기록', 'Malgun Gothic'],
+  ['ko', '끼니플랜', '한 끼를 기록하고,', '오늘의 나를 챙겨요.', '사진으로 남기는 식사·영양 기록', '식사 일기   ·   영양소   ·   나의 통계', 'Malgun Gothic'],
   ['tw', 'GginiPlan 台灣', '照顧每餐，', '也照顧你的預算。', '從今天吃什麼，到這週買什麼', '餐點推薦   ·   購物清單   ·   餐費紀錄', 'Microsoft JhengHei'],
 ]) {
+  if(process.argv.includes('--ko-only')&&market!=='ko')continue;
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
     <rect width="1200" height="630" fill="#fffaf0"/>
     <rect x="22" y="22" width="1156" height="586" rx="36" fill="none" stroke="#e5e9d5" stroke-width="2"/>
@@ -29,5 +31,5 @@ for (const [market, brand, first, second, description, tags, font] of [
     </g>
     <g transform="translate(756 125) scale(1.64)">${mascot}</g>
   </svg>`;
-  await sharp(Buffer.from(svg)).png().toFile(fileURLToPath(new URL(`meal-plan-${market}-v1.png`, directory)));
+  await sharp(Buffer.from(svg)).png().toFile(fileURLToPath(new URL(market==='ko'?'meal-record-ko-v2.png':'meal-plan-tw-v1.png', directory)));
 }

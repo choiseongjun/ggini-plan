@@ -5,8 +5,8 @@ import {usePathname,useRouter} from 'next/navigation';
 import './guided-tour.css';
 const key='kkini-guided-tour';
 const steps=[
- {path:'/',target:'.home-recommend-cta, .home-start-cta, .planner-reroll-actions .primary-button, .shopping-planner',title:'여기서 식단을 추천받아요',text:'‘오늘 식단 추천받기’로 시작해요. 끼니를 고르는 창의 ‘더 맞춰볼까요?’에서 취향과 못 먹는 재료를 설정할 수 있어요.'},
- {path:'/record',target:'.record-entry-actions button:first-child',title:'사진으로 기록하고 싶다면',text:'로그인한 뒤 음식 사진만 올리면 돼요. 음식과 먹은 양을 분석하고 사진도 식사 일기에 저장해요. 추천 메뉴와 다른 음식을 먹어도 괜찮아요.'},
+ {path:'/',target:'.record-entry-actions button:first-child',title:'사진으로 한 끼를 시작해요',text:'사진을 고르고 로그인한 뒤, 사진 전송에 동의하면 AI가 음식 후보를 찾아요. 맞는 음식과 먹은 양을 확인해 주세요.'},
+ {path:'/record',target:'.record-entry-actions button:first-child',title:'확인한 음식만 일기에',text:'사진 분석은 동의 후 Groq 서버에서 진행해요. 음식과 먹은 양을 확인하고 저장하면 사진과 영양정보가 일기에 남아요.'},
  {path:'/record',target:'.record-entry-actions button:last-child',title:'사진 없이도 남길 수 있어요',text:'음식을 검색하고 먹은 양을 선택하면 끝! 추천이나 구매 등록은 필요 없어요. 지난 기록도 이 기록 탭에서 날짜별로 봐요.'},
  {path:'/profile',target:'.profile-quick-settings button',title:'내 정보는 여기서 바꿔요',text:'키·체중·활동량과 식사 취향을 설정해요. 처음부터 모두 입력하지 않아도 괜찮아요.'},
  {path:'/profile',target:'.buddy-pet',title:'끼니에게 인사해 보세요',text:'캐릭터를 톡 누르면 반응해요. 식사를 기록한 날마다 성장하고 선물을 받아요. 하루 쉬어도 성장은 사라지지 않아요.'},

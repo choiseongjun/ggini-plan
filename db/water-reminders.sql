@@ -1,0 +1,15 @@
+CREATE TABLE IF NOT EXISTS water_reminders (
+ user_id BIGINT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+ enabled BOOLEAN NOT NULL DEFAULT FALSE,
+ times JSONB NOT NULL DEFAULT '["10:00","14:00","18:00"]'::jsonb,
+ updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE TABLE IF NOT EXISTS water_reminder_deliveries (
+ user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+ destination TEXT NOT NULL,
+ day DATE NOT NULL,
+ time TEXT NOT NULL,
+ PRIMARY KEY(user_id,destination,day,time)
+);
+ALTER TABLE water_reminders ENABLE ROW LEVEL SECURITY;
+ALTER TABLE water_reminder_deliveries ENABLE ROW LEVEL SECURITY;

@@ -1,11 +1,12 @@
 import type { MetadataRoute } from 'next';
+import {brandCopy} from '../lib/brand-copy';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
     id: '/',
     name: '끼니플랜',
     short_name: '끼니플랜',
-    description: '내 예산에 맞는 장보기와 식단을 간편하게 챙겨요.',
+    description: brandCopy.description,
     lang: 'ko',
     start_url: '/',
     scope: '/',

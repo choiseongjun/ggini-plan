@@ -1,9 +1,12 @@
 import {ProductAnalytics,SiteAnalytics} from './product-analytics';
+import {NativeSafeArea} from './native-safe-area';
+import {RetiredModelCleanup} from './retired-model-cleanup';
 import type { Metadata, Viewport } from "next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { KakaoBrowser } from './kakao-browser';
 import { DialogHistory } from './dialog-history';
 import { pageMetadata, siteUrl, indexable } from "../lib/seo";
+import {brandCopy} from '../lib/brand-copy';
 import "./tokens.css";
 import "./globals.css";
 import "./playful.css";
@@ -15,7 +18,7 @@ import './mobile-polish.css';
 export const viewport:Viewport={width:'device-width',initialScale:1,viewportFit:'cover',interactiveWidget:'resizes-content',themeColor:'#f7f9fa'};
 
 export const metadata: Metadata = {
-  ...pageMetadata("자취 식단 추천·사진 식사 기록·장보기 | 끼니플랜", "먹은 것과 먹을 것을 분석해, 내게 필요한 영양과 음식을 찾아주는 서비스. 부족한 영양을 채우는 한 끼 추천부터 식재료 가격 비교, 장보기 리스트까지 끼니플랜에서 함께 관리하세요.", "/"),
+  ...pageMetadata(brandCopy.title, brandCopy.description, "/"),
   metadataBase: new URL(siteUrl),
   applicationName: "끼니플랜",
   appleWebApp: { capable: true, title: '끼니플랜', statusBarStyle: 'default' },
@@ -28,5 +31,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
-  return <html lang="ko"><body><AppLoadingProvider>{children}</AppLoadingProvider><KakaoBrowser /><DialogHistory /><ProductAnalytics /><SiteAnalytics /><SpeedInsights /></body></html>;
+  return <html lang="ko"><body><NativeSafeArea/><RetiredModelCleanup/><AppLoadingProvider>{children}</AppLoadingProvider><KakaoBrowser /><DialogHistory /><ProductAnalytics /><SiteAnalytics /><SpeedInsights /></body></html>;
 }

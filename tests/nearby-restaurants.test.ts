@@ -1,6 +1,14 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {parseRestaurantSearch,restaurantSearchParams,parseRestaurants} from '../lib/nearby-restaurants';
+test('accepts bounded category metadata without forwarding it to the place provider',()=>{
+ const input=parseRestaurantSearch({menu:'새로운요리',category:'찜류',area:'서울'});
+ assert.equal(input?.category,'찜류');
+ assert.equal(restaurantSearchParams(input!).get('query'),'서울 새로운요리');
+ assert.equal(restaurantSearchParams(input!).has('category'),false);
+ assert.equal(parseRestaurantSearch({menu:'요리',area:'서울',category:42}),null);
+ assert.equal(parseRestaurantSearch({menu:'요리',area:'서울',category:'x'.repeat(41)}),null);
+});
 test('validates either a neighborhood or complete numeric coordinates',()=>{
  assert.deepEqual(parseRestaurantSearch({menu:' 비빔밥 ',area:' 강남역 '}),{menu:'비빔밥',area:'강남역',radius:3000});
  for(const v of [null,{}, {menu:'a',area:' '},{menu:'a',latitude:37},{menu:'a',latitude:'37',longitude:127},{menu:'a',latitude:91,longitude:127},{menu:'a',latitude:NaN,longitude:127},{menu:'a',area:'서울',latitude:37,longitude:127},{menu:'a',area:'서울',radius:99999}])assert.equal(parseRestaurantSearch(v),null);

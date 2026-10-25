@@ -1,4 +1,5 @@
 import {timePeriod,timePeriods} from './meal-time';
+import {nutritionHistoryTotals} from './nutrition-history';
 import { EXTRA_PREFIX } from "./intake-extras";
 
 export type StatLog = { productId: string; name: string; calories: number | null; protein: number | null; cost: number | null; date: string; eatenAt?:string };
@@ -38,7 +39,7 @@ export function intakeStats(logs: StatLog[], today: string, goals: { calories: n
   const meals = logs.filter(isMeal);
   const byDay = new Map<string, { calories: number; protein: number; meals: number }>();
   for (const l of logs) { const d = byDay.get(l.date) ?? { calories: 0, protein: 0, meals: 0 }; d.calories += l.calories ?? 0; d.protein += l.protein ?? 0; if (isMeal(l)) d.meals++; byDay.set(l.date, d); }
-  const proteinDays = goals.protein ? [...byDay.values()].filter(d => d.protein >= goals.protein! * 0.9).length : 0;
+  const proteinDays = goals.protein ? [...byDay.entries()].filter(([day,d]) => logs.filter(l=>l.date===day).every(l=>l.protein!==null&&Number.isFinite(l.protein))&&d.protein >= goals.protein!).length : 0;
   const weekMeals = new Map<string, number>();
   for (const l of meals) weekMeals.set(weekStart(l.date), (weekMeals.get(weekStart(l.date)) ?? 0) + 1);
   const bestWeek = Math.max(0, ...weekMeals.values());
@@ -72,10 +73,11 @@ export function weeklyReport(logs: StatLog[], start: string, goals: { calories: 
   const week = logs.filter(l => l.date >= start && l.date <= end);
   const meals = week.filter(isMeal);
   const days = [...new Set(week.map(l => l.date))];
-  const perDay = days.map(d => { const ls = week.filter(l => l.date === d); return { calories: ls.reduce((s, l) => s + (l.calories ?? 0), 0), protein: ls.reduce((s, l) => s + (l.protein ?? 0), 0) }; });
-  const avgCalories = perDay.length ? Math.round(perDay.reduce((s, d) => s + d.calories, 0) / perDay.length) : null;
-  const avgProtein = perDay.length ? Math.round(perDay.reduce((s, d) => s + d.protein, 0) / perDay.length) : null;
-  const proteinDays = goals.protein ? perDay.filter(d => d.protein >= goals.protein! * 0.9).length : null;
+  const totals=nutritionHistoryTotals(week);
+  const calorieSummary=totals.find(n=>n.key==='calories')!;
+  const avgCalories=calorieSummary.average;
+  const avgProtein=totals.find(n=>n.key==='protein')!.average;
+  const proteinDays=goals.protein?days.filter(day=>{const entries=week.filter(l=>l.date===day);return entries.every(l=>l.protein!==null&&Number.isFinite(l.protein))&&entries.reduce((sum,l)=>sum+l.protein!,0)>=goals.protein!;}).length:null;
   const counts = new Map<string, number>();
   for (const l of meals) counts.set(l.name, (counts.get(l.name) ?? 0) + 1);
   const favorite = [...counts].sort((a, b) => b[1] - a[1])[0] ?? null;
@@ -86,12 +88,7 @@ export function weeklyReport(logs: StatLog[], start: string, goals: { calories: 
   const highest=Math.max(...timeCounts.map(item=>item.count));
   const peak=timeCounts.filter(item=>item.count===highest);
   const timeInsight=timedCount>=3&&peak.length===1?`음식 기록 ${timedCount}건 중 ${peak[0].count}건이 ${peak[0].period} 시간대에 있어요.`:null;
-  const tip = !days.length ? null
-    : goals.protein && avgProtein !== null && avgProtein < goals.protein * 0.8 ? { kind: "protein", text: "단백질이 목표보다 적었어요. 다음 주는 고기·생선·두부 메뉴를 한두 끼 더 넣어 보세요." }
-    : goals.calories && avgCalories !== null && avgCalories > goals.calories * 1.1 && days.length >= 3 ? { kind: "over", text: "기록한 날 칼로리가 목표보다 많았어요. 국물·튀김 메뉴를 줄이면 쉽게 맞출 수 있어요." }
-    : extras >= days.length * 2 ? { kind: "extras", text: "함께 먹은 간식·음료가 많았어요. 음료 한 잔만 줄여도 하루 100~150kcal가 줄어요." }
-    : days.length < 4 ? { kind: "habit", text: "기록한 날이 아직 적어요. 저녁 한 끼만이라도 사진으로 남겨 보세요." }
-    : { kind: "good", text: "목표에 맞게 잘 챙겨 먹었어요. 다음 주도 이대로 가 봐요!" };
-  return { timeCounts,timeInsight,start, end, days: days.length, meals: meals.length, extras, avgCalories, avgProtein, proteinDays, favorite: favorite ? { name: favorite[0], count: favorite[1] } : null, spent, tip };
+  const tip = !days.length?null:{kind:'habit',text:'기록한 음식만 집계했어요. 빠뜨린 끼니가 있다면 추가해 주세요. 이 기록만으로 과식·영양 부족을 판단하지 않아요.'};
+  return { timeCounts,timeInsight,start, end, days: days.length, meals: meals.length, extras, avgCalories, avgProtein, proteinDays, averageDays:calorieSummary.days,missingCalories:calorieSummary.missing,favorite: favorite ? { name: favorite[0], count: favorite[1] } : null, spent, tip };
 }
 export type IntakeStats = ReturnType<typeof intakeStats>;

@@ -22,7 +22,18 @@ export async function DELETE(request:NextRequest){
   if(input?.confirmation!=='회원 탈퇴'||input?.userId!==user.id)return authFailure('계정과 확인 문구를 확인해 주세요.',400);
   const oauth=await oauthAccount(user.id);
   let removeIdentity=async()=>{};
-  if(oauth){
+  if(oauth?.provider==='kakao'){
+   // Kakao has no Firebase identity. As with native social deletion, the
+   // HttpOnly session, same-origin POST and typed confirmation authorize deletion.
+   removeIdentity=async()=>{
+    const key=process.env.KAKAO_LOGIN_ADMIN_KEY;
+    if(!key)return;
+    const response=await fetch('https://kapi.kakao.com/v1/user/unlink',{method:'POST',headers:{Authorization:`KakaoAK ${key}`,'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({target_id_type:'user_id',target_id:oauth.provider_subject}),signal:AbortSignal.timeout(15000)});
+    // Already unlinked is idempotent; other errors leave the local account intact.
+    if(!response.ok){const data=await response.json().catch(()=>null);if(data?.code!==-101)throw new Error('Kakao unlink failed');}
+   };
+  }else if(oauth){
+   const provider=oauth.provider;
    const label=oauth.provider==='apple'?'Apple':'구글';
    let idToken:string|undefined;
    // Inside the iOS app a provider popup cannot open, so the signed-in session plus the
@@ -35,7 +46,7 @@ export async function DELETE(request:NextRequest){
     idToken=input.idToken;
    }
    removeIdentity=async()=>{
-    if(await deleteFirebaseIdentity(oauth.provider,oauth.provider_subject))return;
+    if(await deleteFirebaseIdentity(provider,oauth.provider_subject))return;
     const key=process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
     if(!idToken||!key)return;
     const result=await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:delete?key=${encodeURIComponent(key)}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({idToken}),signal:AbortSignal.timeout(15000)});
@@ -57,6 +68,6 @@ export async function DELETE(request:NextRequest){
 }
 
 async function oauthAccount(userId:string){
- const row=(await getPool().query("SELECT provider,provider_subject FROM oauth_accounts WHERE user_id=$1 AND provider IN ('apple','google') ORDER BY provider='apple' DESC LIMIT 1",[userId])).rows[0];
- return row as {provider:'apple'|'google';provider_subject:string}|undefined;
+ const row=(await getPool().query("SELECT provider,provider_subject FROM oauth_accounts WHERE user_id=$1 AND provider IN ('apple','google','kakao') ORDER BY provider='apple' DESC LIMIT 1",[userId])).rows[0];
+ return row as {provider:'apple'|'google'|'kakao';provider_subject:string}|undefined;
 }

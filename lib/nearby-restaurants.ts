@@ -1,17 +1,19 @@
-export type RestaurantSearch={menu:string;area?:string;latitude?:number;longitude?:number;radius:number};
+export type RestaurantSearch={menu:string;category?:string;area?:string;latitude?:number;longitude?:number;radius:number};
 export type MapPoint={latitude:number;longitude:number};
 export type NearbyRestaurant={id:string;name:string;category:string;address:string;phone:string;distance:number|null;url:string;position:MapPoint|null};
 export function parseRestaurantSearch(value:unknown):RestaurantSearch|null{
  if(!value||typeof value!=='object')return null;
  const v=value as Record<string,unknown>;
  if(typeof v.menu!=='string'||!v.menu.trim()||v.menu.length>60)return null;
+ if(v.category!==undefined&&(typeof v.category!=='string'||v.category.length>40))return null;
+ const category=typeof v.category==='string'&&v.category.trim()?{category:v.category.trim()}:{};
  const radius=v.radius??3000;if(typeof radius!=='number'||![1000,3000,5000,10000,20000].includes(radius))return null;
  if(v.area!==undefined){
   if(typeof v.area!=='string'||v.area.trim().length<2||v.area.length>60||v.latitude!==undefined||v.longitude!==undefined)return null;
-  return {menu:v.menu.trim(),area:v.area.trim(),radius};
+  return {menu:v.menu.trim(),...category,area:v.area.trim(),radius};
  }
  if(typeof v.latitude!=='number'||!Number.isFinite(v.latitude)||v.latitude< -90||v.latitude>90||typeof v.longitude!=='number'||!Number.isFinite(v.longitude)||v.longitude< -180||v.longitude>180)return null;
- return {menu:v.menu.trim(),latitude:v.latitude,longitude:v.longitude,radius};
+ return {menu:v.menu.trim(),...category,latitude:v.latitude,longitude:v.longitude,radius};
 }
 export function restaurantSearchParams(input:RestaurantSearch){
  const params=new URLSearchParams({query:`${input.area?`${input.area} `:''}${input.menu}`,category_group_code:'FD6',size:'10'});

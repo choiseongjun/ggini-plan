@@ -77,11 +77,11 @@ export default async function ComparePage(props: Props) {
   </section>
   <section className="kcal-cta">
    <h2>오늘은 어느 쪽을 먹었나요?</h2>
-   <p>기록하면 오늘 남은 칼로리·단백질에 맞춰 다음 끼니를 골라 드려요.</p>
+   <p>먹은 음식과 양을 확인하고 오늘 식사로 남겨 보세요.</p>
    <div className="kcal-actions">
-    <LinkButton variant="primary" block href={`/record?log=${encodeURIComponent(a.food.code)}`}>{a.food.name} 먹었어요</LinkButton>
-    <LinkButton variant="primary" block href={`/record?log=${encodeURIComponent(b.food.code)}`}>{b.food.name} 먹었어요</LinkButton>
-    <LinkButton variant="secondary" block href="/?from=kcal">오늘 남은 끼니 추천받기</LinkButton>
+    <LinkButton variant="primary" block href={`/record?log=${encodeURIComponent(a.food.code)}&from=kcal`}>{a.food.name} 먹었어요</LinkButton>
+    <LinkButton variant="primary" block href={`/record?log=${encodeURIComponent(b.food.code)}&from=kcal`}>{b.food.name} 먹었어요</LinkButton>
+    <LinkButton variant="secondary" block href="/record?from=kcal">다른 음식도 함께 기록하기</LinkButton>
    </div>
   </section>
   <p className="kcal-note">출처: 식품영양성분 데이터베이스 · Korean Food Composition Database system(K-FCDB). 1인분 참고값이며 조리법·식당·양에 따라 달라요. 초록색 칸은 더 가벼운 쪽(단백질은 더 많은 쪽)이에요.</p>

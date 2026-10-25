@@ -1,0 +1,210 @@
+[
+  {
+    "id": "source-zrFScX1aJeM",
+    "group": 0,
+    "accompaniment": "",
+    "name": "간장계란국수",
+    "family": "국수",
+    "checkedAt": "2026-10-12",
+    "video": {
+      "id": "zrFScX1aJeM",
+      "title": "간장계란면 Soy Sauce Egg Noodles",
+      "channel": "하루한끼 one meal a day",
+      "url": "https://www.youtube.com/watch?v=zrFScX1aJeM",
+      "thumbnail": "https://i.ytimg.com/vi/zrFScX1aJeM/mqdefault.jpg"
+    },
+    "ingredients": [
+      {
+        "name": "소면",
+        "label": "소면"
+      },
+      {
+        "name": "달걀",
+        "label": "달걀"
+      },
+      {
+        "name": "간장",
+        "label": "간장"
+      },
+      {
+        "name": "참기름",
+        "label": "참기름"
+      }
+    ],
+    "steps": [],
+    "tips": [],
+    "servingLabel": "주요 재료 미리보기 · 전체 재료와 분량, 조리법은 원본 영상에서 확인"
+  },
+  {
+    "id": "source-S1WuRptR7WY",
+    "group": 0,
+    "accompaniment": "",
+    "name": "소시지 계란볶음밥",
+    "family": "볶음밥",
+    "checkedAt": "2026-10-12",
+    "video": {
+      "id": "S1WuRptR7WY",
+      "title": "볶음밥은 이렇게 만들어야 맛있어요 :: 진짜 고소한 계란볶음밥 만들기 :: Egg Fried Rice",
+      "channel": "매일맛나 delicious day",
+      "url": "https://www.youtube.com/watch?v=S1WuRptR7WY",
+      "thumbnail": "https://i.ytimg.com/vi/S1WuRptR7WY/mqdefault.jpg"
+    },
+    "ingredients": [
+      {
+        "name": "밥",
+        "label": "밥"
+      },
+      {
+        "name": "달걀",
+        "label": "달걀"
+      },
+      {
+        "name": "소시지",
+        "label": "소시지"
+      },
+      {
+        "name": "대파",
+        "label": "대파"
+      }
+    ],
+    "steps": [],
+    "tips": [],
+    "servingLabel": "주요 재료 미리보기 · 전체 재료와 분량, 조리법은 원본 영상에서 확인"
+  },
+  {
+    "id": "source-zBejSzHVTyo",
+    "group": 1,
+    "accompaniment": "밥은 별도로 준비해 주세요.",
+    "name": "돼지고기 김치찌개",
+    "family": "찌개",
+    "checkedAt": "2026-10-12",
+    "video": {
+      "id": "zBejSzHVTyo",
+      "title": "식당 이모님이 알려준 2가지 재료! 🥘김치찌개 쉽고 빠르고 맛있게",
+      "channel": "이 남자의 cook",
+      "url": "https://www.youtube.com/watch?v=zBejSzHVTyo",
+      "thumbnail": "https://i.ytimg.com/vi/zBejSzHVTyo/mqdefault.jpg"
+    },
+    "ingredients": [
+      {
+        "name": "신김치",
+        "label": "신김치"
+      },
+      {
+        "name": "돼지고기",
+        "label": "돼지고기"
+      },
+      {
+        "name": "두부",
+        "label": "두부"
+      },
+      {
+        "name": "사골육수",
+        "label": "사골육수"
+      }
+    ],
+    "steps": [],
+    "tips": [],
+    "servingLabel": "주요 재료 미리보기 · 전체 재료와 분량, 조리법은 원본 영상에서 확인"
+  },
+  {
+    "id": "source-2OM8ZJjEiG8",
+    "group": 1,
+    "accompaniment": "밥은 별도로 준비해 주세요.",
+    "name": "시골된장국",
+    "family": "국",
+    "checkedAt": "2026-10-12",
+    "video": {
+      "id": "2OM8ZJjEiG8",
+      "title": "시골된장국 이렇게 끓이면 인정받습니다",
+      "channel": "김대석 셰프TV",
+      "url": "https://www.youtube.com/watch?v=2OM8ZJjEiG8",
+      "thumbnail": "https://i.ytimg.com/vi/2OM8ZJjEiG8/mqdefault.jpg"
+    },
+    "ingredients": [
+      {
+        "name": "애호박",
+        "label": "애호박"
+      },
+      {
+        "name": "감자",
+        "label": "감자"
+      },
+      {
+        "name": "두부",
+        "label": "두부"
+      },
+      {
+        "name": "된장",
+        "label": "된장"
+      }
+    ],
+    "steps": [],
+    "tips": [],
+    "servingLabel": "주요 재료 미리보기 · 전체 재료와 분량, 조리법은 원본 영상에서 확인"
+  },
+  {
+    "id": "source-wa0UvD1fa_o",
+    "group": 2,
+    "accompaniment": "반찬·곁들임 메뉴예요. 밥이나 다른 메뉴와 함께 드세요.",
+    "name": "버섯 두부조림",
+    "family": "조림",
+    "checkedAt": "2026-10-12",
+    "video": {
+      "id": "wa0UvD1fa_o",
+      "title": "겉은 바삭~ 안은 푸딩 같은 버섯 두부 조림!! 두부가 이렇게 맛있어집니다.",
+      "channel": "쿠킹하루 Cooking Haru :)",
+      "url": "https://www.youtube.com/watch?v=wa0UvD1fa_o",
+      "thumbnail": "https://i.ytimg.com/vi/wa0UvD1fa_o/mqdefault.jpg"
+    },
+    "ingredients": [
+      {
+        "name": "두부",
+        "label": "두부"
+      },
+      {
+        "name": "양송이버섯",
+        "label": "양송이버섯"
+      },
+      {
+        "name": "간장",
+        "label": "간장"
+      },
+      {
+        "name": "굴소스",
+        "label": "굴소스"
+      }
+    ],
+    "steps": [],
+    "tips": [],
+    "servingLabel": "주요 재료 미리보기 · 전체 재료와 분량, 조리법은 원본 영상에서 확인"
+  },
+  {
+    "id": "source-_VleuIXseUM",
+    "group": 2,
+    "accompaniment": "반찬·곁들임 메뉴예요. 밥이나 다른 메뉴와 함께 드세요.",
+    "name": "감자채전",
+    "family": "전",
+    "checkedAt": "2026-10-12",
+    "video": {
+      "id": "_VleuIXseUM",
+      "title": "(재료 1개) 밀가루 없이!  감자 1개로 바삭바삭 맛있는 감자 요리 만들기 (감자채전, Potato Pancakes, Easy Potato Recipe)",
+      "channel": "식탁일기 table diary",
+      "url": "https://www.youtube.com/watch?v=_VleuIXseUM",
+      "thumbnail": "https://i.ytimg.com/vi/_VleuIXseUM/mqdefault.jpg"
+    },
+    "ingredients": [
+      {
+        "name": "감자",
+        "label": "감자"
+      },
+      {
+        "name": "소금",
+        "label": "소금"
+      }
+    ],
+    "steps": [],
+    "tips": [],
+    "servingLabel": "주요 재료 미리보기 · 전체 재료와 분량, 조리법은 원본 영상에서 확인"
+  }
+]

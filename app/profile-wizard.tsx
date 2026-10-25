@@ -1,5 +1,6 @@
 "use client";
 
+
 import { useEffect, useId, useRef } from "react";
 import {HealthSourcesNotice} from './health-sources-notice';
 import { activities, calorieEstimate, parseBodyProfile, profileYear, type BodyProfile } from "../lib/body-profile";
@@ -89,7 +90,6 @@ export function ProfileProgress({ fields, reviewed, saved, onOpen }: { fields: P
 }
 
 // 처음 입력할 땐 필수 4단계(기본 정보·키·체중·활동량·목표)만 거쳐 바로 결과로 — 식사·칼로리·못 먹는 재료는 나중에.
-const QUICK_SKIP = new Set([4, 5, 6]);
 
 export function ProfileWizardModal({ step, direction, fields, userId, saving, error, quick = false, onStep, onChange, onReviewed, onClose, onSave }: {
   step: number | null; direction: 1 | -1; fields: ProfileFields; userId?: string; saving: boolean; error: string; quick?: boolean;
@@ -128,9 +128,9 @@ export function ProfileWizardModal({ step, direction, fields, userId, saving, er
   const shown = target ?? plan?.target ?? null;
   const shownMeals = shown?.mealCalories ?? (shown ? splitCalories(shown.calories, mealCount) : []);
   const { diet } = fields;
-  const move = (from: number, delta: 1 | -1) => { let n = from + delta; while (quick && QUICK_SKIP.has(n)) n += delta; return n; };
+  const visibleSteps = quick ? [3, 0, 1, 2, 7] : steps.map((_, i) => i);
+  const move = (from: number, delta: 1 | -1) => visibleSteps[visibleSteps.indexOf(from) + delta];
   const next = () => { onReviewed(current); onStep(move(current, 1)); };
-  const visibleSteps = steps.map((_, i) => i).filter(i => !quick || !QUICK_SKIP.has(i));
 
   return <dialog ref={dialog} className="profile-wizard" aria-labelledby={titleId} onCancel={e => { e.preventDefault(); onClose(); }} onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
     {open && <div className="wizard-sheet">
@@ -225,7 +225,7 @@ export function ProfileWizardModal({ step, direction, fields, userId, saving, er
 
       {error && <p className="auth-error" role="alert">{error}</p>}
       <footer className="wizard-actions">
-        {current > 0 && <button type="button" className="wizard-back" onClick={() => onStep(move(current, -1))}>이전</button>}
+        {visibleSteps.indexOf(current) > 0 && <button type="button" className="wizard-back" onClick={() => onStep(move(current, -1))}>이전</button>}
         {current < steps.length - 1
           ? <button type="button" className="wizard-next" disabled={!ready} onClick={next}>{current === 6 && !diet.excluded.length ? "없어요, 다음" : "다음"}</button>
           : <button type="button" className="wizard-next" disabled={!ready || saving} onClick={onSave}>{saving ? "저장하는 중…" : userId ? "저장하고 완료" : "로그인하고 저장하기"}</button>}

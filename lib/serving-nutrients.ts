@@ -1,8 +1,11 @@
+import {officialMealMacros,officialMealNutrients} from './official-meal-nutrition';
 import type {PlanProduct} from './shopping-plan';
 export function nutritionIsEstimated(p:PlanProduct):boolean {
+  if(p.officialNutrition)return false;
   return Boolean(p.nutritionEstimate||p.nutritionBasis?.includes('추정 포함')||p.recipe?.ingredients.some(i=>nutritionIsEstimated(i.product)));
 }
 export function servingNutrients(p:PlanProduct):{calories:number|null;protein:number|null;carbs:number|null;fat:number|null;sodium:number|null} {
+  if(p.officialNutrition)return officialMealMacros(p.officialNutrition);
   if(p.recipe){
     const parts=p.recipe.ingredients.map(i=>({n:servingNutrients(i.product),factor:i.product.servings*i.packs}));
     const sum=(key:'carbs'|'fat'|'sodium')=>parts.length&&parts.every(i=>i.n[key]!==null)?Math.round(parts.reduce((s,i)=>s+i.n[key]!*i.factor,0)*1000)/1000:null;
@@ -25,6 +28,12 @@ export function servingNutrients(p:PlanProduct):{calories:number|null;protein:nu
 const RICE_COOKED_GRAMS=210;
 export function mealCalorieParts(p:PlanProduct){
   const total=servingNutrients(p).calories;
+  if(p.officialNutrition){
+    const part=(role:'main'|'rice'|'side')=>p.officialNutrition!.parts.filter(x=>x.role===role);
+    const kcal=(role:'main'|'rice'|'side')=>{const parts=part(role);const n=officialMealNutrients({parts}).find(x=>x.name==='에너지'&&x.unit==='kcal');return n&&n.known===n.total?n.value:null;};
+    const grams=(role:'main'|'rice'|'side')=>part(role).every(x=>x.amount?.unit==='g')?part(role).reduce((sum,x)=>sum+x.amount!.value,0):null;
+    return {total,dish:{kcal:kcal('main'),grams:grams('main')},rice:part('rice').length&&kcal('rice')!==null?{kcal:kcal('rice')!,grams:grams('rice')??0}:null,sides:part('side').length&&kcal('side')!==null?{kcal:kcal('side')!,names:part('side').map(x=>x.name)}:null};
+  }
   const kcalOf=(part:{product:PlanProduct;packs:number})=>(servingNutrients(part.product).calories??0)*part.packs*part.product.servings;
   const gramsOf=(part:{product:PlanProduct;packs:number})=>part.product.unit==='g'?part.packs*part.product.quantity*part.product.servings:0;
   if(!p.recipe||total===null)return {total,dish:{kcal:total,grams:null as number|null},rice:null,sides:null};

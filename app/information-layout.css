@@ -9,6 +9,10 @@
 .site-shell .information-detail>summary:focus-visible,.site-shell .today-alternatives a:focus-visible{outline:solid var(--focus);outline-offset:var(--space-1)}
 
 .site-shell .today-choice-heading h2{margin:0;font-size:var(--fs-xl);color:var(--text)}
+.site-shell .today-people-choice{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-2);margin-bottom:var(--space-4)}
+.site-shell .today-people-choice button{min-height:var(--touch);padding:var(--space-2);border:1px solid var(--border);border-radius:var(--radius-pill);background:var(--surface);color:var(--text-muted);font-size:var(--fs-md);font-weight:700;cursor:pointer}
+.site-shell .today-people-choice button[aria-pressed=true]{background:var(--primary-strong);border-color:var(--primary-strong);color:var(--surface)}
+.site-shell .today-people-choice button:focus-visible{outline:2px solid var(--focus);outline-offset:var(--space-1)}
 .site-shell .today-choice-heading p{margin:var(--space-2) 0 var(--space-4);font-size:var(--fs-sm);color:var(--text-subtle)}
 .site-shell .today-choice-tabs button{display:flex;align-items:center;justify-content:center;gap:var(--space-1);min-height:var(--touch);padding:var(--space-2);border:0;border-radius:var(--radius-sm);background:transparent;color:var(--text-muted);font-size:var(--fs-md);font-weight:700;cursor:pointer}
 .site-shell .today-choice-tabs button[aria-selected=true]{background:var(--primary-strong);color:var(--surface);box-shadow:var(--shadow-sm)}

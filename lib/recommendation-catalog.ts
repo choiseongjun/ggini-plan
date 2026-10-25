@@ -1,3 +1,4 @@
+import {withKfindNutrition} from './kfind-plan-products';
 import {gzipSync,gunzipSync} from 'node:zlib';
 import {getPool} from './db';
 import {listRecipeOptimizerResults} from './recipe-optimizer-store';
@@ -7,23 +8,32 @@ import {applyPairings} from './meal-pairings';
 import {slimRecipe} from './shopping-plan-catalog';
 import {reviewedRecipeImages} from './reviewed-recipe-images';
 import type {PlanProduct} from './shopping-plan';
+import type {DetailedNutritionData} from './detailed-nutrition';
 
 export const RECOMMENDATION_CATALOG_TAG='recommendation-catalog-v1';
 
 // Preserve every scoring/price/ingredient field. Only display data is loaded later.
 export async function buildRecommendationCatalog():Promise<PlanProduct[]>{
  const [results,relations]=await Promise.all([listRecipeOptimizerResults(true),listPairings()]);
- return applyPairings(recipeProductsFromResults(results),recipeProductsFromResults(results,'side'),relations).map(slimRecipe);
+ const official=await withKfindNutrition(recipeProductsFromResults(results),recipeProductsFromResults(results,'side'));
+ return applyPairings(official.mains,official.sides,relations).map(slimRecipe);
 }
 
 // Compression preserves exact values and keeps the Data Cache entry below its size limit.
 export function encodeRecommendationCatalog(products:PlanProduct[]){
- const encoded=gzipSync(JSON.stringify(products)).toString('base64');
+ const references:Record<string,DetailedNutritionData>={};
+ const compact=products.map(p=>p.officialNutrition?{...p,officialNutrition:{parts:p.officialNutrition.parts.map(part=>{
+  if(part.reference)references[part.code]=part.reference;
+  return {...part,reference:part.reference?part.code:null};
+ })}}:p);
+ const encoded=gzipSync(JSON.stringify({products:compact,references})).toString('base64');
  if(Buffer.byteLength(encoded)>1_900_000)throw new Error('Recommendation catalog exceeds cache entry limit');
  return encoded;
 }
 export function decodeRecommendationCatalog(encoded:string):PlanProduct[]{
- return JSON.parse(gunzipSync(Buffer.from(encoded,'base64')).toString('utf8'));
+ const data=JSON.parse(gunzipSync(Buffer.from(encoded,'base64')).toString('utf8'));
+ if(Array.isArray(data))return data;
+ return (data.products as PlanProduct[]).map(p=>p.officialNutrition?{...p,officialNutrition:{parts:p.officialNutrition.parts.map(part=>({...part,reference:typeof part.reference==='string'?data.references[part.reference]??null:part.reference}))}}:p);
 }
 
 type Detail={food_code:string;image_url:string|null;image_urls:string[]|null;note:string|null};

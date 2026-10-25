@@ -83,7 +83,7 @@ export function googleIdentity(payload: TokenPayload | undefined, expectedNonce:
   };
 }
 
-export async function googleUser(identity: ReturnType<typeof googleIdentity>, consent?: unknown, provider: 'google' | 'apple' = 'google'): Promise<PublicUser> {
+export async function googleUser(identity: ReturnType<typeof googleIdentity>, consent?: unknown, provider: 'google' | 'apple' | 'kakao' = 'google'): Promise<PublicUser> {
   const db = await getPool().connect();
   const findAccount = () => db.query<PublicUser>(
     `SELECT u.id::text AS id, u.name, u.email FROM users u

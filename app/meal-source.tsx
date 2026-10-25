@@ -26,7 +26,8 @@ export function RecipeProductPreview({product,videos=true}:{product:PlanProduct;
  const groups=new Map<string,number>();
  for(const i of product.recipe.ingredients){if(!i.group)continue;groups.set(i.group,(groups.get(i.group)??0)+i.product.price*i.packs);}
  return <div className="meal-source-ingredients" aria-label="요리에 쓰는 실제 재료 상품">
-  <p>{product.recipe.assembly?'이 상품들을 함께 먹어요':'이 재료로 만들어요'} <span>1인분 · 쓰는 양 기준 가격</span></p>
+  <p>{product.officialNutrition?'참고용 조리 재료':product.recipe.assembly?'이 상품들을 함께 먹어요':'이 재료로 만들어요'} <span>1인분 · 쓰는 양 기준 가격</span></p>
+  {product.officialNutrition&&<small className="ingredient-cost-note">아래는 AI가 구성한 참고 재료·예상 가격이에요. 영양정보는 이 재료 합산이 아닌 K-FCDB 음식별 기준량으로 계산해요.</small>}
   {/* 재료마다 쓰는 양과 그만큼의 예상 가격. 통째로 산 포장값이 아니라 g당 가격 × 사용량이에요. */}
   <ul className="ingredient-cost-list">{ungrouped.map(({product:p,label,packs},i)=>{
    const name=label.replace(/\s*\(기본 양념\)$/,'');const pantry=p.price===0;

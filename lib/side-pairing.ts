@@ -1,3 +1,4 @@
+import {officialMealComplete} from './official-meal-nutrition';
 import type {PlanProduct} from './shopping-plan';
 
 // 메인 요리에 어울리는 밑반찬 고르기. 각 메뉴의 특징(맛·조리법·무게감·주재료·채소량)은 AI로 한 번 판정해 둔
@@ -55,7 +56,7 @@ export function pickSides(main: PlanProduct, sides: PlanProduct[], traits: Recor
  if (!mt || fit === 'none') return [];
  // 한 그릇·면 요리엔 김치류만(깍두기·단무지·배추김치…) 한두 가지.
  if (fit === 'kimchi') { sides = sides.filter((s) => ['김치', '장아찌'].includes(traits[s.id]?.method ?? '')); count = Math.min(count, 2); }
- const scored = sides.flatMap((s) => { const st = traits[s.id]; if (!st || exclude(s)) return []; const r = score(mt, st); return [{product: s, st, ...r, jitter: Math.random() * 22}]; })
+ const scored = sides.flatMap((s) => { const st = traits[s.id]; if ((s.officialNutrition&&!officialMealComplete(s.officialNutrition)) || !st || exclude(s)) return []; const r = score(mt, st); return [{product: s, st, ...r, jitter: Math.random() * 22}]; })
   .sort((a, b) => (b.score + b.jitter) - (a.score + a.jitter));
  const picked: typeof scored = [];
  for (const c of scored) {

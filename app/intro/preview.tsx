@@ -4,7 +4,7 @@ import {useState} from 'react';
 import {trackAnalytics} from '../../lib/analytics';
 
 export function IntroStart({small=false}:{small?:boolean}){
- return <Link className={`intro-start${small?' is-small':''}`} href="/" onClick={()=>trackAnalytics('landing_cta_clicked')}>{small?'시작하기':'무료로 식단 추천받기'} <span aria-hidden="true">↗</span></Link>;
+ return <Link className={`intro-start${small?' is-small':''}`} href="/" onClick={()=>trackAnalytics('landing_cta_clicked')}>{small?'시작하기':'첫 한 끼 기록하기'} <span aria-hidden="true">↗</span></Link>;
 }
 const choices=[{name:'두부조림',reason:'같은 두부, 다른 조리법',icon:'🍲'},{name:'달걀찜',reason:'부담 없이 간편하게',icon:'🥚'},{name:'닭고기 채소볶음',reason:'다른 재료로 바꿔보기',icon:'🥦'}];
 export function IntroDemo(){

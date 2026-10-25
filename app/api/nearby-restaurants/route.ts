@@ -12,7 +12,7 @@ export async function POST(request:NextRequest){
  const key=process.env.KAKAO_REST_API_KEY?.trim();
  if(!key)return json({error:'주변 식당 검색을 준비 중이에요. 잠시 후 다시 이용해 주세요.'},503);
  try{
-  const keywords=restaurantKeywords(input.menu);
+  const keywords=restaurantKeywords(input.menu,input.category);
   const urls=[...keywords.map(keyword=>`https://dapi.kakao.com/v2/local/search/keyword.json?${restaurantSearchParams({...input,menu:keyword})}`),...[1,2,3].map(page=>surroundingRestaurantsUrl(input,page))];
   const searches=await Promise.allSettled(urls.map(async url=>{
    const response=await fetch(url,{headers:{Authorization:`KakaoAK ${key}`},cache:'no-store',signal:AbortSignal.timeout(10000)});

@@ -12,10 +12,9 @@ export async function GET(request: NextRequest) {
   if (params.get('recent') === '1') {
    const user = await sessionUser(request);
    if (!user) return json({items: []});
-   const {rows} = await getPool().query<{product_id: string}>(
-    `SELECT product_id FROM food_intake_logs WHERE user_id=$1 AND undone_at IS NULL AND product_id LIKE $2
-     GROUP BY product_id ORDER BY max(COALESCE(eaten_at,created_at)) DESC LIMIT 8`, [user.id, `${REFERENCE_PREFIX}%`]);
-   return json({items: await foodReferencesByCodes(rows.map((r) => r.product_id.slice(REFERENCE_PREFIX.length)))});
+   const {rows} = await getPool().query<{product_id: string;portions:number}>(
+    `SELECT product_id,portions FROM (SELECT DISTINCT ON (product_id) product_id,portions::float8,COALESCE(eaten_at,created_at) AS occurred FROM food_intake_logs WHERE user_id=$1 AND undone_at IS NULL AND product_id LIKE $2 ORDER BY product_id,COALESCE(eaten_at,created_at) DESC,created_at DESC,id DESC) recent ORDER BY occurred DESC LIMIT 8`, [user.id, `${REFERENCE_PREFIX}%`]);
+   return json({items: await foodReferencesByCodes(rows.map((r) => r.product_id.slice(REFERENCE_PREFIX.length))),portions:Object.fromEntries(rows.map(r=>[r.product_id.slice(REFERENCE_PREFIX.length),r.portions]))});
   }
   // ?code=... → 칼로리 페이지에서 '먹었어요'로 들어온 음식 한 개.
   const code = params.get('code');

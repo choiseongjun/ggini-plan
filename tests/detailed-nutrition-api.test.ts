@@ -13,6 +13,7 @@ test('detail API validates codes and preserves empty, successful, and unavailabl
  const query = t.mock.method(pool, 'query', async () => {
   if (mode === 'error') throw new Error('private database connection information');
   return {rows: mode === 'empty' ? [] : [{
+   food_code:'P-test',
    raw_record: {'식품명': '검증 음식', '영양성분함량기준량': '100mL', '당류(g)': '0', '칼슘(mg)': '12.5'},
    headers: ['당류(g)', '칼슘(mg)'], file_name: 'source.xlsx', source_date: '2026-09-29',
   }]};
@@ -26,7 +27,7 @@ test('detail API validates codes and preserves empty, successful, and unavailabl
   assert.deepEqual(item.basis, {value: 100, unit: 'mL'});
   assert.equal(item.nutrients[0].value, 0);
   assert.equal(item.nutrients[1].value, 12.5);
-  assert.deepEqual(query.mock.calls[0].arguments[1], ['P-test']);
+  assert.deepEqual(query.mock.calls[0].arguments[1], [['P-test']]);
   mode = 'empty';
   assert.deepEqual(await (await GET(request())).json(), {item: null});
   mode = 'error';

@@ -1,4 +1,5 @@
 'use client';
+
 import {useEffect,useRef,useState} from 'react';
 import Link from 'next/link';
 import {pantryToday} from '../lib/pantry-inventory';
@@ -6,7 +7,7 @@ import type {WellnessAction} from '../lib/wellness-input';
 import './wellness-tracker.css';
 type Settings={waterEnabled:boolean;weightEnabled:boolean;cupMl:number;goalMl:number|null;version:number};
 type Data={date:string;settings:Settings;water:{id:string;ml:number}[];weights:{day:string;kg:number}[]};
-export function WellnessTracker({userId,date=pantryToday(),settingsOnly=false,onLogin}:{userId?:string;date?:string;settingsOnly?:boolean;onLogin:()=>void}){
+export function WellnessTracker({userId,date=pantryToday(),settingsOnly=false,waterOnly=false,onLogin}:{userId?:string;date?:string;settingsOnly?:boolean;waterOnly?:boolean;onLogin:()=>void}){
  const [result,setResult]=useState<{key:string;data:Data}|null>(null),[error,setError]=useState(''),[busy,setBusy]=useState(false),[revision,setRevision]=useState(0);
  const key=`${userId}:${date}`,data=result?.key===key?result.data:null;
  const [hasPending,setHasPending]=useState(false);
@@ -26,11 +27,12 @@ export function WellnessTracker({userId,date=pantryToday(),settingsOnly=false,on
  return <section className="wellness" aria-label={settingsOnly?'기록 항목 설정':'물과 체중 기록'}>
  {error&&<p role="alert">{error} {hasPending?<button type="button" disabled={busy} onClick={()=>void send()}>같은 요청 다시 확인</button>:<button type="button" onClick={()=>setRevision(v=>v+1)}>다시 불러오기</button>}</p>}
  {!data?!error&&<p role="status">기록을 불러오고 있어요…</p>:settingsOnly?<WellnessSettings key={data.settings.version} settings={data.settings} disabled={disabled} onSave={a=>void send(a)}/>:<>
- <header><h3>하루 건강 기록</h3><Link href="/profile#wellness-settings">표시 설정</Link></header><p className="wellness-date">{date} 기준</p>
+ <header><h3>{waterOnly?'오늘 마신 물':'하루 건강 기록'}</h3><Link href="/profile#wellness-settings">목표·표시 설정</Link></header><p className="wellness-date">{date} · 직접 기록한 양 기준</p>
  {!data.settings.waterEnabled&&!data.settings.weightEnabled&&<p>표시 설정에서 물·체중 기록을 켤 수 있어요.</p>}
- {data.settings.waterEnabled&&<article><h4>물 섭취</h4><strong className="wellness-value">{data.water.reduce((sum,w)=>sum+w.ml,0).toLocaleString()} <small>ml</small></strong>{data.settings.goalMl!==null&&<><p>내가 정한 목표 {data.settings.goalMl.toLocaleString()} ml</p><progress aria-label="물 섭취 목표 진행" max={data.settings.goalMl} value={Math.min(data.settings.goalMl,data.water.reduce((sum,w)=>sum+w.ml,0))}/></>}
+ {waterOnly&&!data.settings.waterEnabled&&<p>표시 설정에서 물 섭취 기록을 켜 주세요.</p>}
+ {data.settings.waterEnabled&&<article><h4>물 섭취</h4><strong className="wellness-value">{(data.water.reduce((sum,w)=>sum+w.ml,0)/1000).toLocaleString('ko-KR',{maximumFractionDigits:2})} <small>L</small></strong><p>{data.water.reduce((sum,w)=>sum+w.ml,0).toLocaleString()} ml 기록</p>{data.settings.goalMl!==null&&<><p>내가 정한 목표 {(data.settings.goalMl/1000).toLocaleString()} L</p><progress aria-label="물 섭취 목표 진행" max={data.settings.goalMl} value={Math.min(data.settings.goalMl,data.water.reduce((sum,w)=>sum+w.ml,0))}/></>}
  <WaterAmountPicker defaultMl={data.settings.cupMl} disabled={disabled} onAdd={ml=>void send({action:'water',ml})}/><div className="wellness-actions"><button type="button" disabled={disabled||!data.water.length} onClick={()=>{const last=data.water.at(-1);if(last)void send({action:'undoWater',id:last.id});}}>마지막 추가 취소</button></div></article>}
- {data.settings.weightEnabled&&<WeightCard key={`${date}:${data.settings.version}`} data={data} disabled={disabled} onSave={kg=>void send({action:'weight',kg})}/>}
+ {!waterOnly&&data.settings.weightEnabled&&<WeightCard key={`${date}:${data.settings.version}`} data={data} disabled={disabled} onSave={kg=>void send({action:'weight',kg})}/>}
  </>}
  </section>;
 }

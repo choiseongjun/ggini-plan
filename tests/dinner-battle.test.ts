@@ -1,0 +1,70 @@
+import assert from 'node:assert/strict';
+import {test} from 'node:test';
+import {randomUUID} from 'node:crypto';
+import {readFileSync} from 'node:fs';
+import {Pool} from 'pg';
+import sharp from 'sharp';
+import {NextRequest} from 'next/server';
+import {parseBattleMenus,battleResult} from '../lib/dinner-battle';
+import {GET as bootstrap,POST as create} from '../app/api/dinner-battles/route';
+import {GET,POST} from '../app/api/dinner-battles/[id]/route';
+import {GET as photoGet} from '../app/api/dinner-battles/[id]/photo/route';
+
+test('menu validation and tie/zero results',()=>{
+ assert.equal(parseBattleMenus({menuA:' 제육 ',menuB:'제육'}),null);
+ assert.equal(parseBattleMenus({menuA:'a'.repeat(41),menuB:'밥'}),null);
+ assert.equal(parseBattleMenus(null),null);
+ assert.deepEqual(parseBattleMenus({menuA:' 제육  볶음 ',menuB:'돈까스'}),['제육 볶음','돈까스']);
+ assert.match(battleResult([0,0]),/첫 표/);assert.match(battleResult([1,1]),/동점/);
+});
+test('isolated database: guest votes, concurrent duplicates, ownership, photo, expiry and deletion',{skip:!process.env.DATABASE_URL},async()=>{
+ const schema='battle_test_'+randomUUID().replaceAll('-','');
+ const admin=new Pool({connectionString:process.env.DATABASE_URL,max:1});
+ const pool=new Pool({connectionString:process.env.DATABASE_URL,max:3});
+ pool.on('connect',client=>{void client.query(`SET search_path TO "${schema}"`);});
+ const globalDb=globalThis as typeof globalThis&{kkiniplanPool?:Pool;kkiniplanDatabaseUrl?:string};
+ globalDb.kkiniplanPool=pool;globalDb.kkiniplanDatabaseUrl=process.env.DATABASE_URL;
+ const req=(cookie='',body?:unknown,origin='http://localhost:3000')=>new NextRequest('http://localhost:3000/api/dinner-battles',{method:body===undefined?'GET':'POST',headers:{cookie,origin,'Content-Type':'application/json'},...(body===undefined?{}:{body:JSON.stringify(body)})});
+ try{
+  await admin.query(`CREATE SCHEMA "${schema}"`);
+  await pool.query(readFileSync('db/dinner-battles.sql','utf8'));
+  const owner=(await bootstrap(req())).cookies.get('ggini_battle_guest')!.value;
+  const stranger=(await bootstrap(req())).cookies.get('ggini_battle_guest')!.value;
+  const c=`ggini_battle_guest=${owner}`,s=`ggini_battle_guest=${stranger}`;
+  assert.equal((await create(req(c,{menuA:'제육',menuB:'돈까스'},'https://evil.example'))).status,403);
+  assert.equal((await create(req(c,{menuA:'제육',menuB:'제육'}))).status,400);
+  const made=await create(req(c,{menuA:'제육',menuB:'돈까스'}));assert.equal(made.status,201);
+  const {id}=await made.json();const context={params:Promise.resolve({id})};
+  assert.equal((await (await GET(req(c),context)).json()).mine,true);
+  const publicView=await (await GET(req(s),context)).json();assert.equal(publicView.mine,false);assert.equal(publicView.owner_hash,undefined);
+  const parallel=await Promise.all(Array.from({length:6},()=>POST(req(s,{action:'vote',choice:0}),context)));
+  parallel.forEach(res=>assert.equal(res.status,200));
+  assert.deepEqual((await (await GET(req(s),context)).json()).votes,[1,0]);
+  await POST(req(s,{action:'vote',choice:1}),context);
+  assert.deepEqual((await (await GET(req(s),context)).json()).votes,[0,1]);
+  assert.equal((await POST(req(s,{action:'close'}),context)).status,403);
+  assert.equal((await POST(req(s,{action:'delete'}),context)).status,403);
+  assert.equal((await POST(req(c,{action:'vote',choice:8}),context)).status,400);
+  const bytes=await sharp({create:{width:16,height:16,channels:3,background:'#526c47'}}).png().toBuffer();
+  const form=new FormData();form.set('choice','1');form.set('caption','친구들이 골라준 한 끼');form.set('photo',new File([new Uint8Array(bytes)],'meal.png',{type:'image/png'}));
+  const upload=(cookie:string)=>new NextRequest('http://localhost:3000/api/dinner-battles/'+id,{method:'POST',headers:{cookie,origin:'http://localhost:3000'},body:form});
+  assert.equal((await POST(upload(s),context)).status,403);
+  assert.equal((await POST(upload(c),context)).status,200);
+  const finished=await (await GET(req(c),context)).json();assert.equal(finished.closed,true);assert.equal(finished.hasPhoto,true);assert.equal(finished.eatenChoice,1);
+  assert.equal((await POST(req(s,{action:'vote',choice:0}),context)).status,409);
+  assert.equal((await photoGet(req(),context)).headers.get('Content-Type'),'image/jpeg');
+  const expiredId=(await (await create(req(c,{menuA:'김치찌개',menuB:'된장찌개'}))).json()).id;
+  await pool.query("UPDATE dinner_battles SET expires_at=NOW()-INTERVAL '1 minute' WHERE id=$1",[expiredId]);
+  assert.equal((await POST(req(s,{action:'vote',choice:0}),{params:Promise.resolve({id:expiredId})})).status,409);
+  for(let i=0;i<3;i++)assert.equal((await create(req(c,{menuA:'밥',menuB:'국'}))).status,201);
+  assert.equal((await create(req(c,{menuA:'밥',menuB:'국'}))).status,429);
+  assert.equal((await POST(req(c,{action:'delete'}),context)).status,200);
+  assert.equal((await GET(req(c),context)).status,404);
+  assert.equal((await photoGet(req(),context)).status,404);
+  assert.equal((await pool.query('SELECT COUNT(*)::int AS n FROM dinner_battle_votes WHERE battle_id=$1',[id])).rows[0].n,0);
+ }finally{
+  await pool.end();
+  await admin.query(`DROP SCHEMA IF EXISTS "${schema}" CASCADE`);
+  await admin.end();delete globalDb.kkiniplanPool;
+ }
+});

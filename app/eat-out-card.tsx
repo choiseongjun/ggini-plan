@@ -138,7 +138,7 @@ export function EatOutCard({userId, onLogin, inline=false,showRecording=true}: {
        </div>
       </div>
       {o.reasons.length > 0 && <ul className="eo-reasons">{o.reasons.map((r) => <li key={r}>{r}</li>)}</ul>}
-      <NearbyRestaurants menu={o.name}/>
+      <NearbyRestaurants key={o.code} menu={o.name} category={o.category}/>
       {showRecording&&<button type="button" className="eo-eat" disabled={busy || logged === o.code} onClick={() => void eat(o)}>{logged === o.code ? '기록했어요' : userId ? '먹었어요' : '로그인하고 기록하기'}</button>}
      </li>)}</ul>}
      {result && tab === 'suggest' && <button type="button" className="eo-again" disabled={busy} onClick={() => suggest()}>다른 메뉴 보기</button>}

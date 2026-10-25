@@ -7,9 +7,11 @@ import { POST as start } from "../app/api/auth/google/route";
 import { GET as callback } from "../app/api/auth/google/callback/route";
 import { POST as passwordLogin } from "../app/api/auth/login/route";
 import { getPool } from "../lib/db";
-import { sessionUser, SESSION_COOKIE } from "../lib/auth";
+import { sessionUser, SESSION_COOKIE,createSession } from "../lib/auth";
 import { beginGoogleLogin, consumeGoogleAttempt, googleIdentity, googleUser, GOOGLE_STATE_COOKIE } from "../lib/google-auth";
 import { MEMBER_POLICY_VERSION } from '../lib/member-policy';
+import {POST as authorizeMobile} from '../app/api/auth/mobile/authorize/route';
+import {POST as exchangeMobile} from '../app/api/auth/mobile/exchange/route';
 const consent = { terms: true, privacy: true, age14: true, version: MEMBER_POLICY_VERSION };
 
 const prefix = `google-test-${randomBytes(8).toString("hex")}`;
@@ -136,5 +138,17 @@ test("Google OAuth local integration (Google exchange and verification are mocke
     assert.match(response.headers.get("location")!, /auth_error=google_cancelled$/);
     assert.equal(response.cookies.get(SESSION_COOKIE), undefined);
     assert.equal(response.cookies.get(GOOGLE_STATE_COOKIE)?.maxAge, 0);
+  });
+
+  await t.test('authenticated browser session exchanges mobile code only with original verifier',async()=>{
+    const verifier=randomBytes(32).toString('hex'),challenge=createHash('sha256').update(verifier).digest('hex');
+      const response=await createSession(await googleUser(googleIdentity(claims(emails[2],'mobile'),'mobile'),consent));
+      const session=response.cookies.get(SESSION_COOKIE)!;assert.ok(session);
+      const authorized=await authorizeMobile(new NextRequest(`${origin}/api/auth/mobile/authorize`,{method:'POST',headers:{origin,Cookie:`${SESSION_COOKIE}=${session.value}`,'Content-Type':'application/json'},body:JSON.stringify({challenge})}));
+      assert.equal(authorized.status,200);const code=new URL((await authorized.json()).redirect).searchParams.get('code');
+      const exchange=(value:string)=>exchangeMobile(new NextRequest(`${origin}/api/auth/mobile/exchange`,{method:'POST',headers:{origin,'Content-Type':'application/json'},body:JSON.stringify({code,verifier:value})}));
+      assert.equal((await exchange(randomBytes(32).toString('hex'))).status,401);
+      const success=await exchange(verifier);assert.equal(success.status,200);assert.ok(success.cookies.get(SESSION_COOKIE)?.httpOnly);
+      assert.equal((await exchange(verifier)).status,401);
   });
 });

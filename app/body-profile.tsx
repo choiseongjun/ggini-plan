@@ -1,4 +1,5 @@
 "use client";
+
 import {ProfileCalorieHistory} from './profile-calorie-history';
 import {HealthSourcesNotice} from './health-sources-notice';
 
@@ -21,6 +22,7 @@ import {WeeklyFeedbackCard} from "./weekly-feedback-card";
 import { RecordCard, WeeklyReportCard, useIntakeStats } from "./record-progress";
 import { mealLabels, ProfileProgress, ProfileWizardModal, readFields, sectionStatus, splitCalories, type CustomTarget, type ProfileFields, type WizardResult } from "./profile-wizard";
 import { bodyGoals, nutritionPlan, type BodyGoal } from "../lib/nutrition-plan";
+import { isHealthGoal } from '../lib/health-goal';
 
 const draftKey = "profile-wizard-draft";
 
@@ -56,10 +58,10 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
     const followLink = () => {
       const id = window.location.hash.slice(1);
       if (id === 'profile-settings') {
-        setDirection(1); setError(''); setQuickWizard(true); setWizardStep(0);
+        setDirection(1); setError(''); setQuickWizard(true); setWizardStep(3);
         return;
       }
-      if (id === 'weekly-feedback' || id === 'weekly-report' || id === 'meal-reminders' || id === 'buddy-companion') {
+      if (id === 'weekly-feedback' || id === 'weekly-report' || id === 'meal-reminders' || id === 'buddy-companion' || id === 'wellness-settings') {
         const target=document.getElementById(id);
         for(let parent=target?.parentElement;parent;parent=parent.parentElement){
           if(parent instanceof HTMLDetailsElement)parent.open=true;
@@ -118,7 +120,7 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
   function focusProfile() {
     const missing = sectionStatus(fields, reviewed, savedProfile).done.findIndex(d => !d);
     // 아직 정보가 없으면 필수 단계만 빠르게.
-    openWizard(missing === -1 ? 0 : missing, !savedProfile);
+    openWizard(!savedProfile ? 3 : missing === -1 ? 3 : missing, !savedProfile);
   }
   const calories = profile ? calorieEstimate(profile) : null;
   const hasInfo = savedProfile || Boolean(profile);
@@ -132,9 +134,11 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
     Promise.all([
       fetch("/api/profile", { cache: "no-store", signal: controller.signal }),
       fetch("/api/meal-plans", { cache: "no-store", signal: controller.signal }),
-    ]).then(async ([response, plansResponse]) => {
+      fetch("/api/health-goal", { cache: "no-store", signal: controller.signal }),
+    ]).then(async ([response, plansResponse, goalResponse]) => {
       const data = await response.json() as { profile?: BodyProfile; diet?: DietPreferences; nutritionTarget?: NutritionTarget | null; error?: string };
       const history = await plansResponse.json();
+      const savedGoal = goalResponse.ok ? (await goalResponse.json()).goal : null;
       if (!response.ok) throw new Error(data.error);
       if (!plansResponse.ok) throw new Error(history.error);
       if (controller.signal.aborted) return;
@@ -163,12 +167,19 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
         if (match) setGoal(match);
         else if (saved) setCustom({ mealCalories: data.nutritionTarget.mealCalories ?? splitCalories(data.nutritionTarget.calories, saved.meals), proteinRatio: data.nutritionTarget.proteinRatio, fatRatio: data.nutritionTarget.fatRatio });
       }
+      if (isHealthGoal(savedGoal)) setGoal(savedGoal);
     }).catch(error => {
       if (controller.signal.aborted) return;
       setError(error instanceof Error ? error.message : "정보를 불러오지 못했어요."); setLoadError(true);
     }).finally(() => { if (!controller.signal.aborted) setLoading(false); });
     return () => controller.abort();
   }, [userId]); // eslint-disable-line react-hooks/exhaustive-deps -- completeWizard only replays a guest draft once per login
+
+  useEffect(() => {
+    const changed = (event: Event) => { const value = (event as CustomEvent).detail; if (isHealthGoal(value)) setGoal(value); };
+    window.addEventListener('health-goal-changed', changed);
+    return () => window.removeEventListener('health-goal-changed', changed);
+  }, []);
 
   async function generate(nextVariant: number) {
     if (saving) return;
@@ -212,6 +223,13 @@ export function BodyProfilePanel({ userId, onLogin, onSaved }: { userId?: string
     if(!userId){
       try{sessionStorage.setItem(draftKey,JSON.stringify(result));}catch{}
       setWizardStep(null);onLogin();return false;
+    }
+    if(g){
+      try {
+        const response=await fetch('/api/health-goal',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({goal:g})});
+        if(!response.ok)throw new Error();
+        window.dispatchEvent(new CustomEvent('health-goal-changed',{detail:g}));
+      }catch{setError('모드를 저장하지 못했어요. 다시 시도해 주세요.');return false;}
     }
     // Home recommendations rank by this goal; failure here shouldn't block the profile save.
     if(g)await fetch('/api/shopping-plan',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({goal:g})}).catch(()=>{});

@@ -1,0 +1,29 @@
+.health-mode{padding:var(--space-4);margin-bottom:var(--space-4);background:var(--surface-soft);border:1px solid var(--border);border-radius:var(--radius-lg);color:var(--text)}
+.health-mode-current{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3)}
+.health-mode-current div{display:grid;gap:var(--space-1)}
+.health-mode small,.health-mode p{color:var(--text-muted);font-size:var(--fs-sm)}
+.health-mode-current strong{font-size:var(--fs-lg)}
+.health-mode button{min-height:var(--touch);font:inherit;cursor:pointer}
+.health-mode-current button{border:1px solid var(--primary-line);background:var(--surface);border-radius:var(--radius-pill);padding:var(--space-2) var(--space-4);color:var(--primary)}
+.health-mode a{font-size:var(--fs-sm);color:var(--primary);display:inline-flex;align-items:center;min-height:var(--touch)}
+.health-mode-dialog{padding:0;width:min(100% - var(--space-5),30rem);max-height:90dvh;margin:auto;border:0;border-radius:var(--radius-lg);background:var(--surface);color:var(--text);box-shadow:var(--shadow-md)}
+.health-mode-dialog::backdrop{background:var(--taste-scrim)}
+.health-mode-sheet{padding:var(--space-5);display:grid;gap:var(--space-4)}
+.health-mode-sheet h2{font-size:var(--fs-2xl);line-height:1.4;margin:0}
+.health-mode-sheet p{margin:0;line-height:1.6}
+.health-mode-options{display:grid;gap:var(--space-3)}
+.health-mode-options button{display:flex;align-items:center;gap:var(--space-3);text-align:left;padding:var(--space-4);border:1px solid var(--border);border-radius:var(--radius-md);background:var(--surface);color:var(--text)}
+.health-mode-options button[aria-pressed=true]{background:var(--primary-soft);border-color:var(--primary);box-shadow:inset 0 0 0 1px var(--primary)}
+.health-mode-options button>svg{width:var(--space-5);height:var(--space-5);flex-shrink:0}
+.health-mode-options button>span:first-of-type{display:grid;gap:var(--space-2);flex:1}
+.health-mode-options strong{font-size:var(--fs-lg)}
+.health-mode-options small{line-height:1.5}
+.health-mode-save{border:0;border-radius:var(--radius-md);background:var(--primary);color:var(--surface);padding:var(--space-4);font-weight:700!important}
+.health-mode button:disabled{opacity:.55;cursor:default}
+.health-mode-later{border:0;background:transparent;color:var(--text-muted)}
+.health-mode button:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.health-mode-compact{padding:0;margin:0;background:none;border:0}
+.health-mode-compact .health-mode-current div{display:flex;align-items:center;gap:var(--space-2)}
+.health-mode-compact .health-mode-current small{display:none}
+.health-mode-compact .health-mode-current strong{font-size:var(--fs-sm);background:var(--primary-soft);padding:var(--space-2) var(--space-3);border-radius:var(--radius-pill)}
+.health-mode-compact .health-mode-current button{border:0;background:none;font-size:var(--fs-sm)}

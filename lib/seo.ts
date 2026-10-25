@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 export const siteUrl = new URL(process.env.SITE_URL || "https://gginiplan.kr").origin;
 export function socialImage(market: "ko" | "tw" = "ko") {
   return {
-    url: `${siteUrl}/og/meal-plan-${market}-v1.png`,
+    url: `${siteUrl}/og/${market==='ko'?'meal-record-ko-v2.png':'meal-plan-tw-v1.png'}`,
     width: 1200, height: 630, type: "image/png",
-    alt: market === "tw" ? "GginiPlan 台灣 — 照顧每餐，也照顧你的預算。" : "끼니플랜 — 내 식사에서 건강을 찾다.",
+    alt: market === "tw" ? "GginiPlan 台灣 — 照顧每餐，也照顧你的預算。" : "끼니플랜 — 사진으로 남기는 식사·영양 기록. 한 끼를 기록하고, 오늘의 나를 챙겨요.",
   };
 }
 // Production defaults to searchable after launch. Keep preview and local builds out.

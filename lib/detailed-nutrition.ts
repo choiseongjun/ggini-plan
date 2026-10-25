@@ -2,6 +2,7 @@ export type NutritionAmount = {value: number; unit: 'g' | 'mL'};
 export type DetailedNutrient = {key: string; name: string; unit: string; value: number | null; text: string; group: string};
 export type DetailedNutritionData = {
  code: string; name: string; basisText: string; basis: NutritionAmount | null;
+ serving?: NutritionAmount | null;
  source: string; sourceDate: string | null; fileName: string;
  nutrients: DetailedNutrient[];
 };

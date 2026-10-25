@@ -35,6 +35,7 @@
 
  /* 터치 */
  --touch:44px;   /* 손가락으로 누르는 모든 요소의 최소 크기 */
+ --diary-thumbnail:88px;--diary-photo-width:48rem;
  /* 문서형 페이지 */
  --document-width:76rem;--document-nav-width:15rem;--document-reading-width:48rem;
 }

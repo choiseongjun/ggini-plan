@@ -12,6 +12,8 @@
     "foodsafety:import-dishes": "node --env-file=.env.local scripts/import-foodsafety-dishes.mjs",
     "foodsafety:import-raw": "node --env-file=.env.local scripts/import-foodsafety-raw.mjs",
     "foodsafety:import-bulk-api": "node --env-file=.env.local scripts/import-foodsafety-bulk-api.mjs",
+    "foodsafety:validate-kfind": "node scripts/import-kfind.mjs",
+    "foodsafety:import-kfind": "node --env-file=.env.local scripts/import-kfind.mjs --apply",
     "recipes:generate-similar": "node --env-file=.env.local --import tsx scripts/generate-similar-recipes.mjs",
     "recipes:import-images": "node --env-file=.env.local --import tsx scripts/import-recipe-images.mjs",
     "recipes:synthesize-ai-ingredients": "node --env-file=.env.local --import tsx scripts/synthesize-ai-ingredients.mjs",
@@ -31,12 +33,9 @@
     "db:catalog": "node --env-file=.env.local scripts/seed-verified-catalog.mjs",
     "test:dashboard": "node --env-file=.env.local --import tsx --test tests/dashboard.test.ts",
     "recipes:review-images": "node --env-file=.env.local --import tsx scripts/review-recipe-images.mjs --apply",
-    "prices:collect": "node --env-file=.env.local scripts/collect-kamis.mjs && python scripts/collect-tprice.py && python scripts/build-regional-prices.py",
-    "foodsafety:validate-kfind": "node scripts/import-kfind.mjs",
-    "foodsafety:import-kfind": "node --env-file=.env.local scripts/import-kfind.mjs --apply"
+    "prices:collect": "node --env-file=.env.local scripts/collect-kamis.mjs && python scripts/collect-tprice.py && python scripts/build-regional-prices.py"
   },
   "dependencies": {
-    "@huggingface/transformers": "^4.3.0",
     "@supabase/supabase-js": "^2.116.0",
     "@vercel/analytics": "^2.0.1",
     "@vercel/functions": "^3.9.8",

@@ -20,6 +20,9 @@ export async function POST(request:NextRequest){
    // Import receipts remain as replay protection, not as visible user records.
    await db.query('INSERT INTO user_data_resets(user_id) VALUES($1) ON CONFLICT(user_id) DO UPDATE SET reset_at=NOW()',[user.id]);
    await db.query('UPDATE wellness_settings SET water_enabled=true,weight_enabled=true,cup_ml=200,goal_ml=NULL,version=version+1,request_id=NULL WHERE user_id=$1',[user.id]);
+   await db.query('DELETE FROM water_reminders WHERE user_id=$1',[user.id]);
+   await db.query('DELETE FROM water_reminder_deliveries WHERE user_id=$1',[user.id]);
+   await db.query('DELETE FROM health_goals WHERE user_id=$1',[user.id]);
    await db.query('COMMIT');
    return NextResponse.json({reset:true},{headers:{'Cache-Control':'no-store'}});
   }catch(e){await db.query('ROLLBACK');throw e;}finally{db.release();}

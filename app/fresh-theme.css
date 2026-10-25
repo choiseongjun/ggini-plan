@@ -127,7 +127,7 @@
 .fresh-shell.site-shell .reset-data p { color: #7b8782; font-size: 12px; }
 .fresh-shell.site-shell .page-intro h2 span { color: #268b73; }
 .fresh-shell.site-shell .planner-profile-summary { background: #f2f8f5; color: #607c6e; }
-.fresh-shell.site-shell .bottom-nav { background: #fffdf5f5; border-top: 1px solid var(--line); box-shadow: 0 -6px 24px #314e3f03; min-height: 72px; }
+.fresh-shell.site-shell .bottom-nav { background: #fffdf5; border-top: 1px solid var(--line); box-shadow: 0 -6px 24px #314e3f03; min-height: 72px; }
 .fresh-shell.site-shell .bottom-nav button { color: #94a39c; position: relative; }
 .fresh-shell.site-shell .bottom-nav button.active { color: #587548; }
 .fresh-shell.site-shell .bottom-nav button.active::before { display: none; }
@@ -426,4 +426,58 @@
  .fresh-shell .daily-return.daily-return-compact{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;padding:14px}
  .fresh-shell .daily-return-compact .daily-buddy-link{grid-column:1 / -1;width:100%;box-sizing:border-box}
  .fresh-shell .daily-return-compact .daily-return-record{min-width:0;width:100%;box-sizing:border-box;justify-content:center;text-align:center;white-space:normal;overflow-wrap:anywhere;line-height:1.5;padding:10px;font-size:12px}
+}
+
+/* One mobile navigation geometry for browsers and Android/iOS WebViews.
+   Keep document scrolling; reserve the entire fixed bar, including safe area. */
+@media (max-width: 910px) {
+  .fresh-shell.site-shell {
+    --mobile-nav-height: 76px;
+    --mobile-nav-inset: max(8px, env(safe-area-inset-bottom, 0px));
+  }
+  .fresh-shell.site-shell .app-side {
+    position: static;
+    height: auto;
+    min-height: 100dvh;
+  }
+  .fresh-shell.site-shell .app-frame {
+    height: auto;
+    min-height: 100dvh;
+  }
+  .fresh-shell.site-shell .app-frame:has(> .bottom-nav) {
+    padding-bottom: calc(var(--mobile-nav-height) + var(--mobile-nav-inset));
+  }
+  .fresh-shell.site-shell .app-content {
+    overflow: visible;
+    min-height: 0;
+    scroll-margin-bottom: calc(var(--mobile-nav-height) + var(--mobile-nav-inset));
+  }
+  .fresh-shell.site-shell .bottom-nav {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 20;
+    box-sizing: border-box;
+    height: calc(var(--mobile-nav-height) + var(--mobile-nav-inset));
+    min-height: 0;
+    grid-template-rows: minmax(0, 1fr);
+    padding: 4px max(8px, env(safe-area-inset-right, 0px)) var(--mobile-nav-inset) max(8px, env(safe-area-inset-left, 0px));
+    background: #fffdf5;
+  }
+  .fresh-shell.site-shell .bottom-nav button,
+  .fresh-shell.site-shell .bottom-nav > a {
+    min-height: 0;
+    min-width: 0;
+    padding: 6px 0;
+  }
+}
+
+/* Installed shells already inset the WebView above the system navigation. */
+@media (max-width: 910px) {
+  html[data-native-safe-area="handled"] .fresh-shell.site-shell {
+    --mobile-nav-inset: var(--space-2);
+  }
+  html[data-native-safe-area="handled"] .fresh-shell.site-shell .bottom-nav {
+    padding-left: var(--space-2);
+    padding-right: var(--space-2);
+  }
 }

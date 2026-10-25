@@ -5,6 +5,7 @@ import {nutritionIsEstimated} from './serving-nutrients';
 import {purchaseBasket,type PlanConditions,type PlanProduct} from './shopping-plan';
 export function recommendationReasons(p:PlanProduct,c:PlanConditions,target:number|null){
  const reasons:string[]=[];
+ if(p.officialNutrition)reasons.push('K-FCDB 음식별 기준량으로 영양을 계산했어요');
  if(nutritionIsEstimated(p))reasons.push('추정 영양정보 포함 · 추천 반영 비중을 낮췄어요');
  const kind=mealKind(p);if(c.mealKinds?.length&&kind&&c.mealKinds.includes(kind))reasons.push(`선택한 ${mealKinds[kind].label} 메뉴예요`);
  const n=servingNutrition(p);

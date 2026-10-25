@@ -14,3 +14,11 @@ data/shopping-label-research.json
 toss/node_modules
 toss/dist
 *.traineddata
+.artifacts
+data/tempdata
+test999
+tools
+/*-proof.png
+/promo-character-icon.png
+/tmp
+/output

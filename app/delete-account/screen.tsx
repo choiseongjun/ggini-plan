@@ -6,10 +6,11 @@ import {GoogleAuthProvider,OAuthProvider,revokeAccessToken,signInWithPopup,signO
 import {firebaseAuth,firebaseLoginMessage} from '../../lib/firebase-client';
 import {isNativeApp} from '../../lib/native-environment';
 import {nativePushLogout} from '../../lib/native-push-client';
-type Method='google'|'apple'|'password';
+import {accountLabel} from '../../lib/account-label';
+type Method='google'|'apple'|'kakao'|'password';
 type Account={user:{id:string;email:string};method:Method};
 const PHRASE='회원 탈퇴';
-const LABEL:Record<Method,string>={google:'Google',apple:'Apple',password:'이메일'};
+const LABEL:Record<Method,string>={google:'Google',apple:'Apple',kakao:'카카오',password:'이메일'};
 export default function DeleteAccountScreen(){
  const [account,setAccount]=useState<Account|null>(null),[loaded,setLoaded]=useState(false),[message,setMessage]=useState(''),[confirmation,setConfirmation]=useState(''),[password,setPassword]=useState(''),[busy,setBusy]=useState(false),[deleted,setDeleted]=useState(false);
  // Only read after the account loads, so the server render ("계정 확인 중") never depends on it.
@@ -45,7 +46,7 @@ export default function DeleteAccountScreen(){
  return <Card tone="danger" className="delete-account-card" aria-labelledby="delete-account-title">
   <h2 id="delete-account-title">계정 삭제하기</h2>
   {!loaded?<p className="delete-account-muted">계정 확인 중…</p>:!account?<p>먼저 <Link href="/">홈에서 로그인</Link>한 뒤 이 페이지로 돌아오세요.</p>:<>
-   <div className="delete-account-who"><span>{LABEL[account.method]} 계정</span><strong>{account.user.email}</strong></div>
+   <div className="delete-account-who"><span>{LABEL[account.method]} 계정</span><strong>{accountLabel(account.user.email)}</strong></div>
    <ul className="delete-account-list"><li>식단·식사·물·체중 기록과 사진</li><li>신체 정보, 예산, 장보기 내역</li><li>공유 식단, 커뮤니티 글, 알림 설정</li></ul>
    <label className="delete-account-field"><span>확인을 위해 <b>‘{PHRASE}’</b>를 입력해 주세요</span><input value={confirmation} onChange={e=>setConfirmation(e.target.value)} disabled={busy} placeholder={PHRASE} autoComplete="off" enterKeyHint="done"/></label>
    {account.method==='password'&&<label className="delete-account-field"><span>현재 비밀번호</span><input type="password" autoComplete="current-password" value={password} onChange={e=>setPassword(e.target.value)} disabled={busy}/></label>}

@@ -27,9 +27,10 @@ export function composePairing(main:PlanProduct,sides:PlanProduct[],relations:Pa
  const ingredients=[...main.recipe.ingredients,...sides.flatMap(s=>s.recipe!.ingredients.map(i=>({...i,group:s.name})))];
  const nutrients=[main,...sides].map(servingNutrients);
  const sum=(key:'calories'|'protein')=>nutrients.every(n=>n[key]!==null)?Math.round(nutrients.reduce((n,v)=>n+v[key]!,0)*10)/10:null;
- return {...main,id:`${main.id}--sides-${sides.length}-${sides.map(s=>s.id.replace(/^recipe-opt-/, '')).join('_')}`,name:`${main.name} + ${sides.map(s=>s.name).join(' + ')}`,
+ return {...main,...(main.officialNutrition?{officialNutrition:{parts:[...main.officialNutrition.parts,...sides.flatMap(s=>s.officialNutrition?.parts??[{role:'side' as const,name:s.name,code:s.id,amount:null,reference:null}])]}}:{}),id:`${main.id}--sides-${sides.length}-${sides.map(s=>s.id.replace(/^recipe-opt-/, '')).join('_')}`,name:`${main.name} + ${sides.map(s=>s.name).join(' + ')}`,
   detail:`${main.detail} · 함께 먹는 밥과 곁들임 포함 · 조합 규칙 v1`,
-  price:Math.round(ingredients.reduce((n,i)=>n+i.product.price*i.packs,0)),servingGrams:(main.servingGrams??0)+sides.reduce((n,s)=>n+(s.servingGrams??0),0),
+  servingNote:[main,...sides].map(p=>p.servingNote).join(' + '),
+  price:Math.round(ingredients.reduce((n,i)=>n+i.product.price*i.packs,0)),servingGrams:[main,...sides].every(p=>p.servingGrams!==undefined)?[main,...sides].reduce((n,p)=>n+p.servingGrams!,0):undefined,
   avoidanceText:[main,...sides].every(p=>p.avoidanceText!==null)?[main,...sides].map(p=>p.avoidanceText).join(' '):null,
   allergens:[...new Set([main,...sides].flatMap(p=>p.allergens??[]))],
   recipe:{...main.recipe,sideCount:sides.length,ingredients,nutrition:{calories:sum('calories'),protein:sum('protein')},minutes:main.recipe.minutes===null||sides.some(s=>s.recipe!.minutes===null)?null:main.recipe.minutes+sides.reduce((n,s)=>n+s.recipe!.minutes!,0),

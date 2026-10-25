@@ -1,7 +1,8 @@
 'use client';
 
+
 import {MealTimePicker,type MealTimeSelection} from './meal-time-picker';
-import {mealTimeISO,validEatenAt,recordDestinationTo,inferredMealSlot,type MealSlot} from '../lib/meal-time';
+import {mealTimeISO,mealTimeLocal,validEatenAt,recordDestinationTo,inferredMealSlot,type MealSlot} from '../lib/meal-time';
 import {useEffect, useRef, useState} from 'react';
 import type {FoodReference} from '../lib/food-reference';
 import {DetailedNutrition} from './detailed-nutrition';
@@ -12,15 +13,16 @@ import {MealPhotoLog} from './meal-photo-log';
 import {validPortions} from '../lib/food-intake';
 import {hasCachedFoodSearch,searchFoods} from '../lib/food-search-client';
 import {manualFoodReference} from '../lib/basic-food-reference';
+import type {MealDraft} from '../lib/meal-draft';
 
 const portionsList = [[0.5, '반'], [1, '1회'], [1.5, '1.5'], [2, '2회']] as const;
 const n = (v: number) => Math.round(v).toLocaleString('ko-KR');
 const serving = (f: FoodReference) => `${n(f.servingAmount)}${f.servingUnit}`;
 
 // 간식·디저트·음료·외식 기록: 이름으로 찾아 한 번에 남긴다. 기록이 쌓일수록 하루 섭취량(칼로리·당류)이 정확해진다.
-export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyChange,initialFood=null,timeSelection}: {timeSelection?:MealTimeSelection;initialFood?:FoodReference|null;onLogged: (name:string,eatenAt?:string,result?:{ids:string[];nutrition?:Record<string,number|null>;mealSlot?:MealSlot}) => void;initialOpen?:boolean;photo?:boolean;onClose?:()=>void;onBusyChange?:(busy:boolean)=>void}) {
- const [localMealTime,setLocalMealTime]=useState('');
- const [localMealSlot,setLocalMealSlot]=useState<MealSlot|null>(()=>inferredMealSlot(new Date().toISOString()));
+export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyChange,initialFood=null,timeSelection,draft,onDraftChange}: {draft?:MealDraft|null;onDraftChange?:(draft:MealDraft)=>Promise<void>;timeSelection?:MealTimeSelection;initialFood?:FoodReference|null;onLogged: (name:string,eatenAt?:string,result?:{ids:string[];nutrition?:Record<string,number|null>;mealSlot?:MealSlot}) => void;initialOpen?:boolean;photo?:boolean;onClose?:()=>void;onBusyChange?:(busy:boolean)=>void}) {
+ const [localMealTime,setLocalMealTime]=useState(()=>draft?mealTimeLocal(draft.createdAt):'');
+ const [localMealSlot,setLocalMealSlot]=useState<MealSlot|null>(()=>inferredMealSlot(draft?.createdAt??new Date().toISOString()));
  const mealTime=timeSelection?.value??localMealTime,mealSlot=timeSelection?timeSelection.slot:localMealSlot;
  const setMealTime=timeSelection?.onChange??setLocalMealTime,setMealSlot=timeSelection?.onSlotChange??setLocalMealSlot;
  const timeISO=mealTime?mealTimeISO(mealTime):undefined;
@@ -30,8 +32,19 @@ export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyC
  const [results, setResults] = useState<{q: string; items: FoodReference[]} | null>(null);
  const [recent, setRecent] = useState<FoodReference[]>([]);
  const [picked, setPicked] = useState<FoodReference | null>(initialFood);
- const [portions, setPortions] = useState(1);
+ const [portions, setPortions] = useState(draft?.portions??1);
+ const [rememberedPortions,setRememberedPortions]=useState<Record<string,number>>({});
+ const [photoUrl,setPhotoUrl]=useState('');
+ const requestId=useRef<string|null>(draft?.id??null),submitting=useRef(false);
+ useEffect(()=>{if(!draft?.photo)return;const url=URL.createObjectURL(draft.photo);const frame=requestAnimationFrame(()=>setPhotoUrl(url));return()=>{cancelAnimationFrame(frame);URL.revokeObjectURL(url);};},[draft?.photo]);
  const [busy, setBusy] = useState(false), [error, setError] = useState(''), [done, setDone] = useState('');
+ useEffect(()=>{
+  if(!draft||!picked||!validPortions(portions)||busy)return;
+  const occurred=timeISO??draft.createdAt;
+  if(draft.food?.code===picked.code&&draft.portions===portions&&draft.createdAt===occurred)return;
+  const timer=window.setTimeout(()=>{void onDraftChange?.({...draft,food:picked,portions,createdAt:occurred}).catch(()=>setError('수정 내용을 임시 보관하지 못했어요. 화면을 닫기 전에 다시 저장해 주세요.'));},200);
+  return()=>window.clearTimeout(timer);
+ },[draft,picked,portions,timeISO,busy,onDraftChange]);
  useEffect(()=>{onBusyChange?.(busy);},[busy,onBusyChange]);
  const input = useRef<HTMLInputElement>(null);
  const recentVersion=useRef(0);
@@ -43,7 +56,7 @@ export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyC
   const version=recentVersion.current;
   fetch('/api/food-reference?recent=1',{cache:'no-store'})
    .then(async response=>{if(!response.ok)throw Error();return response.json();})
-   .then(data=>{if(alive&&version===recentVersion.current)setRecent(data.items??[]);})
+   .then(data=>{if(alive&&version===recentVersion.current){setRecent(data.items??[]);setRememberedPortions(data.portions??{});}})
    .catch(()=>{})
    .finally(()=>{if(alive)setRecentLoading(false);});
   return()=>{alive=false;};
@@ -65,19 +78,28 @@ export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyC
  }
 
  async function log(amount=portions) {
-  if (!picked || !validPortions(amount)||!timeValid||!mealSlot) return;
+  if (!picked || !validPortions(amount)||!timeValid||!mealSlot||submitting.current) return;
+  submitting.current=true;
   setBusy(true); setError('');
   try {
-   const r = await fetch('/api/food-intake', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({action: 'log', id: crypto.randomUUID(), version: 0, mealSlot, referenceCode: picked.code, portions:amount,...(timeISO?{eatenAt:timeISO}:{})})});
+   requestId.current??=crypto.randomUUID();
+   let r:Response;
+   if(draft){
+    await onDraftChange?.({...draft,food:picked,portions:amount,createdAt:timeISO??draft.createdAt});
+    const form=new FormData();form.set('id',requestId.current);form.set('referenceCode',picked.code);form.set('portions',String(amount));form.set('mealSlot',mealSlot);form.set('eatenAt',timeISO??draft.createdAt);form.set('photo',draft.photo,'meal.jpg');
+    r=await fetch('/api/food-intake/confirmed-photo',{method:'POST',body:form});
+   }else r=await fetch('/api/food-intake', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({action: 'log', id: requestId.current, version: 0, mealSlot, referenceCode: picked.code, portions:amount,...(timeISO?{eatenAt:timeISO}:{})})});
    const d = await r.json();
    if (!r.ok) throw new Error(d.error);
-   setDone(`${picked.name} 기록했어요${picked.kcal !== null ? ` · 약 ${n(picked.kcal * amount)}kcal` : ''}`);
+   const savedName=d.food?.name??picked.name;
+   setDone(d.replayed?'이미 저장된 식사를 확인했어요.':`${savedName} 기록했어요${picked.kcal !== null ? ` · 약 ${n(picked.kcal * amount)}kcal` : ''}`);
    remember(picked);
+   setRememberedPortions(values=>({...values,[picked.code]:amount}));requestId.current=null;
    setPicked(null); setQuery(''); setResults(null); setPortions(1);
    trackPlanner('snack_logged');
    window.dispatchEvent(new CustomEvent(INTAKE_LOGGED_EVENT));
-   setMealTime('');setMealSlot(inferredMealSlot(new Date().toISOString()));onLogged(picked.name,d.eatenAt,d);
-  } catch (e) { setError(e instanceof Error ? e.message : '기록하지 못했어요.'); } finally { setBusy(false); }
+   setMealTime('');setMealSlot(inferredMealSlot(new Date().toISOString()));onLogged(savedName,d.eatenAt,d);
+  } catch (e) { setError(e instanceof Error ? e.message : '기록하지 못했어요.'); } finally { submitting.current=false;setBusy(false); }
  }
 
  if (!open) return <div className="snack-log-entry">
@@ -90,6 +112,10 @@ export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyC
   <header><strong>무엇을 먹었어요?</strong><button type="button" aria-label="닫기" disabled={busy} onClick={() => { setOpen(false); setPicked(null); setQuery(''); onClose?.(); }}>
    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></header>
   {!timeSelection&&<MealTimePicker value={mealTime} slot={mealSlot} onSlotChange={setMealSlot} onChange={setMealTime} disabled={busy}/>}
+  {draft&&<div><p className="snack-log-note">보관한 사진과 함께 저장해요. 음식과 분량을 확인해 주세요.</p>
+   {/* eslint-disable-next-line @next/next/no-img-element -- device-local preview */}
+   <img src={photoUrl||undefined} alt="임시 보관한 식사" style={{width:'100%',maxHeight:'12rem',objectFit:'contain'}}/>
+   <small>최종 저장 시 사진을 내 식사 일기에 업로드해요. 사진 분석을 사용하면 기기 안에서 처리해요.</small></div>}
   {photo&&<p className="snack-log-note">음식을 고른 뒤 사진을 올리면 먹은 양을 추정해요. 올린 사진은 식사 기록에 함께 보관돼요.</p>}
   <input ref={input} type="search" value={query} placeholder="예: 카페라떼, 치즈케이크, 스타벅스, 순대국밥" aria-label="음식 이름 검색" maxLength={40} disabled={busy} onChange={(e) => { setQuery(e.target.value); setPicked(null);setSearchError('');setDone(''); }}/>
   {!q&&recentLoading&&!recent.length&&<p className="snack-log-note" role="status">최근 기록을 불러오는 중이에요. 음식 이름을 바로 검색할 수 있어요.</p>}
@@ -98,13 +124,14 @@ export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyC
   {q&&searchError&&<p role="alert" className="snack-log-note">{searchError}</p>}
   {q&&!picked&&<div className="snack-log-manual"><button type="button" disabled={busy} onClick={()=>{const food=manualFoodReference(`manual:${q}`);if(food){setPicked(food);setPortions(1);}}}>목록에 없나요? ‘{q}’ 그대로 기록하기</button><small>이름과 먹은 양을 저장해요. 영양정보는 미확인으로 표시해요.</small></div>}
   {!picked && list && list.length > 0 && <ul className="snack-log-list">{list.map((f) => <li key={f.code}>
-   <button type="button" onClick={() => { setPicked(f); setPortions(1); }}>
+   <button type="button" disabled={busy} onClick={() => { setPicked(f); setPortions(validPortions(rememberedPortions[f.code])?rememberedPortions[f.code]:1); }}>
     <span><strong>{f.name}</strong>{f.brand && <small>{f.brand}</small>}</span>
     <span className="snack-log-meta">{serving(f)}{f.kcal !== null && ` · ${n(f.kcal)}kcal`}{f.sugar !== null && f.sugar >= 1 && ` · 당류 ${n(f.sugar)}g`}</span>
    </button>
   </li>)}</ul>}
   {picked && <div className="snack-log-pick">
    <p><strong>{picked.name}</strong>{picked.brand && <small> {picked.brand}</small>}<span>1회 {serving(picked)} 기준</span></p>
+   {validPortions(rememberedPortions[picked.code])&&<p className="snack-log-note">지난번에는 {rememberedPortions[picked.code]}회분으로 기록했어요. 오늘 먹은 양에 맞게 바꿔 주세요.</p>}
    {photo&&<MealPhotoLog key={picked.code} referenceCode={picked.code} dishName={picked.name} disabled={busy} onManual={()=>void log()} onFallback={()=>void log(1)} onLogged={()=>{remember(picked);setPicked(null);setQuery('');setDone('사진으로 식사를 기록했어요. 아래에서 양을 수정할 수 있어요.');window.dispatchEvent(new CustomEvent(INTAKE_LOGGED_EVENT));onLogged(picked.name);}}/>}
    <div className="snack-log-portions" role="radiogroup" aria-label="먹은 양">{portionsList.map(([value, label]) => <button type="button" role="radio" key={value} aria-checked={portions === value} onClick={() => setPortions(value)}>{label}</button>)}</div>
    <label className="snack-log-custom">먹은 양 직접 입력<input type="number" min="0.25" max="10" step="0.25" aria-label="먹은 양 직접 입력" value={portions||''} disabled={busy} onChange={e=>setPortions(Number(e.target.value))}/>회</label>

@@ -37,6 +37,8 @@ export async function POST(request: NextRequest) {
  let input: Record<string, unknown>;
  try { input = JSON.parse(raw); } catch { return authFailure('입력을 확인해 주세요.', 400); }
  if (!input || typeof input !== 'object') return authFailure('입력을 확인해 주세요.', 400);
+ if(!['browse','recommend','swap','alternatives','picker','sides','products'].includes(input.action as string))return authFailure('요청을 확인해 주세요.',400);
+ if(['recommend','swap','alternatives','picker'].includes(input.action as string)&&!parseConditions(input.conditions))return authFailure('챙길 끼니와 조건을 확인해 주세요.',400);
  try {
   const user = await sessionUser(request);
   const conditions = input.conditions === undefined ? null : parseConditions(input.conditions);

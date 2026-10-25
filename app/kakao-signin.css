@@ -1,0 +1,4 @@
+/* Kakao brand colors follow its login button design guide. */
+.kakao-signin{display:flex;align-items:center;justify-content:center;gap:var(--space-3);width:100%;min-height:calc(var(--touch) + var(--space-2));padding:var(--space-3) var(--space-4);margin-bottom:var(--space-3);border:0;border-radius:var(--radius-md);background:#fee500;color:#191919;font-size:var(--fs-md);font-weight:600;cursor:pointer}
+.kakao-signin:disabled{opacity:.6;cursor:wait}
+.kakao-signin:focus-visible{outline:3px solid var(--focus);outline-offset:3px}

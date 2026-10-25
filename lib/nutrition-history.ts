@@ -3,8 +3,12 @@ export type NutritionHistoryLog={date:string}&Partial<Record<typeof historyNutri
 export function nutritionHistoryTotals(logs:NutritionHistoryLog[]){
  return historyNutrients.map(([key,label,unit])=>{
   const known=logs.filter(log=>typeof log[key]==='number'&&Number.isFinite(log[key]));
-  const days=new Set(known.map(log=>log.date)).size;
+  // An unknown item makes that day's total incomplete. Keep its known subtotal,
+  // but exclude the whole day from averages instead of treating it as zero.
+  const completeDates=[...new Set(known.map(log=>log.date))].filter(date=>logs.filter(log=>log.date===date).every(log=>typeof log[key]==='number'&&Number.isFinite(log[key])));
+  const days=completeDates.length;
+  const averageSum=known.filter(log=>completeDates.includes(log.date)).reduce((n,log)=>n+log[key]!,0);
   const sum=known.reduce((n,log)=>n+log[key]!,0);
-  return {key,label,unit,total:known.length?Math.round(sum*10)/10:null,average:days?Math.round(sum/days*10)/10:null,days,missing:logs.length-known.length};
+  return {key,label,unit,total:known.length?Math.round(sum*10)/10:null,average:days?Math.round(averageSum/days*10)/10:null,days,missing:logs.length-known.length};
  });
 }

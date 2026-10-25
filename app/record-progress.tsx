@@ -93,8 +93,8 @@ export function WeeklyReportCard({stats}:{stats:Stats|null}){
   {!r.days?<p className="rp-empty">{which==='week'?'이번 주 기록이 아직 없어요. 한 끼만 사진으로 남겨도 리포트가 만들어져요.':'지난주에는 기록이 없어요.'}</p>:<>
    <dl className="rp-stats">
     <div><dt>기록한 날</dt><dd>{r.days}<small>/7일</small></dd></div>
-    <div><dt>기록한 끼니</dt><dd>{r.meals}<small>끼</small></dd></div>
-    <div><dt>하루 평균</dt><dd>{r.avgCalories?.toLocaleString('ko-KR')}<small>kcal</small></dd>{g.calories&&r.avgCalories!==null&&<em className={r.avgCalories>g.calories*1.1?'is-over':r.avgCalories<g.calories*0.8?'is-under':'is-ok'}>목표 {g.calories.toLocaleString('ko-KR')}</em>}</div>
+    <div><dt>음식 기록</dt><dd>{r.meals}<small>건</small></dd></div>
+    <div><dt>기록 기준 평균</dt><dd>{r.avgCalories?.toLocaleString('ko-KR')??'—'}<small>kcal</small></dd><em>영양값 확인된 {r.averageDays}일 · 미확인 {r.missingCalories}건 제외</em></div>
     <div><dt>단백질 목표</dt><dd>{r.proteinDays??'—'}<small>일 달성</small></dd>{g.protein&&<em>하루 {g.protein}g</em>}</div>
    </dl>
    <ul className="rp-facts">

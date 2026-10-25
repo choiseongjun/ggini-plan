@@ -6,7 +6,10 @@ export const maxDuration=60;
 export async function GET(r:NextRequest){if(!await adminUser(r))return Response.json({error:'관리자 로그인이 필요해요.'},{status:403});return Response.json(await collectionStatus(),{headers:{'Cache-Control':'no-store'}});}
 export async function POST(r:NextRequest){
  if(r.headers.get('origin')!==new URL(r.url).origin||!await adminUser(r))return Response.json({error:'관리자 권한이 필요해요.'},{status:403});
- try{return Response.json(await collectFoodDeals('admin'));}catch(e){return Response.json({error:e instanceof Error?e.message:'수집 실패'},{status:e instanceof CollectionBusy?409:503});}
+ let provider:'all'|'kurly'|'naver'='all';
+ const raw=await r.text();if(raw.length>100)return Response.json({error:'요청이 너무 커요.'},{status:413});
+ if(raw){try{const p=JSON.parse(raw).provider;if(!['all','kurly','naver'].includes(p))throw new Error();provider=p;}catch{return Response.json({error:'수집 출처를 확인해 주세요.'},{status:400});}}
+ try{return Response.json(await collectFoodDeals('admin',60,45000,provider));}catch(e){return Response.json({error:e instanceof Error?e.message:'수집 실패'},{status:e instanceof CollectionBusy?409:503});}
 }
 export async function PATCH(r:NextRequest){
  if(r.headers.get('origin')!==new URL(r.url).origin||!await adminUser(r))return Response.json({error:'관리자 권한이 필요해요.'},{status:403});

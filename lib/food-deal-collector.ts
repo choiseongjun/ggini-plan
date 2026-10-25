@@ -1,6 +1,8 @@
 import {randomUUID} from 'node:crypto';
 import {setTimeout as delay} from 'node:timers/promises';
 import {getPool} from './db';
+import {collectNaverShopping} from './naver-shopping-collector';
+import {naverShoppingConfigured} from './naver-shopping-deals';
 import {parseKurlyProduct,robotsAllows} from './food-deal-parser';
 
 const origin='https://www.kurly.com';
@@ -19,9 +21,9 @@ async function read(path:string){
 export async function collectionStatus(){
  const p=getPool();
  const [settings,runs,total]=await Promise.all([p.query('SELECT enabled FROM food_deal_collection_settings WHERE id=true'),p.query('SELECT * FROM food_deal_collection_runs ORDER BY started_at DESC LIMIT 8'),p.query('SELECT count(*)::integer AS count FROM food_deal_candidates')]);
- return {enabled:settings.rows[0]?.enabled??false,runs:runs.rows.map(r=>r.status==='running'&&Date.now()-Date.parse(r.heartbeat_at)>600000?{...r,status:'failed',message:'응답이 중단되었습니다. 다시 수집할 수 있어요.'}:r),candidates:total.rows[0].count,source:'컬리 공개 상품 페이지',schedule:'매일 오전 9시 이후 (한국 시간, 실행이 지연될 수 있어요)'};
+ return {enabled:settings.rows[0]?.enabled??false,runs:runs.rows.map(r=>r.status==='running'&&Date.now()-Date.parse(r.heartbeat_at)>600000?{...r,status:'failed',message:'응답이 중단되었습니다. 다시 수집할 수 있어요.'}:r),candidates:total.rows[0].count,naverConfigured:naverShoppingConfigured(),source:'네이버 쇼핑 검색 · 컬리 공개 상품 페이지',schedule:'매일 오전 9시 이후 (한국 시간, 실행이 지연될 수 있어요)'};
 }
-export async function collectFoodDeals(trigger:'admin'|'daily',limit=60,timeBudgetMs=45000){
+export async function collectFoodDeals(trigger:'admin'|'daily',limit=60,timeBudgetMs=45000,provider:'all'|'kurly'|'naver'='all'){
  const pool=getPool(),id=randomUUID(),started=Date.now();
  const client=await pool.connect();
  try{
@@ -33,9 +35,14 @@ export async function collectFoodDeals(trigger:'admin'|'daily',limit=60,timeBudg
   await client.query('INSERT INTO food_deal_collection_runs(id,trigger) VALUES($1,$2)',[id,trigger]);
   await client.query('COMMIT');
  }catch(e){await client.query('ROLLBACK');throw e;}finally{client.release();}
- let scanned=0,published=0,ended=0,skipped=0,errors=0,lastError='',consecutiveErrors=0;
+ let scanned=0,published=0,ended=0,skipped=0,errors=0,lastError='',naverError='',consecutiveErrors=0;
  const progress=()=>pool.query('UPDATE food_deal_collection_runs SET scanned=$2,published=$3,ended=$4,skipped=$5,errors=$6,heartbeat_at=now() WHERE id=$1',[id,scanned,published,ended,skipped,errors]);
  try{
+  if(provider!=='kurly'){
+   if(naverShoppingConfigured()){const n=await collectNaverShopping(Math.min(limit,trigger==='daily'?160:40),Math.min(timeBudgetMs,trigger==='daily'?75000:18000),trigger==='daily'?8:2);scanned+=n.scanned;published+=n.published;skipped+=n.skipped;errors+=n.errors;lastError=n.lastError;naverError=n.lastError;await progress();}
+   else if(provider==='naver')throw new Error('네이버 쇼핑 검색용 API 키를 설정해 주세요.');
+  }
+  if(provider!=='naver'){
   const robots=await read('/robots.txt');
   if(!robots||!robotsAllows(robots,'/goods/1001866269')||!robotsAllows(robots,'/sitemap/index-sitemap.xml'))throw new Error('판매처 수집 정책을 확인할 수 없거나 수집이 제한됐어요.');
   await pool.query(`INSERT INTO food_deal_candidates(url) SELECT DISTINCT product_url FROM catalog_items WHERE market_code='KR' AND product_url ~ '^https://www[.]kurly[.]com/goods/[0-9]+$' ON CONFLICT DO NOTHING`);
@@ -73,8 +80,10 @@ export async function collectFoodDeals(trigger:'admin'|'daily',limit=60,timeBudg
    }catch(e){errors++;consecutiveErrors++;lastError=e instanceof Error?e.message:'상품 확인 실패';await pool.query("UPDATE food_deal_candidates SET last_checked_at=now(),last_result='error' WHERE url=$1",[item.url]);if(/HTTP (403|429)/.test(lastError)||consecutiveErrors>=5)throw new Error(lastError);}
    await progress();
   }
+  }
+  lastError=[...new Set([naverError,lastError].filter(Boolean))].join(' / ');
   await progress();
-  await pool.query("UPDATE food_deal_collection_runs SET status=$2,finished_at=now(),message=$3 WHERE id=$1",[id,errors?'partial':'success',errors?lastError:'할인 상품을 자동 공개했어요. 다음 실행은 확인이 오래된 상품부터 이어집니다.']);
-  return {id,scanned,published,ended,skipped,errors};
- }catch(e){await progress();const message=e instanceof Error?e.message:'수집 실패';await pool.query("UPDATE food_deal_collection_runs SET status='failed',finished_at=now(),message=$2 WHERE id=$1",[id,message]);throw new Error(message);}
+  await pool.query("UPDATE food_deal_collection_runs SET status=$2,finished_at=now(),message=$3 WHERE id=$1",[id,errors?(published?'partial':'failed'):'success',errors?lastError:`${provider==='naver'?'네이버 쇼핑':provider==='kurly'?'컬리':'네이버 쇼핑·컬리'} 수집 완료. 네이버 가격은 할인율 없이 검색 가격으로 표시합니다.`]);
+  return {id,scanned,published,ended,skipped,errors,message:lastError};
+ }catch(e){await progress();const message=[...new Set([naverError,e instanceof Error?e.message:'수집 실패'].filter(Boolean))].join(' / ');await pool.query("UPDATE food_deal_collection_runs SET status='failed',finished_at=now(),message=$2 WHERE id=$1",[id,message]);throw new Error(message);}
 }

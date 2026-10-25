@@ -1,3 +1,4 @@
+import {withKfindNutrition} from './kfind-plan-products';
 import {applyPairings} from './meal-pairings';
 import {withMarketPrices} from './regional-prices-db';
 import {listPairings} from './meal-pairing-store';
@@ -26,7 +27,7 @@ function recipeResults(){
 let cachedSides: {at: number; products: Promise<PlanProduct[]>} | null = null;
 export async function sideProducts(): Promise<PlanProduct[]> {
  if (cachedSides && Date.now() - cachedSides.at < TTL) return cachedSides.products;
- const products = recipeResults().then(results=>recipeProductsFromResults(results,'side').map(slimRecipe));
+ const products = recipeResults().then(async results=>(await withKfindNutrition([],recipeProductsFromResults(results,'side'))).sides.map(slimRecipe));
  cachedSides = {at: Date.now(), products};
  products.catch(() => { if (cachedSides?.products === products) cachedSides = null; });
  return products;
@@ -34,7 +35,7 @@ export async function sideProducts(): Promise<PlanProduct[]> {
 
 export async function planProducts():Promise<PlanProduct[]> {
  if (cached && Date.now() - cached.at < TTL) return cached.products.then(withMarketPrices);
- const products = Promise.all([recipeResults(),listPairings()]).then(([results,relations]) => applyPairings(recipeProductsFromResults(results),recipeProductsFromResults(results,'side'),relations).map(slimRecipe));
+ const products = Promise.all([recipeResults(),listPairings()]).then(async ([results,relations]) => {const official=await withKfindNutrition(recipeProductsFromResults(results),recipeProductsFromResults(results,'side'));return applyPairings(official.mains,official.sides,relations).map(slimRecipe);});
  cached = {at: Date.now(), products};
  products.catch(() => { if (cached?.products === products) cached = null; });
  return products.then(withMarketPrices);

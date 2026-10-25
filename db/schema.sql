@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS body_profiles (
 ALTER TABLE users ALTER COLUMN password_hash DROP NOT NULL;
 
 CREATE TABLE IF NOT EXISTS oauth_accounts (
-  provider TEXT NOT NULL CHECK (provider IN ('google', 'apple')),
+  provider TEXT NOT NULL CHECK (provider IN ('google', 'apple', 'kakao')),
   provider_subject TEXT NOT NULL,
   user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -48,6 +48,11 @@ CREATE TABLE IF NOT EXISTS oauth_login_attempts (
   expires_at TIMESTAMPTZ NOT NULL
 );
 CREATE INDEX IF NOT EXISTS oauth_login_attempts_expires_idx ON oauth_login_attempts(expires_at);
+
+CREATE TABLE IF NOT EXISTS kakao_login_attempts (
+ state_hash CHAR(64) PRIMARY KEY, consent JSONB, mobile_challenge CHAR(64), expires_at TIMESTAMPTZ NOT NULL
+);
+CREATE INDEX IF NOT EXISTS kakao_login_attempts_expires_idx ON kakao_login_attempts(expires_at);
 
 CREATE TABLE IF NOT EXISTS catalog_items (
   id TEXT PRIMARY KEY,

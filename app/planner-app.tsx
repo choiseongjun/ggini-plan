@@ -1,6 +1,8 @@
 "use client";
 
+
 import {scrollToAppTop} from '../lib/scroll-to-top';
+import {accountLabel} from '../lib/account-label';
 import {takeProfileIntent,clearProfileIntent} from '../lib/profile-intent';
 import './home-readability.css';
 import {pendingRecordMode,clearRecordMode} from '../lib/record-intent';
@@ -19,7 +21,6 @@ import { Dashboard } from "./dashboard";
 import { ResetData } from "./reset-data";
 import {WellnessTracker} from "./wellness-tracker";
 import { FoodIntake } from "./food-intake";
-import {HomeEntry} from "./home-entry";
 import { PantryHome } from "./pantry-home";
 import {PendingRecommendationPantry} from './recommendation-pantry';
 import {pendingPantryKey,pendingPantrySelection} from '../lib/recommendation-pantry';
@@ -31,7 +32,7 @@ import { CommunityPanel, SharedBasket } from "./community";
 import { BudgetSettings } from "./budget-settings";
 const BodyProfilePanel=dynamic(()=>import("./body-profile").then(module=>module.BodyProfilePanel));
 import {AppShell,Brand,Icon,type IconName} from './app-shell';
-import { googleAuthErrors, type GoogleAuthErrorCode } from "../lib/auth-messages";
+import { authErrors as googleAuthErrors, type AuthErrorCode as GoogleAuthErrorCode } from "../lib/auth-messages";
 import type { PublicUser } from "../lib/auth";
 import { catalogCategories, shoppingSearchLinks, unitPrice, type CatalogItem, type CompareResponse } from "../lib/catalog";
 import { ProductThumb } from "./product-thumb";
@@ -48,21 +49,33 @@ const GUEST_PUSH_KEY='kkiniplan-guest-push-v1';
 import {MealReminderCard} from './meal-reminder-card';
 import {hasGuestIntake,importGuestIntake} from '../lib/guest-intake';
 import {PageHeader,LinkButton,BackButton} from './components/ui';
+import Together from './together/together';
 import {PlanningNavigation,TodayNavigation,ShoppingNavigation} from './section-navigation';
 import './information-layout.css';
 import {HomeMealChoice} from './home-meal-choice';
+import {NutritionHome} from './nutrition-home';
+import {HealthMode} from './health-mode';
+import {WaterReminderCard} from './water-reminder-card';
+import DinnerSelection from './another-dinner/selection';
 import {EatOutCard} from './eat-out-card';
 const WeeklyGuideCard=dynamic(()=>import('./weekly-guide-card').then(module=>module.WeeklyGuideCard));
 import {trackPlanner} from '../lib/track-planner';
 import {trackAnalytics} from '../lib/analytics';
+import {pendingPlanSave} from '../lib/pending-plan-save';
 import {pendingTasteReturn} from '../lib/pending-taste-save';
 import TasteHomeArrival from './taste-home-arrival';
 
-type Tab = "ingredients" | "plan" | "eat-out" | "convenience" | "community" | "home" | "calendar" | "cart" | "compare" | "record" | "profile";
+const NutritionStatistics=dynamic(()=>import('./nutrition-statistics').then(m=>m.NutritionStatistics));
+type Tab = "stats" | "next-meal" | "ingredients" | "plan" | "eat-out" | "convenience" | "community" | "home" | "calendar" | "cart" | "compare" | "record" | "profile";
 const formatWon=(value:number)=>new Intl.NumberFormat('ko-KR').format(value)+'원';
 export default function Home() {
-  const [homeEntry,setHomeEntry]=useState<'choose'|'pantry'|'recommend'>('choose');
-  const [todayView,setTodayView]=useState<'home'|'eat-out'|'convenience'>('home');
+  const [todayView,setTodayView]=useState<'home'|'eat-out'|'convenience'|'together'>('home');
+  const todayViews = process.env.NODE_ENV==='development' ? ['home','eat-out','convenience','together'] as const : ['home','eat-out','convenience'] as const;
+  useEffect(()=>{
+    if(process.env.NODE_ENV!=='development'||new URLSearchParams(window.location.search).get('view')!=='together')return;
+    const frame=requestAnimationFrame(()=>setTodayView('together'));
+    return()=>cancelAnimationFrame(frame);
+  },[]);
   const [recordDate,setRecordDate]=useState(()=>emptyDashboard().today);
   const pathname = usePathname();
   useEffect(()=>{
@@ -75,13 +88,14 @@ export default function Home() {
     if(pathname!=="/")return;
     const query=new URLSearchParams(window.location.search);
     if(query.has("recipe"))router.replace(`/ingredients?${query.toString()}`);
+    else if(query.has("meal")||query.has("recommend")||query.get("from")==="kcal"||query.get("view")==="together"||window.location.hash==="#today-meals")router.replace(`/next-meal${query.size?`?${query}`:""}`);
   },[pathname,router]);
   const section = pathname.split("/")[1];
-  const tab: Tab = (["ingredients", "plan", "eat-out", "convenience", "calendar", "cart", "record", "community", "profile", "compare"] as string[]).includes(section) ? section as Tab : "home";
+  const tab: Tab = (["stats", "next-meal", "ingredients", "plan", "eat-out", "convenience", "calendar", "cart", "record", "community", "profile", "compare"] as string[]).includes(section) ? section as Tab : "home";
   const setTab = (next: Tab) => router.push(next === "home" ? "/" : `/${next}`);
   // 하단 탭에 없는 화면도 어느 영역에 있는지 보이도록 상위 탭을 켠다.
   const isPlanning = tab === "plan" || tab === "calendar";
-  const navSection: Tab = isPlanning ? "plan" : tab === "compare" || tab === "ingredients" ? "cart" : tab === "eat-out" || tab === "convenience" ? "home" : tab === "community" ? "profile" : tab;
+  const navSection: Tab = tab==='home'||tab==='record'||tab==='stats'?tab:'profile';
   const contentRef=useRef<HTMLDivElement>(null);
   const startLoading = useLoadingTask();
   const [products, setProducts] = useState<CatalogItem[]>([]);
@@ -91,9 +105,9 @@ export default function Home() {
   function openPlanLogin(){
    const pantry=pendingPantrySelection();setPantryAuth(!!pantry);
    if(pantry){setAuthPurpose('선택한 재료를 기억해 둘게요. 로그인하면 내 재료에 추가하고, 다음에도 재료에 맞춰 추천받을 수 있어요.');trackAnalytics('recommendation_pantry_login_viewed');setShowAuth(true);return;}
-   let saving=false;try{saving=!!sessionStorage.getItem('ggini-pending-adoption');}catch{}
+   const saving=pendingPlanSave();
    setAuthPurpose(undefined);
-   if(saving){setAuthPurpose('방금 고른 식단을 계정에 저장해요. 로그인하면 선택한 메뉴 그대로 저장돼요.');trackAnalytics('save_login_viewed');}
+   if(saving){setAuthPurpose(`${saving.names.length?saving.names.join(' · ')+' — ':''}고른 메뉴를 저장하고, 먹을 때 다시 꺼내보세요. 로그인 후 바로 저장해 드려요.`);trackAnalytics('save_login_viewed');}
    setShowAuth(true);
   }
   const [authUser, setAuthUser] = useState<PublicUser | null>(null);
@@ -192,7 +206,8 @@ export default function Home() {
         const data = await response.json() as { user: PublicUser | null; error?: string };
         if (!response.ok) throw new Error(data.error ?? "로그인 상태를 확인할 수 없습니다.");
         setAuthUser(data.user);
-        if(data.user&&pendingTasteReturn())router.replace(pendingTasteReturn()!);
+        if(data.user&&pendingPlanSave())router.replace(pendingPlanSave()!.returnTo);
+        else if(data.user&&pendingTasteReturn())router.replace(pendingTasteReturn()!);
         else if(data.user&&takeProfileIntent())router.replace("/profile?personalize=1#profile-settings");
         else if(data.user&&pendingRecordMode())router.replace("/record");
       })
@@ -244,35 +259,33 @@ export default function Home() {
 
   return <AppShell>
     {savingBudget && <AppLoading message="이번 주 예산을 저장하고 있어요"/>}
-      {showAuth ? <AuthScreen purpose={authPurpose} purposeTitle={pantryAuth?"집에 있는 재료를 기억해 둘까요?":undefined} onAuthEvent={authPurpose?event=>trackAnalytics(pantryAuth?(event==='started'?'recommendation_pantry_login_started':event==='failed'?'recommendation_pantry_login_failed':event==='consent_required'?'recommendation_pantry_consent_required':'recommendation_pantry_login_succeeded'):(event==='started'?'save_login_started':event==='failed'?'save_login_failed':event==='consent_required'?'save_consent_required':'save_login_succeeded')):undefined} initialError={authError} onExplore={() => { if(authPurpose){try{sessionStorage.removeItem(pantryAuth?pendingPantryKey:'ggini-pending-adoption');}catch{}trackAnalytics(pantryAuth?'recommendation_pantry_login_cancelled':'save_login_cancelled');}setPantryAuth(false);setAuthPurpose(undefined);clearRecordMode();clearProfileIntent();setShowAuth(false); setAuthError(""); }} onSuccess={(user) => { setPantryAuth(false);setAuthPurpose(undefined);setDashboard(null); setAuthUser(user); setAuthError(""); setShowAuth(false); if(pendingTasteReturn())router.push(pendingTasteReturn()!);else if(takeProfileIntent())router.push("/profile?personalize=1#profile-settings");else setTab(pendingRecordMode()?"record":"home"); }}/> : <>
+      {showAuth ? <AuthScreen purpose={authPurpose} purposeTitle={pantryAuth?"집에 있는 재료를 기억해 둘까요?":undefined} onAuthEvent={authPurpose?event=>trackAnalytics(pantryAuth?(event==='started'?'recommendation_pantry_login_started':event==='failed'?'recommendation_pantry_login_failed':event==='consent_required'?'recommendation_pantry_consent_required':'recommendation_pantry_login_succeeded'):(event==='started'?'save_login_started':event==='failed'?'save_login_failed':event==='consent_required'?'save_consent_required':'save_login_succeeded')):undefined} initialError={authError} onExplore={() => { if(authPurpose){try{sessionStorage.removeItem(pantryAuth?pendingPantryKey:'ggini-pending-adoption');}catch{}trackAnalytics(pantryAuth?'recommendation_pantry_login_cancelled':'save_login_cancelled');}setPantryAuth(false);setAuthPurpose(undefined);clearRecordMode();clearProfileIntent();setShowAuth(false); setAuthError(""); }} onSuccess={(user) => { setPantryAuth(false);setAuthPurpose(undefined);setDashboard(null); setAuthUser(user); setAuthError(""); setShowAuth(false); if(pendingPlanSave())router.push(pendingPlanSave()!.returnTo);else if(pendingTasteReturn())router.push(pendingTasteReturn()!);else if(takeProfileIntent())router.push("/profile?personalize=1#profile-settings");else setTab(pendingRecordMode()?"record":"home"); }}/> : <>
       <header className="app-header"><Brand/><div className="app-header-actions">{authUser ? <button className="logout-link" type="button" onClick={signOut}>로그아웃</button> : <button className="logout-link" type="button" onClick={() => { setAuthError(""); setShowAuth(true); }}>로그인</button>}</div></header>
-      <div className={`app-content app-content-${tab}`} ref={contentRef}>
+      <div className={`app-content app-content-${tab==='next-meal'?'home':tab}`} ref={contentRef}>
         {/* 로그인 확인이 끝난 뒤에 그린다 — 비회원 화면을 먼저 그렸다가 회원 화면으로 다시 마운트하면 요청이 두 번씩 나간다. */}
         {authChecked&&<>
+        {(tab==='home'||tab==='profile')&&<HealthMode key={authUser?.id??'guest'} userId={authUser?.id} compact={tab==='home'}/>}
+        {tab==='profile'&&authUser&&<details id="water-reminders"><summary>물 섭취 알림 설정</summary><WaterReminderCard key={authUser.id} userId={authUser.id}/></details>}
         <PendingRecommendationPantry key={authUser?.id??'guest'} userId={authUser?.id}/>
+        {(tab==='next-meal'||tab==='convenience'||tab==='eat-out')&&<DinnerSelection/>}
         {isPlanning&&<PlanningNavigation section={tab}/>}
         {(tab==='eat-out'||tab==='convenience')&&<TodayNavigation section={tab}/>}
         {tab==='ingredients'&&<ShoppingNavigation section="ingredients"/>}
+        {tab === "stats" && <NutritionStatistics userId={authUser?.id} onLogin={()=>setShowAuth(true)}/>}
         {tab === "record" && <FoodIntake key={`intake-${authUser?.id??"guest"}-${tab}`} userId={authUser?.id} onLogin={()=>setShowAuth(true)} history={tab==="record"} recordDate={recordDate} onDateChange={setRecordDate} expenseManagement={dashboard&&<Dashboard key={`${authUser?.id??"guest"}-${tab}-${recordDate}`} mode={tab} recordDate={recordDate} data={dashboard} userId={authUser?.id} products={products} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")} onCalendar={()=>setTab("calendar")} onBudget={editBudget} onRefresh={refreshDashboard} onCompare={openCompare}/>}/>}
         {tab==='record'&&authUser&&<details className="information-detail"><summary>나의 기록 습관·주간 피드백</summary><DailyReturnCard key={authUser.id} userId={authUser.id} onRecord={()=>{setRecordDate(emptyDashboard().today);setTab('record');}}/></details>}
         {tab === "record" && <details className="information-detail"><summary>내 재료로 만든 식사 이력</summary><PantryMealHistory userId={authUser?.id}/></details>}
         {tab === "ingredients" && <PantryHome initialEntry="pantry" userId={authUser?.id} onLogin={()=>setShowAuth(true)} onPlan={()=>setTab("plan")}/>}
-        {tab === "home" && <>
-          <TasteHomeArrival/>
-          {homeEntry==='choose'?<HomeEntry onChoose={entry=>{setHomeEntry(entry);trackAnalytics('home_entry_selected',{entry});}}/>:<>
-          {homeEntry!=='pantry'&&<BackButton onClick={()=>setHomeEntry('choose')}>홈으로</BackButton>}
-          {homeEntry==='pantry'?<PantryHome standardResults onHome={()=>setHomeEntry('choose')} initialEntry="pantry" userId={authUser?.id} onLogin={()=>setShowAuth(true)} onPlan={()=>setTab('plan')}/>:<>
-          <header id="today-meals" className="today-choice-heading"><div className="today-heading-row"><h2>오늘의 식단</h2><span id="today-plan-tools" hidden={todayView!=='home'}/></div><p>뭘 먹을지 고민된다면 끼니플랜이 추천해 드려요.</p></header>
-          <nav className="section-navigation today-navigation today-choice-tabs" aria-label="오늘의 메뉴 선택" role="tablist">{(['home','eat-out','convenience'] as const).map((view,i)=><button key={view} id={`today-tab-${view}`} type="button" role="tab" aria-selected={todayView===view} aria-controls={`today-panel-${view}`} onClick={()=>setTodayView(view)}><span className="today-tab-check" aria-hidden="true"><Icon name="check" size={16}/></span><span>{['집에서','외식','편의점'][i]}</span></button>)}</nav>
+        {tab === "home" && <NutritionHome key={`nutrition-${authUser?.id??'guest'}`} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/>}
+        {tab === "next-meal" && <>
+          <TasteHomeArrival/><BackButton href="/">오늘 홈으로</BackButton><header id="today-meals" tabIndex={-1} className="today-choice-heading"><div className="today-heading-row"><h2>다음 끼니, 어떻게 먹을까요?</h2><span id="today-plan-tools" hidden={todayView!=='home'}/></div><p>집밥부터 요리 쉬는 날까지, 지금 가능한 한 끼를 골라요.</p></header>
+          <nav className="section-navigation today-navigation today-choice-tabs" style={{gridTemplateColumns:`repeat(${todayViews.length},minmax(0,1fr))`}} aria-label="오늘의 메뉴 선택" role="tablist">{todayViews.map((view,i)=><button key={view} id={`today-tab-${view}`} type="button" role="tab" tabIndex={todayView===view?0:-1} aria-selected={todayView===view} aria-controls={`today-panel-${view}`} onClick={()=>setTodayView(view)} onKeyDown={event=>{let index=i;if(event.key==='ArrowRight')index=(i+1)%todayViews.length;else if(event.key==='ArrowLeft')index=(i+todayViews.length-1)%todayViews.length;else if(event.key==='Home')index=0;else if(event.key==='End')index=todayViews.length-1;else return;event.preventDefault();setTodayView(todayViews[index]);document.getElementById(`today-tab-${todayViews[index]}`)?.focus();}}><span className="today-tab-check" aria-hidden="true"><Icon name="check" size={16}/></span><span>{['집에서','외식','편의점','둘이서'][i]}</span></button>)}</nav>
+          {process.env.NODE_ENV==='development'&&<div id="today-panel-together" role="tabpanel" aria-labelledby="today-tab-together" hidden={todayView!=='together'}><Together embedded/></div>}
           <div id="today-panel-home" role="tabpanel" aria-labelledby="today-tab-home" hidden={todayView!=='home'}><ShoppingPlanner simpleHome active={todayView==='home'} key={`home-plan-${authUser?.id??'guest'}`} dashboard={dashboard} userId={authUser?.id} onLogin={openPlanLogin}/></div>
           {todayView==='eat-out'&&<div id="today-panel-eat-out" role="tabpanel" aria-labelledby="today-tab-eat-out"><EatOutCard inline showRecording={false} userId={authUser?.id} onLogin={()=>setShowAuth(true)}/></div>}
           {todayView==='convenience'&&<div id="today-panel-convenience" role="tabpanel" aria-labelledby="today-tab-convenience"><HomeMealChoice initialOpen showRecording={false}/></div>}
-          </>}</>}
-          <details className="home-entry-more"><summary>식단 계획 · 기록 · 다른 기능</summary>
-          <LinkButton href="/plan" block>미리 식단 짜기</LinkButton>
-          <LinkButton href="/taste" block>너, 내 입맛 얼마나 알아? 친구 퀴즈</LinkButton>
+          <details className="information-detail"><summary>며칠 치 식단을 미리 준비하고 싶다면</summary><LinkButton href="/plan" block>미리 식단 짜기</LinkButton></details>
 
-          </details>
           <InstallPrompt active/>
         </>}
         {tab === "plan" && <><ShoppingPlanner key={`plan-${authUser?.id??'guest'}`} dashboard={dashboard} userId={authUser?.id} onLogin={openPlanLogin}/>{authUser&&<details className="planning-weekly-guide"><summary>이번 주 식단 가이드</summary><WeeklyGuideCard userId={authUser.id}/></details>}</>}
@@ -320,16 +333,16 @@ export default function Home() {
           <p className="compare-disclaimer">비교 결과의 상품 용량, 배송비, 할인 조건은 판매처마다 달라질 수 있습니다. 결제 전 상품 상세 정보를 확인하세요.</p>
         </>}
         {tab === "community" && <CommunityPanel key={authUser?.id ?? "guest"} userId={authUser?.id} products={products} budget={budget} onLogin={()=>setShowAuth(true)} onProfile={()=>setTab("profile")} onCart={()=>setTab("cart")}/>}
-        {tab === "profile" && <><div className="page-intro"><div className="week-label">마이페이지</div><h2>{authUser?`${displayName}님의`:'나의'} <span>식사 취향</span></h2><p>내 몸과 생활에 맞게, 한 번만 설정해요.</p>{authUser&&<p className="profile-account-email">로그인 계정 · <strong>{authUser.email}</strong><br/><small>다른 기기에서도 이 이메일로 로그인하면 같은 기록을 볼 수 있어요.</small></p>}<Link className="profile-guide-link" href="/how-to">처음 오셨나요? 끼니플랜 소개·사용 가이드</Link></div>{/* App Store 심사: 계정 삭제는 프로필 맨 위에서 바로 찾을 수 있어야 한다. */}{authUser&&<section aria-labelledby="profile-account-heading"><h3 id="profile-account-heading" className="profile-group-title">계정 관리</h3><nav className="profile-menu" aria-label="계정 관리"><Link href="/delete-account"><span>회원 탈퇴 · 계정 및 데이터 삭제</span><Icon name="chevron" size={16}/></Link></nav></section>}{authUser&&<section id="meal-reminders" className="profile-retention-section" aria-labelledby="meal-reminders-heading"><h3 id="meal-reminders-heading" className="profile-group-title">식사 알림</h3><MealReminderCard key={authUser.id}/></section>}<BodyProfilePanel key={authUser?.id ?? "guest"} userId={authUser?.id} name={displayName} onLogin={() => setShowAuth(true)}/><section id="wellness-settings"><WellnessTracker key={authUser?.id??"guest"} settingsOnly userId={authUser?.id} onLogin={()=>setShowAuth(true)}/></section><h3 className="profile-group-title">식비 관리</h3><details className="profile-extra"><summary>한 달 식비 예산</summary><BudgetSettings monthlyOnly key={`budget-${authUser?.id ?? "guest"}`} data={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)} onRefresh={refreshDashboard}/></details><h3 className="profile-group-title">도움이 필요할 때</h3><nav className="profile-menu" aria-label="도움말 및 관리"><Link href="/how-to"><span>처음이라면 · 끼니플랜 사용법</span><Icon name="chevron" size={16}/></Link><Link href="/submissions#mine"><span>내 제보와 검토 결과</span><Icon name="chevron" size={16}/></Link><a href="mailto:choisj2702@gmail.com"><span>문의·협업</span><Icon name="chevron" size={16}/></a></nav></> }
+        {tab === "profile" && <><div className="page-intro"><div className="week-label">마이페이지</div><h2>{authUser?`${displayName}님의`:'나의'} <span>식사 취향</span></h2><p>내 몸과 생활에 맞게, 한 번만 설정해요.</p>{authUser&&<p className="profile-account-email">로그인 계정 · <strong>{accountLabel(authUser.email)}</strong><br/><small>다른 기기에서도 같은 로그인 방법과 계정으로 기록을 볼 수 있어요.</small></p>}<Link className="profile-guide-link" href="/how-to">처음 오셨나요? 끼니플랜 소개·사용 가이드</Link></div>{/* App Store 심사: 계정 삭제는 프로필 맨 위에서 바로 찾을 수 있어야 한다. */}{authUser&&<section aria-labelledby="profile-account-heading"><h3 id="profile-account-heading" className="profile-group-title">계정 관리</h3><nav className="profile-menu" aria-label="계정 관리"><Link href="/delete-account"><span>회원 탈퇴 · 계정 및 데이터 삭제</span><Icon name="chevron" size={16}/></Link></nav></section>}{authUser&&<section id="meal-reminders" className="profile-retention-section" aria-labelledby="meal-reminders-heading"><h3 id="meal-reminders-heading" className="profile-group-title">식사 알림</h3><MealReminderCard key={authUser.id}/></section>}<BodyProfilePanel key={authUser?.id ?? "guest"} userId={authUser?.id} name={displayName} onLogin={() => setShowAuth(true)}/><section id="wellness-settings"><WellnessTracker key={authUser?.id??"guest"} settingsOnly userId={authUser?.id} onLogin={()=>setShowAuth(true)}/></section><h3 className="profile-group-title">식비 관리</h3><details className="profile-extra"><summary>한 달 식비 예산</summary><BudgetSettings monthlyOnly key={`budget-${authUser?.id ?? "guest"}`} data={dashboard} userId={authUser?.id} onLogin={()=>setShowAuth(true)} onRefresh={refreshDashboard}/></details><h3 className="profile-group-title">도움이 필요할 때</h3><nav className="profile-menu" aria-label="도움말 및 관리"><Link href="/how-to"><span>처음이라면 · 끼니플랜 사용법</span><Icon name="chevron" size={16}/></Link><Link href="/submissions#mine"><span>내 제보와 검토 결과</span><Icon name="chevron" size={16}/></Link><a href="mailto:choisj2702@gmail.com"><span>문의·협업</span><Icon name="chevron" size={16}/></a></nav></> }
         {tab==='cart'&&<section className="home-guide-entry"><strong>상품·영양정보 제보</strong><Link href="/submissions">상품 정보 보완하기 →</Link></section>}
-        {tab!=='home'&&<ServiceFeedback page={`/${tab}`}/>}
+        {tab!=='home'&&tab!=='next-meal'&&<ServiceFeedback page={`/${tab}`}/>}
         {tab==='profile'&&<details className="home-explore"><summary>상품 비교·이용 안내</summary><ComparisonTrends/><nav aria-label="더 알아보기"><Link href="/products">상품 가격·영양 비교 <span>→</span></Link><Link href="/guides">식단·식비 가이드 <span>→</span></Link><Link href="/submissions">상품·영양정보 제보 <span>→</span></Link><a href="mailto:choisj2702@gmail.com">문의·협업 <span>↗</span></a></nav></details>}
-        {tab==='profile'&&<details className="profile-extra profile-data"><summary>데이터 관리</summary><ResetData key={`reset-${authUser?.id??"guest"}`} userId={authUser?.id}/></details>}
+        {tab==='profile'&&<><h3 className="profile-group-title">식사 준비 도구</h3><nav className="profile-menu" aria-label="식사 준비 도구"><Link href="/next-meal">다음 끼니 추천 <Icon name="chevron" size={16}/></Link><Link href="/plan">식단 미리 짜기 <Icon name="chevron" size={16}/></Link><Link href="/ingredients">냉장고 재료 <Icon name="chevron" size={16}/></Link><Link href="/cart">장보기 <Icon name="chevron" size={16}/></Link></nav><details className="profile-extra profile-data"><summary>데이터 관리</summary><ResetData key={`reset-${authUser?.id??"guest"}`} userId={authUser?.id}/></details></>}
         {(tab === 'home' || tab === 'profile') && <PolicyLinks/>}
         </>}
       </div>
       {/* 식단공유(커뮤니티) 탭은 준비 중이라 메뉴에서 숨김 — /community 라우트 자체는 그대로 동작해요. */}
-      <nav className="bottom-nav launch-nav" aria-label="앱 메뉴">{([ ["home","오늘","home"], ["plan","식단","calendar"], ["record","기록","edit"], ["cart","장보기","bag"], ["profile","마이","user"] ] as [Tab,string,IconName][]).map(([key,label,icon]) => <button key={key} type="button" className={navSection === key ? "active" : ""} onClick={() => setTab(key)} aria-current={tab === key ? "page" : navSection === key ? "true" : undefined}><Icon name={icon} size={21}/><span>{label}</span></button>)}</nav>
+      <nav className="bottom-nav launch-nav" style={{gridTemplateColumns:'repeat(4,minmax(0,1fr))'}} aria-label="앱 메뉴">{([ ["home","오늘","home"], ["record","식사 일기","edit"], ["stats","통계","chart"], ["profile","마이","user"] ] as [Tab,string,IconName][]).map(([key,label,icon]) => <button key={key} type="button" className={navSection === key ? "active" : ""} onClick={() => setTab(key)} aria-current={tab === key ? "page" : navSection === key ? "true" : undefined}><Icon name={icon} size={21}/><span>{label}</span></button>)}</nav>
       </>}
 
     {showSetup && <div className="modal-backdrop" role="presentation" onMouseDown={() => setShowSetup(false)}><div className="setup-modal" role="dialog" aria-modal="true" aria-labelledby="setup-title" onMouseDown={(e) => e.stopPropagation()}>{dataError&&<p className="auth-error" role="alert">{dataError}</p>}<div className="modal-header"><div><span className="section-kicker">MY PLAN</span><h2 id="setup-title">내 목표 수정하기</h2></div><button type="button" onClick={() => setShowSetup(false)} aria-label="닫기"><Icon name="close" size={21}/></button></div><form onSubmit={saveSetup}><label htmlFor="budget">이번 주 식비 한도</label><div className="input-wrap"><input id="budget" type="number" min="1" max="10000000" required inputMode="numeric" value={draftBudget} onChange={(e) => setDraftBudget(e.target.value)}/><span>원</span></div><button className="primary-button" type="submit" disabled={savingBudget}>저장하고 계속하기 <Icon name="arrow" size={17}/></button></form></div></div>}

@@ -1,3 +1,4 @@
+
 import { POLICY_EMAIL } from '../lib/member-policy';
 import './legal.css';
 

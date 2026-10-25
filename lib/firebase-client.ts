@@ -1,12 +1,13 @@
 "use client";
 
 import { getApps, initializeApp } from "firebase/app";
-import { browserPopupRedirectResolver, initializeAuth, inMemoryPersistence, type Auth } from "firebase/auth";
+import { browserPopupRedirectResolver, initializeAuth, inMemoryPersistence, browserSessionPersistence, type Auth } from "firebase/auth";
 
 let auth: Auth | undefined;
+let redirectAuth:Auth|undefined;
 
-export function firebaseAuth(): Auth {
-  if (auth) return auth;
+export function firebaseAuth(forRedirect=false): Auth {
+  const existing=forRedirect?redirectAuth:auth;if(existing)return existing;
   const config = {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
     // Production's auth helpers are proxied by next.config.ts. Keep the
@@ -20,10 +21,12 @@ export function firebaseAuth(): Auth {
   if (!config.apiKey || !config.authDomain || !config.projectId || !config.appId) {
     throw new Error("구글 로그인 설정을 확인해 주세요.");
   }
-  const app = getApps().find((entry) => entry.name === "kkiniplan-web") ?? initializeApp(config, "kkiniplan-web");
-  auth = initializeAuth(app, { persistence: inMemoryPersistence, popupRedirectResolver: browserPopupRedirectResolver });
-  auth.languageCode = "ko";
-  return auth;
+  const name=forRedirect?'kkiniplan-mobile-redirect':'kkiniplan-web';
+  const app = getApps().find((entry) => entry.name === name) ?? initializeApp(config, name);
+  const instance = initializeAuth(app, { persistence: forRedirect?browserSessionPersistence:inMemoryPersistence, popupRedirectResolver: browserPopupRedirectResolver });
+  instance.languageCode = "ko";
+  if(forRedirect)redirectAuth=instance;else auth=instance;
+  return instance;
 }
 
 export function firebaseLoginMessage(error: unknown): string {

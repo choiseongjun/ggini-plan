@@ -3,19 +3,23 @@ import sharp from 'sharp';
 import {sameOrigin,sessionUser} from '../../../../lib/auth';
 import {validatedPhoto} from '../../../../lib/nutrition-photo';
 import {parsePantryPhoto} from '../../../../lib/pantry-photo';
+import {reservePhotoAnalysis} from '../../../../lib/photo-analysis-quota';
 
 export const runtime='nodejs';
 export const maxDuration=60;
 export async function POST(request:NextRequest){
   if(!sameOrigin(request)) return Response.json({error:'요청 출처가 올바르지 않습니다.'},{status:403});
   try{
-    if(!await sessionUser(request)) return Response.json({error:'사진으로 재료를 찾으려면 로그인해 주세요.'},{status:401});
+    const user=await sessionUser(request);
+    if(!user) return Response.json({error:'사진으로 재료를 찾으려면 로그인해 주세요.'},{status:401});
     if(!process.env.OPENAI_API_KEY?.trim()) return Response.json({error:'사진 인식이 아직 준비되지 않았어요. 재료를 직접 선택해 주세요.'},{status:503});
     if(Number(request.headers.get('content-length'))>9*1024*1024) return Response.json({error:'사진은 8MB 이하로 첨부해 주세요.'},{status:413});
     const form=await request.formData();
     const photo=await validatedPhoto(form.get('photo'));
     if(!photo) return Response.json({error:'사진을 첨부해 주세요.'},{status:400});
     const image=await sharp(photo.bytes,{limitInputPixels:25_000_000}).rotate().resize({width:2400,height:2400,fit:'inside',withoutEnlargement:true}).jpeg().toBuffer();
+    const limited=await reservePhotoAnalysis(user.id);
+    if(limited)return Response.json({error:limited},{status:429});
     const response=await fetch('https://api.openai.com/v1/responses',{
       method:'POST',headers:{Authorization:`Bearer ${process.env.OPENAI_API_KEY.trim()}`,'Content-Type':'application/json'},signal:AbortSignal.timeout(35000),
       body:JSON.stringify({model:process.env.OPENAI_PANTRY_MODEL?.trim()||process.env.OPENAI_NUTRITION_MODEL?.trim()||'gpt-4.1',store:false,max_output_tokens:2200,

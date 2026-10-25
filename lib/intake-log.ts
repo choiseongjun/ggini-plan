@@ -1,10 +1,11 @@
+import {officialMealMacros} from './official-meal-nutrition';
 import {pantrySourceProducts} from './pantry-source-recommendations';
 import {validEatenAt,validMealSlot} from './meal-time';
 import {NextResponse} from 'next/server';
 import {authFailure} from './auth';
 import {getPool} from './db';
 import {servingNutrition,validPortions} from './food-intake';
-import {EXTRA_PREFIX,intakeExtras,parseIntakeExtras} from './intake-extras';
+import {EXTRA_PREFIX,intakeExtras,parseIntakeExtras,isReferenceExtra} from './intake-extras';
 import {planProducts} from './shopping-plan-catalog';
 import {servingNutrients} from './serving-nutrients';
 import {REFERENCE_PREFIX,foodReferenceByCode,foodReferencesByCodes} from './food-reference';
@@ -26,7 +27,7 @@ export async function logMeal(userId:string|number,input:{id:string;productId?:u
  if(hasMain&&!main)return authFailure('메뉴 정보를 확인할 수 없어요.',422);
  const portions=hasMain?input.portions as number:1;
  const rows:Entry[]=[];
- if(main){const n=servingNutrition(main),m=servingNutrients(main),x=(v:number|null)=>v===null?null:v*portions;rows.push({id:input.id,productId:main.id,name:main.name,portions,calories:x(n.calories),protein:x(n.protein),cost:main.sourceRecipe?null:main.price/main.servings*portions,carbs:x(m.carbs),sugar:null,sodium:x(m.sodium),fat:x(m.fat)});}
+ if(main){const n=servingNutrition(main),m=servingNutrients(main),x=(v:number|null)=>v===null?null:v*portions;rows.push({id:input.id,productId:main.id,name:main.name,portions,calories:x(n.calories),protein:x(n.protein),cost:main.sourceRecipe?null:main.price/main.servings*portions,carbs:x(m.carbs),sugar:main.officialNutrition?x(officialMealMacros(main.officialNutrition).sugar):null,sodium:x(m.sodium),fat:x(m.fat)});}
  for(const extra of extras){
   const id=rows.length?crypto.randomUUID():input.id;
   if(typeof extra==='string'){const e=intakeExtras[extra];rows.push({id,productId:`${EXTRA_PREFIX}${extra}`,name:e.label,portions:1,calories:e.calories,protein:e.protein,cost:null,carbs:null,sugar:null,sodium:null,fat:null});}
@@ -49,7 +50,20 @@ export async function logReference(userId:string|number,input:{id:string;referen
  return insertEntries(userId,input.id,[{id:input.id,productId:`${REFERENCE_PREFIX}${food.code}`,name:food.brand?`${food.name} (${food.brand})`:food.name,portions:p,calories:x(food.kcal),protein:x(food.protein),cost:null,carbs:x(food.carbs),sugar:x(food.sugar),sodium:x(food.sodium),fat:x(food.fat)}],photos,input.eatenAt,input.mealSlot);
 }
 
-async function insertEntries(userId:string|number,requestId:string,rows:Entry[],photos:Buffer[]=[],eatenAt?:unknown,mealSlot?:unknown){
+export async function logReferenceBatch(userId:string|number,input:{id:string;items:unknown;eatenAt?:unknown;mealSlot?:unknown},photos:Buffer[]=[]){
+ if(!Array.isArray(input.items)||!input.items.length||input.items.length>10||!input.items.every(isReferenceExtra))return authFailure('음식 1~10개와 각각의 먹은 양을 확인해 주세요.',400);
+ const foods=await foodReferencesByCodes(input.items.map(item=>item.referenceCode));
+ const rows:Entry[]=[];
+ for(const [index,item] of input.items.entries()){
+  const food=foods.find(food=>food.code===item.referenceCode);
+  if(!food)return authFailure('음식 정보를 찾지 못했어요. 음식 목록을 다시 확인해 주세요.',422);
+  const x=(value:number|null)=>value===null?null:Math.round(value*item.portions*10)/10;
+  rows.push({id:index===0?input.id:crypto.randomUUID(),productId:`${REFERENCE_PREFIX}${food.code}`,name:food.brand?`${food.name} (${food.brand})`:food.name,portions:item.portions,calories:x(food.kcal),protein:x(food.protein),carbs:x(food.carbs),fat:x(food.fat),sugar:x(food.sugar),sodium:x(food.sodium),cost:null});
+ }
+ return insertEntries(userId,input.id,rows,photos,input.eatenAt,input.mealSlot);
+}
+
+export async function insertEntries(userId:string|number,requestId:string,rows:Entry[],photos:Buffer[]=[],eatenAt?:unknown,mealSlot?:unknown){
  if(eatenAt!==undefined&&!validEatenAt(eatenAt))return authFailure('먹은 날짜와 시간을 확인해 주세요. 미래 시각은 기록할 수 없어요.',400);
  if(mealSlot!==undefined&&mealSlot!==null&&!validMealSlot(mealSlot))return authFailure('끼니를 확인해 주세요.',400);
  const occurred=eatenAt??new Date().toISOString();
