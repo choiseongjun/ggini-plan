@@ -1,6 +1,7 @@
 import {ProductAnalytics,SiteAnalytics} from './product-analytics';
 import {NativeSafeArea} from './native-safe-area';
 import {RetiredModelCleanup} from './retired-model-cleanup';
+import {MobileStoreRedirect} from './mobile-store-redirect';
 import type { Metadata, Viewport } from "next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { KakaoBrowser } from './kakao-browser';
@@ -31,5 +32,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
-  return <html lang="ko"><body><NativeSafeArea/><RetiredModelCleanup/><AppLoadingProvider>{children}</AppLoadingProvider><KakaoBrowser /><DialogHistory /><ProductAnalytics /><SiteAnalytics /><SpeedInsights /></body></html>;
+  return <html lang="ko"><body><NativeSafeArea/><RetiredModelCleanup/><MobileStoreRedirect/><AppLoadingProvider>{children}</AppLoadingProvider><KakaoBrowser /><DialogHistory /><ProductAnalytics /><SiteAnalytics /><SpeedInsights /></body></html>;
 }
