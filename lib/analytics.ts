@@ -1,6 +1,7 @@
 'use client';
 import {analyticsScreen,sanitizeAnalytics,type AnalyticsEvent,type AnalyticsProperties} from './analytics-events';
 import type {PostHog} from 'posthog-js';
+import {entryAttribution} from './analytics-attribution';
 let client:Promise<PostHog|null>|undefined;
 function getClient(){
  const token=process.env.NEXT_PUBLIC_POSTHOG_KEY;
@@ -27,8 +28,10 @@ function getClient(){
 export function trackAnalytics(event:AnalyticsEvent,properties:AnalyticsProperties={}){
  if(typeof window==='undefined')return;
  const screen=analyticsScreen(window.location.pathname);if(!screen)return;
+ let storage:Storage|null=null;try{storage=window.sessionStorage;}catch{/* optional telemetry */}
+ const entry=entryAttribution(storage,window.location.search);
  // Never await analytics in a user action; blocked analytics cannot block a meal log.
- void getClient().then(ph=>{try{ph?.capture(event,{...properties,screen});}catch{/* optional telemetry */}}).catch(()=>{});
+ void getClient().then(ph=>{try{ph?.capture(event,{...entry,...properties,screen});}catch{/* optional telemetry */}}).catch(()=>{});
 }
 
 export function trackPantrySelection(startedAt:number|null){

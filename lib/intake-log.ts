@@ -49,7 +49,7 @@ export async function logReference(userId:string|number,input:{id:string;referen
  return insertEntries(userId,input.id,[{id:input.id,productId:`${REFERENCE_PREFIX}${food.code}`,name:food.brand?`${food.name} (${food.brand})`:food.name,portions:p,calories:x(food.kcal),protein:x(food.protein),cost:null,carbs:x(food.carbs),sugar:x(food.sugar),sodium:x(food.sodium),fat:x(food.fat)}],photos,input.eatenAt,input.mealSlot);
 }
 
-async function insertEntries(userId:string|number,requestId:string,rows:Entry[],photos:Buffer[]=[],eatenAt?:unknown,mealSlot?:unknown){
+export async function insertEntries(userId:string|number,requestId:string,rows:Entry[],photos:Buffer[]=[],eatenAt?:unknown,mealSlot?:unknown){
  if(eatenAt!==undefined&&!validEatenAt(eatenAt))return authFailure('먹은 날짜와 시간을 확인해 주세요. 미래 시각은 기록할 수 없어요.',400);
  if(mealSlot!==undefined&&mealSlot!==null&&!validMealSlot(mealSlot))return authFailure('끼니를 확인해 주세요.',400);
  const occurred=eatenAt??new Date().toISOString();

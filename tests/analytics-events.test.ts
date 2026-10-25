@@ -1,6 +1,13 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
 import {analyticsScreen,sanitizeAnalytics} from '../lib/analytics-events';
+test('statistics and meal reuse steps are measurable without meal identifiers',()=>{
+ assert.equal(analyticsScreen('/stats'),'stats');
+ for(const event of ['meal_reuse_opened','meal_reuse_selected','meal_reuse_saved','meal_reuse_failed']){
+  assert.deepEqual(sanitizeAnalytics(event,{screen:'stats',method:'reuse',source:'threads',campaign:'meal-reuse',replayed:true,food:'secret',sourceId:'secret'}),{$process_person_profile:false,$geoip_disable:true,screen:'stats',source:'threads',campaign:'meal-reuse',method:'reuse',replayed:true});
+ }
+ assert.equal(sanitizeAnalytics('meal_reuse_saved',{campaign:'private customer'})?.campaign,undefined);
+});
 test('analytics strips health, identity, photos, URLs and SDK super-properties',()=>{
  const result=sanitizeAnalytics('photo_analysis_completed',{distinct_id:'0199-abcd',screen:'record',duration_ms:1234.5,photo_count:2,outcome:'recorded',email:'private@example.test',weight:70,food:'private meal',image:'data:image/jpeg;base64,secret',$current_url:'https://gginiplan.kr/?token=secret',$referrer:'private',$set:{email:'private'}});
  assert.deepEqual(result,{$process_person_profile:false,$geoip_disable:true,distinct_id:'0199-abcd',screen:'record',outcome:'recorded',duration_ms:1235,photo_count:2});

@@ -66,7 +66,7 @@ export default async function FoodKcalPage(props: Props) {
   {notes.length > 0 && <section className="kcal-box"><h2>한눈에 보기</h2><ul>{notes.map((t) => <li key={t}>{t}</li>)}</ul></section>}
   <section className="kcal-cta">
    <h2>{name}, 오늘 먹었나요?</h2>
-   <p>기록하면 오늘 남은 칼로리·단백질을 계산해서 다음 끼니로 먹기 좋은 메뉴를 골라 드려요.</p>
+   <p>먹은 양을 확인하고 오늘 식사로 남겨 보세요. 자주 먹는 한 끼는 다음에 다시 불러올 수 있어요.</p>
    <KcalActions code={food.code} name={food.name}/>
   </section>
   {lighter.length > 0 && <section className="kcal-box"><h2>{food.name}보다 가벼운 메뉴</h2><ul className="kcal-links">{lighter.map((r) => <li key={r.slug}><Link href={foodPagePath(r.slug)}>{r.name}{r.kcal !== null && <small>{Math.round(r.kcal)}kcal</small>}</Link></li>)}</ul></section>}

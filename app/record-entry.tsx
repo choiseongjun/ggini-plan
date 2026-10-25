@@ -1,5 +1,6 @@
 'use client';
 import {RecordSavedFeedback,type SavedMeal} from './record-saved-feedback';
+import {RecentMealReuse} from './recent-meal-reuse';
 import {mealTimeLocal} from '../lib/meal-time';
 import {trackAnalytics} from '../lib/analytics';
 import Link from 'next/link';
@@ -16,7 +17,7 @@ function RecordIcon({kind}:{kind:'photo'|'search'|'book'}){
  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{kind==='photo'?<><path d="M8 6 9.5 4h5L16 6h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z"/><circle cx="12" cy="13" r="4"/><path d="M17.5 9h.01"/></>:kind==='search'?<><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5M8 10.5h5M10.5 8v5"/></>:<><rect x="5" y="3" width="15" height="18" rx="3"/><path d="M9 3v18M3 7h4M3 12h4M3 17h4M12 8h5M12 12h3"/></>}</svg>;
 }
 
-export function RecordEntry({userId,onLogin,onLogged}:{userId?:string;onLogin:()=>void;onLogged:(date?:string)=>void}){
+export function RecordEntry({userId,onLogin,onLogged,compact=false}:{compact?:boolean;userId?:string;onLogin:()=>void;onLogged:(date?:string)=>void}){
  const [resumed,setResumed]=useState(false);
  const [mode,setMode]=useState<'search'|'photo'|null>(null);
  const [initialFood,setInitialFood]=useState<FoodReference|null>(null);
@@ -59,6 +60,7 @@ export function RecordEntry({userId,onLogin,onLogged}:{userId?:string;onLogin:()
    </button>
   </div>
   <div className="record-entry-help"><Link className="record-guide-link" href="/how-to#record"><RecordIcon kind="book"/>기록이 처음이라면</Link></div>
+  {userId&&!compact&&mode===null&&<RecentMealReuse key={userId}/>}
   {!userId&&<small className="record-entry-login-note">로그인하면 내 식사 일기에 저장하고<br/>날짜별로 다시 볼 수 있어요.</small>}
   {userId&&<div hidden={mode!=='photo'}><MealPhotoLog buttonLabel="음식 사진 선택" dishName="오늘 먹은 음식" disabled={false} onManual={()=>setMode('search')} onFallback={()=>setMode('search')} onLogged={result=>{setSaved({name:result.food?.name??'사진 속 음식',date:mealTimeLocal(result.eatenAt??new Date()).slice(0,10),ids:result.ids,nutrition:result.nutrition,mealSlot:result.mealSlot});setDone(true);window.dispatchEvent(new CustomEvent('intake-logged'));onLogged(result.eatenAt?mealTimeLocal(result.eatenAt).slice(0,10):undefined);}}/></div>}
   {userId&&mode==='search'&&<FoodSearchModal initialFood={initialFood} onClose={()=>{setMode(null);setResumed(false);setInitialFood(null);}} onLogged={(name,eatenAt,result)=>{setSaved({name,date:mealTimeLocal(eatenAt??new Date()).slice(0,10),ids:result?.ids??[],nutrition:result?.nutrition,mealSlot:result?.mealSlot});setDone(true);onLogged(eatenAt?mealTimeLocal(eatenAt).slice(0,10):undefined);}}/>}
