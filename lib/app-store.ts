@@ -4,6 +4,12 @@ export const appStores={
  android:{name:'Google Play',url:'https://play.google.com/store/apps/details?id=kr.gginiplan.app'},
  ios:{name:'App Store',url:'https://apps.apple.com/kr/app/id6816291997'},
 } as const;
+export const nativeAppUrl='gginiplan:///';
+export function appOpenUrl(store:NonNullable<ReturnType<typeof mobileAppStore>>){
+ return store===appStores.android
+  ?`intent:///#Intent;scheme=gginiplan;package=kr.gginiplan.app;S.browser_fallback_url=${encodeURIComponent(appStores.android.url)};end`
+  :nativeAppUrl;
+}
 export function mobileAppStore(userAgent:string,platform='',maxTouchPoints=0){
  if(/bot|crawler|spider|google-inspectiontool/i.test(userAgent))return null;
  if(/Android/i.test(userAgent))return appStores.android;

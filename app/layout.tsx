@@ -1,7 +1,6 @@
 import {ProductAnalytics,SiteAnalytics} from './product-analytics';
 import {NativeSafeArea} from './native-safe-area';
 import {RetiredModelCleanup} from './retired-model-cleanup';
-import {MobileStoreRedirect} from './mobile-store-redirect';
 import type { Metadata, Viewport } from "next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { KakaoBrowser } from './kakao-browser';
@@ -22,6 +21,7 @@ export const metadata: Metadata = {
   ...pageMetadata(brandCopy.title, brandCopy.description, "/"),
   metadataBase: new URL(siteUrl),
   applicationName: "끼니플랜",
+  itunes: {appId:'6816291997',appArgument:'gginiplan:///'},
   appleWebApp: { capable: true, title: '끼니플랜', statusBarStyle: 'default' },
   alternates: {canonical:siteUrl+'/',languages:{'ko-KR':siteUrl+'/','zh-TW':siteUrl+'/tw','x-default':siteUrl+'/'}},
   robots: { index: indexable, follow: indexable },
@@ -32,5 +32,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
-  return <html lang="ko"><body><NativeSafeArea/><RetiredModelCleanup/><MobileStoreRedirect/><AppLoadingProvider>{children}</AppLoadingProvider><KakaoBrowser /><DialogHistory /><ProductAnalytics /><SiteAnalytics /><SpeedInsights /></body></html>;
+  return <html lang="ko"><body><NativeSafeArea/><RetiredModelCleanup/><AppLoadingProvider>{children}</AppLoadingProvider><KakaoBrowser /><DialogHistory /><ProductAnalytics /><SiteAnalytics /><SpeedInsights /></body></html>;
 }

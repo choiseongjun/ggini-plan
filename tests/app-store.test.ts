@@ -1,6 +1,13 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {appStores,claimStoreVisit,mobileAppStore,storeRedirectAllowed} from '../lib/app-store';
+import {appStores,appOpenUrl,claimStoreVisit,mobileAppStore,nativeAppUrl,storeRedirectAllowed} from '../lib/app-store';
+test('open links address the installed app before offering the matching store',()=>{
+ const android=appOpenUrl(appStores.android);
+ assert.ok(android.startsWith('intent:///#Intent;scheme=gginiplan;package=kr.gginiplan.app;'));
+ assert.ok(android.includes(`S.browser_fallback_url=${encodeURIComponent(appStores.android.url)};end`));
+ assert.equal(appOpenUrl(appStores.ios),nativeAppUrl);
+ assert.equal(nativeAppUrl,'gginiplan:///');
+});
 test('mobile visitors reach the correct published store, including desktop-mode iPads',()=>{
  assert.equal(mobileAppStore('Mozilla/5.0 (Linux; Android 15) Chrome/130'),appStores.android);
  assert.equal(mobileAppStore('Mozilla/5.0 (iPhone; CPU iPhone OS 18_0) Safari'),appStores.ios);
