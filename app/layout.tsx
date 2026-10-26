@@ -21,7 +21,8 @@ export const metadata: Metadata = {
   ...pageMetadata(brandCopy.title, brandCopy.description, "/"),
   metadataBase: new URL(siteUrl),
   applicationName: "끼니플랜",
-  itunes: {appId:'6816291997',appArgument:'gginiplan:///'},
+  // Next's iTunes URL resolver treats custom schemes as an origin of "null".
+  other: {'apple-itunes-app':'app-id=6816291997, app-argument=gginiplan:///'},
   appleWebApp: { capable: true, title: '끼니플랜', statusBarStyle: 'default' },
   alternates: {canonical:siteUrl+'/',languages:{'ko-KR':siteUrl+'/','zh-TW':siteUrl+'/tw','x-default':siteUrl+'/'}},
   robots: { index: indexable, follow: indexable },
