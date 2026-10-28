@@ -4,7 +4,7 @@ import {createPortal} from 'react-dom';
 import {SnackLog} from './snack-log';
 import './food-search-modal.css';
 
-export function FoodSearchModal({onClose,onLogged,initialFood=null,draft,onDraftChange}:{onClose:()=>void;onLogged:ComponentProps<typeof SnackLog>['onLogged'];initialFood?:ComponentProps<typeof SnackLog>['initialFood'];draft?:ComponentProps<typeof SnackLog>['draft'];onDraftChange?:ComponentProps<typeof SnackLog>['onDraftChange']}){
+export function FoodSearchModal({onClose,onLogged,initialFood=null,draft,onDraftChange,onRequireLogin,initialPortions}:{onRequireLogin?:ComponentProps<typeof SnackLog>['onRequireLogin'];initialPortions?:number;onClose:()=>void;onLogged:ComponentProps<typeof SnackLog>['onLogged'];initialFood?:ComponentProps<typeof SnackLog>['initialFood'];draft?:ComponentProps<typeof SnackLog>['draft'];onDraftChange?:ComponentProps<typeof SnackLog>['onDraftChange']}){
  const dialog=useRef<HTMLDialogElement>(null);
  const [busy,setBusy]=useState(false);
  useEffect(()=>{
@@ -17,6 +17,6 @@ export function FoodSearchModal({onClose,onLogged,initialFood=null,draft,onDraft
  },[]);
  if(typeof document==='undefined')return null;
  return createPortal(<dialog ref={dialog} className="food-search-modal" aria-label="무엇을 먹었어요? 음식 검색" onCancel={event=>{event.preventDefault();if(!busy)onClose();}}>
-  <SnackLog initialOpen initialFood={initialFood} draft={draft} onDraftChange={onDraftChange} onBusyChange={setBusy} onClose={onClose} onLogged={(...args)=>{onLogged(...args);onClose();}}/>
+  <SnackLog onRequireLogin={onRequireLogin} initialPortions={initialPortions} initialOpen initialFood={initialFood} draft={draft} onDraftChange={onDraftChange} onBusyChange={setBusy} onClose={onClose} onLogged={(...args)=>{onLogged(...args);onClose();}}/>
  </dialog>,document.body);
 }

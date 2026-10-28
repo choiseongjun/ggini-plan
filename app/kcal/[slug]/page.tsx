@@ -60,17 +60,17 @@ export default async function FoodKcalPage(props: Props) {
   <h1>{name} 칼로리·영양성분</h1>
   <p className="kcal-sub">1인분 {serving} 기준{food.category ? ` · ${food.category}` : ''}</p>
   <div className="kcal-hero"><strong>{food.kcal === null ? '-' : k(food.kcal)}</strong><span>kcal · 1인분 {serving}</span></div>
+  <section className="kcal-cta">
+   <h2>{name}, 오늘 먹었나요?</h2>
+   <p>먹은 양을 확인하고 오늘 식사로 남겨 보세요. 자주 먹는 한 끼는 다음에 다시 불러올 수 있어요.</p>
+   <KcalActions code={food.code} name={food.name}/>
+  </section>
   <div className="kcal-grid">{cells.map(([label, v, unit, dv]) => <div key={label} className={`kcal-cell${v !== null && v / dv > .5 ? ' is-high' : ''}`}>
    <small>{label}</small><b>{v === null ? '-' : `${n(v)}${unit}`}</b>
    {v !== null && <><div className="kcal-bar" aria-hidden="true"><i style={{width: `${Math.min(100, v / dv * 100)}%`}}/></div><em>하루 기준치의 {pct(v, dv)}%</em></>}
   </div>)}</div>
   <DetailedNutrition code={food.code} amount={food.servingAmount} unit={food.servingUnit}/>
   {notes.length > 0 && <section className="kcal-box"><h2>한눈에 보기</h2><ul>{notes.map((t) => <li key={t}>{t}</li>)}</ul></section>}
-  <section className="kcal-cta">
-   <h2>{name}, 오늘 먹었나요?</h2>
-   <p>먹은 양을 확인하고 오늘 식사로 남겨 보세요. 자주 먹는 한 끼는 다음에 다시 불러올 수 있어요.</p>
-   <KcalActions code={food.code} name={food.name}/>
-  </section>
   {lighter.length > 0 && <section className="kcal-box"><h2>{food.name}보다 가벼운 메뉴</h2><ul className="kcal-links">{lighter.map((r) => <li key={r.slug}><Link href={foodPagePath(r.slug)}>{r.name}{r.kcal !== null && <small>{Math.round(r.kcal)}kcal</small>}</Link></li>)}</ul></section>}
   {compare.length > 0 && <section className="kcal-box"><h2>{josa(food.name,'과','와')} 비교해 보기</h2><ul className="kcal-links">{compare.map((r) => <li key={r.slug}><Link href={comparePath(slug, r.slug)}>{food.name} vs {r.name}</Link></li>)}</ul></section>}
   {sameBrand.length > 0 && <section className="kcal-box"><h2>{food.brand} 다른 메뉴</h2><ul className="kcal-links">{sameBrand.map((r) => <li key={r.slug}><Link href={foodPagePath(r.slug)}>{r.name}{r.kcal !== null && <small>{Math.round(r.kcal)}kcal</small>}</Link></li>)}</ul></section>}

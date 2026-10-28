@@ -6,6 +6,7 @@ import {mealTimeISO,mealTimeLocal,validEatenAt,recordDestinationTo,inferredMealS
 import {useEffect, useRef, useState} from 'react';
 import type {FoodReference} from '../lib/food-reference';
 import {DetailedNutrition} from './detailed-nutrition';
+import {trackAnalytics} from '../lib/analytics';
 import {trackPlanner} from '../lib/track-planner';
 import {INTAKE_LOGGED_EVENT} from './record-progress';
 import './snack-log.css';
@@ -20,7 +21,7 @@ const n = (v: number) => Math.round(v).toLocaleString('ko-KR');
 const serving = (f: FoodReference) => `${n(f.servingAmount)}${f.servingUnit}`;
 
 // 간식·디저트·음료·외식 기록: 이름으로 찾아 한 번에 남긴다. 기록이 쌓일수록 하루 섭취량(칼로리·당류)이 정확해진다.
-export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyChange,initialFood=null,timeSelection,draft,onDraftChange}: {draft?:MealDraft|null;onDraftChange?:(draft:MealDraft)=>Promise<void>;timeSelection?:MealTimeSelection;initialFood?:FoodReference|null;onLogged: (name:string,eatenAt?:string,result?:{ids:string[];nutrition?:Record<string,number|null>;mealSlot?:MealSlot}) => void;initialOpen?:boolean;photo?:boolean;onClose?:()=>void;onBusyChange?:(busy:boolean)=>void}) {
+export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyChange,initialFood=null,timeSelection,draft,onDraftChange,onRequireLogin,initialPortions=1}: {onRequireLogin?:(food:FoodReference,portions:number)=>void;initialPortions?:number;draft?:MealDraft|null;onDraftChange?:(draft:MealDraft)=>Promise<void>;timeSelection?:MealTimeSelection;initialFood?:FoodReference|null;onLogged: (name:string,eatenAt?:string,result?:{ids:string[];nutrition?:Record<string,number|null>;mealSlot?:MealSlot}) => void;initialOpen?:boolean;photo?:boolean;onClose?:()=>void;onBusyChange?:(busy:boolean)=>void}) {
  const [localMealTime,setLocalMealTime]=useState(()=>draft?mealTimeLocal(draft.createdAt):'');
  const [localMealSlot,setLocalMealSlot]=useState<MealSlot|null>(()=>inferredMealSlot(draft?.createdAt??new Date().toISOString()));
  const mealTime=timeSelection?.value??localMealTime,mealSlot=timeSelection?timeSelection.slot:localMealSlot;
@@ -32,7 +33,7 @@ export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyC
  const [results, setResults] = useState<{q: string; items: FoodReference[]} | null>(null);
  const [recent, setRecent] = useState<FoodReference[]>([]);
  const [picked, setPicked] = useState<FoodReference | null>(initialFood);
- const [portions, setPortions] = useState(draft?.portions??1);
+ const [portions, setPortions] = useState(draft?.portions??initialPortions);
  const [rememberedPortions,setRememberedPortions]=useState<Record<string,number>>({});
  const [photoUrl,setPhotoUrl]=useState('');
  const requestId=useRef<string|null>(draft?.id??null),submitting=useRef(false);
@@ -79,6 +80,7 @@ export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyC
 
  async function log(amount=portions) {
   if (!picked || !validPortions(amount)||!timeValid||!mealSlot||submitting.current) return;
+  if(onRequireLogin){onRequireLogin(picked,amount);return;}
   submitting.current=true;
   setBusy(true); setError('');
   try {
@@ -96,6 +98,7 @@ export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyC
    remember(picked);
    setRememberedPortions(values=>({...values,[picked.code]:amount}));requestId.current=null;
    setPicked(null); setQuery(''); setResults(null); setPortions(1);
+   if(!d.replayed)trackAnalytics('meal_recorded',{method:draft?'photo':'search'});
    trackPlanner('snack_logged');
    window.dispatchEvent(new CustomEvent(INTAKE_LOGGED_EVENT));
    setMealTime('');setMealSlot(inferredMealSlot(new Date().toISOString()));onLogged(savedName,d.eatenAt,d);
@@ -115,7 +118,7 @@ export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyC
   {draft&&<div><p className="snack-log-note">보관한 사진과 함께 저장해요. 음식과 분량을 확인해 주세요.</p>
    {/* eslint-disable-next-line @next/next/no-img-element -- device-local preview */}
    <img src={photoUrl||undefined} alt="임시 보관한 식사" style={{width:'100%',maxHeight:'12rem',objectFit:'contain'}}/>
-   <small>최종 저장 시 사진을 내 식사 일기에 업로드해요. 사진 분석을 사용하면 기기 안에서 처리해요.</small></div>}
+   <small>최종 저장 시 사진을 내 식사 일기에 업로드해요. AI 사진 분석은 동의 후 서버에서 처리해요.</small></div>}
   {photo&&<p className="snack-log-note">음식을 고른 뒤 사진을 올리면 먹은 양을 추정해요. 올린 사진은 식사 기록에 함께 보관돼요.</p>}
   <input ref={input} type="search" value={query} placeholder="예: 카페라떼, 치즈케이크, 스타벅스, 순대국밥" aria-label="음식 이름 검색" maxLength={40} disabled={busy} onChange={(e) => { setQuery(e.target.value); setPicked(null);setSearchError('');setDone(''); }}/>
   {!q&&recentLoading&&!recent.length&&<p className="snack-log-note" role="status">최근 기록을 불러오는 중이에요. 음식 이름을 바로 검색할 수 있어요.</p>}
@@ -137,7 +140,7 @@ export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyC
    <label className="snack-log-custom">먹은 양 직접 입력<input type="number" min="0.25" max="10" step="0.25" aria-label="먹은 양 직접 입력" value={portions||''} disabled={busy} onChange={e=>setPortions(Number(e.target.value))}/>회</label>
    <p className="snack-log-total" aria-live="polite">{!validPortions(portions)?'먹은 양을 0.25~10회, 0.25 단위로 입력해 주세요.':<>{picked.kcal !== null ? <>약 <b>{n(picked.kcal * portions)}</b>kcal</> : '칼로리 정보 없음'}{picked.sugar !== null && ` · 당류 ${n(picked.sugar * portions)}g`}{picked.sodium !== null && ` · 나트륨 ${n(picked.sodium * portions)}mg`}</>}</p>
    <DetailedNutrition code={picked.code} amount={validPortions(portions) ? picked.servingAmount * portions : 0} unit={picked.servingUnit}/>
-   <div className="snack-log-actions"><button type="button" onClick={() => setPicked(null)}>다시 고르기</button><button type="button" className="snack-log-submit" disabled={busy||!validPortions(portions)||!timeValid||!mealSlot} onClick={() => void log()}>{busy ? '기록 중…' : `${recordDestinationTo(mealTime,mealSlot)} 기록`}</button></div>
+   <div className="snack-log-actions"><button type="button" onClick={() => setPicked(null)}>다시 고르기</button><button type="button" className="snack-log-submit" disabled={busy||!validPortions(portions)||!timeValid||!mealSlot} onClick={() => void log()}>{busy ? '기록 중…' : onRequireLogin?'로그인하고 이 식사 저장':`${recordDestinationTo(mealTime,mealSlot)} 기록`}</button></div>
   </div>}
   {done&&<p className="snack-log-done" role="status">{done}</p>}
   {error && <p className="snack-log-error" role="alert">{error}</p>}
