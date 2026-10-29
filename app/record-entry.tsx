@@ -12,7 +12,7 @@ import {RiceBuddy} from './rice-buddy';
 import {useIntakeStats} from './record-progress';
 import './record-entry.css';
 import styles from './nutrition-home.module.css';
-import {pendingRecordMode,rememberRecordMode,clearRecordMode,rememberRecordFood,pendingRecordPortions,pendingRecordFood,takeRecordFood,recordPortions,type RecordMode} from '../lib/record-intent';
+import {pendingRecordTiming,type RecordTiming,pendingRecordMode,rememberRecordMode,clearRecordMode,rememberRecordFood,pendingRecordPortions,pendingRecordFood,takeRecordFood,recordPortions,type RecordMode} from '../lib/record-intent';
 import type {FoodReference} from '../lib/food-reference';
 import {readMealDraft,writeMealDraft,deleteMealDraft,type MealDraft} from '../lib/meal-draft';
 
@@ -24,6 +24,7 @@ export function RecordEntry({userId,onLogin,onLogged,compact=false}:{compact?:bo
  const [resumed,setResumed]=useState(false);
  const [mode,setMode]=useState<'search'|'photo'|null>(null);
  const [initialPortions,setInitialPortions]=useState(1);
+ const [initialTiming,setInitialTiming]=useState<RecordTiming|undefined>();
  const [initialFood,setInitialFood]=useState<FoodReference|null>(null);
  const [storedDraft,setDraft]=useState<MealDraft|null>(null),[draftError,setDraftError]=useState('');
  const draft=storedDraft?.owner===(userId??'guest')?storedDraft:null;
@@ -42,11 +43,11 @@ export function RecordEntry({userId,onLogin,onLogged,compact=false}:{compact?:bo
  useEffect(()=>{
   const params=new URLSearchParams(window.location.search),fromLink=params.get('log');
   if(fromLink){rememberRecordFood(fromLink,recordPortions(params.get('portions')));params.delete('log');params.delete('portions');window.history.replaceState(null,'',`${window.location.pathname}${params.size?`?${params}`:''}`);}
-  const savedPortions=pendingRecordPortions();
+  const savedPortions=pendingRecordPortions(),savedTiming=pendingRecordTiming();
   const code=fromLink??pendingRecordFood();
   if(!code)return;
   let alive=true;
-  fetch(`/api/food-reference?code=${encodeURIComponent(code)}`).then(r=>r.ok?r.json():null).then(d=>{if(!alive)return;const food=d?.items?.[0]??null;setInitialFood(food);setInitialPortions(savedPortions);setMode('search');if(food)trackAnalytics('record_food_ready',{method:'search'});else setDraftError('선택한 음식을 불러오지 못했어요. 음식 이름으로 다시 찾아주세요.');}).catch(()=>{if(alive){setDraftError('음식을 불러오지 못했어요. 연결을 확인하고 다시 검색해 주세요.');setMode('search');}});
+  fetch(`/api/food-reference?code=${encodeURIComponent(code)}`).then(r=>r.ok?r.json():null).then(d=>{if(!alive)return;const food=d?.items?.[0]??null;setInitialFood(food);setInitialPortions(savedPortions);setInitialTiming(savedTiming);setMode('search');if(food)trackAnalytics('record_food_ready',{method:'search'});else setDraftError('선택한 음식을 불러오지 못했어요. 음식 이름으로 다시 찾아주세요.');}).catch(()=>{if(alive){setDraftError('음식을 불러오지 못했어요. 연결을 확인하고 다시 검색해 주세요.');setMode('search');}});
   return()=>{alive=false;};
   // Resume the selected food when authentication finishes.
  },[userId]);
@@ -78,7 +79,7 @@ export function RecordEntry({userId,onLogin,onLogged,compact=false}:{compact?:bo
   {userId&&!compact&&mode===null&&<RecentMealReuse key={userId}/>}
   {!userId&&<small className="record-entry-login-note">로그인하면 내 식사 일기에 저장하고<br/>날짜별로 다시 볼 수 있어요.</small>}
   {mode==='photo'&&<DevicePhotoEntry userId={userId} onLogin={()=>{rememberRecordMode('photo');onLogin();}} draft={draft} onPhoto={keepPhoto} onDiscard={()=>void discardDraft()} onDraftChange={keepDraft} onSaved={result=>{if(draft){void deleteMealDraft(draft.owner,draft.id).catch(()=>setDraftError('일기는 저장됐지만 임시 사진 정리가 안 됐어요.'));setDraft(null);}setSaved({name:result.food?.name??'한 끼',date:mealTimeLocal(result.eatenAt??new Date()).slice(0,10),ids:result.ids,nutrition:result.nutrition,mealSlot:result.mealSlot});setDone(true);setMode(null);onLogged(result.eatenAt?mealTimeLocal(result.eatenAt).slice(0,10):undefined);}} onSearch={()=>choose('search')}/>}
-  {mode==='search'&&<FoodSearchModal initialPortions={initialPortions} onRequireLogin={userId?undefined:(food,portions)=>{setInitialFood(food);setInitialPortions(portions);rememberRecordFood(food.code,portions);rememberRecordMode('search');setMode(null);onLogin();}} key={draft?.id??initialFood?.code??'manual'} draft={draft} onDraftChange={keepDraft} initialFood={initialFood??draft?.food} onClose={()=>{setMode(null);setResumed(false);setInitialFood(null);setInitialPortions(1);takeRecordFood();}} onLogged={(name,eatenAt,result)=>{if(draft){void deleteMealDraft(draft.owner,draft.id).catch(()=>setDraftError('일기는 저장됐지만 임시 사진 정리가 안 됐어요. 임시 사진을 삭제해 주세요.'));setDraft(null);}setSaved({name,date:mealTimeLocal(eatenAt??new Date()).slice(0,10),ids:result?.ids??[],nutrition:result?.nutrition,mealSlot:result?.mealSlot});setDone(true);onLogged(eatenAt?mealTimeLocal(eatenAt).slice(0,10):undefined);}}/>}
+  {mode==='search'&&<FoodSearchModal initialTiming={initialTiming} initialPortions={initialPortions} onRequireLogin={userId?undefined:(food,portions,timing)=>{setInitialFood(food);setInitialPortions(portions);setInitialTiming(timing);rememberRecordFood(food.code,portions,timing);rememberRecordMode('search');setMode(null);onLogin();}} key={draft?.id??initialFood?.code??'manual'} draft={draft} onDraftChange={keepDraft} initialFood={initialFood??draft?.food} onClose={()=>{setMode(null);setResumed(false);setInitialFood(null);setInitialPortions(1);setInitialTiming(undefined);takeRecordFood();}} onLogged={(name,eatenAt,result)=>{if(draft){void deleteMealDraft(draft.owner,draft.id).catch(()=>setDraftError('일기는 저장됐지만 임시 사진 정리가 안 됐어요. 임시 사진을 삭제해 주세요.'));setDraft(null);}setSaved({name,date:mealTimeLocal(eatenAt??new Date()).slice(0,10),ids:result?.ids??[],nutrition:result?.nutrition,mealSlot:result?.mealSlot});setDone(true);onLogged(eatenAt?mealTimeLocal(eatenAt).slice(0,10):undefined);}}/>}
   {done&&<div className="record-entry-reward" role="status"><RiceBuddy stage={stats?.buddy?.stage??0}/><div><strong>먹고 기록까지. 오늘 좀 부지런했다.</strong><p>{stats?.buddy?`끼니와 함께한 ${stats.buddy.days}일${stats.buddy.next?` · ${stats.buddy.next.gift}까지 ${stats.buddy.remaining}일`:''}`:'아래 식사 일기에 남겼어요.'}</p>{stats?.week&&<small>이번 주 {stats.week.days}일의 식사 이야기가 모였어요.</small>}</div></div>}
  </section>;
 }

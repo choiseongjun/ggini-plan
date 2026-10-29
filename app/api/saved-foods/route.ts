@@ -1,10 +1,11 @@
 import {NextRequest} from 'next/server';
 import {sessionUser,sameOrigin} from '../../../lib/auth';
 import {getPool} from '../../../lib/db';
+import {displayFoodName} from '../../../lib/food-reference';
 const json=(data:unknown,status=200)=>Response.json(data,{status,headers:{'Cache-Control':'no-store'}});
 export async function GET(request:NextRequest){
  try{const user=await sessionUser(request);if(!user)return json({error:'로그인하면 저장한 메뉴를 볼 수 있어요.'},401);
- const {rows}=await getPool().query(`SELECT s.food_code AS code,r.name,r.brand,p.slug,s.created_at FROM saved_foods s JOIN food_reference r ON r.food_code=s.food_code LEFT JOIN LATERAL(SELECT slug FROM food_pages WHERE food_code=s.food_code ORDER BY slug LIMIT 1)p ON TRUE WHERE s.user_id=$1 ORDER BY s.created_at DESC LIMIT 200`,[user.id]);return json({items:rows});
+ const {rows}=await getPool().query(`SELECT s.food_code AS code,r.name,r.brand,p.slug,s.created_at FROM saved_foods s JOIN food_reference r ON r.food_code=s.food_code LEFT JOIN LATERAL(SELECT slug FROM food_pages WHERE food_code=s.food_code ORDER BY slug LIMIT 1)p ON TRUE WHERE s.user_id=$1 ORDER BY s.created_at DESC LIMIT 200`,[user.id]);return json({items:rows.map(row=>({...row,name:displayFoodName(row.name)}))});
  }catch{return json({error:'저장한 메뉴를 불러오지 못했어요.'},503);}
 }
 export async function POST(request:NextRequest){

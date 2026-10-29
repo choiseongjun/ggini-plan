@@ -7,7 +7,7 @@ import {takeProfileIntent,clearProfileIntent} from '../lib/profile-intent';
 import './home-readability.css';
 import {pendingSubmissionReturn} from '../lib/submission-intent';
 import {savedFoodReturn} from '../lib/saved-food-intent';
-import {pendingRecordMode,clearRecordMode} from '../lib/record-intent';
+import {pendingRecordFood,pendingRecordMode,clearRecordMode} from '../lib/record-intent';
 import {finishAuthRedirect} from '../lib/auth-funnel';
 import {InstallPrompt} from './install-prompt';
 import {PolicyLinks} from './policy-links';
@@ -215,7 +215,7 @@ export default function Home() {
         else if(data.user&&pendingPlanSave())router.replace(pendingPlanSave()!.returnTo);
         else if(data.user&&pendingTasteReturn())router.replace(pendingTasteReturn()!);
         else if(data.user&&takeProfileIntent())router.replace("/profile?personalize=1#profile-settings");
-        else if(data.user&&pendingRecordMode())router.replace("/record");
+        else if(data.user&&(pendingRecordMode()||pendingRecordFood()))router.replace("/record");
       })
       .catch((error: unknown) => {
         if (error instanceof Error && error.name === "AbortError") return;

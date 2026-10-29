@@ -18,7 +18,7 @@ const NOT_SUGGESTED = ['보신탕', '영양탕', '개장국', '사철탕'];
 export const foodPagePath = (slug: string) => `/kcal/${encodeURIComponent(slug)}`;
 
 const COLUMNS = 'r.food_code,r.name,r.brand,r.category,r.basis_amount,r.basis_unit,r.serving_amount,r.serving_unit,r.calories_kcal,r.protein_g,r.carbohydrates_g,r.sugar_g,r.fat_g,r.sodium_mg';
-export type RelatedFood = {slug: string; name: string; brand: string | null; kcal: number | null};
+export type RelatedFood = {slug: string; name: string; brand: string | null; kcal: number | null; amount?:number; unit?:string};
 
 // Public reference data only. React cache also deduplicates metadata/page reads.
 export const getFoodPage = cache(unstable_cache(loadFoodPage, ['food-page-v2-provenance'], {revalidate: 86400, tags: ['food-reference']}));
@@ -45,15 +45,17 @@ async function loadFoodPage(slug: string): Promise<{food: FoodReference; provena
 // 색인 페이지: 많이 찾는 음식(이름이 정확히 같은 일반 음식이 있을 때만).
 const POPULAR = ['순대국밥', '김치찌개', '된장찌개', '제육덮밥', '비빔밥', '짜장면', '짬뽕', '탕수육', '떡볶이', '김밥', '라면', '돈가스', '치킨', '삼겹살구이', '부대찌개', '냉면', '칼국수', '갈비탕', '육개장', '카레라이스', '오므라이스', '초밥', '우동', '카페라떼', '아메리카노', '치즈 케이크', '샐러드', '햄버거', '피자', '닭가슴살'];
 export async function popularFoods(): Promise<RelatedFood[]> {
- const {rows} = await getPool().query<RelatedFood>('SELECT slug, name, brand, kcal::float8 AS kcal FROM food_pages WHERE brand IS NULL AND name = ANY($1)', [POPULAR]);
+ const {rows} = await getPool().query<RelatedFood>('SELECT p.slug, p.name, p.brand, p.kcal::float8 AS kcal, COALESCE(r.serving_amount,r.basis_amount)::float8 AS amount, COALESCE(r.serving_unit,r.basis_unit) AS unit FROM food_pages p JOIN food_reference r USING(food_code) WHERE p.brand IS NULL AND p.name = ANY($1)', [POPULAR]);
  return POPULAR.flatMap((n) => rows.filter((r) => r.name === n).slice(0, 1));
 }
 
 export async function searchFoodPages(q: string): Promise<RelatedFood[]> {
- const key = q.trim().replace(/\s+/g, '');
+ const key = q.trim().toLowerCase().replace(/\s+/g, '');
  if (!key) return [];
- const {rows} = await getPool().query<RelatedFood>(`SELECT slug, name, brand, kcal::float8 AS kcal FROM food_pages WHERE replace(name, ' ', '') LIKE '%' || $1 || '%' OR replace(coalesce(brand, ''), ' ', '') LIKE '%' || $1 || '%'
-  ORDER BY (replace(name, ' ', '') = $1) DESC, (brand IS NULL) DESC, length(name) LIMIT 60`, [key]);
+ const tokens=q.trim().toLowerCase().split(/\s+/).slice(0,10);
+ const {rows} = await getPool().query<RelatedFood>(`SELECT p.slug, p.name, p.brand, p.kcal::float8 AS kcal, COALESCE(r.serving_amount,r.basis_amount)::float8 AS amount, COALESCE(r.serving_unit,r.basis_unit) AS unit FROM food_pages p JOIN food_reference r USING(food_code)
+  WHERE NOT EXISTS (SELECT 1 FROM unnest($2::text[]) AS terms(term) WHERE strpos(lower(replace(coalesce(p.brand,'') || p.name,' ','')),term)=0)
+  ORDER BY (lower(replace(p.name, ' ', '')) = $1) DESC, (p.brand IS NULL) DESC, length(p.name),p.slug LIMIT 60`, [key,tokens]);
  return rows;
 }
 

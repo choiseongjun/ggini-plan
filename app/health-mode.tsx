@@ -4,6 +4,8 @@
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { healthModes, isHealthGoal } from '../lib/health-goal';
+import {pendingRecordFood,pendingRecordMode} from '../lib/record-intent';
+import {savedFoodReturn} from '../lib/saved-food-intent';
 import type { BodyGoal } from '../lib/nutrition-plan';
 import { ProfileIcon } from './profile-icons';
 import './health-mode.css';
@@ -29,7 +31,8 @@ export function HealthMode({ userId, compact=false }: { userId?: string; compact
         } else { try { value = localStorage.getItem(guestKey); } catch {} }
         if (controller.signal.aborted) return;
         const next = isHealthGoal(value) ? value : null;
-        setGoal(next); setChoice(next); setOpen(!next); setReady(true);
+        const continuing=Boolean(pendingRecordFood()||pendingRecordMode()||savedFoodReturn()||document.querySelector('dialog[open]'));
+        setGoal(next); setChoice(next); setOpen(!next&&!continuing); setReady(true);
       } catch (e) { if (!controller.signal.aborted) { setError(e instanceof Error ? e.message : '불러오지 못했어요.'); setReady(true); } }
     }
     void load();

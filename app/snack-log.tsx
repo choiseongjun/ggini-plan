@@ -14,16 +14,17 @@ import {MealPhotoLog} from './meal-photo-log';
 import {validPortions} from '../lib/food-intake';
 import {hasCachedFoodSearch,searchFoods} from '../lib/food-search-client';
 import {manualFoodReference} from '../lib/basic-food-reference';
+import type {RecordTiming} from '../lib/record-intent';
 import type {MealDraft} from '../lib/meal-draft';
 
-const portionsList = [[0.5, '½배'], [1, '1배'], [1.5, '1.5배'], [2, '2배']] as const;
+const portionsList = [[0.25, '¼배'], [0.5, '½배'], [1, '1배'], [1.5, '1.5배'], [2, '2배']] as const;
 const n = (v: number) => Math.round(v).toLocaleString('ko-KR');
 const serving = (f: FoodReference) => `${n(f.servingAmount)}${f.servingUnit}`;
 
 // 간식·디저트·음료·외식 기록: 이름으로 찾아 한 번에 남긴다. 기록이 쌓일수록 하루 섭취량(칼로리·당류)이 정확해진다.
-export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyChange,initialFood=null,timeSelection,draft,onDraftChange,onRequireLogin,initialPortions=1}: {onRequireLogin?:(food:FoodReference,portions:number)=>void;initialPortions?:number;draft?:MealDraft|null;onDraftChange?:(draft:MealDraft)=>Promise<void>;timeSelection?:MealTimeSelection;initialFood?:FoodReference|null;onLogged: (name:string,eatenAt?:string,result?:{ids:string[];nutrition?:Record<string,number|null>;mealSlot?:MealSlot}) => void;initialOpen?:boolean;photo?:boolean;onClose?:()=>void;onBusyChange?:(busy:boolean)=>void}) {
- const [localMealTime,setLocalMealTime]=useState(()=>draft?mealTimeLocal(draft.createdAt):'');
- const [localMealSlot,setLocalMealSlot]=useState<MealSlot|null>(()=>inferredMealSlot(draft?.createdAt??new Date().toISOString()));
+export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyChange,initialFood=null,timeSelection,draft,onDraftChange,onRequireLogin,initialPortions=1,initialTiming}: {initialTiming?:RecordTiming;onRequireLogin?:(food:FoodReference,portions:number,timing:RecordTiming)=>void;initialPortions?:number;draft?:MealDraft|null;onDraftChange?:(draft:MealDraft)=>Promise<void>;timeSelection?:MealTimeSelection;initialFood?:FoodReference|null;onLogged: (name:string,eatenAt?:string,result?:{ids:string[];nutrition?:Record<string,number|null>;mealSlot?:MealSlot}) => void;initialOpen?:boolean;photo?:boolean;onClose?:()=>void;onBusyChange?:(busy:boolean)=>void}) {
+ const [localMealTime,setLocalMealTime]=useState(()=>initialTiming?mealTimeLocal(initialTiming.eatenAt):draft?mealTimeLocal(draft.createdAt):'');
+ const [localMealSlot,setLocalMealSlot]=useState<MealSlot|null>(()=>initialTiming?.mealSlot??inferredMealSlot(draft?.createdAt??new Date().toISOString()));
  const mealTime=timeSelection?.value??localMealTime,mealSlot=timeSelection?timeSelection.slot:localMealSlot;
  const setMealTime=timeSelection?.onChange??setLocalMealTime,setMealSlot=timeSelection?.onSlotChange??setLocalMealSlot;
  const timeISO=mealTime?mealTimeISO(mealTime):undefined;
@@ -80,7 +81,7 @@ export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyC
 
  async function log(amount=portions) {
   if (!picked || !validPortions(amount)||!timeValid||!mealSlot||submitting.current) return;
-  if(onRequireLogin){trackAnalytics('record_login_required',{method:'search'});onRequireLogin(picked,amount);return;}
+  if(onRequireLogin){trackAnalytics('record_login_required',{method:'search'});onRequireLogin(picked,amount,{eatenAt:timeISO??new Date().toISOString(),mealSlot});return;}
   trackAnalytics('record_save_started',{method:draft?'photo':'search'});
   submitting.current=true;
   setBusy(true); setError('');

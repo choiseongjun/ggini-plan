@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  allowedDevOrigins: ['127.0.0.1'],
   // Keep Firebase's popup helpers on the service domain (not a redirect).
   async rewrites() {
     return [{
