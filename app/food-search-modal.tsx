@@ -12,7 +12,7 @@ export function FoodSearchModal({onClose,onLogged,initialFood=null,draft,onDraft
   const trigger=document.activeElement instanceof HTMLElement?document.activeElement:null;
   const overflow=document.body.style.overflow;
   node.showModal();document.body.style.overflow='hidden';
-  node.querySelector<HTMLInputElement>('input[type="search"]')?.focus();
+  if(!node.querySelector('.snack-log-pick'))node.querySelector<HTMLInputElement>('input[type="search"]')?.focus();
   return()=>{node.close();document.body.style.overflow=overflow;trigger?.focus({preventScroll:true});};
  },[]);
  if(typeof document==='undefined')return null;

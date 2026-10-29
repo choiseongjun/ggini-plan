@@ -12,7 +12,8 @@ export function RecordSavedFeedback({meal}:{meal:SavedMeal}){
  useEffect(()=>{const controller=new AbortController();fetch(`/api/food-intake?date=${meal.date}`,{cache:'no-store',signal:controller.signal}).then(async r=>{if(!r.ok)throw Error();return r.json();}).then(data=>{if(!controller.signal.aborted)setTotals(Object.fromEntries(fields.map(([key])=>[key,recordedNutrientSummary(data.logs,key)])));}).catch(()=>{if(!controller.signal.aborted)setError(true);});return()=>controller.abort();},[meal]);
  const format=(value:number|null|undefined,unit:string)=>value==null?'미확인':`${Math.round(value*10)/10} ${unit}`;
  return <div className="record-saved-feedback" role="status">
-  <strong>{meal.name} 기록했어요</strong>
+  <strong>잘 먹었습니다. 기록까지 했습니다.</strong>
+  <p>{meal.name} 저장 완료</p>
   <p>{meal.date} {meal.mealSlot?mealSlotLabels[meal.mealSlot]:''} · 확인된 영양값의 합계</p>
   {meal.nutrition&&<dl>{fields.map(([key,label,unit])=><div key={key}><dt>{label}</dt><dd>{format(meal.nutrition?.[key],unit)}</dd></div>)}</dl>}
   {totals?<p><b>{meal.date===mealTimeLocal().slice(0,10)?'오늘':'기록한 날'} 확인된 누적</b> · {format(totals.calories.total,'kcal')}{totals.calories.missing>0&&` (미확인 ${totals.calories.missing}건)`} · 단백질 {format(totals.protein.total,'g')}{totals.protein.missing>0&&` (미확인 ${totals.protein.missing}건)`}</p>:<p>{error?'기록은 저장됐어요. 하루 합계는 기록 목록에서 다시 확인해 주세요.':'하루 합계를 불러오고 있어요…'}</p>}

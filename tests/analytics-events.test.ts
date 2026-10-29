@@ -1,6 +1,12 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
 import {analyticsScreen,sanitizeAnalytics} from '../lib/analytics-events';
+
+test('search-to-record funnel preserves attribution without food or serving details',()=>{
+ for(const event of ['kcal_portion_selected','record_food_ready','record_login_required','record_save_started','record_save_failed','meal_recorded']){
+  assert.deepEqual(sanitizeAnalytics(event,{screen:'record',source:'kcal',method:'search',food:'private',portions:2,calories:500}),{$process_person_profile:false,$geoip_disable:true,screen:'record',source:'kcal',method:'search'});
+ }
+});
 test('statistics and meal reuse steps are measurable without meal identifiers',()=>{
  assert.equal(analyticsScreen('/stats'),'stats');
  for(const event of ['meal_reuse_opened','meal_reuse_selected','meal_reuse_saved','meal_reuse_failed']){

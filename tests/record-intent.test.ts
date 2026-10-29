@@ -1,6 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {parseRecordIntent,rememberRecordFood,pendingRecordPortions,takeRecordFood} from '../lib/record-intent';
+import {parseRecordIntent,rememberRecordFood,pendingRecordPortions,pendingRecordFood,takeRecordFood,recordPortions} from '../lib/record-intent';
+
+test('search landing portions accept only supported quarter servings',()=>{
+ for(const value of [null,'',0,'-1','NaN','Infinity','1.1',11])assert.equal(recordPortions(value),1);
+ for(const value of ['0.25','0.5','1.5','10'])assert.equal(recordPortions(value),Number(value));
+});
 test('login continuation accepts only a recent explicit recording choice',()=>{
  const now=1000000;
  assert.equal(parseRecordIntent(JSON.stringify({mode:'photo',at:now-1000}),now),'photo');
@@ -14,9 +19,13 @@ test('food and serving survive login, expired or invalid servings do not',()=>{
  try{
   rememberRecordFood('test-food',1.5);
   assert.equal(pendingRecordPortions(),1.5);
+  assert.equal(pendingRecordFood(),'test-food');
+  assert.equal(pendingRecordFood(),'test-food'); // Interrupted renders must not consume the login continuation.
   assert.equal(takeRecordFood(),'test-food');
   assert.equal(takeRecordFood(),null);
   rememberRecordFood('test-food',99);assert.equal(pendingRecordPortions(),1);
   rememberRecordFood('test-food',2);assert.equal(pendingRecordPortions(Date.now()+16*60_000),1);
+  assert.equal(pendingRecordFood(Date.now()+16*60_000),null);
+  assert.equal(pendingRecordFood(Date.now()-1000),null);
  }finally{if(previous)Object.defineProperty(globalThis,'sessionStorage',previous);else Reflect.deleteProperty(globalThis,'sessionStorage');}
 });

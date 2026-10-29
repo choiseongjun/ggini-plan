@@ -84,7 +84,7 @@ export function PhotoMealReview({draft,initialFoods,onDraftChange,onSaved,onBusy
   finally{submitting.current=false;setSaving(false);}
  }
  return <div className={styles.matches}>
-  <h3>음식과 먹은 양을 확인해요</h3><p>틀린 이름은 고치고, 빠진 음식은 추가하세요. 양은 1회분으로 시작해요.</p>
+  <h3>제가 메뉴를 헛짚었나요?</h3><p>음식 이름과 먹은 양을 확인해 주세요. 틀린 이름은 고치고, 빠진 음식은 추가하세요. 양은 1회분으로 시작해요.</p>
   <fieldset disabled={locked} className={styles.mealReviewTime}><MealTimePicker value={time} slot={slot} onChange={setTime} onSlotChange={setSlot} disabled={locked}/></fieldset>
   <ol className={styles.foodReviewList}>{items.map((item,index)=><FoodRow key={item.id} item={item} index={index} locked={locked} onResolve={resolved} onChange={next=>setItems(list=>list.map(row=>row.id===next.id?next:row))} onRemove={()=>setItems(list=>list.filter(row=>row.id!==item.id))}/>)}</ol>
   <Button variant="secondary" disabled={locked||items.length>=10} onClick={()=>setItems(list=>[...list,{id:crypto.randomUUID(),name:'',originalName:'',food:null,portions:1}])}>+ 빠진 음식 추가</Button>

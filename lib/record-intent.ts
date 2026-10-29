@@ -10,8 +10,12 @@ export function clearRecordMode(){try{sessionStorage.removeItem(key);}catch{}}
 const foodKey='kkini-record-food';
 export function rememberRecordFood(code:string,portions=1){try{sessionStorage.setItem(foodKey,JSON.stringify({code,portions,at:Date.now()}));}catch{}}
 export function pendingRecordPortions(now=Date.now()){
- try{const d=JSON.parse(sessionStorage.getItem(foodKey)??'null');return d&&now>=d.at&&now-d.at<15*60_000&&Number.isFinite(d.portions)&&d.portions>=0.25&&d.portions<=10?d.portions as number:1;}catch{return 1;}
+ try{const d=JSON.parse(sessionStorage.getItem(foodKey)??'null');return d&&now>=d.at&&now-d.at<15*60_000?recordPortions(d.portions):1;}catch{return 1;}
+}
+export function recordPortions(value:unknown){const n=typeof value==='string'?Number(value):value;return typeof n==='number'&&Number.isFinite(n)&&n>=0.25&&n<=10&&Number.isInteger(n*4)?n:1;}
+export function pendingRecordFood(now=Date.now()){
+ try{const d=JSON.parse(sessionStorage.getItem(foodKey)??'null');return d&&typeof d.code==='string'&&d.code.length>0&&d.code.length<=80&&Number.isFinite(d.at)&&now>=d.at&&now-d.at<15*60_000?d.code as string:null;}catch{return null;}
 }
 export function takeRecordFood(now=Date.now()){
- try{const d=JSON.parse(sessionStorage.getItem(foodKey)??'null');sessionStorage.removeItem(foodKey);return d&&typeof d.code==='string'&&d.code.length<=80&&Number.isFinite(d.at)&&now-d.at<15*60_000?d.code as string:null;}catch{return null;}
+ const code=pendingRecordFood(now);try{sessionStorage.removeItem(foodKey);}catch{}return code;
 }

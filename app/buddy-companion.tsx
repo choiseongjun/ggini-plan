@@ -59,11 +59,11 @@ export function BuddyCompanion({growth,loggedToday,guest,onLogin,userId,recordCo
  if(!buddy)return <section className="buddy-home" id="buddy-companion"><h2>나의 식사 친구, 끼니</h2><p>끼니의 성장 기록을 불러오는 중이에요. 잠시 후에도 보이지 않으면 새로고침해 주세요.</p></section>;
  const littleTalk=[
   !guest&&loggedToday?'오늘 한 끼도 잘 챙겼네. 기록은 내가 기억할게!':buddy.message,
-  '나 여기 있어! 스푼도 준비해 뒀지.',
+  '식사 기록 담당 끼니, 출근했습니다. 스푼도 챙겼고요.',
   !guest&&loggedToday?'오늘 먹은 메뉴 중에 뭐가 제일 맛있었어?':'오늘 뭐 먹었어? 한 끼 이야기 들려줘.',
   buddy.next?`${buddy.next.gift}까지 ${buddy.remaining}일! 나한테 잘 어울릴까?`:'우리 벌써 단짝이네. 오늘도 같이 있자.',
-  '음… 다음 한 끼는 뭘 먹으면 좋을까?',
-  '잠깐 기지개 쭉! 나는 여기서 기다릴게.',
+  '메뉴 이름은 까먹어도 괜찮아. 그래서 내가 있잖아.',
+  '밀린 기록 숙제는 없어. 방금 먹은 것부터 가자.',
  ];
  const greetings=['헤헤, 불렀어? 스푼 흔들며 인사!', '톡톡! 만나서 반가워. 오늘도 같이 잘 먹자.', '내 새싹 간지러워! 한 번 더 인사할까?'];
  return <section ref={scene} className={`buddy-home${awake?'':' is-resting'}`} id="buddy-companion" aria-label="끼니 키우기">

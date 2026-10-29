@@ -62,7 +62,7 @@ export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyC
    .finally(()=>{if(alive)setRecentLoading(false);});
   return()=>{alive=false;};
  },[]);
- useEffect(()=>{if(open)input.current?.focus();},[open]);
+ useEffect(()=>{if(open&&!initialFood)input.current?.focus();},[open,initialFood]);
  const q = query.trim();
  useEffect(() => {
   if (!q) return;
@@ -80,7 +80,8 @@ export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyC
 
  async function log(amount=portions) {
   if (!picked || !validPortions(amount)||!timeValid||!mealSlot||submitting.current) return;
-  if(onRequireLogin){onRequireLogin(picked,amount);return;}
+  if(onRequireLogin){trackAnalytics('record_login_required',{method:'search'});onRequireLogin(picked,amount);return;}
+  trackAnalytics('record_save_started',{method:draft?'photo':'search'});
   submitting.current=true;
   setBusy(true); setError('');
   try {
@@ -102,7 +103,7 @@ export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyC
    trackPlanner('snack_logged');
    window.dispatchEvent(new CustomEvent(INTAKE_LOGGED_EVENT));
    setMealTime('');setMealSlot(inferredMealSlot(new Date().toISOString()));onLogged(savedName,d.eatenAt,d);
-  } catch (e) { setError(e instanceof Error ? e.message : '기록하지 못했어요.'); } finally { submitting.current=false;setBusy(false); }
+  } catch (e) { trackAnalytics('record_save_failed',{method:draft?'photo':'search'});setError(e instanceof Error ? e.message : '기록하지 못했어요.'); } finally { submitting.current=false;setBusy(false); }
  }
 
  if (!open) return <div className="snack-log-entry">
@@ -120,9 +121,9 @@ export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyC
    <img src={photoUrl||undefined} alt="임시 보관한 식사" style={{width:'100%',maxHeight:'12rem',objectFit:'contain'}}/>
    <small>최종 저장 시 사진을 내 식사 일기에 업로드해요. AI 사진 분석은 동의 후 서버에서 처리해요.</small></div>}
   {photo&&<p className="snack-log-note">음식을 고른 뒤 사진을 올리면 먹은 양을 추정해요. 올린 사진은 식사 기록에 함께 보관돼요.</p>}
-  <input ref={input} type="search" value={query} placeholder="예: 카페라떼, 치즈케이크, 스타벅스, 순대국밥" aria-label="음식 이름 검색" maxLength={40} disabled={busy} onChange={(e) => { setQuery(e.target.value); setPicked(null);setSearchError('');setDone(''); }}/>
-  {!q&&recentLoading&&!recent.length&&<p className="snack-log-note" role="status">최근 기록을 불러오는 중이에요. 음식 이름을 바로 검색할 수 있어요.</p>}
-  {!q && recent.length > 0 && <span className="snack-log-label">최근에 기록한 것</span>}
+  {!picked&&<input ref={input} type="search" value={query} placeholder="예: 카페라떼, 치즈케이크, 스타벅스, 순대국밥" aria-label="음식 이름 검색" maxLength={40} disabled={busy} onChange={(e) => { setQuery(e.target.value); setPicked(null);setSearchError('');setDone(''); }}/>}
+  {!picked&&!q&&recentLoading&&!recent.length&&<p className="snack-log-note" role="status">최근 기록을 불러오는 중이에요. 음식 이름을 바로 검색할 수 있어요.</p>}
+  {!picked&&!q && recent.length > 0 && <span className="snack-log-label">최근에 기록한 것</span>}
   {q && list === null && <p className="snack-log-note">찾고 있어요…</p>}
   {q&&searchError&&<p role="alert" className="snack-log-note">{searchError}</p>}
   {q&&!picked&&<div className="snack-log-manual"><button type="button" disabled={busy} onClick={()=>{const food=manualFoodReference(`manual:${q}`);if(food){setPicked(food);setPortions(1);}}}>목록에 없나요? ‘{q}’ 그대로 기록하기</button><small>이름과 먹은 양을 저장해요. 영양정보는 미확인으로 표시해요.</small></div>}
