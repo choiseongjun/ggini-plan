@@ -2,6 +2,7 @@ import {getPool} from './db';
 import {foodReferenceFromRow, type FoodReference} from './food-reference';
 import {cache} from 'react';
 import {unstable_cache} from 'next/cache';
+import {foodProvenance} from './food-provenance';
 
 // 음식 영양 검색 페이지(/kcal/[slug]) 데이터. 기준: 식약처 1일 영양성분 기준치(식품 표시 기준).
 export const DAILY_VALUE = {kcal: 2000, carbs: 324, sugar: 100, protein: 55, fat: 54, sodium: 2000};
@@ -13,12 +14,14 @@ const COLUMNS = 'r.food_code,r.name,r.brand,r.category,r.basis_amount,r.basis_un
 export type RelatedFood = {slug: string; name: string; brand: string | null; kcal: number | null};
 
 // Public reference data only. React cache also deduplicates metadata/page reads.
-export const getFoodPage = cache(unstable_cache(loadFoodPage, ['food-page-v1'], {revalidate: 86400, tags: ['food-reference']}));
-async function loadFoodPage(slug: string): Promise<{food: FoodReference; slug: string; related: RelatedFood[]; sameBrand: RelatedFood[]; lighter: RelatedFood[]} | null> {
+export const getFoodPage = cache(unstable_cache(loadFoodPage, ['food-page-v2-provenance'], {revalidate: 86400, tags: ['food-reference']}));
+async function loadFoodPage(slug: string): Promise<{food: FoodReference; provenance:ReturnType<typeof foodProvenance>; slug: string; related: RelatedFood[]; sameBrand: RelatedFood[]; lighter: RelatedFood[]} | null> {
  const db = getPool();
  const row = (await db.query(`SELECT p.slug, ${COLUMNS} FROM food_pages p JOIN food_reference r ON r.food_code = p.food_code WHERE p.slug = $1`, [slug])).rows[0];
  if (!row) return null;
  const food = foodReferenceFromRow(row);
+ const snapshot=(await db.query(`SELECT s.raw_record FROM kfind_nutrition_snapshots s JOIN kfind_import_files f USING(source_sha256) WHERE s.food_code=$1 AND f.completed_at IS NOT NULL ORDER BY s.source_date DESC NULLS LAST,s.source_sha256 LIMIT 1`,[food.code])).rows[0];
+ const provenance=foodProvenance(row,snapshot?.raw_record??null);
  const first = food.name.split(' ')[0];
  const [related, sameBrand, lighter] = await Promise.all([
   // 같은 분류에서 이름이 비슷한 것 먼저, 그다음 칼로리가 비슷한 것.
@@ -29,7 +32,7 @@ async function loadFoodPage(slug: string): Promise<{food: FoodReference; slug: s
   food.kcal !== null && food.category ? db.query<RelatedFood>(`SELECT slug, name, brand, kcal::float8 AS kcal FROM food_pages WHERE category = $1 AND brand IS NULL AND slug <> $2 AND kcal IS NOT NULL AND kcal <= $3 * 0.85 AND NOT (name = ANY($4))
    ORDER BY kcal DESC LIMIT 6`, [food.category, slug, food.kcal, NOT_SUGGESTED]).then((r) => r.rows) : Promise.resolve([] as RelatedFood[]),
  ]);
- return {food, slug, related, sameBrand, lighter};
+ return {food, provenance, slug, related, sameBrand, lighter};
 }
 
 // 색인 페이지: 많이 찾는 음식(이름이 정확히 같은 일반 음식이 있을 때만).

@@ -16,7 +16,7 @@ import {hasCachedFoodSearch,searchFoods} from '../lib/food-search-client';
 import {manualFoodReference} from '../lib/basic-food-reference';
 import type {MealDraft} from '../lib/meal-draft';
 
-const portionsList = [[0.5, '반'], [1, '1회'], [1.5, '1.5'], [2, '2회']] as const;
+const portionsList = [[0.5, '½배'], [1, '1배'], [1.5, '1.5배'], [2, '2배']] as const;
 const n = (v: number) => Math.round(v).toLocaleString('ko-KR');
 const serving = (f: FoodReference) => `${n(f.servingAmount)}${f.servingUnit}`;
 
@@ -134,11 +134,12 @@ export function SnackLog({onLogged,initialOpen=false,photo=false,onClose,onBusyC
    </button>
   </li>)}</ul>}
   {picked && <div className="snack-log-pick">
-   <p><strong>{picked.name}</strong>{picked.brand && <small> {picked.brand}</small>}<span>1회 {serving(picked)} 기준</span></p>
+   <p><strong>{picked.name}</strong>{picked.brand && <small> {picked.brand}</small>}<span>기준량 {serving(picked)} · 한 개·한 조각과 다를 수 있어요</span></p>
    {validPortions(rememberedPortions[picked.code])&&<p className="snack-log-note">지난번에는 {rememberedPortions[picked.code]}회분으로 기록했어요. 오늘 먹은 양에 맞게 바꿔 주세요.</p>}
    {photo&&<MealPhotoLog key={picked.code} referenceCode={picked.code} dishName={picked.name} disabled={busy} onManual={()=>void log()} onFallback={()=>void log(1)} onLogged={()=>{remember(picked);setPicked(null);setQuery('');setDone('사진으로 식사를 기록했어요. 아래에서 양을 수정할 수 있어요.');window.dispatchEvent(new CustomEvent(INTAKE_LOGGED_EVENT));onLogged(picked.name);}}/>}
    <div className="snack-log-portions" role="radiogroup" aria-label="먹은 양">{portionsList.map(([value, label]) => <button type="button" role="radio" key={value} aria-checked={portions === value} onClick={() => setPortions(value)}>{label}</button>)}</div>
-   <label className="snack-log-custom">먹은 양 직접 입력<input type="number" min="0.25" max="10" step="0.25" aria-label="먹은 양 직접 입력" value={portions||''} disabled={busy} onChange={e=>setPortions(Number(e.target.value))}/>회</label>
+   <label className="snack-log-custom">기준량의 몇 배를 먹었나요?<input type="number" min="0.25" max="10" step="0.25" aria-label="먹은 양 직접 입력" value={portions||''} disabled={busy} onChange={e=>setPortions(Number(e.target.value))}/>배</label>
+   {validPortions(portions)&&<p className="snack-log-note">선택한 양 {Math.round(picked.servingAmount*portions*10)/10}{picked.servingUnit} · 조각 수나 인분 수가 아닌 기준량의 배수예요.</p>}
    <p className="snack-log-total" aria-live="polite">{!validPortions(portions)?'먹은 양을 0.25~10회, 0.25 단위로 입력해 주세요.':<>{picked.kcal !== null ? <>약 <b>{n(picked.kcal * portions)}</b>kcal</> : '칼로리 정보 없음'}{picked.sugar !== null && ` · 당류 ${n(picked.sugar * portions)}g`}{picked.sodium !== null && ` · 나트륨 ${n(picked.sodium * portions)}mg`}</>}</p>
    <DetailedNutrition code={picked.code} amount={validPortions(portions) ? picked.servingAmount * portions : 0} unit={picked.servingUnit}/>
    <div className="snack-log-actions"><button type="button" onClick={() => setPicked(null)}>다시 고르기</button><button type="button" className="snack-log-submit" disabled={busy||!validPortions(portions)||!timeValid||!mealSlot} onClick={() => void log()}>{busy ? '기록 중…' : onRequireLogin?'로그인하고 이 식사 저장':`${recordDestinationTo(mealTime,mealSlot)} 기록`}</button></div>

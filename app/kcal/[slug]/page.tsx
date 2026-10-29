@@ -5,6 +5,7 @@ import {pageMetadata, siteUrl} from '../../../lib/seo';
 import {KcalActions} from './kcal-actions';
 import {DetailedNutrition} from '../../detailed-nutrition';
 import {josa} from '../../../lib/josa';
+import {foodSourceUrl,officialNutritionUrl} from '../../../lib/food-provenance';
 export const revalidate = 86400;
 
 type Props = {params: Promise<{slug: string}>};
@@ -32,7 +33,8 @@ export async function generateMetadata(props: Props) {
 }
 
 export default async function FoodKcalPage(props: Props) {
- const {food, slug, related, sameBrand} = await load(props);
+ const {food, provenance, slug, related, sameBrand} = await load(props);
+ const officialUrl=officialNutritionUrl(food.brand);
  const compare = food.brand ? [] : await compareCandidates(slug, food.category, food.kcal);
  const name = title(food.name, food.brand), serving = `${n(food.servingAmount)}${food.servingUnit}`;
  const cells: [string, number | null, string, number][] = [
@@ -51,7 +53,17 @@ export default async function FoodKcalPage(props: Props) {
   <h1>{name} 칼로리·영양성분</h1>
   <p className="kcal-sub">영양정보 기준량 {serving}{food.category ? ` · ${food.category}` : ''}</p>
   <div className="kcal-hero"><strong>{food.kcal === null ? '-' : k(food.kcal)}</strong><span>kcal · {serving} 기준</span></div>
-  <aside className="kcal-basis" aria-label="영양정보 기준 안내"><strong>한 컵·한 조각의 양인지 확인해 주세요</strong><p>이 값은 {serving} 기준으로, 실제 제품의 중량·용량과 다를 수 있어요.</p><details><summary>자료 출처와 확인할 점</summary><p>식품영양성분 데이터베이스 기준으로 현재 판매 제품과 다를 수 있어요. 브랜드의 최신 영양표시를 우선 확인해 주세요.</p></details></aside>
+  <aside className="kcal-basis" aria-label="영양정보 기준 안내">
+   <strong>{serving}의 영양값이에요 · 한 판·한 조각·한 컵 여부는 미확인</strong>
+   <p>아래 ¼·½·1배는 {serving}에 대한 비율이며, 조각 수나 인분 수가 아니에요.</p>
+   <p>출처: <a href={foodSourceUrl} target="_blank" rel="noopener noreferrer">{provenance?.matches?provenance.source:'식품영양성분 데이터베이스'}</a><br/>공공 DB 기준일: {provenance?.matches?provenance.sourceDate??'미확인':'미확인'} · 데이터 생성일: {provenance?.matches?provenance.createdDate??'미확인':'미확인'}</p>
+   <details><summary>원본 기준량 · 공식 대조 여부</summary>
+    {provenance?.matches?<><p>원본 영양 기준: {provenance.basisText??'미확인'}<br/>원본 식품중량: {provenance.weightText??'미제공'}<br/>원본 1회 참고량: {provenance.servingText??'미제공'}</p><p>자료 구분: {provenance.origin??'미확인'}</p></>:<p>표시된 요약 영양값과 일치하는 원본의 기준일을 확인하지 못했어요.</p>}
+    <p>공공 DB 기준일은 브랜드가 메뉴를 변경하거나 영양값을 다시 측정한 날짜가 아니에요.</p>
+    <p>{food.brand?'브랜드 최신 공식 영양표 대조: 미완료. 도우·크기·온도·옵션이 같은 제품의 최신 표시를 우선 확인해 주세요.':'조리법과 재료, 실제 먹은 양에 따라 달라질 수 있어요.'}</p>
+    {officialUrl&&<a href={officialUrl} target="_blank" rel="noopener noreferrer">{food.brand} 공식 메뉴·영양정보 확인 ↗</a>}
+   </details>
+  </aside>
   <section className="kcal-cta">
    <h2>칼로리만 보고 헤어지기 아쉬운데.</h2>
    <p>이 음식 먹었나요? 먹은 양을 남기고 오늘의 칼로리·단백질 합계도 확인해 보세요.</p>
