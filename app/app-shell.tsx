@@ -16,7 +16,7 @@ export function Brand({ light = false }: { light?: boolean }) {
 
 export function AppShell({children,overlay}:{children:ReactNode;overlay?:ReactNode}){const locale=usePlannerLocale();return locale.render(<main className="site-shell fresh-shell" lang={locale.isTaiwan?'zh-TW':'ko-KR'}>    <aside className="promo-panel" aria-label="끼니플랜 서비스 소개"><div className="promo-inner">
       <div className="promo-top"><Brand light/><span>먹는 일상, 기록하는 재미</span></div>
-      <div className="promo-copy"><div className="eyebrow">사진으로 남기는 식사·영양 기록</div><h1>잘 먹었든 막 먹었든,<br/><em>일단 기록.</em></h1><p>사진 한 장, 먹은 양만 확인.<br/>오늘 먹은 것과 영양을 모아봐요.</p></div>
+      <div className="promo-copy"><div className="eyebrow">사진으로 남기는 식사·영양 기록</div><h2>잘 먹었든 막 먹었든,<br/><em>일단 기록.</em></h2><p>사진 한 장, 먹은 양만 확인.<br/>오늘 먹은 것과 영양을 모아봐요.</p></div>
       <div className="promo-companion"><div className="promo-companion-art"><RiceBuddy animate/></div><div className="promo-companion-note"><span>나의 식사 친구, 끼니</span><strong>먹는 건 네가,<br/>기억하는 건 내가.</strong><p>식사 기록 담당, 끼니입니다.<br/>한 끼씩 남기면 저도 자라요.</p></div></div>
       <ol className="promo-features" aria-label="끼니플랜으로 할 수 있는 일">
         <li><span className="promo-feature-icon"><Icon name="edit" size={23}/></span><div><strong>사진으로 찾고, 먹은 양 확인</strong><p>사진 속 음식 후보를 고르거나 이름으로 찾아 기록해요.</p></div></li>

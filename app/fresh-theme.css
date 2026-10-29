@@ -138,8 +138,8 @@
 .fresh-shell.site-shell .promo-panel { background: #e6ebd6; }
 .fresh-shell.site-shell .promo-inner { display: flex; flex-direction: column; padding: 38px 48px 28px; }
 .fresh-shell.site-shell .promo-copy { margin-top: clamp(32px, 6vh, 70px); }
-.fresh-shell.site-shell .promo-copy h1 { font-size: clamp(38px, 3.6vw, 58px); line-height: 1.28; color: #294d40; }
-.fresh-shell.site-shell .promo-copy h1 em { color: #6e8754; }
+.fresh-shell.site-shell .promo-copy h2 { font-size: clamp(38px, 3.6vw, 58px); line-height: 1.28; color: #294d40; }
+.fresh-shell.site-shell .promo-copy h2 em { color: #6e8754; }
 .fresh-shell.site-shell .promo-copy p { color: #6b8479; font-size: 14px; }
 .fresh-shell.site-shell :is(.eyebrow, .promo-rule, .promo-top>span, .promo-footer) { color: #688e7c; }
 .fresh-shell.site-shell .promo-rule { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -335,7 +335,7 @@
   .fresh-shell.site-shell .promo-top>span { display: block; font-size: 13px; letter-spacing: 0; }
   .fresh-shell.site-shell .promo-copy { margin-top: clamp(16px, 2.8vh, 28px); }
   .fresh-shell.site-shell .promo-copy .eyebrow { font-size: 14px; }
-  .fresh-shell.site-shell .promo-copy h1 { font-size: clamp(44px, 3.8vw, 56px); margin: 12px 0; white-space: normal; }
+  .fresh-shell.site-shell .promo-copy h2 { font-size: clamp(44px, 3.8vw, 56px); margin: 12px 0; white-space: normal; }
   .fresh-shell.site-shell .promo-copy p { font-size: 19px; margin: 0; line-height: 1.8; }
   .fresh-shell.site-shell .promo-footer { display: flex; justify-content: space-between; gap: 12px; padding-top: 24px; font-size: 11px; letter-spacing: 0; }
 }
@@ -354,7 +354,7 @@
 @media (min-width: 911px) and (max-height: 820px) {
   .fresh-shell.site-shell .promo-inner { padding-top: 18px; padding-bottom: 16px; }
   .fresh-shell.site-shell .promo-copy { margin-top: 14px; }
-  .fresh-shell.site-shell .promo-copy h1 { font-size: 44px; margin: 10px 0; }
+  .fresh-shell.site-shell .promo-copy h2 { font-size: 44px; margin: 10px 0; }
   .fresh-shell.site-shell .promo-copy p { font-size: 17px; line-height: 1.6; }
   .fresh-shell .promo-companion { margin: 10px 0; }
   .fresh-shell .promo-companion-art .rice-buddy { max-width: 110px; }
@@ -366,7 +366,7 @@
 }
 @media (min-width: 911px) and (max-height: 680px) {
   .fresh-shell.site-shell .promo-copy .eyebrow, .fresh-shell.site-shell .promo-footer { display: none; }
-  .fresh-shell.site-shell .promo-copy h1 { font-size: 38px; margin: 6px 0; }
+  .fresh-shell.site-shell .promo-copy h2 { font-size: 38px; margin: 6px 0; }
   .fresh-shell.site-shell .promo-copy { margin-top: 10px; }
   .fresh-shell .promo-companion-art .rice-buddy { max-width: 100px; }
   .fresh-shell .promo-companion-note p { display: none; }

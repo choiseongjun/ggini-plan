@@ -1,0 +1,6 @@
+.auth-mode-switch{display:flex;gap:8px;margin-bottom:20px}
+.auth-mode-switch button{flex:1;padding:12px 8px;border:1px solid #d5dfd0;border-radius:12px;background:#fffdf6;color:#42543e;font-size:13px;font-weight:700}
+.auth-mode-switch button[aria-pressed=true]{background:#edf3e6;border-color:#516f43;color:#304c27}
+.auth-mode-switch button:disabled{opacity:.6}
+.auth-card .member-consent summary{cursor:pointer;font-size:12px;line-height:1.5;padding:8px 0}
+@media(max-width:600px){.auth-stage .auth-content{padding-top:24px}.auth-stage .auth-intro{margin-bottom:20px}.auth-stage .auth-intro h2{font-size:28px;line-height:1.35;margin:10px 0}.auth-stage .auth-intro p{font-size:14px;line-height:1.6}.auth-stage .auth-card{padding:16px}.auth-stage .auth-mode-switch{margin-bottom:14px}.auth-stage .member-consent{padding:12px}}

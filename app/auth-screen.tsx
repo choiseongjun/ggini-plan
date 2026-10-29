@@ -1,7 +1,10 @@
 "use client";
 
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
+import {trackAnalytics} from '../lib/analytics';
+import {pendingRecordMode} from '../lib/record-intent';
+import {rememberAuthRedirect} from '../lib/auth-funnel';
 import { AppLoading } from "./app-loading";
 import type { PublicUser } from "../lib/auth";
 import { GoogleAuthProvider, OAuthProvider, signInWithPopup, signOut } from "firebase/auth";
@@ -12,11 +15,19 @@ import './apple-signin.css';
 import { PolicyLinks } from './policy-links';
 import {kakaoAuthErrors} from '../lib/auth-messages';
 import './kakao-signin.css';
+import './auth-conversion.css';
 
 type AuthResponse = { user?: PublicUser; error?: string; code?: string };
 
 export function AuthScreen({ onSuccess, onExplore, initialError = "", admin = false, review = false, purpose, purposeTitle, onAuthEvent }: { onSuccess: (user: PublicUser) => void; onExplore: () => void; initialError?: string; admin?: boolean; review?: boolean; purpose?:string; purposeTitle?:string; onAuthEvent?:(event:'started'|'failed'|'succeeded'|'consent_required')=>void }) {
-  const [mode, setMode] = useState<"login" | "register">(initialError===kakaoAuthErrors.kakao_consent_required||initialError.includes('필수 동의')?'register':'login');
+  const [mode, setMode] = useState<"login" | "register">(admin||review?'login':'register');
+  const [recordMode]=useState(()=>typeof window==='undefined'?null:pendingRecordMode());
+  useEffect(()=>{if(!admin&&!review)trackAnalytics('auth_viewed');},[admin,review]);
+  function reportAuth(event:'started'|'failed'|'succeeded'|'consent_required'){
+    if(!admin&&!review)trackAnalytics(event==='started'?'auth_started':event==='failed'?'auth_failed':event==='succeeded'?'auth_succeeded':'auth_consent_required');
+    onAuthEvent?.(event);
+  }
+  function explore(){if(!admin&&!review)trackAnalytics('auth_cancelled');onExplore();}
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,27 +42,27 @@ export function AuthScreen({ onSuccess, onExplore, initialError = "", admin = fa
   async function signInWithKakao(){
     const bridge=(window as Window&{ReactNativeWebView?:{postMessage:(message:string)=>void}}).ReactNativeWebView;
     // Existing store builds already open the system browser for this bridge event.
-    if(bridge){bridge.postMessage(JSON.stringify({type:'ggini-google-login',provider:'kakao'}));return;}
+    if(bridge){reportAuth('started');bridge.postMessage(JSON.stringify({type:'ggini-google-login',provider:'kakao'}));return;}
     if(mode==='register'&&!consentComplete){setError('회원가입 필수 동의 항목을 확인해 주세요.');return;}
-    onAuthEvent?.('started');setSocialName('카카오');setSocialPending(true);setError('');
+    reportAuth('started');setSocialName('카카오');setSocialPending(true);setError('');
     try{
       const challenge=window.location.pathname==='/app-login'?new URLSearchParams(window.location.search).get('challenge'):undefined;
       const response=await fetch('/api/auth/kakao',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({consent:consentPayload,challenge})});
       const data=await response.json();if(!response.ok)throw new Error(data.error??kakaoAuthErrors.kakao_failed);
       const url=new URL(data.url);if(url.origin!=='https://kauth.kakao.com'||url.pathname!=='/oauth/authorize')throw new Error(kakaoAuthErrors.kakao_failed);
-      window.location.assign(url.href);
-    }catch(e){onAuthEvent?.('failed');setError(e instanceof Error?e.message:kakaoAuthErrors.kakao_failed);setSocialPending(false);}
+      rememberAuthRedirect();window.location.assign(url.href);
+    }catch(e){reportAuth('failed');setError(e instanceof Error?e.message:kakaoAuthErrors.kakao_failed);setSocialPending(false);}
   }
 
   async function signInWithSocial(kind: 'google' | 'apple' = 'google') {
-    onAuthEvent?.('started');
     const label=kind==='apple'?'Apple':'Google';
     setSocialName(label);
     const bridge=(window as Window & {ReactNativeWebView?:{postMessage:(message:string)=>void}}).ReactNativeWebView;
     // Keep the existing bridge message for older builds. The system-browser login
     // screen supports both providers; Apple must not open a popup inside WKWebView.
-    if(bridge){bridge.postMessage(JSON.stringify({type:'ggini-google-login',provider:kind}));return;}
+    if(bridge){reportAuth('started');bridge.postMessage(JSON.stringify({type:'ggini-google-login',provider:kind}));return;}
     if (mode === 'register' && !consentComplete) { setError('회원가입 필수 동의 항목을 확인해 주세요.'); return; }
+    reportAuth('started');
     setSocialPending(true);
     setError("");
     try {
@@ -66,20 +77,20 @@ export function AuthScreen({ onSuccess, onExplore, initialError = "", admin = fa
         });
         const data = await response.json() as AuthResponse;
         if (data.code === 'consent_required') {
-          onAuthEvent?.('consent_required');
+          reportAuth('consent_required');
           setMode('register');
           setError(`처음 이용하는 ${label} 계정이에요. 필수 항목에 동의한 후 ${label}로 계속하기를 다시 눌러 주세요.`);
           return;
         }
         if (!response.ok || !data.user) throw new Error(data.error ?? "구글 로그인을 완료하지 못했어요.");
-        onAuthEvent?.('succeeded');
+        reportAuth('succeeded');
       onSuccess(data.user);
       } finally {
         // The application's HttpOnly session owns login persistence, not Firebase client storage.
         await signOut(auth).catch(() => undefined);
       }
     } catch (error) {
-      onAuthEvent?.('failed');
+      reportAuth('failed');
       setError(firebaseLoginMessage(error).replaceAll('구글',label).replaceAll('Google',label));
     } finally {
       setSocialPending(false);
@@ -88,7 +99,7 @@ export function AuthScreen({ onSuccess, onExplore, initialError = "", admin = fa
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    onAuthEvent?.('started');
+    reportAuth('started');
     if (mode === 'register' && !consentComplete) { setError('회원가입 필수 동의 항목을 확인해 주세요.'); return; }
     setPending(true);
     setError("");
@@ -101,15 +112,15 @@ export function AuthScreen({ onSuccess, onExplore, initialError = "", admin = fa
       });
       const data = await response.json() as AuthResponse;
       if (!response.ok || !data.user) {
-        onAuthEvent?.('failed');
+        reportAuth('failed');
         setError(data.error ?? "잠시 후 다시 시도해 주세요.");
         return;
       }
       setPassword("");
-      onAuthEvent?.('succeeded');
+      reportAuth('succeeded');
       onSuccess(data.user);
     } catch {
-      onAuthEvent?.('failed');
+      reportAuth('failed');
       setError("서버에 연결할 수 없습니다. 로컬 서버를 확인해 주세요.");
     } finally {
       setPending(false);
@@ -119,12 +130,13 @@ export function AuthScreen({ onSuccess, onExplore, initialError = "", admin = fa
 
   return <div className="auth-stage">
     {(pending||socialPending)&&<AppLoading message={socialPending?`${socialName} 로그인을 기다리고 있어요`:mode==="register"?"나만의 식탁을 만들고 있어요":"로그인하고 있어요"}/>}
-    <div className="auth-header"><span className="brand"><span className="brand-mark"><span/><span/><span/><span/></span><span>끼니플랜<span className="brand-dot">.</span></span></span><button className="auth-explore-header" type="button" onClick={onExplore}>{purpose?'저장 취소':'둘러보기'}</button></div>
+    <div className="auth-header"><span className="brand"><span className="brand-mark"><span/><span/><span/><span/></span><span>끼니플랜<span className="brand-dot">.</span></span></span><button className="auth-explore-header" type="button" onClick={explore}>{purpose?'저장 취소':'둘러보기'}</button></div>
     <div className="auth-content">
-      <div className="auth-intro"><span>{admin ? "끼니플랜 관리자" : "내 식사에서 건강을 찾다"}</span><h2>{admin ? <>관리자<br/><em>로그인</em></> : purpose ? (purposeTitle??<>고른 식단을<br/><em>저장해 둘까요?</em></>) : mode === "login" ? <>다시 만나서<br/><em>반가워요.</em></> : <>우리의 첫 주를<br/><em>시작해 볼까요?</em></>}</h2><p>{admin ? "관리자로 등록된 계정으로 로그인해 주세요." : purpose ? purpose : mode === "login" ? "내 계정으로 끼니플랜을 시작해요." : "계정을 만들고 내게 필요한 영양과 한 끼를 찾아봐요."}</p></div>
+      <div className="auth-intro"><span>{admin ? "끼니플랜 관리자" : "내 식사에서 건강을 찾다"}</span><h2>{admin ? <>관리자<br/><em>로그인</em></> : recordMode ? <>이 한 끼부터<br/><em>내 일기에 남겨요.</em></> : purpose ? (purposeTitle??<>고른 식단을<br/><em>저장해 둘까요?</em></>) : mode === "login" ? <>다시 만나서<br/><em>반가워요.</em></> : <>우리의 첫 주를<br/><em>시작해 볼까요?</em></>}</h2><p>{admin ? "관리자로 등록된 계정으로 로그인해 주세요." : recordMode ? "고른 음식과 양은 그대로. 가입하면 식사 일기와 하루 영양 합계로 모아봐요." : purpose ? purpose : mode === "login" ? "내 계정으로 끼니플랜을 시작해요." : "계정을 만들고 내게 필요한 영양과 한 끼를 찾아봐요."}</p></div>
       <div className="auth-card">
         {review && <p>App review / 심사용 로그인<br/>스토어 콘솔에 제공된 테스트 계정을 입력하세요. 일반 사용자와 같은 기능을 이용하며 테스트용 기록만 사용해 주세요.</p>}
-        {!admin && !review && mode === 'register' && <MemberConsentFields value={consent} onChange={setConsent} disabled={pending || socialPending}/>}
+        {!admin && !review && <div className="auth-mode-switch" role="group" aria-label="계정 이용 방식"><button type="button" aria-pressed={mode==='register'} disabled={pending||socialPending} onClick={()=>{setMode('register');setError('');}}>처음이에요 · 회원가입</button><button type="button" aria-pressed={mode==='login'} disabled={pending||socialPending} onClick={()=>{setMode('login');setError('');}}>이미 계정이 있어요</button></div>}
+        {!admin && !review && mode === 'register' && <MemberConsentFields compact value={consent} onChange={setConsent} disabled={pending || socialPending}/>}
         {!admin && !review && <><button className="kakao-signin" type="button" onClick={()=>void signInWithKakao()} disabled={pending||socialPending}><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.5 2 10.8c0 2.8 1.9 5.2 4.8 6.6l-1.2 4 4.6-2.8 1.8.1c5.5 0 10-3.5 10-7.9S17.5 3 12 3Z"/></svg><span>{socialPending&&socialName==='카카오'?'카카오로 이동하는 중…':'카카오로 계속하기'}</span></button><button className="google-signin" type="button" onClick={()=>void signInWithSocial()} disabled={pending || socialPending}>
           <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5Z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6C44.4 38.03 46.98 31.87 46.98 24.55Z"/><path fill="#FBBC05" d="M10.53 28.59A14.4 14.4 0 0 1 9.75 24c0-1.59.27-3.13.78-4.59l-7.98-6.19A23.85 23.85 0 0 0 0 24c0 3.87.93 7.53 2.56 10.78l7.97-6.19Z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.91-5.8l-7.73-6c-2.15 1.45-4.92 2.3-8.18 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48Z"/></svg>
           <span>{socialPending && socialName==='Google' ? "구글로 이동하는 중…" : "Google로 계속하기"}</span>
@@ -133,7 +145,7 @@ export function AuthScreen({ onSuccess, onExplore, initialError = "", admin = fa
           <svg className="apple-signin-logo" width="20" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M17.05 12.04c.03 3.27 2.87 4.36 2.9 4.37-.02.08-.45 1.55-1.49 3.07-.9 1.31-1.83 2.62-3.3 2.65-1.44.03-1.91-.86-3.56-.86-1.65 0-2.17.83-3.54.89-1.42.05-2.5-1.42-3.41-2.73-1.86-2.68-3.28-7.58-1.37-10.89.95-1.64 2.64-2.68 4.47-2.71 1.4-.03 2.72.95 3.57.95.85 0 2.44-1.18 4.11-1.01.7.03 2.68.28 3.95 2.14-.1.06-2.36 1.37-2.33 4.13ZM14.34 4.1c.76-.92 1.27-2.2 1.13-3.47-1.1.04-2.44.73-3.23 1.65-.71.82-1.34 2.13-1.17 3.38 1.23.1 2.49-.63 3.27-1.56Z"/></svg>
           <span>{socialPending && socialName === 'Apple' ? 'Apple로 이동하는 중…' : 'Apple로 계속하기'}</span>
         </button>
-        <p className="google-signin-caption">처음 이용한다면 가입 동의를 확인한 뒤 계정을 만들어요.</p></>}
+        <p className="google-signin-caption">{mode==='register'?'필수 동의 후 평소 쓰는 계정으로 가입하세요. 별도 비밀번호는 만들지 않아요.':'가입할 때 사용한 계정으로 로그인해 주세요.'}</p></>}
         {error && <p className="auth-error" role="alert">{error}</p>}
         {(admin || review) && <form onSubmit={submit}>
           {mode === "register" && <label>이름<input autoComplete="name" value={name} onChange={(event) => setName(event.target.value)} minLength={2} maxLength={40} required placeholder="이름을 입력해 주세요"/></label>}
@@ -142,7 +154,7 @@ export function AuthScreen({ onSuccess, onExplore, initialError = "", admin = fa
           <button className="auth-submit" type="submit" disabled={pending || socialPending}>{pending ? "처리하는 중…" : mode === "login" ? "로그인하기" : "계정 만들기"}</button>
         </form>}
       </div>
-      <button className="auth-explore" type="button" onClick={onExplore}>{purpose?'저장 취소하고 돌아가기':'로그인 없이 둘러보기'} <span aria-hidden="true">→</span></button>
+      <button className="auth-explore" type="button" onClick={explore}>{purpose?'저장 취소하고 돌아가기':'로그인 없이 둘러보기'} <span aria-hidden="true">→</span></button>
       <PolicyLinks/>
       {/* Store reviewers are told to tap this exact label; keep it discreet for everyone else. */}
       {!admin && !review && <a className="auth-review-link" href="/review-login">심사용 로그인 / App review</a>}

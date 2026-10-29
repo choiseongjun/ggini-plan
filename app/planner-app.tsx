@@ -6,6 +6,7 @@ import {accountLabel} from '../lib/account-label';
 import {takeProfileIntent,clearProfileIntent} from '../lib/profile-intent';
 import './home-readability.css';
 import {pendingRecordMode,clearRecordMode} from '../lib/record-intent';
+import {finishAuthRedirect} from '../lib/auth-funnel';
 import {InstallPrompt} from './install-prompt';
 import {PolicyLinks} from './policy-links';
 const PlanCalendar=dynamic(()=>import("./plan-calendar").then(module=>module.PlanCalendar));
@@ -206,6 +207,7 @@ export default function Home() {
         const data = await response.json() as { user: PublicUser | null; error?: string };
         if (!response.ok) throw new Error(data.error ?? "로그인 상태를 확인할 수 없습니다.");
         setAuthUser(data.user);
+        finishAuthRedirect(Boolean(data.user));
         if(data.user&&pendingPlanSave())router.replace(pendingPlanSave()!.returnTo);
         else if(data.user&&pendingTasteReturn())router.replace(pendingTasteReturn()!);
         else if(data.user&&takeProfileIntent())router.replace("/profile?personalize=1#profile-settings");

@@ -5,6 +5,7 @@ import {AuthScreen} from '../auth-screen';
 import {authErrors,type AuthErrorCode} from '../../lib/auth-messages';
 import {GoogleAuthProvider,getRedirectResult,signInWithRedirect,signOut} from 'firebase/auth';
 import {firebaseAuth,firebaseLoginMessage} from '../../lib/firebase-client';
+import {finishAuthRedirect} from '../../lib/auth-funnel';
 export default function AppLogin(){
  const params=useSearchParams(),router=useRouter();
  const challenge=params.get('challenge')??'';
@@ -40,7 +41,8 @@ export default function AppLogin(){
   // Full-page OAuth returns with our HttpOnly session. Complete the existing native exchange.
   let alive=true;
   if(completion.current?.challenge!==challenge)completion.current={challenge,promise:fetch('/api/auth/mobile/authorize',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({challenge})}).then(async response=>{
-   const data=await response.json();if(!response.ok||!/^gginiplan:\/\/auth\?code=[a-f0-9]{64}$/.test(data.redirect))throw new Error('앱 로그인 연결에 실패했어요. 앱에서 다시 시작해 주세요.');
+    const data=await response.json();if(!response.ok||!/^gginiplan:\/\/auth\?code=[a-f0-9]{64}$/.test(data.redirect))throw new Error('앱 로그인 연결에 실패했어요. 앱에서 다시 시작해 주세요.');
+    finishAuthRedirect(true);
    return data.redirect as string;
   })};
   void completion.current.promise.then(value=>{if(alive)setRedirect(value);}).catch(e=>{if(alive)setError(e instanceof Error?e.message:'앱 연결에 실패했어요.');});

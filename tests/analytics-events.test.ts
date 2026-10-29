@@ -2,6 +2,13 @@ import assert from 'node:assert/strict';
 import {test} from 'node:test';
 import {analyticsScreen,sanitizeAnalytics} from '../lib/analytics-events';
 
+test('authentication funnel accepts browser returns without identity or food data',()=>{
+ assert.equal(analyticsScreen('/app-login'),'app_login');
+ for(const event of ['auth_viewed','auth_started','auth_failed','auth_succeeded','auth_consent_required','auth_cancelled']){
+  assert.deepEqual(sanitizeAnalytics(event,{screen:'app_login',source:'kcal',email:'private@example.test',userId:'private',food:'private',token:'private',challenge:'private'}),{$process_person_profile:false,$geoip_disable:true,screen:'app_login',source:'kcal'});
+ }
+});
+
 test('search-to-record funnel preserves attribution without food or serving details',()=>{
  for(const event of ['kcal_portion_selected','record_food_ready','record_login_required','record_save_started','record_save_failed','meal_recorded']){
   assert.deepEqual(sanitizeAnalytics(event,{screen:'record',source:'kcal',method:'search',food:'private',portions:2,calories:500}),{$process_person_profile:false,$geoip_disable:true,screen:'record',source:'kcal',method:'search'});
