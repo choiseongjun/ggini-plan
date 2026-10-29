@@ -30,6 +30,11 @@ export async function PUT(request: NextRequest) {
       const row = (await client.query("SELECT * FROM submissions WHERE id=$1 FOR UPDATE", [input.id])).rows[0];
       if (!row) { await client.query("ROLLBACK"); return json({ error: "제보가 없습니다." }, 404); }
       if (row.status !== "pending" || row.version !== input.version) { await client.query("ROLLBACK"); return json({ error: "이미 처리됐거나 수정된 제보입니다. 새로고침해 주세요." }, 409); }
+      if(row.payload.kind!==payload.kind){await client.query("ROLLBACK");return json({error:"요청 종류는 변경할 수 없습니다."},400);}
+      if(input.status==='approved'&&payload.kind==='food'){
+        const found=await client.query('SELECT 1 FROM food_pages p JOIN food_reference r ON r.food_code=p.food_code WHERE p.food_code=$1',[payload.foodCode]);
+        if(!found.rowCount){await client.query("ROLLBACK");return json({error:"영양정보와 출처를 확인해 음식 검색에 등록한 뒤, 해당 음식 코드를 입력해 주세요."},400);}
+      }
       let catalogId = null;
       if (input.status === "approved" && payload.kind === "product") {
         let imageUrl = null;

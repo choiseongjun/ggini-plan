@@ -23,6 +23,7 @@ export async function POST(request:NextRequest){
    await db.query('DELETE FROM water_reminders WHERE user_id=$1',[user.id]);
    await db.query('DELETE FROM water_reminder_deliveries WHERE user_id=$1',[user.id]);
    await db.query('DELETE FROM health_goals WHERE user_id=$1',[user.id]);
+   await db.query('DELETE FROM saved_foods WHERE user_id=$1',[user.id]);
    await db.query('COMMIT');
    return NextResponse.json({reset:true},{headers:{'Cache-Control':'no-store'}});
   }catch(e){await db.query('ROLLBACK');throw e;}finally{db.release();}

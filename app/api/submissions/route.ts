@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     const mine = request.nextUrl.searchParams.get("mine") === "1";
     const user = mine ? await sessionUser(request) : null;
     if (mine && !user) return json({ error: "로그인이 필요합니다." }, 401);
-    const { rows } = await getPool().query(`SELECT id,payload,status,version,photo_path IS NOT NULL AS photo,created_at,catalog_id${mine ? ",review_note" : ""} FROM submissions WHERE ${mine ? "user_id=$1" : "status='approved'"} ORDER BY created_at DESC LIMIT 100`, mine ? [user!.id] : []);
+    const { rows } = await getPool().query(`SELECT id,payload,status,version,photo_path IS NOT NULL AS photo,created_at,catalog_id${mine ? ",review_note" : ""} FROM submissions WHERE ${mine ? "user_id=$1" : "status='approved' AND payload->>'kind' <> 'food'"} ORDER BY created_at DESC LIMIT 100`, mine ? [user!.id] : []);
     // Unverified nutrition notes are only visible to the author and reviewers.
     if (!mine) for (const row of rows) row.payload = { ...row.payload, nutrition: "" };
     return json({ items: rows });
@@ -28,6 +28,7 @@ export async function POST(request: NextRequest) {
     let payload; let photo;
     try { payload = validateSubmission(JSON.parse(String(form.get("payload")))); photo = await validatedPhoto(form.get("photo")); }
     catch (e) { return json({ error: e instanceof Error ? e.message : "입력을 확인해 주세요." }, 400); }
+    if(payload.kind==='food')payload.foodCode='';
     const id = String(form.get("id") || ""); const version = Number(form.get("version"));
     if (id && !/^[0-9a-f-]{36}$/i.test(id)) return json({ error: "제보를 찾을 수 없습니다." }, 404);
     const client = await getPool().connect();
@@ -36,6 +37,7 @@ export async function POST(request: NextRequest) {
       await client.query("SELECT pg_advisory_xact_lock($1::bigint)", [user.id]);
       const old = id ? (await client.query("SELECT * FROM submissions WHERE id=$1 AND user_id=$2 FOR UPDATE", [id, user.id])).rows[0] : null;
       if (id && !old) { await client.query("ROLLBACK"); return json({ error: "제보를 찾을 수 없습니다." }, 404); }
+      if(old&&old.payload.kind!==payload.kind){await client.query('ROLLBACK');return json({error:'요청 종류는 변경할 수 없어요. 새 요청으로 제출해 주세요.'},400);}
       if (old && (old.status === "approved" || old.version !== version)) { await client.query("ROLLBACK"); return json({ error: "이미 승인됐거나 내용이 변경됐습니다. 목록을 새로고침해 주세요." }, 409); }
       const count = await client.query("SELECT count(*)::int AS n FROM submissions WHERE user_id=$1 AND created_at>NOW()-INTERVAL '1 day'", [user.id]);
       if (!id && count.rows[0].n >= 10) { await client.query("ROLLBACK"); return json({ error: "하루에 최대 10개까지 제보할 수 있어요." }, 429); }

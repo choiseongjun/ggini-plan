@@ -3,6 +3,13 @@ import {foodReferenceFromRow, type FoodReference} from './food-reference';
 import {cache} from 'react';
 import {unstable_cache} from 'next/cache';
 import {foodProvenance} from './food-provenance';
+import {comparableFoods,foodComparisonGroup,type ComparisonFood} from './food-comparison';
+
+export async function foodComparisonCandidates(food:FoodReference):Promise<ComparisonFood[]>{
+ if(!foodComparisonGroup(food.name))return [];
+ const {rows}=await getPool().query(`SELECT p.slug, ${COLUMNS} FROM food_pages p JOIN food_reference r ON r.food_code=p.food_code WHERE r.category IS NOT DISTINCT FROM $1 AND r.food_code<>$2 ORDER BY (r.brand IS NOT DISTINCT FROM $3) DESC,p.slug LIMIT 500`,[food.category,food.code,food.brand]);
+ return comparableFoods(food,rows.map(row=>({slug:row.slug,food:foodReferenceFromRow(row)})));
+}
 
 // 음식 영양 검색 페이지(/kcal/[slug]) 데이터. 기준: 식약처 1일 영양성분 기준치(식품 표시 기준).
 export const DAILY_VALUE = {kcal: 2000, carbs: 324, sugar: 100, protein: 55, fat: 54, sodium: 2000};

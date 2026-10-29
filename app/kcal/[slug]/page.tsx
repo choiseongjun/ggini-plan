@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import {notFound} from 'next/navigation';
-import {DAILY_VALUE, compareCandidates, comparePath, foodPagePath, getFoodPage} from '../../../lib/food-pages';
+import {DAILY_VALUE, foodPagePath, getFoodPage, foodComparisonCandidates} from '../../../lib/food-pages';
 import {pageMetadata, siteUrl} from '../../../lib/seo';
+import {FoodComparison} from './food-comparison';
 import {KcalActions} from './kcal-actions';
 import {DetailedNutrition} from '../../detailed-nutrition';
-import {josa} from '../../../lib/josa';
 import {foodSourceUrl,officialNutritionUrl} from '../../../lib/food-provenance';
 export const revalidate = 86400;
 
@@ -34,8 +34,8 @@ export async function generateMetadata(props: Props) {
 
 export default async function FoodKcalPage(props: Props) {
  const {food, provenance, slug, related, sameBrand} = await load(props);
+ const comparisonItems=await foodComparisonCandidates(food);
  const officialUrl=officialNutritionUrl(food.brand);
- const compare = food.brand ? [] : await compareCandidates(slug, food.category, food.kcal);
  const name = title(food.name, food.brand), serving = `${n(food.servingAmount)}${food.servingUnit}`;
  const cells: [string, number | null, string, number][] = [
   ['탄수화물', food.carbs, 'g', DAILY_VALUE.carbs], ['단백질', food.protein, 'g', DAILY_VALUE.protein], ['지방', food.fat, 'g', DAILY_VALUE.fat],
@@ -64,9 +64,10 @@ export default async function FoodKcalPage(props: Props) {
     {officialUrl&&<a href={officialUrl} target="_blank" rel="noopener noreferrer">{food.brand} 공식 메뉴·영양정보 확인 ↗</a>}
    </details>
   </aside>
+  <FoodComparison food={food} items={comparisonItems}/>
   <section className="kcal-cta">
-   <h2>칼로리만 보고 헤어지기 아쉬운데.</h2>
-   <p>이 음식 먹었나요? 먹은 양을 남기고 오늘의 칼로리·단백질 합계도 확인해 보세요.</p>
+   <h2>다음에 먹을까요, 오늘 먹었나요?</h2>
+   <p>마음에 들면 다음 메뉴로 저장하고, 이미 먹었다면 먹은 양을 기록해요.</p>
    <KcalActions code={food.code} kcal={food.kcal} amount={food.servingAmount} unit={food.servingUnit} protein={food.protein} sugar={food.sugar}/>
   </section>
   <div className="kcal-grid">{cells.map(([label, v, unit, dv]) => <div key={label} className={`kcal-cell${v !== null && v / dv > .5 ? ' is-high' : ''}`}>
@@ -74,9 +75,8 @@ export default async function FoodKcalPage(props: Props) {
    {v !== null && <><div className="kcal-bar" aria-hidden="true"><i style={{width: `${Math.min(100, v / dv * 100)}%`}}/></div><em>하루 기준치의 {pct(v, dv)}%</em></>}
   </div>)}</div>
   <DetailedNutrition code={food.code} amount={food.servingAmount} unit={food.servingUnit}/>
-  {compare.length > 0 && <section className="kcal-box"><h2>{josa(food.name,'과','와')} 비교해 보기</h2><ul className="kcal-links">{compare.map((r) => <li key={r.slug}><Link href={comparePath(slug, r.slug)}>{food.name} vs {r.name}</Link></li>)}</ul></section>}
-  {sameBrand.length > 0 && <section className="kcal-box"><h2>{food.brand} 다른 메뉴</h2><ul className="kcal-links">{sameBrand.map((r) => <li key={r.slug}><Link href={foodPagePath(r.slug)}>{r.name}{r.kcal !== null && <small>{Math.round(r.kcal)}kcal</small>}</Link></li>)}</ul></section>}
-  {related.length > 0 && <section className="kcal-box"><h2>비슷한 음식 칼로리</h2><ul className="kcal-links">{related.map((r) => <li key={r.slug}><Link href={foodPagePath(r.slug)}>{r.name}{r.kcal !== null && <small>{Math.round(r.kcal)}kcal</small>}</Link></li>)}</ul></section>}
+  {sameBrand.length > 0 && <section className="kcal-box"><h2>{food.brand} 다른 메뉴</h2><ul className="kcal-links">{sameBrand.map((r) => <li key={r.slug}><Link href={foodPagePath(r.slug)}>{r.name}</Link></li>)}</ul></section>}
+  {related.length > 0 && <section className="kcal-box"><h2>다른 음식 정보 둘러보기</h2><ul className="kcal-links">{related.map((r) => <li key={r.slug}><Link href={foodPagePath(r.slug)}>{r.name}</Link></li>)}</ul></section>}
   <p className="kcal-note">출처: 식품영양성분 데이터베이스 · Korean Food Composition Database system(K-FCDB). 표시된 기준량의 참고값이며 조리법·식당·양에 따라 달라요. 하루 기준치는 식품 표시용 1일 영양성분 기준치예요.</p>
  </>;
 }

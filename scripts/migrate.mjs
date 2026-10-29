@@ -53,6 +53,7 @@ try {
   await client.query(readFileSync(resolve(root, 'db/photo-analysis.sql'), 'utf8'));
   await client.query(readFileSync(resolve(root, 'db/health-goal.sql'), 'utf8'));
   await client.query(readFileSync(resolve(root, 'db/water-reminders.sql'), 'utf8'));
+  await client.query(readFileSync(resolve(root, 'db/saved-foods.sql'), 'utf8'));
   await client.query('COMMIT');
   console.log("PostgreSQL schema is ready.");
 } catch (error) {

@@ -7,8 +7,12 @@ import { emptySubmission } from "../lib/submissions";
 import { GET, POST } from "../app/api/submissions/route";
 import { GET as adminGet, PUT } from "../app/api/admin/submissions/route";
 import { GET as photoGet } from "../app/api/submissions/photo/route";
+import {workAsyncStorage} from 'next/dist/server/app-render/work-async-storage.external';
 
-test("submission ownership, moderation, re-submission, publication and duplicate approval", async () => {
+test("submission ownership, moderation, re-submission, publication and duplicate approval", async (t) => {
+  // Direct route tests have no Next request cache context; test invalidation dispatch separately.
+  const cacheStore = {incrementalCache: {}, pendingRevalidatedTags: [] as {tag:string}[]};
+  t.mock.method(workAsyncStorage, 'getStore', () => cacheStore);
   const pool = getPool(); const users: string[] = []; const cookies: string[] = []; const submitted: string[] = []; const adminBefore = process.env.ADMIN_EMAILS;
   function req(url: string, cookie?: string) { return new NextRequest("http://localhost:3000" + url, { headers: cookie ? { cookie } : {} }); }
   const payload = { ...emptySubmission, name: "테스트 제보", description: "추천하는 이유", price: 3000, productUrl: "https://www.kurly.com/goods/5053329", nutrition: "검증 전 메모" };
@@ -29,6 +33,7 @@ test("submission ownership, moderation, re-submission, publication and duplicate
     assert.equal((await send(0, id, 1)).status, 409);
     assert.equal((await send(0, id, 2)).status, 200);
     assert.equal((await review(2, id, 3, "approved")).status, 200);
+    assert.equal(cacheStore.pendingRevalidatedTags.length, 1);
     assert.equal((await review(2, id, 3, "approved")).status, 409);
     assert.equal((await send(0, id, 4)).status, 409);
     const published = (await (await GET(req("/api/submissions"))).json()).items.find((s: { id: string }) => s.id === id);

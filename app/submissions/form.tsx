@@ -3,8 +3,9 @@ import { catalogCategories } from "../../lib/catalog";
 import type { SubmissionPayload } from "../../lib/submissions";
 export function SubmissionFields({ value, onChange }: { value: SubmissionPayload; onChange: (v: SubmissionPayload) => void }) {
   const set = (key: keyof SubmissionPayload, v: string | number) => onChange({ ...value, [key]: v });
+  if(value.kind==='food')return <div className="submission-fields"><label>제품·음식 이름<input required maxLength={120} value={value.name} onChange={e=>set("name",e.target.value)} placeholder="브랜드와 메뉴명, 크기·옵션까지 적어 주세요"/></label><label>공식 제품 링크 (선택)<input type="url" pattern="https://.*" maxLength={2048} value={value.productUrl} onChange={e=>set("productUrl",e.target.value)} placeholder="https://"/></label><label>추가 설명 (선택)<textarea maxLength={1000} value={value.description} onChange={e=>set("description",e.target.value)} placeholder="검색한 이름이나 확인이 필요한 부분"/></label><label>영양표 기준량·출처 (선택)<textarea maxLength={2000} value={value.nutrition} onChange={e=>set("nutrition",e.target.value)}/></label></div>;
   return <div className="submission-fields">
-    <label>제보 종류<select value={value.kind} onChange={e => set("kind", e.target.value)}><option value="product">구매 가능한 상품</option><option value="recipe">직접 만든 메뉴</option></select></label>
+    <label>제보 종류<select value={value.kind} onChange={e => set("kind", e.target.value)}><option value="food">없는 음식·영양정보 등록 요청</option><option value="product">구매 가능한 상품</option><option value="recipe">직접 만든 메뉴</option></select></label>
     <label>이름<input required maxLength={120} value={value.name} onChange={e => set("name", e.target.value)}/></label>
     <label>추천 이유<textarea required maxLength={1000} value={value.description} onChange={e => set("description", e.target.value)} placeholder="어떤 점이 좋았나요?"/></label>
     <label>{value.kind === "product" ? "구매 가격 (원)" : "대략적인 재료 비용 (원)"}<input required type="number" min={0} max={10000000} value={value.price} onChange={e => set("price", Number(e.target.value))}/></label>
